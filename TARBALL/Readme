@@ -1,0 +1,77 @@
+This is a 64bit binary distribution of 'kgdevelop' and  Kulina
+Graphics library 'kglib' and its Open Source dependencies(libgm.a) like
+GraphicsMagick, libpng,libjpeg etc. So all the dependencies other than
+Xlib is included. It contains five files.
+
+1. Readme.first (this file)
+2. kgdevelop - statically linked binary, as usr/bin/kgdevelop. 
+3. libkulina.a - library archive of Kulina Graphics Library, as
+usr/lib/libkulina.a
+4. libgm.a  - libray archive of GraphicMagick and other open source
+componects, as libgm.a
+5. kulina.h - required include file as usr/include/kulina.h
+6. install.sh
+
+Installaion:
+
+If you untar this tarball from the root of filesystem (/) everything
+will fall in the right place. Otherwise you have to manually move them to the
+right place, as follows;
+  install -m 755  usr/bin/kgdevelop /usr/bin
+  install -m 755  usr/lib/libkulina.a /usr/lib/
+  install -m 755  usr/lib/libgm.a     /usr/lib/
+  install -m 755  usr/include/kulina.h /usr/include/
+
+System requirements:
+  It should work with any 64bit Linux Distribution. To try out this you
+need a C development environment. You also need a X development
+environment.
+
+How to try it:
+
+  Right now no documentation is included, since it is not yet written.
+However the daring can still try it. First of all you must have some
+experience in C programming and it is ment for C programmers. But your
+devepment can be compiled with C++ also. 
+  Generally one starts by creating a folder, say for example, 'check'. It goes as
+follows:
+
+  mkdir check   
+  cd check
+  kgdevelop check
+
+It is not compulsory that you  have to use the folder name in
+'kgdevelop', you can use any name.
+
+Now you will get the development window with a default canvas. One
+resize it or reposition it. All 'canvas'/project related options are in the
+main menu bar. All 'Widget' related options are under the menu
+'Widget'.One can add,delete,reposition and resize  different widgets
+using the sub menu of main 'Widget' menu.
+Using 'File' menu one can save the project.
+
+At this point it will create the following files:
+
+1. check.rc - design information used by kgdevelop, it a human readable
+file, but normally not expected to be modified manually. However one can
+try manual modifications after backing up the original.
+2. Makefile - a minimal makefile for the project
+3. main.c and main.src : to begin with they are same and it is the main
+program for the project. If the creation is sub Dialog you may not use it in the final
+Makefile, because one can use only one main().
+4. check.c  and check.src : the design code ; initially both same
+5. checkCallbacks.c and checkCallbacks.src: the call backs files,
+initially same
+
+on executing 'make' you can compile the code which will create the
+executable 'check' ( if everything goes well).
+
+One can modify the c- files , especially the Callbacks file  to create
+the real code. 
+For modifications 3soneyou can retry the 'kgdevelop' as above, but this time it
+will create the '.src' files only. So your 'C code' is not distrurbed,
+and you
+have to do the necessary modifications manually (or copy the .src file
+to the corresponding C file).
+
+(more to be added later)

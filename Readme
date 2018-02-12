@@ -1,0 +1,216 @@
+This is a 64bit binary distribution of 'kgdevelop' and  Kulina
+Graphics library 'kglib' and its Open Source dependencies(libgm.a) like
+GraphicsMagick, libpng,libjpeg etc. So all the dependencies other than
+Xlib is included. It contains five files.
+
+1. Readme.first (this file)
+2. kgdevelop - statically linked binary, as usr/bin/kgdevelop. 
+3. libkulina.a - library archive of Kulina Graphics Library, as
+usr/lib/libkulina.a
+4. libgm.a  - libray archive of GraphicMagick and other open source
+componects, as libgm.a
+5. kulina.h - required include file as usr/include/kulina.h
+6. install.sh
+
+Installaion:
+
+If you untar this tarball from the root of filesystem (/) everything
+will fall in the right place. Otherwise you have to manually move them to the
+right place, as follows;
+  install -m 755  usr/bin/kgdevelop /usr/bin
+  install -m 755  usr/lib/libkulina.a /usr/lib/
+  install -m 755  usr/lib/libgm.a     /usr/lib/
+  install -m 755  usr/include/kulina.h /usr/include/
+
+System requirements:
+  It should work with any 64bit Linux Distribution. To try out this you
+need a C development environment. You also need a X development
+environment.
+
+How to try it:
+
+  Right now no documentation is included, since it is not yet written.
+However the daring can still try it. First of all you must have some
+experience in C programming and it is ment for C programmers. But your
+devepment can be compiled with C++ also. 
+  Generally one starts by creating a folder, say for example, 'check'. It goes as
+follows:
+
+  mkdir check   
+  cd check
+  kgdevelop check
+
+It is not compulsory that you  have to use the folder name in
+'kgdevelop', you can use any name.
+
+Now you will get the development window with a default canvas. One may
+resize it or reposition it. All 'canvas'/project related options are in the
+main menu bar. All 'Widget' related options are under the menu
+'Widget'.One can add,delete,reposition and resize  different widgets
+using the sub menu of main 'Widget' menu.
+Using 'File' menu one can save the project.
+
+At this point it will create the following files:
+
+1. check.rc - design information used by kgdevelop, it a human readable
+file, but normally not expected to be modified manually. However one can
+try manual modifications after backing up the original.
+2. Makefile - a minimal makefile for the project
+3. main.c and main.src : to begin with they are same and it is the main
+program for the project. If the creation is sub Dialog you may not use it in the final
+Makefile, because one can use only one main().
+4. check.c  and check.src : the design code ; initially both same
+5. checkCallbacks.c and checkCallbacks.src: the call backs files,
+initially same
+
+on executing 'make' you can compile the code which will create the
+executable 'check' ( if everything goes well).
+
+One can modify the c- files , especially the Callbacks file  to create
+the real code. 
+For modifications oneu can retry the 'kgdevelop' as above, but this time it
+will create the '.src' files only. So your 'C code' is not distrurbed,
+and you
+have to do the necessary modifications manually (or copy the .src file
+to the corresponding C file).
+
+(more to be added later)
+(Added on 24 June 2016)
+
+A folder named examples is added. As of now only one
+example 'sample1' is created. It is a very simple
+2D graphics application, which should give some
+idea of how 2D graphics is implemented in 'Kulina
+Graphics'. 
+It just uses three types of Widgets, namely;
+1. Special Button
+2. Buttons
+3. Drawing Area
+
+Special Buttons/Buttons
+
+'Special Buttons' are similar to 'Buttons', with the
+exception that if its 'Callback' return 1, then
+the 'Ui' is closed. So it is one of the mechanisms to 'quit'
+the UI or program. (There are other ways also.).
+Buttons and Special Buttons are a set of two dimensional
+buttons which can have different 'look' by its type.
+Type tells how a button is drawn, including one type
+where nothing is drawn. (A way of implementing hidden
+buttons, which is used in 'Hotspot'. There are 
+other ways also to get the same effect.)
+
+Drawing Area
+
+'Drawing Area' is the Widget, which used for graphics
+applications. 'Drawing area' does not have a 'Callback'
+since it is not an input widget, but an ouput widget.
+However it has an 'init fuction' which can be used
+to initialise graphics actions and can also be used
+to draw the graphics for a simple application.
+It is also possible to call the graphics primitives
+in 'Callbacks' of other input Widgets.
+A graphics application can have more than one
+'Drawing Area' widgets.
+
+Graphics starts with  setting 'Viewport' which is
+set by default to (0.,0.1.,1.), full
+drawing area. Next one sets the the
+'User Frame', there by defining the coordinate
+system to call graphics primitives.
+One can redefine the 'User Frame' any time 
+and make 'Review', so the that Zooming In/Out
+is possible. In all graphics calls one has to
+use the pointer to the 'Drawing Area' as
+first argument. The 'Drawing Area' pointer
+can be stored in a global variable through the
+'init fuction', or it can be obtained
+by making a call to 'kgGetNamedWidget'.
+'kgdevelop' assigns a unique name for all
+widgets (which may be changed).
+
+Following is the list of 2D Graphics routines;
+
+void kgViewport(DIG *G,float x1, float y1, float x2, float y2);
+void kgUserFrame(DIG *G,float x1,float y1, float x2, float y2);
+
+void kgLineColor(DIG *G,int colr);
+void kgLineStyle(DIG *G,int style);
+void kgLineWidth( DIG *G,int dw);
+void kgMove2f(DIG *G,float x,float y);
+void kgDraw2f(DIG *G,float x,float y);
+void kgMarkerType(DIG *G,int mtype);
+void kgMarker2f(DIG *G,float x,float y);
+void kgTextAngle(DIG *G,float ang);
+void kgTextSize(DIG *G,float h,float w,float g);
+void kgTextFont(DIG *G,int tf);
+void kgTextColor(DIG *G,int tcolr);
+void kgWriteText( DIG *G,char *c);
+void kgCircle2f(DIG *G,float x,float y,float r);
+void kgPolyFill(DIG *G,int n, float *x, float *y, int flag,int color);
+void kgBoxFill(DIG *G,float x1,float y1, float x2, float y2,int fl,int ib);
+void kgSetGouraudParams(DIG *G,float p2, float p1, int n, int ib);
+void kgGouraudFill(DIG *G,int n, float *x, float *y,float *v);
+void kgCircle2f(DIG *G,float x,float y,float r);
+
+void kgArrowSize(DIG *G,int size);
+int kgRoundedRectangleRing2(void * fid,float xo,float yo,float
+xl,float yl,float red,float green,float blue,float fac,float bordrsize) ;
+int kgRoundedRectangleRing3(void * fid,float xo,float yo,float xl,float yl,float red,float green,float blue,float fac,float bordrsize) ;
+int kgRoundedRectangleRing1(void * fid,float xo,float yo,float xl,float yl,float red,float green,float blue,float fac,float bordrsize) ;
+int kgRoundedRectangleRing(void * fid,float xo,float yo,float xl,float yl,float red,float green,float blue,float fac,float bordrsize) ;
+int kgRoundedRectangleFill(void * fid,float xo,float yo,float xl,float yl,int ib,int clr,float fac);
+int kgRoundedRectangleShade(void * fid,float xo,float yo,float xl,float yl,int clr,float fac,float vmin,float vmax);
+int kgRoundedRectangleShade0(void * fid,float xo,float yo,float xl,float yl,int clr,float fac,float vmin,float vmax);
+int kgRoundedRectangleShade1(void * fid,float xo,float yo,float xl,float yl,int clr,float fac,float vmin,float vmax);
+int kgRoundedRectangleShade4(void * fid,float xo,float yo,float xl,float yl,int clr,float fac,float vmin,float vmax);
+int kgRoundedRectangle(void * fid,float xo,float yo,float xl,float yl,int clr,float fac,float bsize)
+int kgArcFill(void * fid,float xo,float yo,float r,float ang1,float ang2,int flag,int color);
+int kgRoundedRectanglePressed(void * fid,float xo,float yo,float xl,float yl,int clr,float fac,float bodrsize);
+int kgRoundedRectangleRaised(void * fid,float xo,float yo,float xl,float yl,int clr,float fac,float bodrsize);
+void kgDrawImage(DIG *G,void *imgfile,float x1,float y1,float x2, float y2);
+void kgImportGphFile(DIG *G,char *flname,float gx1,float gy1,float gx2,float gy2);
+void kgSetShadeParams(DIG *G,float p2, float p1,int startclr, int n, int ib);
+int  kgSetShading(DIG *G,int startclr,int ncolors,int bodr,int basecolor);
+int  kgSetHSVShading(DIG *G,int startclr,int ncolors,int bodr,float hue,float satu);
+int  kgMixHsvColors(void * fid,int sclr,int nclrs,float h,float s,float vmin,float vmax) ;
+void  kgDrawingTool(DIG *G);
+void kgDisplayGphFile(DIALOG *D,char *flname,int xo,int yo,int xl,int yl,unsigned long bkcolor);
+
+
+void kgOpenObject(DIG *G,int obj);
+void kgCloseObject(DIG *G);
+void kgExtObject(DIG *G,int obj);
+void kgCallObject(DIG *G,int obj,float sx,float sy,float fx,float fy);
+void kgCopyObject(DIG *G,int obj);
+
+void kgPointerZoom(DIG *G);
+void kgBackupGph(DIG *G,char *flname);
+int kgImageCopy(void *Tmp,char *imgname);
+
+void kgChangeColor(DIG *G,int no,int ir,int ig,int ib);
+void kgSetClip(DIG *G,float x1,float y1,float x2,float y2);
+void kgPopClip(DIG *G);
+
+void kgGetViewport(DIG *G,float *x1,float *y1,float *x2,float *y2);
+void kgGetWindow(DIG *G,float *x1,float *y1,float *x2,float *y2);
+void kgSetAntialiasing(DIG *G,int val);
+void kgAntialiasingOn(DIG *G,int val);
+void kgAntialiasingOff(DIG *G);
+void kgReview(DIG *G);
+
+There are 1024 color cells inside 'Kulina Grapics', which can be
+redefined by 'kgChangeColor'. However, since many colors are defined
+and used by the 'GUI system' it is recommended to leave the first
+64 colors by graphics applications.
+
+Note on Callbacks
+
+All input Widgets have  Callbacks, which can also be
+set as NULL. These callbacks are called when input event
+happens on these widgets. Also there is a Callback for
+any other mouse click event. There is mechanisms to identify
+the location, Widget if any in such events. Also there
+is a 'WaitCallback' which will be called when Ui is waiting 
+for events. Any of the Callbacks can make call to 'kgSetExit()'
+to close the Ui.

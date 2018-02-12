@@ -1,0 +1,15 @@
+int  Optionsdiahoribar1callback(int key,int i,void *Tmp) ;
+int  Optionsdiahoribar2callback(int key,int i,void *Tmp) ;
+int  Optionsdiahoribar3callback(int key,int i,void *Tmp) ;
+int  Optionsdiahoribar4callback(int key,int i,void *Tmp) ;
+int  Optionsdiabutnbox1callback(int key,int i,void *Tmp) ;
+int  Optionsdiabutnbox2callback(int key,int i,void *Tmp) ;
+int  Optionsdiabutnbox3callback(int key,int i,void *Tmp) ;
+int  Optionsdiabutnbox4callback(int key,int i,void *Tmp) ;
+int  Optionsdiabutnbox5callback(int key,int i,void *Tmp) ;
+int  Optionsdiabutnbox6callback(int key,int i,void *Tmp) ;
+int  Optionsdiabutnbox7callback(int key,int i,void *Tmp) ;
+int  Optionsdiabutnbox8callback(int key,int i,void *Tmp) ;
+int  Optionsdiabutnbox9callback(int key,int i,void *Tmp) ;
+int  Optionsdiabutnbox10callback(int key,int i,void *Tmp) ;
+int Optionsdiainit(void *Tmp) ;
