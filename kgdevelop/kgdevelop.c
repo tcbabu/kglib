@@ -5068,6 +5068,7 @@ void Make_gui_code(DIALOG *D,char *flname,char *dianame){
   fprintf(fp1,"#endif\n");
   fprintf(fp1,"  D.Fixpos = %-d;    /*  1 for Fixing Position */\n",D->Fixpos);
   fprintf(fp1,"  D.NoTaskBar = %-d;    /*  1 for not showing in task bar*/\n",D->NoTaskBar);
+  fprintf(fp1,"  D.NoWinMngr = 0;    /*  1 for no Window Manager*/\n");
   fprintf(fp1,"  D.StackPos = %-d;    /* -1,0,1 for for Stack Position -1:below 0:normal 1:above*/\n",
                                 D->StackPos);
   fprintf(fp1,"  D.Shapexpm = NULL;    /*  PNG/jpeg file for window shape;Black color will not be drawn */\n");
@@ -7730,8 +7731,9 @@ int main(int narg,char **args) {
   FILE *fp,*tp;
   char buff[500];
   if(getenv("KULINA")==NULL) {
-    fprintf(stderr,"KULINA is not set\n");
-    exit(0);
+    fprintf(stderr,"KULINA is not set, setting as /usr\n");
+//    exit(0);
+    setenv ("KULINA","/usr",0);
   }
   strcpy(kulinahome,getenv("KULINA"));
   if( narg < 2) {
