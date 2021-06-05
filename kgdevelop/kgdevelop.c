@@ -72,7 +72,7 @@ int Runtableboxesdata(void *arg);
 void *Runtableboxdata(void *arg,char *msg);
 
 static char flname[100],Sourcecode[100],DiaName[200],Callbackcode[100],
-           Includecode[100],Maincode[100];
+           Includecode[100],Maincode[100],Mainc[100];
 ThumbNail ** MakeSampleThumbNails(int size,int n) {
   int i;
   void *img,*thimg;
@@ -2679,10 +2679,10 @@ void Read_dialog_dimensions(DIALOG *D) {
   sscanf(buff,"%d%d%d%d",&(D->lw),&(D->rw),&(D->tw),&(D->bw));
   GETDATALINE;
   strcat(buff,extra);
-  sscanf(buff,"%d%d%d%d%d%d%d%d%d%d%d%d%f%d%d%d%d",&(D->df),&(D->bor_type),&(D->bkup),
+  sscanf(buff,"%d%d%d%d%d%d%d%d%d%d%d%d%f%d%d%d%d%d",&(D->df),&(D->bor_type),&(D->bkup),
      &(D->Sticky),&(D->Fixpos),&(D->Deco),&(D->fullscreen),&(D->kbattn),&(D->butattn),&(D->Newwin),
      &(D->DrawBkgr),&(D->NoTaskBar),&(D->transparency),&(D->Resize),&(D->MinWidth),
-     &(D->MinHeight),&(D->StackPos));
+     &(D->MinHeight),&(D->StackPos),&(D->NoWinMngr));
   InitOptions(D);
 }
 void Print_buttonbox(FILE *fp,DIB *t,int control,char *dianame) {
@@ -5068,7 +5068,8 @@ void Make_gui_code(DIALOG *D,char *flname,char *dianame){
   fprintf(fp1,"#endif\n");
   fprintf(fp1,"  D.Fixpos = %-d;    /*  1 for Fixing Position */\n",D->Fixpos);
   fprintf(fp1,"  D.NoTaskBar = %-d;    /*  1 for not showing in task bar*/\n",D->NoTaskBar);
-  fprintf(fp1,"  D.NoWinMngr = 0;    /*  1 for no Window Manager*/\n");
+  fprintf(fp1,"  D.NoWinMngr = %-d;    /*  1 for no Window Manager*/\n",
+                      D->NoWinMngr );
   fprintf(fp1,"  D.StackPos = %-d;    /* -1,0,1 for for Stack Position -1:below 0:normal 1:above*/\n",
                                 D->StackPos);
   fprintf(fp1,"  D.Shapexpm = NULL;    /*  PNG/jpeg file for window shape;Black color will not be drawn */\n");
@@ -7737,7 +7738,7 @@ int main(int narg,char **args) {
   }
   strcpy(kulinahome,getenv("KULINA"));
   if( narg < 2) {
-    printf("Usage: kgdesigner  <dianame> \n");
+    printf("Usage: kgdevelop  <dianame> \n");
     exit(0);
   }
   if(narg> 2) {
@@ -7748,7 +7749,8 @@ int main(int narg,char **args) {
   sprintf(Sourcecode,"%-s.src",args[1]);
   sprintf(Callbackcode,"%-sCallbacks.src",args[1]);
   sprintf(Includecode,"%-sCallbacks.h",args[1]);
-  sprintf(Maincode,"main.src");
+  sprintf(Maincode,"%-smain.src",args[1]);
+  sprintf(Mainc,"%-smain.c",args[1]);
 #if 0
   Dia = Make_dialog_structure_from_file(flname);
   SetControlCounters(Dia);
@@ -7761,15 +7763,15 @@ int main(int narg,char **args) {
     fprintf(fp,"KULINA=/usr\n");
     fprintf(fp,"#CC\t=g++ -pthread\n");
     fprintf(fp,"CC\t=cc -pthread\n");
-    fprintf(fp,"%-s\t: %-s.o %-sCallbacks.o main.o\n",args[1],args[1],args[1]);
+    fprintf(fp,"%-s\t: %-s.o %-sCallbacks.o %-smain.o\n",args[1],args[1],args[1],args[1]);
     /* fprintf(fp,"\t cc -o %-s %-s.o %-sCallbacks.o main.o $(PARAS)/lib/glib.a -lX11 -lm\n",args[1],args[1],args[1]);*/
-    fprintf(fp,"\t $(CC) -o %-s %-s.o %-sCallbacks.o main.o -I$(KULINA)/include $(KULINA)/lib/libkulina.a $(KULINA)/lib/libgm.a -L/usr/X11R6/lib -lX11 -lXext -lm -lpthread -lz -lbz2 -lGL\n",args[1],args[1],args[1]);
+    fprintf(fp,"\t $(CC) -o %-s %-s.o %-sCallbacks.o %-smain.o -I$(KULINA)/include $(KULINA)/lib/libkulina.a $(KULINA)/lib/libgm.a -L/usr/X11R6/lib -lX11 -lXext -lm -lpthread -lz -lbz2 -lGL\n",args[1],args[1],args[1],args[1]);
     fprintf(fp,"%-s.o\t: %-s.c \n",args[1],args[1]);
     fprintf(fp,"\t $(CC) -c %-s.c\n",args[1]);
     fprintf(fp,"%-sCallbacks.o\t: %-sCallbacks.c \n",args[1],args[1]);
     fprintf(fp,"\t $(CC) -c %-sCallbacks.c\n",args[1]);
-    fprintf(fp,"main.o\t: main.c \n");
-    fprintf(fp,"\t $(CC) -c main.c\n");
+    fprintf(fp,"%-smain.o\t: %-smain.c \n",args[1],args[1]);
+    fprintf(fp,"\t $(CC) -c %-smain.c\n",args[1]);
     fprintf(fp,"clean\t:  \n");
     fprintf(fp,"\t   rm -f *.o %-s\n",args[1]);
     fclose(fp);
@@ -7788,8 +7790,8 @@ int main(int narg,char **args) {
     }
   }
   else fclose(fp);
-  if( (fp= fopen("main.c","r"))== NULL) {
-    sprintf(buff,"cp main.src main.c");
+  if( (fp= fopen(Mainc,"r"))== NULL) {
+    sprintf(buff,"cp %-s %-s ",Maincode,Mainc);
     system(buff);
   }
   else fclose(fp);

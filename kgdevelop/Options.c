@@ -35,6 +35,7 @@ int  Optionsbrowser2callback(int item,int i,void *Tmp) {
   Dia->DrawBkgr = th1[7]->sw;
   Dia->NoTaskBar = (th1[8]->sw+1)%2;
   Dia->Resize = (th1[9]->sw);
+  Dia->NoWinMngr = th1[10]->sw;
   if(Resize != Dia->Resize) {
      T = (DIT *)kgGetWidget(D,6);
      M = (DIM *)kgGetWidget(D,7);
@@ -65,6 +66,7 @@ void  Optionsbrowser2init(DICH *C,void *pt) {
   th1[7]->sw=Dia->DrawBkgr;
   th1[8]->sw=(Dia->NoTaskBar+1)%2;
   th1[9]->sw=(Dia->Resize);
+  th1[10]->sw=(Dia->NoWinMngr);
 }
 int  Optionshoribar1callback(int key,int i,void *Tmp) {
   DIALOG *D;DILN *B; 
@@ -206,13 +208,14 @@ int Options( void *parent,void **v,void *pt) {
     (char *)"Draw Background",
     (char *)"Taskbar Entry",
     (char *)"Allow Resize",
+    (char *)"No Window Manager",
     NULL 
   };
   ThumbNail **th1 ;
   DICH c1 = { 
     'c',
     16,154,  
-    405,301,   
+    405,326,   
     10,0,  
     170, 
     25, 
