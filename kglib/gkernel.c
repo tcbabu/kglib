@@ -636,8 +636,11 @@ int kgSendKeyEvent(void *Tmp,int ch) {
   k->subwindow = wc->Win;
   k->state = KeyRelease;
   code = Revscan_code[ch];
-  if(code < 0) return 0;
-  if( (code>128)&&(code<218)) {
+  if(code < 0) {
+     fprintf(stderr,"code < 0 %c %x\n",ch,ch);
+     return 0;
+  }
+  if( (code>128)&&(code<223)) {
     code -=128;
     k->same_screen = 1;
     k->keycode = Revscan_code[ShiftKey];
@@ -3936,6 +3939,7 @@ void get_scan_code(Display *Dsp) {
      }
     }
   }
+//TCB
 #if 0
   for(i=0;i<128;i++) {
     k = Revscan_code[i];

@@ -746,32 +746,41 @@ int BorderActions(int but) {
    }
 }
 int  makeguidiabutton1callback(int key,int i,void *Tmp) {
-  DIA *D;DIB *B; 
-  int n,ret =1,but; 
+  DIA *D;DIN *B; 
+  int n,ret =0,but; 
   float xx,yy;
   D = ((DIALOG *)Tmp)->d;
-  B = D[i].b;
+//  B = D[i].n;
+  B = (DIN *)kgGetWidget(Tmp,i);
   n = B->nx*B->ny;
   xx = Dia->xo;
   yy = Dia->yo;
   kgPrintf(Parent,2,(char *)"!c02!s!f22!z53DESIGN MODE");
   switch(key) {
     case 1: 
-      ret = 1;
+      ret = 0;
       switch(RunFileoptdia(Tmp)) {
         case 1:
          ret=0;
-        case 2:
          SetOptions(Dia);
          Convert_gui_data();
          Make_gui_code(Dia,Sourcecode,DiaName);
          Print_gui_data(Dia,flname); /* rewriting */
          Convert_gui_data();
          break;
+        case 2:
+         SetOptions(Dia);
+         Convert_gui_data();
+         Make_gui_code(Dia,Sourcecode,DiaName);
+         Print_gui_data(Dia,flname); /* rewriting */
+         Convert_gui_data();
+         ret=1;
+         break;
         case 3:
          if(!kgCheckMenu(Parent,100,200,(char *)"Quit without SAVING...",0) ) {
                ret=0;
          }
+         else ret=1;
          break;
         default:
          ret =0;
@@ -820,7 +829,7 @@ int  makeguidiabutton1callback(int key,int i,void *Tmp) {
   return ret;
 }
 
-void  makeguidiabutton1init(DIB *B,void *pt) {
+void  makeguidiabutton1init(DIN *B,void *pt) {
 }
 int makeguidiacleanup(void *Tmp) {
   /* you add any cleanup/mem free here */
@@ -879,6 +888,7 @@ int makeguidiainit(void *Tmp) {
 //  DRAW_DIALOG(Dia);
   Parent= (DIALOG *)Tmp;
   T = ((DIALOG *)Tmp)->d[2].i->twin;  
+  kgSetDefaultWidget(Tmp,1);
   return 1;
 }
 #if 0
@@ -1019,82 +1029,73 @@ void ModifymakeguidiaGc(Gclr *gc) {
 int makeguidiaGroup( DIALOG *D,void **v,void *pt) {
   int GrpId=0,oitems=0,i,j;
   DIA *d=NULL,*dtmp;
-  char **titles0=NULL; 
-  titles0= (char **)malloc(sizeof(char *)*7);
-  titles0[0]= (char *)malloc(5);
-  strcpy(titles0[0],(char *)"File");
-  titles0[1]= (char *)malloc(7);
-  strcpy(titles0[1],(char *)"Widget");
-  titles0[2]= (char *)malloc(7);
-  strcpy(titles0[2],(char *)"Border");
-  titles0[3]= (char *)malloc(7);
-  strcpy(titles0[3],(char *)"Resize");
-  titles0[4]= (char *)malloc(6);
-  strcpy(titles0[4],(char *)"Repos");
-  titles0[5]= (char *)malloc(8);
-  strcpy(titles0[5],(char *)"Options");
-  titles0[6]= (char *)malloc(5);
-  strcpy(titles0[6],(char *)"Test");
-  int *sw0=NULL  ; 
-  sw0 =(int *)malloc(sizeof(int)*7) ; 
-  sw0[0]= 1; 
-  sw0[1]= 1; 
-  sw0[2]= 1; 
-  sw0[3]= 1; 
-  sw0[4]= 1; 
-  sw0[5]= 1; 
-  sw0[6]= 1; 
-  char **xpms0  = NULL; 
-  xpms0  = (char **)malloc(sizeof(char *)*21); 
-  xpms0[0]=   NULL; /* pixmap info */ 
-  xpms0[1]=   NULL; /* pixmap info */ 
-  xpms0[2]=   NULL; /* pixmap info */ 
-  xpms0[3]=   NULL; /* pixmap info */ 
-  xpms0[4]=   NULL; /* pixmap info */ 
-  xpms0[5]=   NULL; /* pixmap info */ 
-  xpms0[6]=   NULL; /* pixmap info */ 
-  xpms0[7]=   NULL; /* pixmap info */ 
-  xpms0[8]=   NULL; /* pixmap info */ 
-  xpms0[9]=   NULL; /* pixmap info */ 
-  xpms0[10]=   NULL; /* pixmap info */ 
-  xpms0[11]=   NULL; /* pixmap info */ 
-  xpms0[12]=   NULL; /* pixmap info */ 
-  xpms0[13]=   NULL; /* pixmap info */ 
-  xpms0[14]=   NULL; /* pixmap info */ 
-  xpms0[15]=   NULL; /* pixmap info */ 
-  xpms0[16]=   NULL; /* pixmap info */ 
-  xpms0[17]=   NULL; /* pixmap info */ 
-  xpms0[18]=   NULL; /* pixmap info */ 
-  xpms0[19]=   NULL; /* pixmap info */ 
-  xpms0[20]=   NULL; /* pixmap info */ 
-  int *bkgr0 =NULL; 
-  bkgr0 =(int *)malloc(sizeof(int)*7) ; 
-  bkgr0[0]=  -1; 
-  bkgr0[1]=  -1; 
-  bkgr0[2]=  -1; 
-  bkgr0[3]=  -1; 
-  bkgr0[4]=  -1; 
-  bkgr0[5]=  -1; 
-  bkgr0[6]=  -1; 
-  char *butncode0  = NULL;
-  DIB b0 = { 
-    'b',
+  BUT_STR  *butn0=NULL; 
+  butn0= (BUT_STR *)malloc(sizeof(BUT_STR)*7);
+  butn0[0].sw=1;
+  strcpy(butn0[0].title,(char *)"File");
+  butn0[0].xpmn=NULL;
+  butn0[0].xpmp=NULL;
+  butn0[0].xpmh=NULL;
+  butn0[0].bkgr=-1;
+  butn0[0].butncode='';
+  butn0[1].sw=1;
+  strcpy(butn0[1].title,(char *)"Widget");
+  butn0[1].xpmn=NULL;
+  butn0[1].xpmp=NULL;
+  butn0[1].xpmh=NULL;
+  butn0[1].bkgr=-1;
+  butn0[1].butncode='';
+  butn0[2].sw=1;
+  strcpy(butn0[2].title,(char *)"Border");
+  butn0[2].xpmn=NULL;
+  butn0[2].xpmp=NULL;
+  butn0[2].xpmh=NULL;
+  butn0[2].bkgr=-1;
+  butn0[2].butncode='';
+  butn0[3].sw=1;
+  strcpy(butn0[3].title,(char *)"Resize");
+  butn0[3].xpmn=NULL;
+  butn0[3].xpmp=NULL;
+  butn0[3].xpmh=NULL;
+  butn0[3].bkgr=-1;
+  butn0[3].butncode='';
+  butn0[4].sw=1;
+  strcpy(butn0[4].title,(char *)"Repos");
+  butn0[4].xpmn=NULL;
+  butn0[4].xpmp=NULL;
+  butn0[4].xpmh=NULL;
+  butn0[4].bkgr=-1;
+  butn0[4].butncode='';
+  butn0[5].sw=1;
+  strcpy(butn0[5].title,(char *)"Options");
+  butn0[5].xpmn=NULL;
+  butn0[5].xpmp=NULL;
+  butn0[5].xpmh=NULL;
+  butn0[5].bkgr=-1;
+  butn0[5].butncode='';
+  butn0[6].sw=1;
+  strcpy(butn0[6].title,(char *)"Test");
+  butn0[6].xpmn=NULL;
+  butn0[6].xpmp=NULL;
+  butn0[6].xpmh=NULL;
+  butn0[6].bkgr=-1;
+  butn0[6].butncode='';
+  DIN b0 = { 
+    'n',
     7,3,  
     774,40,
     9,0,  
     88, 
     30, 
     7,1, 
-    NULL, 
-    sw0,
-    titles0,
-    butncode0,
-    NULL,makeguidiabutton1callback, /* args, Callbak */
-      (void **)xpms0,bkgr0, /* pointers to xpms and colors */
-      1,0.500000,0,0 /* button type and roundinfg factor(0-0.5),bordr,hide */
+    1,0.50000,0,0,0,0, /* button type and roundinfg factor(0-0.5),bordr,hide ,nodrawbkgr*/
+ 
+    butn0, 
+    makeguidiabutton1callback, /*  Callbak */
+      NULL  /* any args */
   };
-  b0.bval = 1; 
-  strcpy(b0.Wid,(char *)"");
+  b0.item = 1; 
+  strcpy(b0.Wid,(char *)"buttons");
   char *xpm1=   NULL; /* pixmap info */ 
   DIG g1 = { 
     'g',
@@ -1119,10 +1120,10 @@ int makeguidiaGroup( DIALOG *D,void **v,void *pt) {
   dtmp = (DIA *)realloc(dtmp,sizeof(DIA )*(i+4));
   d =dtmp+i; 
   d[3].t=NULL;
-  d[0].t = (DIT *)malloc(sizeof(DIB));
+  d[0].t = (DIT *)malloc(sizeof(DIN));
   makeguidiabutton1init(&b0,pt) ;
-  *d[0].b = b0;
-  d[0].b->item = -1;
+  *d[0].N = b0;
+  d[0].N->item = -1;
   d[1].t = (DIT *)malloc(sizeof(DIG));
   *d[1].g = g1;
   d[1].g->item = -1;
@@ -1203,6 +1204,7 @@ int makeguidia( void *parent,void **v,void *pt) {
   D.Fixpos = 1;    /*  1 for Fixing Position */
   D.NoTaskBar = 0;    /*  1 for not showing in task bar*/
   D.StackPos = 0;    /* -1,0,1 for for Stack Position -1:below 0:normal 1:above*/
+  D.NoWinMngr = 0;
   D.Shapexpm = NULL;    /*  PNG/jpeg file for window shape;Black color will not be drawn */
   D.parent = parent;    /*  1 for not showing in task bar*/
   D.pt = pt;    /*  any data to be passed by user*/
@@ -7725,7 +7727,7 @@ void Runmakeguidia(void *parent) {
 
 *************************************************/
    void **v=NULL;
-   void **pt=NULL;
+   void *pt=NULL;
    makeguidia( parent,v,pt);
 }
 int main(int narg,char **args) {

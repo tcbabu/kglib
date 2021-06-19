@@ -20,3 +20,4 @@
 #define TabKey       20
 #define SpaceKey     21
 #define PrintKey     22
+#define GreaterKey   0x3e
