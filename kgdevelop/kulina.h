@@ -1136,6 +1136,7 @@ void *kgMergeImages(void  *img1,void  *img2,int Xshft,int Yshft); /* second on f
 void *kgMergeTransparentImage(void  *img1,void  *img2,int Xshft,int Yshft); /* second on first */
 void *kgMaskImage(void *png,void *mask);
 void *kgCopyImage(void *img);
+void *kgCreateImage(int xzise,int ysize);
 void *kgCleanImage(void *img);
 void *kgFlipImage(void *img); // About X refledction overwrites img
 void *kgFlopImage(void *img); // About Y refledction overwrites img
@@ -1162,6 +1163,8 @@ void *kgAddTransparency(void *Img,float transp);
 void *kgChangeBrightness(void *Img,float fac) ;
 int kgRootImage(void *tmp);
 void * kgGetRootImage(void );
+void * kgGetRootRawImage(int xo,int yo,int wd,int ht );
+void * kgMakeImageFromRaw(unsigned char *Imgdata,int wd,int ht );
 /* built in images */
 void * kgUndoImage(int size,int red,int green,int blue);
 void * kgRedoImage(int size,int red,int green,int blue);
@@ -1236,8 +1239,8 @@ void kgPointerZoom(DIG *G);
 void kgPointerAntialiasedZoom(DIG *G);
 void kgBackupGph(DIG *G,char *flname);
 void kgHardCopy(DIG *G,char *flname);
+void kgA4Copy(DIG *G,char *flname);
 void kgLandscapeCopy(DIG *G,char *flname);
-int kgImageCopy(void *Tmp,char *imgname);
 void kgOpenObject(DIG *G,int obj);
 void kgCloseObject(DIG *G);
 void kgExtObject(DIG *G,int obj);
@@ -1299,6 +1302,8 @@ void *kgGetResizedImage(void *G);
 void *kgGetSharpImage(void *G);
 void *kgGetSmoothImage(void *G);
 void kgCloseImage(void *Gtmp);
+void *kgInitGph(int width,int height);
+void kgCloseGph(void *Gtmp);
 /* end of graphics calls */
 /* wait related */
 void kgWaitButtonRelease(DIALOG *D);
@@ -1514,6 +1519,29 @@ int kgClearHighlight(void *Tmp);
 int kgCheckSelection(void *Tmp);
 int kgSetClipbordCallback(void *Tmp,int *(cpCallback)(int,void *));
 int kgSetClipMenu(void *Tmp,char **menu);
+#ifndef D_KEYBRD
+#define D_KEYBRD
+typedef struct _keybrd {
+  void *D;
+  int GrpId;
+  void *Coff,*Con,*Lon,*Loff;
+  int sgrp,cgrp;
+  int offgrp,ongrp;
+  int CapsLock;
+  int ShiftPress;
+  int CurWid;
+  int Vis;
+  int Btype;
+  int symgrp;
+  int kbtype;
+} KEYBRD;
+int kgMakeKeybrd(DIALOG *D,int xo,int yo,int Vis,int kbtype,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float transparency) ;
+   int GrpId;
+int kgMakeDefaultKeybrd(DIALOG *D,int xo,int yo,int vis,int kbtype);
+int kgSetKeybrdWidget(int curwid);
+int kgHideKeybrd(void);
+int kgShowKeybrd(void);
+#endif
 #ifdef __cplusplus
 }
 #endif

@@ -1314,7 +1314,7 @@ static int keybrdGroup( DIALOG *D,void **v,void *pt) {
 
 /* One can also use the following code to add Widgets to an existing Dialog */
 
-int kgMakeKeybrd(DIALOG *D,int xo,int yo,int Vis,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float transparency) {
+int kgMakeKeybrd(DIALOG *D,int xo,int yo,int Vis,int kbtype,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float transparency) {
    int GrpId;
    int i=0,offset;
    DIA *dtmp,*d;
@@ -1327,6 +1327,7 @@ int kgMakeKeybrd(DIALOG *D,int xo,int yo,int Vis,int btype,int bfont,int fontclr
    void **v=NULL;
    void *pt=NULL; /* pointer to send any extra information */
    int Red,Green,Blue;
+   Kbrd.kbtype=kbtype;
 #if 0
    kgDefineColor(93,R,G,B);
    kgDefineColor(3,250,230,00);
@@ -1392,7 +1393,7 @@ int kgMakeKeybrd(DIALOG *D,int xo,int yo,int Vis,int btype,int bfont,int fontclr
    }
    return GrpId;
 }
-int kgMakeDefaultKeybrd(DIALOG *D,int xo,int yo,int Vis) {
+int kgMakeDefaultKeybrd(DIALOG *D,int xo,int yo,int Vis,int kbtype) {
    int GrpId;
    int i=0,offset;
    DIA *dtmp,*d;
@@ -1404,6 +1405,7 @@ int kgMakeDefaultKeybrd(DIALOG *D,int xo,int yo,int Vis) {
 *************************************************/
    void **v=NULL;
    void *pt=NULL; /* pointer to send any extra information */
+   Kbrd.kbtype=kbtype;
    gc = D->gc;
    FillClr = gc.fill_clr;
    Bfont=gc.ButtonFont;
@@ -1457,18 +1459,31 @@ int kgMakeDefaultKeybrd(DIALOG *D,int xo,int yo,int Vis) {
 int kgShowKeybrd(void) {
    DIALOG *D;
    if(Kbrd.Vis) return 0;
-   kgSetGrpVisibility(Kbrd.D,Kbrd.GrpId,1);
-   kgSetGrpVisibility(Kbrd.D,Kbrd.cgrp,0);
-   kgSetGrpVisibility(Kbrd.D,Kbrd.ongrp,0);
-   kgSetGrpVisibility(Kbrd.D,Kbrd.sgrp,1);
-   kgSetGrpVisibility(Kbrd.D,Kbrd.offgrp,1);
+   D= Kbrd.D;
+   if(Kbrd.kbtype ==0) {
+     kgSetGrpVisibility(Kbrd.D,Kbrd.GrpId,1);
+     kgSetGrpVisibility(Kbrd.D,Kbrd.cgrp,0);
+     kgSetGrpVisibility(Kbrd.D,Kbrd.ongrp,0);
+     kgSetGrpVisibility(Kbrd.D,Kbrd.sgrp,1);
+     kgSetGrpVisibility(Kbrd.D,Kbrd.offgrp,1);
+     if(D->wc != NULL) {
+       kgUpdateGrp(Kbrd.D,Kbrd.GrpId);
+       kgUpdateGrp(Kbrd.D,Kbrd.sgrp);
+       kgUpdateGrp(Kbrd.D,Kbrd.offgrp);
+       kgUpdateOn(Kbrd.D);
+     }
+   }
+   else {
+     kgSetGrpVisibility(Kbrd.D,Kbrd.cgrp,0);
+     kgSetGrpVisibility(Kbrd.D,Kbrd.symgrp,0);
+     kgSetGrpVisibility(Kbrd.D,Kbrd.sgrp,1);
+     if(D->wc != NULL) {
+       kgUpdateGrp(Kbrd.D,Kbrd.sgrp);
+       kgUpdateOn(Kbrd.D);
+     }
+   }
    Kbrd.ShiftPress=0;
    Kbrd.CapsLock=0;
-   D= Kbrd.D;
-   if(D->wc != NULL) {
-     kgUpdateGrp(Kbrd.D,Kbrd.GrpId);
-     kgUpdateOn(Kbrd.D);
-   }
    Kbrd.Vis = 1;
    return Kbrd.GrpId;
 }
