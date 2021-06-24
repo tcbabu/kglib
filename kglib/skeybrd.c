@@ -13,10 +13,10 @@ static int Btype=5;
 //#define Btype 4
 //#define Btype 2
 static char BUFF[100];
-static char Sfac[]="54";
+static char Sfac[]="43";
 static int Bfont=16,Bclr=0;
 static int FillClr=101;
-static float Btrans=0.0;
+static float Btrans=0.1;
 static unsigned char R=230,G=60,B=0;
 static int ButClr=-1;
 extern KEYBRD Kbrd;
@@ -86,17 +86,23 @@ void ModifyskeybrdGc(Gclr *gc) {
 }
 int skeybrdGroup( DIALOG *D,void **v,void *pt) {
   int GrpId=0,oitems=0,i,j;
+  int Red,Green,Blue;
   DIA *d=NULL,*dtmp;
   char *xpm0;// Pixmap info
+#if 0
   xpm0 = (char *)malloc(3);
   strcpy(xpm0, (char *)"##");
+#else
+  kgGetDefaultRGB(FillClr,&Red,&Green,&Blue);
+  xpm0 = (char *)MakeLightImage( 492,161,Red,Green,Blue,0.0);
+#endif
   DIP p0 = { 
     'p',
     14,7,  
     506,168,  
     (void *)xpm0,
     FillClr, /* bkgr colour */ 
-      3,0,Btrans /* border hide transparency*/ 
+      1,0,Btrans /* border hide transparency*/ 
   };
   strcpy(p0.Wid,(char *)"background");
   p0.item = -1;
@@ -170,7 +176,7 @@ int skeybrdGroup( DIALOG *D,void **v,void *pt) {
   butn2[2].bkgr=-1;
   butn2[2].butncode='';
   butn2[3].sw=1;
-  Procpy(butn2[3].title,(char *)"!!@#$%");
+  Procpy(butn2[3].title,(char *)"@#$%");
   butn2[3].xpmn=NULL;
   butn2[3].xpmp=NULL;
   butn2[3].xpmh=NULL;

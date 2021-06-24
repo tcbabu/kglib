@@ -1314,7 +1314,7 @@ static int keybrdGroup( DIALOG *D,void **v,void *pt) {
 
 /* One can also use the following code to add Widgets to an existing Dialog */
 
-int kgMakeKeybrd(DIALOG *D,int xo,int yo,int Vis,int kbtype,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float transparency) {
+int kgMakeKeybrd(DIALOG *D,int xo,int yo,int Vis,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float transparency) {
    int GrpId;
    int i=0,offset;
    DIA *dtmp,*d;
@@ -1327,7 +1327,7 @@ int kgMakeKeybrd(DIALOG *D,int xo,int yo,int Vis,int kbtype,int btype,int bfont,
    void **v=NULL;
    void *pt=NULL; /* pointer to send any extra information */
    int Red,Green,Blue;
-   Kbrd.kbtype=kbtype;
+   Kbrd.kbtype=0;
 #if 0
    kgDefineColor(93,R,G,B);
    kgDefineColor(3,250,230,00);
@@ -1393,7 +1393,7 @@ int kgMakeKeybrd(DIALOG *D,int xo,int yo,int Vis,int kbtype,int btype,int bfont,
    }
    return GrpId;
 }
-int kgMakeDefaultKeybrd(DIALOG *D,int xo,int yo,int Vis,int kbtype) {
+int kgMakeDefaultKeybrd(DIALOG *D,int xo,int yo,int Vis) {
    int GrpId;
    int i=0,offset;
    DIA *dtmp,*d;
@@ -1405,7 +1405,7 @@ int kgMakeDefaultKeybrd(DIALOG *D,int xo,int yo,int Vis,int kbtype) {
 *************************************************/
    void **v=NULL;
    void *pt=NULL; /* pointer to send any extra information */
-   Kbrd.kbtype=kbtype;
+   Kbrd.kbtype=0;
    gc = D->gc;
    FillClr = gc.fill_clr;
    Bfont=gc.ButtonFont;
