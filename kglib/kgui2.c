@@ -2149,12 +2149,12 @@ void Print_gui_data(DIALOG *D,char *flname) {
   fp1 = fopen(flname,"w");
   if(D->Resize != 1) {D->Resize=0; D->MinWidth=D->MinHeight=100;}
   fprintf(fp1,"D      //GUI dimensions xo,yo,xl,yl,lw,rw,tw,bw,df,bor_type,bkup\n");
-  fprintf(fp1,"%d %d %d %d\n%d %d %d %d\n%d %d %d %d %d %d %d %d %d %d %d %d %f %d %d %d %d %d\n",
+  fprintf(fp1,"%d %d %d %d\n%d %d %d %d\n%d %d %d %d %d %d %d %d %d %d %d %d %f %d %d %d %d\n",
     D->xo,D->yo,D->xl,D->yl,
     D->lw,D->rw,D->tw,D->bw,
     D->df,D->bor_type,D->bkup,
     (D->Sticky),(D->Fixpos),(D->Deco),(D->fullscreen),(D->kbattn),(D->butattn),(D->Newwin),
-    (D->DrawBkgr),(D->NoTaskBar),(D->transparency),D->Resize,D->MinWidth,D->MinHeight,D->StackPos,D->NoWinMngr
+    (D->DrawBkgr),(D->NoTaskBar),(D->transparency),D->Resize,D->MinWidth,D->MinHeight,D->StackPos
   );
     
   Resetlink(L);
