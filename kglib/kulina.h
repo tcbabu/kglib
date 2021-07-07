@@ -1559,6 +1559,7 @@ int kgMakeDefaultKeybrd1(DIALOG *D,int xo,int yo,int vis);
 int kgSetKeybrdWidget(void *Tmp,int curwid);
 int kgHideKeybrd(void *Tmp);
 int kgShowKeybrd(void *Tmp);
+int kgGetKeybrdSize(void *Tmp,int *xl,int *yl);
 #endif
 #ifdef __cplusplus
 }

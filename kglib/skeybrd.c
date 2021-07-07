@@ -109,7 +109,7 @@ int skeybrdGroup( DIALOG *D,void **v,void *pt) {
     FillClr, /* bkgr colour */ 
       1,0,Btrans /* border hide transparency*/ 
   };
-  strcpy(p0.Wid,(char *)"background");
+  strcpy(p0.Wid,(char *)"Keybrdbkgr");
   p0.item = -1;
   BUT_STR  *butn1=NULL; 
   butn1= (BUT_STR *)malloc(sizeof(BUT_STR)*4);
@@ -1249,7 +1249,7 @@ int keybrd2Group( DIALOG *D,void **v,void *pt) {
     FillClr, /* bkgr colour */ 
       1,0,0.000000 /* border hide transparency*/ 
   };
-  strcpy(p0.Wid,(char *)"background");
+  strcpy(p0.Wid,(char *)"Keybrdbkgr");
   p0.item = -1;
   BUT_STR  *butn1=NULL; 
   butn1= (BUT_STR *)malloc(sizeof(BUT_STR)*4);
