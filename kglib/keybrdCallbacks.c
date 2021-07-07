@@ -15,6 +15,9 @@ static int ProcessLabel(void *Tmp,int butno,char *Label) {
   KEYBRD *Kbrd;
   D = (DIALOG *)Tmp;
   Kbrd = D->Kbrd;
+  if(D->InputWid >= 0) {
+     Kbrd->CurWid = D->InputWid;
+  }
   CurWid = Kbrd->CurWid;
   if(CurWid< 0) return 0;
   kgSetCurrentWidget(D,CurWid);
@@ -42,6 +45,10 @@ int  keybrdbutton1callback(int butno,int i,void *Tmp) {
   Kbrd = D->Kbrd;
   B = (DIN *)kgGetWidget(Tmp,i);
   n = B->nx*B->ny;
+
+  if(D->InputWid >= 0) {
+     Kbrd->CurWid = D->InputWid;
+  }
   CurWid = Kbrd->CurWid;
   if(Kbrd->CurWid< 0) return 0;
   kgSetCurrentWidget(D,CurWid);
@@ -108,6 +115,9 @@ int  keybrdbutton4callback(int butno,int i,void *Tmp) {
   Kbrd = D->Kbrd;
   B = (DIN *)kgGetWidget(Tmp,i);
   n = B->nx*B->ny;
+  if(D->InputWid >= 0) {
+     Kbrd->CurWid = D->InputWid;
+  }
   if(Kbrd->CurWid< 0) return 0;
   kgSetCurrentWidget(D,Kbrd->CurWid);
   kgSendBackspaceKeyEvent(Tmp);
@@ -128,6 +138,9 @@ int  keybrdbutton5callback(int butno,int i,void *Tmp) {
   Kbrd = D->Kbrd;
   B = (DIN *)kgGetWidget(Tmp,i);
   n = B->nx*B->ny;
+  if(D->InputWid >= 0) {
+     Kbrd->CurWid = D->InputWid;
+  }
   if(Kbrd->CurWid< 0) return 0;
   kgSetCurrentWidget(D,Kbrd->CurWid);
   kgSendEscapeKeyEvent(Tmp);
@@ -314,6 +327,9 @@ int  keybrdbutton11callback(int butno,int i,void *Tmp) {
   Kbrd = D->Kbrd;
   B = (DIN *)kgGetWidget(Tmp,i);
   n = B->nx*B->ny;
+  if(D->InputWid >= 0) {
+     Kbrd->CurWid = D->InputWid;
+  }
   if(Kbrd->CurWid< 0) return 0;
   kgSetCurrentWidget(D,Kbrd->CurWid);
   kgSendEnterKeyEvent(Tmp);
@@ -332,6 +348,9 @@ int  keybrdbutton12callback(int butno,int i,void *Tmp) {
   D = (DIALOG *)Tmp;
   KEYBRD *Kbrd;
   Kbrd = D->Kbrd;
+  if(D->InputWid >= 0) {
+     Kbrd->CurWid = D->InputWid;
+  }
   if(Kbrd->CurWid< 0) return 0;
   kgSetCurrentWidget(D,Kbrd->CurWid);
   kgSendSpaceKeyEvent(Tmp);
@@ -350,6 +369,9 @@ int  keybrdbutton13callback(int butno,int i,void *Tmp) {
   D = (DIALOG *)Tmp;
   KEYBRD *Kbrd;
   Kbrd = D->Kbrd;
+  if(D->InputWid >= 0) {
+     Kbrd->CurWid = D->InputWid;
+  }
   if(Kbrd->CurWid< 0) return 0;
   switch(butno) {
     case 1: 
@@ -397,6 +419,9 @@ int  keybrdbutton15callback(int butno,int i,void *Tmp) {
   Kbrd = D->Kbrd;
   B = (DIN *)kgGetWidget(Tmp,i);
   n = B->nx*B->ny;
+  if(D->InputWid >= 0) {
+     Kbrd->CurWid = D->InputWid;
+  }
   if(Kbrd->CurWid< 0) return 0;
   switch(butno) {
     case 1: 

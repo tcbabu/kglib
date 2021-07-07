@@ -867,7 +867,9 @@ typedef struct Dia_str {
   void *PWIN; // NULL, if not set as NULL it will be used as parent Window
   void *ThInfo;  // internal
   void *Kbrd; //for keyboard 
+  int InputWid;
 } DIALOG;
+
 typedef struct _WidgetGroup {
   void *wlist;
   void *arg;
@@ -1054,6 +1056,7 @@ void * kgOpenBusy(void *arg,int xo,int yo);
 void kgCloseBusy(void * id);
 void kgAddSearchDir(void *Tmp,char *Dir);
 void kgColorTheme(DIALOG *D,unsigned char red,unsigned char green, unsigned char blue);
+void kgColorTheme1(DIALOG *D,unsigned char red,unsigned char green, unsigned char blue);
 void kgResetColor(void *D,int no,int ir,int ig,int ib); // redefines a color; but will not affect hardcopy
 
 /* Default definitions of color */
@@ -1536,13 +1539,23 @@ typedef struct _keybrd {
   int symgrp;
   int kbtype;
   char Sfac[5];
-  int  Bfont,Bclr;
+  int  Bfont,Bclr,ButClr;
+  int  FillClr;
+  float Rfac;
+  int grp1,grp2,grp3,grp4,grp5,grp6; //extras
+  int Hclr;
+  void *Thds;
 } KEYBRD;
-int kgMakeKeybrd(DIALOG *D,int xo,int yo,int Vis,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float transparency) ;
-int kgMakeSkeybrd(DIALOG *D,int xo,int yo,int Vis,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float transparency);
-   int GrpId;
+int kgMakeKeybrd(DIALOG *D,int xo,int yo,int Vis,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float rfac,float transparency) ;
+int kgMakeKeybrd2(DIALOG *D,int xo,int yo,int Vis,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float rfac,float transparency) ;
+int kgMakeSkeybrd(DIALOG *D,int xo,int yo,int Vis,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float rfac,float transparency);
+int kgMakekeybrd1(DIALOG *D,int xo,int yo,int Vis,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float rfac,float transparency);
+int kgMakekeybrd0(DIALOG *D,int xo,int yo,int Vis,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float rfac,float transparency);
 int kgMakeDefaultKeybrd(DIALOG *D,int xo,int yo,int vis);
+int kgMakeDefaultKeybrd0(DIALOG *D,int xo,int yo,int vis);
+int kgMakeDefaultKeybrd2(DIALOG *D,int xo,int yo,int vis);
 int kgMakeDefaultSkeybrd(DIALOG *D,int xo,int yo,int vis);
+int kgMakeDefaultKeybrd1(DIALOG *D,int xo,int yo,int vis);
 int kgSetKeybrdWidget(void *Tmp,int curwid);
 int kgHideKeybrd(void *Tmp);
 int kgShowKeybrd(void *Tmp);

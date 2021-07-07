@@ -2,7 +2,7 @@
 #include "keybrdCallbacks.h"
 int RED=120,GREEN=120,BLUE=120;
 int Btype=5;
-#define  Rfac 0.2 
+static float  Rfac=0.2 ;
 //#define Btype 8
 //#define Brdr  0
 
@@ -70,12 +70,12 @@ static int keybrdGroup( DIALOG *D,void **v,void *pt) {
   strcpy(xpm0, (char *)"##");
 #else
   kgGetDefaultRGB(FillClr,&Red,&Green,&Blue);
-  xpm0 = (char *)MakeLightImage( 792,254,Red,Green,Blue,0.0);
+  xpm0 = (char *)MakeLightImage( 780,249,Red,Green,Blue,0.0);
 #endif
   DIP p0 = { 
     'p',
-    1,1,  
-    793,255,  
+    6,0,  
+    786,249,  
     (void *)xpm0,
     FillClr, /* bkgr colour */ 
       1,0,Btrans /* border hide transparency*/ 
@@ -1313,7 +1313,23 @@ static int keybrdGroup( DIALOG *D,void **v,void *pt) {
 
 /* One can also use the following code to add Widgets to an existing Dialog */
 
-int kgMakeKeybrd(DIALOG *D,int xo,int yo,int Vis,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float transparency) {
+static int ConvertColor(int clr,int no) {
+   int r,g,b;
+   int fac;
+   if(clr >=0 ) {
+      kgGetDefaultRGB(clr,&r,&g,&b);
+   }
+   else {
+     clr = -clr;
+     b = clr%1000;
+     fac = clr/1000;
+     g = fac%1000;
+     r= fac/1000;
+   }
+   kgDefineColor(no,(unsigned char)r,(unsigned char)g,(unsigned char)b);
+   return no;
+}
+int kgMakeKeybrd(DIALOG *D,int xo,int yo,int Vis,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float rfac,float transparency) {
    int GrpId;
    int i=0,offset;
    DIA *dtmp,*d;
@@ -1328,6 +1344,7 @@ int kgMakeKeybrd(DIALOG *D,int xo,int yo,int Vis,int btype,int bfont,int fontclr
    int Red,Green,Blue;
    KEYBRD *Kbrd;
    D->Kbrd = (void *) malloc(sizeof(KEYBRD));
+   if(btype<1) btype=5;
    Kbrd = D->Kbrd;
    Kbrd->kbtype=0;
 #if 0
@@ -1335,24 +1352,28 @@ int kgMakeKeybrd(DIALOG *D,int xo,int yo,int Vis,int btype,int bfont,int fontclr
    kgDefineColor(3,250,230,00);
    kgDefineColor(101,210,210,210);
 #endif
+   Rfac = rfac;
    gc = D->gc;
-   FillClr = bkgrclr;
+   FillClr = ConvertColor(bkgrclr,81);
    Btype=btype;
    Bfont=bfont;
    Bclr = fontclr;
+   Bclr = ConvertColor(fontclr,83);
    Btrans = transparency;
-   ButClr = butclr;
-   kgGetDefaultRGB(butclr,&Red,&Green,&Blue);
-   ButClr = -(Red*1000000+Green*1000+Blue);
+   ButClr = ConvertColor(butclr,82);
    Kbrd->Btype=Btype;
+   Kbrd->Rfac = rfac;
    if(Bclr >= 100) Bclr =0;
+   Kbrd->Bclr = Bclr;
+   Kbrd->FillClr= FillClr;
+   Kbrd->ButClr= ButClr;
    dtmp = D->d;
    i=0;
    if(dtmp!= NULL) while(dtmp[i].t!=NULL)i++;
    offset = i+1;
 
    GrpId = keybrdGroup(D,v,pt);
-   kgShiftGrp(D,GrpId,xo,yo);
+   kgShiftGrp(D,GrpId,xo-4,yo-2);
    Gpt = kgGetWidgetGrp(D,GrpId);
    Gpt->arg= v; // kulina will double free this; you may modify
    d = D->d;
@@ -1417,15 +1438,19 @@ int kgMakeDefaultKeybrd(DIALOG *D,int xo,int yo,int Vis) {
    Bclr = gc.but_char;
    Btrans = 0.0;
    if(Bclr >= 100) Bclr =0;
-   ButClr = -1;
+   ButClr = FillClr;
+   Btype=5;
    Kbrd->Btype=Btype;
+   Kbrd->Bclr = Bclr;
+   Kbrd->FillClr= FillClr;
+   Kbrd->ButClr= ButClr;
    dtmp = D->d;
    i=0;
    if(dtmp!= NULL) while(dtmp[i].t!=NULL)i++;
    offset = i+1;
 
    GrpId = keybrdGroup(D,v,pt);
-   kgShiftGrp(D,GrpId,xo,yo);
+   kgShiftGrp(D,GrpId,xo-4,yo-2);
    Gpt = kgGetWidgetGrp(D,GrpId);
    Gpt->arg= v; // kulina will double free this; you may modify
    d = D->d;

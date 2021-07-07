@@ -4544,6 +4544,8 @@ void kgInitUi(void *Tmp) {
  D->MinHeight=100;
  D->wc=D->parent=D->pt=D->Shapexpm=D->SearchList=D->GrpList=NULL;
  D->TotWid=0;
+ D->CurWid=0;
+ D->InputWid=-1;
  return;
 }
 void *kgUiFromWindow(void *Dsp,void * Win,void * cmap) {
@@ -4900,7 +4902,10 @@ again:
                  rmv_key_board_attn(oldi,D);
                  draw_key_board_attn(i,D);
                  ch =  (d[oldi].t->code);
-                 if( (ch=='t')||((ch=='T')) ){_ui_readtextbox((TX_STR *)(d[oldi].t->tstr));}
+                 if( (ch=='t')||((ch=='T')) ){
+                   _ui_readtextbox((TX_STR *)(d[oldi].t->tstr));
+                   D->InputWid=oldi;
+                 }
                  uiUpdateOn(D);
                  oldi=i;
             }

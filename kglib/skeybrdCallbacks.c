@@ -1,5 +1,6 @@
 #include "kulina.h"
 static char BUFF[100];
+#define NOBKGR 0
 
 #if 0
 static char Label1[]="1234567890abcdefghijklmnopqrstuvwxyz,./?";
@@ -12,7 +13,7 @@ static char Label3[]="1234567890~`!@#$%^&*()_+-={}|[]\\:\";',.<>?";
 static char *kgButtonTitle(char * str,void *pt) {
   KEYBRD *Kbrd;
   Kbrd = (KEYBRD *)pt;
-  sprintf(BUFF,"!z%-s!f%2.2d!c%2.2d%-s",Kbrd->Sfac,Kbrd->Bfont,Kbrd->Bclr,str);
+  sprintf(BUFF,"!h15!d!h51!z%-s!f%2.2d!c%2.2d%-s",Kbrd->Sfac,Kbrd->Bfont,Kbrd->Bclr,str);
 //  printf("%s\n",BUFF);
   return BUFF;
 }
@@ -28,6 +29,10 @@ static int ProcessLabel(void *Tmp,int butno,char *Label) {
   D = (DIALOG *)Tmp;
   Kbrd = D->Kbrd;
   CurWid = Kbrd->CurWid;
+  if(D->InputWid >= 0) {
+     Kbrd->CurWid = D->InputWid;
+     CurWid = Kbrd->CurWid;
+  }
   if(CurWid< 0) return 0;
   kgSetCurrentWidget(D,CurWid);
   ch= Label[butno-1];
@@ -50,6 +55,9 @@ int  skeybrdbutton1callback(int butno,int i,void *Tmp) {
   D = (DIALOG *)Tmp;
   KEYBRD *Kbrd;
   Kbrd = D->Kbrd;
+  if(D->InputWid >= 0) {
+     Kbrd->CurWid = D->InputWid;
+  }
   if(Kbrd->CurWid < 0) return 0;
   B = (DIN *)kgGetWidget(Tmp,i);
   n = B->nx*B->ny;
@@ -74,6 +82,17 @@ int  skeybrdbutton1callback(int butno,int i,void *Tmp) {
   return ret;
 }
 void  skeybrdbutton1init(DIN *B,void *pt) {
+   int i,n;
+   char buff[3];
+   BUT_STR * but;
+   KEYBRD *Kbrd;
+   Kbrd = (KEYBRD *)pt;
+   but = B->buts;
+   n = B->nx * B->ny;
+   B->nodrawbkgr = NOBKGR;
+   for(i=0;i<n;i++) {
+    but[i].bkgr = Kbrd->ButClr;
+   }
 }
 int  skeybrdbutton2callback(int butno,int i,void *Tmp) {
   /*********************************** 
@@ -86,6 +105,9 @@ int  skeybrdbutton2callback(int butno,int i,void *Tmp) {
   D = (DIALOG *)Tmp;
   KEYBRD *Kbrd;
   Kbrd = D->Kbrd;
+  if(D->InputWid >= 0) {
+     Kbrd->CurWid = D->InputWid;
+  }
   if(Kbrd->CurWid < 0) return 0;
   B = (DIN *)kgGetWidget(Tmp,i);
   n = B->nx*B->ny;
@@ -99,7 +121,7 @@ int  skeybrdbutton2callback(int butno,int i,void *Tmp) {
       kgSendEscapeKeyEvent(Tmp);
       break;
     case 3: 
-      kgSetGrpVisibility(D,Kbrd->GrpId,1);
+//      kgSetGrpVisibility(D,Kbrd->GrpId,1);
       kgSetGrpVisibility(D,Kbrd->sgrp,0);
       kgSetGrpVisibility(D,Kbrd->symgrp,0);
       kgSetGrpVisibility(D,Kbrd->cgrp,1);
@@ -107,7 +129,7 @@ int  skeybrdbutton2callback(int butno,int i,void *Tmp) {
       kgUpdateOn(D);
       break;
     case 4: 
-      kgSetGrpVisibility(D,Kbrd->GrpId,1);
+//      kgSetGrpVisibility(D,Kbrd->GrpId,1);
       kgSetGrpVisibility(D,Kbrd->sgrp,0);
       kgSetGrpVisibility(D,Kbrd->cgrp,0);
       kgSetGrpVisibility(D,Kbrd->symgrp,1);
@@ -119,6 +141,17 @@ int  skeybrdbutton2callback(int butno,int i,void *Tmp) {
   return ret;
 }
 void  skeybrdbutton2init(DIN *B,void *pt) {
+   int i,n;
+   char buff[3];
+   BUT_STR * but;
+   KEYBRD *Kbrd;
+   Kbrd = (KEYBRD *)pt;
+   but = B->buts;
+   n = B->nx * B->ny;
+   B->nodrawbkgr = NOBKGR;
+   for(i=0;i<n;i++) {
+    but[i].bkgr = Kbrd->ButClr;
+   }
 }
 int  skeybrdbutton3callback(int butno,int i,void *Tmp) {
   /*********************************** 
@@ -138,14 +171,18 @@ int  skeybrdbutton3callback(int butno,int i,void *Tmp) {
 void  skeybrdbutton3init(DIN *B,void *pt) {
    int i,n;
    char buff[3];
+   KEYBRD *Kbrd;
+   Kbrd = (KEYBRD *)pt;
    BUT_STR * but;
    but = B->buts;
    n = B->nx * B->ny;
+   B->nodrawbkgr = NOBKGR;
    for(i=0;i<n;i++) {
     buff[0]= Label1[i];
     buff[1]='\0';
     if(buff[0]=='!') {buff[1]='!';buff[2]='\0';}
     Procpy(but[i].title,buff,pt);
+    but[i].bkgr = Kbrd->ButClr;
    }
 }
 int  skeybrdbutton4callback(int butno,int i,void *Tmp) {
@@ -159,6 +196,9 @@ int  skeybrdbutton4callback(int butno,int i,void *Tmp) {
   D = (DIALOG *)Tmp;
   KEYBRD *Kbrd;
   Kbrd = D->Kbrd;
+  if(D->InputWid >= 0) {
+     Kbrd->CurWid = D->InputWid;
+  }
   if(Kbrd->CurWid < 0) return 0;
   B = (DIN *)kgGetWidget(Tmp,i);
   n = B->nx*B->ny;
@@ -172,7 +212,7 @@ int  skeybrdbutton4callback(int butno,int i,void *Tmp) {
       kgSendEscapeKeyEvent(Tmp);
       break;
     case 3: 
-      kgSetGrpVisibility(D,Kbrd->GrpId,1);
+//      kgSetGrpVisibility(D,Kbrd->GrpId,1);
       kgSetGrpVisibility(D,Kbrd->cgrp,0);
       kgSetGrpVisibility(D,Kbrd->symgrp,0);
       kgSetGrpVisibility(D,Kbrd->sgrp,1);
@@ -180,7 +220,7 @@ int  skeybrdbutton4callback(int butno,int i,void *Tmp) {
       kgUpdateOn(D);
       break;
     case 4: 
-      kgSetGrpVisibility(D,Kbrd->GrpId,1);
+//      kgSetGrpVisibility(D,Kbrd->GrpId,1);
       kgSetGrpVisibility(D,Kbrd->cgrp,0);
       kgSetGrpVisibility(D,Kbrd->sgrp,0);
       kgSetGrpVisibility(D,Kbrd->symgrp,1);
@@ -191,6 +231,17 @@ int  skeybrdbutton4callback(int butno,int i,void *Tmp) {
   return ret;
 }
 void  skeybrdbutton4init(DIN *B,void *pt) {
+   int i,n;
+   char buff[3];
+   BUT_STR * but;
+   KEYBRD *Kbrd;
+   Kbrd = (KEYBRD *)pt;
+   but = B->buts;
+   B->nodrawbkgr = NOBKGR;
+   n = B->nx * B->ny;
+   for(i=0;i<n;i++) {
+    but[i].bkgr = Kbrd->ButClr;
+   }
 }
 int  skeybrdbutton5callback(int butno,int i,void *Tmp) {
   /*********************************** 
@@ -211,14 +262,18 @@ int  skeybrdbutton5callback(int butno,int i,void *Tmp) {
 void  skeybrdbutton5init(DIN *B,void *pt) {
    int i,n;
    char buff[3];
+   KEYBRD *Kbrd;
+   Kbrd = (KEYBRD *)pt;
    BUT_STR * but;
    but = B->buts;
    n = B->nx * B->ny;
+   B->nodrawbkgr = NOBKGR;
    for(i=0;i<n;i++) {
     buff[0]= Label2[i];
     buff[1]='\0';
     if(buff[0]=='!') {buff[1]='!';buff[2]='\0';}
     Procpy(but[i].title,buff,pt);
+    but[i].bkgr = Kbrd->ButClr;
    }
 }
 int  skeybrdbutton6callback(int butno,int i,void *Tmp) {
@@ -232,6 +287,9 @@ int  skeybrdbutton6callback(int butno,int i,void *Tmp) {
   D = (DIALOG *)Tmp;
   KEYBRD *Kbrd;
   Kbrd = D->Kbrd;
+  if(D->InputWid >= 0) {
+     Kbrd->CurWid = D->InputWid;
+  }
   if(Kbrd->CurWid < 0) return 0;
   B = (DIN *)kgGetWidget(Tmp,i);
   n = B->nx*B->ny;
@@ -245,7 +303,7 @@ int  skeybrdbutton6callback(int butno,int i,void *Tmp) {
       kgSendEscapeKeyEvent(Tmp);
       break;
     case 3: 
-      kgSetGrpVisibility(D,Kbrd->GrpId,1);
+//      kgSetGrpVisibility(D,Kbrd->GrpId,1);
       kgSetGrpVisibility(D,Kbrd->sgrp,0);
       kgSetGrpVisibility(D,Kbrd->symgrp,0);
       kgSetGrpVisibility(D,Kbrd->cgrp,1);
@@ -253,7 +311,7 @@ int  skeybrdbutton6callback(int butno,int i,void *Tmp) {
       kgUpdateOn(D);
       break;
     case 4: 
-      kgSetGrpVisibility(D,Kbrd->GrpId,1);
+//      kgSetGrpVisibility(D,Kbrd->GrpId,1);
       kgSetGrpVisibility(D,Kbrd->cgrp,0);
       kgSetGrpVisibility(D,Kbrd->symgrp,0);
       kgSetGrpVisibility(D,Kbrd->sgrp,1);
@@ -264,6 +322,17 @@ int  skeybrdbutton6callback(int butno,int i,void *Tmp) {
   return ret;
 }
 void  skeybrdbutton6init(DIN *B,void *pt) {
+   int i,n;
+   char buff[3];
+   BUT_STR * but;
+   KEYBRD *Kbrd;
+   Kbrd = (KEYBRD *)pt;
+   but = B->buts;
+   n = B->nx * B->ny;
+   B->nodrawbkgr = NOBKGR;
+   for(i=0;i<n;i++) {
+    but[i].bkgr = Kbrd->ButClr;
+   }
 }
 int  skeybrdbutton7callback(int butno,int i,void *Tmp) {
   /*********************************** 
@@ -285,13 +354,17 @@ void  skeybrdbutton7init(DIN *B,void *pt) {
    int i,n;
    char buff[3];
    BUT_STR * but;
+   KEYBRD *Kbrd;
+   Kbrd = (KEYBRD *)pt;
    but = B->buts;
    n = B->nx * B->ny;
+   B->nodrawbkgr = NOBKGR;
    for(i=0;i<n;i++) {
     buff[0]= Label3[i];
     buff[1]='\0';
     if(buff[0]=='!') {buff[1]='!';buff[2]='\0';}
     Procpy(but[i].title,buff,pt);
+    but[i].bkgr = Kbrd->ButClr;
    }
 }
 int skeybrdinit(void *Tmp) {
