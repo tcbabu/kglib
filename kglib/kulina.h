@@ -1546,12 +1546,12 @@ typedef struct _keybrd {
   int Hclr;
   void *Thds;
 } KEYBRD;
-int kgMakeKeybrd(DIALOG *D,int xo,int yo,int Vis,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float rfac,float transparency) ;
+int kgMakeKeybrd3(DIALOG *D,int xo,int yo,int Vis,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float rfac,float transparency) ;
 int kgMakeKeybrd2(DIALOG *D,int xo,int yo,int Vis,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float rfac,float transparency) ;
 int kgMakeSkeybrd(DIALOG *D,int xo,int yo,int Vis,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float rfac,float transparency);
-int kgMakekeybrd1(DIALOG *D,int xo,int yo,int Vis,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float rfac,float transparency);
-int kgMakekeybrd0(DIALOG *D,int xo,int yo,int Vis,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float rfac,float transparency);
-int kgMakeDefaultKeybrd(DIALOG *D,int xo,int yo,int vis);
+int kgMakeKeybrd1(DIALOG *D,int xo,int yo,int Vis,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float rfac,float transparency);
+int kgMakeKeybrd0(DIALOG *D,int xo,int yo,int Vis,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float rfac,float transparency);
+int kgMakeDefaultKeybrd3(DIALOG *D,int xo,int yo,int vis);
 int kgMakeDefaultKeybrd0(DIALOG *D,int xo,int yo,int vis);
 int kgMakeDefaultKeybrd2(DIALOG *D,int xo,int yo,int vis);
 int kgMakeDefaultSkeybrd(DIALOG *D,int xo,int yo,int vis);
@@ -1560,6 +1560,9 @@ int kgSetKeybrdWidget(void *Tmp,int curwid);
 int kgHideKeybrd(void *Tmp);
 int kgShowKeybrd(void *Tmp);
 int kgGetKeybrdSize(void *Tmp,int *xl,int *yl);
+int kgShiftKeybrd(void *Tmp,int xs,int ys);
+int kgMakeKeybrd(void *Tmp,int Type,int Vis,int Btype,int Bfont,int Charclr,int Butclr,int Fillclr,float Rfac,float Trans) ;
+int kgMakeDefaultKeybrd(void *Tmp,int Type,int Vis);
 #endif
 #ifdef __cplusplus
 }

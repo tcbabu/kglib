@@ -99,12 +99,12 @@ int skeybrdGroup( DIALOG *D,void **v,void *pt) {
   strcpy(xpm0, (char *)"##");
 #else
   kgGetDefaultRGB(FillClr,&Red,&Green,&Blue);
-  xpm0 = (char *)MakeLightImage( 492,160,Red,Green,Blue,0.0);
+  xpm0 = (char *)MakeLightImage( 502,165,Red,Green,Blue,0.0);
 #endif
   DIP p0 = { 
     'p',
     14,7,  
-    506,167,  
+    516,172,  
     (void *)xpm0,
     FillClr, /* bkgr colour */ 
       1,0,Btrans /* border hide transparency*/ 
@@ -145,11 +145,11 @@ int skeybrdGroup( DIALOG *D,void **v,void *pt) {
     'n',
     441,12,  
     502,164,
-    0,0,  
+    1,1,
     56, 
     36, 
     1,4, 
-    Btype,Rfac,0,0,0,0, /* button type and roundinfg factor(0-0.5),bordr,hide ,nodrawbkgr*/
+    Btype,Rfac,0,0,0,1, /* button type and roundinfg factor(0-0.5),bordr,hide ,nodrawbkgr*/
  
     butn1, 
     skeybrdbutton1callback, /*  Callbak */
@@ -191,11 +191,11 @@ int skeybrdGroup( DIALOG *D,void **v,void *pt) {
     'n',
     18,12,  
     75,164,
-    0,0,  
+    1,1,
     55, 
     36, 
     1,4, 
-    Btype,Rfac,0,0,0,0, /* button type and roundinfg factor(0-0.5),bordr,hide ,nodrawbkgr*/
+    Btype,Rfac,0,0,0,1, /* button type and roundinfg factor(0-0.5),bordr,hide ,nodrawbkgr*/
  
     butn2, 
     skeybrdbutton2callback, /*  Callbak */
@@ -489,11 +489,11 @@ int skeybrdGroup( DIALOG *D,void **v,void *pt) {
     'n',
     77,12,  
     442,164,
-    0,0,  
+    1,1,
     36, 
     36, 
     10,4, 
-    Btype,Rfac,0,0,0,0, /* button type and roundinfg factor(0-0.5),bordr,hide ,nodrawbkgr*/
+    Btype,Rfac,0,0,0,1, /* button type and roundinfg factor(0-0.5),bordr,hide ,nodrawbkgr*/
  
     butn3, 
     skeybrdbutton3callback, /*  Callbak */
@@ -535,11 +535,11 @@ int skeybrdGroup( DIALOG *D,void **v,void *pt) {
     'n',
     18,12,  
     75,164,
-    0,0,  
+    1,1,
     55, 
     36, 
     1,4, 
-    Btype,Rfac,0,0,0,0, /* button type and roundinfg factor(0-0.5),bordr,hide ,nodrawbkgr*/
+    Btype,Rfac,0,0,0,1, /* button type and roundinfg factor(0-0.5),bordr,hide ,nodrawbkgr*/
  
     butn4, 
     skeybrdbutton4callback, /*  Callbak */
@@ -833,11 +833,11 @@ int skeybrdGroup( DIALOG *D,void **v,void *pt) {
     'n',
     77,12,  
     442,164,
-    0,0,  
+    1,1,
     36, 
     36, 
     10,4, 
-    Btype,Rfac,0,0,0,0, /* button type and roundinfg factor(0-0.5),bordr,hide ,nodrawbkgr*/
+    Btype,Rfac,0,0,0,1, /* button type and roundinfg factor(0-0.5),bordr,hide ,nodrawbkgr*/
  
     butn5, 
     skeybrdbutton5callback, /*  Callbak */
@@ -879,11 +879,11 @@ int skeybrdGroup( DIALOG *D,void **v,void *pt) {
     'n',
     18,12,  
     75,164,
-    0,0,  
+    1,1,
     55, 
     36, 
     1,4, 
-    Btype,Rfac,0,0,0,0, /* button type and roundinfg factor(0-0.5),bordr,hide ,nodrawbkgr*/
+    Btype,Rfac,0,0,0,1, /* button type and roundinfg factor(0-0.5),bordr,hide ,nodrawbkgr*/
  
     butn6, 
     skeybrdbutton6callback, /*  Callbak */
@@ -1177,11 +1177,11 @@ int skeybrdGroup( DIALOG *D,void **v,void *pt) {
     'n',
     77,12,  
     442,164,
-    0,0,  
+    1,1,
     36, 
     36, 
     10,4, 
-    Btype,Rfac,0,0,0,0, /* button type and roundinfg factor(0-0.5),bordr,hide ,nodrawbkgr*/
+    Btype,Rfac,0,0,0,1, /* button type and roundinfg factor(0-0.5),bordr,hide ,nodrawbkgr*/
  
     butn7, 
     skeybrdbutton7callback, /*  Callbak */
@@ -1240,14 +1240,14 @@ int keybrd2Group( DIALOG *D,void **v,void *pt) {
   DIA *d=NULL,*dtmp;
   char *xpm0=   NULL; /* pixmap info */ 
   kgGetDefaultRGB(FillClr,&Red,&Green,&Blue);
-  xpm0 = (char *)MakeLightImage( 696,231,Red,Green,Blue,0.0);
+  xpm0 = (char *)MakeLightImage( 672,222,Red,Green,Blue,0.0);
   DIP p0 = { 
     'p',
-    7,0,  
-    703,231,  
+    21,4,  
+    693,226,  
     (void *)xpm0,
     FillClr, /* bkgr colour */ 
-      1,0,0.000000 /* border hide transparency*/ 
+      1,0,Btrans /* border hide transparency*/ 
   };
   strcpy(p0.Wid,(char *)"Keybrdbkgr");
   p0.item = -1;
@@ -2391,6 +2391,64 @@ static int ConvertColor(int clr,int no) {
    kgDefineColor(no,(unsigned char)r,(unsigned char)g,(unsigned char)b);
    return no;
 }
+static int CreateKeybrdGrps(DIALOG *D,KEYBRD *Kbrd,int offset,int Vis,int xo,int yo) {
+   int xm=10000,ym=10000;
+   int rgrp,lgrp;
+   int i;
+   DIA *d;
+   d = (DIA *)(D->d);
+   i = offset;
+   while(d[i].t != NULL) {
+     if(xm > (d[i].t->x1) ) xm = d[i].t->x1;
+     if(ym > (d[i].t->y1) ) ym = d[i].t->y1;
+     i++;
+   }
+   kgShiftGrp(D,Kbrd->GrpId,xo-xm,yo-ym);
+   d = D->d;
+   lgrp = kgOpenGrp(D);
+   kgAddtoGrp(D,lgrp,d[2+offset].t);
+   kgAddtoGrp(D,lgrp,d[4+offset].t);
+   kgAddtoGrp(D,lgrp,d[6+offset].t);
+   rgrp = kgOpenGrp(D);
+   kgAddtoGrp(D,rgrp,d[1+offset].t);
+   if(Kbrd->kbtype==2) {
+     kgShiftGrp(D,lgrp,8,0);
+     kgShiftGrp(D,rgrp,-7,0);
+   }
+   else {
+     kgShiftGrp(D,lgrp,2,0);
+     kgShiftGrp(D,rgrp,7,0);
+   }
+   Kbrd->sgrp = kgOpenGrp(D);
+   kgAddtoGrp(D,Kbrd->sgrp,d[0+offset].t);
+   kgAddtoGrp(D,Kbrd->sgrp,d[1+offset].t);
+   kgAddtoGrp(D,Kbrd->sgrp,d[3+offset].t);
+   kgAddtoGrp(D,Kbrd->sgrp,d[2+offset].t);
+   Kbrd->cgrp = kgOpenGrp(D);
+   kgAddtoGrp(D,Kbrd->cgrp,d[0+offset].t);
+   kgAddtoGrp(D,Kbrd->cgrp,d[1+offset].t);
+   kgAddtoGrp(D,Kbrd->cgrp,d[5+offset].t);
+   kgAddtoGrp(D,Kbrd->cgrp,d[4+offset].t);
+   Kbrd->symgrp = kgOpenGrp(D);
+   kgAddtoGrp(D,Kbrd->symgrp,d[0+offset].t);
+   kgAddtoGrp(D,Kbrd->symgrp,d[1+offset].t);
+   kgAddtoGrp(D,Kbrd->symgrp,d[7+offset].t);
+   kgAddtoGrp(D,Kbrd->symgrp,d[6+offset].t);
+   Kbrd->CurWid = -1;
+   Kbrd->Vis = Vis;
+   Kbrd->D = D;
+   Kbrd->ShiftPress=0;
+   Kbrd->CapsLock=0;
+   if(Vis==0) {
+    kgSetGrpVisibility(D,Kbrd->GrpId,0);
+   }
+   else {
+    kgSetGrpVisibility(D,Kbrd->cgrp,0);
+    kgSetGrpVisibility(D,Kbrd->symgrp,0);
+    kgSetGrpVisibility(D,Kbrd->sgrp,1);
+   }
+   return 1;
+}
 int kgMakeDefaultSkeybrd(DIALOG *D,int xo,int yo,int Vis) {
    int GrpId;
    WIDGETGRP *Gpt;
@@ -2426,39 +2484,10 @@ int kgMakeDefaultSkeybrd(DIALOG *D,int xo,int yo,int Vis) {
 
    GrpId = skeybrdGroup(D,v,pt);
    Gpt = kgGetWidgetGrp(D,GrpId);
-   kgShiftGrp(D,GrpId,xo-14,yo-7);
    Gpt->arg= v; // kulina will double free this; you may modify
-   d = D->d;
    Kbrd->kbtype=1;
-   Kbrd->sgrp = kgOpenGrp(D);
-   kgAddtoGrp(D,Kbrd->sgrp,d[0+offset].t);
-   kgAddtoGrp(D,Kbrd->sgrp,d[1+offset].t);
-   kgAddtoGrp(D,Kbrd->sgrp,d[2+offset].t);
-   kgAddtoGrp(D,Kbrd->sgrp,d[3+offset].t);
-   Kbrd->cgrp = kgOpenGrp(D);
-   kgAddtoGrp(D,Kbrd->cgrp,d[0+offset].t);
-   kgAddtoGrp(D,Kbrd->cgrp,d[1+offset].t);
-   kgAddtoGrp(D,Kbrd->cgrp,d[4+offset].t);
-   kgAddtoGrp(D,Kbrd->cgrp,d[5+offset].t);
-   Kbrd->symgrp = kgOpenGrp(D);
-   kgAddtoGrp(D,Kbrd->symgrp,d[0+offset].t);
-   kgAddtoGrp(D,Kbrd->symgrp,d[1+offset].t);
-   kgAddtoGrp(D,Kbrd->symgrp,d[6+offset].t);
-   kgAddtoGrp(D,Kbrd->symgrp,d[7+offset].t);
-   Kbrd->GrpId=GrpId;
-   Kbrd->CurWid = -1;
-   Kbrd->Vis = Vis;
-   Kbrd->D = D;
-   Kbrd->ShiftPress=0;
-   Kbrd->CapsLock=0;
-   if(Vis==0) {
-    kgSetGrpVisibility(D,Kbrd->GrpId,0);
-   }
-   else {
-    kgSetGrpVisibility(D,Kbrd->cgrp,0);
-    kgSetGrpVisibility(D,Kbrd->symgrp,0);
-    kgSetGrpVisibility(D,Kbrd->sgrp,1);
-   }
+   Kbrd->GrpId = GrpId;
+   CreateKeybrdGrps(D,Kbrd,offset,Vis, xo,yo);
    return GrpId;
 }
 int kgMakeDefaultKeybrd1(DIALOG *D,int xo,int yo,int Vis) {
@@ -2493,7 +2522,6 @@ int kgMakeSkeybrd(DIALOG *D,int xo,int yo,int Vis,int btype,int bfont,int fontcl
    strcpy(Kbrd->Sfac,Sfac);
    Kbrd->Bclr = Bclr;
    Kbrd->Bfont = Bfont;
-   Kbrd->kbtype=1;
    Rfac = rfac;
    Kbrd->Btype=Btype;
    Kbrd->Rfac=rfac;
@@ -2510,36 +2538,9 @@ int kgMakeSkeybrd(DIALOG *D,int xo,int yo,int Vis,int btype,int bfont,int fontcl
    Gpt = kgGetWidgetGrp(D,GrpId);
    kgShiftGrp(D,GrpId,xo-14,yo-7);
    Gpt->arg= v; // kulina will double free this; you may modify
-   d = D->d;
-   Kbrd->sgrp = kgOpenGrp(D);
-   kgAddtoGrp(D,Kbrd->sgrp,d[0+offset].t);
-   kgAddtoGrp(D,Kbrd->sgrp,d[1+offset].t);
-   kgAddtoGrp(D,Kbrd->sgrp,d[2+offset].t);
-   kgAddtoGrp(D,Kbrd->sgrp,d[3+offset].t);
-   Kbrd->cgrp = kgOpenGrp(D);
-   kgAddtoGrp(D,Kbrd->cgrp,d[0+offset].t);
-   kgAddtoGrp(D,Kbrd->cgrp,d[1+offset].t);
-   kgAddtoGrp(D,Kbrd->cgrp,d[4+offset].t);
-   kgAddtoGrp(D,Kbrd->cgrp,d[5+offset].t);
-   Kbrd->symgrp = kgOpenGrp(D);
-   kgAddtoGrp(D,Kbrd->symgrp,d[0+offset].t);
-   kgAddtoGrp(D,Kbrd->symgrp,d[1+offset].t);
-   kgAddtoGrp(D,Kbrd->symgrp,d[6+offset].t);
-   kgAddtoGrp(D,Kbrd->symgrp,d[7+offset].t);
    Kbrd->GrpId=GrpId;
-   Kbrd->CurWid = -1;
-   Kbrd->Vis = Vis;
-   Kbrd->D = D;
-   Kbrd->ShiftPress=0;
-   Kbrd->CapsLock=0;
-   if(Vis==0) {
-    kgSetGrpVisibility(D,Kbrd->GrpId,0);
-   }
-   else {
-    kgSetGrpVisibility(D,Kbrd->cgrp,0);
-    kgSetGrpVisibility(D,Kbrd->symgrp,0);
-    kgSetGrpVisibility(D,Kbrd->sgrp,1);
-   }
+   Kbrd->kbtype=1;
+   CreateKeybrdGrps(D,Kbrd,offset,Vis, xo,yo);
    return GrpId;
 }
 int kgMakeKeybrd1(DIALOG *D,int xo,int yo,int Vis,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float rfac,float transparency) {
@@ -2581,39 +2582,10 @@ int kgMakeDefaultKeybrd2(DIALOG *D,int xo,int yo,int Vis) {
 
    GrpId = keybrd2Group(D,v,pt);
    Gpt = kgGetWidgetGrp(D,GrpId);
-   kgShiftGrp(D,GrpId,xo-7,yo);
    Gpt->arg= v; // kulina will double free this; you may modify
-   d = D->d;
    Kbrd->kbtype=2;
-   Kbrd->sgrp = kgOpenGrp(D);
-   kgAddtoGrp(D,Kbrd->sgrp,d[0+offset].t);
-   kgAddtoGrp(D,Kbrd->sgrp,d[1+offset].t);
-   kgAddtoGrp(D,Kbrd->sgrp,d[2+offset].t);
-   kgAddtoGrp(D,Kbrd->sgrp,d[3+offset].t);
-   Kbrd->cgrp = kgOpenGrp(D);
-   kgAddtoGrp(D,Kbrd->cgrp,d[0+offset].t);
-   kgAddtoGrp(D,Kbrd->cgrp,d[1+offset].t);
-   kgAddtoGrp(D,Kbrd->cgrp,d[4+offset].t);
-   kgAddtoGrp(D,Kbrd->cgrp,d[5+offset].t);
-   Kbrd->symgrp = kgOpenGrp(D);
-   kgAddtoGrp(D,Kbrd->symgrp,d[0+offset].t);
-   kgAddtoGrp(D,Kbrd->symgrp,d[1+offset].t);
-   kgAddtoGrp(D,Kbrd->symgrp,d[6+offset].t);
-   kgAddtoGrp(D,Kbrd->symgrp,d[7+offset].t);
-   Kbrd->GrpId=GrpId;
-   Kbrd->CurWid = -1;
-   Kbrd->Vis = Vis;
-   Kbrd->D = D;
-   Kbrd->ShiftPress=0;
-   Kbrd->CapsLock=0;
-   if(Vis==0) {
-    kgSetGrpVisibility(D,Kbrd->GrpId,0);
-   }
-   else {
-    kgSetGrpVisibility(D,Kbrd->cgrp,0);
-    kgSetGrpVisibility(D,Kbrd->symgrp,0);
-    kgSetGrpVisibility(D,Kbrd->sgrp,1);
-   }
+   Kbrd->GrpId = GrpId;
+   CreateKeybrdGrps(D,Kbrd,offset,Vis, xo,yo);
    return GrpId;
 }
 int kgMakeKeybrd2(DIALOG *D,int xo,int yo,int Vis,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float rfac,float transparency) {
@@ -2660,38 +2632,10 @@ int kgMakeKeybrd2(DIALOG *D,int xo,int yo,int Vis,int btype,int bfont,int fontcl
 
    GrpId = keybrd2Group(D,v,pt);
    Gpt = kgGetWidgetGrp(D,GrpId);
-   kgShiftGrp(D,GrpId,xo-7,yo);
    Gpt->arg= v; // kulina will double free this; you may modify
-   d = D->d;
-   Kbrd->sgrp = kgOpenGrp(D);
-   kgAddtoGrp(D,Kbrd->sgrp,d[0+offset].t);
-   kgAddtoGrp(D,Kbrd->sgrp,d[1+offset].t);
-   kgAddtoGrp(D,Kbrd->sgrp,d[2+offset].t);
-   kgAddtoGrp(D,Kbrd->sgrp,d[3+offset].t);
-   Kbrd->cgrp = kgOpenGrp(D);
-   kgAddtoGrp(D,Kbrd->cgrp,d[0+offset].t);
-   kgAddtoGrp(D,Kbrd->cgrp,d[1+offset].t);
-   kgAddtoGrp(D,Kbrd->cgrp,d[4+offset].t);
-   kgAddtoGrp(D,Kbrd->cgrp,d[5+offset].t);
-   Kbrd->symgrp = kgOpenGrp(D);
-   kgAddtoGrp(D,Kbrd->symgrp,d[0+offset].t);
-   kgAddtoGrp(D,Kbrd->symgrp,d[1+offset].t);
-   kgAddtoGrp(D,Kbrd->symgrp,d[6+offset].t);
-   kgAddtoGrp(D,Kbrd->symgrp,d[7+offset].t);
-   Kbrd->GrpId=GrpId;
-   Kbrd->CurWid = -1;
-   Kbrd->Vis = Vis;
-   Kbrd->D = D;
-   Kbrd->ShiftPress=0;
-   Kbrd->CapsLock=0;
-   if(Vis==0) {
-    kgSetGrpVisibility(D,Kbrd->GrpId,0);
-   }
-   else {
-    kgSetGrpVisibility(D,Kbrd->cgrp,0);
-    kgSetGrpVisibility(D,Kbrd->symgrp,0);
-    kgSetGrpVisibility(D,Kbrd->sgrp,1);
-   }
+   Kbrd->kbtype=2;
+   Kbrd->GrpId = GrpId;
+   CreateKeybrdGrps(D,Kbrd,offset,Vis, xo,yo);
    return GrpId;
 }
 

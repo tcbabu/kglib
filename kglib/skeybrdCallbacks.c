@@ -1,6 +1,6 @@
 #include "kulina.h"
 static char BUFF[100];
-#define NOBKGR 0
+#define NOBKGR 1
 
 #if 0
 static char Label1[]="1234567890abcdefghijklmnopqrstuvwxyz,./?";
@@ -121,7 +121,6 @@ int  skeybrdbutton2callback(int butno,int i,void *Tmp) {
       kgSendEscapeKeyEvent(Tmp);
       break;
     case 3: 
-//      kgSetGrpVisibility(D,Kbrd->GrpId,1);
       kgSetGrpVisibility(D,Kbrd->sgrp,0);
       kgSetGrpVisibility(D,Kbrd->symgrp,0);
       kgSetGrpVisibility(D,Kbrd->cgrp,1);
@@ -129,7 +128,6 @@ int  skeybrdbutton2callback(int butno,int i,void *Tmp) {
       kgUpdateOn(D);
       break;
     case 4: 
-//      kgSetGrpVisibility(D,Kbrd->GrpId,1);
       kgSetGrpVisibility(D,Kbrd->sgrp,0);
       kgSetGrpVisibility(D,Kbrd->cgrp,0);
       kgSetGrpVisibility(D,Kbrd->symgrp,1);
@@ -212,7 +210,6 @@ int  skeybrdbutton4callback(int butno,int i,void *Tmp) {
       kgSendEscapeKeyEvent(Tmp);
       break;
     case 3: 
-//      kgSetGrpVisibility(D,Kbrd->GrpId,1);
       kgSetGrpVisibility(D,Kbrd->cgrp,0);
       kgSetGrpVisibility(D,Kbrd->symgrp,0);
       kgSetGrpVisibility(D,Kbrd->sgrp,1);
@@ -220,7 +217,6 @@ int  skeybrdbutton4callback(int butno,int i,void *Tmp) {
       kgUpdateOn(D);
       break;
     case 4: 
-//      kgSetGrpVisibility(D,Kbrd->GrpId,1);
       kgSetGrpVisibility(D,Kbrd->cgrp,0);
       kgSetGrpVisibility(D,Kbrd->sgrp,0);
       kgSetGrpVisibility(D,Kbrd->symgrp,1);
@@ -303,7 +299,6 @@ int  skeybrdbutton6callback(int butno,int i,void *Tmp) {
       kgSendEscapeKeyEvent(Tmp);
       break;
     case 3: 
-//      kgSetGrpVisibility(D,Kbrd->GrpId,1);
       kgSetGrpVisibility(D,Kbrd->sgrp,0);
       kgSetGrpVisibility(D,Kbrd->symgrp,0);
       kgSetGrpVisibility(D,Kbrd->cgrp,1);
@@ -311,7 +306,6 @@ int  skeybrdbutton6callback(int butno,int i,void *Tmp) {
       kgUpdateOn(D);
       break;
     case 4: 
-//      kgSetGrpVisibility(D,Kbrd->GrpId,1);
       kgSetGrpVisibility(D,Kbrd->cgrp,0);
       kgSetGrpVisibility(D,Kbrd->symgrp,0);
       kgSetGrpVisibility(D,Kbrd->sgrp,1);
