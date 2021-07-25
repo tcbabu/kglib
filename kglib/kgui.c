@@ -2892,6 +2892,8 @@ int uiGetButtonPress(void *tmp,KBEVENT kbevent) {
             _dv_draw_button(B, nb,-1);
             (B->bval)=df;
             uiUpdateOn(D);
+//TCB 2021
+            usleep(20000);
             break;
          }
        }
@@ -3768,7 +3770,7 @@ int MouseDragInHslide(DIHB *B,KBEVENT kbevent,int i) {
    }
    return df;
 }
-int ProcessMousePressDrag(DIALOG *D,KBEVENT kbevent,int i,int controls) {
+int ProcessMousePressDrag(DIALOG *D,KBEVENT kbevent,int i,int hcontrols,int controls) {
   DIA *d;
   int ch,df,OK=0,uperr;
   void *Wid;
@@ -3785,9 +3787,13 @@ int ProcessMousePressDrag(DIALOG *D,KBEVENT kbevent,int i,int controls) {
     case 'n':
     case 'b':
     case 'N':
+// not useful side effects
+//       ProcessMousePress(D,kbevent,i,hcontrols,controls);
        break;
     case 'h':
     case 'H':
+// not useful side effects
+//       ProcessMousePress(D,kbevent,i,hcontrols,controls);
        break;
     case 't':
        df = EventInTextBox(D->d[i].t,kbevent);
@@ -4546,6 +4552,7 @@ void kgInitUi(void *Tmp) {
  D->TotWid=0;
  D->CurWid=0;
  D->InputWid=-1;
+ D->Kbrd = NULL;
  return;
 }
 void *kgUiFromWindow(void *Dsp,void * Win,void * cmap) {
@@ -4923,7 +4930,7 @@ again:
        case 2:
          continue;
        case 3:
-         OK = ProcessMousePressDrag(D,kbevent,i,D->controls);
+         OK = ProcessMousePressDrag(D,kbevent,i,hcontrols,D->controls);
          continue;
        case 4:
          continue;

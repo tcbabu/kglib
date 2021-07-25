@@ -362,6 +362,7 @@ void kgColorTheme(DIALOG *D,unsigned char red,unsigned char green, unsigned char
   Gc->info_char = 56;
   Gc->but_char=Gc->v_dim;
   if(type) Gc->but_char= vbrt;
+  Gc->msg_char = Gc->but_char;
   Gc->menu_char=56;
   Gc->c_bound = 58;
   Gc->GuiFontSize =9;

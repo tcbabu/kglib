@@ -1,1 +1,109 @@
-  fprintf(TX_F,"Zc%d\n",t_color);
+int kgSendKeyToWindow(void *Tmp,void *wtmp,int ch) {
+  int code;
+  XEvent *e;
+  XKeyEvent *k;
+  DIALOG *D;
+  kgWC *wc;
+  Window win;
+  e = (XEvent *)malloc(sizeof(XEvent));
+  k = (XKeyEvent *)e;
+  D = (DIALOG *)Tmp;
+  wc = WC(D);
+  int status;
+  win = wc->Win;
+  win = *((Window *)wtmp);
+  k->type=KeyRelease;
+  k->send_event=1;
+  k->display=wc->Dsp;
+  k->window= win;
+  k->root = DefaultRootWindow(wc->Dsp);
+  k->subwindow =  win;
+  k->state = KeyRelease;
+  code = Revscan_code[ch];
+  if(code < 0) {
+     fprintf(stderr,"code < 0 %c %x\n",ch,ch);
+     return 0;
+  }
+  if( (code>128)&&(code<223)) {
+    code -=128;
+    k->same_screen = 1;
+    k->keycode = Revscan_code[ShiftKey];
+    k->type=KeyPress;
+    k->state = KeyPress;
+    status= XSendEvent(wc->Dsp,win,False,0,e);
+    k->keycode = code;
+    k->type=KeyPress;
+    k->state = KeyPress;
+    status= XSendEvent(wc->Dsp,win,False,0,e);
+    k->type=KeyRelease;
+    k->state = KeyRelease;
+    status= XSendEvent(wc->Dsp,win,False,0,e);
+    k->keycode = Revscan_code[ShiftKey];
+    status= XSendEvent(wc->Dsp,win,False,0,e);
+  }
+  else {
+    k->keycode = code;
+    k->same_screen = 1;
+    k->type=KeyPress;
+    k->state = KeyPress;
+    status= XSendEvent(wc->Dsp,win,False,0,e);
+    k->type=KeyRelease;
+    k->state = KeyRelease;
+    status= XSendEvent(wc->Dsp,win,False,0,e);
+  }
+  
+  free(e);
+  return status;
+}
+int kgSendTabKeyToWindow(void *Tmp,void *win) {
+  return kgSendKeyToWindow(Tmp,win,TabKey);
+}
+int kgSendSpaceKeyToWindow(void *Tmp,void *win) {
+  return kgSendKeyToWindow(Tmp,win,' ');
+}
+int kgSendDeleteKeyToWindow(void *Tmp,void *win) {
+  return kgSendKeyToWindow(Tmp,win,DeleteKey);
+}
+int kgSendInsertKeyToWindow(void *Tmp,void *win) {
+  return kgSendKeyToWindow(Tmp,win,InsertKey);
+}
+int kgSendPageupKeyToWindow(void *Tmp,void *win) {
+  return kgSendKeyToWindow(Tmp,win,PageupKey);
+}
+int kgSendPagedownKeyToWindow(void *Tmp,void *win) {
+  return kgSendKeyToWindow(Tmp,win,PagedownKey);
+}
+int kgSendEscapeKeyToWindow(void *Tmp,void *win) {
+  return kgSendKeyToWindow(Tmp,win,EscapeKey);
+}
+int kgSendClearKeyToWindow(void *Tmp,void *win) {
+  return kgSendKeyToWindow(Tmp,win,ClearKey);
+//  return kgSendKeyToWindow(Tmp,win,PrintKey);
+}
+int kgSendHomeKeyToWindow(void *Tmp,void *win) {
+  return kgSendKeyToWindow(Tmp,win,HomeKey);
+}
+int kgSendEndKeyToWindow(void *Tmp,void *win) {
+  return kgSendKeyToWindow(Tmp,win,EndKey);
+}
+int kgSendBackspaceKeyToWindow(void *Tmp,void *win) {
+  return kgSendKeyToWindow(Tmp,win,BackspaceKey);
+}
+int kgSendLeftKeyToWindow(void *Tmp,void *win) {
+  return kgSendKeyToWindow(Tmp,win,LeftKey);
+}
+int kgSendRightKeyToWindow(void *Tmp,void *win) {
+  return kgSendKeyToWindow(Tmp,win,RightKey);
+}
+int kgSendUpKeyToWindow(void *Tmp,void *win) {
+  return kgSendKeyToWindow(Tmp,win,UpKey);
+}
+int kgSendDownKeyToWindow(void *Tmp,void *win) {
+  return kgSendKeyToWindow(Tmp,win,DownKey);
+}
+int kgSendEnterKeyToWindow(void *Tmp,void *win) {
+  return kgSendKeyToWindow(Tmp,win,LinefeedKey);
+}
+int kgSendLinefeedKeyToWindow(void *Tmp,void *win) {
+  return kgSendKeyToWindow(Tmp,win,LinefeedKey);
+}

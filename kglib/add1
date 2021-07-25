@@ -1,40 +1,18 @@
-static void psCopyImage(int x0,int y0,GMIMG *img) {
-  GMIMG *Dimg,*Simg;
-  PixelPacket *spixels;
-  int w,h,iw,ih,i,j,ii,jj,sloc,dloc,cx0,cx1,cy0,cy1;
-  dc= G->dc;
-  wc =G->wc;
-  Simg = (GMIMG *)img;
-  Dimg = G->img;
-  iw = Dimg->image_width;
-  ih = Dimg->image_height; 
-  w  = Simg->image_width;
-  h  = Simg->image_height;
-  cx0=wc->c_v_x1;
-  cx1=wc->c_v_x2;
-  cy0=dc->EVGAY-1-wc->c_v_y2;
-  cy1=dc->EVGAY-1-wc->c_v_y1;
-//  printf("%d %d %d %d\n",cx0,cy0,cx1,cy1);
-  spixels = GetImagePixels((Image *)(Simg->image),0,0,((Image *)(Simg->image))->columns,((Image *)(Simg->image))->rows);
-  for(j=0;j<(h);j++) {
-    jj = j+y0;
-    if(jj<cy0)continue;
-    if(jj>=cy1) break;
-    if(jj>= ih) break;
-    
-    for(i=0;i<w;i++) {
-      ii =i+x0;
-      if(ii<cx0) continue;
-      if(ii>cx1) continue;
-      if(ii >= iw) continue;
-      sloc = j*w+i;
-      dloc= jj*iw+ii;
-      pixels[dloc]=spixels[sloc];
-      pixels[dloc].blue = spixels[sloc].blue;
-      pixels[dloc].green = spixels[sloc].green;
-      pixels[dloc].red = spixels[sloc].red;
-      pixels[dloc].opacity = spixels[sloc].opacity;
-    }
-  }
-  return;
-}
+int kgSendKeyToWindow(void *Tmp,void *wtmp,int ch);
+int kgSendTabKeyToWindow(void *Tmp,void *win) ;
+int kgSendSpaceKeyToWindow(void *Tmp,void *win) ;
+int kgSendDeleteKeyToWindow(void *Tmp,void *win) ;
+int kgSendInsertKeyToWindow(void *Tmp,void *win) ;
+int kgSendPageupKeyToWindow(void *Tmp,void *win) ;
+int kgSendPagedownKeyToWindow(void *Tmp,void *win) ;
+int kgSendEscapeKeyToWindow(void *Tmp,void *win) ;
+int kgSendClearKeyToWindow(void *Tmp,void *win) ;
+int kgSendHomeKeyToWindow(void *Tmp,void *win) ;
+int kgSendEndKeyToWindow(void *Tmp,void *win) ;
+int kgSendBackspaceKeyToWindow(void *Tmp,void *win) ;
+int kgSendLeftKeyToWindow(void *Tmp,void *win) ;
+int kgSendRightKeyToWindow(void *Tmp,void *win) ;
+int kgSendUpKeyToWindow(void *Tmp,void *win) ;
+int kgSendDownKeyToWindow(void *Tmp,void *win) ;
+int kgSendEnterKeyToWindow(void *Tmp,void *win) ;
+int kgSendLinefeedKeyToWindow(void *Tmp,void *win) ;

@@ -2460,6 +2460,7 @@ int kgMakeDefaultSkeybrd(DIALOG *D,int xo,int yo,int Vis) {
    KEYBRD *Kbrd;
    Kbrd = (KEYBRD *)malloc(sizeof(KEYBRD));
    D->Kbrd = Kbrd;
+   Kbrd->TargetWindow = NULL;
 
    gc = D->gc;
    D->wc=NULL;
@@ -2506,6 +2507,7 @@ int kgMakeSkeybrd(DIALOG *D,int xo,int yo,int Vis,int btype,int bfont,int fontcl
    KEYBRD *Kbrd;
    Kbrd = (KEYBRD *)malloc(sizeof(KEYBRD));
    D->Kbrd = Kbrd;
+   Kbrd->TargetWindow = NULL;
    if(btype < 1) btype=1;
    gc = D->gc;
    FillClr = bkgrclr;
@@ -2558,6 +2560,7 @@ int kgMakeDefaultKeybrd2(DIALOG *D,int xo,int yo,int Vis) {
    KEYBRD *Kbrd;
    Kbrd = (KEYBRD *)malloc(sizeof(KEYBRD));
    D->Kbrd = Kbrd;
+   Kbrd->TargetWindow = NULL;
    gc = D->gc;
    D->wc=NULL;
    FillClr = gc.fill_clr;
@@ -2601,6 +2604,7 @@ int kgMakeKeybrd2(DIALOG *D,int xo,int yo,int Vis,int btype,int bfont,int fontcl
    KEYBRD *Kbrd;
    Kbrd = (KEYBRD *)malloc(sizeof(KEYBRD));
    D->Kbrd = Kbrd;
+   Kbrd->TargetWindow = NULL;
    gc = D->gc;
    FillClr = bkgrclr;
    FillClr = ConvertColor(FillClr,81);

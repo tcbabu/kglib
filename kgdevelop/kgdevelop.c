@@ -1084,9 +1084,9 @@ int makeguidiaGroup( DIALOG *D,void **v,void *pt) {
     'n',
     7,3,  
     774,40,
-    9,0,  
-    88, 
-    30, 
+    12,5,  
+    84, 
+    25, 
     7,1, 
     1,0.50000,0,0,0,0, /* button type and roundinfg factor(0-0.5),bordr,hide ,nodrawbkgr*/
  
@@ -4193,6 +4193,20 @@ int Writeinitroutine(FILE *fp,char *dianame) {
  fprintf(fp,"}\n");
 }
 int WriteDefaultCallback(FILE *fp,char *dianame) {
+ fprintf(Inc,"int Modify%-s(void *Tmp,int GrpId) ;\n",dianame);
+ fprintf(fp,"int Modify%-s(void *Tmp,int GrpId) {\n",dianame);
+ fprintf(fp,"  DIALOG *D;\n");
+ fprintf(fp,"  D = (DIALOG *)Tmp;\n");
+ fprintf(fp,"  DIA *d;\n");
+ fprintf(fp,"  int i,n;\n");
+ fprintf(fp,"  d = D->d;\n");
+ fprintf(fp,"  i=0;while(d[i].t!= NULL) {;\n");
+ fprintf(fp,"     i++;\n");
+ fprintf(fp,"  };\n");
+ fprintf(fp,"  n=1;\n");
+ fprintf(fp,"  return GrpId;\n");
+ fprintf(fp,"}\n");
+ fprintf(fp,"\n");
  fprintf(Inc,"int %-sCallBack(void *Tmp,void *tmp) ;\n",dianame);
  fprintf(fp,"int %-sCallBack(void *Tmp,void *tmp) {\n",dianame);
  fprintf(fp,"  /*********************************** \n");
@@ -4641,30 +4655,30 @@ void assign_dia_names(Dlink *L,FILE *fp1,char *dianame) {
       break;
      case 'x':
       fprintf(fp1,"  d[%d].t = (DIT *)malloc(sizeof(DIX));\n",n);
-      fprintf(fp1,"  %-sbrowser%-dinit(&x%-d,pt) ;\n", dianame,brwsr+1,n);
       fprintf(fp1,"  *d[%-d].x = x%-d;\n",n,n);
       fprintf(fp1,"  d[%-d].x->item = -1;\n",n);
+      fprintf(fp1,"  %-sbrowser%-dinit(d[%-d].x,pt) ;\n", dianame,brwsr+1,n);
       brwsr++;
       break;
      case 'y':
       fprintf(fp1,"  d[%d].t = (DIT *)malloc(sizeof(DIY));\n",n);
-      fprintf(fp1,"  %-sbrowser%-dinit(&y%-d,pt) ;\n", dianame,brwsr+1,n);
       fprintf(fp1,"  *d[%-d].y = y%-d;\n",n,n);
       fprintf(fp1,"  d[%-d].y->item = -1;\n",n);
+      fprintf(fp1,"  %-sbrowser%-dinit(d[%-d].y,pt) ;\n", dianame,brwsr+1,n);
       brwsr++;
       break;
      case 'r':
       fprintf(fp1,"  d[%d].t = (DIT *)malloc(sizeof(DIRA));\n",n);
-      fprintf(fp1,"  %-sbrowser%-dinit(&r%-d,pt) ;\n", dianame,brwsr+1,n);
       fprintf(fp1,"  *d[%-d].r = r%-d;\n",n,n);
       fprintf(fp1,"  d[%-d].r->item = -1;\n",n);
+      fprintf(fp1,"  %-sbrowser%-dinit(d[%-d].r,pt) ;\n", dianame,brwsr+1,n);
       brwsr++;
       break;
      case 'c':
       fprintf(fp1,"  d[%d].t = (DIT *)malloc(sizeof(DICH));\n",n);
-      fprintf(fp1,"  %-sbrowser%-dinit(&c%-d,pt) ;\n", dianame,brwsr+1,n);
       fprintf(fp1,"  *d[%-d].c = c%-d;\n",n,n);
       fprintf(fp1,"  d[%-d].c->item = -1;\n",n);
+      fprintf(fp1,"  %-sbrowser%-dinit(d[%-d].c,pt) ;\n", dianame,brwsr+1,n);
       brwsr++;
       break;
      case 'w':
@@ -4681,44 +4695,44 @@ void assign_dia_names(Dlink *L,FILE *fp1,char *dianame) {
       break;
      case 's':
       fprintf(fp1,"  d[%d].t = (DIT *)malloc(sizeof(DIS));\n",n);
-      fprintf(fp1,"  %-sbrowser%-dinit(&s%-d,pt) ;\n", dianame,brwsr+1,n);
       fprintf(fp1,"  *d[%-d].s = s%-d;\n",n,n);
       fprintf(fp1,"  d[%-d].s->item = -1;\n",n);
+      fprintf(fp1,"  %-sbrowser%-dinit(d[%-d].s,pt) ;\n", dianame,brwsr+1,n);
       brwsr++;
       break;
      case 'b':
       fprintf(fp1,"  d[%d].t = (DIT *)malloc(sizeof(DIB));\n",n);
-      fprintf(fp1,"  %-sbutton%-dinit(&b%-d,pt) ;\n", dianame,butn+1,n);
       fprintf(fp1,"  *d[%-d].b = b%-d;\n",n,n);
       fprintf(fp1,"  d[%-d].b->item = -1;\n",n);
+      fprintf(fp1,"  %-sbutton%-dinit(d[%-d].b,pt) ;\n", dianame,butn+1,n);
       butn++;
       break;
      case 'n':
       fprintf(fp1,"  d[%d].t = (DIT *)malloc(sizeof(DIN));\n",n);
-      fprintf(fp1,"  %-sbutton%-dinit(&b%-d,pt) ;\n", dianame,butn+1,n);
       fprintf(fp1,"  *d[%-d].N = b%-d;\n",n,n);
       fprintf(fp1,"  d[%-d].N->item = -1;\n",n);
+      fprintf(fp1,"  %-sbutton%-dinit(d[%-d].N,pt) ;\n", dianame,butn+1,n);
       butn++;
       break;
      case 'N':
       fprintf(fp1,"  d[%d].t = (DIT *)malloc(sizeof(DIBN));\n",n);
-      fprintf(fp1,"  %-sbutton%-dinit(&n%-d,pt) ;\n", dianame,butn+1,n);
       fprintf(fp1,"  *d[%-d].n = n%-d;\n",n,n);
       fprintf(fp1,"  d[%-d].n->item = -1;\n",n);
+      fprintf(fp1,"  %-sbutton%-dinit(d[%-d].n,pt) ;\n", dianame,butn+1,n);
       butn++;
       break;
      case 'h':
       fprintf(fp1,"  d[%d].t = (DIT *)malloc(sizeof(DIL));\n",n);
-      fprintf(fp1,"  %-ssplbutton%-dinit(&h%-d,pt) ;\n", dianame,hbutn+1,n);
       fprintf(fp1,"  *d[%-d].h = h%-d;\n",n,n);
       fprintf(fp1,"  d[%-d].h->item = -1;\n",n);
+      fprintf(fp1,"  %-ssplbutton%-dinit(d[%-d].h,pt) ;\n", dianame,hbutn+1,n);
       hbutn++;
       break;
      case 'H':
       fprintf(fp1,"  d[%d].t = (DIT *)malloc(sizeof(DILN));\n",n);
-      fprintf(fp1,"  %-shbutton%-dinit(&H%-d,pt) ;\n", dianame,hbutn+1,n);
       fprintf(fp1,"  *d[%-d].H = H%-d;\n",n,n);
       fprintf(fp1,"  d[%-d].H->item = -1;\n",n);
+      fprintf(fp1,"  %-shbutton%-dinit(d[%-d].H,pt) ;\n", dianame,hbutn+1,n);
       hbutn++;
       break;
      case 'p':
@@ -5029,7 +5043,11 @@ void Make_gui_code(DIALOG *D,char *flname,char *dianame){
   fprintf(fp1,"  D.VerId=%d;\n",VER);
   fprintf(fp1,"  kgInitUi(&D);\n");
   fprintf(fp1,"  D.d=NULL;\n");
+  fprintf(fp1,"#if 1\n");
   fprintf(fp1,"  GrpId = %-sGroup(&D,v,pt);\n",dianame);
+  fprintf(fp1,"#else \n");
+  fprintf(fp1,"  GrpId = Make%-sGroup(&D,pt); // can try this also\n",dianame); 
+  fprintf(fp1,"#endif \n");
   fprintf(fp1,"  d = D.d;\n");
   fprintf(fp1,"  D.d = d;\n");
   fprintf(fp1,"  D.bkup = %-d; /* set to 1 for backup */\n",D->bkup);
@@ -5094,6 +5112,7 @@ void Make_gui_code(DIALOG *D,char *flname,char *dianame){
 //  fprintf(fp1,"  kgDefaultGuiTheme(&(D.gc));    /*  set colors for gui*/\n");
   fprintf(fp1,"//  kgColorTheme(&D,210,210,210);    /*  set colors for gui*/\n");
   fprintf(fp1,"//  Modify%-sGc(&(D.gc));    /*  set colors for gui*/\n",dianame);
+  fprintf(fp1,"  Modify%-s(&D,GrpId);    /*  add extras to  gui*/\n",dianame);
   fprintf(fp1,"  ret= kgUi(&D);\n");
   fprintf(fp1,"  kgCleanUi(&D);\n");
   fprintf(fp1,"  return ret;\n");

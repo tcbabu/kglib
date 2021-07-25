@@ -1044,7 +1044,6 @@ int kgScrollUpThumbNails (DIY *y);
 int kgDragThumbNail(DIY *Y,int item,int *x,int *y);
 int kgPickImage( void *parent,int xo,int yo,void *pt);
 int kgSelectImage( void *parent,int xo,int yo,int ThSize,void *pt);
-void kgDropFocus(void *tmp);
 int kgRedrawDialog(DIALOG *Dialog);
 int kgDrawDialog(DIALOG *D);
 ThumbNail ** kgMakeThumbNails(char *dir,int size);
@@ -1109,6 +1108,24 @@ int kgSendUpKeyEvent(void *Tmp) ;
 int kgSendDownKeyEvent(void *Tmp) ;
 int kgSendEnterKeyEvent(void *Tmp) ;
 int kgSendLinefeedKeyEvent(void *Tmp) ;
+int kgSendKeyToWindow(void *Tmp,void *wtmp,int ch);
+int kgSendTabKeyToWindow(void *Tmp,void *win) ;
+int kgSendSpaceKeyToWindow(void *Tmp,void *win) ;
+int kgSendDeleteKeyToWindow(void *Tmp,void *win) ;
+int kgSendInsertKeyToWindow(void *Tmp,void *win) ;
+int kgSendPageupKeyToWindow(void *Tmp,void *win) ;
+int kgSendPagedownKeyToWindow(void *Tmp,void *win) ;
+int kgSendEscapeKeyToWindow(void *Tmp,void *win) ;
+int kgSendClearKeyToWindow(void *Tmp,void *win) ;
+int kgSendHomeKeyToWindow(void *Tmp,void *win) ;
+int kgSendEndKeyToWindow(void *Tmp,void *win) ;
+int kgSendBackspaceKeyToWindow(void *Tmp,void *win) ;
+int kgSendLeftKeyToWindow(void *Tmp,void *win) ;
+int kgSendRightKeyToWindow(void *Tmp,void *win) ;
+int kgSendUpKeyToWindow(void *Tmp,void *win) ;
+int kgSendDownKeyToWindow(void *Tmp,void *win) ;
+int kgSendEnterKeyToWindow(void *Tmp,void *win) ;
+int kgSendLinefeedKeyToWindow(void *Tmp,void *win) ;
 /*
   Image related Calls
 */
@@ -1346,6 +1363,10 @@ int RGBtoHLS(float r,float g, float b,float *h,float *l,float *s);
 void kgGetWindowSize(DIALOG *D,int *length,int *height);
 int kgGetRootPos( int *xp,int *yp);
 int kgGetRootRect( int *x1,int *y1,int *x2,int *y2) ;
+void * kgGetInputFocus (void *Tmp);
+int kgSetInputFocus(void *Tmp,void *wtmp);
+int kgCheckMyWindow(void *Tmp,void *wtmp);
+void kgDropFocus(void *tmp);
 /* Reading Widget data from file */
 DIM * Read_data_message(FILE *fp);
 DIO * Read_data_progressbar(FILE *fp);
@@ -1545,6 +1566,10 @@ typedef struct _keybrd {
   int grp1,grp2,grp3,grp4,grp5,grp6; //extras
   int Hclr;
   void *Thds;
+  int Bx,By,Xg,Yg, Boff;
+  float trans;
+  int Bodr;
+  void *TargetWindow;
 } KEYBRD;
 int kgMakeKeybrd3(DIALOG *D,int xo,int yo,int Vis,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float rfac,float transparency) ;
 int kgMakeKeybrd2(DIALOG *D,int xo,int yo,int Vis,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float rfac,float transparency) ;

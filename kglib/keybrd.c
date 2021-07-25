@@ -1384,6 +1384,7 @@ int kgMakeKeybrd3(DIALOG *D,int xo,int yo,int Vis,int btype,int bfont,int fontcl
    D->Kbrd = (void *) malloc(sizeof(KEYBRD));
    if(btype<1) btype=1;
    Kbrd = D->Kbrd;
+   Kbrd->TargetWindow = NULL;
    Kbrd->kbtype=3;
 #if 0
    kgDefineColor(93,R,G,B);
@@ -1426,6 +1427,7 @@ int kgMakeDefaultKeybrd3(DIALOG *D,int xo,int yo,int Vis) {
    KEYBRD *Kbrd;
    D->Kbrd = (void *) malloc(sizeof(KEYBRD));
    Kbrd = D->Kbrd;
+   Kbrd->TargetWindow = NULL;
 /*************************************************
 
 

@@ -7877,6 +7877,8 @@ void _dv_draw_button(void *tmp,int k,int state) {
    D= N->D;
    df = *(N->df);
    if(N->type==10) return;
+   xgap = N->xgap;
+   ygap = N->ygap;
    transparency = D->transparency;
    wc = WC(D);
    highli=0;
@@ -8279,10 +8281,12 @@ int _uiMake_N(void *tmp) {
   BUT_STR *buts;
   int ret=1,k,n,backgr;
   int x1,y1,x2,y2;
+  int xgap,ygap;
+  int xoff,yoff;
   DIALOG *D;
   kgWC *wc;
   b= (DIN *)tmp;
-  D=b->D;
+  D=b->D;  
   x1 = b->x1+D->xo;
   x2 = b->x2+D->xo;
   y1 = b->y1+D->yo;
@@ -14795,7 +14799,7 @@ void _uiMakeButs(DIN *B) {
   }
 
 }
-void _uiInitButs(DIN *B) {
+void _uiInitButs_org(DIN *B) {
   BUT_STR *butns;
   int offset=4;
   float transparency;
@@ -14849,6 +14853,72 @@ void _uiInitButs(DIN *B) {
       if(D->butattn==0 ){butns[i].highli=0;highli=0;}
       x1 = x1+dx+xgap;
       x2 = x1+dx+3;
+      butns[i].x1 =x1;
+      butns[i].x2 =x2;
+      butns[i].y1 =y1;
+      butns[i].y2 =y2;
+      butns[i].butno=i;
+      bkgr = butns[i].bkgr;
+      if(bkgr < 0) {
+        if(bkgr==-1) bkgr=D->gc.fill_clr;
+      }
+      i++;
+    }
+  }
+
+}
+// TCB 0n 07/21
+void _uiInitButs(DIN *B) {
+  BUT_STR *butns;
+  int offset=3;
+  float transparency;
+  int n,i,j,k,ix,iy,nx,ny,type,mf=1,mfp=0;
+  int x1,y1,x2,y2,xgap,ygap,ln,wd,bkgr,highli=1,xo,yo,dx,dy;
+  void *xpm,*timg=NULL;
+  DIALOG *D;
+  kgWC *wc;
+  D = (DIALOG *)(B->D);
+  wc = WC(D);
+  nx= B->nx;
+  ny= B->ny;
+  n = nx*ny;
+  transparency = D->transparency;
+  butns = B->buts;
+  xgap = B->xgap;
+  ygap = B->ygap;
+  ln= B->lngth;
+  wd= B->width;
+  type = B->type;
+  if(butns==NULL) return;
+  if((type==0)||(type==9)) {
+        mf=1;
+        mfp=1;
+  }
+  else {
+        mf=1;
+        mfp=0;
+  }
+  xo = D->xo+B->x1+offset;
+  yo = D->yo+B->y1+offset;
+  dx =ln;
+  dy =wd;
+  y1 = yo-dy-ygap+mf*ygap/2;
+  i=0;
+  for(j=0;j<ny;j++) {
+    y1 = y1+dy+ygap;
+//    y2 = y1+dy-1+mfp;
+    y2 = y1+dy+mfp;
+    x1 = xo -dx-xgap+xgap/2;
+    for(k=0;k<nx;k++) {
+      butns[i].D=B->D;
+      butns[i].Widget=B;
+      butns[i].state=0;
+      butns[i].highli=0;
+      if(*(B->df) == (i+1) ) butns[i].highli=1;
+      if(D->butattn==0 ){butns[i].highli=0;highli=0;}
+      x1 = x1+dx+xgap;
+//      x2 = x1+dx-1+mfp;
+      x2 = x1+dx+mfp;
       butns[i].x1 =x1;
       butns[i].x2 =x2;
       butns[i].y1 =y1;
@@ -14973,19 +15043,26 @@ void *_uiMakeButnImages(void *buttmp){
   butns = B->buts;
   xgap = B->xgap;
   ygap = B->ygap;
+#if 0  // TCB 07/21 may have side effects
+  ln= ((B->lngth-1)/2)*2-1;
+  wd= ((B->width-1)/2)*2-1;
+#else
   ln= B->lngth;
   wd= B->width;
+#endif
+// mfp can be adjusted to adjust the size of drawing
   type = B->type;
   if(butns==NULL) return NULL;
   if(type==10) return NULL;
   if((type==0)||(type==9)) {
         mf=0;
-        mfp=3;
+        mfp=2;
   }
   else {
         mf=1;
         mfp=1;
   }
+  if(type==1)mfp=0;
   i=butno;
   x1 = butns[i].x1;
   y1 = butns[i].y1;

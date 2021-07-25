@@ -10,6 +10,7 @@ static char Label1[]="1234567890qwertyuiopasdfghjkl/zxcvbnm,.?";
 static char Label2[]="1234567890QWERTYUIOPASDFGHJKL/ZXCVBNM,.?";
 #endif
 static char Label3[]="1234567890~`!@#$%^&*()_+-={}|[]\\:\";',.<>?";
+int kgShowKey(int ch);
 static char *kgButtonTitle(char * str,void *pt) {
   KEYBRD *Kbrd;
   Kbrd = (KEYBRD *)pt;
@@ -79,6 +80,7 @@ int  skeybrdbutton1callback(int butno,int i,void *Tmp) {
       kgSendSpaceKeyEvent(Tmp);
       break;
   }
+  kgShowKey('a');
   return ret;
 }
 void  skeybrdbutton1init(DIN *B,void *pt) {
@@ -135,6 +137,7 @@ int  skeybrdbutton2callback(int butno,int i,void *Tmp) {
       kgUpdateOn(D);
       break;
   }
+  kgShowKey('a');
  
   return ret;
 }
@@ -164,6 +167,7 @@ int  skeybrdbutton3callback(int butno,int i,void *Tmp) {
   Kbrd = D->Kbrd;
   if(Kbrd->CurWid < 0) return 0;
   ProcessLabel(D,butno,Label1);
+  kgShowKey('a');
   return ret;
 }
 void  skeybrdbutton3init(DIN *B,void *pt) {
@@ -224,6 +228,7 @@ int  skeybrdbutton4callback(int butno,int i,void *Tmp) {
       kgUpdateOn(D);
       break;
   }
+  kgShowKey('a');
   return ret;
 }
 void  skeybrdbutton4init(DIN *B,void *pt) {
@@ -253,6 +258,7 @@ int  skeybrdbutton5callback(int butno,int i,void *Tmp) {
   if(Kbrd->CurWid < 0) return 0;
   B = (DIN *)kgGetWidget(Tmp,i);
   ProcessLabel(D,butno,Label2);
+  kgShowKey('a');
   return ret;
 }
 void  skeybrdbutton5init(DIN *B,void *pt) {
@@ -313,6 +319,7 @@ int  skeybrdbutton6callback(int butno,int i,void *Tmp) {
       kgUpdateOn(D);
       break;
   }
+  kgShowKey('a');
   return ret;
 }
 void  skeybrdbutton6init(DIN *B,void *pt) {
@@ -342,6 +349,7 @@ int  skeybrdbutton7callback(int butno,int i,void *Tmp) {
   if(Kbrd->CurWid < 0) return 0;
   B = (DIN *)kgGetWidget(Tmp,i);
   ProcessLabel(D,butno,Label3);
+  kgShowKey('a');
   return ret;
 }
 void  skeybrdbutton7init(DIN *B,void *pt) {

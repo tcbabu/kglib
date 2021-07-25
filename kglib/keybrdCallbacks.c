@@ -1,4 +1,5 @@
 #include "kulina.h"
+int kgShowKey(int ch);
 int ProcessShift(void *D);
 int kgSetKeybrdWidget(void *Tmp,int CurWid) {
    DIALOG *D;
@@ -58,6 +59,7 @@ int  keybrdbutton1callback(int butno,int i,void *Tmp) {
     Kbrd->ShiftPress=0;
     ProcessShift(D);
   }
+  kgShowKey('a');
   return ret;
 }
 void  keybrdbutton1init(DIN *B,void *pt) {
@@ -78,6 +80,7 @@ int  keybrdbutton2callback(int butno,int i,void *Tmp) {
   n = B->nx*B->ny;
   if(Kbrd->CurWid< 0) return 0;
   ProcessLabel(D,butno,Label);
+  kgShowKey('a');
   return ret;
 }
 void  keybrdbutton2init(DIN *B,void *pt) {
@@ -98,6 +101,7 @@ int  keybrdbutton3callback(int butno,int i,void *Tmp) {
   n = B->nx*B->ny;
   if(Kbrd->CurWid< 0) return 0;
   ProcessLabel(D,butno,Label);
+  kgShowKey('a');
   return ret;
 }
 void  keybrdbutton3init(DIN *B,void *pt) {
@@ -121,6 +125,7 @@ int  keybrdbutton4callback(int butno,int i,void *Tmp) {
   if(Kbrd->CurWid< 0) return 0;
   kgSetCurrentWidget(D,Kbrd->CurWid);
   kgSendBackspaceKeyEvent(Tmp);
+  kgShowKey('a');
   return ret;
 }
 void  keybrdbutton4init(DIN *B,void *pt) {
@@ -144,6 +149,7 @@ int  keybrdbutton5callback(int butno,int i,void *Tmp) {
   if(Kbrd->CurWid< 0) return 0;
   kgSetCurrentWidget(D,Kbrd->CurWid);
   kgSendEscapeKeyEvent(Tmp);
+  kgShowKey('a');
   return ret;
 }
 void  keybrdbutton5init(DIN *B,void *pt) {
@@ -164,6 +170,7 @@ int  keybrdbutton6callback(int butno,int i,void *Tmp) {
   n = B->nx*B->ny;
   if(Kbrd->CurWid< 0) return 0;
   ProcessLabel(D,butno,Label);
+  kgShowKey('a');
   return ret;
 }
 void  keybrdbutton6init(DIN *B,void *pt) {
@@ -182,6 +189,7 @@ int  keybrdbutton7callback(int butno,int i,void *Tmp) {
   char Label[]="zxcvbnm";
   if(Kbrd->CurWid< 0) return 0;
   ProcessLabel(D,butno,Label);
+  kgShowKey('a');
   return ret;
 }
 void  keybrdbutton7init(DIN *B,void *pt) {
@@ -249,6 +257,7 @@ int  keybrdbutton8callback(int butno,int i,void *Tmp) {
   n = B->nx*B->ny;
   Kbrd->CapsLock = (Kbrd->CapsLock+1)%2;
   ProcessCapsLock(D);
+  kgShowKey('a');
   return ret;
 }
 void  keybrdbutton8init(DIN *B,void *pt) {
@@ -268,6 +277,7 @@ int  keybrdbutton19callback(int butno,int i,void *Tmp) {
   n = B->nx*B->ny;
   Kbrd->CapsLock = (Kbrd->CapsLock+1)%2;
   ProcessCapsLock(D);
+  kgShowKey('a');
   return ret;
 }
 void  keybrdbutton19init(DIN *B,void *pt) {
@@ -285,10 +295,8 @@ int  keybrdbutton9callback(int butno,int i,void *Tmp) {
   Kbrd = D->Kbrd;
   char Label[]="<>?,./";
   if(Kbrd->CurWid< 0) return 0;
-#if 0
-#else
   ProcessLabel(D,butno,Label);
-#endif
+  kgShowKey('a');
   return ret;
 }
 void  keybrdbutton9init(DIN *B,void *pt) {
@@ -306,10 +314,8 @@ int  keybrdbutton10callback(int butno,int i,void *Tmp) {
   KEYBRD *Kbrd;
   Kbrd = D->Kbrd;
   if(Kbrd->CurWid< 0) return 0;
-#if 0
-#else
   ProcessLabel(D,butno,Label);
-#endif
+  kgShowKey('a');
   return ret;
 }
 void  keybrdbutton10init(DIN *B,void *pt) {
@@ -333,6 +339,7 @@ int  keybrdbutton11callback(int butno,int i,void *Tmp) {
   if(Kbrd->CurWid< 0) return 0;
   kgSetCurrentWidget(D,Kbrd->CurWid);
   kgSendEnterKeyEvent(Tmp);
+  kgShowKey('a');
   return ret;
 }
 void  keybrdbutton11init(DIN *B,void *pt) {
@@ -354,6 +361,7 @@ int  keybrdbutton12callback(int butno,int i,void *Tmp) {
   if(Kbrd->CurWid< 0) return 0;
   kgSetCurrentWidget(D,Kbrd->CurWid);
   kgSendSpaceKeyEvent(Tmp);
+  kgShowKey('a');
   return ret;
 }
 void  keybrdbutton12init(DIN *B,void *pt) {
@@ -383,6 +391,7 @@ int  keybrdbutton13callback(int butno,int i,void *Tmp) {
       kgSendLeftKeyEvent(Tmp);
       break;
   }
+  kgShowKey('a');
   return ret;
 }
 void  keybrdbutton13init(DIN *B,void *pt) {
@@ -402,6 +411,7 @@ int  keybrdbutton14callback(int butno,int i,void *Tmp) {
   n = B->nx*B->ny;
   Kbrd->ShiftPress = (Kbrd->ShiftPress+1)%2;
   ProcessShift(D);
+  kgShowKey('a');
   return ret;
 }
 void  keybrdbutton14init(DIN *B,void *pt) {
@@ -433,6 +443,7 @@ int  keybrdbutton15callback(int butno,int i,void *Tmp) {
       kgSendHomeKeyEvent(Tmp);
       break;
   }
+  kgShowKey('a');
   return ret;
 }
 void  keybrdbutton15init(DIN *B,void *pt) {
@@ -451,6 +462,7 @@ int  keybrdbutton16callback(int butno,int i,void *Tmp) {
   Kbrd = D->Kbrd;
   if(Kbrd->CurWid< 0) return 0;
   ProcessLabel(D,butno,Label);
+  kgShowKey('a');
   return ret;
 }
 void  keybrdbutton16init(DIN *B,void *pt) {
@@ -469,6 +481,7 @@ int  keybrdbutton17callback(int butno,int i,void *Tmp) {
   Kbrd = D->Kbrd;
   if(Kbrd->CurWid< 0) return 0;
   ProcessLabel(D,butno,Label);
+  kgShowKey('a');
   return ret;
 }
 void  keybrdbutton17init(DIN *B,void *pt) {
@@ -487,6 +500,7 @@ int  keybrdbutton18callback(int butno,int i,void *Tmp) {
   Kbrd = D->Kbrd;
   if(Kbrd->CurWid< 0) return 0;
   ProcessLabel(D,butno,Label);
+  kgShowKey('a');
   return ret;
 }
 void  keybrdbutton18init(DIN *B,void *pt) {
