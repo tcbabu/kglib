@@ -68,6 +68,8 @@ int Borderoptdia(  void *v0 ){
   };
   d[0].n = &n0;
   d[1].t = NULL;
+  D.VerId =1401010000;
+  kgInitUi(&D);
   D.d = d;
   D.bkup = 1; /* set to 1 for backup */
   D.bor_type = 4;

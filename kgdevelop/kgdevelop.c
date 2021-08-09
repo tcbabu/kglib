@@ -8,7 +8,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include "image.c"
-#define VER 1401010200
+#define VER 2107030000
 char kulinahome[500];
 char CWD[500];
 int FullScreen=0;
@@ -5041,6 +5041,7 @@ void Make_gui_code(DIALOG *D,char *flname,char *dianame){
 //  fprintf(fp1,"  DIA d[%-d];\n",(no+1));
   fprintf(fp1,"  DIA *d=NULL;\n");
   fprintf(fp1,"  D.VerId=%d;\n",VER);
+//  fprintf(fp1,"  D.VerId=kgGetVersion();\n");
   fprintf(fp1,"  kgInitUi(&D);\n");
   fprintf(fp1,"  D.d=NULL;\n");
   fprintf(fp1,"#if 1\n");

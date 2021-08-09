@@ -47,6 +47,7 @@ static char SLASHS[2]="\\";
 #endif
 #define GAP 0.05
 #define HFAC 1.30
+#define RESIZE 5
 static pthread_mutex_t _Initlock=PTHREAD_MUTEX_INITIALIZER;
 void CHDIR(char *);
 static int NCLRS=256;
@@ -555,11 +556,12 @@ void uiInitGbox(DIALOG *D,int i) {
   pthread_mutex_lock(&_Initlock);
   entry++;
   G = D->d[i].g;
-  dc = (kgDC *) malloc(sizeof(kgDC));
+  dc = (kgDC *) Malloc(sizeof(kgDC));
   G->D= D;
-  G->wc = (kgWC *) malloc(sizeof(kgWC));
+  G->wc = (kgWC *) Malloc(sizeof(kgWC));
   G->dc = dc;
   G->Obj_opn=0;
+  dc->Fontlist=NULL;
   ui_initialise(G);
   for(l=0;l<10;l++) dc->st_ptr[l]=0;
   G->B_min = 10400;
@@ -591,7 +593,7 @@ void uiInitGbox(DIALOG *D,int i) {
   strcat(dc->cmdsfile,"/cmdsfile");
   dc->ls_list=NULL;
   dc->No_of_lights=0;
-  G->Rbuff = (unsigned char  *) malloc(B_max+100);
+  G->Rbuff = (unsigned char  *) Malloc(B_max+100);
   G->hbuf =-1;
   uiinitialise(G);
   pthread_mutex_unlock(&_Initlock);
@@ -1448,8 +1450,8 @@ int uiProcess_arc (DIG *G,float *xo,float *yo)
     a2 = ang2*3.14159265/180.0;
     th= 2.0*3.14159265/180.0;
     n = fabs(a2-a1)/th+0.5;
-    x = malloc(sizeof(float)*(n+2));
-    y = malloc(sizeof(float)*(n+2));
+    x = Malloc(sizeof(float)*(n+2));
+    y = Malloc(sizeof(float)*(n+2));
     if(y==NULL) {
       printf("Error: In mem allocation..\n");
       exit(0);
@@ -1487,8 +1489,8 @@ int uiProcess_arc (DIG *G,float *xo,float *yo)
     a2 = ang2*3.14159265/180.0;
     th= 2.0*3.14159265/180.0;
     n = fabs(a2-a1)/th+0.5;
-    x = malloc(sizeof(float)*(n+2));
-    y = malloc(sizeof(float)*(n+2));
+    x = Malloc(sizeof(float)*(n+2));
+    y = Malloc(sizeof(float)*(n+2));
     if(y==NULL) {
       printf("Error: In mem allocation..\n");
       exit(0);
@@ -4679,8 +4681,8 @@ int gphRoundedRectangleLowered_o(int fid,float xo,float yo,float xl,float yl,int
     a2 = ang2*3.14159265/180.0;
     th= 5.0*3.14159265/180.0;
     n = fabs(a2-a1)/th+0.5;
-    x = malloc(sizeof(float)*(n+2));
-    y = malloc(sizeof(float)*(n+2));
+    x = Malloc(sizeof(float)*(n+2));
+    y = Malloc(sizeof(float)*(n+2));
     if(y==NULL) {
       printf("Error: In mem allocation..\n");
       exit(0);
@@ -4744,10 +4746,10 @@ void kgrev_shade_o(DIG *G,FILE *fp)
   dc= G->dc;
   Fread(fp,(void *)&n,4);
   l = sizeof(float)*n;
-  x = (float *)malloc(l);
-  y = (float *)malloc(l);
-  z = (float *)malloc(l);
-  v = (float *)malloc(l);
+  x = (float *)Malloc(l);
+  y = (float *)Malloc(l);
+  z = (float *)Malloc(l);
+  v = (float *)Malloc(l);
   Fread(fp,(void *)x,l);
   Fread(fp,(void *)y,l);
   Fread(fp,(void *)z,l);
@@ -4823,10 +4825,10 @@ void kgrev_godr_fill3f(DIG *G,FILE *fp)
      dc = G->dc;
   Fread(fp,(void *)&n,4);
   l = sizeof(float)*n;
-  x = (float *)malloc(l);
-  y = (float *)malloc(l);
-  z = (float *)malloc(l);
-  v = (float *)malloc(l);
+  x = (float *)Malloc(l);
+  y = (float *)Malloc(l);
+  z = (float *)Malloc(l);
+  v = (float *)Malloc(l);
   Fread(fp,(void *)x,l);
   Fread(fp,(void *)y,l);
   Fread(fp,(void *)z,l);
@@ -4857,9 +4859,9 @@ void kgrev_poly_fill3f(DIG *G,FILE *fp)
      dc = G->dc;
   Fread(fp,(void *)&n,4);
   l = sizeof(float)*n;
-  x = (float *)malloc(l);
-  y = (float *)malloc(l);
-  z = (float *)malloc(l);
+  x = (float *)Malloc(l);
+  y = (float *)Malloc(l);
+  z = (float *)Malloc(l);
   Fread(fp,(void *)x,l);
   Fread(fp,(void *)y,l);
   Fread(fp,(void *)z,l);
@@ -5040,7 +5042,7 @@ void kgrev_box_fill3f(DIG *G,FILE *fp)
       {
         case 'w':
                 Fread(pf,(void *)&n,4);
-                tx= (unsigned char *) malloc((n+1)*sizeof(unsigned));
+                tx= (unsigned char *) Malloc((n+1)*sizeof(unsigned));
                 Fread(pf,(void *)tx,n);
                 *(tx+n)='\0';
                 kgWriteText(G,(char *)tx);
@@ -5122,8 +5124,8 @@ void kgrev_box_fill3f(DIG *G,FILE *fp)
                 break;
         case 'p':
                 Fread(pf,(void *)&n,4);
-                xx=(float *)malloc(sizeof(float)*n);
-                yy=(float *)malloc(sizeof(float)*n);
+                xx=(float *)Malloc(sizeof(float)*n);
+                yy=(float *)Malloc(sizeof(float)*n);
                 check_mem_alloc(yy);
                 Fread(pf,(void *)xx,4*n);
                 Fread(pf,(void *)yy,4*n);
@@ -5139,9 +5141,9 @@ void kgrev_box_fill3f(DIG *G,FILE *fp)
                 break;
         case 'g': 
                 Fread(pf,(void *)&n,4);
-                xx=(float *)malloc(sizeof(float)*n);
-                yy=(float *)malloc(sizeof(float)*n);
-                p=(float *)malloc(sizeof(float)*n);
+                xx=(float *)Malloc(sizeof(float)*n);
+                yy=(float *)Malloc(sizeof(float)*n);
+                p=(float *)Malloc(sizeof(float)*n);
                 check_mem_alloc(p);
                 Fread(pf,(void *)xx,4*n);
                 Fread(pf,(void *)yy,4*n);
@@ -5290,10 +5292,10 @@ void uicnv_godr_fill3f(DIG *G,FILE *fp)
   dc = G->dc;
   Fread(fp,(void *)&n,4);
   l = sizeof(float)*n;
-  x = (float *)malloc(l);
-  y = (float *)malloc(l);
-  z = (float *)malloc(l);
-  v = (float *)malloc(l);
+  x = (float *)Malloc(l);
+  y = (float *)Malloc(l);
+  z = (float *)Malloc(l);
+  v = (float *)Malloc(l);
   Fread(fp,(void *)x,l);
   Fread(fp,(void *)y,l);
   Fread(fp,(void *)z,l);
@@ -5326,9 +5328,9 @@ void uicnv_shade_o(DIG *G,FILE *fp)
   dc = G->dc;
   Fread(fp,(void *)&n,4);
   l = sizeof(float)*n;
-  x = (float *)malloc(l);
-  y = (float *)malloc(l);
-  z = (float *)malloc(l);
+  x = (float *)Malloc(l);
+  y = (float *)Malloc(l);
+  z = (float *)Malloc(l);
   Fread(fp,(void *)x,l);
   Fread(fp,(void *)y,l);
   Fread(fp,(void *)z,l);
@@ -5369,9 +5371,9 @@ void uicnv_poly_fill3f(DIG *G,FILE *fp)
   dc = G->dc;
   Fread(fp,(void *)&n,4);
   l = sizeof(float)*n;
-  x = (float *)malloc(l);
-  y = (float *)malloc(l);
-  z = (float *)malloc(l);
+  x = (float *)Malloc(l);
+  y = (float *)Malloc(l);
+  z = (float *)Malloc(l);
   Fread(fp,(void *)x,l);
   Fread(fp,(void *)y,l);
   Fread(fp,(void *)z,l);
@@ -5556,7 +5558,7 @@ void uicnv_box_fill3f(DIG *G,FILE *fp)
       {
         case 'w':
                 Fread(pf,(void *)&n,4);
-                tx= (unsigned char *) malloc((n+1)*sizeof(unsigned));
+                tx= (unsigned char *) Malloc((n+1)*sizeof(unsigned));
                 Fread(pf,(void *)tx,n);
                 *(tx+n)='\0';
                 kgWriteText(G,(char *)tx);
@@ -5631,8 +5633,8 @@ void uicnv_box_fill3f(DIG *G,FILE *fp)
                 break;
         case 'p':
                 Fread(pf,(void *)&n,4);
-                xx=(float *)malloc(sizeof(float)*n);
-                yy=(float *)malloc(sizeof(float)*n);
+                xx=(float *)Malloc(sizeof(float)*n);
+                yy=(float *)Malloc(sizeof(float)*n);
                 check_mem_alloc(yy);
                 Fread(pf,(void *)xx,4*n);
                 Fread(pf,(void *)yy,4*n);
@@ -5648,9 +5650,9 @@ void uicnv_box_fill3f(DIG *G,FILE *fp)
                 break;
         case 'g': 
                 Fread(pf,(void *)&n,4);
-                xx=(float *)malloc(sizeof(float)*n);
-                yy=(float *)malloc(sizeof(float)*n);
-                p=(float *)malloc(sizeof(float)*n);
+                xx=(float *)Malloc(sizeof(float)*n);
+                yy=(float *)Malloc(sizeof(float)*n);
+                p=(float *)Malloc(sizeof(float)*n);
                 check_mem_alloc(p);
                 Fread(pf,(void *)xx,4*n);
                 Fread(pf,(void *)yy,4*n);
@@ -6028,8 +6030,8 @@ void uiwin_poly_fill(DIG *G)
   dc=G->dc;
   wc = G->wc;
   uiread_buf(G,&n,4);
-  x = (float *) malloc(sizeof(float)*n);
-  y = (float *) malloc(sizeof(float)*n);
+  x = (float *) Malloc(sizeof(float)*n);
+  y = (float *) Malloc(sizeof(float)*n);
   if(y==NULL) {
     printf("Error: in allocating memory for panel\n");
     exit(0);
@@ -6213,7 +6215,7 @@ void  uiwin_txtwrt(DIG *G)
   dc=G->dc;
   wc = G->wc;
   uiread_buf(G,&n,4);
-  tx = (char *)malloc((n+1)*sizeof(char));
+  tx = (char *)Malloc((n+1)*sizeof(char));
   uiread_buf(G,tx,n);
   tx[n]='\0';
   if(G->D_ON)ui_txt_wr(G,n,tx);
@@ -12064,7 +12066,7 @@ void * kgStringToImage_old(char *Str,void *image,int xsize,int ysize,int font,in
    float length=0.0,fac,th,tw;
 #if 1
    {
-      fid = kgInitImage((int)(xsize),ysize,4);
+      fid = kgInitImage((int)(xsize),ysize,RESIZE);
       kgUserFrame(fid,0.,0.,(float)xsize,(float)ysize);
       th = (float)ysize*.5;
       tw = (float)width;
@@ -12111,7 +12113,7 @@ void * kgStringToImage(char *Str,void *image,int xsize,int ysize,int font,int tx
    float length=0.0,fac,th,tw;
 #if 1
    {
-      fid = kgInitImage((int)(xsize),ysize,8);
+      fid = kgInitImage((int)(xsize),ysize,RESIZE);
       kgUserFrame(fid,0.,0.,(float)xsize,(float)ysize);
       th = (float)ysize*.5;
       tw = (float)width;
@@ -12141,7 +12143,7 @@ void * kgFilledStringToImagePressed(char *Str,void *image,int xsize,int ysize,in
    aspc=1;
    if(ysize > size) {size=ysize;aspc=0;}
    {
-      fid = kgInitImage(xsize,ysize,4);
+      fid = kgInitImage(xsize,ysize,RESIZE);
       kgUserFrame(fid,-3.,-3.,(float)xsize+3.,(float)ysize+3.);
       kgTextFont(fid,font);
       th = (float)ysize*.5;
@@ -12226,7 +12228,7 @@ void * kgFilledStringToImage1(char *Str,void *image,int xsize,int ysize,int font
    if(ysize > size) {size=ysize;aspc=0;}
    if(depthfac> xsize*0.4 ) depthfac=xsize*0.4;
    if(depthfac> ysize*0.4 ) depthfac=ysize*0.4;
-   fid = kgInitImage(xsize,ysize,4);
+   fid = kgInitImage(xsize,ysize,RESIZE);
    {
       kgUserFrame(fid,-3.,-3.,(float)xsize+3.,(float)ysize+3.);
       kgTextFont(fid,font);
@@ -12308,7 +12310,7 @@ void * kgFilledStringToImage2(char *Str,void *image,int xsize,int ysize,int font
    aspc=1;
    size = xsize;
    if(ysize > size) {size=ysize;aspc=0;}
-   fid = kgInitImage(xsize,ysize,4);
+   fid = kgInitImage(xsize,ysize,RESIZE);
    if(fid != NULL ) {
       kgUserFrame(fid,-3.,-3.,(float)xsize+3.,(float)ysize+3.);
       kgTextFont(fid,font);
@@ -12382,7 +12384,7 @@ void * kgFilledStringToImage3(char *Str,void *image,int xsize,int ysize,int font
    if(ysize > size) {size=ysize;aspc=0;}
    if(depthfac> xsize*0.4 ) depthfac=xsize*0.4;
    if(depthfac> ysize*0.4 ) depthfac=ysize*0.4;
-   fid = kgInitImage(xsize,ysize,4);
+   fid = kgInitImage(xsize,ysize,RESIZE);
    if(fid != NULL ) {
       kgUserFrame(fid,-3.,-3.,(float)xsize+3.,(float)ysize+3.);
       kgTextFont(fid,font);
@@ -12465,7 +12467,7 @@ void * kgShadedStringToImage(char *Str,void *image,int xsize,int ysize,int font,
    float length=0.0,fac,th,tw,vmin,vmax,size,lnwidth=2,xm,ym;
    float h,s,v,red,blue,green;
    int r,g,b;
-   fid = kgInitImage(xsize,ysize,4);
+   fid = kgInitImage(xsize,ysize,RESIZE);
    aspc =1;
    size = xsize;
 //   kgGetDefaultRGB(fillcolor,&r,&g,&b);
@@ -12627,7 +12629,7 @@ void * kgBoxedStringToImage(char *Str,void *image,int xsize,int ysize,int font,i
    float length=0.0,fac,th,tw,size;
    float h,s,v,red,blue,green,vorg;
    int r,g,b;
-   fid = kgInitImage(xsize,ysize,4);
+   fid = kgInitImage(xsize,ysize,RESIZE);
    aspc =1;
    size = xsize;
    if(ysize > size) {size=ysize;aspc=0;}
@@ -12725,7 +12727,7 @@ void  kgStringToImagefile(char *Imgfile,char *Str,int xsize,int ysize,int font,i
    void *img=NULL;
    char *tmpdir,flname[200];
    float length=0.0,fac,th,tw;
-   fid = kgInitImage(xsize,ysize,4);
+   fid = kgInitImage(xsize,ysize,RESIZE);
    if(fid != NULL ) {
       kgUserFrame(fid,0.,0.,(float)xsize,(float)ysize);
       kgTextFont(fid,font);
@@ -12774,7 +12776,7 @@ void * kgSplashStringToImage_o(char *Str,int xsize,int ysize,int font,int fillco
    aspc=1;
    size = xsize;
    if(ysize > size) {size=ysize;aspc=0;}
-   fid = kgInitImage(xsize,ysize,4);
+   fid = kgInitImage(xsize,ysize,RESIZE);
    if(fid != NULL ) {
       kgUserFrame(fid,-0.,-0.,(float)xsize+0.,(float)ysize+0.);
       kgTextFont(fid,font);
@@ -12849,7 +12851,7 @@ void * kgSplashStringToImage(char *Str,int xsize,int ysize,int font,int fillcolo
    aspc=1;
    size = xsize;
    if(ysize > size) {size=ysize;aspc=0;}
-   fid = kgInitImage(xsize,ysize,8);
+   fid = kgInitImage(xsize,ysize,RESIZE);
    if(fid != NULL ) {
 //      kgUserFrame(fid,-0.,-0.,(float)xsize+0.,(float)ysize+0.);
       kgUserFrame(fid,-1.0,-1.0,(float)xsize+1.0,(float)ysize+1.0);
@@ -12957,7 +12959,7 @@ void * kgSplashStringToImage_n(char *Str,int xsize,int ysize,int font,int fillco
    aspc=1;
    size = xsize;
    if(ysize > size) {size=ysize;aspc=0;}
-   fid = kgInitImage(xsize,ysize,4);
+   fid = kgInitImage(xsize,ysize,RESIZE);
    if(fid != NULL ) {
       kgUserFrame(fid,-1.,-1.,(float)xsize+1.,(float)ysize+1.);
 //      kgGetDefaultRGB(fillcolor,&r,&g,&b);
@@ -13063,7 +13065,7 @@ int uiPressedBoxFill(void *Dialog,int xo,int yo,int xsize,int ysize,int fillcolo
    void *fid;
    void *img=NULL;
    char *tmpdir,flname[200];
-   fid = kgInitImage(xsize,ysize,4);
+   fid = kgInitImage(xsize,ysize,RESIZE);
    if(fid != NULL ) {
       kgUserFrame(fid,0.,0.,(float)xsize,(float)ysize);
       kgRoundedRectangleFill(fid,(float)xsize*0.5,(float)ysize*0.5,(float)xsize,(float)ysize,0,fillcolor,rfac);
@@ -13080,7 +13082,7 @@ int uiBoxFill(void *Dialog,int xo,int yo,int xsize,int ysize,int fillcolor,float
    void * fid;
    void *img=NULL;
    char *tmpdir,flname[200];
-   fid = kgInitImage(xsize,ysize,4);
+   fid = kgInitImage(xsize,ysize,RESIZE);
    if(fid != NULL ) {
       kgUserFrame(fid,0.,0.,(float)xsize,(float)ysize);
       kgRoundedRectangleFill(fid,(float)xsize*0.5,(float)ysize*0.5,(float)xsize,(float)ysize,0,fillcolor,rfac);
@@ -13096,7 +13098,7 @@ int uiRoundedBorder(void *Dialog,int xo,int yo,int xsize,int ysize,int bodrcolor
    void * fid;
    void *img=NULL;
    char *tmpdir,flname[200];
-   fid = kgInitImage(xsize,ysize,4);
+   fid = kgInitImage(xsize,ysize,RESIZE);
    if(fid != NULL ) {
       kgUserFrame(fid,0.,0.,(float)xsize,(float)ysize);
       kgRoundedRectangle(fid,(float)xsize*0.5,(float)ysize*0.5,(float)xsize,(float)ysize,bodrcolor,rfac,(float)bodrsize);
@@ -13118,7 +13120,7 @@ void kgAddSearchDir(void *Tmp,char *Dir) {
        D->SearchList=L;
      }
      Resetlink(L);
-     dname = (char *)malloc(strlen(Dir)+2);
+     dname = (char *)Malloc(strlen(Dir)+2);
      strcpy(dname,Dir);
      strcat(dname,"/");
      Dinsert(L,dname);
@@ -13135,7 +13137,7 @@ void *kgBorderedRectangle(int width,int height,int fillclr,float rfac) {
   xo = l*0.5;
   yo = w*0.5;
   if(height<100) small=1;
-  fid = kgInitImage(width,height,4);
+  fid = kgInitImage(width,height,RESIZE);
    if(fid != NULL ) {
       kgUserFrame(fid,-3.0,-3.0,(float)l+3,(float)w+3);
       if(fillclr>=0)
@@ -13185,7 +13187,7 @@ void *kgPressedRectangle(int width,int height,int fillclr,float rfac) {
   xo = l*0.5;
   yo = w*0.5;
   if(height<100) small=1;
-  fid = kgInitImage(width,height,4);
+  fid = kgInitImage(width,height,RESIZE);
    if(fid != NULL ) {
       kgUserFrame(fid,-3.0,-3.0,(float)l+3,(float)w+3);
       if(fillclr>0)

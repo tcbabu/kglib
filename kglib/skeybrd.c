@@ -2647,7 +2647,7 @@ int skeybrd( void *parent,void **v,void *pt) {
   int ret=1,GrpId,k;
   DIALOG D;
   DIA *d=NULL;
-  D.VerId=1401010200;
+  D.VerId=2107030000;
   kgInitUi(&D);
   D.d=NULL;
   GrpId = skeybrdGroup(&D,v,pt);

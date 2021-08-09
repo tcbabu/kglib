@@ -27,6 +27,7 @@
 #define LN_WIDTH 20
 #define far 
 #include <malloc.h>
+#define RESIZE 5
 //#include "images.c"
 extern int TextSize,Ht,Wd,Gap,Bt;  // It is Okay For Thread;
 static pthread_mutex_t _Tmplock=PTHREAD_MUTEX_INITIALIZER;
@@ -39,12 +40,16 @@ static int Hsize =1;
 static int SLASH=47;
 static char SLASHS[2]="/";
 #define FreeImg(x) { \
+ {\
   if((x)!= NULL) kgFreeImage((x));\
   (x)=NULL;\
+ }\
 }
 #define Free(x) {\
+ {\
   if((x) != NULL) free((x));\
   (x) = NULL;\
+ }\
 }
 static void uiFreemenu(char **m) {
   int i;
@@ -87,7 +92,7 @@ char *kgWhich(char *pgr) {
     if( (m==NULL)) {return NULL;}
     if( (m[0]==NULL)) {kgFreeDouble((void **)m);return NULL;}
     kgFreeDouble((void **)m);
-    res = (char *)malloc(strlen(pgr)+1);
+    res = (char *)Malloc(strlen(pgr)+1);
     strcpy(res,pgr);
     return res;
   }
@@ -104,7 +109,7 @@ char *kgWhich(char *pgr) {
       j++;
     }
     path[j]='\0';
-    cpt = (char *)malloc(strlen(path+i)+1);
+    cpt = (char *)Malloc(strlen(path+i)+1);
     strcpy(cpt,path+i);
     Dadd(L,cpt);
     i=j+1;
@@ -116,7 +121,7 @@ char *kgWhich(char *pgr) {
     m = kgFileMenu(pt,pgr);
     if(m==NULL) continue;
     if(m[0]==NULL) { free(m);continue;}
-    res = (char *)malloc(strlen(pt)+1+strlen(m[0])+1);
+    res = (char *)Malloc(strlen(pt)+1+strlen(m[0])+1);
     strcpy(res,pt);
     strcat(res,"/");
     strcat(res,m[0]);
@@ -195,7 +200,7 @@ static char *uiSearchFolder(char *Folder,char *Icon) {
            strcpy(buff,Folder);
            strcat(buff,"/");
            strcat(buff,Files[l]);
-           res =(char *)malloc( strlen(buff)+1);
+           res =(char *)Malloc( strlen(buff)+1);
            strcpy(res,buff);
            break;
        }
@@ -253,7 +258,7 @@ char *kgGetIcon(char *pgr,char *theme) {
     if( (m==NULL)) {return NULL;}
     if( (m[0]==NULL)) {kgFreeDouble((void **)m);return NULL;}
     kgFreeDouble((void **)m);
-    res = (char *)malloc(strlen(pgr)+1);
+    res = (char *)Malloc(strlen(pgr)+1);
     strcpy(res,pgr);
     return res;
   }
@@ -269,7 +274,7 @@ char *kgGetIcon(char *pgr,char *theme) {
       j++;
     }
     path[j]='\0';
-    cpt = (char *)malloc(strlen(path+i)+1);
+    cpt = (char *)Malloc(strlen(path+i)+1);
     strcpy(cpt,path+i);
     Dadd(L,cpt);
     i=j+1;
@@ -476,9 +481,9 @@ int  gscanf_o(void *D,void *unknown,...)
     if((*cpt=='F')&&(fln[item]<=1))fln[item]=15;
     if((*cpt=='d')&&(fln[item]<=1))fln[item]=5;
     if(fln[item] < 30 ) fln[item]=30;
-//    field[item]=(char *)malloc(sizeof(char)*fln[item]);
-    field[item]=(char *)malloc(sizeof(char)*500);
-    prompt[item]=(char *)malloc(sizeof(char)*pln[item]+10);
+//    field[item]=(char *)Malloc(sizeof(char)*fln[item]);
+    field[item]=(char *)Malloc(sizeof(char)*500);
+    prompt[item]=(char *)Malloc(sizeof(char)*pln[item]+10);
     code[item]=*cpt;
     item++;
    }
@@ -1087,8 +1092,8 @@ int uiDraw_Dialog(DIALOG *D) {
  i=0;
  while(d[i].t!=NULL) {
      ch =  (d[i].t->code);
-//     printf("ch:%c\n",ch);
-//     fflush(stdout);
+//     fprintf(stderr,"ch:%c\n",ch);
+//     fflush(stderr);
      switch ((int)ch) {
        case 'o': /* progress bar */
          _uiDrawO(D,i);
@@ -2032,7 +2037,8 @@ void uiFreeMemAlloc(DIALOG *D) {
           if(g->dc != NULL) { 
             kgDC *dc;
             dc = (kgDC *)(g->dc);
-            Dfree(dc->Fontlist);
+//            Dfree(dc->Fontlist);
+            Dempty(dc->Fontlist);
             Free(g->dc);
           }
           if(g->wc != NULL) Free(g->wc);
@@ -2160,7 +2166,11 @@ void uiFreeXpm(void * xpm) {
   char *pt;
   if(xpm==NULL) return;
   pt = (char *)xpm;
-  if((pt[0]=='#')&&(pt[1]=='#')) Free(xpm);
+  if((pt[0]=='#')&&(pt[1]=='#')) {Free(xpm);}
+//  else kgFreeImage(xpm);
+// should not; it is user to clean his allocation
+
+
   return;
   
 }
@@ -2240,7 +2250,9 @@ void kgFreeWidget(void *Widget) {
           if(butn != NULL) {
            for(k=0;k<n;k++) {
             if(butn[k].xpmn!= butn[k].xpmp) uiFreeXpm(butn[k].xpmp);
-            if(butn[k].xpmn!= butn[k].xpmh) uiFreeXpm(butn[k].xpmh);
+            if(butn[k].xpmn!= butn[k].xpmh) {
+              if(butn[k].xpmp!= butn[k].xpmh) uiFreeXpm(butn[k].xpmh);
+            }
             uiFreeXpm(butn[k].xpmn);
             butn[k].xpmn=NULL;
             butn[k].xpmp=NULL;
@@ -2302,7 +2314,10 @@ void kgFreeWidget(void *Widget) {
           if(butn != NULL) {
            for(k=0;k<n;k++) {
             if(butn[k].xpmn!= butn[k].xpmp) uiFreeXpm(butn[k].xpmp);
-            if(butn[k].xpmn!= butn[k].xpmh) uiFreeXpm(butn[k].xpmh);
+//            if(butn[k].xpmn!= butn[k].xpmh) uiFreeXpm(butn[k].xpmh);
+            if(butn[k].xpmn!= butn[k].xpmh) {
+              if(butn[k].xpmp!= butn[k].xpmh) uiFreeXpm(butn[k].xpmh);
+            }
             uiFreeXpm(butn[k].xpmn);
             butn[k].xpmn=NULL;
             butn[k].xpmp=NULL;
@@ -2559,7 +2574,9 @@ void uiFreeWidgetMem(DIALOG *D) {
           if(butn != NULL) {
           for(k=0;k<n;k++) {
             if(butn[k].xpmn!= butn[k].xpmp) uiFreeXpm(butn[k].xpmp);
-            if(butn[k].xpmn!= butn[k].xpmh) uiFreeXpm(butn[k].xpmh);
+            if(butn[k].xpmn!= butn[k].xpmh) {
+              if(butn[k].xpmp!= butn[k].xpmh) uiFreeXpm(butn[k].xpmh);
+            }
             uiFreeXpm(butn[k].xpmn);
             butn[k].xpmn=NULL;
             butn[k].xpmp=NULL;
@@ -2617,7 +2634,9 @@ void uiFreeWidgetMem(DIALOG *D) {
           if(butn != NULL) {
           for(k=0;k<n;k++) {
             if(butn[k].xpmn!= butn[k].xpmp) uiFreeXpm(butn[k].xpmp);
-            if(butn[k].xpmn!= butn[k].xpmh) uiFreeXpm(butn[k].xpmh);
+            if(butn[k].xpmn!= butn[k].xpmh) {
+              if(butn[k].xpmp!= butn[k].xpmh) uiFreeXpm(butn[k].xpmh);
+            }
             uiFreeXpm(butn[k].xpmn);
             butn[k].xpmn=NULL;
             butn[k].xpmp=NULL;
@@ -2712,7 +2731,7 @@ void uiFreeWidgetMem(DIALOG *D) {
          {
            DIX *w;
            w = d[i].x;
-           if(D->VerId==1401010200) {
+           if((D->VerId==1401010200)||(D->VerId==2107030000)) {
              kgFreeDouble((void **)(w->pt));
              w->pt=NULL;
            }
@@ -2724,7 +2743,7 @@ void uiFreeWidgetMem(DIALOG *D) {
          {
            DIY *w;
            w = d[i].y;
-           if(D->VerId==1401010200) {
+           if((D->VerId==1401010200)||(D->VerId==2107030000)) {
              kgFreeDouble((void **)(w->pt));
              w->pt=NULL;
            }
@@ -4558,14 +4577,14 @@ void kgInitUi(void *Tmp) {
 void *kgUiFromWindow(void *Dsp,void * Win,void * cmap) {
    DIALOG *D;
    kgWC *wc;
-   D=(DIALOG *)malloc(sizeof(DIALOG));
+   D=(DIALOG *)Malloc(sizeof(DIALOG));
    kgInitUi(D);
-   wc= (kgWC *)malloc(sizeof(kgWC));
+   wc= (kgWC *)Malloc(sizeof(kgWC));
    D->wc=wc;
    wc->Dsp=(Display *)Dsp;
    wc->Win=(Window)Win;
    wc->Cmap=(Colormap)cmap;
-   uiMakeFontlist();
+//   uiMakeFontlist();
    return (void *)D;
 }
 void kgFreeUifromWindow(void *D) {
@@ -4589,6 +4608,7 @@ void kgCleanUi(void *tmp){
  if(Grp != NULL) {
    Resetlink(Grp);
    while ( (pt=( WIDGETGRP *)Getrecord(Grp))!= NULL) {
+     if(pt->CleanupGrp != NULL) pt->CleanupGrp(D);
      Dfree((Dlink *)pt->wlist);
      if(pt->arg != NULL) kgFreeDouble(pt->arg);
      pt->arg = NULL;
@@ -4606,6 +4626,13 @@ void kgCleanUi(void *tmp){
     case 1401010200:
        if(D->Cleanupfun != NULL) D->Cleanupfun(D);
        uiFreeWidgetMem(D);
+       kgFreeDouble((void **)(D->d));
+       D->d =  NULL;
+       break;
+    case 2107030000:
+       if(D->Cleanupfun != NULL) D->Cleanupfun(D);
+       uiFreeWidgetMem(D);
+       Free((D->Kbrd));
        kgFreeDouble((void **)(D->d));
        D->d =  NULL;
        break;
@@ -4627,7 +4654,7 @@ int kgOpenGrp(void *Tmp) {
  Dlink *Gpt;
  WIDGETGRP *pt=NULL;
  int gid=0;
- pt = (WIDGETGRP *)malloc(sizeof(WIDGETGRP));
+ pt = (WIDGETGRP *)Malloc(sizeof(WIDGETGRP));
  Grp = (Dlink *)D->GrpList;
  if(Grp==NULL){
    Grp=Dopen();
@@ -4637,6 +4664,7 @@ int kgOpenGrp(void *Tmp) {
  pt->wlist =(void *)Gpt;
  pt->arg = NULL;
  pt->hide=0;
+ pt->CleanupGrp = NULL;
  Dappend(Grp,pt);
  gid = Dcount(Grp);
 // printf("Dcount= %d\n",gid);
@@ -4659,7 +4687,7 @@ int kgAddtoGrp_o(void *tmp,int grpid,int WidgetNo) {
  Dposition(Grp,grpid);
  pt = (WIDGETGRP  *)Getrecord(Grp);
  Gpt = (Dlink *)pt->wlist;
- Widget=(int *)malloc(sizeof(int));
+ Widget=(int *)Malloc(sizeof(int));
  *Widget = WidgetNo;
  Dappend(Gpt,Widget);
  return 1;
@@ -4681,6 +4709,24 @@ int kgAddtoGrp(void *tmp,int grpid,void * Widget) {
  pt = (WIDGETGRP  *)Getrecord(Grp);
  Gpt = (Dlink *)pt->wlist;
  Dappend(Gpt,Widget);
+ return 1;
+}
+int kgSetGrpCleanup(void *tmp,int grpid,int (*Cleanup)(void *)) {
+ DIALOG *D;
+ D = (DIALOG *) tmp;
+ Dlink *Grp;
+ Dlink *Gpt;
+ WIDGETGRP *pt=NULL;
+ Grp = (Dlink *)D->GrpList;
+ if(Grp==NULL){
+   return 0;
+ }
+ if(Dcount(Grp) < grpid ) return 0;
+ if(grpid < 1) return 0;
+ Resetlink(Grp);
+ Dposition(Grp,grpid);
+ pt = (WIDGETGRP  *)Getrecord(Grp);
+ pt->CleanupGrp = Cleanup;
  return 1;
 }
 WIDGETGRP * kgGetWidgetGrp(void *tmp,int grpid) {
@@ -4774,9 +4820,10 @@ int kgUi(DIALOG *D) {
    D->tmpdir = ui_mktmpdir();
    D->df=0;
    pthread_mutex_init(&(D->Lock),NULL);
-   uiMakeFontlist();
-   uiInitGm();
+//   uiMakeFontlist();
+   kgInitGm();
    D->ThInfo = OpenThreads(getCores());
+//   D->ThInfo = OpenThreads(1);
    if((D->Newwin==1)||(D->parent==NULL)) {
       D->Newwin=1;
       D->bkup=0;
@@ -4852,6 +4899,7 @@ again:
 //   if(D->controls>0){OK=0; kbevent = kgGetEvent(Parent);} // skipping one event to clean
    if(D->controls>0){OK=0; kgSkipEvents(D);} // skipping one event to clean
    D->CurWid =i;
+   WaitThreads( D->ThInfo);
    pthread_mutex_lock(&(D->Lock));
    while(OK<1){
     if(D->KILL==1000) {OK=1002;break;}
@@ -5007,7 +5055,7 @@ again:
      ui_cleandir(D->tmpdir);
      kgCheckAndRemoveParent(D->tmpdir);
      normal();
-     printf("WRONG DATA ENTRY.. JOB CANCELLED\n");
+     fprintf(stderr,"WRONG DATA ENTRY.. JOB CANCELLED\n");
      exit(0);
     }
    }
@@ -5016,8 +5064,8 @@ again:
      kgDisableSelection(D);
      if(!WC(D)->FullScreen) {
        pthread_cancel(WC(D)->Pth);
-//       printf("Joining thread\n");
-//       fflush(stdout);
+//       fprintf(stderr,"Joining thread\n");
+//       fflush(stderr);
        pthread_join(WC(D)->Pth,NULL);
      }
      Dempty(WC(D)->Clip);
@@ -5034,6 +5082,7 @@ again:
    ui_cleandir(D->tmpdir);
    kgCheckAndRemoveParent(D->tmpdir);
    Free(D->tmpdir);
+
    CloseThreads(D->ThInfo);
 //   fprintf(stderr,"Closed Ui\n");
    return(ret);
@@ -5147,7 +5196,7 @@ int _filter_string(char *s, char *fltr){
      return 0;
   }
   else{
-    buf= (char *)malloc(strlen(fltr)+1);
+    buf= (char *)Malloc(strlen(fltr)+1);
 //    strcpy(buf,fltr);
     i=0;
     while(1) {
@@ -5406,7 +5455,7 @@ char * ui_mktmpdir_o(void) {
     else closedir(dp);
     sprintf(dirname,"%-s/%-d",dir,entry);
     mkdir(dirname,0700);
-    pt = (char *)malloc(strlen(dirname)+1);
+    pt = (char *)Malloc(strlen(dirname)+1);
     strcpy(pt,dirname);
   }
   entry++;
@@ -5430,7 +5479,7 @@ char * ui_mktmpdir(void) {
       mkdir(dirname,0700);
     }
     else closedir(dp);
-    pt = (char *)malloc(strlen(dirname)+1);
+    pt = (char *)Malloc(strlen(dirname)+1);
     strcpy(pt,dirname);
   entry++;
 //  printf("Tmpdir:%s\n",pt);
@@ -8807,7 +8856,7 @@ void *kgGetProcessedImage(void *timg,int Bsize,float rfac,
   pt = (char *)timg;
   if((pt[0]=='#')&&(pt[1]=='#')&&(pt[2]!='/')) {
     pt= kgSearchIcon(pt+2);
-    printf("pt=%s\n",pt);
+//    printf("pt=%s\n",pt);
     if(pt != NULL) {
        img = (GMIMG *)kgGetImage(pt);
        free(pt);
@@ -8879,4 +8928,7 @@ void *kgGetProcessedImage(void *timg,int Bsize,float rfac,
     kgFreeImage(img);
   }
   return rzimg;
+}
+int kgGetVersion(void) {
+   return VER;
 }

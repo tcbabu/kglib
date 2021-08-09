@@ -383,6 +383,7 @@ int Options( void *parent,void **v,void *pt) {
   d[9].t = (DIT *)malloc(sizeof(DIM));
   *d[9].m = m9;
   d[10].t = NULL;
+  D.VerId =1401010000;
   kgInitUi(&D);
   D.d = d;
   D.bkup = 1; /* set to 1 for backup */

@@ -2,7 +2,8 @@ include config.mak
 #MFLAGS	= -O -mcpu=pentium -march=pentium
 #OFLAGS	= -O  -mpentium 
 
-CC	= cc    -msse3 -O3 -DUNIX -pthread $(X11_CFLAFS)  $(CFLAGS)
+CC	= cc  -g  -msse3 -O3 -DUNIX -pthread $(X11_CFLAFS)  $(CFLAGS)
+#CC	= cc    -msse3 -O3 -DUNIX -pthread $(X11_CFLAFS)  $(CFLAGS)
 #CC	= cc    -msse3 -g -DUNIX  $(CFLAGS)
 all	: libkulina.a 
 libkulina.a  : kgl.o kgui.o kgui1.o kgui2.o lowlib.o gkernel.o file_pro.o dlink.o printerdia.o shade.o PngImage.o gminterface.o makeimg.o drawimg.o  ogl.o threadtool.o hlib.o keybrd.o keybrdCallbacks.o skeybrd.o skeybrdCallbacks.o keybrd0.o keybrd0Callbacks.o

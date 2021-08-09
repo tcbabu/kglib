@@ -4,6 +4,7 @@ int RED=120,GREEN=120,BLUE=120;
 int Btype=5;
 static float  Rfac=0.2 ;
 
+int kgShowKeybrd4(void *Tmp);
 int kgShowKeybrd1(void *Tmp);
 int kgShowKeybrd0(void *Tmp);
 static char BUFF[100];
@@ -1486,6 +1487,31 @@ int kgShowKeybrd3(void *Tmp) {
    Kbrd->Vis = 1;
    return Kbrd->GrpId;
 }
+int kgShowKeybrd4(void *Tmp) {
+   DIALOG *D;
+   KEYBRD *Kbrd;
+   D = (DIALOG *)Tmp;
+   Kbrd = (KEYBRD *)D->Kbrd;
+   if(Kbrd->Vis) return 0;
+    kgSetGrpVisibility(D,Kbrd->grp2,0);
+    kgSetGrpVisibility(D,Kbrd->cgrp,0);
+    kgSetGrpVisibility(D,Kbrd->ongrp,0);
+    kgSetGrpVisibility(D,Kbrd->grp1,1);
+    kgSetGrpVisibility(D,Kbrd->grp3,1);
+    kgSetGrpVisibility(D,Kbrd->sgrp,1);
+    kgSetGrpVisibility(D,Kbrd->offgrp,1);
+   Kbrd->ShiftPress=0;
+   Kbrd->CapsLock=0;
+   if(D->wc != NULL) {
+     kgUpdateGrp(D,Kbrd->grp1);
+     kgUpdateGrp(D,Kbrd->grp3);
+     kgUpdateGrp(D,Kbrd->sgrp);
+     kgUpdateGrp(D,Kbrd->offgrp);
+     kgUpdateOn(D);
+   }
+   Kbrd->Vis = 1;
+   return Kbrd->GrpId;
+}
 int kgShowKeybrd(void *Tmp) {
    DIALOG *D;
    KEYBRD *Kbrd;
@@ -1498,13 +1524,17 @@ int kgShowKeybrd(void *Tmp) {
       break;
      case 1:
      case 2:
-     default:
       kgShowKeybrd1(Tmp);
       break;
      case 3:
       kgShowKeybrd3(Tmp);
       break;
+     default:
+//      kgShowKeybrd0(Tmp);
+      kgShowKeybrd4(Tmp);
+      break;
    }
+   Kbrd->Vis =1;
    return Kbrd->GrpId;
 }
 
@@ -1529,8 +1559,6 @@ int kgMakeKeybrd(void *Tmp,int Type,int Vis,int Btype,int Bfont,int Charclr,int 
     switch(Type) {
        case 0:
        default:
-       return kgMakeKeybrd0((DIALOG *)Tmp,xo,yo,Vis,Btype,Bfont,
-                             Charclr,Butclr,Fillclr,Rfac,Trans);
        break;
        case 1:
        return kgMakeKeybrd1((DIALOG *)Tmp,xo,yo,Vis,Btype,Bfont,
@@ -1571,7 +1599,7 @@ int keybrd( void *parent,void **v,void *pt) {
   KEYBRD *Kbrd;
   DIALOG D;
   DIA *d=NULL;
-  D.VerId=1401010200;
+  D.VerId=2107030000;
   Kbrd = (KEYBRD *)malloc(sizeof(KEYBRD));
   D.Kbrd = Kbrd;
   kgInitUi(&D);

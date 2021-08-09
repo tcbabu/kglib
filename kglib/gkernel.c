@@ -135,6 +135,8 @@ static  XFontStruct *fontstruct;
 #define Space            XK_KP_Space
 #define Capslock         XK_Caps_Lock
 #define Shiftlock         XK_Shift_Lock
+#define Control           XK_Control_L
+#define Alt           XK_Alt_L
 
 union kbinp { short kbint; char kbc[2];} kb;
 int NCLRS=1024;
@@ -626,54 +628,29 @@ int kgSendKeyEvent(void *Tmp,int ch) {
   XKeyEvent *k;
   DIALOG *D;
   kgWC *wc;
-  e = (XEvent *)malloc(sizeof(XEvent));
+  int status;
+  e = (XEvent *)Malloc(sizeof(XEvent));
   k = (XKeyEvent *)e;
   D = (DIALOG *)Tmp;
   wc = WC(D);
-  int status;
   k->type=KeyRelease;
   k->send_event=1;
   k->display=wc->Dsp;
   k->window=wc->Win;
   k->root = DefaultRootWindow(wc->Dsp);
   k->subwindow = wc->Win;
-  k->state = KeyRelease;
+  k->state = 0;
   code = Revscan_code[ch];
   if(code < 0) {
      fprintf(stderr,"code < 0 %c %x\n",ch,ch);
      return 0;
   }
-//  if( (code>128)&&(code<223)) {
-  if(code >255) { // dummy not needed now
-    code -=128;
-    k->same_screen = 1;
-    k->keycode = Revscan_code[ShiftKey];
-    k->type=KeyPress;
-    k->state = KeyPress;
-//    status= XSendEvent(wc->Dsp,wc->Win,False,(KeyPressMask|KeyReleaseMask),e);
-    status= XSendEvent(wc->Dsp,wc->Win,False,0,e);
-    k->keycode = code;
-    k->type=KeyPress;
-    k->state = KeyPress;
-//    status= XSendEvent(wc->Dsp,wc->Win,False,(KeyPressMask|KeyReleaseMask),e);
-    status= XSendEvent(wc->Dsp,wc->Win,False,0,e);
-    k->type=KeyRelease;
-    k->state = KeyRelease;
-    status= XSendEvent(wc->Dsp,InputFocus,False,0,e);
-    k->keycode = Revscan_code[ShiftKey];
-//    status= XSendEvent(wc->Dsp,wc->Win,False,(KeyPressMask|KeyReleaseMask),e);
-    status= XSendEvent(wc->Dsp,wc->Win,False,0,e);
-  }
-  else {
+  {
     k->keycode = code;
     k->same_screen = 1;
-//    status= XSendEvent(wc->Dsp,wc->Win,False,(KeyPressMask|KeyReleaseMask),e);
     k->type=KeyPress;
-    k->state = KeyPress;
     status= XSendEvent(wc->Dsp,wc->Win,False,0,e);
-//    status= XSendEvent(wc->Dsp,InputFocus,False,0,e);
     k->type=KeyRelease;
-    k->state = KeyRelease;
     status= XSendEvent(wc->Dsp,wc->Win,False,0,e);
   }
   
@@ -732,14 +709,51 @@ int kgSendEnterKeyEvent(void *Tmp) {
 int kgSendLinefeedKeyEvent(void *Tmp) {
   return kgSendKeyEvent(Tmp,LinefeedKey);
 }
+int kgSendControlKeyEvent(void *Tmp,int ch) {
+  int code;
+  if(ch >='a') ch = (ch-'a'+'A');
+  if( (ch < 'A') || (ch>'_')) return 0;
+  XEvent *e;
+  XKeyEvent *k;
+  DIALOG *D;
+  kgWC *wc;
+  e = (XEvent *)Malloc(sizeof(XEvent));
+  k = (XKeyEvent *)e;
+  D = (DIALOG *)Tmp;
+  wc = WC(D);
+  int status;
+  k->state = ControlMask;
+  k->type=KeyRelease;
+  k->send_event=1;
+  k->display=wc->Dsp;
+  k->window=wc->Win;
+  k->root = DefaultRootWindow(wc->Dsp);
+  k->subwindow = wc->Win;
+  k->state = KeyRelease;
+  code = Revscan_code[ch];
+  if(code < 0) {
+     fprintf(stderr,"code < 0 %c %x\n",ch,ch);
+     return 0;
+  }
+  {
+    k->keycode = code;
+    k->same_screen = 1;
+    k->type=KeyPress;
+    status= XSendEvent(wc->Dsp,wc->Win,False,0,e);
+    k->type=KeyRelease;
+    status= XSendEvent(wc->Dsp,wc->Win,False,0,e);
+  }
+  
+  free(e);
+}
 int kgSendKeyToWindow(void *Tmp,void *wtmp,int ch) {
   int code;
   XEvent *e;
   XKeyEvent *k;
   DIALOG *D;
   kgWC *wc;
-  Window win,mywin;
-  e = (XEvent *)malloc(sizeof(XEvent));
+  Window win,mywin,root;
+  e = (XEvent *)Malloc(sizeof(XEvent));
   k = (XKeyEvent *)e;
   D = (DIALOG *)Tmp;
   wc = WC(D);
@@ -750,6 +764,7 @@ int kgSendKeyToWindow(void *Tmp,void *wtmp,int ch) {
   k->type=KeyRelease;
   k->send_event=True;
   k->display=wc->Dsp;
+  k->window= root;
   k->window= win;
   k->root = DefaultRootWindow(wc->Dsp);
   k->subwindow =  mywin;
@@ -759,32 +774,15 @@ int kgSendKeyToWindow(void *Tmp,void *wtmp,int ch) {
      fprintf(stderr,"code < 0 %c %x\n",ch,ch);
      return 0;
   }
-//  fprintf(stderr,"\nCode: %d %c \n",code,ch);
-  if( (code>=255) ) {
-    code -=128;
-    k->same_screen = 1;
-    k->keycode = Revscan_code[ShiftKey];
-    k->type=KeyPress;
-    k->state = state;
-    status= XSendEvent(wc->Dsp,win,True,0,e);
-    k->keycode = code;
-    status= XSendEvent(wc->Dsp,win,True,0,e);
-    k->type=KeyRelease;
-    k->state = state;
-    status= XSendEvent(wc->Dsp,win,True,0,e);
-    k->keycode = Revscan_code[ShiftKey];
-    status= XSendEvent(wc->Dsp,win,True,0,e);
-    printf("Send Shift code %d\n",code);
-  }
-  else {
+  {
     k->keycode = code;
     k->same_screen = 1;
     k->type=KeyPress;
     k->state = state;
-    status= XSendEvent(wc->Dsp,win,True,0,e);
+    status= XSendEvent(wc->Dsp,win,False,KeyPress|KeyRelease,e);
     k->type=KeyRelease;
     k->state = state;
-    status= XSendEvent(wc->Dsp,win,True,0,e);
+    status= XSendEvent(wc->Dsp,win,False,KeyPress|KeyRelease,e);
   }
   
   free(e);
@@ -841,6 +839,46 @@ int kgSendEnterKeyToWindow(void *Tmp,void *win) {
 }
 int kgSendLinefeedKeyToWindow(void *Tmp,void *win) {
   return kgSendKeyToWindow(Tmp,win,LinefeedKey);
+}
+int kgSendControlKeyToWindow(void *Tmp,void *wtmp,int ch) {
+  int code;
+  kgSetInputFocus(Tmp,wtmp);
+  if(ch >= 'a') ch = (ch-'a'+'A');
+  if( (ch < 'A') || (ch>'_')){
+      fprintf(stderr,"Wrong Control char: %c:%d\n",ch,ch);
+      return 0;
+  }
+  XEvent *e;
+  XKeyEvent *k;
+  DIALOG *D;
+  kgWC *wc;
+  Window win,mywin,root;
+  e = (XEvent *)Malloc(sizeof(XEvent));
+  k = (XKeyEvent *)e;
+  D = (DIALOG *)Tmp;
+  wc = WC(D);
+  int status;
+  int state = ControlMask;
+  mywin = wc->Win;
+  win = *((Window *)wtmp);
+  k->type=KeyRelease;
+  k->send_event=True;
+  k->display=wc->Dsp;
+  k->window= root;
+  k->window= win;
+  k->root = DefaultRootWindow(wc->Dsp);
+  k->subwindow =  mywin;
+  k->state = state;
+  code = Revscan_code[ch];
+    k->same_screen = 1;
+    k->type=KeyPress;
+    k->state = state;
+    k->keycode =  code;
+    status= XSendEvent(wc->Dsp,win,False,KeyPress|KeyRelease,e);
+    k->type=KeyRelease;
+    status= XSendEvent(wc->Dsp,win,False,KeyPress|KeyRelease,e);
+  free(e);
+  return status;
 }
 void kgPutBackEvent(void *tmp,XEvent *event) {
   kgWC *wc;
@@ -947,13 +985,40 @@ void kgDropFocus(void *tmp) {
 }
 
 void * kgGetInputFocus (void *Tmp) {
-  Window *win;
+  static Window *owin=NULL;
+  static Window *mywin=NULL;
+  void *tpt;
+  Window Cw;
   DIALOG *D;
-  D = (DIALOG *)Tmp;
+  Display *Dsp;
   int ret;
-  win = (Window *) malloc(sizeof(Window));
-  XGetInputFocus((Display *)WC(D)->Dsp,win,&ret);
-  return win;
+  if(owin==NULL)  owin = (Window *) Malloc(sizeof(Window));
+  if(mywin==NULL)  mywin = (Window *) Malloc(sizeof(Window));
+  if(Tmp != NULL) {
+    D = (DIALOG *)Tmp;
+    Dsp = (Display *)WC(D)->Dsp;
+  }
+  else {
+    Dsp = XOpenDisplay(NULL);
+    if(Dsp == NULL) {
+     fprintf(stderr,"Failed to Open Display\n");
+     return NULL;
+    }
+  }
+  XGetInputFocus(Dsp,&Cw,&ret);
+  if(Tmp == NULL)  {
+    XCloseDisplay(Dsp);
+    memcpy(owin,&Cw,sizeof(Window));
+    return owin;
+  }
+  if (Cw == (Window)(WC(D)->Win)) {
+    memcpy(mywin,&Cw,sizeof(Window));
+    return mywin;
+  }
+  else {
+    memcpy(owin,&Cw,sizeof(Window));
+    return owin;
+  }
 }
 int kgSetInputFocus(void *Tmp,void *wtmp) {
   Window *win;
@@ -971,7 +1036,7 @@ int kgCheckMyWindow(void *Tmp,void *wtmp) {
   DIALOG *D;
   D = (DIALOG *)Tmp;
   win = (Window *)wtmp;
-  if (*win == (Window)WC(D)->Win) return 1;
+  if (*win == (Window)(WC(D)->Win)) return 1;
   else return 0;
 }
 
@@ -1137,7 +1202,7 @@ void kgSubWindow(void *Gtmp) {
   xswa.override_redirect=False;
   Win= XCreateWindow(Dsp,Parent,xpos,ypos,xres,yres,0,Dpth,InputOutput,Vis,
        (CWBackPixel|CWBackingStore|CWSaveUnder|CWColormap|CWBitGravity),&xswa);
-  sWin= (void *)malloc(sizeof(Window));
+  sWin= (void *)Malloc(sizeof(Window));
   fprintf(stderr,"glWindow= %ld\n",Win);
   *sWin =Win;
   G->glWindow= (void *)sWin;
@@ -1246,7 +1311,7 @@ void  *kgCreateSubWindow (void *Tmp) {
   hints.flags = 2;   // Specify that we're changing the window decorations.
   hints.decorations = dec;  // 0 (false) means that window decorations should go bye-bye.
   
-  wc = (kgWC *)malloc(sizeof(kgWC));
+  wc = (kgWC *)Malloc(sizeof(kgWC));
   PARWC= (kgWC *)(Parent->wc);
   D->wc= wc;
 //  XInitThreads(); // created problem for True Color
@@ -1509,7 +1574,7 @@ void  *kgCreateSubWindow (void *Tmp) {
   wc->SBlist=Dopen();
   wc->TLIST = Dopen();
   wc->ExposeWin =0;
-  wc->kgcolors=(kgColor *) malloc(sizeof(kgColor)*1024);
+  wc->kgcolors=(kgColor *) Malloc(sizeof(kgColor)*1024);
   wc->GuiFont=23;
   wc->GuiFontSize=8;
   kgcolors = (kgColor *) wc->kgcolors;
@@ -1548,7 +1613,7 @@ void * kgGetGeometry(void *Tmp,int *xo,int *yo,int *l,int *h,int *borwidth) {
   wc = WC(D);
   Window *Rwin;
   int bwidth,depth;
-  Rwin = (Window *)malloc(sizeof(Window));
+  Rwin = (Window *)Malloc(sizeof(Window));
 //  XGetGeometry(wc->Dsp,wc->Win,Rwin,xo,yo,l,h,borwidth,&depth);
   XGetWindowAttributes(wc->Dsp,wc->Win,&xwa);
   *xo = xwa.x;
@@ -1642,7 +1707,7 @@ void  *kgCreateWindow (void *Tmp) {
   NoWinMngr=D->NoWinMngr;
   hints.flags = 2;   // Specify that we're changing the window decorations.
   hints.decorations = dec;  // 0 (false) means that window decorations should go bye-bye.
-  wc = (kgWC *)malloc(sizeof(kgWC));
+  wc = (kgWC *)Malloc(sizeof(kgWC));
   D->wc= wc;
 //  XInitThreads(); // created problem for True Color
   XInitThreads();
@@ -1929,7 +1994,7 @@ if(NoWinMngr!=1) {
   wc->SBlist=Dopen();
   wc->TLIST = Dopen();
   wc->ExposeWin =0;
-  wc->kgcolors=(kgColor *) malloc(sizeof(kgColor)*1024);
+  wc->kgcolors=(kgColor *) Malloc(sizeof(kgColor)*1024);
   wc->GuiFont=23;
   wc->GuiFontSize=8;
   kgcolors = (kgColor *) wc->kgcolors;
@@ -2023,7 +2088,7 @@ void  *ui_create_window(int xpos,int ypos,int xres,int yres,char *title,int dec,
   XColor c15,c0;
   kgColor *kgcolors;
 //  XInitThreads(); // created problem for True Color
-  wc = (kgWC *)malloc(sizeof(kgWC));
+  wc = (kgWC *)Malloc(sizeof(kgWC));
   XInitThreads();
   Dsp = XOpenDisplay(NULL);
   if(Dsp == NULL) {printf(" Error: in opening Display ..\n");exit(0);};
@@ -2342,7 +2407,7 @@ void  *ui_create_window(int xpos,int ypos,int xres,int yres,char *title,int dec,
   wc->SBlist=Dopen();
   wc->TLIST = Dopen();
   wc->ExposeWin =0;
-  wc->kgcolors=(kgColor *) malloc(sizeof(kgColor)*1024);
+  wc->kgcolors=(kgColor *) Malloc(sizeof(kgColor)*1024);
   wc->GuiFont=23;
   wc->GuiFontSize=8;
   kgcolors = (kgColor *) wc->kgcolors;
@@ -2901,7 +2966,7 @@ void uiDraw_XString(DIALOG *D,int x,int y,char *str,int gap){
    if(ln <=0 ) return;
    while(str[ln-1]<= ' ') ln--;
    if(ln <=0 ) return;
-   item = (XTextItem *)malloc(sizeof(XTextItem)*ln);
+   item = (XTextItem *)Malloc(sizeof(XTextItem)*ln);
    if(item==NULL) {
      printf("Error: IN MALLOC....\n");
      exit(1);
@@ -3216,22 +3281,16 @@ void get_scan_code(Display *Dsp) {
   XDisplayKeycodes(Dsp,&K_min,&K_max);
   keysym = XGetKeyboardMapping(Dsp,K_min,K_max-K_min+1,&code);
   for(i=0;i<256;i++) Revscan_code[i]=-1;
-  k=0;
-  for(i=192;i<(256);i++) {
-    keysym[k+192*code]=keysym[k+1];
-    k=k+code;
-  }
-  XChangeKeyboardMapping(Dsp,K_min,code,keysym,K_max-K_min+1);
 #if 0
   printf("K_min : %d K_max : %d,%d\n",K_min,K_max,code);
 
-//  for(i=K_min;i<=K_max;i++) {
-//  for(i=K_min;i<(K_min+128);i++) {
+  for(i=K_min;i<=K_max;i++) {
+  }
 //TCB 07
       XModifierKeymap *xm;
       KeyCode *mpt;
       xm = XGetModifierMapping(Dsp);
-      xm->max_keypermod = 1;
+//      xm->max_keypermod = 1; //should not be done
       XSetModifierMapping(Dsp,xm);
       free(xm);
       xm = XGetModifierMapping(Dsp);
@@ -3244,17 +3303,47 @@ void get_scan_code(Display *Dsp) {
                
         k += 8;
       }
+#endif
+#if 0
+  printf("K_min : %d K_max : %d,%d\n",K_min,K_max,code);
+  k=(K_min-1)*code;
   k=0;
-  for(i=K_min;i<(256);i++) {
-    printf("Kesym:%d  %d %c %c\n",i,k,keysym[k],keysym[k+1]);
-    k+=7;
+  for(i=K_min;i<K_max;i++) {
+    printf("Kesym:%d  %d %x:%c %x:%c %x:%c\n",i,k,keysym[k],keysym[k],keysym[k+1],keysym[k+1],keysym[k+2],keysym[k+2]);
+    k+=code;
+  }
+#endif
+// For Shift characters from 161 onwards
+  k=0;
+  for(i=K_min;i<(K_max-160);i++) {
+    keysym[k+160*code]=keysym[k+1];
+    k=k+code;
+  }
+// For control charactres Cntl-A to Cntl-_
+// Stored from 224 onwards
+#if 0  // Not Needed
+  k=0;
+  for(i=K_min;i<(K_max-224);i++) {
+    keysym[k+224*code]=0x0000+((i-K_min)+1);
+//    keysym[k+224*code]=0xff00|((i-K_min)+'A');
+//    keysym[k+224*code]=0x1008ff00+(i-K_min)+1;
+    k=k+code;
+  }
+#endif
+  XChangeKeyboardMapping(Dsp,K_min,code,keysym,K_max-K_min+1);
+#if 0
+  printf("K_min : %d K_max : %d,%d\n",K_min,K_max,code);
+  k=(K_min-1)*code;
+  k=0;
+  for(i=K_min;i<K_max;i++) {
+    printf("Kesym:%d  %d %x:%c %x:%c %x:%c\n",i,k,keysym[k],keysym[k],keysym[k+1],keysym[k+1],keysym[k+2],keysym[k+2]);
+    k+=code;
   }
 #endif
   k=0;
-//  for(i=K_min;i<(K_min+64);i++) {
-  for(i=K_min;i<(256);i++) {
+//  for(i=K_min;i<(256);i++) {
+  for(i=K_min;i<(K_max);i++) {
     ch = keysym[k];
-    
     k+=code;
     if(ch != NoSymbol )Scan_code[i]= ch;
     if(ch != NoSymbol) switch(ch) {
@@ -3273,6 +3362,14 @@ void get_scan_code(Display *Dsp) {
       case Escape:
         if(Revscan_code[EscapeKey] < 0)
         Revscan_code[EscapeKey]=i;
+        break;
+      case Control:
+        if(Revscan_code[CntlKey] < 0)
+        Revscan_code[CntlKey]=i;
+        break;
+      case Alt:
+        if(Revscan_code[AltKey] < 0)
+        Revscan_code[AltKey]=i;
         break;
       case Tab:
         if(Revscan_code[TabKey] < 0)
@@ -3357,7 +3454,8 @@ void get_scan_code(Display *Dsp) {
     }
   }
   k=0;
-  for(i=K_min;i<(256);i++) {
+//  for(i=K_min;i<(256);i++) {
+  for(i=K_min;i<(K_max);i++) {
     ch1 = keysym[k+1];
     k +=code;
     if(ch1 !=  NoSymbol) {
@@ -3454,15 +3552,19 @@ void get_scan_code(Display *Dsp) {
 #endif
     }
   }
+// For Control Characters
+  for(i=224;i<(K_max-K_min);i++) {
+    Revscan_code[i]=i+K_min;
+  }
 //TCB 07
 #if 0
-  for(i=0;i<128;i++) {
+  for(i=0;i<K_max;i++) {
     k = Revscan_code[i];
     if(k==-1) continue;
     ch = ' ';
-    if(k>=128) ch= Scan_sh_code[k-128];
-    else  ch= Scan_code[k];
-    printf("%d: %d %c \n",i,k,ch);
+//    if(k>=128) ch= Scan_sh_code[k-128];
+      ch= Scan_code[k];
+    printf("%d: %d %x:%c \n",i,k,ch,ch);
   }
 #endif
   XFree(keysym);
@@ -3732,7 +3834,7 @@ void kgPushBackEvent(DIALOG *D) {
   wc=WC(D);
   XEvent *e;
   if(wc->eventback.type < 0) return;
-  e =(XEvent *)malloc(sizeof(XEvent));
+  e =(XEvent *)Malloc(sizeof(XEvent));
   *e= wc->eventback;
   XPutBackEvent(wc->Dsp,e);
   wc->eventback.type=-100;
@@ -4795,7 +4897,7 @@ char * _uiGetFileImageName(DIALOG *D,char *flname) {
           strcat(sharedfilename,flname);
           if ((infile = fopen(sharedfilename, "rb"))){
             fclose(infile);
-            fullname = (char *)malloc(strlen(sharedfilename)+1);
+            fullname = (char *)Malloc(strlen(sharedfilename)+1);
             strcpy(fullname,sharedfilename);
             break;
           }
@@ -4804,7 +4906,7 @@ char * _uiGetFileImageName(DIALOG *D,char *flname) {
   }
   else {
     fclose(infile);
-    fullname = (char *)malloc(strlen(sharedfilename)+1);
+    fullname = (char *)Malloc(strlen(sharedfilename)+1);
     strcpy(fullname,sharedfilename);
   }
   return fullname;
@@ -4872,7 +4974,7 @@ void * ReadJpegFile (char * flname) {
         }
       }
   }
-  img = (JPGIMG *)malloc(sizeof(JPGIMG));
+  img = (JPGIMG *)Malloc(sizeof(JPGIMG));
   strcpy(img->Sign,"JPG");
   img->incode =0;
   cinfo.err = jpeg_std_error(&jerr.pub);
@@ -4892,9 +4994,9 @@ void * ReadJpegFile (char * flname) {
   img->col = cinfo.output_width;
   img->row = cinfo.output_height;
   img->colors = cinfo.output_components;
-  img->matchcol= (int *)malloc(sizeof(int)*img->row*img->col);
+  img->matchcol= (int *)Malloc(sizeof(int)*img->row*img->col);
   j=0;
-  buffer = (char *)malloc(row_stride);
+  buffer = (char *)Malloc(row_stride);
   while (cinfo.output_scanline < cinfo.output_height) {
     (void) jpeg_read_scanlines(&cinfo, (JSAMPARRAY)&buffer, 1);
     pt = img->matchcol+j*img->col;
@@ -5018,7 +5120,7 @@ static short * setpal(Dlink *Tlist) {
     short *palette=NULL;
     int no,k=0,*val;
     no = Dcount(Tlist);
-    palette = (short *)malloc(sizeof(short)*no*3);
+    palette = (short *)Malloc(sizeof(short)*no*3);
     Resetlink(Tlist);
     while ( (val = (int *)Getrecord(Tlist)) != NULL) {
       palette[k]= (((*val)*0x00ff0000)>>16)*65535/255;
@@ -5095,7 +5197,7 @@ static int add_palette(Dlink *Tlist,int val) {
     break;
   }
   if(pt==NULL) {
-    tmp = (int *)malloc(sizeof(int));
+    tmp = (int *)Malloc(sizeof(int));
     *tmp = val;
     Dappend(Tlist,tmp);
   }
@@ -5390,7 +5492,7 @@ void uiFreeImage(void *tmp) {
   return ;
 }
 void kgFreeImage(void *tmp) {
-  uiFreeImage(tmp);
+  if(tmp != NULL) uiFreeImage(tmp);
 }
 
 int uiDataToArea(DIALOG *D,unsigned long *data,int xl,int yl,int w,int h) {
@@ -5504,7 +5606,7 @@ SC_BUF * wc_alloc_scrn_buffer(kgWC *wc) {
     SBlist=Dopen();
     wc->SBlist =SBlist;
   }
-    tmp=(SC_BUF *)malloc(sizeof(SC_BUF));
+    tmp=(SC_BUF *)Malloc(sizeof(SC_BUF));
     Dappend(SBlist,tmp);
   return tmp;
 }
@@ -5516,7 +5618,7 @@ SC_BUF * kg_alloc_scrn_buffer(kgWC *wc) {
     SBlist=Dopen();
     wc->SBlist =SBlist;
   }
-  tmp=(SC_BUF *)malloc(sizeof(SC_BUF));
+  tmp=(SC_BUF *)Malloc(sizeof(SC_BUF));
   Dappend(SBlist,tmp);
   return tmp;
 }
@@ -7029,7 +7131,7 @@ static int mod_table[] = {0, 2, 1};
 void build_decoding_table() {
   int i;
 
-  decoding_table = malloc(256);
+  decoding_table = Malloc(256);
 
   for (i = 0; i < 64; i++)
     decoding_table[(unsigned char) encoding_table[i]] = i;
@@ -7110,7 +7212,7 @@ void * kgGetRootRawImage(int xo,int yo,int wd,int ht ) {
     uiImage = XGetImage(Dsp,Root,0,0,EVGAX,EVGAY,0xffffffff,ZPixmap);
     ximage_rowbytes = uiImage->bytes_per_line;
     Imgdata = (unsigned char *)uiImage->data;
-    Img = (unsigned char *)malloc(ht*wd*3);
+    Img = (unsigned char *)Malloc(ht*wd*3);
     rdest = Img;
     k=0;
     for (i = 0;  i < h;  ++i) {
@@ -7625,7 +7727,7 @@ unsigned char *_uiGetPrimary(void * Tmp) {
 //   XDeleteProperty(wc->Dsp, wc->Win, prop);
    XFlush(wc->Dsp);
    if(buff != NULL) {
-     ret = (unsigned char *)malloc(len+1);
+     ret = (unsigned char *)Malloc(len+1);
      memcpy(ret,buff,len);
 //     printf("len= %d\n",len);
      ret[len]='\0';
@@ -7710,7 +7812,7 @@ unsigned char *_uiGetClipBoard(void * Tmp) {
 //   XDeleteProperty(wc->Dsp, wc->Win, prop);
    XFlush(wc->Dsp);
    if(buff != NULL) {
-     ret = (unsigned char *)malloc(len+1);
+     ret = (unsigned char *)Malloc(len+1);
      memcpy(ret,buff,len);
 //     printf("len= %d\n",len);
      ret[len]='\0';

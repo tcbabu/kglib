@@ -118,6 +118,8 @@ int getStrings( void *parent,void **v,int id) {
   d[0].t = &t0;
   d[1].H = &H1;
   d[2].t = NULL;
+  D.VerId =1401010000;
+  kgInitUi(&D);
   D.d = d;
   D.bkup = 1; /* set to 1 for backup */
   D.bor_type = 4;

@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
+#include <malloc.h>
 #include <ctype.h>
 #include <pthread.h>
 #include <sys/types.h>
@@ -874,6 +875,7 @@ typedef struct _WidgetGroup {
   void *wlist;
   void *arg;
   int hide;
+  int (*CleanupGrp)(void *);
 } WIDGETGRP;
 typedef struct _jpegimg {
   char Sign[4]; // Sign is "JPG"
@@ -913,6 +915,8 @@ typedef struct _gmImage {
   int xoffset,yoffset;
   int bkgrclr;
   float rzfac;
+  void *info;
+  void *exce;
 } GMIMG;
 
 void opntwin(DIALOG *D,int ix,int iy,int chrs,int lines);
@@ -927,11 +931,13 @@ char **fontnames(void);
 
 typedef int (*CALLBACK)(int,int,void *);
 
+int  kgGetVersion(void);
 int  kgUi(DIALOG *D);
 void kgInitUi(void *Tmp);
 void kgCleanUi(void *tmp);
 int  kgOpenGrp(void *Tmp);
 int  kgAddtoGrp(void *tmp,int grpid,void * Widget);
+int  kgSetGrpCleanup(void *tmp,int grpid,int (*Cleanup)(void *));
 int  kgSetGrpVisibility(void *Tmp,int grpid,int val);
 int  kgUpdateGrp(void *Tmp,int grpid);
 int  kgMoveGrp(void *Tmp,int grpid,int x1,int y1);
@@ -1108,6 +1114,8 @@ int kgSendUpKeyEvent(void *Tmp) ;
 int kgSendDownKeyEvent(void *Tmp) ;
 int kgSendEnterKeyEvent(void *Tmp) ;
 int kgSendLinefeedKeyEvent(void *Tmp) ;
+int kgSendControlKeyEvent(void *Tmp,int ch);
+
 int kgSendKeyToWindow(void *Tmp,void *wtmp,int ch);
 int kgSendTabKeyToWindow(void *Tmp,void *win) ;
 int kgSendSpaceKeyToWindow(void *Tmp,void *win) ;
@@ -1126,9 +1134,11 @@ int kgSendUpKeyToWindow(void *Tmp,void *win) ;
 int kgSendDownKeyToWindow(void *Tmp,void *win) ;
 int kgSendEnterKeyToWindow(void *Tmp,void *win) ;
 int kgSendLinefeedKeyToWindow(void *Tmp,void *win) ;
+int kgSendControlKeyToWindow(void *Tmp,void *win,int ch);
 /*
   Image related Calls
 */
+void kgInitGm (void);
 void *kgGetImageCopy(void *D,void *img);
 void *kgGetProcessedImage(void *timg,int Bsize,float rfac,
                          int Btred,int Btgreen,int Btblue);
@@ -1546,6 +1556,20 @@ int kgSetClipbordCallback(void *Tmp,int *(cpCallback)(int,void *));
 int kgSetClipMenu(void *Tmp,char **menu);
 #ifndef D_KEYBRD
 #define D_KEYBRD
+#ifndef D_KBINFO
+#define D_KBINFO
+typedef struct _kb_info {
+ int fillclr,butclr,charclr;
+ int xl,yl,xg,yg;
+ int btype;
+ int font;
+ float rfac,trans;
+ int kbtype;
+ int Bodr;
+ float Brfac;
+} KBINFO;
+int kgInitKbinfo(KBINFO *ki);
+#endif
 typedef struct _keybrd {
   void *D;
   int GrpId;
@@ -1570,12 +1594,19 @@ typedef struct _keybrd {
   float trans;
   int Bodr;
   void *TargetWindow;
+  float Brfac;
+  int CntlGrp;
+  void *XpmList; // for Xpms
+  int ControlPress,AltPress; // for future
 } KEYBRD;
+int kgKeybrd(void *Tmp,int Vis,void *kbinfo);
+int kgMakeKeybrd5(DIALOG *D,int Bx,int By,int Xg,int Yg,int Vis,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float rfac,float transparency,int bodr);
+int kgMakeKeybrd4(DIALOG *D,int Bx,int By,int Xg,int Yg,int Vis,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float rfac,float transparency,int bodr);
+int kgMakeKeybrd0(DIALOG *D,int Bx,int By,int Xg,int Yg,int Vis,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float rfac,float transparency,int bodr);
 int kgMakeKeybrd3(DIALOG *D,int xo,int yo,int Vis,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float rfac,float transparency) ;
 int kgMakeKeybrd2(DIALOG *D,int xo,int yo,int Vis,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float rfac,float transparency) ;
 int kgMakeSkeybrd(DIALOG *D,int xo,int yo,int Vis,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float rfac,float transparency);
 int kgMakeKeybrd1(DIALOG *D,int xo,int yo,int Vis,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float rfac,float transparency);
-int kgMakeKeybrd0(DIALOG *D,int xo,int yo,int Vis,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float rfac,float transparency);
 int kgMakeDefaultKeybrd3(DIALOG *D,int xo,int yo,int vis);
 int kgMakeDefaultKeybrd0(DIALOG *D,int xo,int yo,int vis);
 int kgMakeDefaultKeybrd2(DIALOG *D,int xo,int yo,int vis);
@@ -1588,6 +1619,15 @@ int kgGetKeybrdSize(void *Tmp,int *xl,int *yl);
 int kgShiftKeybrd(void *Tmp,int xs,int ys);
 int kgMakeKeybrd(void *Tmp,int Type,int Vis,int Btype,int Bfont,int Charclr,int Butclr,int Fillclr,float Rfac,float Trans) ;
 int kgMakeDefaultKeybrd(void *Tmp,int Type,int Vis);
+static void *Malloc(int size) {
+   void *pt;
+   pt = (void *) malloc(size);
+   if(pt==NULL) {
+     fprintf(stderr,"Failed in Malloc\n");
+     exit(0);
+   }
+   return pt;
+}
 #endif
 #ifdef __cplusplus
 }
