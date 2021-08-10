@@ -1600,15 +1600,14 @@ typedef struct _keybrd {
   int ControlPress,AltPress; // for future
 } KEYBRD;
 int kgKeybrd(void *Tmp,int Vis,void *kbinfo);
-int kgMakeKeybrd5(DIALOG *D,int Bx,int By,int Xg,int Yg,int Vis,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float rfac,float transparency,int bodr);
-int kgMakeKeybrd4(DIALOG *D,int Bx,int By,int Xg,int Yg,int Vis,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float rfac,float transparency,int bodr);
-int kgMakeKeybrd0(DIALOG *D,int Bx,int By,int Xg,int Yg,int Vis,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float rfac,float transparency,int bodr);
+int kgMakeKeybrd5(DIALOG *D,int Bx,int By,int Xg,int Yg,int Vis,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float rfac,float transparency,int bodr,float Brfac);
+int kgMakeKeybrd4(DIALOG *D,int Bx,int By,int Xg,int Yg,int Vis,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float rfac,float transparency,int bodr,float Brfac);
+int kgMakeKeybrd0(DIALOG *D,int Bx,int By,int Xg,int Yg,int Vis,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float rfac,float transparency,int bodr,float Brfac);
 int kgMakeKeybrd3(DIALOG *D,int xo,int yo,int Vis,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float rfac,float transparency) ;
 int kgMakeKeybrd2(DIALOG *D,int xo,int yo,int Vis,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float rfac,float transparency) ;
 int kgMakeSkeybrd(DIALOG *D,int xo,int yo,int Vis,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float rfac,float transparency);
 int kgMakeKeybrd1(DIALOG *D,int xo,int yo,int Vis,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float rfac,float transparency);
 int kgMakeDefaultKeybrd3(DIALOG *D,int xo,int yo,int vis);
-int kgMakeDefaultKeybrd0(DIALOG *D,int xo,int yo,int vis);
 int kgMakeDefaultKeybrd2(DIALOG *D,int xo,int yo,int vis);
 int kgMakeDefaultSkeybrd(DIALOG *D,int xo,int yo,int vis);
 int kgMakeDefaultKeybrd1(DIALOG *D,int xo,int yo,int vis);

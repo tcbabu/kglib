@@ -1383,7 +1383,7 @@ static int ConvertColor(int clr,int no) {
    return no;
 }
 
-int kgMakeKeybrd0(DIALOG *D,int Bx,int By,int Xg,int Yg,int Vis,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float rfac,float transparency,int bodr) {
+int kgMakeKeybrd0(DIALOG *D,int Bx,int By,int Xg,int Yg,int Vis,int btype,int bfont,int fontclr,int butclr,int bkgrclr,float rfac,float transparency,int bodr,float Brfac) {
 
    int GrpId;
    WIDGETGRP *Gpt;
@@ -1404,7 +1404,7 @@ int kgMakeKeybrd0(DIALOG *D,int Bx,int By,int Xg,int Yg,int Vis,int btype,int bf
    Kbrd->TargetWindow = NULL;
    Kbrd->XpmList = NULL;
    Kbrd->Thds=NULL;
-   Kbrd->Brfac =0.0;
+   Kbrd->Brfac =Brfac;
    gc = D->gc;
    Kbrd->FillClr = ConvertColor(bkgrclr,80);
    D->wc=NULL;

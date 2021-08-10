@@ -270,10 +270,18 @@ static int ProcessLabel(void *Tmp,int butno,char *Label) {
      Kbrd->CurWid = D->InputWid;
      CurWid = Kbrd->CurWid;
   }
-  if(CurWid< 0) return 0;
+  if(CurWid>= 0) {
   kgSetCurrentWidget(D,CurWid);
   ch= Label[butno-1];
   kgSendKeyEvent(D,ch);
+  }
+  else {
+    if(Kbrd->TargetWindow != NULL) {
+//      kgSetInputFocus(D,Kbrd->TargetWindow);
+      ch= Label[butno-1];
+      kgSendKeyToWindow(D,Kbrd->TargetWindow,ch);
+    }
+  }
   if(Kbrd->ShiftPress) {
     Kbrd->ShiftPress=0;
     ProcessShift(D);
@@ -540,7 +548,13 @@ static int kgProcessInit(DIN *B,KEYBRD *Kbrd,char *Label,char *Label1,int inx) {
 }
 void  keybrd0button1init(DIN *B,void *pt) {
    int n;
+   void *win;
+   KEYBRD *kb;
    n = B->nx * B->ny;
+   win = kgGetInputFocus(NULL);
+   kb = (KEYBRD *)pt;
+   kb->TargetWindow = win;
+
    kgFixButton(B,pt);
    kgProcessInit(B,(KEYBRD *)pt,Label1,Label6,0);
 }
@@ -811,7 +825,14 @@ int  keybrd0button13callback(int butno,int i,void *Tmp) {
   if(D->InputWid >= 0) {
      Kbrd->CurWid = D->InputWid;
   }
-  if(Kbrd->CurWid < 0) ret= 0;
+  if(Kbrd->CurWid < 0){
+    ret= 0;
+    if(Kbrd->TargetWindow != NULL) {
+//      kgSetInputFocus(D,Kbrd->TargetWindow);
+      kgSendBackspaceKeyToWindow(D,Kbrd->TargetWindow);
+    }
+
+  }
   else {
     kgSetCurrentWidget(D,Kbrd->CurWid);
     kgSendBackspaceKeyEvent(Tmp);
@@ -842,7 +863,23 @@ int  keybrd0button14callback(int butno,int i,void *Tmp) {
   if(D->InputWid >= 0) {
      Kbrd->CurWid = D->InputWid;
   }
-  if(Kbrd->CurWid < 0) return 0;
+  if(Kbrd->CurWid < 0) {
+     ret= 0;
+    if(Kbrd->TargetWindow != NULL) {
+//      kgSetInputFocus(D,Kbrd->TargetWindow);
+    switch(butno) {
+    case 1:
+      kgSendLeftKeyToWindow(D,Kbrd->TargetWindow);
+      break;
+    case 2:
+      kgSendRightKeyToWindow(D,Kbrd->TargetWindow);
+      break;
+
+    }
+
+    }
+  }
+  else {
   kgSetCurrentWidget(D,Kbrd->CurWid);
   switch(butno) {
     case 1: 
@@ -853,6 +890,7 @@ int  keybrd0button14callback(int butno,int i,void *Tmp) {
       kgSendRightKeyEvent(Tmp);
       if(!kgCheckEventDelivery(Tmp)) kgSendRightKeyEvent(Tmp);
       break;
+  }
   }
   kgShowKey('a');
   return ret;
@@ -879,10 +917,18 @@ int  keybrd0button15callback(int butno,int i,void *Tmp) {
   if(D->InputWid >= 0) {
      Kbrd->CurWid = D->InputWid;
   }
-  if(Kbrd->CurWid < 0) return 0;
+  if(Kbrd->CurWid < 0){
+     ret= 0;
+    if(Kbrd->TargetWindow != NULL) {
+//      kgSetInputFocus(D,Kbrd->TargetWindow);
+      kgSendEscapeKeyToWindow(D,Kbrd->TargetWindow);
+    }
+  }
+  else {
   kgSetCurrentWidget(D,Kbrd->CurWid);
   kgSendEscapeKeyEvent(Tmp);
   if(!kgCheckEventDelivery(Tmp)) kgSendEscapeKeyEvent(Tmp);
+  }
   kgShowKey('a');
   return ret;
 }
@@ -909,7 +955,13 @@ int  keybrd0button16callback(int butno,int i,void *Tmp) {
   if(D->InputWid >= 0) {
      Kbrd->CurWid = D->InputWid;
   }
-  if(Kbrd->CurWid < 0) ret= 0;
+  if(Kbrd->CurWid < 0){
+     ret= 0;
+    if(Kbrd->TargetWindow != NULL) {
+//      kgSetInputFocus(D,Kbrd->TargetWindow);
+      kgSendEnterKeyToWindow(D,Kbrd->TargetWindow);
+    }
+  }
   else {
     kgSetCurrentWidget(D,Kbrd->CurWid);
     kgSendEnterKeyEvent(Tmp);
@@ -938,7 +990,13 @@ int  keybrd0button17callback(int butno,int i,void *Tmp) {
   if(D->InputWid >= 0) {
      Kbrd->CurWid = D->InputWid;
   }
-  if(Kbrd->CurWid < 0) ret= 0;
+  if(Kbrd->CurWid < 0){
+     ret= 0;
+    if(Kbrd->TargetWindow != NULL) {
+//      kgSetInputFocus(D,Kbrd->TargetWindow);
+      kgSendTabKeyToWindow(D,Kbrd->TargetWindow);
+    }
+  }
   else {
     kgSetCurrentWidget(D,Kbrd->CurWid);
     kgSendTabKeyEvent(Tmp);
@@ -967,7 +1025,13 @@ int  keybrd0button18callback(int butno,int i,void *Tmp) {
   if(D->InputWid >= 0) {
      Kbrd->CurWid = D->InputWid;
   }
-  if(Kbrd->CurWid < 0) ret= 0;
+  if(Kbrd->CurWid < 0){
+     ret= 0;
+    if(Kbrd->TargetWindow != NULL) {
+//      kgSetInputFocus(D,Kbrd->TargetWindow);
+      kgSendHomeKeyToWindow(D,Kbrd->TargetWindow);
+    }
+  }
   else {
    kgSetCurrentWidget(D,Kbrd->CurWid);
    kgSendHomeKeyEvent(Tmp);
@@ -996,7 +1060,13 @@ int  keybrd0button19callback(int butno,int i,void *Tmp) {
   if(D->InputWid >= 0) {
      Kbrd->CurWid = D->InputWid;
   }
-  if(Kbrd->CurWid < 0) ret= 0;
+  if(Kbrd->CurWid < 0){
+     ret= 0;
+    if(Kbrd->TargetWindow != NULL) {
+//      kgSetInputFocus(D,Kbrd->TargetWindow);
+      kgSendEndKeyToWindow(D,Kbrd->TargetWindow);
+    }
+  }
   else {
     kgSetCurrentWidget(D,Kbrd->CurWid);
     kgSendEndKeyEvent(Tmp);
@@ -1049,7 +1119,13 @@ int  keybrd0button21callback(int butno,int i,void *Tmp) {
   if(D->InputWid >= 0) {
      Kbrd->CurWid = D->InputWid;
   }
-  if(Kbrd->CurWid < 0) ret= 0;
+  if(Kbrd->CurWid < 0){
+     ret= 0;
+    if(Kbrd->TargetWindow != NULL) {
+//      kgSetInputFocus(D,Kbrd->TargetWindow);
+      kgSendSpaceKeyToWindow(D,Kbrd->TargetWindow);
+    }
+  }
   else {
     kgSetCurrentWidget(D,Kbrd->CurWid);
     kgSendSpaceKeyEvent(Tmp);

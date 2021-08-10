@@ -2912,7 +2912,7 @@ int uiGetButtonPress(void *tmp,KBEVENT kbevent) {
             (B->bval)=df;
             uiUpdateOn(D);
 //TCB 2021
-            usleep(20000);
+            usleep(50000);
             break;
          }
        }
