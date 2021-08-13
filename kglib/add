@@ -1,7 +1,7 @@
-  if(Kbrd->CurWid < 0){
-     ret= 0;
-    if(Kbrd->TargetWindow != NULL) {
-//      kgSetInputFocus(D,Kbrd->TargetWindow);
-      kgSendEscapeKeyToWindow(D,Kbrd->TargetWindow);
-    }
-  }
+     Window Root,Par,*Child;
+     int nChild,i;
+     XQueryTree(Dsp,Win,&Root,&Par,&Child,&nChild);
+//     printf("Win:par,Root,Par: %d %d %d %d,%d\n",Win,par,Root,Par,nChild);
+     wc->Root=Root;
+     wc->Parent = Par;
+     if(nChild!= 0) XFree(Child);

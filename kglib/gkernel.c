@@ -746,6 +746,88 @@ int kgSendControlKeyEvent(void *Tmp,int ch) {
   
   free(e);
 }
+int uiCheckChildern(void *Tmp,Window Win,void *wtmp) {
+/*
+  Checks Window exists or not
+*/
+  int ret=0;
+  DIALOG *D;
+  kgWC *wc;
+  Window win,mywin,root;
+  int nChild,i;
+  XWindowAttributes xwa;
+  D = (DIALOG *)Tmp;
+  wc = WC(D);
+  mywin = wc->Win;
+  win = *((Window *)wtmp);
+  Window Root,Par,*Child;
+//  XQueryTree(Dsp,Win,&Root,&Par,&Child,&nChild);
+//     printf("Win:par,Root,Par: %d %d %d %d,%d\n",Win,par,Root,Par,nChild);
+#if 1
+  if(!XQueryTree(wc->Dsp,Win,&Root,&Par,&Child,&nChild)) {
+     fprintf(stderr,"XQueryTree Failed\n");
+     return 0;
+  }
+//  fprintf(stderr,"nChild = %d\n",nChild);
+  for(i=0;i<nChild;i++) {
+    if( win == (Child[i])) {
+//       fprintf(stderr,"Got Window\n");
+       ret=1;break;
+    }
+    else {
+      if( uiCheckChildern(Tmp,Child[i],wtmp)) {
+//       fprintf(stderr,"Got from Children\n");
+       ret=1;break;
+      }
+    }
+  }
+  if(nChild!= 0) XFree(Child);
+#else
+  if(XGetWindowAttributes(wc->Dsp,win,&xwa)) ret=1;
+#endif
+  return ret;
+}
+int kgCheckWindow(void *Tmp,void *wtmp) {
+/*
+  Checks Window exists or not
+*/
+  int ret=0;
+  DIALOG *D;
+  kgWC *wc;
+  Window win,mywin,root;
+  int nChild,i;
+  XWindowAttributes xwa;
+  D = (DIALOG *)Tmp;
+  wc = WC(D);
+  mywin = wc->Win;
+  win = *((Window *)wtmp);
+  Window Root,Par,*Child;
+//  XQueryTree(Dsp,Win,&Root,&Par,&Child,&nChild);
+//     printf("Win:par,Root,Par: %d %d %d %d,%d\n",Win,par,Root,Par,nChild);
+#if 1
+  if(!XQueryTree(wc->Dsp,DefaultRootWindow(wc->Dsp),&Root,&Par,&Child,&nChild)) {
+     fprintf(stderr,"XQueryTree Failed\n");
+     return 0;
+  }
+//  fprintf(stderr,"nChild = %d\n",nChild);
+  for(i=0;i<nChild;i++) {
+    if( win == (Child[i])) {
+//       fprintf(stderr,"Got Window\n");
+       ret=1;break;
+    }
+    else {
+      if( uiCheckChildern(Tmp,Child[i],wtmp)) {
+//       fprintf(stderr,"Got from Children\n");
+       ret=1;break;
+      }
+    }
+  }
+  if(nChild!= 0) XFree(Child);
+#else
+  if(XGetWindowAttributes(wc->Dsp,win,&xwa)) ret=1;
+#endif
+  return ret;
+}
 int kgSendKeyToWindow(void *Tmp,void *wtmp,int ch) {
   int code;
   XEvent *e;
@@ -753,14 +835,16 @@ int kgSendKeyToWindow(void *Tmp,void *wtmp,int ch) {
   DIALOG *D;
   kgWC *wc;
   Window win,mywin,root;
-  e = (XEvent *)Malloc(sizeof(XEvent));
-  k = (XKeyEvent *)e;
   D = (DIALOG *)Tmp;
   wc = WC(D);
-  int status;
-  int state = 0;
   mywin = wc->Win;
   win = *((Window *)wtmp);
+  if(!kgCheckWindow(Tmp,wtmp)) return 0;
+  kgSetInputFocus(Tmp,wtmp);  // Can be used
+  e = (XEvent *)Malloc(sizeof(XEvent));
+  k = (XKeyEvent *)e;
+  int status;
+  int state = 0;
   k->type=KeyRelease;
   k->send_event=True;
   k->display=wc->Dsp;
@@ -842,7 +926,6 @@ int kgSendLinefeedKeyToWindow(void *Tmp,void *win) {
 }
 int kgSendControlKeyToWindow(void *Tmp,void *wtmp,int ch) {
   int code;
-  kgSetInputFocus(Tmp,wtmp);
   if(ch >= 'a') ch = (ch-'a'+'A');
   if( (ch < 'A') || (ch>'_')){
       fprintf(stderr,"Wrong Control char: %c:%d\n",ch,ch);
@@ -853,14 +936,16 @@ int kgSendControlKeyToWindow(void *Tmp,void *wtmp,int ch) {
   DIALOG *D;
   kgWC *wc;
   Window win,mywin,root;
-  e = (XEvent *)Malloc(sizeof(XEvent));
-  k = (XKeyEvent *)e;
   D = (DIALOG *)Tmp;
   wc = WC(D);
-  int status;
-  int state = ControlMask;
   mywin = wc->Win;
   win = *((Window *)wtmp);
+  if(!kgCheckWindow(Tmp,wtmp)) return 0;
+  kgSetInputFocus(Tmp,wtmp);
+  e = (XEvent *)Malloc(sizeof(XEvent));
+  k = (XKeyEvent *)e;
+  int status;
+  int state = ControlMask;
   k->type=KeyRelease;
   k->send_event=True;
   k->display=wc->Dsp;
