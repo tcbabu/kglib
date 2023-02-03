@@ -1,6 +1,6 @@
 #include <unistd.h>
 #include <ctype.h>
-#include "kulina.h"
+#include <kulina.h>
 extern char CWD[500];
 char icondir[500];
 static void SetButton(DIALOG *D,DIN *B,int index) {

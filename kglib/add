@@ -1,7 +1,42 @@
-     Window Root,Par,*Child;
-     int nChild,i;
-     XQueryTree(Dsp,Win,&Root,&Par,&Child,&nChild);
-//     printf("Win:par,Root,Par: %d %d %d %d,%d\n",Win,par,Root,Par,nChild);
-     wc->Root=Root;
-     wc->Parent = Par;
-     if(nChild!= 0) XFree(Child);
+void kgModifyTextWidget(void *Tmp,int ch) {
+/*
+   it should behave like a
+   key event with a character 'ch'
+   Useful for onscreen keyboard widget
+*/
+    int i,code;
+    DIALOG *D;
+    DIT *T;
+    D= (DIALOG *)Tmp;
+    if(D->InputWid < 0) return;
+    i = D->InputWid;
+    code = D->d[i].t->code;
+    switch(code) {
+      case 't':
+       df = KeyReleaseInTextBox((TX_STR *)(D->d[i].t->tstr),kbevent);
+       if(df >= 0) {
+          if( _ui_readtextbox((TX_STR *)(D->d[i].t->tstr)) < 0) {
+             gprintf(D,"Error in Text box data");
+          }
+          else {
+           Up_D_Tx_Table(0,i,D);
+          }
+       }
+       break;
+      case 'T':
+       df = KeyReleaseInTableBox((TX_STR *)(D->d[i].t->tstr),kbevent);
+       if(df != -1) {
+          if( _ui_readtextbox((TX_STR *)(D->d[i].t->tstr)) < 0) {
+             gprintf(D,"Error in Table box data");
+          }
+          else {
+           Up_D_Table(df,i,D);
+          }
+       }
+       break;
+      default:
+       break;
+   }
+   kgUpdateOn(D);
+   return;
+}

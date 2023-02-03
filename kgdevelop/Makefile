@@ -1,6 +1,6 @@
 include config.mak
 #CC	=cc -pthread
-CC	=g++   -pthread 
+CC	=g++   -pthread -I$(KULINA)/include
 CFLAGS	= -g
 kgdevelop	: kgdevelop.o Fileoptdia.o Itemoptdia.o Borderoptdia.o getStrings.o Options.o \
 		  Optionsdia.o addcontroldia.o slided.o slidef.o buttoninfo.o Runcheckbox.o Runselectmenu.o Runthumbnail.o  editbuttons.o messagedata.o textboxdata.o slidebaropt.o \

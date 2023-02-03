@@ -32,6 +32,7 @@ all	: kgdevelop/kgdevelop lib/libkulina.a lib/libgm.a
 
 lib/libkulina.a	: lib/libgm.a $(KGLIBFILES) 
 	echo "PREFIX=$(PWD)">kglib/config.mak
+	echo "KULINA=$(PWD)">>kglib/config.mak
 	echo "export X11_CFLAGS=\"$(X11_CFLAGS)\"">>kglib/config.mak
 	echo "export X11_LIBS=\"$(X11_LIBS)\"">>kglib/config.mak
 	$(MAKE) -C kglib 
