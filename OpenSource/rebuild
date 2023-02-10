@@ -26,21 +26,21 @@ make -j2 install PREFIX=$KULINA >out
 cd ..
 rm -rf bzip2-1.0.6
 echo "bzip2"
-tar xf zlib-1.2.8.tar.gz
-cd zlib-1.2.8
+tar xf zlib-1.2.13.tar.xz
+cd zlib-1.2.13
 ./configure --prefix=$KULINA --static  >out
 make -j2  >out
 make -j2 install >out
 cd ..
-rm -r -f zlib-1.2.8
+rm -r -f zlib-1.2.13
 echo "zlib"
-tar xf gzip-1.10.tar.xz >out
-cd gzip-1.10
+tar xf gzip-1.12.tar.xz >out
+cd gzip-1.12
 ./configure --prefix=$KULINA  >out
 make -j2 >out
 make -j2 install  >out
 cd ..
-rm -rf gzip-1.10 >out
+rm -rf gzip-1.12 >out
 echo "gzip"
 tar xf libpng-1.6.9.tar.xz
 cd libpng-1.6.9
