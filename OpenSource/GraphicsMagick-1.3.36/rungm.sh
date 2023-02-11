@@ -13,8 +13,8 @@
 # Written by Bob Friesenhahn <bfriesen@simple.dallas.tx.us> December 2003
 #
 
-top_srcdir='/home/babu/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36'
-top_builddir='/home/babu/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36'
+top_srcdir='/home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36'
+top_builddir='/home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36'
 
 MAGICK_CODER_MODULE_PATH="${top_builddir}/coders"
 MAGICK_CONFIGURE_SRC_PATH="${top_srcdir}/config"

@@ -17,7 +17,7 @@ old_library='libGraphicsMagickWand.a'
 inherited_linker_flags=''
 
 # Libraries that this one depends upon.
-dependency_libs=' -L/home/babu/BUILD/kglib/lib /home/babu/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36/magick/libGraphicsMagick.la /home/babu/BUILD/kglib/lib/libtiff.la -lc /home/babu/BUILD/kglib/lib/libfreetype.la /home/babu/BUILD/kglib/lib/libjasper.la /home/babu/BUILD/kglib/lib/libjpeg.la /home/babu/BUILD/kglib/lib/libpng16.la /home/babu/BUILD/kglib/lib/liblzma.la -lbz2 -lz -lzstd -lpthread -lm'
+dependency_libs=' -L/home/kulina/BUILD/kglib/lib /home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36/magick/libGraphicsMagick.la /home/kulina/BUILD/kglib/lib/libtiff.la -lc /home/kulina/BUILD/kglib/lib/libfreetype.la /home/kulina/BUILD/kglib/lib/libjasper.la /home/kulina/BUILD/kglib/lib/libjpeg.la /home/kulina/BUILD/kglib/lib/libpng16.la /home/kulina/BUILD/kglib/lib/liblzma.la -lbz2 -lz -lzstd -lpthread -lm'
 
 # Names of additional weak libraries provided by this library
 weak_library_names=''
@@ -38,4 +38,4 @@ dlopen=''
 dlpreopen=''
 
 # Directory that this library needs to be installed in:
-libdir='/home/babu/BUILD/kglib/lib'
+libdir='/home/kulina/BUILD/kglib/lib'

@@ -113,11 +113,11 @@ coders/magick_libGraphicsMagick_la-png.lo: coders/png.c \
  magick/resource.h magick/semaphore.h magick/static.h magick/tempfile.h \
  magick/tempfile-private.h magick/transform.h magick/utility.h \
  magick/utility-private.h magick/version.h \
- /home/babu/BUILD/kglib/include/png.h \
- /home/babu/BUILD/kglib/include/pnglibconf.h \
- /home/babu/BUILD/kglib/include/pngconf.h /usr/include/setjmp.h \
- /home/babu/BUILD/kglib/include/zlib.h \
- /home/babu/BUILD/kglib/include/zconf.h
+ /home/kulina/BUILD/kglib/include/png.h \
+ /home/kulina/BUILD/kglib/include/pnglibconf.h \
+ /home/kulina/BUILD/kglib/include/pngconf.h /usr/include/setjmp.h \
+ /home/kulina/BUILD/kglib/include/zlib.h \
+ /home/kulina/BUILD/kglib/include/zconf.h
 /usr/include/stdc-predef.h:
 magick/studio.h:
 magick/magick_config.h:
@@ -342,9 +342,9 @@ magick/transform.h:
 magick/utility.h:
 magick/utility-private.h:
 magick/version.h:
-/home/babu/BUILD/kglib/include/png.h:
-/home/babu/BUILD/kglib/include/pnglibconf.h:
-/home/babu/BUILD/kglib/include/pngconf.h:
+/home/kulina/BUILD/kglib/include/png.h:
+/home/kulina/BUILD/kglib/include/pnglibconf.h:
+/home/kulina/BUILD/kglib/include/pngconf.h:
 /usr/include/setjmp.h:
-/home/babu/BUILD/kglib/include/zlib.h:
-/home/babu/BUILD/kglib/include/zconf.h:
+/home/kulina/BUILD/kglib/include/zlib.h:
+/home/kulina/BUILD/kglib/include/zconf.h:

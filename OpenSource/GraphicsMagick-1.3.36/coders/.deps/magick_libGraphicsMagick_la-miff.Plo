@@ -114,9 +114,9 @@ coders/magick_libGraphicsMagick_la-miff.lo: coders/miff.c \
  magick/magick.h magick/magick-private.h magick/monitor.h \
  magick/monitor-private.h magick/profile.h magick/utility.h \
  magick/utility-private.h magick/version.h \
- /home/babu/BUILD/kglib/include/zlib.h \
- /home/babu/BUILD/kglib/include/zconf.h \
- /home/babu/BUILD/kglib/include/bzlib.h
+ /home/kulina/BUILD/kglib/include/zlib.h \
+ /home/kulina/BUILD/kglib/include/zconf.h \
+ /home/kulina/BUILD/kglib/include/bzlib.h
 /usr/include/stdc-predef.h:
 magick/studio.h:
 magick/magick_config.h:
@@ -343,6 +343,6 @@ magick/profile.h:
 magick/utility.h:
 magick/utility-private.h:
 magick/version.h:
-/home/babu/BUILD/kglib/include/zlib.h:
-/home/babu/BUILD/kglib/include/zconf.h:
-/home/babu/BUILD/kglib/include/bzlib.h:
+/home/kulina/BUILD/kglib/include/zlib.h:
+/home/kulina/BUILD/kglib/include/zconf.h:
+/home/kulina/BUILD/kglib/include/bzlib.h:

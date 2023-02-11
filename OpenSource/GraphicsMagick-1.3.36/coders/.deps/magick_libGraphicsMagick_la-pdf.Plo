@@ -113,8 +113,8 @@ coders/magick_libGraphicsMagick_la-pdf.lo: coders/pdf.c \
  magick/magick-private.h magick/monitor.h magick/monitor-private.h \
  magick/resize.h magick/shear.h magick/tempfile.h \
  magick/tempfile-private.h magick/utility.h magick/utility-private.h \
- magick/version.h /home/babu/BUILD/kglib/include/zlib.h \
- /home/babu/BUILD/kglib/include/zconf.h
+ magick/version.h /home/kulina/BUILD/kglib/include/zlib.h \
+ /home/kulina/BUILD/kglib/include/zconf.h
 /usr/include/stdc-predef.h:
 magick/studio.h:
 magick/magick_config.h:
@@ -340,5 +340,5 @@ magick/tempfile-private.h:
 magick/utility.h:
 magick/utility-private.h:
 magick/version.h:
-/home/babu/BUILD/kglib/include/zlib.h:
-/home/babu/BUILD/kglib/include/zconf.h:
+/home/kulina/BUILD/kglib/include/zlib.h:
+/home/kulina/BUILD/kglib/include/zconf.h:

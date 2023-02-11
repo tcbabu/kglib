@@ -107,25 +107,25 @@ coders/magick_libGraphicsMagick_la-jp2.lo: coders/jp2.c \
  magick/pixel_cache.h magick/pixel_cache-private.h magick/magick.h \
  magick/magick-private.h magick/monitor.h magick/monitor-private.h \
  magick/profile.h magick/utility.h magick/utility-private.h \
- /home/babu/BUILD/kglib/include/jasper/jasper.h \
- /home/babu/BUILD/kglib/include/jasper/jas_config.h \
- /home/babu/BUILD/kglib/include/jasper/jas_types.h \
+ /home/kulina/BUILD/kglib/include/jasper/jasper.h \
+ /home/kulina/BUILD/kglib/include/jasper/jas_config.h \
+ /home/kulina/BUILD/kglib/include/jasper/jas_types.h \
  /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.0/include/stdbool.h \
- /home/babu/BUILD/kglib/include/jasper/jas_version.h \
- /home/babu/BUILD/kglib/include/jasper/jas_init.h \
- /home/babu/BUILD/kglib/include/jasper/jas_cm.h \
- /home/babu/BUILD/kglib/include/jasper/jas_icc.h \
- /home/babu/BUILD/kglib/include/jasper/jas_stream.h \
- /home/babu/BUILD/kglib/include/jasper/jas_fix.h \
- /home/babu/BUILD/kglib/include/jasper/jas_debug.h \
- /home/babu/BUILD/kglib/include/jasper/jas_getopt.h \
- /home/babu/BUILD/kglib/include/jasper/jas_image.h \
- /home/babu/BUILD/kglib/include/jasper/jas_seq.h \
- /home/babu/BUILD/kglib/include/jasper/jas_math.h \
- /home/babu/BUILD/kglib/include/jasper/jas_malloc.h \
- /home/babu/BUILD/kglib/include/jasper/jas_string.h \
- /home/babu/BUILD/kglib/include/jasper/jas_tmr.h \
- /home/babu/BUILD/kglib/include/jasper/jas_tvp.h
+ /home/kulina/BUILD/kglib/include/jasper/jas_version.h \
+ /home/kulina/BUILD/kglib/include/jasper/jas_init.h \
+ /home/kulina/BUILD/kglib/include/jasper/jas_cm.h \
+ /home/kulina/BUILD/kglib/include/jasper/jas_icc.h \
+ /home/kulina/BUILD/kglib/include/jasper/jas_stream.h \
+ /home/kulina/BUILD/kglib/include/jasper/jas_fix.h \
+ /home/kulina/BUILD/kglib/include/jasper/jas_debug.h \
+ /home/kulina/BUILD/kglib/include/jasper/jas_getopt.h \
+ /home/kulina/BUILD/kglib/include/jasper/jas_image.h \
+ /home/kulina/BUILD/kglib/include/jasper/jas_seq.h \
+ /home/kulina/BUILD/kglib/include/jasper/jas_math.h \
+ /home/kulina/BUILD/kglib/include/jasper/jas_malloc.h \
+ /home/kulina/BUILD/kglib/include/jasper/jas_string.h \
+ /home/kulina/BUILD/kglib/include/jasper/jas_tmr.h \
+ /home/kulina/BUILD/kglib/include/jasper/jas_tvp.h
 /usr/include/stdc-predef.h:
 magick/studio.h:
 magick/magick_config.h:
@@ -332,22 +332,22 @@ magick/monitor-private.h:
 magick/profile.h:
 magick/utility.h:
 magick/utility-private.h:
-/home/babu/BUILD/kglib/include/jasper/jasper.h:
-/home/babu/BUILD/kglib/include/jasper/jas_config.h:
-/home/babu/BUILD/kglib/include/jasper/jas_types.h:
+/home/kulina/BUILD/kglib/include/jasper/jasper.h:
+/home/kulina/BUILD/kglib/include/jasper/jas_config.h:
+/home/kulina/BUILD/kglib/include/jasper/jas_types.h:
 /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.0/include/stdbool.h:
-/home/babu/BUILD/kglib/include/jasper/jas_version.h:
-/home/babu/BUILD/kglib/include/jasper/jas_init.h:
-/home/babu/BUILD/kglib/include/jasper/jas_cm.h:
-/home/babu/BUILD/kglib/include/jasper/jas_icc.h:
-/home/babu/BUILD/kglib/include/jasper/jas_stream.h:
-/home/babu/BUILD/kglib/include/jasper/jas_fix.h:
-/home/babu/BUILD/kglib/include/jasper/jas_debug.h:
-/home/babu/BUILD/kglib/include/jasper/jas_getopt.h:
-/home/babu/BUILD/kglib/include/jasper/jas_image.h:
-/home/babu/BUILD/kglib/include/jasper/jas_seq.h:
-/home/babu/BUILD/kglib/include/jasper/jas_math.h:
-/home/babu/BUILD/kglib/include/jasper/jas_malloc.h:
-/home/babu/BUILD/kglib/include/jasper/jas_string.h:
-/home/babu/BUILD/kglib/include/jasper/jas_tmr.h:
-/home/babu/BUILD/kglib/include/jasper/jas_tvp.h:
+/home/kulina/BUILD/kglib/include/jasper/jas_version.h:
+/home/kulina/BUILD/kglib/include/jasper/jas_init.h:
+/home/kulina/BUILD/kglib/include/jasper/jas_cm.h:
+/home/kulina/BUILD/kglib/include/jasper/jas_icc.h:
+/home/kulina/BUILD/kglib/include/jasper/jas_stream.h:
+/home/kulina/BUILD/kglib/include/jasper/jas_fix.h:
+/home/kulina/BUILD/kglib/include/jasper/jas_debug.h:
+/home/kulina/BUILD/kglib/include/jasper/jas_getopt.h:
+/home/kulina/BUILD/kglib/include/jasper/jas_image.h:
+/home/kulina/BUILD/kglib/include/jasper/jas_seq.h:
+/home/kulina/BUILD/kglib/include/jasper/jas_math.h:
+/home/kulina/BUILD/kglib/include/jasper/jas_malloc.h:
+/home/kulina/BUILD/kglib/include/jasper/jas_string.h:
+/home/kulina/BUILD/kglib/include/jasper/jas_tmr.h:
+/home/kulina/BUILD/kglib/include/jasper/jas_tvp.h:

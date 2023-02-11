@@ -112,10 +112,10 @@ coders/magick_libGraphicsMagick_la-jpeg.lo: coders/jpeg.c \
  magick/render-private.h magick/resource.h magick/magick.h \
  magick/magick-private.h magick/monitor.h magick/monitor-private.h \
  magick/profile.h magick/utility.h magick/utility-private.h \
- /usr/include/setjmp.h /home/babu/BUILD/kglib/include/jpeglib.h \
- /home/babu/BUILD/kglib/include/jconfig.h \
- /home/babu/BUILD/kglib/include/jmorecfg.h \
- /home/babu/BUILD/kglib/include/jerror.h
+ /usr/include/setjmp.h /home/kulina/BUILD/kglib/include/jpeglib.h \
+ /home/kulina/BUILD/kglib/include/jconfig.h \
+ /home/kulina/BUILD/kglib/include/jmorecfg.h \
+ /home/kulina/BUILD/kglib/include/jerror.h
 /usr/include/stdc-predef.h:
 magick/studio.h:
 magick/magick_config.h:
@@ -338,7 +338,7 @@ magick/profile.h:
 magick/utility.h:
 magick/utility-private.h:
 /usr/include/setjmp.h:
-/home/babu/BUILD/kglib/include/jpeglib.h:
-/home/babu/BUILD/kglib/include/jconfig.h:
-/home/babu/BUILD/kglib/include/jmorecfg.h:
-/home/babu/BUILD/kglib/include/jerror.h:
+/home/kulina/BUILD/kglib/include/jpeglib.h:
+/home/kulina/BUILD/kglib/include/jconfig.h:
+/home/kulina/BUILD/kglib/include/jmorecfg.h:
+/home/kulina/BUILD/kglib/include/jerror.h:

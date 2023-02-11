@@ -60,3 +60,4 @@ clean	:
 	$(MAKE) -C OpenSource clean
 	$(MAKE) -C kglib clean
 	$(MAKE) -C kgdevelop clean
+	rm -f  TARBALL/kulina.h TARBALL/libgm.a TARBALL/kgdevelop TARBALL/libkulina.a

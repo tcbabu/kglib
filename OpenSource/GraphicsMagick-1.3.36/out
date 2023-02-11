@@ -1,205 +1,205 @@
-make[2]: Entering directory '/home/babu/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36'
+make[2]: Entering directory '/home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36'
 make  install-am
-make[3]: Entering directory '/home/babu/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36'
-make[4]: Entering directory '/home/babu/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36'
- /usr/bin/mkdir -p '/home/babu/BUILD/kglib/bin'
- /usr/bin/mkdir -p '/home/babu/BUILD/kglib/lib/GraphicsMagick-1.3.36/config'
- /usr/bin/install -c magick/GraphicsMagick-config wand/GraphicsMagickWand-config '/home/babu/BUILD/kglib/bin'
- /usr/bin/install -c -m 644 config/delegates.mgk config/type-ghostscript.mgk config/type.mgk config/type-solaris.mgk config/type-windows.mgk '/home/babu/BUILD/kglib/lib/GraphicsMagick-1.3.36/config'
- /usr/bin/mkdir -p '/home/babu/BUILD/kglib/share/GraphicsMagick-1.3.36/config'
-/bin/sh /home/babu/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36/config/install-sh -d /home/babu/BUILD/kglib/include/GraphicsMagick/magick
- /usr/bin/install -c -m 644 config/colors.mgk config/log.mgk config/modules.mgk '/home/babu/BUILD/kglib/share/GraphicsMagick-1.3.36/config'
-/bin/sh /home/babu/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36/config/install-sh -d /home/babu/BUILD/kglib/share/doc/GraphicsMagick
-/usr/bin/install -c -m 644 magick/magick_config_api.h /home/babu/BUILD/kglib/include/GraphicsMagick/magick/magick_config.h
- /usr/bin/mkdir -p '/home/babu/BUILD/kglib/share/doc/GraphicsMagick'
- /usr/bin/install -c -m 644 Copyright.txt ChangeLog ChangeLog.2019 ChangeLog.2018 ChangeLog.2017 ChangeLog.2016 ChangeLog.2015 ChangeLog.2014 ChangeLog.2013 ChangeLog.2012 ChangeLog.2011 ChangeLog.2010 ChangeLog.2009 ChangeLog.2008 ChangeLog.2007 ChangeLog.2006 ChangeLog.2005 ChangeLog.2004 ChangeLog.2003 ChangeLog.2002 ChangeLog.2001 NEWS.txt '/home/babu/BUILD/kglib/share/doc/GraphicsMagick'
- /usr/bin/mkdir -p '/home/babu/BUILD/kglib/include/GraphicsMagick/magick'
-/usr/bin/install -c -m 644 ./www/ChangeLog-2001.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/ChangeLog-2002.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/ChangeLog-2003.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
- /usr/bin/install -c -m 644 magick/api.h magick/analyze.h magick/attribute.h magick/average.h magick/blob.h magick/cdl.h magick/channel.h magick/color.h magick/color_lookup.h magick/colormap.h magick/colorspace.h magick/command.h magick/common.h magick/compare.h magick/composite.h magick/compress.h magick/confirm_access.h magick/constitute.h magick/decorate.h magick/delegate.h magick/describe.h magick/deprecate.h magick/draw.h magick/effect.h magick/enhance.h magick/enum_strings.h magick/error.h magick/forward.h magick/fx.h magick/gem.h magick/gradient.h magick/hclut.h magick/image.h magick/list.h magick/log.h magick/magic.h magick/magick.h magick/magick_types.h magick/memory.h magick/module.h '/home/babu/BUILD/kglib/include/GraphicsMagick/magick'
-/usr/bin/install -c -m 644 ./www/ChangeLog-2004.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/ChangeLog-2005.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/ChangeLog-2006.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
- /usr/bin/install -c -m 644 magick/monitor.h magick/montage.h magick/operator.h magick/paint.h magick/pixel_cache.h magick/pixel_iterator.h magick/plasma.h magick/profile.h magick/quantize.h magick/random.h magick/registry.h magick/render.h magick/resize.h magick/resource.h magick/shear.h magick/signature.h magick/statistics.h magick/symbols.h magick/texture.h magick/timer.h magick/transform.h magick/type.h magick/utility.h magick/version.h '/home/babu/BUILD/kglib/include/GraphicsMagick/magick'
-/usr/bin/install -c -m 644 ./www/ChangeLog-2007.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/ChangeLog-2008.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/ChangeLog-2009.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/ChangeLog-2010.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/ChangeLog-2011.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/ChangeLog-2012.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/ChangeLog-2013.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/ChangeLog-2014.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/ChangeLog-2015.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/ChangeLog-2016.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/ChangeLog-2017.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
- /usr/bin/mkdir -p '/home/babu/BUILD/kglib/share/man/man1'
-/usr/bin/install -c -m 644 ./www/ChangeLog-2018.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/ChangeLog-2019.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/Changelog.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/Changes.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
- /usr/bin/install -c -m 644 magick/GraphicsMagick-config.1 utilities/gm.1 wand/GraphicsMagickWand-config.1 '/home/babu/BUILD/kglib/share/man/man1'
-/usr/bin/install -c -m 644 ./www/Copyright.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/FAQ.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/GraphicsMagick.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/Hg.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
- /usr/bin/mkdir -p '/home/babu/BUILD/kglib/share/man/man4'
-/usr/bin/install -c -m 644 ./www/INSTALL-unix.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/INSTALL-windows.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/ImageMagickObject.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/NEWS.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
- /usr/bin/install -c -m 644 utilities/miff.4 '/home/babu/BUILD/kglib/share/man/man4'
-/usr/bin/install -c -m 644 ./www/OpenMP.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/README.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/animate.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
- /usr/bin/mkdir -p '/home/babu/BUILD/kglib/share/man/man5'
-/usr/bin/install -c -m 644 ./www/authors.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/batch.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/benchmark.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/benchmarks.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
- /usr/bin/install -c -m 644 utilities/quantize.5 '/home/babu/BUILD/kglib/share/man/man5'
-/usr/bin/install -c -m 644 ./www/bugs.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/color.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/compare.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
- /usr/bin/mkdir -p '/home/babu/BUILD/kglib/lib/pkgconfig'
-/usr/bin/install -c -m 644 ./www/composite.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/configure-target-setup.png /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/conjure.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
- /usr/bin/install -c -m 644 magick/GraphicsMagick.pc wand/GraphicsMagickWand.pc '/home/babu/BUILD/kglib/lib/pkgconfig'
-/usr/bin/install -c -m 644 ./www/contribute.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/convert.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/display.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
- /usr/bin/mkdir -p '/home/babu/BUILD/kglib/include/GraphicsMagick/wand'
-/usr/bin/install -c -m 644 ./www/docutils-api.css /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/docutils-articles.css /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
- /usr/bin/install -c -m 644 wand/drawing_wand.h wand/magick_wand.h wand/pixel_wand.h wand/wand_api.h wand/wand_symbols.h '/home/babu/BUILD/kglib/include/GraphicsMagick/wand'
-/usr/bin/install -c -m 644 ./www/download.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/favicon.ico /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/formats.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/gm.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
- /usr/bin/mkdir -p '/home/babu/BUILD/kglib/lib'
-/usr/bin/install -c -m 644 ./www/identify.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
- /bin/sh ./libtool   --mode=install /usr/bin/install -c   magick/libGraphicsMagick.la wand/libGraphicsMagickWand.la '/home/babu/BUILD/kglib/lib'
-/usr/bin/install -c -m 644 ./www/import.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/index.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/links.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/magick.css /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/miff.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/mission.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/mogrify.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/montage.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/motion-picture.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/perl.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/process.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/programming.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/project.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/quantize.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/reference.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/security.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/smile.c /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/thanks.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/time.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/tools.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/utilities.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-/usr/bin/install -c -m 644 ./www/version.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www
-libtool: install: /usr/bin/install -c magick/.libs/libGraphicsMagick.lai /home/babu/BUILD/kglib/lib/libGraphicsMagick.la
-libtool: install: /usr/bin/install -c wand/.libs/libGraphicsMagickWand.lai /home/babu/BUILD/kglib/lib/libGraphicsMagickWand.la
-libtool: install: /usr/bin/install -c magick/.libs/libGraphicsMagick.a /home/babu/BUILD/kglib/lib/libGraphicsMagick.a
-/usr/bin/install -c -m 644 ./www/api/animate.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/annotate.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/api.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/attribute.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/average.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/blob.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-libtool: install: chmod 644 /home/babu/BUILD/kglib/lib/libGraphicsMagick.a
-/usr/bin/install -c -m 644 ./www/api/cdl.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-libtool: install: ranlib /home/babu/BUILD/kglib/lib/libGraphicsMagick.a
-/usr/bin/install -c -m 644 ./www/api/channel.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/color.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/colormap.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/compare.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/composite.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/confirm_access.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/constitute.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/decorate.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/deprecate.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/describe.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/display.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/draw.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/effect.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/enhance.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/error.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/export.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/fx.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/hclut.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/image.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/import.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/list.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/log.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/magick.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/memory.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/monitor.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/montage.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/operator.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/paint.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/pixel_cache.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/pixel_iterator.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/plasma.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/profile.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/quantize.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/registry.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/render.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/resize.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/resource.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/segment.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/shear.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/signature.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/statistics.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/texture.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/transform.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/types.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-/usr/bin/install -c -m 644 ./www/api/widget.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/api
-libtool: install: /usr/bin/install -c wand/.libs/libGraphicsMagickWand.a /home/babu/BUILD/kglib/lib/libGraphicsMagickWand.a
-/usr/bin/install -c -m 644 ./www/images/ball.png /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/images
-/usr/bin/install -c -m 644 ./www/images/banner_bg.png /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/images
-libtool: install: chmod 644 /home/babu/BUILD/kglib/lib/libGraphicsMagickWand.a
-/usr/bin/install -c -m 644 ./www/images/gm-107x76.gif /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/images
-libtool: install: ranlib /home/babu/BUILD/kglib/lib/libGraphicsMagickWand.a
-/usr/bin/install -c -m 644 ./www/images/gm-107x76.png /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/images
-/usr/bin/install -c -m 644 ./www/images/gm-125x80t.png /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/images
-/usr/bin/install -c -m 644 ./www/images/right_triangle.png /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/images
-/usr/bin/install -c -m 644 ./www/images/right_triangle_option.png /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/images
-/usr/bin/install -c -m 644 ./www/Magick++/Blob.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
-/usr/bin/install -c -m 644 ./www/Magick++/Cache.png /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
-/usr/bin/install -c -m 644 ./www/Magick++/ChangeLog.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
-/usr/bin/install -c -m 644 ./www/Magick++/CoderInfo.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
-/usr/bin/install -c -m 644 ./www/Magick++/Color.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
-/usr/bin/install -c -m 644 ./www/Magick++/Drawable.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
-/usr/bin/install -c -m 644 ./www/Magick++/Drawable_example_1.png /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
-/usr/bin/install -c -m 644 ./www/Magick++/Enumerations.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
-/usr/bin/install -c -m 644 ./www/Magick++/Exception.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
-/usr/bin/install -c -m 644 ./www/Magick++/FormatCharacters.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
-/usr/bin/install -c -m 644 ./www/Magick++/Geometry.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
-/usr/bin/install -c -m 644 ./www/Magick++/Image.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
-/usr/bin/install -c -m 644 ./www/Magick++/Image.png /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
-/usr/bin/install -c -m 644 ./www/Magick++/ImageDesign.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
-/usr/bin/install -c -m 644 ./www/Magick++/Montage.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
-/usr/bin/install -c -m 644 ./www/Magick++/PixelPacket.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
-/usr/bin/install -c -m 644 ./www/Magick++/Pixels.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
-/usr/bin/install -c -m 644 ./www/Magick++/STL.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
-/usr/bin/install -c -m 644 ./www/Magick++/TypeMetric.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
-/usr/bin/install -c -m 644 ./www/Magick++/gm-188x120t.png /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
-/usr/bin/install -c -m 644 ./www/Magick++/index.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
-/usr/bin/install -c -m 644 ./www/Magick++/montage-sample-framed.jpg /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
-/usr/bin/install -c -m 644 ./www/Magick++/right_triangle.png /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
-/usr/bin/install -c -m 644 ./www/Magick++/thumbnail-anatomy-framed.jpg /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
-/usr/bin/install -c -m 644 ./www/Magick++/thumbnail-anatomy-plain.jpg /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
-/usr/bin/install -c -m 644 ./www/Magick++/thumbnail-sample-framed.jpg /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
-/usr/bin/install -c -m 644 ./www/Magick++/thumbnail-sample-plain.jpg /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
-libtool: finish: PATH="/usr/bin:/sbin" ldconfig -n /home/babu/BUILD/kglib/lib
+make[3]: Entering directory '/home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36'
+make[4]: Entering directory '/home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36'
+ /bin/mkdir -p '/home/kulina/BUILD/kglib/bin'
+ /bin/mkdir -p '/home/kulina/BUILD/kglib/lib/GraphicsMagick-1.3.36/config'
+ /bin/install -c magick/GraphicsMagick-config wand/GraphicsMagickWand-config '/home/kulina/BUILD/kglib/bin'
+ /bin/install -c -m 644 config/delegates.mgk config/type-ghostscript.mgk config/type.mgk config/type-solaris.mgk config/type-windows.mgk '/home/kulina/BUILD/kglib/lib/GraphicsMagick-1.3.36/config'
+ /bin/mkdir -p '/home/kulina/BUILD/kglib/share/GraphicsMagick-1.3.36/config'
+/bin/sh /home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36/config/install-sh -d /home/kulina/BUILD/kglib/include/GraphicsMagick/magick
+ /bin/install -c -m 644 config/colors.mgk config/log.mgk config/modules.mgk '/home/kulina/BUILD/kglib/share/GraphicsMagick-1.3.36/config'
+/bin/sh /home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36/config/install-sh -d /home/kulina/BUILD/kglib/share/doc/GraphicsMagick
+/bin/install -c -m 644 magick/magick_config_api.h /home/kulina/BUILD/kglib/include/GraphicsMagick/magick/magick_config.h
+ /bin/mkdir -p '/home/kulina/BUILD/kglib/share/doc/GraphicsMagick'
+ /bin/install -c -m 644 Copyright.txt ChangeLog ChangeLog.2019 ChangeLog.2018 ChangeLog.2017 ChangeLog.2016 ChangeLog.2015 ChangeLog.2014 ChangeLog.2013 ChangeLog.2012 ChangeLog.2011 ChangeLog.2010 ChangeLog.2009 ChangeLog.2008 ChangeLog.2007 ChangeLog.2006 ChangeLog.2005 ChangeLog.2004 ChangeLog.2003 ChangeLog.2002 ChangeLog.2001 NEWS.txt '/home/kulina/BUILD/kglib/share/doc/GraphicsMagick'
+ /bin/mkdir -p '/home/kulina/BUILD/kglib/include/GraphicsMagick/magick'
+/bin/install -c -m 644 ./www/ChangeLog-2001.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/ChangeLog-2002.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+ /bin/install -c -m 644 magick/api.h magick/analyze.h magick/attribute.h magick/average.h magick/blob.h magick/cdl.h magick/channel.h magick/color.h magick/color_lookup.h magick/colormap.h magick/colorspace.h magick/command.h magick/common.h magick/compare.h magick/composite.h magick/compress.h magick/confirm_access.h magick/constitute.h magick/decorate.h magick/delegate.h magick/describe.h magick/deprecate.h magick/draw.h magick/effect.h magick/enhance.h magick/enum_strings.h magick/error.h magick/forward.h magick/fx.h magick/gem.h magick/gradient.h magick/hclut.h magick/image.h magick/list.h magick/log.h magick/magic.h magick/magick.h magick/magick_types.h magick/memory.h magick/module.h '/home/kulina/BUILD/kglib/include/GraphicsMagick/magick'
+/bin/install -c -m 644 ./www/ChangeLog-2003.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/ChangeLog-2004.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/ChangeLog-2005.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+ /bin/install -c -m 644 magick/monitor.h magick/montage.h magick/operator.h magick/paint.h magick/pixel_cache.h magick/pixel_iterator.h magick/plasma.h magick/profile.h magick/quantize.h magick/random.h magick/registry.h magick/render.h magick/resize.h magick/resource.h magick/shear.h magick/signature.h magick/statistics.h magick/symbols.h magick/texture.h magick/timer.h magick/transform.h magick/type.h magick/utility.h magick/version.h '/home/kulina/BUILD/kglib/include/GraphicsMagick/magick'
+/bin/install -c -m 644 ./www/ChangeLog-2006.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/ChangeLog-2007.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/ChangeLog-2008.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/ChangeLog-2009.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/ChangeLog-2010.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/ChangeLog-2011.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/ChangeLog-2012.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/ChangeLog-2013.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/ChangeLog-2014.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/ChangeLog-2015.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/ChangeLog-2016.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+ /bin/mkdir -p '/home/kulina/BUILD/kglib/share/man/man1'
+/bin/install -c -m 644 ./www/ChangeLog-2017.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/ChangeLog-2018.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/ChangeLog-2019.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/Changelog.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+ /bin/install -c -m 644 magick/GraphicsMagick-config.1 utilities/gm.1 wand/GraphicsMagickWand-config.1 '/home/kulina/BUILD/kglib/share/man/man1'
+/bin/install -c -m 644 ./www/Changes.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/Copyright.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/FAQ.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/GraphicsMagick.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+ /bin/mkdir -p '/home/kulina/BUILD/kglib/share/man/man4'
+/bin/install -c -m 644 ./www/Hg.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/INSTALL-unix.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/INSTALL-windows.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/ImageMagickObject.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+ /bin/install -c -m 644 utilities/miff.4 '/home/kulina/BUILD/kglib/share/man/man4'
+/bin/install -c -m 644 ./www/NEWS.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/OpenMP.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/README.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+ /bin/mkdir -p '/home/kulina/BUILD/kglib/share/man/man5'
+/bin/install -c -m 644 ./www/animate.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/authors.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/batch.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/benchmark.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+ /bin/install -c -m 644 utilities/quantize.5 '/home/kulina/BUILD/kglib/share/man/man5'
+/bin/install -c -m 644 ./www/benchmarks.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/bugs.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/color.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/compare.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+ /bin/mkdir -p '/home/kulina/BUILD/kglib/lib/pkgconfig'
+/bin/install -c -m 644 ./www/composite.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/configure-target-setup.png /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+ /bin/install -c -m 644 magick/GraphicsMagick.pc wand/GraphicsMagickWand.pc '/home/kulina/BUILD/kglib/lib/pkgconfig'
+/bin/install -c -m 644 ./www/conjure.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/contribute.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/convert.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+ /bin/mkdir -p '/home/kulina/BUILD/kglib/include/GraphicsMagick/wand'
+/bin/install -c -m 644 ./www/display.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/docutils-api.css /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+ /bin/install -c -m 644 wand/drawing_wand.h wand/magick_wand.h wand/pixel_wand.h wand/wand_api.h wand/wand_symbols.h '/home/kulina/BUILD/kglib/include/GraphicsMagick/wand'
+/bin/install -c -m 644 ./www/docutils-articles.css /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/download.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/favicon.ico /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/formats.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/gm.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+ /bin/mkdir -p '/home/kulina/BUILD/kglib/lib'
+ /bin/sh ./libtool   --mode=install /bin/install -c   magick/libGraphicsMagick.la wand/libGraphicsMagickWand.la '/home/kulina/BUILD/kglib/lib'
+/bin/install -c -m 644 ./www/identify.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/import.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/index.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/links.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/magick.css /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/miff.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/mission.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/mogrify.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/montage.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/motion-picture.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/perl.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/process.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/programming.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/project.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/quantize.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/reference.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/security.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/smile.c /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/thanks.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/time.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/tools.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/utilities.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+/bin/install -c -m 644 ./www/version.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www
+libtool: install: /bin/install -c magick/.libs/libGraphicsMagick.lai /home/kulina/BUILD/kglib/lib/libGraphicsMagick.la
+libtool: install: /bin/install -c wand/.libs/libGraphicsMagickWand.lai /home/kulina/BUILD/kglib/lib/libGraphicsMagickWand.la
+libtool: install: /bin/install -c magick/.libs/libGraphicsMagick.a /home/kulina/BUILD/kglib/lib/libGraphicsMagick.a
+/bin/install -c -m 644 ./www/api/animate.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/annotate.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/api.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/attribute.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/average.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/blob.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+libtool: install: chmod 644 /home/kulina/BUILD/kglib/lib/libGraphicsMagick.a
+/bin/install -c -m 644 ./www/api/cdl.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+libtool: install: ranlib /home/kulina/BUILD/kglib/lib/libGraphicsMagick.a
+/bin/install -c -m 644 ./www/api/channel.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/color.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/colormap.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/compare.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/composite.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/confirm_access.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/constitute.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/decorate.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/deprecate.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/describe.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/display.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/draw.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/effect.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/enhance.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/error.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/export.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/fx.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/hclut.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/image.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/import.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/list.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/log.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/magick.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/memory.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/monitor.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/montage.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/operator.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/paint.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/pixel_cache.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/pixel_iterator.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/plasma.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/profile.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/quantize.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/registry.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/render.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/resize.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/resource.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/segment.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/shear.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/signature.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/statistics.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/texture.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/transform.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/types.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/api/widget.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/api
+/bin/install -c -m 644 ./www/images/ball.png /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/images
+/bin/install -c -m 644 ./www/images/banner_bg.png /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/images
+/bin/install -c -m 644 ./www/images/gm-107x76.gif /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/images
+/bin/install -c -m 644 ./www/images/gm-107x76.png /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/images
+/bin/install -c -m 644 ./www/images/gm-125x80t.png /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/images
+/bin/install -c -m 644 ./www/images/right_triangle.png /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/images
+/bin/install -c -m 644 ./www/images/right_triangle_option.png /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/images
+libtool: install: /bin/install -c wand/.libs/libGraphicsMagickWand.a /home/kulina/BUILD/kglib/lib/libGraphicsMagickWand.a
+libtool: install: chmod 644 /home/kulina/BUILD/kglib/lib/libGraphicsMagickWand.a
+libtool: install: ranlib /home/kulina/BUILD/kglib/lib/libGraphicsMagickWand.a
+/bin/install -c -m 644 ./www/Magick++/Blob.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
+/bin/install -c -m 644 ./www/Magick++/Cache.png /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
+/bin/install -c -m 644 ./www/Magick++/ChangeLog.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
+/bin/install -c -m 644 ./www/Magick++/CoderInfo.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
+/bin/install -c -m 644 ./www/Magick++/Color.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
+/bin/install -c -m 644 ./www/Magick++/Drawable.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
+/bin/install -c -m 644 ./www/Magick++/Drawable_example_1.png /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
+/bin/install -c -m 644 ./www/Magick++/Enumerations.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
+/bin/install -c -m 644 ./www/Magick++/Exception.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
+/bin/install -c -m 644 ./www/Magick++/FormatCharacters.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
+/bin/install -c -m 644 ./www/Magick++/Geometry.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
+/bin/install -c -m 644 ./www/Magick++/Image.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
+/bin/install -c -m 644 ./www/Magick++/Image.png /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
+/bin/install -c -m 644 ./www/Magick++/ImageDesign.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
+/bin/install -c -m 644 ./www/Magick++/Montage.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
+/bin/install -c -m 644 ./www/Magick++/PixelPacket.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
+/bin/install -c -m 644 ./www/Magick++/Pixels.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
+/bin/install -c -m 644 ./www/Magick++/STL.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
+/bin/install -c -m 644 ./www/Magick++/TypeMetric.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
+/bin/install -c -m 644 ./www/Magick++/gm-188x120t.png /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
+/bin/install -c -m 644 ./www/Magick++/index.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
+/bin/install -c -m 644 ./www/Magick++/montage-sample-framed.jpg /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
+/bin/install -c -m 644 ./www/Magick++/right_triangle.png /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
+/bin/install -c -m 644 ./www/Magick++/thumbnail-anatomy-framed.jpg /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
+/bin/install -c -m 644 ./www/Magick++/thumbnail-anatomy-plain.jpg /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
+/bin/install -c -m 644 ./www/Magick++/thumbnail-sample-framed.jpg /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
+/bin/install -c -m 644 ./www/Magick++/thumbnail-sample-plain.jpg /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/Magick++
+libtool: finish: PATH="/opt/rustc/bin:/bin:/opt/qt5/bin:/usr/bin:/sbin" ldconfig -n /home/kulina/BUILD/kglib/lib
 ----------------------------------------------------------------------
 Libraries have been installed in:
-   /home/babu/BUILD/kglib/lib
+   /home/kulina/BUILD/kglib/lib
 
 If you ever happen to want to link against installed libraries
 in a given directory, LIBDIR, you must either use libtool, and
@@ -215,13 +215,13 @@ flag during linking and do at least one of the following:
 See any operating system documentation about shared libraries for
 more information, such as the ld(1) and ld.so(8) manual pages.
 ----------------------------------------------------------------------
- /usr/bin/mkdir -p '/home/babu/BUILD/kglib/bin'
-  /bin/sh ./libtool   --mode=install /usr/bin/install -c utilities/gm '/home/babu/BUILD/kglib/bin'
-/usr/bin/install -c -m 644 ./www/wand/drawing_wand.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/wand
-/usr/bin/install -c -m 644 ./www/wand/magick_wand.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/wand
-/usr/bin/install -c -m 644 ./www/wand/pixel_wand.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/wand
-/usr/bin/install -c -m 644 ./www/wand/wand.html /home/babu/BUILD/kglib/share/doc/GraphicsMagick/www/wand
-libtool: install: /usr/bin/install -c utilities/gm /home/babu/BUILD/kglib/bin/gm
-make[4]: Leaving directory '/home/babu/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36'
-make[3]: Leaving directory '/home/babu/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36'
-make[2]: Leaving directory '/home/babu/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36'
+/bin/install -c -m 644 ./www/wand/drawing_wand.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/wand
+ /bin/mkdir -p '/home/kulina/BUILD/kglib/bin'
+/bin/install -c -m 644 ./www/wand/magick_wand.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/wand
+/bin/install -c -m 644 ./www/wand/pixel_wand.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/wand
+/bin/install -c -m 644 ./www/wand/wand.html /home/kulina/BUILD/kglib/share/doc/GraphicsMagick/www/wand
+  /bin/sh ./libtool   --mode=install /bin/install -c utilities/gm '/home/kulina/BUILD/kglib/bin'
+libtool: install: /bin/install -c utilities/gm /home/kulina/BUILD/kglib/bin/gm
+make[4]: Leaving directory '/home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36'
+make[3]: Leaving directory '/home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36'
+make[2]: Leaving directory '/home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36'

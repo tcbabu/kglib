@@ -21,22 +21,22 @@ fi
 while test $# -gt 0; do
   case $1 in
     --prefix)
-      echo /home/babu/BUILD/kglib
+      echo /home/kulina/BUILD/kglib
       ;;
     --exec-prefix)
-      echo /home/babu/BUILD/kglib
+      echo /home/kulina/BUILD/kglib
       ;;
     --version)
       echo 1.3.36
       ;;
     --cppflags)
-      echo '-I/home/babu/BUILD/kglib/include/GraphicsMagick'
+      echo '-I/home/kulina/BUILD/kglib/include/GraphicsMagick'
       ;;
     --cxxflags)
       echo ''
       ;;
     --ldflags)
-      echo '-L/home/babu/BUILD/kglib/lib -L/home/babu/BUILD/kglib/lib -L/home/babu/BUILD/kglib/lib'
+      echo '-L/home/kulina/BUILD/kglib/lib -L/home/kulina/BUILD/kglib/lib -L/home/kulina/BUILD/kglib/lib'
       ;;
     --libs)
       echo '-lGraphicsMagick++ -lGraphicsMagick -ltiff -lfreetype -ljasper -ljpeg -lpng16 -llzma -lbz2 -lz -lzstd -lm -lpthread'

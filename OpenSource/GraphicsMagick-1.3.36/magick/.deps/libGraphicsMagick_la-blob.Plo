@@ -112,9 +112,9 @@ magick/libGraphicsMagick_la-blob.lo: magick/blob.c \
  magick/magick_endian.h magick/module.h magick/module-private.h \
  magick/semaphore.h magick/tempfile.h magick/tempfile-private.h \
  magick/utility.h magick/utility-private.h \
- /home/babu/BUILD/kglib/include/zlib.h \
- /home/babu/BUILD/kglib/include/zconf.h \
- /home/babu/BUILD/kglib/include/bzlib.h
+ /home/kulina/BUILD/kglib/include/zlib.h \
+ /home/kulina/BUILD/kglib/include/zconf.h \
+ /home/kulina/BUILD/kglib/include/bzlib.h
 /usr/include/stdc-predef.h:
 magick/studio.h:
 magick/magick_config.h:
@@ -336,6 +336,6 @@ magick/tempfile.h:
 magick/tempfile-private.h:
 magick/utility.h:
 magick/utility-private.h:
-/home/babu/BUILD/kglib/include/zlib.h:
-/home/babu/BUILD/kglib/include/zconf.h:
-/home/babu/BUILD/kglib/include/bzlib.h:
+/home/kulina/BUILD/kglib/include/zlib.h:
+/home/kulina/BUILD/kglib/include/zconf.h:
+/home/kulina/BUILD/kglib/include/bzlib.h:

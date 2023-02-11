@@ -1,4 +1,4 @@
-prefix=/home/babu/BUILD/kglib
+prefix=/home/kulina/BUILD/kglib
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include/GraphicsMagick

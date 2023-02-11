@@ -20,13 +20,13 @@
 #define GM_BUILD_CC "gcc"
 
 /* CFLAGS used for C compilation */
-#define GM_BUILD_CFLAGS "-I/home/babu/BUILD/kglib/include -Wall"
+#define GM_BUILD_CFLAGS "-I/home/kulina/BUILD/kglib/include -Wall"
 
 /* arguments passed to configure */
-#define GM_BUILD_CONFIGURE_ARGS "./configure  '--prefix=/home/babu/BUILD/kglib' '--enable-static' '--without-magick-plus-plus' '--without-perl' '--without-lcms' '--without-lcms2' '--without-trio' '--without-wmf' '--without-xml' '--disable-openmp' '--with-threads' '--without-x' 'CFLAGS=-I/home/babu/BUILD/kglib/include' 'LDFLAGS=-L/home/babu/BUILD/kglib/lib' 'CPPFLAGS=-I/home/babu/BUILD/kglib/include' 'PKG_CONFIG_PATH=/home/babu/BUILD/kglib/lib/pkgconfig:/usr/X11R76/lib/pkgconfig'"
+#define GM_BUILD_CONFIGURE_ARGS "./configure  '--prefix=/home/kulina/BUILD/kglib' '--enable-static' '--without-magick-plus-plus' '--without-perl' '--without-lcms' '--without-lcms2' '--without-trio' '--without-wmf' '--without-xml' '--disable-openmp' '--with-threads' '--without-x' 'CFLAGS=-I/home/kulina/BUILD/kglib/include' 'LDFLAGS=-L/home/kulina/BUILD/kglib/lib' 'CPPFLAGS=-I/home/kulina/BUILD/kglib/include' 'PKG_CONFIG_PATH=/home/kulina/BUILD/kglib/lib/pkgconfig:/usr/X11R76/lib/pkgconfig'"
 
 /* CPPFLAGS used for preprocessing */
-#define GM_BUILD_CPPFLAGS "-I/home/babu/BUILD/kglib/include -I/home/babu/BUILD/kglib/include/freetype2"
+#define GM_BUILD_CPPFLAGS "-I/home/kulina/BUILD/kglib/include -I/home/kulina/BUILD/kglib/include/freetype2"
 
 /* C++ compiler used for compilation */
 #define GM_BUILD_CXX "g++"
@@ -38,7 +38,7 @@
 #define GM_BUILD_HOST "x86_64-pc-linux-gnu"
 
 /* LDFLAGS used for linking */
-#define GM_BUILD_LDFLAGS "-L/home/babu/BUILD/kglib/lib -L/home/babu/BUILD/kglib/lib"
+#define GM_BUILD_LDFLAGS "-L/home/kulina/BUILD/kglib/lib -L/home/kulina/BUILD/kglib/lib"
 
 /* LIBS used for linking */
 #define GM_BUILD_LIBS "-ltiff -lfreetype -ljasper -ljpeg -lpng16 -llzma -lbz2 -lz -lzstd -lm -lpthread"
@@ -503,43 +503,43 @@
 /* #undef MISSING_STD_IOS_BINARY */
 
 /* Directory where executables are installed. */
-#define MagickBinPath "/home/babu/BUILD/kglib/bin/"
+#define MagickBinPath "/home/kulina/BUILD/kglib/bin/"
 
 /* Location of coder modules */
-#define MagickCoderModulesPath "/home/babu/BUILD/kglib/lib/GraphicsMagick-1.3.36/modules-Q8/coders/"
+#define MagickCoderModulesPath "/home/kulina/BUILD/kglib/lib/GraphicsMagick-1.3.36/modules-Q8/coders/"
 
 /* Subdirectory of lib where coder modules are installed */
 #define MagickCoderModulesSubdir "GraphicsMagick-1.3.36/modules-Q8/coders"
 
 /* Location of filter modules */
-#define MagickFilterModulesPath "/home/babu/BUILD/kglib/lib/GraphicsMagick-1.3.36/modules-Q8/filters/"
+#define MagickFilterModulesPath "/home/kulina/BUILD/kglib/lib/GraphicsMagick-1.3.36/modules-Q8/filters/"
 
 /* Subdirectory of lib where filter modules are installed */
 #define MagickFilterModulesSubdir "GraphicsMagick-1.3.36/modules-Q8/filters"
 
 /* Directory where architecture-dependent configuration files live. */
-#define MagickLibConfigPath "/home/babu/BUILD/kglib/lib/GraphicsMagick-1.3.36/config/"
+#define MagickLibConfigPath "/home/kulina/BUILD/kglib/lib/GraphicsMagick-1.3.36/config/"
 
 /* Subdirectory of lib where architecture-dependent configuration files live.
    */
 #define MagickLibConfigSubDir "GraphicsMagick-1.3.36/config"
 
 /* Directory where architecture-dependent files live. */
-#define MagickLibPath "/home/babu/BUILD/kglib/lib/GraphicsMagick-1.3.36/"
+#define MagickLibPath "/home/kulina/BUILD/kglib/lib/GraphicsMagick-1.3.36/"
 
 /* Subdirectory of lib where GraphicsMagick architecture dependent files are
    installed */
 #define MagickLibSubdir "GraphicsMagick-1.3.36"
 
 /* Directory where architecture-independent configuration files live. */
-#define MagickShareConfigPath "/home/babu/BUILD/kglib/share/GraphicsMagick-1.3.36/config/"
+#define MagickShareConfigPath "/home/kulina/BUILD/kglib/share/GraphicsMagick-1.3.36/config/"
 
 /* Subdirectory of lib where architecture-independent configuration files
    live. */
 #define MagickShareConfigSubDir "GraphicsMagick-1.3.36/config"
 
 /* Directory where architecture-independent files live. */
-#define MagickSharePath "/home/babu/BUILD/kglib/share/GraphicsMagick-1.3.36/"
+#define MagickSharePath "/home/kulina/BUILD/kglib/share/GraphicsMagick-1.3.36/"
 
 /* Define to the address where bug reports for this package should be sent. */
 #define PACKAGE_BUGREPORT ""

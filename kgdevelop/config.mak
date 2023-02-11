@@ -1,2 +1,2 @@
 PREFIX=/usr
-KULINA=/home/babu/BUILD/kglib
+KULINA=/home/kulina/BUILD/kglib

@@ -14,16 +14,16 @@
 use ExtUtils::MakeMaker;
 use Config;
 
-my $magick_CPPFLAGS='-I/home/babu/BUILD/kglib/include -I/home/babu/BUILD/kglib/include/freetype2';
+my $magick_CPPFLAGS='-I/home/kulina/BUILD/kglib/include -I/home/kulina/BUILD/kglib/include/freetype2';
 my $magick_DEFS=' -D_LARGE_FILES=1 -DHAVE_CONFIG_H';
-my $magick_CFLAGS='-I/home/babu/BUILD/kglib/include -Wall';
+my $magick_CFLAGS='-I/home/kulina/BUILD/kglib/include -Wall';
 my $magick_CC='gcc';
-my $magick_CPPFLAGS='-I../ -I.. -I/home/babu/BUILD/kglib/include -I/home/babu/BUILD/kglib/include/freetype2';
-my $magick_LDFLAGS='-L/home/babu/BUILD/kglib/lib -L/home/babu/BUILD/kglib/lib';
-my $magick_BIN_DIR="$ENV{'DESTDIR'}/home/babu/BUILD/kglib/bin";
+my $magick_CPPFLAGS='-I../ -I.. -I/home/kulina/BUILD/kglib/include -I/home/kulina/BUILD/kglib/include/freetype2';
+my $magick_LDFLAGS='-L/home/kulina/BUILD/kglib/lib -L/home/kulina/BUILD/kglib/lib';
+my $magick_BIN_DIR="$ENV{'DESTDIR'}/home/kulina/BUILD/kglib/bin";
 my $magick_API_LIBS='-lGraphicsMagick -ltiff -lfreetype -ljasper -ljpeg -lpng16 -llzma -lbz2 -lz -lzstd -lm -lpthread';
 my $magick_PERLMAINCC='';
-my $magick_LIB_DIR="$ENV{'DESTDIR'}/home/babu/BUILD/kglib/lib";
+my $magick_LIB_DIR="$ENV{'DESTDIR'}/home/kulina/BUILD/kglib/lib";
 
 # Compute test specification
 my $delegate_tests='t/*.t';
@@ -90,7 +90,7 @@ WriteMakefile
    'PERLMAINCC' => $magick_PERLMAINCC,
 
    # Set Perl installation prefix to GraphicsMagick installation prefix
-#   'PREFIX'    => '/home/babu/BUILD/kglib',
+#   'PREFIX'    => '/home/kulina/BUILD/kglib',
 
    # Include delegate directories in tests
    test         => { TESTS      =>      $delegate_tests},
@@ -112,7 +112,7 @@ sub MY::makeaperl {
      # tries to insert our library path first. Also, use the same compiler used
      # to build perlmain.c to link so that a C++ compiler may be used if
      # necessary.
-     $inherited =~ s:MAP_LINKCMD\s.*\s*\$\(CC\):MAP_LINKCMD   = \$(PERLMAINCC) -L/home/babu/BUILD/kglib/lib: ;
+     $inherited =~ s:MAP_LINKCMD\s.*\s*\$\(CC\):MAP_LINKCMD   = \$(PERLMAINCC) -L/home/kulina/BUILD/kglib/lib: ;
      $inherited;
  }
 

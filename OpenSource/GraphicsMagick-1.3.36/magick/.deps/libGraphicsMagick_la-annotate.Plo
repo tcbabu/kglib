@@ -112,22 +112,22 @@ magick/libGraphicsMagick_la-annotate.lo: magick/annotate.c \
  magick/type-private.h magick/render-private.h magick/tempfile.h \
  magick/tempfile-private.h magick/transform.h magick/utility.h \
  magick/utility-private.h magick/xwindow.h \
- /home/babu/BUILD/kglib/include/ft2build.h \
- /home/babu/BUILD/kglib/include/freetype2/freetype/config/ftheader.h \
- /home/babu/BUILD/kglib/include/freetype2/freetype/freetype.h \
- /home/babu/BUILD/kglib/include/freetype2/freetype/config/ftconfig.h \
- /home/babu/BUILD/kglib/include/freetype2/freetype/config/ftoption.h \
- /home/babu/BUILD/kglib/include/freetype2/freetype/config/ftstdlib.h \
+ /home/kulina/BUILD/kglib/include/ft2build.h \
+ /home/kulina/BUILD/kglib/include/freetype2/freetype/config/ftheader.h \
+ /home/kulina/BUILD/kglib/include/freetype2/freetype/freetype.h \
+ /home/kulina/BUILD/kglib/include/freetype2/freetype/config/ftconfig.h \
+ /home/kulina/BUILD/kglib/include/freetype2/freetype/config/ftoption.h \
+ /home/kulina/BUILD/kglib/include/freetype2/freetype/config/ftstdlib.h \
  /usr/include/setjmp.h \
- /home/babu/BUILD/kglib/include/freetype2/freetype/fterrors.h \
- /home/babu/BUILD/kglib/include/freetype2/freetype/ftmoderr.h \
- /home/babu/BUILD/kglib/include/freetype2/freetype/fterrdef.h \
- /home/babu/BUILD/kglib/include/freetype2/freetype/fttypes.h \
- /home/babu/BUILD/kglib/include/freetype2/freetype/ftsystem.h \
- /home/babu/BUILD/kglib/include/freetype2/freetype/ftimage.h \
- /home/babu/BUILD/kglib/include/freetype2/freetype/ftglyph.h \
- /home/babu/BUILD/kglib/include/freetype2/freetype/ftoutln.h \
- /home/babu/BUILD/kglib/include/freetype2/freetype/ftbbox.h
+ /home/kulina/BUILD/kglib/include/freetype2/freetype/fterrors.h \
+ /home/kulina/BUILD/kglib/include/freetype2/freetype/ftmoderr.h \
+ /home/kulina/BUILD/kglib/include/freetype2/freetype/fterrdef.h \
+ /home/kulina/BUILD/kglib/include/freetype2/freetype/fttypes.h \
+ /home/kulina/BUILD/kglib/include/freetype2/freetype/ftsystem.h \
+ /home/kulina/BUILD/kglib/include/freetype2/freetype/ftimage.h \
+ /home/kulina/BUILD/kglib/include/freetype2/freetype/ftglyph.h \
+ /home/kulina/BUILD/kglib/include/freetype2/freetype/ftoutln.h \
+ /home/kulina/BUILD/kglib/include/freetype2/freetype/ftbbox.h
 /usr/include/stdc-predef.h:
 magick/studio.h:
 magick/magick_config.h:
@@ -347,19 +347,19 @@ magick/transform.h:
 magick/utility.h:
 magick/utility-private.h:
 magick/xwindow.h:
-/home/babu/BUILD/kglib/include/ft2build.h:
-/home/babu/BUILD/kglib/include/freetype2/freetype/config/ftheader.h:
-/home/babu/BUILD/kglib/include/freetype2/freetype/freetype.h:
-/home/babu/BUILD/kglib/include/freetype2/freetype/config/ftconfig.h:
-/home/babu/BUILD/kglib/include/freetype2/freetype/config/ftoption.h:
-/home/babu/BUILD/kglib/include/freetype2/freetype/config/ftstdlib.h:
+/home/kulina/BUILD/kglib/include/ft2build.h:
+/home/kulina/BUILD/kglib/include/freetype2/freetype/config/ftheader.h:
+/home/kulina/BUILD/kglib/include/freetype2/freetype/freetype.h:
+/home/kulina/BUILD/kglib/include/freetype2/freetype/config/ftconfig.h:
+/home/kulina/BUILD/kglib/include/freetype2/freetype/config/ftoption.h:
+/home/kulina/BUILD/kglib/include/freetype2/freetype/config/ftstdlib.h:
 /usr/include/setjmp.h:
-/home/babu/BUILD/kglib/include/freetype2/freetype/fterrors.h:
-/home/babu/BUILD/kglib/include/freetype2/freetype/ftmoderr.h:
-/home/babu/BUILD/kglib/include/freetype2/freetype/fterrdef.h:
-/home/babu/BUILD/kglib/include/freetype2/freetype/fttypes.h:
-/home/babu/BUILD/kglib/include/freetype2/freetype/ftsystem.h:
-/home/babu/BUILD/kglib/include/freetype2/freetype/ftimage.h:
-/home/babu/BUILD/kglib/include/freetype2/freetype/ftglyph.h:
-/home/babu/BUILD/kglib/include/freetype2/freetype/ftoutln.h:
-/home/babu/BUILD/kglib/include/freetype2/freetype/ftbbox.h:
+/home/kulina/BUILD/kglib/include/freetype2/freetype/fterrors.h:
+/home/kulina/BUILD/kglib/include/freetype2/freetype/ftmoderr.h:
+/home/kulina/BUILD/kglib/include/freetype2/freetype/fterrdef.h:
+/home/kulina/BUILD/kglib/include/freetype2/freetype/fttypes.h:
+/home/kulina/BUILD/kglib/include/freetype2/freetype/ftsystem.h:
+/home/kulina/BUILD/kglib/include/freetype2/freetype/ftimage.h:
+/home/kulina/BUILD/kglib/include/freetype2/freetype/ftglyph.h:
+/home/kulina/BUILD/kglib/include/freetype2/freetype/ftoutln.h:
+/home/kulina/BUILD/kglib/include/freetype2/freetype/ftbbox.h:

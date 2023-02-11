@@ -113,13 +113,13 @@ coders/magick_libGraphicsMagick_la-ps3.lo: coders/ps3.c \
  magick/magick.h magick/magick-private.h magick/map.h magick/monitor.h \
  magick/monitor-private.h magick/tempfile.h magick/tempfile-private.h \
  magick/utility.h magick/utility-private.h magick/version.h \
- /home/babu/BUILD/kglib/include/tiffconf.h \
- /home/babu/BUILD/kglib/include/tiffio.h \
- /home/babu/BUILD/kglib/include/tiff.h \
- /home/babu/BUILD/kglib/include/tiffconf.h \
- /home/babu/BUILD/kglib/include/tiffvers.h \
- /home/babu/BUILD/kglib/include/zlib.h \
- /home/babu/BUILD/kglib/include/zconf.h
+ /home/kulina/BUILD/kglib/include/tiffconf.h \
+ /home/kulina/BUILD/kglib/include/tiffio.h \
+ /home/kulina/BUILD/kglib/include/tiff.h \
+ /home/kulina/BUILD/kglib/include/tiffconf.h \
+ /home/kulina/BUILD/kglib/include/tiffvers.h \
+ /home/kulina/BUILD/kglib/include/zlib.h \
+ /home/kulina/BUILD/kglib/include/zconf.h
 /usr/include/stdc-predef.h:
 magick/studio.h:
 magick/magick_config.h:
@@ -346,10 +346,10 @@ magick/tempfile-private.h:
 magick/utility.h:
 magick/utility-private.h:
 magick/version.h:
-/home/babu/BUILD/kglib/include/tiffconf.h:
-/home/babu/BUILD/kglib/include/tiffio.h:
-/home/babu/BUILD/kglib/include/tiff.h:
-/home/babu/BUILD/kglib/include/tiffconf.h:
-/home/babu/BUILD/kglib/include/tiffvers.h:
-/home/babu/BUILD/kglib/include/zlib.h:
-/home/babu/BUILD/kglib/include/zconf.h:
+/home/kulina/BUILD/kglib/include/tiffconf.h:
+/home/kulina/BUILD/kglib/include/tiffio.h:
+/home/kulina/BUILD/kglib/include/tiff.h:
+/home/kulina/BUILD/kglib/include/tiffconf.h:
+/home/kulina/BUILD/kglib/include/tiffvers.h:
+/home/kulina/BUILD/kglib/include/zlib.h:
+/home/kulina/BUILD/kglib/include/zconf.h:
