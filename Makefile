@@ -55,9 +55,22 @@ install	: kgdevelop/kgdevelop lib/libkulina.a lib/libgm.a
 	  install -m 755 lib/libkulina.a $(PREFIX)/lib
 	  install -m 755 lib/libgm.a $(PREFIX)/lib
 	  install -m 755 include/kulina.h $(PREFIX)/include
+
+tarball	: usr/bin/kgdevelop
+	  install -m 755  usr/bin/kgdevelop TARBALL/
+	  install -m 755  usr/lib/libkulina.a TARBALL/
+	  install -m 755  usr/lib/libgm.a TARBALL/
+	  install -m 755  usr/include/kulina.h  TARBALL/
+	  mv TARBALL kulinagraphics
+	  tar czf kulinagraphics.tgz  kulinagraphics
+	  mv kulinagraphics TARBALL
+	  rm -f TARBALL/kgdevelop
+	  rm -f TARBALL/libkulina.a
+	  rm -f TARBALL/libgm.a
+	  rm -f TARBALL/kulina.h
 clean	:
 	 rm -rf lib/* share/* bin/* man/* include/*
 	$(MAKE) -C OpenSource clean
 	$(MAKE) -C kglib clean
 	$(MAKE) -C kgdevelop clean
-	rm -f  TARBALL/kulina.h TARBALL/libgm.a TARBALL/kgdevelop TARBALL/libkulina.a
+	rm -f  TARBALL/kulina.h TARBALL/libgm.a TARBALL/kgdevelop TARBALL/libkulina.a kulinagraphics.tgz
