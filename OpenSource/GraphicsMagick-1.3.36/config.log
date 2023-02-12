@@ -635,7 +635,7 @@ configure:14644: checking how to hardcode library paths into programs
 configure:14669: result: immediate
 configure:14771: checking for shl_load
 configure:14771: gcc -o conftest  -I/home/kulina/BUILD/kglib/include -Wall  -I/home/kulina/BUILD/kglib/include -L/home/kulina/BUILD/kglib/lib conftest.c  >&5
-/bin/ld: /tmp/ccFvncFo.o: in function `main':
+/bin/ld: /tmp/ccveYf1f.o: in function `main':
 conftest.c:(.text+0xa): undefined reference to `shl_load'
 collect2: error: ld returned 1 exit status
 configure:14771: $? = 1
@@ -775,7 +775,7 @@ configure:15054: $? = 0
 configure:15072: result: yes
 configure:15077: checking whether a statically linked program can dlopen itself
 configure:15157: gcc -o conftest  -I/home/kulina/BUILD/kglib/include -Wall  -I/home/kulina/BUILD/kglib/include -DHAVE_DLFCN_H -L/home/kulina/BUILD/kglib/lib -Wl,--export-dynamic -static conftest.c   >&5
-/bin/ld: /tmp/ccFAZnhd.o: in function `main':
+/bin/ld: /tmp/ccgwhGhg.o: in function `main':
 conftest.c:(.text+0x1e): warning: Using 'dlopen' in statically linked applications requires at runtime the shared libraries from the glibc version used for linking
 configure:15160: $? = 0
 conftest: undefined symbol: _fnord
@@ -4330,7 +4330,7 @@ configure:28034: $? = 0
 configure:28034: result: yes
 configure:28034: checking for CryptGenRandom
 configure:28034: gcc -o conftest  -I/home/kulina/BUILD/kglib/include -Wall  -I/home/kulina/BUILD/kglib/include -I/home/kulina/BUILD/kglib/include/freetype2 -L/home/kulina/BUILD/kglib/lib -L/home/kulina/BUILD/kglib/lib conftest.c -ltiff -lfreetype -ljasper -ljpeg -lpng16 -lzstd -llzma -lbz2 -lz -lm  -lpthread >&5
-/bin/ld: /tmp/cc6lfN61.o: in function `main':
+/bin/ld: /tmp/cceQsG0h.o: in function `main':
 conftest.c:(.text+0xa): undefined reference to `CryptGenRandom'
 collect2: error: ld returned 1 exit status
 configure:28034: $? = 1
@@ -4514,7 +4514,7 @@ configure:28034: $? = 0
 configure:28034: result: yes
 configure:28034: checking for getexecname
 configure:28034: gcc -o conftest  -I/home/kulina/BUILD/kglib/include -Wall  -I/home/kulina/BUILD/kglib/include -I/home/kulina/BUILD/kglib/include/freetype2 -L/home/kulina/BUILD/kglib/lib -L/home/kulina/BUILD/kglib/lib conftest.c -ltiff -lfreetype -ljasper -ljpeg -lpng16 -lzstd -llzma -lbz2 -lz -lm  -lpthread >&5
-/bin/ld: /tmp/ccCZJOXZ.o: in function `main':
+/bin/ld: /tmp/ccHsRNr8.o: in function `main':
 conftest.c:(.text+0xa): undefined reference to `getexecname'
 collect2: error: ld returned 1 exit status
 configure:28034: $? = 1
@@ -4674,7 +4674,7 @@ configure:28034: $? = 0
 configure:28034: result: yes
 configure:28034: checking for lltostr
 configure:28034: gcc -o conftest  -I/home/kulina/BUILD/kglib/include -Wall  -I/home/kulina/BUILD/kglib/include -I/home/kulina/BUILD/kglib/include/freetype2 -L/home/kulina/BUILD/kglib/lib -L/home/kulina/BUILD/kglib/lib conftest.c -ltiff -lfreetype -ljasper -ljpeg -lpng16 -lzstd -llzma -lbz2 -lz -lm  -lpthread >&5
-/bin/ld: /tmp/ccroy62Z.o: in function `main':
+/bin/ld: /tmp/cc16AEGN.o: in function `main':
 conftest.c:(.text+0xa): undefined reference to `lltostr'
 collect2: error: ld returned 1 exit status
 configure:28034: $? = 1
@@ -4839,7 +4839,7 @@ configure:28034: $? = 0
 configure:28034: result: yes
 configure:28034: checking for _NSGetExecutablePath
 configure:28034: gcc -o conftest  -I/home/kulina/BUILD/kglib/include -Wall  -I/home/kulina/BUILD/kglib/include -I/home/kulina/BUILD/kglib/include/freetype2 -L/home/kulina/BUILD/kglib/lib -L/home/kulina/BUILD/kglib/lib conftest.c -ltiff -lfreetype -ljasper -ljpeg -lpng16 -lzstd -llzma -lbz2 -lz -lm  -lpthread >&5
-/bin/ld: /tmp/ccUAYM9z.o: in function `main':
+/bin/ld: /tmp/cced9Bbp.o: in function `main':
 conftest.c:(.text+0xa): undefined reference to `_NSGetExecutablePath'
 collect2: error: ld returned 1 exit status
 configure:28034: $? = 1
@@ -4989,7 +4989,7 @@ configure: failed program was:
 configure:28034: result: no
 configure:28034: checking for _pclose
 configure:28034: gcc -o conftest  -I/home/kulina/BUILD/kglib/include -Wall  -I/home/kulina/BUILD/kglib/include -I/home/kulina/BUILD/kglib/include/freetype2 -L/home/kulina/BUILD/kglib/lib -L/home/kulina/BUILD/kglib/lib conftest.c -ltiff -lfreetype -ljasper -ljpeg -lpng16 -lzstd -llzma -lbz2 -lz -lm  -lpthread >&5
-/bin/ld: /tmp/ccQ1ROBm.o: in function `main':
+/bin/ld: /tmp/ccOM3hAK.o: in function `main':
 conftest.c:(.text+0xa): undefined reference to `_pclose'
 collect2: error: ld returned 1 exit status
 configure:28034: $? = 1
@@ -5147,7 +5147,7 @@ configure:28034: $? = 0
 configure:28034: result: yes
 configure:28034: checking for _popen
 configure:28034: gcc -o conftest  -I/home/kulina/BUILD/kglib/include -Wall  -I/home/kulina/BUILD/kglib/include -I/home/kulina/BUILD/kglib/include/freetype2 -L/home/kulina/BUILD/kglib/lib -L/home/kulina/BUILD/kglib/lib conftest.c -ltiff -lfreetype -ljasper -ljpeg -lpng16 -lzstd -llzma -lbz2 -lz -lm  -lpthread >&5
-/bin/ld: /tmp/ccqKihDx.o: in function `main':
+/bin/ld: /tmp/cc6YCBvR.o: in function `main':
 conftest.c:(.text+0xa): undefined reference to `_popen'
 collect2: error: ld returned 1 exit status
 configure:28034: $? = 1
@@ -5391,7 +5391,7 @@ configure:28034: $? = 0
 configure:28034: result: yes
 configure:28034: checking for spawnvp
 configure:28034: gcc -o conftest  -I/home/kulina/BUILD/kglib/include -Wall  -I/home/kulina/BUILD/kglib/include -I/home/kulina/BUILD/kglib/include/freetype2 -L/home/kulina/BUILD/kglib/lib -L/home/kulina/BUILD/kglib/lib conftest.c -ltiff -lfreetype -ljasper -ljpeg -lpng16 -lzstd -llzma -lbz2 -lz -lm  -lpthread >&5
-/bin/ld: /tmp/ccqQi2XO.o: in function `main':
+/bin/ld: /tmp/cceLJc8M.o: in function `main':
 conftest.c:(.text+0xa): undefined reference to `spawnvp'
 collect2: error: ld returned 1 exit status
 configure:28034: $? = 1
@@ -5571,7 +5571,7 @@ configure:28034: $? = 0
 configure:28034: result: yes
 configure:28034: checking for strlcat
 configure:28034: gcc -o conftest  -I/home/kulina/BUILD/kglib/include -Wall  -I/home/kulina/BUILD/kglib/include -I/home/kulina/BUILD/kglib/include/freetype2 -L/home/kulina/BUILD/kglib/lib -L/home/kulina/BUILD/kglib/lib conftest.c -ltiff -lfreetype -ljasper -ljpeg -lpng16 -lzstd -llzma -lbz2 -lz -lm  -lpthread >&5
-/bin/ld: /tmp/ccidMKyG.o: in function `main':
+/bin/ld: /tmp/ccYI3Xht.o: in function `main':
 conftest.c:(.text+0xa): undefined reference to `strlcat'
 collect2: error: ld returned 1 exit status
 configure:28034: $? = 1
@@ -5745,7 +5745,7 @@ configure: failed program was:
 configure:28034: result: no
 configure:28034: checking for strlcpy
 configure:28034: gcc -o conftest  -I/home/kulina/BUILD/kglib/include -Wall  -I/home/kulina/BUILD/kglib/include -I/home/kulina/BUILD/kglib/include/freetype2 -L/home/kulina/BUILD/kglib/lib -L/home/kulina/BUILD/kglib/lib conftest.c -ltiff -lfreetype -ljasper -ljpeg -lpng16 -lzstd -llzma -lbz2 -lz -lm  -lpthread >&5
-/bin/ld: /tmp/ccWzWLMt.o: in function `main':
+/bin/ld: /tmp/ccH4Iqp4.o: in function `main':
 conftest.c:(.text+0xa): undefined reference to `strlcpy'
 collect2: error: ld returned 1 exit status
 configure:28034: $? = 1
@@ -5945,7 +5945,7 @@ configure:28034: $? = 0
 configure:28034: result: yes
 configure:28034: checking for ulltostr
 configure:28034: gcc -o conftest  -I/home/kulina/BUILD/kglib/include -Wall  -I/home/kulina/BUILD/kglib/include -I/home/kulina/BUILD/kglib/include/freetype2 -L/home/kulina/BUILD/kglib/lib -L/home/kulina/BUILD/kglib/lib conftest.c -ltiff -lfreetype -ljasper -ljpeg -lpng16 -lzstd -llzma -lbz2 -lz -lm  -lpthread >&5
-/bin/ld: /tmp/ccPFRRhV.o: in function `main':
+/bin/ld: /tmp/cc4eCiSe.o: in function `main':
 conftest.c:(.text+0xa): undefined reference to `ulltostr'
 collect2: error: ld returned 1 exit status
 configure:28034: $? = 1
@@ -6280,8 +6280,8 @@ config.status:1762: magick/magick_config_api.h is unchanged
 config.status:1810: executing depfiles commands
 config.status:1887: cd .       && sed -e '/# am--include-marker/d' Makefile         | make -f - am--depfiles
 make[2]: Entering directory '/home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36'
-/tmp/GmoFdrfv:10749: warning: overriding recipe for target 'PerlMagick/Magick.pm'
-/tmp/GmoFdrfv:4935: warning: ignoring old recipe for target 'PerlMagick/Magick.pm'
+/tmp/Gmizp8oI:10749: warning: overriding recipe for target 'PerlMagick/Magick.pm'
+/tmp/Gmizp8oI:4935: warning: ignoring old recipe for target 'PerlMagick/Magick.pm'
 make[2]: Nothing to be done for 'am--depfiles'.
 make[2]: Leaving directory '/home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36'
 config.status:1892: $? = 0

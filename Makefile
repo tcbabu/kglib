@@ -47,17 +47,17 @@ lib/libgm.a	: $(GMFILES)
 	$(MAKE) -C OpenSource 
 	$(MAKE) -C OpenSource install
 kgdevelop/kgdevelop	: lib/libgm.a lib/libkulina.a $(KGDEVELOPFILES)
-	echo "PREFIX=$(PREFIX)">kgdevelop/config.mak
+	echo "PREFIX=$(PWD)">kgdevelop/config.mak
 	echo "KULINA=$(PWD)">>kgdevelop/config.mak
 	$(MAKE) -C kgdevelop
 	$(MAKE) -C kgdevelop install
 
-install	: kgdevelop/kgdevelop lib/libkulina.a lib/libgm.a
-	  install -m 755 bin/kgdevelop
-	  install -m 755 lib/libkulina.a $(PREFIX)/lib
-	  install -m 755 lib/libkulina.a $(PREFIX)/lib
-	  install -m 755 lib/libgm.a $(PREFIX)/lib
-	  install -m 755 include/kulina.h $(PREFIX)/include
+install	: bin/kgdevelop lib/libkulina.a lib/libgm.a
+	  install -m 755 bin/kgdevelop   /usr/bin
+	  install -m 755 lib/libkulina.a /usr/lib
+	  install -m 755 lib/libkulina.a /usr/lib
+	  install -m 755 lib/libgm.a /usr/lib
+	  install -m 755 include/kulina.h /usr/include
 
 tarball	: bin/kgdevelop
 	  install -m 755  bin/kgdevelop TARBALL/
