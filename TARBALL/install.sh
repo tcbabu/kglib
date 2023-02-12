@@ -1,5 +1,5 @@
 #!/bin/bash
-  install -m 755  usr/bin/kgdevelop /usr/bin
-  install -m 755  usr/lib/libkulina.a /usr/lib/
-  install -m 755  usr/lib/libgm.a     /usr/lib/
-  install -m 755  usr/include/kulina.h /usr/include/
+  install -m 755  kgdevelop /usr/bin
+  install -m 644  libkulina.a /usr/lib/
+  install -m 644  libgm.a     /usr/lib/
+  install -m 644  kulina.h /usr/include/

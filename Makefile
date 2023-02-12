@@ -50,17 +50,20 @@ kgdevelop/kgdevelop	: lib/libgm.a lib/libkulina.a $(KGDEVELOPFILES)
 	echo "PREFIX=$(PREFIX)">kgdevelop/config.mak
 	echo "KULINA=$(PWD)">>kgdevelop/config.mak
 	$(MAKE) -C kgdevelop
+	$(MAKE) -C kgdevelop install
+
 install	: kgdevelop/kgdevelop lib/libkulina.a lib/libgm.a
-	  $(MAKE) -C kgdevelop install
+	  install -m 755 bin/kgdevelop
+	  install -m 755 lib/libkulina.a $(PREFIX)/lib
 	  install -m 755 lib/libkulina.a $(PREFIX)/lib
 	  install -m 755 lib/libgm.a $(PREFIX)/lib
 	  install -m 755 include/kulina.h $(PREFIX)/include
 
-tarball	: usr/bin/kgdevelop
-	  install -m 755  usr/bin/kgdevelop TARBALL/
-	  install -m 755  usr/lib/libkulina.a TARBALL/
-	  install -m 755  usr/lib/libgm.a TARBALL/
-	  install -m 755  usr/include/kulina.h  TARBALL/
+tarball	: bin/kgdevelop
+	  install -m 755  bin/kgdevelop TARBALL/
+	  install -m 755  lib/libkulina.a TARBALL/
+	  install -m 755  lib/libgm.a TARBALL/
+	  install -m 755  include/kulina.h  TARBALL/
 	  mv TARBALL kulinagraphics
 	  tar czf kulinagraphics.tgz  kulinagraphics
 	  mv kulinagraphics TARBALL
