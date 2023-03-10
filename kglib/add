@@ -1,42 +1,39 @@
-void kgModifyTextWidget(void *Tmp,int ch) {
-/*
-   it should behave like a
-   key event with a character 'ch'
-   Useful for onscreen keyboard widget
-*/
-    int i,code;
-    DIALOG *D;
-    DIT *T;
-    D= (DIALOG *)Tmp;
-    if(D->InputWid < 0) return;
-    i = D->InputWid;
-    code = D->d[i].t->code;
-    switch(code) {
-      case 't':
-       df = KeyReleaseInTextBox((TX_STR *)(D->d[i].t->tstr),kbevent);
-       if(df >= 0) {
-          if( _ui_readtextbox((TX_STR *)(D->d[i].t->tstr)) < 0) {
-             gprintf(D,"Error in Text box data");
-          }
-          else {
-           Up_D_Tx_Table(0,i,D);
-          }
-       }
-       break;
-      case 'T':
-       df = KeyReleaseInTableBox((TX_STR *)(D->d[i].t->tstr),kbevent);
-       if(df != -1) {
-          if( _ui_readtextbox((TX_STR *)(D->d[i].t->tstr)) < 0) {
-             gprintf(D,"Error in Table box data");
-          }
-          else {
-           Up_D_Table(df,i,D);
-          }
-       }
-       break;
-      default:
-       break;
-   }
-   kgUpdateOn(D);
-   return;
-}
+    DIALOG *D= (DIALOG *)Tmp;
+    kgWC *wc;
+    XEvent res;			/* response to event */
+    Window win;
+    Atom pty,target,prop,sel;
+    Atom prop_type;
+    int prop_format,count=0;
+    unsigned long prop_size, prop_items;
+
+    wc = WC(D);
+    unsigned long len;
+    unsigned char *txt;
+    target = XA_STRING;
+    sel = evt.xselectionrequest.selection;
+    if (evt.type != SelectionRequest) return (0);
+    win = evt.xselectionrequest.requestor;
+    pty = evt.xselectionrequest.property;
+    prop=None;
+    if(sel==XA_PRIMARY) {
+//      printf("pty is Primary\n");
+      prop = XInternAtom(wc->Dsp, "XPRI_IN", True);
+    }
+    else {
+//     printf("pty is Clipboard\n");
+     prop = XInternAtom(wc->Dsp, "XCLIP_IN", True);
+    }
+    XGetWindowProperty(wc->Dsp, wc->Win, prop, 0, 0, False,
+                           AnyPropertyType, &prop_type,
+                          &prop_format,
+                           &prop_items, &prop_size, &txt);
+   XFree(txt);
+   txt=NULL;
+   len = prop_size;
+//   printf("len = %d\n",len);
+   XGetWindowProperty(wc->Dsp, wc->Win, prop, 0, len, False,
+                           AnyPropertyType, &prop_type,
+                          &prop_format,
+                           &prop_items, &prop_size, &txt);
+
