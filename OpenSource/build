@@ -104,7 +104,7 @@ echo "tiff"
 echo " Entering Graphic Magic"
 tar xf GraphicsMagick-1.3.36.tar.bz2 >out
 cd GraphicsMagick-1.3.36 >out
-./configure --prefix=$KULINA --enable-static  --without-magick-plus-plus --without-perl   --without-lcms --without-lcms2 --without-trio --without-wmf --without-xml  --disable-openmp --with-threads --without-x >out
+./configure --prefix=$KULINA --enable-static  --without-magick-plus-plus --without-perl   --without-lcms --without-lcms2 --without-trio --without-wmf --without-xml  --disable-openmp --with-threads --without-x --without-webp>out
 make -j2  >out
 make -j2 install >out
 cd ..

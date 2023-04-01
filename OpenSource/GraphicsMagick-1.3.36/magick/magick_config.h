@@ -23,7 +23,7 @@
 #define GM_BUILD_CFLAGS "-I/home/kulina/BUILD/kglib/include -Wall"
 
 /* arguments passed to configure */
-#define GM_BUILD_CONFIGURE_ARGS "./configure  '--prefix=/home/kulina/BUILD/kglib' '--enable-static' '--without-magick-plus-plus' '--without-perl' '--without-lcms' '--without-lcms2' '--without-trio' '--without-wmf' '--without-xml' '--disable-openmp' '--with-threads' '--without-x' 'CFLAGS=-I/home/kulina/BUILD/kglib/include' 'LDFLAGS=-L/home/kulina/BUILD/kglib/lib' 'CPPFLAGS=-I/home/kulina/BUILD/kglib/include' 'PKG_CONFIG_PATH=/home/kulina/BUILD/kglib/lib/pkgconfig:/usr/X11R76/lib/pkgconfig'"
+#define GM_BUILD_CONFIGURE_ARGS "./configure  '--prefix=/home/kulina/BUILD/kglib' '--enable-static' '--without-magick-plus-plus' '--without-perl' '--without-lcms' '--without-lcms2' '--without-trio' '--without-wmf' '--without-xml' '--disable-openmp' '--with-threads' '--without-x' '--without-webp' 'CFLAGS=-I/home/kulina/BUILD/kglib/include' 'LDFLAGS=-L/home/kulina/BUILD/kglib/lib' 'CPPFLAGS=-I/home/kulina/BUILD/kglib/include' 'PKG_CONFIG_PATH=/home/kulina/BUILD/kglib/lib/pkgconfig:/usr/X11R76/lib/pkgconfig'"
 
 /* CPPFLAGS used for preprocessing */
 #define GM_BUILD_CPPFLAGS "-I/home/kulina/BUILD/kglib/include -I/home/kulina/BUILD/kglib/include/freetype2"

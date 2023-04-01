@@ -2415,7 +2415,7 @@ DEFS = -DHAVE_CONFIG_H
 DELEGATES = bzlib jng jp2 jpeg lzma png ps tiff ttf zlib
 DEPDIR = .deps
 DIRSEP = :
-DISTCHECK_CONFIG_FLAGS = 'CFLAGS=-I/home/kulina/BUILD/kglib/include' 'CPPFLAGS=-I/home/kulina/BUILD/kglib/include' 'LDFLAGS=-L/home/kulina/BUILD/kglib/lib'  --with-fpx=no  --with-lcms2=no  --with-trio=no  --with-wmf=no  --with-fontpath=  --with-xml=no  --with-perl=no 
+DISTCHECK_CONFIG_FLAGS = 'CFLAGS=-I/home/kulina/BUILD/kglib/include' 'CPPFLAGS=-I/home/kulina/BUILD/kglib/include' 'LDFLAGS=-L/home/kulina/BUILD/kglib/lib'  --with-fpx=no  --with-webp=no  --with-lcms2=no  --with-trio=no  --with-wmf=no  --with-fontpath=  --with-xml=no  --with-perl=no 
 DLLTOOL = false
 DOC_DIR = /home/kulina/BUILD/kglib/share/doc/GraphicsMagick
 DOTDecodeDelegate = dot
@@ -2605,12 +2605,12 @@ PrintDelegate = /usr/bin/lpr
 QuantumDepth = 8
 RANLIB = ranlib
 RPM = 
-RST2HTML = 
+RST2HTML = rst2html
 SBIN_DIR = /home/kulina/BUILD/kglib/sbin
 SED = /usr/bin/sed
 SET_MAKE = 
 SHAREDSTATE_DIR = /home/kulina/BUILD/kglib/com
-SHELL = /bin/bash
+SHELL = /bin/sh
 STRIP = strip
 SYSCONF_DIR = /home/kulina/BUILD/kglib/etc
 ShowImageDelegate = 
@@ -4685,10 +4685,10 @@ WWWAPI_EXTRA_DIST = \
 	$(WWWWAPI_FILES)
 
 WWWAPI_MAINTAINER_TARGETS = $(WWWAPI_HTML_TARGETS)
-##APIWHATIS = $(top_srcdir)/scripts/whatis.txt
-##FORMATCAPI = $(top_srcdir)/scripts/format_c_api_doc.py
-##APIRST2HTML_COMMAND = $(RST2HTMLDECO) \
-##  --link-stylesheet=../docutils-articles.css`
+#APIWHATIS = $(top_srcdir)/scripts/whatis.txt
+#FORMATCAPI = $(top_srcdir)/scripts/format_c_api_doc.py
+#APIRST2HTML_COMMAND = $(RST2HTMLDECO) \
+#  --link-stylesheet=../docutils-articles.css`
 
 wwwwandapidir = $(htmldir)/wand
 WWWWANDAPIDIR = $(top_srcdir)/www/wand
@@ -11017,14 +11017,14 @@ uninstall-data-html:
 #$(WWWDIR)/color.html : $(NAMED_COLORS)
 #	$(NAMED_COLORS) > $@
 
-##$(WWWAPI_HTML_TARGETS) : $(FORMATCAPI) $(RST2HTMLDECO) $(APIWHATIS) $(top_srcdir)/scripts/html_fragments.py $(top_srcdir)/www/api/Makefile.am $(top_srcdir)/www/api/api_hyperlinks.rst
+#$(WWWAPI_HTML_TARGETS) : $(FORMATCAPI) $(RST2HTMLDECO) $(APIWHATIS) $(top_srcdir)/scripts/html_fragments.py $(top_srcdir)/www/api/Makefile.am $(top_srcdir)/www/api/api_hyperlinks.rst
 
-##$(WWWAPIDIR)/%.apirst : $(top_srcdir)/magick/%.c
-##	$(FORMATCAPI) --whatis-file $(APIWHATIS) $< $@
+#$(WWWAPIDIR)/%.apirst : $(top_srcdir)/magick/%.c
+#	$(FORMATCAPI) --whatis-file $(APIWHATIS) $< $@
 
-##$(WWWAPIDIR)/%.html : $(WWWAPIDIR)/%.apirst
-##	$(RST2HTMLDECO) --link-stylesheet=`$(RELPATH) $(top_srcdir)/www $@`docutils-api.css \
-##	--url-prefix=`$(RELPATH) $(top_srcdir)/www $@` $< $@
+#$(WWWAPIDIR)/%.html : $(WWWAPIDIR)/%.apirst
+#	$(RST2HTMLDECO) --link-stylesheet=`$(RELPATH) $(top_srcdir)/www $@`docutils-api.css \
+#	--url-prefix=`$(RELPATH) $(top_srcdir)/www $@` $< $@
 
 #APIWHATIS = $(top_srcdir)/scripts/whatis.txt
 #FORMATCAPI = $(top_srcdir)/scripts/format_c_api_doc.py
@@ -11032,20 +11032,20 @@ uninstall-data-html:
 #APIRST2HTML_COMMAND = $(RST2HTMLDECO) \
 #  --link-stylesheet=../docutils-articles.css`
 
-##$(WWWWANDAPI_HTML_TARGETS) : $(FORMATCAPI) \
-##	$(RST2HTMLDECO) \
-##	$(APIWHATIS) \
-##	$(top_srcdir)/scripts/html_fragments.py \
-##	$(top_srcdir)/www/wand/Makefile.am \
-##	$(top_srcdir)/www/api/api_hyperlinks.rst
+#$(WWWWANDAPI_HTML_TARGETS) : $(FORMATCAPI) \
+#	$(RST2HTMLDECO) \
+#	$(APIWHATIS) \
+#	$(top_srcdir)/scripts/html_fragments.py \
+#	$(top_srcdir)/www/wand/Makefile.am \
+#	$(top_srcdir)/www/api/api_hyperlinks.rst
 
-##$(WWWWANDAPIDIR)/%.apirst : $(top_srcdir)/wand/%.c
-##	$(FORMATCAPI) --whatis-file $(APIWHATIS) \
-##	--include-rst ../api/api_hyperlinks.rst $< $@
+#$(WWWWANDAPIDIR)/%.apirst : $(top_srcdir)/wand/%.c
+#	$(FORMATCAPI) --whatis-file $(APIWHATIS) \
+#	--include-rst ../api/api_hyperlinks.rst $< $@
 
-##$(WWWWANDAPIDIR)/%.html : $(WWWWANDAPIDIR)/%.apirst
-##	$(RST2HTMLDECO) --link-stylesheet=`$(RELPATH) $(top_srcdir)/www $@`docutils-api.css \
-##	--url-prefix=`$(RELPATH) $(top_srcdir)/www $@` $< $@
+#$(WWWWANDAPIDIR)/%.html : $(WWWWANDAPIDIR)/%.apirst
+#	$(RST2HTMLDECO) --link-stylesheet=`$(RELPATH) $(top_srcdir)/www $@`docutils-api.css \
+#	--url-prefix=`$(RELPATH) $(top_srcdir)/www $@` $< $@
 
 utilities/tests/montage.log : \
 	utilities/tests/effects.log

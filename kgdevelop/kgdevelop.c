@@ -7800,15 +7800,15 @@ int main(int narg,char **args) {
     tp = fopen("/usr/include/kulina.h","r");
     if(tp != NULL) {
       fclose(tp);
-      system("cp /usr/include/kulina.h kulina.h");
+//      system("cp /usr/include/kulina.h kulina.h");
     }
     else {
       tp = fopen("/usr/local/include/kulina.h","r");
       if(tp != NULL) {
         fclose(tp);
-        system("cp /usr/local/include/kulina.h kulina.h");
+//        system("cp /usr/local/include/kulina.h kulina.h");
       }
-      else system("cp $KULINA/include/kulina.h kulina.h");
+//      else system("cp $KULINA/include/kulina.h kulina.h");
     }
   }
   else fclose(fp);

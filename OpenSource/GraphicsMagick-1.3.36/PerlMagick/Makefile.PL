@@ -124,6 +124,6 @@ sub MY::makeaperl {
 #     my $inherited = shift->SUPER::test(@_);
 #
      # Run tests in our environment
-#     $inherited =~ s:PERL_DL_NONLAZY=1:/bin/bash ../rungm.sh PERL_DL_NONLAZY=1:g ;
+#     $inherited =~ s:PERL_DL_NONLAZY=1:/bin/sh ../rungm.sh PERL_DL_NONLAZY=1:g ;
 #     $inherited;
 # }
