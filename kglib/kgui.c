@@ -188,7 +188,7 @@ static char *uiSearchFolder(char *Folder,char *Icon) {
   char **Dirs,**Files;
   char *res=NULL,*cpt;
   char buff[500];
-  int i,l;
+  int i,l,App=0;
   Dlink *L;
   Files = kgFileMenu(Folder,"*.png");
   if(Files != NULL) {
@@ -215,10 +215,53 @@ static char *uiSearchFolder(char *Folder,char *Icon) {
   Dirs = kgFolderMenu(Folder);
   if(Dirs==NULL) return res;
   if(Dirs[0]==NULL) { kgFreeDouble((void **)Dirs); return res;}
-  L = Dopen();
+#if 1
   i=0;
-  while(Dirs[i]!= NULL) {Dadd(L,Dirs[i]);i++;}
+  App=0;
+  while(Dirs[i]!=NULL) {
+	  char *pt=NULL;
+	  pt=strstr(Dirs[i],"app");
+	  if(pt!=NULL) {
+             App=1;
+	     break;
+	  }
+	  i++;
+  }
+#endif
+  L = Dopen();
+  if(App) {
+	  /* if an app folder is available only thar folder is checked */
+    i=0;
+    while(Dirs[i]!= NULL) {if(strstr(Dirs[i],"app")!=NULL) Dadd(L,Dirs[i]);i++;}
+  }
+  else {
+    i=0;
+    while(Dirs[i]!= NULL) {
+	    char *pt,buff[500];
+	    strcpy(buff,Dirs[i]);
+	    /* Checking for <reso>x<reso> type , small ones ignored */
+	    pt =strstr(buff,"x");
+	    if(pt!= NULL) {
+		    int reso,k,type=1;
+		    *pt='\0';
+		    k=0;
+		    while(buff[k] != '\0') {
+		       int j=0;
+		       if(!isdigit(buff[k])) {type=0; break;}
+		       k++;
+		    }
+		    if(type) {
+		       sscanf(buff,"%d",&reso);
+	               if(reso> 64) Dadd(L,Dirs[i]);
+		    }
+		    else Dadd(L,Dirs[i]);
+	    }
+	    else Dadd(L,Dirs[i]);
+	    i++;
+    }
+  }
   free(Dirs);
+  if(Dcount(L)==0) return res;
   Dsort(L,compname);
   Resetlink(L);
   while ( (cpt=(char *)Getrecord(L))!=NULL) {

@@ -1728,7 +1728,7 @@ char ** _uiFolderMenu(char *d_name) {
   char buf[500];
   dp = opendir(d_name);
   if(dp==NULL) {
-    printf("No such dir:%s\n",d_name);
+//    printf("No such dir:%s\n",d_name);
     return NULL;
   }
   L = Dopen();
