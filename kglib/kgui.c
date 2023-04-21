@@ -252,7 +252,7 @@ static char *uiSearchFolder(char *Folder,char *Icon) {
 		    }
 		    if(type) {
 		       sscanf(buff,"%d",&reso);
-	               if(reso> 64) Dadd(L,Dirs[i]);
+	               if(reso>= 128) Dadd(L,Dirs[i]);
 		    }
 		    else Dadd(L,Dirs[i]);
 	    }
@@ -349,9 +349,35 @@ char *kgGetIcon(char *pgr,char *theme) {
   return res;
 }
 
+static int uiProcessIconName(char *Icon){
+  int pos,count=0;
+  char *pt,*ptmp;
+  if(strstr(Icon,".png")!= NULL) return 1;
+  if((pt=strstr(Icon,".svg"))!= NULL)  {
+          strcpy(pt,".png");
+          return 1;
+  }
+  count =0;
+  pt=Icon;
+  while((pt=strstr(pt,"."))!= NULL) {count++;pt++;}
+  if(count>1) {
+    pt = strstr(Icon,".")+1;
+    while((ptmp=strstr(pt,"."))!= NULL){
+      pt=ptmp+1;
+    }
+    strcpy(Icon,pt);
+//    strcat(Icon,".png");
+    return 1;
+  }
+//  strcat(Icon,".png");
+  return 1;
+}
+
 void *kgSearchIcon(char *IconName) {
-  char *pt,*res=NULL;
-  pt = IconName;
+  char *pt,*res=NULL,Icon[500],*ptmp;
+  strcpy(Icon,IconName);
+  uiProcessIconName(Icon);
+  pt = Icon;
   res = kgGetIcon(pt,"oxygen");
   if(res==NULL) res = kgGetIcon(pt,"Oxygen");
   if(res==NULL) res = kgGetIcon(pt,"KDE");
@@ -376,6 +402,26 @@ void *kgSearchIcon(char *IconName) {
       }
       kgFreeDouble((void **)m2);
     }
+  }
+  if(res==NULL) {
+	  ptmp = strstr(Icon,"_");
+	  if(ptmp!= NULL) {
+		  pt =ptmp+1;
+		  res= kgGetIcon(pt,"hicolor");
+		  if(res=NULL) res= kgGetIcon(pt,"oxygen");
+                  if(res==NULL) res = kgGetIcon(pt,"gnome");
+                  if(res==NULL) res = kgGetIcon(pt,"CratOS");
+	  }
+  }
+  if(res==NULL) {
+	  ptmp = strstr(Icon,"-");
+	  if(ptmp!= NULL) {
+		  *ptmp='\0';
+		  res= kgGetIcon(pt,"hicolor");
+		  if(res=NULL) res= kgGetIcon(pt,"oxygen");
+                  if(res==NULL) res = kgGetIcon(pt,"gnome");
+                  if(res==NULL) res = kgGetIcon(pt,"CratOS");
+	  }
   }
   return res;
 }
