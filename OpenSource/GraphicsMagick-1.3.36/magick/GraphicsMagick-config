@@ -30,7 +30,7 @@ while test $# -gt 0; do
       echo 1.3.36
       ;;
     --cflags)
-      echo '-I/home/kulina/BUILD/kglib/include -Wall -pthread'
+      echo '-I/home/kulina/BUILD/kglib/include -Wall'
       ;;
     --cppflags)
       echo '-I/home/kulina/BUILD/kglib/include/GraphicsMagick'

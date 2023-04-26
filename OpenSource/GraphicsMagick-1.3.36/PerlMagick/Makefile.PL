@@ -16,7 +16,7 @@ use Config;
 
 my $magick_CPPFLAGS='-I/home/kulina/BUILD/kglib/include -I/home/kulina/BUILD/kglib/include/freetype2';
 my $magick_DEFS=' -D_LARGE_FILES=1 -DHAVE_CONFIG_H';
-my $magick_CFLAGS='-I/home/kulina/BUILD/kglib/include -Wall -pthread';
+my $magick_CFLAGS='-I/home/kulina/BUILD/kglib/include -Wall';
 my $magick_CC='gcc';
 my $magick_CPPFLAGS='-I../ -I.. -I/home/kulina/BUILD/kglib/include -I/home/kulina/BUILD/kglib/include/freetype2';
 my $magick_LDFLAGS='-L/home/kulina/BUILD/kglib/lib -L/home/kulina/BUILD/kglib/lib';
@@ -28,7 +28,7 @@ my $magick_LIB_DIR="$ENV{'DESTDIR'}/home/kulina/BUILD/kglib/lib";
 # Compute test specification
 my $delegate_tests='t/*.t';
 my $delegate;
-foreach $delegate (qw/bzlib jng jp2 jpeg lzma png ps tiff ttf xfig zlib/) {
+foreach $delegate (qw/bzlib jng jp2 jpeg lzma png ps tiff ttf zlib/) {
   if( -d "t/$delegate" ) {
     $delegate_tests .= " t/$delegate/*.t";
   }
