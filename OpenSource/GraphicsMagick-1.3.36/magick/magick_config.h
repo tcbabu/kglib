@@ -20,7 +20,7 @@
 #define GM_BUILD_CC "gcc"
 
 /* CFLAGS used for C compilation */
-#define GM_BUILD_CFLAGS "-I/home/kulina/BUILD/kglib/include -Wall"
+#define GM_BUILD_CFLAGS "-I/home/kulina/BUILD/kglib/include -Wall -pthread"
 
 /* arguments passed to configure */
 #define GM_BUILD_CONFIGURE_ARGS "./configure  '--prefix=/home/kulina/BUILD/kglib' '--enable-static' '--without-magick-plus-plus' '--without-perl' '--without-lcms' '--without-lcms2' '--without-trio' '--without-wmf' '--without-xml' '--disable-openmp' '--with-threads' '--without-x' '--without-webp' 'CFLAGS=-I/home/kulina/BUILD/kglib/include' 'LDFLAGS=-L/home/kulina/BUILD/kglib/lib' 'CPPFLAGS=-I/home/kulina/BUILD/kglib/include' 'PKG_CONFIG_PATH=/home/kulina/BUILD/kglib/lib/pkgconfig:/usr/X11R76/lib/pkgconfig'"
@@ -32,7 +32,7 @@
 #define GM_BUILD_CXX "g++"
 
 /* CXXFLAGS used for C++ compilation */
-#define GM_BUILD_CXXFLAGS ""
+#define GM_BUILD_CXXFLAGS "-pthread"
 
 /* Host identification triplet */
 #define GM_BUILD_HOST "x86_64-pc-linux-gnu"

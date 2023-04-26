@@ -2385,7 +2385,7 @@ distuninstallcheck_listfiles = find . -type f -print
 am__distuninstallcheck_listfiles = $(distuninstallcheck_listfiles) \
   | sed 's|^\./|$(prefix)/|' | grep -v '$(infodir)/dir$$'
 distcleancheck_listfiles = find . -type f -print
-ACLOCAL = aclocal -I /usr/share/aclocal
+ACLOCAL = ${SHELL} '/home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36/config/missing' aclocal-1.16
 AMTAR = $${TAR-tar}
 AM_DEFAULT_VERBOSITY = 1
 AR = ar
@@ -2398,7 +2398,7 @@ BIN_DIR = /home/kulina/BUILD/kglib/bin
 BrowseDelegate = xdg-open
 CC = gcc
 CCDEPMODE = depmode=gcc3
-CFLAGS = -I/home/kulina/BUILD/kglib/include -Wall
+CFLAGS = -I/home/kulina/BUILD/kglib/include -Wall -pthread
 CGMDecodeDelegate = ralcgm
 CONFIG_STATUS_DEPENDENCIES = $(top_srcdir)/ChangeLog $(top_srcdir)/version.sh
 CPP = gcc -E
@@ -2406,17 +2406,17 @@ CPPFLAGS = -I/home/kulina/BUILD/kglib/include -I/home/kulina/BUILD/kglib/include
 CXX = g++
 CXXCPP = g++ -E
 CXXDEPMODE = depmode=gcc3
-CXXFLAGS = 
+CXXFLAGS = -pthread
 CYGPATH_W = echo
 ConvertDelegate = 
 DATA_DIR = /home/kulina/BUILD/kglib/share
 DCRAWDecodeDelegate = dcraw
 DEFS = -DHAVE_CONFIG_H
-DELEGATES = bzlib jng jp2 jpeg lzma png ps tiff ttf zlib
+DELEGATES = bzlib jng jp2 jpeg lzma png ps tiff ttf xfig zlib
 DEPDIR = .deps
 DIRSEP = :
 DISTCHECK_CONFIG_FLAGS = 'CFLAGS=-I/home/kulina/BUILD/kglib/include' 'CPPFLAGS=-I/home/kulina/BUILD/kglib/include' 'LDFLAGS=-L/home/kulina/BUILD/kglib/lib'  --with-fpx=no  --with-webp=no  --with-lcms2=no  --with-trio=no  --with-wmf=no  --with-fontpath=  --with-xml=no  --with-perl=no 
-DLLTOOL = false
+DLLTOOL = dlltool
 DOC_DIR = /home/kulina/BUILD/kglib/share/doc/GraphicsMagick
 DOTDecodeDelegate = dot
 DSYMUTIL = 
@@ -2445,7 +2445,7 @@ GSMonoDevice = pbmraw
 GSPDFDevice = pdfwrite
 GSPSDevice = ps2write
 GSPaletteDevice = pcx256
-GSVersion = 10.01.0
+GSVersion = 9.55.0
 HG_BRANCH_TAG = GraphicsMagick-1_3
 HPGLDecodeDelegate = hp2xx
 HTMLDecodeDelegate = html2ps
@@ -2454,7 +2454,7 @@ ILBMDecodeDelegate = ilbmtoppm
 ILBMEncodeDelegate = ppmtoilbm
 INCLUDE_DIR = /home/kulina/BUILD/kglib/include
 INFO_DIR = /home/kulina/BUILD/kglib/share/info
-INSTALL = /usr/bin/install -c
+INSTALL = /usr/bin/ginstall -c
 INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_PROGRAM = ${INSTALL}
 INSTALL_SCRIPT = ${INSTALL}
@@ -2517,7 +2517,7 @@ LT_SYS_LIBRARY_PATH =
 LaunchDelegate = gimp
 MAGICKLIB = -L/home/kulina/BUILD/kglib/lib -lGraphicsMagick
 MAGICKLIBDIR = /home/kulina/BUILD/kglib/lib
-MAGICK_API_CFLAGS = -I/home/kulina/BUILD/kglib/include -Wall
+MAGICK_API_CFLAGS = -I/home/kulina/BUILD/kglib/include -Wall -pthread
 MAGICK_API_CPPFLAGS = -I/home/kulina/BUILD/kglib/include/GraphicsMagick
 MAGICK_API_LDFLAGS = -L/home/kulina/BUILD/kglib/lib -L/home/kulina/BUILD/kglib/lib -L/home/kulina/BUILD/kglib/lib
 MAGICK_API_LIBS = -lGraphicsMagick -ltiff -lfreetype -ljasper -ljpeg -lpng16 -llzma -lbz2 -lz -lzstd -lm -lpthread
@@ -2527,7 +2527,7 @@ MAGICK_CONFIGURE_BUILD_PATH = /home/kulina/BUILD/kglib/OpenSource/GraphicsMagick
 MAGICK_CONFIGURE_SRC_PATH = /home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36/config
 MAGICK_DEP_LIBS = -ltiff -lfreetype -ljasper -ljpeg -lpng16 -llzma -lbz2 -lz -lzstd -lm -lpthread
 MAGICK_EXTRA_DEP_LIBS = 
-MAGICK_FEATURES = BZLIB JNG JP2 JPEG LZMA PNG PS TIFF TTF ZLIB
+MAGICK_FEATURES = BZLIB JNG JP2 JPEG LZMA PNG PS TIFF TTF XFIG ZLIB
 MAGICK_FILTER_MODULE_PATH = /home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36/filters
 MAGICK_LIBRARY_AGE = 22
 MAGICK_LIBRARY_CURRENT = 25
@@ -2598,14 +2598,14 @@ PKG_CONFIG_PATH = /home/kulina/BUILD/kglib/lib/pkgconfig:/usr/X11R76/lib/pkgconf
 PREFIX_DIR = /home/kulina/BUILD/kglib
 PSDelegate = gs
 PTHREAD_CC = gcc
-PTHREAD_CFLAGS = 
+PTHREAD_CFLAGS = -pthread
 PTHREAD_CXX = 
 PTHREAD_LIBS = -lpthread
 PrintDelegate = /usr/bin/lpr
 QuantumDepth = 8
 RANLIB = ranlib
 RPM = rpmbuild
-RST2HTML = 
+RST2HTML = rst2html.py
 SBIN_DIR = /home/kulina/BUILD/kglib/sbin
 SED = /usr/bin/sed
 SET_MAKE = 
@@ -2635,7 +2635,7 @@ X_CFLAGS =
 X_EXTRA_LIBS = 
 X_LIBS = 
 X_PRE_LIBS = 
-ZIP = 
+ZIP = zip
 abs_builddir = /home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36
 abs_srcdir = /home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36
 abs_top_builddir = /home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36
@@ -4685,10 +4685,10 @@ WWWAPI_EXTRA_DIST = \
 	$(WWWWAPI_FILES)
 
 WWWAPI_MAINTAINER_TARGETS = $(WWWAPI_HTML_TARGETS)
-##APIWHATIS = $(top_srcdir)/scripts/whatis.txt
-##FORMATCAPI = $(top_srcdir)/scripts/format_c_api_doc.py
-##APIRST2HTML_COMMAND = $(RST2HTMLDECO) \
-##  --link-stylesheet=../docutils-articles.css`
+#APIWHATIS = $(top_srcdir)/scripts/whatis.txt
+#FORMATCAPI = $(top_srcdir)/scripts/format_c_api_doc.py
+#APIRST2HTML_COMMAND = $(RST2HTMLDECO) \
+#  --link-stylesheet=../docutils-articles.css`
 
 wwwwandapidir = $(htmldir)/wand
 WWWWANDAPIDIR = $(top_srcdir)/www/wand
@@ -4809,12 +4809,12 @@ doc_DATA = \
 
 # Non-Automake subdirectories to distribute
 DISTDIRS = locale scripts www PerlMagick TclMagick
-DIST_WINDOWS_SRC_ZIP = 
+#DIST_WINDOWS_SRC_ZIP = 
 
 #
 # Build Windows source Zip and 7Zip balls
 #
-#DIST_WINDOWS_SRC_ZIP = $(PACKAGE_NAME)-$(PACKAGE_VERSION)$(PACKAGE_VERSION_ADDENDUM)-windows.zip
+DIST_WINDOWS_SRC_ZIP = $(PACKAGE_NAME)-$(PACKAGE_VERSION)$(PACKAGE_VERSION_ADDENDUM)-windows.zip
 DIST_WINDOWS_SRC_7ZIP = 
 #DIST_WINDOWS_SRC_7ZIP = $(PACKAGE_NAME)-$(PACKAGE_VERSION)$(PACKAGE_VERSION_ADDENDUM)-windows.7z
 
@@ -11017,14 +11017,14 @@ uninstall-data-html:
 #$(WWWDIR)/color.html : $(NAMED_COLORS)
 #	$(NAMED_COLORS) > $@
 
-##$(WWWAPI_HTML_TARGETS) : $(FORMATCAPI) $(RST2HTMLDECO) $(APIWHATIS) $(top_srcdir)/scripts/html_fragments.py $(top_srcdir)/www/api/Makefile.am $(top_srcdir)/www/api/api_hyperlinks.rst
+#$(WWWAPI_HTML_TARGETS) : $(FORMATCAPI) $(RST2HTMLDECO) $(APIWHATIS) $(top_srcdir)/scripts/html_fragments.py $(top_srcdir)/www/api/Makefile.am $(top_srcdir)/www/api/api_hyperlinks.rst
 
-##$(WWWAPIDIR)/%.apirst : $(top_srcdir)/magick/%.c
-##	$(FORMATCAPI) --whatis-file $(APIWHATIS) $< $@
+#$(WWWAPIDIR)/%.apirst : $(top_srcdir)/magick/%.c
+#	$(FORMATCAPI) --whatis-file $(APIWHATIS) $< $@
 
-##$(WWWAPIDIR)/%.html : $(WWWAPIDIR)/%.apirst
-##	$(RST2HTMLDECO) --link-stylesheet=`$(RELPATH) $(top_srcdir)/www $@`docutils-api.css \
-##	--url-prefix=`$(RELPATH) $(top_srcdir)/www $@` $< $@
+#$(WWWAPIDIR)/%.html : $(WWWAPIDIR)/%.apirst
+#	$(RST2HTMLDECO) --link-stylesheet=`$(RELPATH) $(top_srcdir)/www $@`docutils-api.css \
+#	--url-prefix=`$(RELPATH) $(top_srcdir)/www $@` $< $@
 
 #APIWHATIS = $(top_srcdir)/scripts/whatis.txt
 #FORMATCAPI = $(top_srcdir)/scripts/format_c_api_doc.py
@@ -11032,20 +11032,20 @@ uninstall-data-html:
 #APIRST2HTML_COMMAND = $(RST2HTMLDECO) \
 #  --link-stylesheet=../docutils-articles.css`
 
-##$(WWWWANDAPI_HTML_TARGETS) : $(FORMATCAPI) \
-##	$(RST2HTMLDECO) \
-##	$(APIWHATIS) \
-##	$(top_srcdir)/scripts/html_fragments.py \
-##	$(top_srcdir)/www/wand/Makefile.am \
-##	$(top_srcdir)/www/api/api_hyperlinks.rst
+#$(WWWWANDAPI_HTML_TARGETS) : $(FORMATCAPI) \
+#	$(RST2HTMLDECO) \
+#	$(APIWHATIS) \
+#	$(top_srcdir)/scripts/html_fragments.py \
+#	$(top_srcdir)/www/wand/Makefile.am \
+#	$(top_srcdir)/www/api/api_hyperlinks.rst
 
-##$(WWWWANDAPIDIR)/%.apirst : $(top_srcdir)/wand/%.c
-##	$(FORMATCAPI) --whatis-file $(APIWHATIS) \
-##	--include-rst ../api/api_hyperlinks.rst $< $@
+#$(WWWWANDAPIDIR)/%.apirst : $(top_srcdir)/wand/%.c
+#	$(FORMATCAPI) --whatis-file $(APIWHATIS) \
+#	--include-rst ../api/api_hyperlinks.rst $< $@
 
-##$(WWWWANDAPIDIR)/%.html : $(WWWWANDAPIDIR)/%.apirst
-##	$(RST2HTMLDECO) --link-stylesheet=`$(RELPATH) $(top_srcdir)/www $@`docutils-api.css \
-##	--url-prefix=`$(RELPATH) $(top_srcdir)/www $@` $< $@
+#$(WWWWANDAPIDIR)/%.html : $(WWWWANDAPIDIR)/%.apirst
+#	$(RST2HTMLDECO) --link-stylesheet=`$(RELPATH) $(top_srcdir)/www $@`docutils-api.css \
+#	--url-prefix=`$(RELPATH) $(top_srcdir)/www $@` $< $@
 
 utilities/tests/montage.log : \
 	utilities/tests/effects.log

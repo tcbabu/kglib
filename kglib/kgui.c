@@ -211,7 +211,6 @@ static char *uiSearchFolder(char *Folder,char *Icon) {
     if(res != NULL) return res;
   }
 /*  Going down throuch Folders */
-
   Dirs = kgFolderMenu(Folder);
   if(Dirs==NULL) return res;
   if(Dirs[0]==NULL) { kgFreeDouble((void **)Dirs); return res;}
@@ -278,7 +277,7 @@ static char *uiSearchFolder(char *Folder,char *Icon) {
 char *kgGetIcon(char *pgr,char *theme) {
 /* Caller must free result if it is not NULL */
   int i=0,j,k=0,End=0;
-  char *pt,**m,*res=NULL,*cpt,**m1,**m2;
+  char *pt,**m,*res=NULL,*cpt,**m1,**m2,*ptmp;
   char buff[500];
   char buff1[500];
   char buff2[500];
@@ -308,8 +307,12 @@ char *kgGetIcon(char *pgr,char *theme) {
   }
   pt = getenv("XDG_DATA_DIRS");
   if(pt==NULL) strcpy(path,"/usr/share");
-  else strcpy(path , getenv("XDG_DATA_DIRS"));
+  else{
+     ptmp =getenv("XDG_DATA_DIRS");
+     strcpy(path , ptmp);
+  }
   L = Dopen();
+  i=0; pt=path;
   while(!End) {
     j=i;
     if(pt[j]< ' ') break;
@@ -335,7 +338,6 @@ char *kgGetIcon(char *pgr,char *theme) {
     if(m[0]==NULL) { kgFreeDouble((void **)m);continue;}
     i=0;
     while(m[i]!= NULL){
-//      printf("THEME: %s : %s\n",m[i],theme);
       if(kgSearchString(m[i],theme)< 0) {i++;continue;}
       strcpy(buff1,buff);
       strcat(buff1,"/");
@@ -350,7 +352,7 @@ char *kgGetIcon(char *pgr,char *theme) {
 }
 
 static int uiProcessIconName(char *Icon){
-  int pos,count=0;
+  int pos,count=0,i;
   char *pt,*ptmp;
   if(strstr(Icon,".png")!= NULL) return 1;
   if((pt=strstr(Icon,".svg"))!= NULL)  {
@@ -359,6 +361,9 @@ static int uiProcessIconName(char *Icon){
   }
   count =0;
   pt=Icon;
+  i=0;while(pt[i]>= ' ') i++;
+  while(pt[i] <= ' ') {pt[i]='\0'; i--;if(i==0) break;}
+  while((ptmp=strstr(pt," "))!= NULL) {*ptmp='_';}
   while((pt=strstr(pt,"."))!= NULL) {count++;pt++;}
   if(count>1) {
     pt = strstr(Icon,".")+1;
@@ -1184,8 +1189,6 @@ int uiDraw_Dialog(DIALOG *D) {
  i=0;
  while(d[i].t!=NULL) {
      ch =  (d[i].t->code);
-//     fprintf(stderr,"ch:%c\n",ch);
-//     fflush(stderr);
      switch ((int)ch) {
        case 'o': /* progress bar */
          _uiDrawO(D,i);
@@ -5209,8 +5212,6 @@ again:
      kgDisableSelection(D);
      if(!WC(D)->FullScreen) {
        pthread_cancel(WC(D)->Pth);
-//       fprintf(stderr,"Joining thread\n");
-//       fflush(stderr);
        pthread_join(WC(D)->Pth,NULL);
      }
      Dempty(WC(D)->Clip);

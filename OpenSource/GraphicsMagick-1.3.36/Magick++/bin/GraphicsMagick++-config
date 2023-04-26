@@ -33,7 +33,7 @@ while test $# -gt 0; do
       echo '-I/home/kulina/BUILD/kglib/include/GraphicsMagick'
       ;;
     --cxxflags)
-      echo ''
+      echo '-pthread'
       ;;
     --ldflags)
       echo '-L/home/kulina/BUILD/kglib/lib -L/home/kulina/BUILD/kglib/lib -L/home/kulina/BUILD/kglib/lib'
