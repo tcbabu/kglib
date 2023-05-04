@@ -6243,6 +6243,41 @@ void uiString(DIALOG *D,char *str,int x,int y,int width,int height,int font,int 
    }
    else printf("img == NULL\n");
 }
+void uiMsgString(DIALOG *D,char *str,int x1,int y1,int char_clr,int Font,int FontSize)
+{
+ /* writes a string in fixed font mod */
+ void *fid,*img;
+ int jj,k,i,iyi,ln;
+ unsigned int temp;
+ char stmp[2];
+ int xsize,ysize;
+ float th,tw,tg,xx,yy;;
+ ln = strlen(str);
+ if(ln > 0) {
+   xsize = ln*FontSize;
+   ysize = 1.80*FontSize;
+   stmp[1]='\0';
+//   fid = kgInitImage((int)(xsize),ysize,2);
+   fid = kgInitImage((int)(xsize),ysize,RESIZE);
+   kgUserFrame(fid,0.,0.,(float)xsize,(float)ysize);
+   th = FontSize*1.1;
+   tw = FontSize;
+   kgTextFont(fid,Font);
+   kgTextSize(fid,th,tw,GAP*tw);
+   kgTextColor(fid,char_clr);
+   xx =0.0;
+   yy = 0.5*FontSize;
+   i=0;
+   kgMove2f(fid,xx,yy);
+   kgWriteText(fid,str);
+//   img = kgGetResizedImage(fid);
+   img = kgGetSharpImage(fid);
+   kgCloseImage(fid);
+   kgImage(D,img,x1,y1,xsize,ysize,0.0,1.0);
+   kgFreeImage(img);
+ }
+ return;
+}
 void uiBoxedString(DIALOG *D,char *str,int x,int y,int width,int height,int font,int border,int highli,int charclr,int FontSize,int justfic,float rfac,int state){
 /*
    Write a string in Dialog Area;
@@ -10064,8 +10099,7 @@ void ui_draw_browser(DIW *w,int n,int lngth) {
   if(w->Bimg != NULL) kgRestoreImage(D,w->Bimg,x1,y1,(x2-x1+1),(y2-y1+1));
   if(n> 0) {
      uiString(D,w->prompt,x1,y1,lngth,w->y2-w->y1,D->gc.PromptFont,
-                   D->gc.txt_pchar,D->gc.FontSize,1,-1);
-//                   D->gc.txt_pchar,D->gc.FontSize,1,D->gc.fill_clr);
+                   D->gc.txt_pchar,D->gc.FontSize,1,D->gc.fill_clr);
   }
   EVGAY = D->evgay;
   x1 = w->xb+D->xo+2;
@@ -11878,7 +11912,7 @@ int _uiMake_MS(DIS *y)
   char **menu;
   BRW_STR *bwsr;
   int ret,n=0,i=0,x1,y1;
-  int height,extra,w;
+  int height,extra,w,exitems;
   kgWC *wc;
   DIALOG *D;
   D = (DIALOG *) (y->D);
@@ -11899,15 +11933,23 @@ int _uiMake_MS(DIS *y)
    menu=(char **)y->menu;
    n=0;
    if(menu != NULL) while ( menu[n]!=NULL) n++;
-   y->nitems=n;
-   if(y->size>n) y->size=n;
    bwsr->hitem=0;
    bwsr->pos=0;
    bwsr->xb= bwsr->x2;
    height = y->width;
    bwsr->width=height;
    y->size = (y->y2-y->y1-2*y->offset)/bwsr->width;
-   if(y->size>y->nitems) y->size=y->nitems;
+   y->nitems=n;
+   //TCB NEW
+   exitems=0;
+   if(n>y->size) {
+	   exitems= n -y->size;
+#if 0
+	   menu +=exitems;
+	   y->nitems= y->size;
+#endif
+   }
+//   if(y->size>y->nitems) y->size=y->nitems;
    bwsr->w= y->w;
    bwsr->offset=y->offset;
    if(y->size<=0) {
@@ -11916,16 +11958,23 @@ int _uiMake_MS(DIS *y)
    }
    extra = (y->y2 -y->y1-2*y->offset-y->size*height)/2;
    if(extra < -y->offset) extra= -y->offset;
-   bwsr->offset =y->offset+extra;
+   //TCB NEW
+//   bwsr->offset =y->offset+extra;
    bwsr->scroll=1;
    bwsr->menu = (char **)menu;
-   if(y->size==y->nitems) {
+//   if(y->size<=y->nitems) {
+   if(exitems==0) {
         bwsr->scroll=0;
    }
    bwsr->size=y->size;
+#if 0   
    if(bwsr->df >n ) bwsr->df=1;
    if(bwsr->df < 1 ) bwsr->df=1;
-   bwsr->pos=0;
+#else
+   //TCB NEW
+   bwsr->df=exitems+1;
+#endif
+   bwsr->pos=exitems;
    bwsr->D=D;
    bwsr->hitem = bwsr->df-1;
    w = bwsr->scroll*y->w;
@@ -18714,7 +18763,7 @@ void _uiPutMmenu( DIS *y){
       br= y->bwsr;
       D = (DIALOG *)(y->D);
       EVGAY = D->evgay;
-      list = (char **)y->menu;
+      list = (char **)br->menu;
       scroll=br->scroll;
       w = y->w*scroll;
       th = y->width;
@@ -18734,7 +18783,12 @@ void _uiPutMmenu( DIS *y){
       if(pos>=y->nitems) pos=y->nitems-1;
       br->pos=pos;
       menu=NULL;
+#if 0
       if(list != NULL) menu=list+pos;
+#else
+      menu = list;
+      if(y->nitems > y->size) menu += (y->nitems - y->size);
+#endif
       _dvrect_fill(WC(D),(br->x1+xoffset),(br->y1+xoffset),(br->x2-xoffset-w)-1, (br->y2-xoffset),D->gc.info_fill);
       if(y->bordr==1) {
       _dv_draw_bound(D,(br->x1+xoffset),(br->y1+xoffset),(br->x2-xoffset-w)-1, (br->y2-xoffset),D->gc.high_clr);
@@ -18751,11 +18805,17 @@ void _uiPutMmenu( DIS *y){
       {
         if(kk+pos >= y->nitems) continue;
         if(kk+pos==br->df-1)  swv=1;else swv=0;
-        ixp = br->x1+xoffset+xi*(y->width);
-        iyp = br->y1+yoffset+yi*br->width;
+        ixp = br->x1+xoffset+xi*(y->width)+br->width*0.5;
+        iyp = br->y1+yoffset+yi*br->width+br->width*0.5;
 	if((list!= NULL)&&(list[kk+pos]!=NULL)){
+#if 0
             uiString(D,list[kk+pos], (int)ixp+xoff*y->width,(int)iyp,bxln,y->width,D->gc.MsgFont,
                     D->gc.info_char,D->gc.FontSize,-1,-1);
+#else
+	    //TCB NEW
+	    //
+	   uiMsgString(D,list[kk+pos],(int)ixp+xoff*y->width,(int)iyp,D->gc.info_char,D->gc.MsgFont,D->gc.FontSize);
+#endif
         }
         kk++;
       }

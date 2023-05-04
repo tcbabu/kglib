@@ -3620,6 +3620,7 @@ int EventInMsg(BRW_STR *br,KBEVENT kbevent) {
   ans = kbevent.key;
 //  set_pointer_position(kbevent.x,kbevent.y,kbevent.button);
   D->PON_X=kbevent.x; D->PON_Y=kbevent.y;
+  printf("Msg Scroll\n");
   switch(kbevent.event) {
        case 0:
 //           printf("Msg Scroll\n");
@@ -3631,6 +3632,7 @@ int EventInMsg(BRW_STR *br,KBEVENT kbevent) {
        case 2:
           break;
        case 3:
+	   printf(" MS Scroll Move \n");
           _ui_scroll_msg_move(br,kbevent);
           break;
        case 4:
@@ -4008,6 +4010,7 @@ int ProcessMouseMovement(DIALOG *D,KBEVENT kbevent,int i,int controls) {
   if(controls > 0) {
   d = D->d;
   ch = D->d[i].t->code;
+//  printf("ProcessMouseMovement %c\n",ch);
   switch (ch) {
     case 'h':
     case 'n':
@@ -5080,6 +5083,7 @@ again:
       }
       continue;
     }
+//    printf("controls: %d KEY = %d\n",controls,KEY);
     if(KEY< 5)if(!uiCheckClickinDialog(D)){
 // As on 28 Jun 2013
       if((D->Callback != NULL)) OK=D->Callback(D,&kbevent); 
@@ -5087,7 +5091,6 @@ again:
       if(OK) OK=1001;
       continue; 
     }
-//    printf("controls: %d\n",controls);
     if(D->controls > 0) {
       switch (KEY) {
        case 0:
@@ -6285,6 +6288,36 @@ int kgWrite(void *Tmp,char *msg) {
    if(m->hide==1) return 0;
    strncpy(m->msg,msg,499);
    kgUpdateWidget(m);
+   break;
+   case 's':
+   {
+	   Dlink *L;
+	   DIS *s;
+	   int i=0;
+	   char *pt,**menu;
+	   s = (DIS *)m;
+	   L = Dopen();
+	   menu = s->menu;
+	   if (menu != NULL) {
+	     i=0;
+ 	     while( (pt = menu[i++])!= NULL) Dadd(L,pt);
+             free(menu);
+	   }
+	   pt = (char *)malloc(strlen(msg)+1);
+	   strcpy(pt,msg);
+	   Dappend(L,pt);
+	   Resetlink(L);
+	   menu = (char **) malloc(sizeof(char *)*(Dcount(L)+1));
+	   i=0;
+	   Resetlink(L);
+	   while( (pt= (char *)Getrecord(L))!= NULL) {
+		   menu[i]=pt;i++;
+	   }
+	   menu[i]=NULL;
+	   s->menu  = menu;
+	   Dfree(L);
+           kgUpdateWidget(s);
+   }
    break;
    case 'i':
    I = (DII *)Tmp;
