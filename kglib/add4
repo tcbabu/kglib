@@ -1,7 +1,0 @@
-  GetExceptionInfo(Exception);
-  if (Exception->severity != UndefinedException) {
-     DestroyImageInfo(Image_Info);
-     DestroyExceptionInfo(Exception);
-     free(Exception);
-     return NULL;
-  }

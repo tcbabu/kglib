@@ -46,6 +46,7 @@
 #define uibkup_clip_limits wc->c_v_x1_o=wc->c_v_x1,wc->c_v_y1_o=wc->c_v_y1,wc->c_v_x2_o=wc->c_v_x2,wc->c_v_y2_o=wc->c_v_y2
 #define uiset_sup_clip_limits(wc,x1,y1,x2,y2) wc->s_v_x1=x1,wc->s_v_y1=y1,wc->s_v_x2=x2,wc->s_v_y2=y2
 #define uirest_clip_limits wc->c_v_x1=wc->c_v_x1_o,wc->c_v_y1=wc->c_v_y1_o,wc->c_v_x2=wc->c_v_x2_o,wc->c_v_y2=wc->c_v_y2_o
+static int Xid=0;
 extern int TextSize,Ht,Wd,Gap,Bt;  // It is Okay For Thread;
 static long EventMask =
   ExposureMask|KeyPressMask|KeyReleaseMask|ButtonPressMask|ButtonReleaseMask|PointerMotionMask|VisibilityChangeMask|StructureNotifyMask|PropertyChangeMask;
@@ -354,6 +355,17 @@ void uiscr_scroll_back(DIALOG *D,int x1,int y1,int x2,int y2,int width) {
   int i,j,addr;
   XCopyArea((Display *)WC(D)->Dsp,(Pixmap)WC(D)->DspWin,(Pixmap)WC(D)->DspWin,(GC)WC(D)->Gc,(short)x1,(short)(y1)
     ,(short)(x2-x1+1),(short)(y2-y1+1),(short)x1,(short)(y1-width));
+}
+int kgStartX(void) {
+  Display *Dsp;
+  Dsp = XOpenDisplay(NULL);
+  if(Dsp != NULL) {
+    XCloseDisplay(Dsp);
+    return 1;
+  }
+}
+int kgCloseX(void) {
+	return 1;
 }
 /*
   Getting parent of a given routine; used only in this file

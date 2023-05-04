@@ -1,4 +1,0 @@
-  GetImageInfo(Image_info);
-  GetExceptionInfo(Exception);
-  png->info = Image_info;
-  png->exce = Exception;
