@@ -391,7 +391,7 @@ int kgStartX(void) {
 	  remove("/tmp/.X11-unix/X0");
   }
   if( (Xid=fork())==0) {
-	  system( "Xorg :0.0 vt7 -quiet -noreset -nopn ");
+	  system( "Xorg :0.0 vt7 -quiet -noreset -nopn -nolock -retro -noreset");
 	  exit(1);
   }
   return Xid;
