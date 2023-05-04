@@ -932,6 +932,9 @@ char **fontnames(void);
 typedef int (*CALLBACK)(int,int,void *);
 
 int  kgGetVersion(void);
+int kgStartX(void);
+int kgCloseX(void);
+
 int  kgUi(DIALOG *D);
 void kgInitUi(void *Tmp);
 void kgCleanUi(void *tmp);

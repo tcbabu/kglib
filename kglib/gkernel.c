@@ -356,6 +356,29 @@ void uiscr_scroll_back(DIALOG *D,int x1,int y1,int x2,int y2,int width) {
   XCopyArea((Display *)WC(D)->Dsp,(Pixmap)WC(D)->DspWin,(Pixmap)WC(D)->DspWin,(GC)WC(D)->Gc,(short)x1,(short)(y1)
     ,(short)(x2-x1+1),(short)(y2-y1+1),(short)x1,(short)(y1-width));
 }
+int isunixsocketinuse(char *sock) {
+  FILE *fp;
+  char buff1[300];
+  char *line=NULL;
+  int ret=0,no,id;
+  size_t len = 0;
+  ssize_t read;
+  fp = fopen("/proc/net/unix","r");
+  if(fp==NULL) return -1;
+//  read = getline(&line, &len, fp);
+  while (fscanf(fp,"%s",buff1) > 0) {
+       if(strcmp(buff1,sock)==0){ret=1; break;}
+  }
+  fclose(fp);
+  free(line);
+  return ret;
+}
+int isdisplayinuse(int num) {
+  char buff[200];
+  sprintf(buff,"/tmp/.X11-unix/X%-d",num);
+  return isunixsocketinuse(buff);
+}
+
 int kgStartX(void) {
   Display *Dsp;
   Dsp = XOpenDisplay(NULL);
@@ -363,8 +386,20 @@ int kgStartX(void) {
     XCloseDisplay(Dsp);
     return 1;
   }
+  if(isdisplayinuse(0) ) {
+	  remove("/tmp/.X0-lock");
+	  remove("/tmp/.X11-unix/X0");
+  }
+  if( (Xid=fork())==0) {
+	  system( "Xorg :0.0 vt7 -quiet -noreset -nopn ");
+	  exit(1);
+  }
+  return Xid;
 }
 int kgCloseX(void) {
+	if(Xid) {
+		kill(Xid,SIGHUP);
+	}
 	return 1;
 }
 /*
