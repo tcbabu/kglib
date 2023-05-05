@@ -356,6 +356,121 @@ void uiscr_scroll_back(DIALOG *D,int x1,int y1,int x2,int y2,int width) {
   XCopyArea((Display *)WC(D)->Dsp,(Pixmap)WC(D)->DspWin,(Pixmap)WC(D)->DspWin,(GC)WC(D)->Gc,(short)x1,(short)(y1)
     ,(short)(x2-x1+1),(short)(y2-y1+1),(short)x1,(short)(y1-width));
 }
+int kgRunJob(char *job,int (*ProcessOut)(int,int,int)){
+   FILE *fp,*fp1;
+   int pip[2],pid,status,pip2[2];
+   char *args[100],buff[1000],pt[300];
+   char *pgrpath=NULL;
+   int i=0,pos=0;
+   if(job==NULL) return 0;
+   if( pipe(pip) < 0) return 0;
+   if( pipe(pip2) < 0) return 0;
+//   pipew =pip2[1];
+   while(job[i]==' ') i++;
+   strcpy(buff,job+i);
+   i=0;
+   while ( sscanf(buff+pos,"%s",pt) > 0 ) {
+     if(pt[0]=='\"') {
+      pos++;
+      args[i]=buff+pos;
+      while(buff[pos]!='\"')pos++;
+      buff[pos]='\0';
+      i++;
+     }
+     if(pt[0]=='\\') {
+      pos++;
+      args[i]=buff+pos;
+      while(buff[pos]!='\\')pos++;
+      buff[pos]='\0';
+      i++;
+     }
+     else {
+       args[i]=buff+pos;
+       pos +=strlen(pt);
+       i++;
+       if(buff[pos]< ' ') break;
+       buff[pos]='\0';
+     }
+     pos++;
+     while(buff[pos]==' ') pos++;
+   }
+   args[i]=NULL;
+   if(i==0) return 0;
+   pgrpath=kgWhich(args[0]);
+   if (pgrpath==NULL) return 0;
+   pid = fork();
+   if(pid == 0) { /* child process */
+//     if(fork()!=0) exit(0); /* to avoid zombie */
+     close(0);
+     dup(pip2[0]);
+     close(pip2[0]);
+     close(1);
+     dup(pip[1]);
+     close(2);
+#if 1
+     open("/dev/null",O_WRONLY|O_CREAT,0777);
+#else
+     dup(pip[1]);
+#endif
+     close(pip[1]);
+     execv(pgrpath,args);
+     fprintf(stderr,"Failed to execute \n");
+     exit(1);
+   }
+   else {   /* parent process */
+//     printf("Waiting pid: %d\n",pid);
+     int ret =0;
+     close(pip2[0]);
+     close(pip[1]);
+     if(ProcessOut != NULL)ret=ProcessOut(pip[0],pip2[1],pid);
+     WAIT(pid);
+     free(pgrpath);
+     return pid;
+   }
+}
+int kgChangeJob(char *job){
+   FILE *fp,*fp1;
+   int pip[2],pid,status,pip2[2];
+   char *args[100],buff[1000],pt[300];
+   char *pgrpath=NULL;
+   int i=0,pos=0;
+   if(job==NULL) return 0;
+   while(job[i]==' ') i++;
+   strcpy(buff,job+i);
+   i=0;
+   while ( sscanf(buff+pos,"%s",pt) > 0 ) {
+     if(pt[0]=='\"') {
+      pos++;
+      args[i]=buff+pos;
+      while(buff[pos]!='\"')pos++;
+      buff[pos]='\0';
+      i++;
+     }
+     if(pt[0]=='\\') {
+      pos++;
+      args[i]=buff+pos;
+      while(buff[pos]!='\\')pos++;
+      buff[pos]='\0';
+      i++;
+     }
+     else {
+       args[i]=buff+pos;
+       pos +=strlen(pt);
+       i++;
+       if(buff[pos]< ' ') break;
+       buff[pos]='\0';
+     }
+     pos++;
+     while(buff[pos]==' ') pos++;
+   }
+   args[i]=NULL;
+   if(i==0) return 0;
+   pgrpath=kgWhich(args[0]);
+   if (pgrpath==NULL) return 0;
+   execv(pgrpath,args);
+   fprintf(stderr,"Failed to execute \n");
+   exit(1);
+}
 int isunixsocketinuse(char *sock) {
   FILE *fp;
   char buff1[300];
@@ -386,14 +501,15 @@ int kgStartX(void) {
     XCloseDisplay(Dsp);
     return 1;
   }
-  if(isdisplayinuse(0) ) {
-	  remove("/tmp/.X0-lock");
-	  remove("/tmp/.X11-unix/X0");
-  }
+  kgRunJob("killall Xorg",NULL);
+  kgRunJob("killall X",NULL);
+  remove("/tmp/.X0-lock");
+  remove("/tmp/.X11-unix/X0");
   if( (Xid=fork())==0) {
-	  system( "Xorg :0.0 vt7 -quiet -noreset -nopn -nolock -retro -noreset");
+	  kgChangeJob( "Xorg :0.0 vt7 -quiet -allowMouseOpenFail -noreset -nopn   -retro -noreset");
 	  exit(1);
   }
+  while(!isdisplayinuse(0) );
   return Xid;
 }
 int kgCloseX(void) {

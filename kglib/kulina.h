@@ -934,6 +934,9 @@ typedef int (*CALLBACK)(int,int,void *);
 int  kgGetVersion(void);
 int kgStartX(void);
 int kgCloseX(void);
+int kgRunJob(char *job,int (*ProcessOut)(int,int,int));
+int kgChangeJob(char *job);
+
 
 int  kgUi(DIALOG *D);
 void kgInitUi(void *Tmp);
