@@ -932,7 +932,7 @@ char **fontnames(void);
 typedef int (*CALLBACK)(int,int,void *);
 
 int  kgGetVersion(void);
-int kgStartX(void);
+int kgStartX(char *logfile);  // arg can be NULL
 int kgCloseX(void);
 int kgRunJob(char *job,int (*ProcessOut)(int,int,int));
 int kgChangeJob(char *job);

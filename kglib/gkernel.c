@@ -494,7 +494,7 @@ int isdisplayinuse(int num) {
   return isunixsocketinuse(buff);
 }
 
-int kgStartX(void) {
+int kgStartX(char *logfile) {
   Display *Dsp;
   Dsp = XOpenDisplay(NULL);
   if(Dsp != NULL) {
@@ -506,7 +506,14 @@ int kgStartX(void) {
   remove("/tmp/.X0-lock");
   remove("/tmp/.X11-unix/X0");
   if( (Xid=fork())==0) {
+	if(logfile==NULL) {
 	  kgChangeJob( "Xorg :0.0 vt7 -quiet -allowMouseOpenFail -noreset -nopn   -retro -noreset");
+	}
+	else {
+		char command[500];
+		sprintf(command,"Xorg :0.0 vt7 -quiet -allowMouseOpenFail -noreset -nopn   -retro -noreset -logfile %s",logfile);
+		kgChangeJob(command);
+	}
 	  exit(1);
   }
   while(!isdisplayinuse(0) );

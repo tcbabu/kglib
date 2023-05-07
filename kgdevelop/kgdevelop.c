@@ -5130,7 +5130,7 @@ void Make_gui_code(DIALOG *D,char *flname,char *dianame){
   fpc = fopen(Maincode,"w");
   fprintf(fpc,"#include <stdio.h>\n");
   fprintf(fpc,"void *Run%-s(void *);\n",dianame);
-  fprintf(fpc,"int main(void) { Run%-s(NULL);return 1;}\n",dianame);
+  fprintf(fpc,"int main(void) {\n// kgStartX(NULL) //can be used;\n  Run%-s(NULL);\n//  kgCloseX(); //canbe used\n  return 1;\n}\n",dianame);
   fclose(fpc);
   Dfree(L);
 }
