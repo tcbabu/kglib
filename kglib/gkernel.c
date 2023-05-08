@@ -499,6 +499,8 @@ int kgStartX(char *logfile) {
   Dsp = XOpenDisplay(NULL);
   if(Dsp != NULL) {
     XCloseDisplay(Dsp);
+    fprintf(stderr,"Xorg Active \n");
+    fflush(stderr);
     return 1;
   }
   kgRunJob("killall Xorg",NULL);
@@ -507,11 +509,11 @@ int kgStartX(char *logfile) {
   remove("/tmp/.X11-unix/X0");
   if( (Xid=fork())==0) {
 	if(logfile==NULL) {
-	  kgChangeJob( "Xorg :0.0 vt7 -quiet -allowMouseOpenFail -noreset -nopn   -retro -noreset");
+	  kgChangeJob( "Xorg :0.0 vt7 -quiet -allowMouseOpenFail -terminate -reset -nopn   -retro  ");
 	}
 	else {
 		char command[500];
-		sprintf(command,"Xorg :0.0 vt7 -quiet -allowMouseOpenFail -noreset -nopn   -retro -noreset -logfile %s",logfile);
+		sprintf(command,"Xorg :0.0 vt7 -quiet -allowMouseOpenFail -terminate -reset -nopn   -retro   -logfile %s",logfile);
 		kgChangeJob(command);
 	}
 	  exit(1);
@@ -521,7 +523,9 @@ int kgStartX(char *logfile) {
 }
 int kgCloseX(void) {
 	if(Xid) {
-		kill(Xid,SIGHUP);
+		kill(Xid,SIGTERM);
+//		kill(Xid,SIGHUP);
+//		kill(Xid,SIGKILL);
 	}
 	return 1;
 }
