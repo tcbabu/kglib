@@ -11911,6 +11911,7 @@ int _uiMake_MS(DIS *y)
  {
   char **menu;
   BRW_STR *bwsr;
+  Gclr gc;
   int ret,n=0,i=0,x1,y1;
   int height,extra,w,exitems;
   kgWC *wc;
@@ -11976,6 +11977,10 @@ int _uiMake_MS(DIS *y)
 #endif
    bwsr->pos=exitems;
    bwsr->D=D;
+   gc=D->gc;
+//   bwsr->MS.color1=gc.fill_clr;bwsr->MS.color2=gc.high_clr;
+   bwsr->MS.color1=gc.msg_fill;bwsr->MS.color2=gc.msg_bodr;
+   bwsr->MS.char_clr = gc.msg_char;
    bwsr->hitem = bwsr->df-1;
    w = bwsr->scroll*y->w;
    bwsr->w=w;
@@ -18752,6 +18757,7 @@ void _uiPutMmenu( DIS *y){
       char **menu,**list;
       unsigned int cur_c,temp,ch,cr,esc;
       int j,pos;
+      int offset=2;
       int k,kk,knew,jj,ln,bxln,bxwd;
       int n,iy,iyp,ixp,ixmid;
       int scroll=1,swv,nx,ny,yi,xi,scrsize,xoffset,yoffset,th,w;
@@ -18789,10 +18795,21 @@ void _uiPutMmenu( DIS *y){
       menu = list;
       if(y->nitems > y->size) menu += (y->nitems - y->size);
 #endif
+#if 0
       _dvrect_fill(WC(D),(br->x1+xoffset),(br->y1+xoffset),(br->x2-xoffset-w)-1, (br->y2-xoffset),D->gc.info_fill);
       if(y->bordr==1) {
       _dv_draw_bound(D,(br->x1+xoffset),(br->y1+xoffset),(br->x2-xoffset-w)-1, (br->y2-xoffset),D->gc.high_clr);
       }
+#else
+      _dvrect_fill(WC(D),(br->x1+xoffset),(br->y1+xoffset),(br->x2-xoffset-w)-1, (br->y2-xoffset),br->MS.color1);
+#if 0
+      if(y->bordr==1) {
+//      _dv_draw_bound(D,(br->x1+xoffset),(br->y1+xoffset),(br->x2-xoffset-w)-1, (br->y2-xoffset),br->MS.color2);
+      _dvrect_fill(WC(D),(br->x1+xoffset),(br->y1+xoffset),(br->x2-xoffset-w)-1, (br->y2-xoffset),br->MS.color2);
+      _dvrect_fill(WC(D),(br->x1+xoffset+offset),(br->y1+xoffset+offset),(br->x2-xoffset-w-1-offset), (br->y2-xoffset-offset),br->MS.color1);
+      }
+#endif
+#endif
       jj = iy;
       uiDefaultGuiFontSize(D);
       kk=0;
@@ -18814,7 +18831,7 @@ void _uiPutMmenu( DIS *y){
 #else
 	    //TCB NEW
 	    //
-	   uiMsgString(D,list[kk+pos],(int)ixp+xoff*y->width,(int)iyp,D->gc.info_char,D->gc.MsgFont,D->gc.FontSize);
+	   uiMsgString(D,list[kk+pos],(int)ixp+xoff*y->width,(int)iyp,br->MS.char_clr,D->gc.MsgFont,D->gc.FontSize);
 #endif
         }
         kk++;
@@ -19816,7 +19833,11 @@ void _uiDrawDialogMenu(BRW_STR *br) {
     uiSet_full_scrn(WC(D));
 //    offset=scroll*4;
     _uirect_fill(WC(D), br->x1+(offset+2),D->evgay-br->y1-(offset+2),br->x2-(offset+2), D->evgay-br->y2+(offset+2),gc.txt_fill);
+#if 0
     _uibordertype0(D, br->x1+(offset+2),D->evgay-br->y1-(offset+2),br->x2-((offset+2)-1), D->evgay-br->y2+((offset+2)-1),gc.vbright);
+#else
+    _uibordertype1(D, br->x1+(offset+2),D->evgay-br->y1-(offset+2),br->x2-((offset+2)-1), D->evgay-br->y2+((offset+2)-1));
+#endif
     uiRest_clip_limits(WC(D));
   }
   if(n!=0) {
@@ -20088,11 +20109,24 @@ void _uiDrawDialogM(DIS *y) {
   gc = D->gc;
   uiBkup_clip_limits(WC(D));
   uiSet_full_scrn(WC(D));
+#if 0
    _dvrect_fill(WC(D), br->x1+(offset),br->y1+(offset),br->x2-(offset), br->y2-(offset),gc.fill_clr);
    if((D->DrawBkgr!=0)&&(y->bkgr==1)) {
     _dvrect_fill(WC(D), br->x1+(offset),br->y1+(offset),br->x2-(offset), br->y2-(offset),gc.txt_fill);
     _dvbordertype0(D, br->x1+(offset),br->y1+(offset),br->x2-(offset), br->y2-(offset),gc.vbright);
    }
+#else
+   _dvrect_fill(WC(D), br->x1+(offset),br->y1+(offset),br->x2-(offset), br->y2-(offset),gc.fill_clr);
+   if((D->DrawBkgr!=0)&&(y->bkgr==1)) {
+#if 0
+    _dvrect_fill(WC(D), br->x1+(offset),br->y1+(offset),br->x2-(offset), br->y2-(offset),br->MS.color1);
+    _dvbordertype0(D, br->x1+(offset),br->y1+(offset),br->x2-(offset), br->y2-(offset),br->MS.color2);
+#else
+      _dvrect_fill(WC(D),(br->x1+offset),(br->y1+offset),(br->x2-offset), (br->y2-offset),br->MS.color2);
+      _dvrect_fill(WC(D),(br->x1+offset)+3,(br->y1+offset)+3,(br->x2-offset)-3, (br->y2-offset)-3,br->MS.color1);
+#endif
+   }
+#endif
    if(y->nitems!=0) {
     if(br->scroll) {
      _ui_vert_scroll_mbar(y);
@@ -20168,7 +20202,8 @@ void _uiDrawMsg(DIS *w) {
   gc = D->gc;
   br->D=D;
   br->MS.color1=gc.fill_clr;br->MS.color2=gc.high_clr;
-  br->MS.char_clr = gc.txt_char;
+  br->MS.color1=gc.msg_fill;br->MS.color2=gc.msg_bodr;
+  br->MS.char_clr = gc.msg_char;
 //TCB
   br->MS.imenu=br->size;
   br->MS.nitems=n;
@@ -20194,9 +20229,16 @@ void _uiDrawMsg(DIS *w) {
   Y2=(br->MS.iyy+scroll*10+bodrwidth+(br->MS.iyl));
   uiBkup_clip_limits(WC(D));
   uiSet_full_scrn(WC(D));
-  _dvrect_fill(WC(D),br->x1+offset,br->y1+offset,br->x2-offset, br->y2-offset,gc.txt_fill);
+  _dvrect_fill(WC(D),br->x1+offset,br->y1+offset,br->x2-offset, br->y2-offset,gc.fill_clr);
 //TCBTCB
+#if 1
   _dvbordertype1(D,br->x1+offset,br->y1+offset,br->x2-offset, br->y2-offset);
+#else
+   if((D->DrawBkgr!=0)&&(w->bkgr==1)) {
+    _dvrect_fill(WC(D), br->x1+(offset),br->y1+(offset),br->x2-(offset), br->y2-(offset),br->MS.color1);
+    _dvbordertype0(D, br->x1+(offset),br->y1+(offset),br->x2-(offset), br->y2-(offset),br->MS.color2);
+   }
+#endif
   uiRest_clip_limits(WC(D));
   if(n!=0) {
    pos  = 1;

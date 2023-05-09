@@ -509,11 +509,13 @@ int kgStartX(char *logfile) {
   remove("/tmp/.X11-unix/X0");
   if( (Xid=fork())==0) {
 	if(logfile==NULL) {
-	  kgChangeJob( "Xorg :0.0 vt7 -quiet -allowMouseOpenFail -terminate -reset -nopn   -retro  ");
+//	  kgChangeJob( "Xorg :0.0 vt7 -quiet -allowMouseOpenFail -terminate -reset -nopn   -retro  ");
+	  kgChangeJob( "Xorg :0.0 vt7 -quiet -allowMouseOpenFail -reset -nopn   -retro  ");
 	}
 	else {
 		char command[500];
-		sprintf(command,"Xorg :0.0 vt7 -quiet -allowMouseOpenFail -terminate -reset -nopn   -retro   -logfile %s",logfile);
+//		sprintf(command,"Xorg :0.0 vt7 -quiet -allowMouseOpenFail -terminate -reset -nopn   -retro   -logfile %s",logfile);
+		sprintf(command,"Xorg :0.0 vt7 -quiet -allowMouseOpenFail  -reset -nopn   -retro   -logfile %s",logfile);
 		kgChangeJob(command);
 	}
 	  exit(1);
