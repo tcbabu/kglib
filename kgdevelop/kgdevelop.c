@@ -6746,6 +6746,7 @@ DIT * Making_t_box(DIALOG *D)
      for(k=0;k<(nx) ;k++) {
        sprintf(buf,"For Textbox: (%d,%d)",k+1,j+1);
        E[i].fmt = (char *)Runtextboxdata(buf);
+       E[i].noecho = 0;
        i++;
      }
    }
@@ -6834,6 +6835,7 @@ DIT * Making_T_box(DIALOG *D)
    E = (T_ELMT *)malloc(sizeof(T_ELMT)*nx*ny);
    for(i=0;i<(nx*ny) ;i++) {
      E[i].fmt = (char *)malloc(150);
+     E[i].noecho=0;
    }
    T->elmt = E;
    for(i=0;i<(nx) ;i++) {

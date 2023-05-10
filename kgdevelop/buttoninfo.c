@@ -446,6 +446,7 @@ int butnoptGroup( DIALOG *D,void **v,void *pt) {
   strcpy(c3.Wid,(char *)"");
   T_ELMT *e4  ; 
   e4 =(T_ELMT *)malloc(sizeof(T_ELMT)*3);
+  for(j=0;j<3;j++) e4[j].noecho=0;
   e4[0].fmt = (char *)malloc(5);
   strcpy(e4[0].fmt,(char *)"%15s");
   e4[0].v=(void *)v[2];

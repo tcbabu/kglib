@@ -145,6 +145,7 @@ int messagedataGroup( DIALOG *D,void **v,void *pt) {
   DIA *d=NULL,*dtmp;
   T_ELMT *e0  ; 
   e0 =(T_ELMT *)malloc(sizeof(T_ELMT)*4);
+  for(j=0;j<4;j++) e0[j].noecho =0;
   e0[0].fmt = (char *)malloc(10);
   strcpy(e0[0].fmt,(char *)"Length%4d");
   e0[0].v=(void *)v[0];

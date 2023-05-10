@@ -296,8 +296,8 @@ int Options( void *parent,void **v,void *pt) {
   };
   strcpy(m5.msg,(char *)"Border type:");
   T_ELMT e6[2]  = { 
-    {(char *)"Width%3d", v[3], 1},
-    {(char *)"Height%3d", v[4], 1}
+    {(char *)"Width%3d", v[3], 1,0},
+    {(char *)"Height%3d", v[4], 1,0}
   };
   DIT t6 = { 
     't',

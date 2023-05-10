@@ -107,6 +107,7 @@ int getStrings( void *parent,void **v,int id) {
     sprintf(e0[k].fmt,"Item%-d String%%30s",k+id);
     e0[k].v = v[k];
     e0[k].sw =1;
+    e0[k].noecho=0;
   }
   t0.ny=n-1;
   t0.elmt = e0;

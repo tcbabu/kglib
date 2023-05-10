@@ -129,6 +129,7 @@ int selectmenuGroup( DIALOG *D,void **v,void *pt) {
   DIA *d=NULL,*dtmp;
   T_ELMT *e0  ;
   e0 =(T_ELMT *)malloc(sizeof(T_ELMT)*6);
+  for(j=0;j<6;j++) e0[j].noecho=0;
   e0[0].fmt = (char *)malloc(10);
   strcpy(e0[0].fmt,(char *)"Length%4d");
   e0[0].v=(void *)v[0];
@@ -264,6 +265,7 @@ int selectmenuGroup( DIALOG *D,void **v,void *pt) {
   strcpy(H3.Wid,(char *)"");
   T_ELMT *e4  ;
   e4 =(T_ELMT *)malloc(sizeof(T_ELMT)*1);
+  for(j=0;j<1;j++) e4[j].noecho=0;
   e4[0].fmt = (char *)malloc(16);
   strcpy(e4[0].fmt,(char *)"Widget Name%20s");
   e4[0].v=(void *)v[8];

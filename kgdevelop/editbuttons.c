@@ -183,6 +183,7 @@ int buttondataGroup( DIALOG *D,void **v,void *pt) {
   DIA *d=NULL,*dtmp;
   T_ELMT *e0  ; 
   e0 =(T_ELMT *)malloc(sizeof(T_ELMT)*8);
+  for(j=0;j<8;j++) e0[j].noecho=0;
   e0[0].fmt = (char *)malloc(10);
   strcpy(e0[0].fmt,(char *)"Length%3d");
   e0[0].v=(void *)v[0];
@@ -435,6 +436,7 @@ int hbuttondataGroup( DIALOG *D,void **v,void *pt) {
   DIA *d=NULL,*dtmp;
   T_ELMT *e0  ; 
   e0 =(T_ELMT *)malloc(sizeof(T_ELMT)*6);
+  for(j=0;j<6;j++) e0[j].noecho=0;
   e0[0].fmt = (char *)malloc(10);
   strcpy(e0[0].fmt,(char *)"Length%3d");
   e0[0].v=(void *)v[0];
@@ -801,6 +803,7 @@ int buttoneditGroup( DIALOG *D,void **v,void *pt) {
   DIA *d=NULL,*dtmp;
   T_ELMT *e0  ; 
   e0 =(T_ELMT *)malloc(sizeof(T_ELMT)*6);
+  for(j=0;j<6;j++) e0[j].noecho=0;
   e0[0].fmt = (char *)malloc(10);
   strcpy(e0[0].fmt,(char *)"Length%3d");
   e0[0].v=(void *)v[0];
