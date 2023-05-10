@@ -1568,6 +1568,10 @@ void Print_Msgscroll(FILE *fp,DIS *t,int control,char *dianame) {
   fprintf(fp,"    NULL,NULL, /* *args, callback */\n");
   fprintf(fp,"    %d,%d,%d,%d,%d,%d,%d\n",
                   t->width,t->offset,t->w,t->itemhi,t->bordr,t->bkgr,t->hide);
+  fprintf(fp,"//     line width,offset (not used),scroll width,highlight item(not used)\n");
+  fprintf(fp,"//     border on/off,bkgr on/off,hide on/off\n");
+  fprintf(fp,"//     uses Gclr items: msg_fill,msg_char,msg_bodr,scroll_fill,scroll_dim,scroll_vbright)\n");
+
   fprintf(fp,"  };\n");
   t->Wid[49]='\0';
   fprintf(fp,"  strcpy(s%-d.Wid,(char *)\"%-s\");\n",Tbox,t->Wid);
@@ -4191,6 +4195,7 @@ int Writeinitroutine(FILE *fp,char *dianame) {
  fprintf(fp,"  pt = D->pt;\n");
  fprintf(fp,"  return ret;\n");
  fprintf(fp,"}\n");
+ return 1;
 }
 int WriteDefaultCallback(FILE *fp,char *dianame) {
  fprintf(Inc,"int Modify%-s(void *Tmp,int GrpId) ;\n",dianame);
@@ -4252,6 +4257,7 @@ int WriteDefaultCallback(FILE *fp,char *dianame) {
  fprintf(fp,"  int ret = 0;\n");
  fprintf(fp,"  return ret;\n");
  fprintf(fp,"}\n");
+ return 1;
 }
 int WriteGboxinit(int control,FILE *fp,char *dianame){
   fprintf(Inc,"void %-sgbox%-dinit(int i,void *Tmp) ;\n",dianame,control);
@@ -4267,6 +4273,7 @@ int WriteGboxinit(int control,FILE *fp,char *dianame){
   fprintf(fp,"  G->D = (void *)(Tmp);\n");
   fprintf(fp,"  return ;\n");
   fprintf(fp,"}\n");
+  return 1;
 }
 void WriteCallBacks(Dlink *Dialink, FILE *fp,char *dianame){
   int nvar=0, control=0;
@@ -4987,11 +4994,20 @@ void Make_gui_code(DIALOG *D,char *flname,char *dianame){
   fclose(fpc);
   fclose(Inc);
   codes = Get_gui_args(L);
-  fprintf(fp1,"void Modify%-sGc(Gclr *gc) {\n",dianame);
+  fprintf(fp1,"void Modify%-sGc(void *Tmp) {\n",dianame);
+  fprintf(fp1,"   DIALOG *D;\n");
+  fprintf(fp1,"   Gclr *gc;\n");
+  fprintf(fp1,"   D = (DIALOG *)Tmp;\n");
+  fprintf(fp1,"   gc = &(D->gc);\n");
   fprintf(fp1,"/*\n");
   fprintf(fp1,"//  You may change default settings here \n");
   fprintf(fp1,"//  probably you can allow the user to create a config in $HOME\n");
   fprintf(fp1,"//  and try to read that file (if exits); so dynamic configuration is possible\n");
+  fprintf(fp1,"   kgColorTheme(D,220,220,200);\n");
+  fprintf(fp1,"   kgColorTheme1(D,220,220,200);\n");
+  fprintf(fp1,"   kgColorTheme2(D,220,220,200);\n");
+  fprintf(fp1,"   kgDefaultGuiTheme(gc);\n");
+  fprintf(fp1,"   kgGrayGuiTheme(gc);\n");
   fprintf(fp1,"   gc->FontSize =8;\n");
   fprintf(fp1,"   gc->Font=23;\n");
   fprintf(fp1,"*/\n");
@@ -5111,9 +5127,8 @@ void Make_gui_code(DIALOG *D,char *flname,char *dianame){
   fprintf(fp1,"  }    /*  end of fullscreen mode */\n");
 //  fprintf(fp1,"  D.SearchList=(void *)Dopen();    /*  list of directories picture search */\n");
 //  fprintf(fp1,"  kgDefaultGuiTheme(&(D.gc));    /*  set colors for gui*/\n");
-  fprintf(fp1,"//  kgColorTheme(&D,210,210,210);    /*  set colors for gui*/\n");
-  fprintf(fp1,"//  Modify%-sGc(&(D.gc));    /*  set colors for gui*/\n",dianame);
   fprintf(fp1,"  Modify%-s(&D,GrpId);    /*  add extras to  gui*/\n",dianame);
+  fprintf(fp1,"  Modify%-sGc(&D);    /*  set colors for gui if don't like default*/\n",dianame);
   fprintf(fp1,"  ret= kgUi(&D);\n");
   fprintf(fp1,"  kgCleanUi(&D);\n");
   fprintf(fp1,"  return ret;\n");

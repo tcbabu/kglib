@@ -113,6 +113,10 @@ typedef struct {
   int ProgColor;
   int ItemHighColor;
   int InputFontSize;
+  int scroll_fill;
+  int scroll_bright;
+  int scroll_vbright;
+  int scroll_dim;
 } Gclr;
 
 typedef struct dia_msg_str {
@@ -1069,6 +1073,7 @@ void kgCloseBusy(void * id);
 void kgAddSearchDir(void *Tmp,char *Dir);
 void kgColorTheme(DIALOG *D,unsigned char red,unsigned char green, unsigned char blue);
 void kgColorTheme1(DIALOG *D,unsigned char red,unsigned char green, unsigned char blue);
+void kgColorTheme2(DIALOG *D,unsigned char red,unsigned char green, unsigned char blue);
 void kgResetColor(void *D,int no,int ir,int ig,int ib); // redefines a color; but will not affect hardcopy
 
 /* Default definitions of color */

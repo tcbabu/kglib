@@ -10016,7 +10016,7 @@ int Make_fbrowser(DIX *x,int x1,int y1,int XX)
    wc= WC(D);
    uiBkup_clip_limits(wc);
    uiSet_full_scrn(wc);
-   uiShadedString(D,"!f35!w32!xs", x, y, w,w,35,D->gc.fill_clr,0,D->gc.v_dim,D->gc.FontSize-1,0,rfac,1,type);
+   uiShadedString(D,"!f35!w32!xs", x, y, w,w,35,D->gc.scroll_fill,0,D->gc.v_dim,D->gc.FontSize-1,0,rfac,1,type);
    uiRest_clip_limits(wc);
   }
  void _dvdown_dir(DIALOG *D,int x,int y,int w,float rfac,int type)
@@ -10025,7 +10025,7 @@ int Make_fbrowser(DIX *x,int x1,int y1,int XX)
    wc= WC(D);
    uiBkup_clip_limits(wc);
    uiSet_full_scrn(wc);
-   uiShadedString(D,"!f35!w32!xt", x, y, w,w,35,D->gc.fill_clr,0,D->gc.v_dim,D->gc.FontSize-1,0,rfac,1,type);
+   uiShadedString(D,"!f35!w32!xt", x, y, w,w,35,D->gc.scroll_fill,0,D->gc.v_dim,D->gc.FontSize-1,0,rfac,1,type);
    uiRest_clip_limits(wc);
   }
  void _uidown_dir_o(DIALOG *D,int x,int y,int w)
@@ -19326,15 +19326,15 @@ void _uiNewMoveVertPointer(BRW_STR *br) {
    tmp=WC(D)->c_color;
    uiBkup_clip_limits(WC(D));
    uiSet_full_scrn(WC(D));
-//TCB
+//TCB NEW
    x1=x+1;y1=y;x2=x1+w;y2=y+h;
-   _dvrect_fill(WC(D),x1,y1,x2,y2,D->gc.dim);
+   _dvrect_fill(WC(D),x1,y1,x2,y2,D->gc.scroll_dim);
    sy = y1+sy;
    if(sy>y2) sy=y2-sh;
    if(sy+sh>y2) sy =y2- sh;
-   uiset_clr(D,D->gc.vbright);
-   _dvrect_fill(WC(D),x1,sy,x2,sy+sh,D->gc.fill_clr);
-   uiset_clr(D,D->gc.vbright);
+   uiset_clr(D,D->gc.scroll_vbright);
+   _dvrect_fill(WC(D),x1,sy,x2,sy+sh,D->gc.scroll_fill);
+   uiset_clr(D,D->gc.scroll_vbright);
    _dv_h_line(WC(D),x1,x2,sy);
    _dv_v_line(WC(D),sy,sy+sh,x1);
    uiset_clr(D,D->gc.v_dim);

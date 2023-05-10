@@ -174,6 +174,10 @@ void kgDefaultGuiTheme(Gclr *Gc) {
   Gc->ProgColor=8;
   Gc->ItemHighColor=6;
   Gc->InputFontSize=9;
+  Gc->scroll_fill= Gc->fill_clr;
+  Gc->scroll_dim= Gc->dim;
+  Gc->scroll_bright= Gc->bright;
+  Gc->scroll_vbright= Gc->vbright;
   return ;
 }
 void kgColorTheme2(DIALOG *D,unsigned char red,unsigned char green, unsigned char blue) {
@@ -277,6 +281,10 @@ void kgColorTheme2(DIALOG *D,unsigned char red,unsigned char green, unsigned cha
   Gc->SplashCharColor=26;
   Gc->ItemHighColor=6;
   Gc->InputFontSize=9;
+  Gc->scroll_fill= Gc->fill_clr;
+  Gc->scroll_dim= Gc->dim;
+  Gc->scroll_bright= Gc->bright;
+  Gc->scroll_vbright= Gc->vbright;
   return ;
 }
 void kgColorTheme(DIALOG *D,unsigned char red,unsigned char green, unsigned char blue) {
@@ -393,6 +401,10 @@ void kgColorTheme(DIALOG *D,unsigned char red,unsigned char green, unsigned char
   Gc->ProgBodrColor=58;
   Gc->ProgColor=56;
   Gc->InputFontSize=9;
+  Gc->scroll_fill= Gc->fill_clr;
+  Gc->scroll_dim= Gc->dim;
+  Gc->scroll_bright= Gc->bright;
+  Gc->scroll_vbright= Gc->vbright;
   return ;
 }
 void kgColorTheme1(DIALOG *D,unsigned char red,unsigned char green, unsigned char blue) {
@@ -502,6 +514,10 @@ void kgColorTheme1(DIALOG *D,unsigned char red,unsigned char green, unsigned cha
   Gc->ProgBodrColor=58;
   Gc->ProgColor=56;
   Gc->InputFontSize=9;
+  Gc->scroll_fill= Gc->fill_clr;
+  Gc->scroll_dim= Gc->dim;
+  Gc->scroll_bright= Gc->bright;
+  Gc->scroll_vbright= Gc->vbright;
   return ;
 }
 void kgGrayGuiTheme(Gclr *Gc) {
@@ -549,6 +565,10 @@ void kgGrayGuiTheme(Gclr *Gc) {
   Gc->ProgColor=8;
   Gc->ItemHighColor=6;
   Gc->InputFontSize=8;
+  Gc->scroll_fill= Gc->fill_clr;
+  Gc->scroll_dim= Gc->dim;
+  Gc->scroll_bright= Gc->bright;
+  Gc->scroll_vbright= Gc->vbright;
   return ;
 }
 #if 0
