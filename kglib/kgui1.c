@@ -3899,6 +3899,8 @@ int uiTextMenu(void *parent,int x1,int y1,  int items,char **promt,char ** field
      l+= get_t_item_size(promt[i]);
      if(maxl <l ) maxl =l;
      e0[i].fmt=promt[i];e0[i].v = field[i];e0[i].sw=1;
+     e0[i].noecho=0;
+     e0[i].img=NULL;
   }
 //  printf("Inside uiTextMenu\n");
   maxl =maxl*9+50;
@@ -6194,6 +6196,8 @@ int  gscanf(void *parent,void *unknown,...){
     e[it].fmt = (char *)Malloc(ln);
     strcpy(e[it].fmt,pt);
     e[it].sw=1;
+    e[it].img=NULL;
+    e[it].noecho=0;
     cpt++;
     pt =cpt;
     switch( ch) {
@@ -6341,6 +6345,10 @@ DIT * kgCreateTable(int xo,int yo,int nrows,char **colformats,char *name) {
    E = (T_ELMT *)Malloc(sizeof(T_ELMT)*nx*ny);
    for(i=0;i<(nx*ny) ;i++) {
      E[i].fmt = (char *)Malloc(150);
+     E[i].noecho = 0;
+     E[i].img=NULL;
+
+
    }
    T->elmt = E;
    width = (ny)*T->width;

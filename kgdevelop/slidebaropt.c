@@ -266,6 +266,7 @@ int slidebaroptGroup( DIALOG *D,void **v,void *pt) {
   T_ELMT *e5  ; 
   e5 =(T_ELMT *)malloc(sizeof(T_ELMT)*3);
   for(j=0;j<3;j++) e5[j].noecho =0;
+  for(j=0;j<3;j++) e5[j].img=0;
   e5[0].fmt = (char *)malloc(14);
   strcpy(e5[0].fmt,(char *)"Min. Value%6d");
   e5[0].v=(void *)v[1];

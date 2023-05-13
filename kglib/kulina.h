@@ -96,27 +96,27 @@ typedef struct {
   int info_char;    /* character colour for info box */
   int but_char;     /* character colour for button title */
   int menu_char;    /* Color for menu item */
-  int c_bound;
-  int GuiFontSize;
-  int MenuFont;
-  int PromptFont;
-  int ButtonFont;
-  int MsgFont;
-  int Font;   //internal use
-  int FontSize;   //internal use
-  int SplashFont;
   int SplashFillColor;
   int SplashBodrColor;
   int SplashCharColor;
   int ProgFillColor;
   int ProgBodrColor;
   int ProgColor;
-  int ItemHighColor;
-  int InputFontSize;
   int scroll_fill;
   int scroll_bright;
   int scroll_vbright;
   int scroll_dim;
+  int ItemHighColor;
+  int c_bound;
+  int GuiFontSize;
+  int MenuFont;
+  int PromptFont;
+  int ButtonFont;
+  int MsgFont;
+  int FontSize;   //internal use
+  int SplashFont;
+  int InputFontSize;
+  int Font;   //internal use
 } Gclr;
 
 typedef struct dia_msg_str {

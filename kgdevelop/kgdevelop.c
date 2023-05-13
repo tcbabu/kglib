@@ -72,7 +72,7 @@ int Runtableboxesdata(void *arg);
 void *Runtableboxdata(void *arg,char *msg);
 
 static char flname[100],Sourcecode[100],DiaName[200],Callbackcode[100],
-           Includecode[100],Maincode[100],Mainc[100];
+           Includecode[100],Maincode[100],Mainc[100],Gclrcode[200];
 ThumbNail ** MakeSampleThumbNails(int size,int n) {
   int i;
   void *img,*thimg;
@@ -2493,6 +2493,7 @@ void Print_textbox(FILE *fp,DIT *t,int control,char *dianame) {
     fprintf(fp,"  e%-d[%-d].v=(void *)v[%-d];\n",Tbox,i,Vcount++);
     fprintf(fp,"  e%-d[%-d].sw=1;\n",Tbox,i);
     fprintf(fp,"  e%-d[%-d].noecho=0;\n",Tbox,i);
+    fprintf(fp,"  e%-d[%-d].img=NULL;\n",Tbox,i);
   }
   fprintf(fp,"  DIT t%-d = { \n",Tbox);
   fprintf(fp,"    \'%c\',\n",t->code);
@@ -2588,6 +2589,7 @@ void Print_tablebox(FILE *fp,DIT *t,int control,char *dianame) {
     fprintf(fp,"  e%-d[%-d].v=(void *)v[%-d];\n",Tbox,i,Vcount++);
     fprintf(fp,"  e%-d[%-d].sw=%d;\n",Tbox,i,e[i].sw);
     fprintf(fp,"  e%-d[%-d].noecho=0;\n",Tbox,i);
+    fprintf(fp,"  e%-d[%-d].img=NULL;\n",Tbox,i);
   }
   fprintf(fp,"  DIT T%-d = { \n",Tbox);
   fprintf(fp,"    \'%c\',\n",t->code);
@@ -4974,11 +4976,12 @@ Dlink *Make_controls_link(DIALOG *D){
   return L;
 }
 void Make_gui_code(DIALOG *D,char *flname,char *dianame){
-  FILE *fpc;
+  FILE *fpc,*fpg;
   Dlink *L;
   DIA *d;
   int i,n,no;
   char *codes;
+  char buff[300];
   InitCounters();
   SetOptions(D);
   L = Dopen();
@@ -4986,32 +4989,35 @@ void Make_gui_code(DIALOG *D,char *flname,char *dianame){
   i=0;while(d[i].t != NULL) {Dadd(L,d[i].t);i++;};
   fp1 = fopen(flname,"w");
   fpc = fopen(Callbackcode,"w");
+  fpg = fopen(Gclrcode,"w");
   Inc = fopen(Includecode,"w");
   fprintf(fp1,"#include <kulina.h>\n");
   fprintf(fp1,"#include \"%-s\"\n",Includecode);
+  fprintf(fp1,"#include \"%-s\"\n",Gclrcode);
   fprintf(fpc,"#include <kulina.h>\n");
   WriteCallBacks(L,fpc,dianame);
   fclose(fpc);
   fclose(Inc);
   codes = Get_gui_args(L);
-  fprintf(fp1,"void Modify%-sGc(void *Tmp) {\n",dianame);
-  fprintf(fp1,"   DIALOG *D;\n");
-  fprintf(fp1,"   Gclr *gc;\n");
-  fprintf(fp1,"   D = (DIALOG *)Tmp;\n");
-  fprintf(fp1,"   gc = &(D->gc);\n");
-  fprintf(fp1,"/*\n");
-  fprintf(fp1,"//  You may change default settings here \n");
-  fprintf(fp1,"//  probably you can allow the user to create a config in $HOME\n");
-  fprintf(fp1,"//  and try to read that file (if exits); so dynamic configuration is possible\n");
-  fprintf(fp1,"   kgColorTheme(D,220,220,200);\n");
-  fprintf(fp1,"   kgColorTheme1(D,220,220,200);\n");
-  fprintf(fp1,"   kgColorTheme2(D,220,220,200);\n");
-  fprintf(fp1,"   kgDefaultGuiTheme(gc);\n");
-  fprintf(fp1,"   kgGrayGuiTheme(gc);\n");
-  fprintf(fp1,"   gc->FontSize =8;\n");
-  fprintf(fp1,"   gc->Font=23;\n");
-  fprintf(fp1,"*/\n");
-  fprintf(fp1,"}\n");
+  fprintf(fpg,"void Modify%-sGc(void *Tmp) {\n",dianame);
+  fprintf(fpg,"   DIALOG *D;\n");
+  fprintf(fpg,"   Gclr *gc;\n");
+  fprintf(fpg,"   D = (DIALOG *)Tmp;\n");
+  fprintf(fpg,"   gc = &(D->gc);\n");
+  fprintf(fpg,"/*\n");
+  fprintf(fpg,"//  You may change default settings here \n");
+  fprintf(fpg,"//  probably you can allow the user to create a config in $HOME\n");
+  fprintf(fpg,"//  and try to read that file (if exits); so dynamic configuration is possible\n");
+  fprintf(fpg,"   kgColorTheme(D,220,220,200);\n");
+  fprintf(fpg,"   kgColorTheme1(D,220,220,200);\n");
+  fprintf(fpg,"   kgColorTheme2(D,220,220,200);\n");
+  fprintf(fpg,"   kgDefaultGuiTheme(gc);\n");
+  fprintf(fpg,"   kgGrayGuiTheme(gc);\n");
+  fprintf(fpg,"   gc->FontSize =8;\n");
+  fprintf(fpg,"   gc->Font=23;\n");
+  fprintf(fpg,"*/\n");
+  fprintf(fpg,"}\n");
+  fclose(fpg);
   n = strlen(codes);
 
 #if 1 
@@ -5276,8 +5282,9 @@ void ChangeControlSize(DIALOG *D){
   ixpos = (int)(xpos + 0.5);
   iypos = (int)(ypos + 0.5);
 //  iypos = Evgay -iypos;
-  Resetlink(L);
-  while ( (!OK) && ( (t=(DIT *)Getrecord(L)) != NULL)) {
+//  Resetlink(L);
+  Dend(L);
+  while ( (!OK) && ( (t=(DIT *)Getrecordrev(L)) != NULL)) {
     switch(t->code) {
      case 't':
      case 'T':
@@ -5375,8 +5382,9 @@ void ChangeControlPos(DIALOG *D){
   ixpos = (int)(xpos + 0.5);
   iypos = (int)(ypos + 0.5);
 //  iypos = Evgay -iypos;
-  Resetlink(L);
-  while ( (!OK) && ( (t=(DIT *)Getrecord(L)) != NULL)) {
+//  Resetlink(L);
+  Dend(L);
+  while ( (!OK) && ( (t=(DIT *)Getrecordrev(L)) != NULL)) {
     switch(t->code) {
      case 't':
      case 'T':
@@ -5468,8 +5476,9 @@ void ChangeControlVisibility(DIALOG *D){
   Cross_gincur(&xpos,&ypos);
   ixpos = (int)(xpos + 0.5);
   iypos = (int)(ypos + 0.5);
-  Resetlink(L);
-  while ( (!OK) && ( (t=(DIT *)Getrecord(L)) != NULL)) {
+//  Resetlink(L);
+  Dend(L);
+  while ( (!OK) && ( (t=(DIT *)Getrecordrev(L)) != NULL)) {
     switch(t->code) {
      case 't':
      case 'T':
@@ -5925,9 +5934,10 @@ void DeleteControl(DIALOG *D) {
   ixpos = (int)(xpos + 0.5);
   iypos = (int)(ypos + 0.5);
 //  iypos = Evgay -iypos;
-  Resetlink(L);
+//  Resetlink(L);
+  Dend(L);
   i=0;
-  while ( (!OK) && ( (t=(DIT *)Getrecord(L)) != NULL)) {
+  while ( (!OK) && ( (t=(DIT *)Getrecordrev(L)) != NULL)) {
     i++;
     switch(t->code) {
      case 't':
@@ -5997,6 +6007,7 @@ void DeleteControl(DIALOG *D) {
     }
   }
   if(OK){
+	  i= Dcount(L)-i+1;
     Dposition(L,i); Ddelete(L);
     Make_dialog_structure(D,L);
     SetControlCounters(D);
@@ -6747,6 +6758,7 @@ DIT * Making_t_box(DIALOG *D)
        sprintf(buf,"For Textbox: (%d,%d)",k+1,j+1);
        E[i].fmt = (char *)Runtextboxdata(buf);
        E[i].noecho = 0;
+       E[i].img=NULL;
        i++;
      }
    }
@@ -6836,6 +6848,7 @@ DIT * Making_T_box(DIALOG *D)
    for(i=0;i<(nx*ny) ;i++) {
      E[i].fmt = (char *)malloc(150);
      E[i].noecho=0;
+       E[i].img=NULL;
    }
    T->elmt = E;
    for(i=0;i<(nx) ;i++) {
@@ -7790,6 +7803,7 @@ int main(int narg,char **args) {
   sprintf(Includecode,"%-sCallbacks.h",args[1]);
   sprintf(Maincode,"%-smain.src",args[1]);
   sprintf(Mainc,"%-smain.c",args[1]);
+  sprintf(Gclrcode,"Gclr%-s.c",args[1]);
 #if 0
   Dia = Make_dialog_structure_from_file(flname);
   SetControlCounters(Dia);
@@ -7805,7 +7819,7 @@ int main(int narg,char **args) {
     fprintf(fp,"%-s\t: %-s.o %-sCallbacks.o %-smain.o\n",args[1],args[1],args[1],args[1]);
     /* fprintf(fp,"\t cc -o %-s %-s.o %-sCallbacks.o main.o $(PARAS)/lib/glib.a -lX11 -lm\n",args[1],args[1],args[1]);*/
     fprintf(fp,"\t $(CC) -o %-s %-s.o %-sCallbacks.o %-smain.o -I$(KULINA)/include $(KULINA)/lib/libkulina.a $(KULINA)/lib/libgm.a -L/usr/X11R6/lib -lX11 -lXext -lm -lpthread -lz -lbz2 -lGL\n",args[1],args[1],args[1],args[1]);
-    fprintf(fp,"%-s.o\t: %-s.c \n",args[1],args[1]);
+    fprintf(fp,"%-s.o\t: %-s.c Gclr%-s.c \n",args[1],args[1],args[1]);
     fprintf(fp,"\t $(CC) -c %-s.c\n",args[1]);
     fprintf(fp,"%-sCallbacks.o\t: %-sCallbacks.c \n",args[1],args[1]);
     fprintf(fp,"\t $(CC) -c %-sCallbacks.c\n",args[1]);

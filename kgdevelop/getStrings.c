@@ -108,6 +108,7 @@ int getStrings( void *parent,void **v,int id) {
     e0[k].v = v[k];
     e0[k].sw =1;
     e0[k].noecho=0;
+    e0[k].img=NULL;
   }
   t0.ny=n-1;
   t0.elmt = e0;

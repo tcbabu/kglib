@@ -378,6 +378,7 @@ int butnoptGroup( DIALOG *D,void **v,void *pt) {
   e1[0].v=(void *)v[0];
   e1[0].sw=1;
   e1[0].noecho=0;
+  e1[0].img=NULL;
   DIT t1 = { 
     't',
     57,47,  
@@ -447,6 +448,7 @@ int butnoptGroup( DIALOG *D,void **v,void *pt) {
   T_ELMT *e4  ; 
   e4 =(T_ELMT *)malloc(sizeof(T_ELMT)*3);
   for(j=0;j<3;j++) e4[j].noecho=0;
+  for(j=0;j<3;j++) e4[j].img=NULL;
   e4[0].fmt = (char *)malloc(5);
   strcpy(e4[0].fmt,(char *)"%15s");
   e4[0].v=(void *)v[2];

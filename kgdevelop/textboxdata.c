@@ -104,6 +104,7 @@ int textboxdataGroup( DIALOG *D,void **v,void *pt) {
   T_ELMT *e0  ; 
   e0 =(T_ELMT *)malloc(sizeof(T_ELMT)*2);
   for(j=0;j<2;j++) e0[j].noecho =0;
+  for(j=0;j<2;j++) e0[j].img=NULL;
   e0[0].fmt = (char *)malloc(18);
   strcpy(e0[0].fmt,(char *)"Prompt String%20s");
   e0[0].v=(void *)v[0];
@@ -443,6 +444,7 @@ int textboxesdataGroup( DIALOG *D,void **v,void *pt) {
   T_ELMT *e0  ; 
   e0 =(T_ELMT *)malloc(sizeof(T_ELMT)*3);
   for(j=0;j<3;j++) e0[j].noecho =0;
+  for(j=0;j<3;j++) e0[j].img=NULL;
   e0[0].fmt = (char *)malloc(21);
   strcpy(e0[0].fmt,(char *)"Boxes X Dirextion%4d");
   e0[0].v=(void *)v[0];
@@ -768,6 +770,7 @@ int tableboxesdataGroup( DIALOG *D,void **v,void *pt) {
   T_ELMT *e0  ; 
   e0 =(T_ELMT *)malloc(sizeof(T_ELMT)*3);
   for(j=0;j<3;j++) e0[j].noecho =0;
+  for(j=0;j<3;j++) e0[j].img=NULL;
   e0[0].fmt = (char *)malloc(18);
   strcpy(e0[0].fmt,(char *)"No. of Columns%4d");
   e0[0].v=(void *)v[0];
@@ -1113,6 +1116,7 @@ int tableboxdataGroup( DIALOG *D,void **v,void *pt) {
   e0[0].v=(void *)v[0];
   e0[0].sw=1;
   e0[0].noecho=0;
+  e0[0].img=NULL;
   DIT t0 = { 
     't',
     4,39,  
@@ -1381,5 +1385,6 @@ void *Runtableboxdata(void *arg,char *msg) {
    }
    e->sw = (v2)%2;
    e->noecho=0;
+   e->img=NULL;
    return NULL;
 }
