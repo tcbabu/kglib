@@ -53,6 +53,8 @@ kgdevelop/kgdevelop	: lib/libgm.a lib/libkulina.a $(KGDEVELOPFILES)
 	$(MAKE) -C kgdevelop install
 
 install	: bin/kgdevelop lib/libkulina.a lib/libgm.a
+	  mkdir -p /usr/share/kulina
+	  cp demo.tar /usr/share/kulina/
 	  install -m 755 bin/kgdevelop   /usr/bin
 	  install -m 755 lib/libkulina.a /usr/lib
 	  install -m 755 lib/libkulina.a /usr/lib
@@ -64,6 +66,7 @@ tarball	: bin/kgdevelop
 	  install -m 755  lib/libkulina.a TARBALL/
 	  install -m 755  lib/libgm.a TARBALL/
 	  install -m 755  include/kulina.h  TARBALL/
+	  cp demo.tar TARBALL/
 	  mv TARBALL kulinagraphics
 	  tar czf kulinagraphics.tgz  kulinagraphics
 	  mv kulinagraphics TARBALL

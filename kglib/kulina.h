@@ -1255,6 +1255,7 @@ void kgDraw2f(DIG *G,float x,float y);
 void kgMarker2f(DIG *G,float x,float y);
 void kgDefaultGuiTheme(Gclr *Gc);
 void kgGrayGuiTheme(Gclr *Gc);
+void kgMkgclr(void *dianame,void *Dia); // second arg can be NULL
 void kgSetGouraudParams(DIG *G,float p2, float p1, int n, int ib);
 void kgGouraudFill(DIG *G,int n, float *x, float *y,float *v);
 void kgWriteText( DIG *G,char *c);

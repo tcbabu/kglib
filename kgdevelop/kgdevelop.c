@@ -5015,6 +5015,7 @@ void Make_gui_code(DIALOG *D,char *flname,char *dianame){
   fprintf(fpg,"   kgGrayGuiTheme(gc);\n");
   fprintf(fpg,"   gc->FontSize =8;\n");
   fprintf(fpg,"   gc->Font=23;\n");
+  fprintf(fpg,"   kgMkgclr(\"%-s\",Tmp);\n",dianame);
   fprintf(fpg,"*/\n");
   fprintf(fpg,"}\n");
   fclose(fpg);
