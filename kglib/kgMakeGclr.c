@@ -163,6 +163,7 @@ int  mkgclrsplbutton1callback(int butno,int i,void *Tmp) {
       system("cp Gclr.c /tmp/demo");
       system("make -C /tmp/demo"); 
       system("/tmp/demo/demo");
+      remove("/tmp/demo");
       ret=0;
   }
   return ret;

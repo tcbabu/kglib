@@ -1264,7 +1264,7 @@ int  GetColorbutnbox1callback(int key,int i,void *Tmp) {
   D = ((DIALOG *)Tmp)->d;
   B = D[i].b;
   n = B->nx*B->ny;
-  kgGetDefaultRGB(key-1,&r,&g,&b);
+  kgGetDefaultRGB(key-1+800,&r,&g,&b);
   uiSetDslide(Tmp,1,r);
   uiSetDslide(Tmp,2,g);
   uiSetDslide(Tmp,3,b);
@@ -1323,8 +1323,74 @@ int GetColorinit(void *Tmp) {
   int *ioldclr;
   
   DIALOG *D;
+  DIB *b0;
   kgWC *wc;
   D = (DIALOG *)Tmp;
+  b0 = (DIB*) kgGetNamedWidget(Tmp,"Cbox");
+  kgDefineColor(800,25,25,25);
+  kgDefineColor(801,50,50,50);
+  kgDefineColor(802,75,75,75);
+  kgDefineColor(803,100,100,100);
+  kgDefineColor(804,175,175,175);
+  kgDefineColor(805,200,200,200);
+  kgDefineColor(806,225,225,225);
+  kgDefineColor(807,250,250,250);
+  kgDefineColor(808,25,0,0);
+  kgDefineColor(809,50,0,0);
+  kgDefineColor(810,75,0,0);
+  kgDefineColor(811,100,0,0);
+  kgDefineColor(812,175,0,0);
+  kgDefineColor(813,200,0,0);
+  kgDefineColor(814,225,0,0);
+  kgDefineColor(815,250,0,0);
+  kgDefineColor(816,0,25,0);
+  kgDefineColor(817,0,50,0);
+  kgDefineColor(818,0,75,0);
+  kgDefineColor(819,0,100,0);
+  kgDefineColor(820,0,175,0);
+  kgDefineColor(821,0,200,0);
+  kgDefineColor(822,0,225,0);
+  kgDefineColor(823,0,250,0);
+  kgDefineColor(824,10,25,.0);
+  kgDefineColor(825,35,50,35);
+  kgDefineColor(826,60,75,60);
+  kgDefineColor(827,85,100,85);
+  kgDefineColor(828,160,175,160);
+  kgDefineColor(829,185,200,185);
+  kgDefineColor(830,210,225,210);
+  kgDefineColor(831,235,250,235);
+  kgDefineColor(832,0,0,25);
+  kgDefineColor(833,0,0,50);
+  kgDefineColor(834,0,0,75);
+  kgDefineColor(835,0,0,100);
+  kgDefineColor(836,0,0,175);
+  kgDefineColor(837,0,0,200);
+  kgDefineColor(838,0,0,225);
+  kgDefineColor(839,0,0,250);
+  kgDefineColor(840,25,25,0);
+  kgDefineColor(841,50,50,0);
+  kgDefineColor(842,75,75,0);
+  kgDefineColor(843,100,100,0);
+  kgDefineColor(844,175,175,0);
+  kgDefineColor(845,200,200,0);
+  kgDefineColor(846,225,225,0);
+  kgDefineColor(847,250,250,0);
+  kgDefineColor(848,0,25,25);
+  kgDefineColor(849,0,50,50);
+  kgDefineColor(850,0,75,75);
+  kgDefineColor(851,0,100,100);
+  kgDefineColor(852,0,175,175);
+  kgDefineColor(853,0,200,200);
+  kgDefineColor(854,0,225,225);
+  kgDefineColor(855,0,250,250);
+  kgDefineColor(856,25,0,25);
+  kgDefineColor(857,50,0,50);
+  kgDefineColor(858,75,0,75);
+  kgDefineColor(859,100,0,100);
+  kgDefineColor(860,175,0,175);
+  kgDefineColor(861,200,0,200);
+  kgDefineColor(862,225,0,225);
+  kgDefineColor(863,250,0,250);
 #if 0
   ioldclr = (int *)(D->pt);
   r = ioldclr[0];
@@ -1340,6 +1406,8 @@ int GetColorinit(void *Tmp) {
   uiDrawColorInPixmap1(Tmp);
 #endif
   uiDrawColorInPixmap(Tmp);
+  kgUpdateWidget(b0);
+  kgUpdateOn(Tmp);
   return ret;
 }
 int GetColorCallBack(void *Tmp,void *tmp) {
@@ -1393,10 +1461,10 @@ int _uiGetColor(void *parent,int xo,int yo, void *v1 ,void *v2 ,void *v3 ) {
     NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
     NULL };
   int bkgr0[]  = { 
-    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 
-    20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 
-    38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 
-    56, 57, 58, 59, 60, 61, 62, 63, -1
+    800, 801, 802, 803, 804, 805, 806, 807, 808, 809, 810, 811, 812, 813, 814, 815, 816, 817, 818, 819, 
+    820, 821, 822, 823, 824, 825, 826, 827, 828, 829, 830, 831, 832, 833, 834, 835, 836, 837, 
+    838, 839, 840, 841, 842, 843, 844, 845, 846, 847, 848, 849, 850, 851, 852, 853, 854, 855, 
+    856, 857, 858, 859, 860, 861, 862, 863, -1
   };
   char *butncode0  = NULL;
   int sw0[]={1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
@@ -1417,6 +1485,7 @@ int _uiGetColor(void *parent,int xo,int yo, void *v1 ,void *v2 ,void *v3 ) {
     xpm0,bkgr0, /* pointers to xpms and colors */
       1,0.000000 /* button type and roundinfg factor(0-0.5) */
   };
+  strcpy(n0.Wid,"Cbox");
   DID d1 = { 
     'd',
     335,20,  

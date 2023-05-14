@@ -8689,7 +8689,7 @@ void _ui_slidevalue(DIALOG *D,S_STR *pt) {
    EVGAY = D->evgay;
    uiBkup_clip_limits(wc);
    uiSet_full_scrn(wc);
-   uiShadedString(D,"!f35t", x-3, EVGAY-y-1, w,w+1,35,D->gc.fill_clr,0,D->gc.v_dim,D->gc.FontSize-1,0,rfac,1,type);
+   uiShadedString(D,"!f35t", x-3, EVGAY-y-1, w,w+1,35,D->gc.scroll_fill,0,D->gc.v_dim,D->gc.FontSize-1,0,rfac,1,type);
    uiRest_clip_limits(wc);
   }
  void _ui_right_dir(DIALOG *D,int x,int y,int w,int bright)
@@ -8706,7 +8706,7 @@ void _ui_slidevalue(DIALOG *D,S_STR *pt) {
    uiSet_full_scrn(wc);
    uiset_clr(D,tmp);
 //   uiShadedString(D,"!f35!w32!xs", x+3, EVGAY-y-1, w,w+1,35,D->gc.fill_clr,0,D->gc.v_dim,D->gc.FontSize-1,0,rfac,1,type);
-   uiShadedString(D,"!f35s", x+3, EVGAY-y-1, w,w+1,35,D->gc.fill_clr,0,D->gc.v_dim,D->gc.FontSize-1,0,rfac,1,type);
+   uiShadedString(D,"!f35s", x+3, EVGAY-y-1, w,w+1,35,D->gc.scroll_fill,0,D->gc.v_dim,D->gc.FontSize-1,0,rfac,1,type);
    uiRest_clip_limits(wc);
   }
  void _dvleft_dir(DIALOG *D,int x,int y,int w,float rfac,int type)
@@ -8719,7 +8719,7 @@ void _ui_slidevalue(DIALOG *D,S_STR *pt) {
    wc= WC(D);
    uiBkup_clip_limits(wc);
    uiSet_full_scrn(wc);
-   uiShadedString(D,"!f35t", x, y, w-1,w,35,D->gc.fill_clr,0,D->gc.v_dim,D->gc.FontSize-1,0,rfac,1,type);
+   uiShadedString(D,"!f35t", x, y, w-1,w,35,D->gc.scroll_fill,0,D->gc.v_dim,D->gc.FontSize-1,0,rfac,1,type);
    uiRest_clip_limits(wc);
   }
  void _dvright_dir(DIALOG *D,int x,int y,int w,float rfac,int type)
@@ -8734,7 +8734,7 @@ void _ui_slidevalue(DIALOG *D,S_STR *pt) {
    uiSet_full_scrn(wc);
    uiset_clr(D,tmp);
 //   uiShadedString(D,"!f35!w32!xs", x+3, EVGAY-y-1, w,w+1,35,D->gc.fill_clr,0,D->gc.v_dim,D->gc.FontSize-1,0,rfac,1,type);
-   uiShadedString(D,"!f35s", x, y, w-1,w,35,D->gc.fill_clr,0,D->gc.v_dim,D->gc.FontSize-1,0,rfac,1,type);
+   uiShadedString(D,"!f35s", x, y, w-1,w,35,D->gc.scroll_fill,0,D->gc.v_dim,D->gc.FontSize-1,0,rfac,1,type);
    uiRest_clip_limits(wc);
   }
 void _ui_slidebar_o(DIALOG *D,S_STR *pt) {
@@ -19352,13 +19352,13 @@ void _uiNewMoveVertPointer(BRW_STR *br) {
    uiSet_full_scrn(WC(D));
 //TCB
    x1=x;y1=y;x2=x+w;y2=y+h;
-   _dvrect_fill(WC(D),x1,y1,x2,y2,D->gc.dim);
+   _dvrect_fill(WC(D),x1,y1,x2,y2,D->gc.scroll_dim);
    sy = x1+sy;
    if(sy>x2) sy=x2-sh;
    if(sy+sh>x2) sy =x2- sh;
-   uiset_clr(D,D->gc.vbright);
-   _dvrect_fill(WC(D),sy,y1,sy+sh,y2,D->gc.fill_clr);
-   uiset_clr(D,D->gc.vbright);
+   uiset_clr(D,D->gc.scroll_vbright);
+   _dvrect_fill(WC(D),sy,y1,sy+sh,y2,D->gc.scroll_fill);
+   uiset_clr(D,D->gc.scroll_vbright);
    _dv_h_line(WC(D),sy,sy+sh,y1);
    _dv_v_line(WC(D),y1,y2,sy);
    uiset_clr(D,D->gc.v_dim);
