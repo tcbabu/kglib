@@ -6317,12 +6317,14 @@ int kgWrite(void *Tmp,char *msg) {
 	   s->menu  = menu;
 	   Dfree(L);
            kgUpdateWidget(s);
+	   kgUpdateOn(s->D);
    }
    break;
    case 'i':
    I = (DII *)Tmp;
    if(I->hide==1) return 0;
    uiinfo_wprintf((DIALOG *)I->D,I->twin,msg);
+   kgUpdateOn(I->D);
    break;
    default:
    fprintf(stderr,"Wrong Widget for kgWrite\n");
