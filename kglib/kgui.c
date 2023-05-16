@@ -3066,7 +3066,7 @@ int MousePressInHBar(void *tmp,KBEVENT kbevent) {
 int uiGetBrowserButtonPress(DIW *w,KBEVENT kbevent) {
     BRW_STR *br;
     Gclr gc;
-    int x1,y1,x2,y2,PON_X,PON_Y,df;
+    int x1,y1,x2,y2,PON_X,PON_Y,df,yoff;
     char **m;
     int evgax,evgay;
     DIALOG *D;
@@ -3078,7 +3078,8 @@ int uiGetBrowserButtonPress(DIW *w,KBEVENT kbevent) {
     PON_X=kbevent.x;
     PON_Y=kbevent.y;
     x1 = w->x2-w->width-w->offset+D->xo;
-    y1=w->y1+D->yo;
+    yoff = (w->y2+w->y1)*0.5;
+    y1=D->yo+yoff-w->width*.5;
     x2=x1+w->width;
     y2=y1+w->width;
     if(((x1>(PON_X))||(x2<(PON_X))||

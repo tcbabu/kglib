@@ -10104,12 +10104,21 @@ void ui_draw_browser(DIW *w,int n,int lngth) {
   EVGAY = D->evgay;
   x1 = w->xb+D->xo+2;
   x2 = w->x2+D->xo-w->width-w->offset;
+  //NEW
+#if 0
   y1 = w->y1+D->yo+2;
   y2 = w->y2+D->yo-2;
+  y1 = w->y1+D->yo;
+  y2 = w->y2+D->yo;
   yoff = (y2-y1-w->width)*0.5;
   x1+=xoff;
   y1+=yoff;
   y2-=yoff;
+#else 
+  yoff= w->width*0.5;
+  y1 = (w->y1+w->y2)*0.5+D->yo-yoff;
+  y2 = (w->y1+w->y2)*0.5+D->yo+yoff;
+#endif
   ln = x2-x1-5;
   uiBkup_clip_limits(wc);
   uiSet_full_scrn(wc);
@@ -10123,10 +10132,15 @@ void ui_draw_browser(DIW *w,int n,int lngth) {
            D->gc.menu_char,D->gc.FontSize,-1,-1);
 //  kgImage(D,img,x1+5,y1,ln,w->width,0.0,1.0);
 #endif
+#if 0
   y1-=yoff;
   y2+=yoff;
   yoff = (y2-y1-w->w)*0.5;
   _dvdown_dir(D,x2,y1+yoff,w->w,0.2,5);
+  _dvdown_dir(D,x2,y1,w->w,0.2,5);
+#else
+  _dvdown_dir(D,x2,y1-3,w->width+4,0.2,4);
+#endif
   uiRest_clip_limits(wc);
 }
 void uiCleanEbrowserImages(DIE *w) {
@@ -19114,8 +19128,8 @@ void _uiPutmsg(BRW_STR *br) {
   D= (DIALOG *)(v->D);
   uiBkup_clip_limits(WC(D));
   uiSet_full_scrn(WC(D));
-   xx = v->tbx1;
-   yy = v->tby1;
+   xx = v->tbx1+1;
+   yy = v->tby1+1;
    w= v->w;
    _dvup_dir(D,xx,yy,w,0.2,4);
    yy = v->bby1;
@@ -19186,7 +19200,7 @@ void _uiPutmsg(BRW_STR *br) {
   D= (DIALOG *)(y->D);
   uiBkup_clip_limits(WC(D));
   uiSet_full_scrn(WC(D));
-   xx = br->tbx1;
+   xx = br->tbx1+2;
    yy = br->tby1;
    w= br->w;
    _dvup_dir(D,xx,yy,w,0.2,4);
