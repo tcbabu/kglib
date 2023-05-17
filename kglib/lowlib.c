@@ -10250,7 +10250,7 @@ void uiMakeYImages(DIY *w) {
    }
 #else
    w->imgs= (void **) uiMenuNailImages(D,menu,
-                 lng,width,D->gc.MsgFont,D->gc.info_char,
+                 lng,width,D->gc.MsgFont,D->gc.twin_char,
                  D->gc.FontSize,0,4);
 #endif
    return;
@@ -10291,8 +10291,8 @@ void uiMakeXImages(DIX *w,int lng) {
      w->himg=NULL;
    }
    i=0;
-   w->nimg = uiMakeXSymbol(w,D->gc.menu_char,D->gc.FontSize,0);
-   w->himg = uiMakeXSymbol(w,D->gc.menu_char,D->gc.FontSize,1);
+   w->nimg = uiMakeXSymbol(w,D->gc.twin_char,D->gc.FontSize,0);
+   w->himg = uiMakeXSymbol(w,D->gc.twin_char,D->gc.FontSize,1);
    menu = (ThumbNail **)w->list;
    if(menu != NULL) {
 #if 0
@@ -10307,7 +10307,7 @@ void uiMakeXImages(DIX *w,int lng) {
      }
 #else
    w->imgs= (void **) uiMenuNailImages(D,menu,
-                 lng,w->width,D->gc.MenuFont,D->gc.menu_char,
+                 lng,w->width,D->gc.MenuFont,D->gc.twin_char,
                  D->gc.FontSize,-1,Mag);
 #endif
    }
@@ -11315,6 +11315,7 @@ int _uiMake_X(DIX *y)
    bwsr->y1 =y->y1+y1;
    bwsr->x2 =y->x2+x1;
    bwsr->y2 =y->y2+y1;
+   if(y->bkgr ==1) _dvrect_fill(WC(D), bwsr->x1+4,bwsr->y1+4,bwsr->x2-4,bwsr->y2-4,D->gc.twin_fill);
   if(y->hide != 1) {
    CHECKLIMITS(y);
    if(y->Bimg== NULL) y->Bimg=kgGetBackground(D,bwsr->x1,bwsr->y1,bwsr->x2,bwsr->y2 );
@@ -18382,7 +18383,7 @@ void _uiPutYmenu( DIY *y){
       if(y->bordr==1) {
       _dv_draw_bound(D,(br->x1+xoffset),(br->y1+xoffset),(br->x2-xoffset-w), (br->y2-xoffset),D->gc.twin_bodr);
       _dv_draw_bound(D,(br->x1+xoffset+1),(br->y1+xoffset+1),(br->x2-xoffset-w-1), (br->y2-xoffset-1),D->gc.twin_bodr);
-      _dv_draw_bound(D,(br->x1+xoffset+2),(br->y1+xoffset+2),(br->x2-xoffset-w-2), (br->y2-xoffset-2),D->gc.twin_bodr);
+//      _dv_draw_bound(D,(br->x1+xoffset+2),(br->y1+xoffset+2),(br->x2-xoffset-w-2), (br->y2-xoffset-2),D->gc.twin_bodr);
       }
       jj = iy;
       uiDefaultGuiFontSize(D);
@@ -18392,7 +18393,7 @@ void _uiPutYmenu( DIY *y){
         yi = (br->hitem-pos)/nx;
         ixp = br->x1+xoffset+xi*(y->lngth+y->xgap)+br->xshift;
         iyp = br->y1+yoffset+yi*br->width;
-        _dvrect_fill(WC(D),ixp,iyp,ixp+y->lngth+y->xgap,iyp+y->width+6,D->gc.dim);
+        _dvrect_fill(WC(D),ixp,iyp,ixp+y->lngth+y->xgap,iyp+y->width+6,D->gc.ItemHighColor);
       }
 #endif
       kk=0;
@@ -18599,14 +18600,14 @@ void _uiPutXmenu( DIX *y){
       menu=NULL;
       if(list != NULL) menu=list+pos;
 #ifndef D_RESTORE
-      _dvrect_fill(WC(D),(br->x1+xoffset),(br->y1+xoffset),(br->x2-xoffset-w)-1, (br->y2-xoffset),D->gc.fill_clr);
+      _dvrect_fill(WC(D),(br->x1+xoffset),(br->y1+xoffset),(br->x2-xoffset-w)-1, (br->y2-xoffset),D->gc.twin_fill);
 #else
       dx = (br->x2-xoffset-w)-(br->x1+xoffset);
       dy = (br->y2-xoffset)-(br->y1+xoffset)+1;
       kgRestoreImagePart(D,y->Bimg,(br->x1+xoffset),(br->y1+xoffset),xoffset,xoffset,dx,dy);
 #endif
       if(y->bordr==1) {
-      _dv_draw_bound(D,(br->x1+xoffset),(br->y1+xoffset),(br->x2-xoffset-w)-1, (br->y2-xoffset),D->gc.high_clr);
+      _dv_draw_bound(D,(br->x1+xoffset),(br->y1+xoffset),(br->x2-xoffset-w)-1, (br->y2-xoffset),D->gc.twin_bodr);
       }
       jj = iy;
       uiDefaultGuiFontSize(D);
@@ -19877,6 +19878,7 @@ void _uiDrawDialogMenu(BRW_STR *br) {
 
 }
 void _uiDrawDialogY(DIY *y) {
+  void *img;
   BRW_STR *br;
   Gclr gc;
   int offset=2;
@@ -19891,8 +19893,14 @@ void _uiDrawDialogY(DIY *y) {
    if(y->Bimg== NULL) y->Bimg=kgGetBackground(D,br->x1,br->y1,br->x2,br->y2 );
    else kgRestoreImage(D,y->Bimg,br->x1,br->y1,(br->x2-br->x1+1),(br->y2-br->y1+1));
    if((D->DrawBkgr!=0)&&(y->bkgr==1)) {
-    _dvrect_fill(WC(D), br->x1+(offset),br->y1+(offset),br->x2-(offset), br->y2-(offset),gc.txt_fill);
-    _dvbordertype0(D, br->x1+(offset),br->y1+(offset),br->x2-(offset), br->y2-(offset),gc.vbright);
+#if 0
+    _dvrect_fill(WC(D), br->x1+(offset),br->y1+(offset),br->x2-(offset), br->y2-(offset),gc.twin_fill);
+    _dvbordertype0(D, br->x1+(offset),br->y1+(offset),br->x2-(offset), br->y2-(offset),gc.twin_bodr);
+//    _dvbordertype4(D, br->x1+(offset),br->y1+(offset),br->x2-(offset), br->y2-(offset));
+#else
+    img = kgBorderedRectangle(br->x2-br->x1,br->y2-br->y1,gc.twin_fill,0.0);
+    kgImage(D,img, br->x1,br->y1,br->x2-br->x1,br->y2-br->y1,0.0,1.0);
+#endif
    }
    if(y->nitems!=0) {
     if(br->scroll) {
@@ -19983,6 +19991,7 @@ void _uiDrawDialogCheckBox(DICH *y) {
 }
 void _uiDrawDialogX(DIX *y) {
   BRW_STR *br;
+  void *img;
   Gclr gc;
   int offset=2;
   DIALOG *D;
@@ -19997,8 +20006,14 @@ void _uiDrawDialogX(DIX *y) {
    if(y->Bimg== NULL) y->Bimg=kgGetBackground(D,br->x1,br->y1,br->x2,br->y2 );
    if(y->Bimg != NULL) kgRestoreImage(D,y->Bimg,br->x1,br->y1,(br->x2-br->x1+1),(br->y2-br->y1+1));
    if((D->DrawBkgr!=0)&&(y->bkgr==1)) {
-    _dvrect_fill(WC(D), br->x1+(offset),br->y1+(offset),br->x2-(offset), br->y2-(offset),gc.txt_fill);
-    _dvbordertype0(D, br->x1+(offset),br->y1+(offset),br->x2-(offset), br->y2-(offset),gc.vbright);
+#if 0
+    _dvrect_fill(WC(D), br->x1+(offset),br->y1+(offset),br->x2-(offset), br->y2-(offset),gc.twin_fill);
+    _dvbordertype0(D, br->x1+(offset),br->y1+(offset),br->x2-(offset), br->y2-(offset),gc.twin_bodr);
+//    _dvbordertype4(D, br->x1+(offset),br->y1+(offset),br->x2-(offset), br->y2-(offset));
+#else
+    img = kgBorderedRectangle(br->x2-br->x1,br->y2-br->y1,gc.twin_fill,0.0);
+    kgImage(D,img, br->x1,br->y1,br->x2-br->x1,br->y2-br->y1,0.0,1.0);
+#endif
    }
    if(y->nitems!=0) {
     if(br->scroll) {

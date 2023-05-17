@@ -6289,6 +6289,7 @@ int kgWrite(void *Tmp,char *msg) {
    if(m->hide==1) return 0;
    strncpy(m->msg,msg,499);
    kgUpdateWidget(m);
+   kgUpdateOn(m->D);
    break;
    case 's':
    {

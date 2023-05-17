@@ -1,6 +1,6 @@
 #include <kulina.h>
 #include <string.h>
-#define NT 37
+#define NT 38
 typedef struct _gcentry {
 	char *name; char * vname;int clrno;int red;int green;int blue;
 } GCENTRY;
@@ -21,13 +21,13 @@ GCENTRY gcclrs[NT]= {
 	{(char *)"table line color", (char *)"tabl_line"},
 	{(char *)"table char color", (char *)"tabl_char"},
 	{(char *)"table highlight color", (char *)"tabl_hchar"},
-	{(char *)"very dim color", (char *)"v_dim"},
-	{(char *)"dim color ", (char *)"dim"},
-	{(char *)"bright color", (char *)"bright"},
-	{(char *)"very bright color", (char *)"vbright"},
-	{(char *)"twin fill color", (char *)"twin_fill"},
-	{(char *)"twin char color", (char *)"twin_char"},
-	{(char *)"twin border color", (char *)"twin_bodr"},
+	{(char *)"very dim color(3D)", (char *)"v_dim"},
+	{(char *)"dim color (3D) ", (char *)"dim"},
+	{(char *)"bright color(3D)", (char *)"bright"},
+	{(char *)"very bright color(3D)", (char *)"vbright"},
+	{(char *)"thumbnail browser fill", (char *)"twin_fill"},
+	{(char *)"thumbnail browser char", (char *)"twin_char"},
+	{(char *)"humbnail browser border", (char *)"twin_bodr"},
 	{(char *)"info box fill", (char *)"info_fill"},
 	{(char *)"info box char", (char *)"info_char"},
 	{(char *)"button char color", (char *)"but_char"},
@@ -42,6 +42,7 @@ GCENTRY gcclrs[NT]= {
 	{(char *)"scroll bright color", (char *)"scroll_bright"},
 	{(char *)"scroll very bright", (char *)"scroll_vbright"},
 	{(char *)"scroll dim color", (char *)"scroll_dim"},
+	{(char *)"Browser Highlight", (char *)"ItemHighColor"},
 };
 int Mkthumps(void *Tmp,void *Tmp1) {
 	Gclr *gc;
@@ -185,7 +186,7 @@ int  mkgclrbrowser1callback(int item,int i,void *Tmp) {
   j = item -1;
   pt = D->pt;
   Y = (DIY *)kgGetWidget(Tmp,i);
-  kgGetColor(NULL,300,300,&(gcclrs[j].red),&(gcclrs[j].green),&(gcclrs[j].blue));
+  kgGetColor(Tmp,250,400,&(gcclrs[j].red),&(gcclrs[j].green),&(gcclrs[j].blue));
   th0 = (ThumbNail **) (Y->list);
   gcclrs[j].clrno = clrno+j;
   kgDefineColor(gcclrs[j].clrno,gcclrs[j].red,gcclrs[j].green,gcclrs[j].blue);
