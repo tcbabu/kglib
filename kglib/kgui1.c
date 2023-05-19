@@ -2337,7 +2337,7 @@ char ** _uiFileMenu(char *dir,char *filter) {
 char **kgFileMenu( char *dir,char *filter) {
  return  _uiFileMenu(dir,filter);
 }
-int  filebrowsertextbox1callback(int key,int i,void *Tmp) {
+static int  filebrowsertextbox1callback(int key,int i,void *Tmp) {
   char d_name[150],*filter;
   char **m;
   DIE *E;
@@ -2362,7 +2362,7 @@ int  filebrowsertextbox1callback(int key,int i,void *Tmp) {
   uiUpdateOn((DIALOG *)Tmp);
   return ret;
 }
-int  filebrowserhoribar1callback(int key,int i,void *Tmp) {
+static int  filebrowserhoribar1callback(int key,int i,void *Tmp) {
   DIA *D;DILN *B; 
   int n,ret=1; 
   D = ((DIALOG *)Tmp)->d;
@@ -2377,7 +2377,7 @@ int  filebrowserhoribar1callback(int key,int i,void *Tmp) {
 //  scr_recover();
   return ret;
 }
-int  filebrowserbrowser1callback(int key,int i,void *Tmp) {
+static int  filebrowserbrowser1callback(int key,int i,void *Tmp) {
   DIA *D;DIE *B; 
   int ret=1; 
   char *m;
@@ -2395,7 +2395,7 @@ int  filebrowserbrowser1callback(int key,int i,void *Tmp) {
   uiUpdateOn((DIALOG *)Tmp);
   return ret;
 }
-int filebrowserinit(void *Tmp) {
+static int filebrowserinit(void *Tmp) {
   int ret = 1;
   DIALOG *D;
   D = (DIALOG *)Tmp;
