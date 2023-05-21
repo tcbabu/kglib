@@ -1001,6 +1001,8 @@ long   kgGetLong(void *Widget,int item) ;
 long   kgSetLong(void *Widget,int item,long val) ;
 char * kgGetString(void *Widget,int item) ;
 char * kgSetString(void *Widget,int item,char * val) ;
+void * kgSetWidgetImage(void *Widget,void *img);
+void * kgGetWidgetImage(void *Widget);
 void kgSetTextItemEcho(void *Tmp,int item, int echo);
 int    kgWrite(void *Widget, char *str) ;
 int    kgPrintf(void *Tmp, int infob,char *str) ;
@@ -1187,6 +1189,9 @@ void *kgEmbossImage(void *img);
 void *kgSharpenImage(void *img);
 void *kgSpreadImage(void *img);
 void *kgEnhanceImage(void *img);
+void *kgImagetoGray(void *img);
+void *kgImageModifyColor(void *img,float rfac,float gfac,float bfac);
+void *kgModifyImageHSV(void *Img,float hfac,float sfac,float vfac);
 void *kgShadowImage(void* img,int xoffset,int yoffset,void *shimg);
 void *kgMergeImages(void  *img1,void  *img2,int Xshft,int Yshft); /* second on first */
 void *kgMergeTransparentImage(void  *img1,void  *img2,int Xshft,int Yshft); /* second on first */
@@ -1296,6 +1301,7 @@ void kgPointerZoom(DIG *G);
 void kgPointerAntialiasedZoom(DIG *G);
 void kgBackupGph(DIG *G,char *flname);
 void kgHardCopy(DIG *G,char *flname);
+void kgSaveAsPng(DIG *G,char *flname);
 void kgA4Copy(DIG *G,char *flname);
 void kgLandscapeCopy(DIG *G,char *flname);
 void kgOpenObject(DIG *G,int obj);

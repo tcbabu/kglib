@@ -6907,6 +6907,36 @@ void uireview_cmds(DIG *G)
    hbuf=open(".plotgph",O_CREAT|O_RDWR|O_TRUNC|O_BINARY, 0666);
   }
  #endif
+ void kgSaveAsPng(DIG *G,char *flname) {
+   char ch;
+   char command[500];
+   kgDC *dc;
+   dc = G->dc;
+   uilscopy(G);
+   ch ='P';
+   dc->TIFF =0;
+   if(dc->ZBUFF) dc->TIFF=1;
+   WRITE(G->hbuf,(void *)&ch,1);
+   close(G->hbuf);
+   {
+      char *dir,pngfile[300];
+      void *png;
+      printf("Creating Png Image File...\n");
+      dir = kgMakeTmpDir();
+      sprintf(pngfile,"%-s/gph.png",dir);
+      kgBackupGph(G,dc->plotfile);
+      png=kgGphtoAntialiasedImage(dc->plotfile,dc->EVGAX,dc->EVGAY,0,4);
+      kgWriteImage(png,pngfile);
+      kgFreeImage(png);
+      sprintf(command,"mv %-s %-s",pngfile,flname);
+      SYSTEM(command);
+      kgCleanDir(dir);
+      free(dir);
+   }
+   dc->TIFF=0;
+   remove(dc->plotfile);
+   G->hbuf =-1;
+ }
  void kgHardCopy(DIG *G,char *flname) {
    char ch;
    char command[500];

@@ -6654,6 +6654,21 @@ int kgMoveThumbNail(void *wid,int item,int pos) {
 	return 1;
 
 }
+void *kgSetWidgetImage(void *wid,void *img) {
+	DIP *p;
+	p = (DIP *)wid;
+	if(p->code != 'p') return NULL;
+	p->xpm = img;
+	return img;
+}
+void *kgGetWidgetImage(void *wid) {
+	DIP *p;
+	void *img=NULL;
+	p = (DIP *)wid;
+	if(p->code != 'p') return NULL;
+	img = p->xpm;
+	return img;
+}
 
 static int uiCompItem(void *tmp1,void *tmp2) {
 	ThumbNail *th1,*th2;
