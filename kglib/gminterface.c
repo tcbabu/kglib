@@ -2389,12 +2389,15 @@ void *kgAddTransparency(void *Img,float transp) {
    for (i = 0;  i < h;  ++i) {
             dest = pixels + i*w;
             for (j=0;j < w;   j++) {
+#if 1
                   if(dest->opacity < 255 ){
                        opacity = dest->opacity +  f+0.5;
                        if(opacity >255) opacity=255;
                        dest->opacity=opacity;
                   }
                   else dest->opacity=255;
+#else
+#endif
                   dest++;
            }
    }
