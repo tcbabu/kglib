@@ -6770,6 +6770,65 @@ int kgSetSwitch(void *Tmp,int item,int val) {
     return 0;
   }
 }
+void kgSetScrollLength(void *wid,int percent) {
+	DIV *V;
+	V = (DIV *)wid;
+	switch (V->code) {
+		case 'v':
+		case 'z':
+			V->ds=percent;
+			break;
+		default:
+			break;
+	}
+}
+void kgSetScrollPos(void *wid,int percent) {
+	DIV *V;
+	V = (DIV *)wid;
+	switch (V->code) {
+		case 'v':
+		case 'z':
+			V->df=percent;
+			break;
+		default:
+			break;
+	}
+}
+int kgGetScrollPos(void *wid) {
+	DIV *V;
+	V = (DIV *)wid;
+	switch (V->code) {
+		case 'v':
+		case 'z':
+			return V->df;
+			break;
+		default:
+			break;
+	}
+}
+int kgGetScrollLength(void *wid) {
+	DIV *V;
+	V = (DIV *)wid;
+	switch (V->code) {
+		case 'v':
+		case 'z':
+			return V->ds;
+			break;
+		default:
+			break;
+	}
+}
+
+int kgGetWidgetSize(void *wid,int *xsize,int *ysize){
+	DIT *T;
+	*xsize =0;
+	*ysize =0;
+	if(wid==NULL) return 0;
+	T = (DIT *)wid;
+	*xsize = T->x2 -T->x1;
+	*ysize = T->y2 -T->y1;
+	return 1;
+}
 int Dgetselectmenuitem(void *Tmp,int menu) {
   DIA *D;DIX *E;
   BRW_STR *B;

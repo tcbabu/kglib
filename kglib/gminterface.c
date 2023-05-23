@@ -2622,4 +2622,23 @@ void *kgImageModifyColor(void *img,float rfac,float gfac,float bfac) {
   SyncImagePixels(image);
   return png;
 }
+int kgGetImageSize(void *img,int *xsize,int *ysize) {
+
+/*
+ Converts the Image to Gray scale
+  
+*/
+  int i,j,k=0;
+  GMIMG *png=NULL;
+  int gray=0;
+  
+  Image *image;
+  png = (GMIMG *)img;
+  *xsize =0,*ysize = 0;
+  if(png== NULL) return 0;
+  image = (Image *)(png->image);
+  *xsize = image->columns;
+  *ysize = image->rows;
+  return 1;
+}
 #endif

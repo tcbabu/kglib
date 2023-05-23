@@ -1004,6 +1004,10 @@ char * kgSetString(void *Widget,int item,char * val) ;
 void * kgSetWidgetImage(void *Widget,void *img);
 void * kgGetWidgetImage(void *Widget);
 void kgSetTextItemEcho(void *Tmp,int item, int echo);
+void kgSetScrollLength(void *widget,int percent);
+void kgSetScrollPos(void *widget,int percent);
+int  kgGetScrollPos(void *widget);
+int  kgGetScrollLength(void *widget);
 int    kgWrite(void *Widget, char *str) ;
 int    kgPrintf(void *Tmp, int infob,char *str) ;
 int    kgSplash(void *Tmp,int item,char *msg);
@@ -1195,6 +1199,7 @@ void *kgModifyImageHSV(void *Img,float hfac,float sfac,float vfac);
 void *kgShadowImage(void* img,int xoffset,int yoffset,void *shimg);
 void *kgMergeImages(void  *img1,void  *img2,int Xshft,int Yshft); /* second on first */
 void *kgMergeTransparentImage(void  *img1,void  *img2,int Xshft,int Yshft); /* second on first */
+int  kgGetImageSize(void *img,int *xsize,int *ysize);
 void *kgMaskImage(void *png,void *mask);
 void *kgCopyImage(void *img);
 void *kgCreateImage(int xzise,int ysize);
@@ -1469,6 +1474,7 @@ DID * kgCreateIntSlide(int xo,int yo,int length,int min,int max,int val,char *na
 DIF * kgCreateDoubleSlide(int xo,int yo,int length,double min,double max,double val,char *name);
 /* end of create widgets */
 void kgPrintWidgetData(void *W,FILE *fp1); // prints widget data
+int kgGetWidgetSize(void *wid,int *xsize,int *ysize);
 /***********************************/
 
 /* String Manupulation       */
