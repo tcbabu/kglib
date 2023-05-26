@@ -5765,8 +5765,8 @@ int kgPickImage( void *parent,int xo,int yo,void *pt) {
   ThumbNail **th;
   int ret=1;
   GMIMG *img;
-  char CurDir[1000];
-  char HomeDir[1000];
+  static char CurDir[1000]="";
+  static char HomeDir[1000]="";
   void *ptrs[6];
   DIALOG D;
   DIA d[6];
@@ -5895,8 +5895,10 @@ int kgPickImage( void *parent,int xo,int yo,void *pt) {
   };
   xpm2[0]=kgHomeImage(24,250,250,220);
   xpm2[1]=kgUpdirImage(24,250,250,220);
-  GETCWD(CurDir,999);
-  strcpy(HomeDir,CurDir);
+  if(CurDir[0]=='\0'){
+	  GETCWD(CurDir,999);
+          strcpy(HomeDir,CurDir);
+  }
   menu0=kgFolderMenu(CurDir);
   e0.menu=menu0;
   th =(ThumbNail **)uiMakeThumbNails(CurDir,y1.width);

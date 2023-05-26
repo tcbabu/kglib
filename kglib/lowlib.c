@@ -16587,15 +16587,18 @@ int kgScrollDownThumbNails (DIY *y) {
       else ret =0;
       return(ret);
 }
-int  kgDragThumbNail(DIY *Y,int item,int *x,int *y) {
+int  kgDragThumbNail(void *wid,int item,int *x,int *y) {
   ThumbNail **th,*tpt;
   void *Img=NULL;
   KBEVENT  kb;
   DIALOG *D;
+  DIY *Y;
   int ret=0,pos,k,rv; 
   int ymin,ymax,xmin,xmax,xmid;
   int x1,y1,x2,y2,xl,yl;
+  Y = (DIY *) wid;
   D = ((DIALOG *)(Y->D));
+  if( (Y->code != 'y') && (Y->code != 'x') ) return 0;
   ymin = Y->y1+D->yo+Y->offset;
   ymax = Y->y2+D->yo-Y->offset;
   xmin = Y->x1+D->xo+Y->offset;
