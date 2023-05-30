@@ -6835,6 +6835,28 @@ int kgSortList(void *Wid) {
 	Dfree(L);
 	return 1;
 }
+void ** kgCopyList(void *Wid) {
+	Dlink *L=NULL;
+	ThumbNail **TH,*th;
+	ThumbNail **Tout;
+	void *pt;
+	int i,n;
+	TH = (ThumbNail **)kgGetList(Wid);
+	if (TH == NULL) return NULL;
+	i=0;
+	while(TH[i] != NULL) {
+		i++;
+	}
+	n = i;
+	Tout = (ThumbNail **) malloc(sizeof(ThumbNail)*(n+1));
+	i=0;
+	while(TH[i] != NULL) {
+		Tout[i]= kgCopyThumbNail(TH[i]);
+		i++;
+	}
+	Tout[i]=NULL;
+	return (void **)Tout;
+}
 int kgListRemoveDup(void *Wid) {
 	Dlink *L=NULL;
 	ThumbNail **TH,*th;

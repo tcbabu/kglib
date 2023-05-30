@@ -18418,7 +18418,12 @@ void _uiPutYmenu( DIY *y){
          else img->bkgrclr=D->gc.twin_fill;
          kgImage(D,xpm,ixp+2,iyp+2,y->lngth+y->xgap-4,y->width+2,0.0,1.0);
         }
+	//TCB NEW
+#if 0
         iyp = iyp+br->width-th;
+#else
+        iyp = iyp+br->width-th*1.20;
+#endif
         if((list!= NULL)&&(menu[kk]->name!=NULL))
 //            uiString(D,menu[kk]->name,ixp,iyp,y->width+y->xgap,th,D->gc.MsgFont,D->gc.info_char,D->gc.FontSize,0,-1);
           kgImage(D,y->imgs[kk+pos],ixp,iyp,y->lngth+y->xgap,th,0.0,1.0);

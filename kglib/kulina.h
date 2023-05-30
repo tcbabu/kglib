@@ -1027,6 +1027,7 @@ void *    kgPickThumbNail(void *Widget,int pos);
 int    kgInsertThumbNail(void *Widget,void *th,int pos);
 int kgMoveThumbNail(void *wid,int item,int pos);
 int    kgSortList(void *Widget);
+void **kgCopyList(void *Widget);
 int kgListRemoveDup(void *Wid);
 void *kgCopyThumbNail(void *th);
 void   kgSetProgressBar(void *Widget,int val);
