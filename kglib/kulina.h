@@ -1089,7 +1089,7 @@ void *kgGetThumbNail(void *Wid,int item);
 char *kgGetThumbNailName(void *Wid,int item);
 void *kgGetThumbNailImage(void *Wid,int item);
 void *kgSetThumbNailImage(void *Wid,int item,void *img);
-void kgSetTmumbNailName(void *wid,int item,char *name);
+void kgSetThumbNailName(void *wid,int item,char *name);
 ThumbNail ** kgMakeThumbNails(char *dir,int size);
 ThumbNail **kgStringToThumbNails(char **menu);
 ThumbNail ** kgFolderThumbNails(char *dir);

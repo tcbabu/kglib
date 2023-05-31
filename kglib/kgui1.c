@@ -6215,6 +6215,17 @@ static int Size(char *t)
    if(lng != 0) lng +=(8);
    return ( lng);
  }
+int gscanfInit(void *Tmp) {
+  /***********************************
+    Tmp :  Pointer to DIALOG
+   ***********************************/
+  /* you add any initialisation here */
+  int ret = 1;
+  DIALOG *D;void *pt;
+  D = (DIALOG *)Tmp;
+  kgSetDefaultWidget(Tmp,0);
+  return ret;
+}
 int  gscanf(void *parent,void *unknown,...){
   DILN *H;
   DIALOG D;
@@ -6341,7 +6352,7 @@ int  gscanf(void *parent,void *unknown,...){
   D.bw = 4;
   D.lw = 4;
   D.rw = 4;
-  D.Initfun = NULL;
+  D.Initfun = gscanfInit;
   D.kbattn = 1;   
   D.butattn = 0; 
   D.fullscreen = 0;

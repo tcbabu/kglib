@@ -6599,7 +6599,7 @@ void *kgSetThumbNailImage(void *wid,int item,void *img){
   }
   return NULL;
 }
-void kgSetTmumbNailName(void *wid,int item,char *name){
+void kgSetThumbNailName(void *wid,int item,char *name){
   DIX *X;
   X = (DIX *)wid;
   ThumbNail **list;
