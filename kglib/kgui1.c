@@ -4956,7 +4956,7 @@ void kgFreeThumbNails(ThumbNail **tb){
 #include <pthread.h>
 #include <math.h>
 int kgBusyinit(void *Tmp) {
-  void *img;
+  void *img,*imgbk;
   float ang=0.0,dang=5.0,r=15.,xo,yo;
   double rang;
   int pipe;
@@ -4964,15 +4964,37 @@ int kgBusyinit(void *Tmp) {
   DIALOG *D;
   D = (DIALOG *)Tmp;
   DIG *G;
+  int fillclr;
+  fillclr = (D->gc).fill_clr;
   rang = ang*3.14159265/180.0;
   xo = r*cos(rang);
   yo=  r*sin(rang);
   pipe = *((int *)(D->pt)+0);
+  G = kgInitImage(D->xl,D->yl,RESIZE);
+#if 0
+  kgUserFrame(G,-25.,-25.,25.,25.);
+  kgChangeColor(G,1002,0,0,0);
+  kgChangeColor(G,1001,255,255,255);
+//  kgArcFill(G,0.,0.,18.5,0.,360.0,0,1001);
+//  kgArcFill(G,0.,0.,11.5,0.,360.0,0,1002);
+  kgRoundedRectangleFill(G,0.,0.,50.,50.,0,fillclr,0.);
+//  kgRoundedRectangleRing(G,0.,0.,24.,24.,255.,255.,255.,0.5,7.);
+  kgRoundedRectangleRing(G,0.,0.,37.,37,0.,0.,0.,0.5,8.);
+  imgbk=kgGetResizedImage(G);
+  kgCloseImage(G);
+#else
+  imgbk = kgGetBackground(Tmp,D->xo,D->yo,D->xo+D->xl,D->yo+D->yl);
+#endif
   while(!kgThreadWaitPipe(pipe,0,40000)) {
     G = kgInitImage(D->xl,D->yl,RESIZE);
     kgUserFrame(G,-25.,-25.,25.,25.);
     kgChangeColor(G,1002,0,0,0);
-    kgArcFill(G,xo,yo,3.0,0.,360.0,0,1002);
+    kgRoundedRectangleRing(G,0.,0.,37.,37,0.,0.,0.,0.5,8.);
+//    kgArcFill(G,xo,yo,3.0,0.,360.0,0,1002);
+#if 0
+    kgArcFill(G,0.,0.,17.0,0.,360.0,0,1002);
+    kgArcFill(G,0.,0.,13.0,0.,360.0,0,fillclr);
+#endif
     ang+=dang;
     rang = ang*3.14159265/180.0;
     xo = r*cos(rang);
@@ -4981,10 +5003,12 @@ int kgBusyinit(void *Tmp) {
     kgArcFill(G,xo,yo,3.0,0.,360.0,0,1001);
     img=kgGetResizedImage(G);
     kgCloseImage(G);
+    kgImage(D,imgbk,D->xo,D->yo,D->xl,D->yl,0.,1.0);
     kgImage(D,img,D->xo,D->yo,D->xl,D->yl,0.,1.0);
     kgUpdateOn(D);
     uiFreeImage(img);
   }
+  uiFreeImage(imgbk);
   return ret;
 }
 int kgBusyCallBack(void *Tmp,void *tmp) {
@@ -5014,7 +5038,7 @@ void * kgBusy( void *dummy) {
   kgInitUi(&D);
   D.d = d;
   D.bkup = 1; /* set to 1 for backup */
-  D.bor_type = 4;
+  D.bor_type = 0;
   D.df = 0;
   D.tw = 4;
   D.bw = 4;
