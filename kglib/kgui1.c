@@ -5037,7 +5037,7 @@ void * kgBusy( void *dummy) {
   D.VerId=1401010200;
   kgInitUi(&D);
   D.d = d;
-  D.bkup = 1; /* set to 1 for backup */
+  D.bkup = 0; /* set to 1 for backup */
   D.bor_type = 0;
   D.df = 0;
   D.tw = 4;
