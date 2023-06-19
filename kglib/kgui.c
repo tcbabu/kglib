@@ -6479,6 +6479,7 @@ void **kgSetList(void *Tmp,void **list) {
     case 'c':
     X->list=list;
     X->nitems= nitems;
+    *(X->df) = 1;
     uiCleanXImages(X);
     return (void **)list;
     case 'r':
@@ -6489,6 +6490,7 @@ void **kgSetList(void *Tmp,void **list) {
     case 'y':
     X->list=list;
     X->nitems= nitems;
+    *(X->df) = 1;
     uiCleanYImages((DIY *)X);
     return (void **)list;
     case 'e':

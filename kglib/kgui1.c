@@ -4956,51 +4956,43 @@ void kgFreeThumbNails(ThumbNail **tb){
 #include <pthread.h>
 #include <math.h>
 int kgBusyinit(void *Tmp) {
-  void *img,*imgbk;
+  void *img=NULL,*imgbk=NULL,*imgr=NULL;
   float ang=0.0,dang=5.0,r=15.,xo,yo;
   double rang;
   int pipe;
   int ret = 1;
+  int count=0;
   DIALOG *D;
   D = (DIALOG *)Tmp;
   DIG *G;
   int fillclr;
   fillclr = (D->gc).fill_clr;
-  rang = ang*3.14159265/180.0;
+  dang = dang*3.14159265/180.0;
+  rang = count*dang;
   xo = r*cos(rang);
   yo=  r*sin(rang);
   pipe = *((int *)(D->pt)+0);
   G = kgInitImage(D->xl,D->yl,RESIZE);
-#if 0
+#if 1
   kgUserFrame(G,-25.,-25.,25.,25.);
-  kgChangeColor(G,1002,0,0,0);
-  kgChangeColor(G,1001,255,255,255);
-//  kgArcFill(G,0.,0.,18.5,0.,360.0,0,1001);
-//  kgArcFill(G,0.,0.,11.5,0.,360.0,0,1002);
-  kgRoundedRectangleFill(G,0.,0.,50.,50.,0,fillclr,0.);
-//  kgRoundedRectangleRing(G,0.,0.,24.,24.,255.,255.,255.,0.5,7.);
-  kgRoundedRectangleRing(G,0.,0.,37.,37,0.,0.,0.,0.5,8.);
-  imgbk=kgGetResizedImage(G);
+  kgRoundedRectangleRing3(G,1.,-1.,36.,36,0.,0.,0.,0.5,4.);
+  img=kgGetResizedImage(G);
   kgCloseImage(G);
-#else
-  imgbk = kgGetBackground(Tmp,D->xo,D->yo,D->xo+D->xl,D->yo+D->yl);
+  kgImage(D,img,D->xo,D->yo,D->xl,D->yl,0.,1.0);
 #endif
+  imgbk = kgGetBackground(Tmp,D->xo,D->yo,D->xo+D->xl,D->yo+D->yl);
+  kgFreeImage(img);
   while(!kgThreadWaitPipe(pipe,0,40000)) {
     G = kgInitImage(D->xl,D->yl,RESIZE);
     kgUserFrame(G,-25.,-25.,25.,25.);
     kgChangeColor(G,1002,0,0,0);
-    kgRoundedRectangleRing(G,0.,0.,37.,37,0.,0.,0.,0.5,8.);
-//    kgArcFill(G,xo,yo,3.0,0.,360.0,0,1002);
-#if 0
-    kgArcFill(G,0.,0.,17.0,0.,360.0,0,1002);
-    kgArcFill(G,0.,0.,13.0,0.,360.0,0,fillclr);
-#endif
-    ang+=dang;
-    rang = ang*3.14159265/180.0;
+//    kgRoundedRectangleRing2(G,0.,0.,36.,36,0.,0.,0.,0.5,4.);
+    rang= count*dang;
+    count = (count+1)%72;
     xo = r*cos(rang);
     yo=  r*sin(rang);
-    kgChangeColor(G,1001,255,255,255);
-    kgArcFill(G,xo,yo,3.0,0.,360.0,0,1001);
+    kgChangeColor(G,1001,255,255,225);
+    kgArcFill(G,xo,yo,6.0,0.,360.0,0,1001);
     img=kgGetResizedImage(G);
     kgCloseImage(G);
     kgImage(D,imgbk,D->xo,D->yo,D->xl,D->yl,0.,1.0);
@@ -5037,7 +5029,7 @@ void * kgBusy( void *dummy) {
   D.VerId=1401010200;
   kgInitUi(&D);
   D.d = d;
-  D.bkup = 0; /* set to 1 for backup */
+  D.bkup = 1; /* set to 1 for backup */
   D.bor_type = 0;
   D.df = 0;
   D.tw = 4;
