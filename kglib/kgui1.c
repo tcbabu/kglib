@@ -6001,8 +6001,56 @@ static int Size(char *t)
    if(lng != 0) lng +=(8);
    return ( lng);
  }
+static int  gcanftextbox1callback(int cellno,int i,void *Tmp) {
+  /*************************************************
+   cellno: current cell counted along column strting with 0
+           ie 0 to (nx*ny-1)
+   i     : widget id starting from 0
+   Tmp   : Pointer to DIALOG
+   *************************************************/
+  DIALOG *D;DIT *T;T_ELMT *e;
+  int ret=1;
+  D = (DIALOG *)Tmp;
+  T = (DIT *)kgGetWidget(Tmp,i);
+  e = T->elmt;
+  if(T->ny == 1)kgSetExit(Tmp);
+  return ret;
+}
+
+static int gscanfCallBack(void *Tmp,void *tmp) {
+  /***********************************
+    Tmp :  Pointer to DIALOG
+    tmp :  Pointer to KBEVENT
+   ***********************************/
+  int ret = 0;
+  DIALOG *D;
+  KBEVENT *kbe;
+  D = (DIALOG *)Tmp;
+  kbe = (KBEVENT *)tmp;
+  if(kbe->event ==1) {
+    if(kbe->button ==1) {
+	    ret=1;
+    }
+  }
+  return ret;
+}
+static int gscanfinit(void *Tmp) {
+  /***********************************
+    Tmp :  Pointer to DIALOG
+   ***********************************/
+  /* you add any initialisation here */
+  int ret = 1;
+  DIALOG *D;void *pt;
+  D = (DIALOG *)Tmp;
+  pt = D->pt;
+  kgSetDefaultWidget(Tmp,0);
+  return ret;
+}
+
+
 int  gscanf(void *parent,void *unknown,...){
-  DILN *H;
+//  DILN *H;
+  DIL *H;
   DIALOG D;
   DIA *d;
   DIT *T;
@@ -6014,6 +6062,8 @@ int  gscanf(void *parent,void *unknown,...){
   int i,j,k,item=0,it=0,size=6,ln,width,lngth,nx,ny,ret=1,prsize=0,fldsize=0;
   void **v=NULL;
   va_list ad;
+  DIALOG *Par=NULL;
+  Par = (DIALOG *)parent;
   va_start(ad,unknown);
   if(unknown==NULL) return 0;
   strcpy(wrk,(char *)unknown);
@@ -6104,29 +6154,38 @@ int  gscanf(void *parent,void *unknown,...){
   if(lngth<100) lngth=100;
   T->x2 =T->x1+lngth;
   T->y2 =T->y1+width;
-  D.VerId=1401010200;
+  T->Update = gcanftextbox1callback;
+  D.VerId=2107030000;
   kgInitUi(&D);
   D.d = (DIA *)Malloc(sizeof(DIA)*3);
   d = D.d;
-  H = kgCreateHButtons(T->x1+lngth/2-30,T->y2+4,1,60,25,titles,NULL);
+//  H = kgCreateHButtons(T->x1+lngth/2-36,T->y2+4,1,72,25,titles,NULL);
+  H = kgCreateSplButtons(T->x1+lngth/2-36,T->y2+4,1,1,72,25,titles,NULL);
+  H->fac = 0.5;
+  H->bordr =0;
+  H->type = 4;
   d[0].t =T;
   d[1].t = (DIT *)H;
   d[2].t =NULL;
-  D.VerId=1401010200;
+  D.VerId=2107030000;
   kgInitUi(&D);
   D.xo= 100;
   D.yo= 100;
   D.xl = lngth+10;
   D.yl=width+45;
+  if(Par != NULL) {
+	  D.xo = (Par->xl -D.xl)/2;
+	  D.yo = (Par->yl -D.yl)/2;
+  }
   D.bkup = 1; /* set to 1 for backup */
   D.bor_type = 4;
-  D.df = 1;
+  D.df = 0;
   D.tw = 4;
   D.bw = 4;
   D.lw = 4;
   D.rw = 4;
-  D.Initfun = NULL;
-  D.kbattn = 1;   
+  D.Initfun = gscanfinit;
+  D.kbattn = 0;   
   D.butattn = 0; 
   D.fullscreen = 0;
   D.Deco = 1;   
@@ -6138,7 +6197,7 @@ int  gscanf(void *parent,void *unknown,...){
   D.Resize = 1;   
   D.MinWidth = 100; 
   D.MinHeight = 100; 
-  D.Callback = NULL;
+  D.Callback = gscanfCallBack;
   D.ResizeCallback = NULL;
   D.WaitCallback=NULL;
   D.Fixpos = 0;   
