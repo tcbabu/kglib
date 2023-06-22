@@ -27,7 +27,7 @@ int RunItemoptdia(void *arg) {
     Buttonbox1 (new) 1 data value
 
 *************************************************/
-   char *menu[]={(char *)"Add",(char *)"Delete",(char *)"Resize",(char *)"Repos",(char *)"Toggle Visibility",(char *)"Hor. Align",(char *)"Vert. Align",NULL};
+   char *menu[]={(char *)"Add",(char *)"Delete",(char *)"Resize",(char *)"Repos",(char *)"Toggle Visibility",(char *)"Vert. Align",(char *)"Hoz. Align",NULL};
    int   v0 = 1;
    switch(kgMenu1(Parent,120,45,0,menu,7,NULL,NULL)) {
       case 1:
