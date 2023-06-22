@@ -3,6 +3,9 @@ Graphics library 'kglib' and its Open Source dependencies(libgm.a) like
 GraphicsMagick, libpng,libjpeg etc. So all the dependencies other than
 Xlib is included. It contains five files.
 
+If you need OpenGL support enable it in ogl.c
+
+
 1. Readme.first (this file)
 2. kgdevelop - statically linked binary, as usr/bin/kgdevelop. 
 3. libkulina.a - library archive of Kulina Graphics Library, as
