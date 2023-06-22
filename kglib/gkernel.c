@@ -471,7 +471,7 @@ int kgChangeJob(char *job){
    fprintf(stderr,"Failed to execute \n");
    exit(1);
 }
-int isunixsocketinuse(char *sock) {
+static int isunixsocketinuse(char *sock) {
   FILE *fp;
   char buff1[300];
   char *line=NULL;
@@ -488,7 +488,7 @@ int isunixsocketinuse(char *sock) {
   free(line);
   return ret;
 }
-int isdisplayinuse(int num) {
+static int isdisplayinuse(int num) {
   char buff[200];
   sprintf(buff,"/tmp/.X11-unix/X%-d",num);
   return isunixsocketinuse(buff);
