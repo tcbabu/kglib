@@ -54,7 +54,9 @@ kgdevelop/kgdevelop	: lib/libgm.a lib/libkulina.a $(KGDEVELOPFILES)
 
 install	: bin/kgdevelop lib/libkulina.a lib/libgm.a
 	  mkdir -p /usr/share/kulina
+	  mkdir -p /usr/share/icons
 	  cp demo.tar /usr/share/kulina/
+	  cp -r icons/* /usr/share/icons
 	  install -m 755 bin/kgdevelop   /usr/bin
 	  install -m 755 lib/libkulina.a /usr/lib
 	  install -m 755 lib/libkulina.a /usr/lib
