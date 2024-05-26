@@ -17,6 +17,7 @@ echo "$X11_LIBS"
 echo "$X11_CFLAGS"
 tar xf xz-5.0.3.tar.gz
 cd xz-5.0.3
+mkdir -p $KULINA/include
 ./configure --prefix=$KULINA --enable-static --disable-shared >out
 make -j2 >out
 make -j2 install >out

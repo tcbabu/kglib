@@ -234,7 +234,7 @@ void _uiInitButs(DIN *B);
 DIALOG *getParentDisplay(void *D) {
   DIALOG *Dtmp;
   Dtmp = (DIALOG *) D;
-  while(Dtmp->Newwin!=1 ){
+  if(Dtmp->Newwin!=1 ){
     Dtmp = Dtmp->parent;
     if(Dtmp==NULL) {printf("Parent=NULL\n");exit(0);}
   }
