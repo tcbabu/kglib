@@ -5092,7 +5092,8 @@ void Make_gui_code(DIALOG *D,char *flname,char *dianame){
   fprintf(fp1,"  D.fullscreen = %-d;    /*  1 for for fullscreen mode */\n",D->fullscreen);
   fprintf(fp1,"  D.Deco = %-d;    /*  1 for Window Decorration */\n",D->Deco);
   fprintf(fp1,"  D.transparency = %-f;    /*  float 1.0 for full transparency */\n",D->transparency);
-  fprintf(fp1,"  D.Newwin = %-d;    /*  1 for new window not yet implemented */\n",D->Newwin);
+//  fprintf(fp1,"  D.Newwin = %-d;    /*  1 for new window not yet implemented */\n",D->Newwin);
+  fprintf(fp1,"  D.Newwin = %-d;    /*  1 for new window not yet implemented */\n",1);
   fprintf(fp1,"  D.DrawBkgr = %-d;    /*  1 for drawing background */\n",D->DrawBkgr);
   fprintf(fp1,"  D.Bkpixmap = NULL;    /*  background image */\n");
   fprintf(fp1,"  D.Sticky = %-d;    /*  1 for stickyness */\n",D->Sticky);
