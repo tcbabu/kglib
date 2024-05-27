@@ -755,3 +755,573 @@ void *Getrecordrev(Dlink *L) {
   }
   return tmp;
 }
+static int GetNextTag ( char *tmp , char *Tag , int *ln ) {
+        int i , j = 0;
+        char *pt = NULL;
+        int ret;
+        char buff [ 500 ] ;
+        int ok=1;
+        Tag [ 0 ] = '\0';
+        pt = tmp;
+        i = 0;
+        while ( ( *pt == ' ' ) || ( *pt == '\t' ) ) {
+            if ( ( *pt != '\t' ) ) *pt = ' ';
+            i++;
+            pt++;
+        }
+        if ( ( *pt < ' ' ) ) {*ln = i;return i;}
+        j = 0;
+        while ( ( *pt > ' ' ) ) {
+            ok=1;
+            if ( *pt == '\'' ) {
+                buff [ j++ ] = *pt++;i++;
+                while ( *pt != '\'' ) {
+                    if ( *pt == '\\' ) {buff [ j++ ] = *pt++;i++;}
+                    if(( *pt=='\n')||(*pt=='\0')) {ok=0;break;}
+                    buff [ j++ ] = *pt++;
+                    i++;
+                }
+            }
+            if ( *pt == '"' ) {
+                buff [ j++ ] = *pt++;i++;
+                while ( *pt != '"' ) {
+                    if ( *pt == '\\' ) {buff [ j++ ] = *pt++;i++;}
+                    if(( *pt=='\n')||(*pt=='\0')) {ok=0;break;}
+                    buff [ j++ ] = *pt++;
+                    i++;
+                }
+            }
+            if(ok) {
+              Tag [ j++ ] = *pt++;
+              i++;
+            }
+        }
+        Tag [ j ] = '\0';
+        *ln = i;
+        return *ln;
+}
+// a special sort for blank seperated string record
+static int Dcmpstring(void *p1,void *p2,int field,int order) {
+	char *s1=(char *)p1,*s2 = (char *)p2;
+	char Tag1[300],Tag2[300];
+	char *cpt1,*cpt2;
+	int i,ln;
+	int ret;
+	for(i=0;i<field;i++) {
+	  GetNextTag(s1,Tag1,&ln);
+	  s1 += ln;
+	  if(Tag1[0]=='\0') {
+		  fprintf(stderr,"Error in Dstringsort..\n");
+		  exit(-1);
+	  }
+	  GetNextTag(s2,Tag2,&ln);
+	  s2 += ln;
+	  if(Tag2[0]=='\0') {
+		  fprintf(stderr,"Error in Dstringsort..\n");
+		  exit(-1);
+	  }
+	   
+	}
+//	printf( "TAG0: %s %s\n",Tag1,Tag2);
+	cpt1=Tag1;
+	if((Tag1[0]=='\'')||(Tag1[0]=='"')) {
+		cpt1=Tag1+1;
+		Tag1[strlen(Tag1)-1]='\0';
+	}
+	cpt2=Tag2;
+	if((Tag2[0]=='\'')||(Tag2[0]=='"')) {
+		cpt2=Tag2+1;
+		Tag2[strlen(Tag2)-1]='\0';
+	}
+        ret = strcmp ( cpt1 , cpt2 ) ;
+	if(order==0) {
+          if ( ret > 0 ) return 1;
+          else return 0;
+	}
+	else {
+          if ( ret < 0 ) return 1;
+          else return 0;
+	}
+
+}
+// order = 0 ascenting
+// else decenting
+// field is counted from 1
+void Dstringsort(Dlink *LN , int field,int order) {
+ D_l *tmp,*pt,*pos,*tmp1;
+ void *dum;
+  if(LN==NULL) {
+    printf("Error: Empty listi:Dsort\n");
+    exit(0);
+  }
+ tmp = LN->st;
+ if(tmp==NULL) return;
+ pt = tmp->nx;
+ while(pt !=NULL) {
+   pos = LN->st;
+   while(pos != pt) {
+      if( Dcmpstring(pos->bf,pt->bf,field,order) > 0 ){ 
+        tmp1 = pt;
+        (pt->pv)->nx = pt->nx;
+        if(pt->nx != NULL) (pt->nx)->pv = pt->pv;
+        else LN->en = pt->pv;
+        pt = pt->nx;
+        if(pos->pv != NULL)  (pos->pv)->nx = tmp1;
+        tmp1->pv =pos->pv;
+        pos->pv = tmp1;
+        tmp1->nx = pos;
+        if(pos == LN->st) LN->st = tmp1;
+        break;
+      }
+      pos = pos->nx;
+   }
+   if(pos==pt) pt = pt->nx;
+ }
+}
+// a special sort for blank seperated string record
+static int Dcmpnumber(void *p1,void *p2,int field,int order) {
+	char *s1=(char *)p1,*s2 = (char *)p2;
+	char Tag1[300],Tag2[300];
+	char *cpt1,*cpt2;
+	int i,ln;
+	int ret;
+	double v1,v2;
+	for(i=0;i<field;i++) {
+	  GetNextTag(s1,Tag1,&ln);
+	  s1 += ln;
+	  if(Tag1[0]=='\0') {
+		  fprintf(stderr,"Error in Dstringsort..\n");
+		  exit(-1);
+	  }
+	  GetNextTag(s2,Tag2,&ln);
+	  s2 += ln;
+	  if(Tag2[0]=='\0') {
+		  fprintf(stderr,"Error in Dstringsort..\n");
+		  exit(-1);
+	  }
+	   
+	}
+//	printf( "TAG0: %s %s\n",Tag1,Tag2);
+	cpt1=Tag1;
+	if((Tag1[0]=='\'')||(Tag1[0]=='"')) {
+		cpt1=Tag1+1;
+		Tag1[strlen(Tag1)-1]='\0';
+	}
+	cpt2=Tag2;
+	if((Tag2[0]=='\'')||(Tag2[0]=='"')) {
+		cpt2=Tag2+1;
+		Tag2[strlen(Tag2)-1]='\0';
+	}
+	sscanf(cpt1,"%lf",&v1);
+	sscanf(cpt2,"%lf",&v2);
+//	printf("v1:v2 %lf %lf\n",v1,v2);
+	if(order==0) {
+          if ( v1 > v2 ) return 1;
+          else return 0;
+	}
+	else {
+          if ( v1 < v2 ) return 1;
+          else return 0;
+	}
+
+}
+// order = 0 ascenting
+// else decenting
+// field is counted from 1
+void Dnumbersort(Dlink *LN , int field,int order) {
+ D_l *tmp,*pt,*pos,*tmp1;
+ void *dum;
+  if(LN==NULL) {
+    printf("Error: Empty listi:Dsort\n");
+    exit(0);
+  }
+ tmp = LN->st;
+ if(tmp==NULL) return;
+ pt = tmp->nx;
+ while(pt !=NULL) {
+   pos = LN->st;
+   while(pos != pt) {
+      if( Dcmpnumber(pos->bf,pt->bf,field,order) > 0 ){ 
+        tmp1 = pt;
+        (pt->pv)->nx = pt->nx;
+        if(pt->nx != NULL) (pt->nx)->pv = pt->pv;
+        else LN->en = pt->pv;
+        pt = pt->nx;
+        if(pos->pv != NULL)  (pos->pv)->nx = tmp1;
+        tmp1->pv =pos->pv;
+        pos->pv = tmp1;
+        tmp1->nx = pos;
+        if(pos == LN->st) LN->st = tmp1;
+        break;
+      }
+      pos = pos->nx;
+   }
+   if(pos==pt) pt = pt->nx;
+ }
+}
+/* i is position and starts from 0 */
+
+//Similar to Dposition, on;y that arg start from 0
+//
+int Dlocation(Dlink *L,int pos) { //
+	if(pos>=Dcount(L)) return 0;
+	Dposition(L,pos+1);
+	return 1;
+}
+// Deletes item at pos
+int Dremove(Dlink *L,int pos) {
+	if(pos>=Dcount(L)) return 0;
+	Dposition(L,pos+1);
+	Ddelete(L);
+	Dposition(L,pos+1);
+	return 1;
+}
+// Removes from list but record is retuned
+void * Dtake(Dlink *L,int pos) {
+	void *bf;
+	if(pos>=Dcount(L)) return NULL;
+	Dposition(L,pos+1);
+	bf =  Dpick(L);;
+	Dposition(L,pos+1);
+	return bf;
+}
+ 
+void *Drecord(Dlink *L,int i) {
+	if(i>=Dcount(L)) return NULL;
+	Dposition(L,i+1);
+	return Getrecord(L);
+}
+void Dtravel(Dlink *L,void (*action) (void *)) {
+	void *pt;
+	Resetlink (L);
+	while( (pt=Getrecord(L))!= NULL) action(pt);
+	Resetlink (L);
+}
+// Routines to extract command line args
+
+Dlink * DgetFlags(char **argv) {
+	int i;
+	char *pt;
+	Dlink * FlagsList=NULL;
+
+	FlagsList = Dopen();
+	i=0;
+	while ((pt=argv[i]) != NULL) {
+		if(pt[0]=='-') Dappend(FlagsList,pt);
+		i++;
+	}
+	return FlagsList;
+}
+Dlink * DgetArgs(char **argv) {
+	int i;
+	char *pt;
+	Dlink * ArgsList=NULL;
+
+	ArgsList = Dopen();
+	i=0;
+	while ((pt=argv[i]) != NULL) {
+		if(pt[0]!='-') Dappend(ArgsList,pt);
+		i++;
+	}
+	return ArgsList;
+}
+/* Utility routine to get arg for a flag */
+
+char * DgetFlagArg(Dlink *Alist,char **argv,char *flag,int nv) {
+	char *Farg=NULL,*tpt,*Apt;
+	int i=0,j=0;
+	while((tpt=argv[i]) != NULL) {
+		if(strncmp(flag,"--",2) ==0 ) { //long flag
+		  if( strcmp(tpt,flag) == 0 ) {
+			Farg= argv[i+1+nv];
+			if (Farg[0]== '-') {
+				   fprintf(stderr,"Error: Invalid arg for '%-s'\n",flag);
+				   exit(1);
+		        }
+			j=0;
+		       	while(strcmp((Apt=(char *)Drecord(Alist,j)),Farg)!=0) {
+				if(Apt== NULL){
+				   fprintf(stderr,"Error: Invalid arg for '%-s'\n",flag);
+				   exit(1);
+				}
+			       	j++;
+		       	}
+			Dtake(Alist,j);
+			break;
+		  }
+
+		}
+		else { // short flag
+		  if( strncmp(tpt,flag,2) == 0 ) {
+			if(flag[2] <= ' '){
+			   Farg= argv[i+1+nv];
+			   if (Farg[0]== '-') {
+				   fprintf(stderr,"Error: Invalid arg for '%-s'\n",flag);
+				   exit(1);
+			   }
+			   j=0;
+		       	   while(strcmp((Apt=(char *)Drecord(Alist,j)),Farg)!=0) {
+				if(Apt== NULL) {
+				   fprintf(stderr,"Error: Invalid arg for '%-s'\n",flag);
+				   exit(1);
+				}
+			       	j++;
+		       	   }
+			   Dtake(Alist,j);
+			   break;
+			}
+			else {Farg=flag+2;break;}
+		  }
+		}
+		i++;
+	}
+	return Farg;
+
+}
+char **  DprocessFlags(char *argv[],DARGS fargpt[]) {
+		                    
+
+	Dlink *Flist=NULL,*Alist=NULL;
+	char *pt;
+	int i,count,j=0,k;
+	char **rargs=NULL;
+	int *ipt;
+	long *lpt;
+	char **spt;
+	char *cpt;
+	double *dpt;
+	int Matched=0;
+	int Cond=0;
+	char *tpt=NULL;
+
+	Flist = DgetFlags(argv+1);
+	Alist = DgetArgs(argv+1);
+
+	i=0;
+        while((pt =(char *)Drecord(Flist,i)) != NULL){
+                j=0;
+		while((fargpt+j != NULL)&&(fargpt[j].flag != NULL)) {
+		  if(fargpt[j].flag == NULL) {
+			  printf("NULL flag ... \n");break;
+		  }
+		  Matched=0;
+		  Matched = ((strncmp(pt,"--",2)!=0) && 
+			  (strncmp(pt,fargpt[j].flag,2)==0))
+			  || (strcmp(pt,fargpt[j].flag)==0);
+		  if(Matched > 0) {  
+		       if(fargpt[j].pt != NULL) {
+			  switch (fargpt[j].code) {
+				  case 'i':
+					  ipt = (int *)(fargpt[j].pt);
+					  *ipt =1;
+					  for(k=0;k<fargpt[j].nvals;k++)  {
+				             tpt = (char *) DgetFlagArg(Alist,argv,pt,k);
+                                             ipt[k] = atoi(tpt);
+					  }
+					  break;
+				  case 'l':
+					  lpt = (long *)fargpt[j].pt;
+					  *lpt =1;
+					  for(k=0;k<fargpt[j].nvals;k++){ 
+				              tpt = (char *) DgetFlagArg(Alist,argv,pt,k);
+                                              *(lpt+k) = atol(tpt);
+					  }
+					  break;
+				  case 'f':
+					  dpt = (double *)fargpt[j].pt;
+					  *dpt = 1.0;
+					  for(k=0;k<fargpt[j].nvals;k++) {
+				              tpt = (char *) DgetFlagArg(Alist,argv,pt,k);
+                                              dpt[k] = atof(tpt);
+					  }
+					  break;
+				  case 's':
+					  spt = (char **)fargpt[j].pt;
+					  for(k=0;k<fargpt[j].nvals;k++) {
+				              tpt = (char *) DgetFlagArg(Alist,argv,pt,k);
+                                              spt[k] = tpt;
+					  }
+					  break;
+				  case 'c':
+					  cpt = (char *)fargpt[j].pt;
+					  for(k=0;k<fargpt[j].nvals;k++) {
+				              tpt = (char *) DgetFlagArg(Alist,argv,pt,k);
+                                              cpt[k] = tpt[0];
+					  }
+					  break;
+				  default:
+					  fprintf(stderr,"illegal code <%s> ; ignored\n",fargpt[j].code);
+					  break;
+
+			  }
+		       }
+		  }
+		  if(Matched) {
+			  if(fargpt[j].Callback != NULL){
+		             fargpt[j].Callback(fargpt[j].arg);
+			  }
+			  break;
+		  }
+		  j++;
+		}
+		if(!Matched){
+		      	fprintf(stderr,"illegal flag  <%s> ; Exiting...\n",pt);
+		      	fprintf(stderr,"See help and retry...\n");
+			exit(0);
+		}
+		i++;
+	}
+	count = Dcount(Alist);
+	if(count <=0 ) rargs = NULL;
+	else {
+	  rargs = (char **) malloc(sizeof(char *)*(count+1));
+	  rargs[count]=NULL;
+	  for(i=0;i<count;i++) {
+		rargs[i]=(char *)Drecord(Alist,i);
+	  }
+	}
+	Dfree(Alist);
+	Dfree(Flist);
+	return rargs;
+}
+Dlink *Dreadfile(char *flname) {
+	Dlink *L;
+	char buff[1000];
+	char *bf;
+	FILE *fp;
+	fp = fopen(flname,"r");
+	if(fp == NULL){
+//		fprintf(stderr,"Failed open %s in Dreadfile\n",flname);
+	       	return Dopen();
+	}
+	L = Dopen();
+	while (fgets(buff,999,fp) != NULL) {
+		bf = (char *)malloc(strlen(buff)+1);
+		strcpy(bf,buff);
+		Dappend(L,bf);
+	}
+	fclose(fp);
+	Resetlink(L);
+	return L;
+}
+int Dwritefile(Dlink *L,char *flname) {
+	char *bf;
+	FILE *fp;
+	int i;
+	fp = fopen(flname,"w");
+	if(fp == NULL) return 0;
+	i=0;
+	while ((bf=(char *)Drecord(L,i)) != NULL) {
+		fprintf(fp,"%s",bf);
+//		fputs(bf,fp);
+		i++;
+	}
+	fclose(fp);
+	return 1;
+}
+int Dpush(Dlink *L,void *bf) {
+    if(L==NULL) {
+	    fprintf(stderr,"Empty Link in Dpush\n");
+	    exit(-1);
+    }	    
+    Resetlink(L);
+    Dinsert(L,bf);
+    Resetlink(L);
+    return 1;
+}
+void * Dpop(Dlink *L) {
+    void *bf;
+    if(L==NULL) {
+	    fprintf(stderr,"Empty Link in Dpop\n");
+	    exit(-1);
+    }	    
+    if(Dcount(L)== 0) return NULL;
+    Resetlink(L);
+    bf = Dpick(L);
+    Resetlink(L);
+    return bf;
+}
+void * Dfifoout(Dlink *L) {
+    void *bf;
+    if(L==NULL) {
+	    fprintf(stderr,"Empty Link in Dfifoout\n");
+	    exit(-1);
+    }	    
+    Dend(L);
+    bf = Dpick(L);
+    Dend(L);
+    return bf;
+}
+int Dfifoin(Dlink *L,void *bf) {
+    if(L==NULL) {
+	    fprintf(stderr,"Empty Link in Dfifoin\n");
+	    exit(-1);
+    }	    
+    Resetlink(L);
+    Dinsert(L,bf);
+    Resetlink(L);
+    return 1;
+}
+int Dreplace(Dlink *L,void *bf,int pos) {
+    if(L==NULL) {
+	    fprintf(stderr,"Empty Link in Dreplace\n");
+	    exit(-1);
+    }	    
+    Dlocation(L,pos);
+    Ddelete(L);
+    Dlocation(L,pos-1);
+    Dadd(L,bf);
+    Dlocation(L,pos);
+    return 1;
+}
+#if 0
+/ *
+ * Sample code for compare function
+ *
+ */
+int CompareAction(void *rec, char *name) {
+	/* 
+	 * return -1 if rec field < name
+	 * return  1 if rec field > name
+	 * return  0 if rec field = name
+	 *
+	 */
+	PACTION  *recv = ((PACTION  *)rec);
+//	int val = *((int *) name);
+	char *field = recv->Flag;;
+	// field = ...
+	return strcmp(field,(char *)name);
+//	return (recv - val);
+}
+ 
+#endif
+void *Dsearch(Dlink *L, char *val  ,int (*Compare)(void *,char *)){
+	/*
+	 * Link must in ascending order; 
+	 */
+	int count = Dcount(L);
+	int mid,low=0,up=count-1,cmp;
+	char *bf;
+	if(L==NULL) return NULL;
+	if(count == 0) return NULL;
+	bf = Drecord(L,low);
+	cmp = Compare(bf,(char *)val);
+	if(cmp > 0 )return NULL;
+	if(cmp == 0 ) return bf;
+	bf = Drecord(L,up);
+	cmp = Compare(bf,(char *)val);
+	if(cmp < 0 )return NULL;
+	if(cmp == 0 ) return bf;
+	while(1) {
+	   if(up<low) up=low;
+   	   if(low > up) low = up;
+  	   mid = (low+up)/2;
+	   bf = Drecord(L,mid);
+	   cmp = Compare(bf,(char *)val);
+	   if(cmp ==0) return bf;
+	   if( low==up) return NULL;
+	   if(cmp < 0) low =mid+1;
+	   else up=mid-1;
+	}
+}
+
