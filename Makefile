@@ -60,22 +60,28 @@ install	: bin/kgdevelop lib/libkulina.a lib/libgm.a
 	  install -m 755 bin/kgdevelop   /usr/bin
 	  install -m 755 lib/libkulina.a /usr/lib
 	  install -m 755 lib/libkulina.a /usr/lib
+	  install -m 755 lib/libdlink.a /usr/lib
 	  install -m 755 lib/libgm.a /usr/lib
 	  install -m 755 include/kulina.h /usr/include
+	  install -m 755 include/dlink.h /usr/include
 
 tarball	: bin/kgdevelop
 	  install -m 755  bin/kgdevelop TARBALL/
 	  install -m 755  lib/libkulina.a TARBALL/
+	  install -m 755  lib/libdlink.a TARBALL/
 	  install -m 755  lib/libgm.a TARBALL/
 	  install -m 755  include/kulina.h  TARBALL/
+	  install -m 755  include/dlink.h  TARBALL/
 	  cp demo.tar TARBALL/
 	  mv TARBALL kulinagraphics
 	  tar czf kulinagraphics.tgz  kulinagraphics
 	  mv kulinagraphics TARBALL
 	  rm -f TARBALL/kgdevelop
 	  rm -f TARBALL/libkulina.a
+	  rm -f TARBALL/libdlink.a
 	  rm -f TARBALL/libgm.a
 	  rm -f TARBALL/kulina.h
+	  rm -f TARBALL/dlink.h
 clean	:
 	 rm -rf lib/* share/* bin/* man/* include/*
 	$(MAKE) -C OpenSource clean

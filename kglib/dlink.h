@@ -1,10 +1,15 @@
 /*
-   Version 2.1
-   Dated 12/07/97
+   Version 3.0
+   Dated 27/05/2024
 */
 
 #ifndef D_LINK
 #define D_LINK
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 #include <stdio.h>
 #include <ctype.h>
 #include <malloc.h>

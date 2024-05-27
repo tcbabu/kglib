@@ -5,11 +5,16 @@ include config.mak
 CC	= cc  -g  -msse3 -O3 -DUNIX -pthread $(X11_CFLAFS)  $(CFLAGS)
 #CC	= cc    -msse3 -O3 -DUNIX -pthread $(X11_CFLAFS)  $(CFLAGS)
 #CC	= cc    -msse3 -g -DUNIX  $(CFLAGS)
-all	: libkulina.a 
+all	: libkulina.a libdlink.a
 libkulina.a  : kgl.o kgui.o kgui1.o kgui2.o lowlib.o gkernel.o file_pro.o dlink.o printerdia.o shade.o PngImage.o gminterface.o makeimg.o drawimg.o  ogl.o threadtool.o hlib.o keybrd.o keybrdCallbacks.o skeybrd.o skeybrdCallbacks.o keybrd0.o keybrd0Callbacks.o keybrd4.o keybrd4Callbacks.o keybrd5.o keybrd5Callbacks.o kgMakeGclr.o
 	ar -rD libkulina.a kgl.o kgui.o kgui1.o kgui2.o lowlib.o gkernel.o file_pro.o  printerdia.o shade.o PngImage.o gminterface.o makeimg.o drawimg.o dlink.o ogl.o threadtool.o hlib.o keybrd.o keybrdCallbacks.o skeybrd.o skeybrdCallbacks.o keybrd0.o keybrd0Callbacks.o keybrd4.o keybrd4Callbacks.o keybrd5.o keybrd5Callbacks.o kgMakeGclr.o
 	cp libkulina.a $(KULINA)/lib/libkulina.a
 	cp kulina.h $(KULINA)/include
+
+libdlink.a	: dlink.o
+		 ar -rD libdlink.a dlink.o
+		 cp libdlink.a $(KULINA)/lib/
+		 cp dlink.h $(KULINA)/include
 kgl.o : kgl.c kulina.h gprivate.h
 	$(CC) -c  -I$(PREFIX)/include/GraphicsMagick kgl.c
 printerdia.o	: printerdia.c  kulina.h gprivate.h
