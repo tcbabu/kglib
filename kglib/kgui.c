@@ -6657,7 +6657,7 @@ int kgInsertThumbNail(void *Wid,void *th,int pos) {
 	else {
 		i=0;
 		while(TH[i] != NULL) {Dadd(L,TH[i]);i++;}
-	        if(pos>= i) Dappend(L,th);
+	        if((pos>= i) || (pos < 0))Dappend(L,th);
 		else {
 	          Dposition(L,pos+1);
 	          Dinsert(L,th);
@@ -6685,7 +6685,7 @@ int kgAddThumbNail(void *Wid,void *th,int pos) {
 	else {
 		i=0;
 		while(TH[i] != NULL) {Dadd(L,TH[i]);i++;}
-	        if(pos>= i) Dappend(L,th);
+	        if((pos>= i)||(pos < 0))  Dappend(L,th);
 		else {
 	          Dposition(L,pos+1);
 	          Dadd(L,th);
