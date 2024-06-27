@@ -680,6 +680,8 @@
   }
 /*******************************************************
    removes duplicate records as per given rule;
+ * May not be good, due to the probabilty of not freeing
+ * the duplicates
 ********************************************************/
   int Drmvdup_cond ( Dlink *L , int rule ( void *, void * ) ) {
       D_l *tmp , *tmp1;

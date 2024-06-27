@@ -6800,8 +6800,9 @@ static int uiDupItem(void *tmp1,void *tmp2) {
 	th1 = (ThumbNail *)tmp1;
 	th2 = (ThumbNail *)tmp2;
 	ret = strcmp(th1->name,th2->name);
+//	printf("%s : %s :ret = %d\n",th1->name,th2->name,ret);
 	if(ret == 0) return 1;
-	else ret = 0;
+	else return 0;
 }
 static int uiCompItem(void *tmp1,void *tmp2) {
 	ThumbNail *th1,*th2;
@@ -6810,7 +6811,7 @@ static int uiCompItem(void *tmp1,void *tmp2) {
 	th2 = (ThumbNail *)tmp2;
 	ret = strcmp(th1->name,th2->name);
 	if(ret == 1) return 1;
-	else ret = 0;
+	else return 0;
 }
 int kgSortList(void *Wid) {
 	Dlink *L=NULL;
@@ -6859,7 +6860,7 @@ void ** kgCopyList(void *Wid) {
 	Tout[i]=NULL;
 	return (void **)Tout;
 }
-int kgListRemoveDup(void *Wid) {
+int kgListRemoveDup_o(void *Wid) {
 	Dlink *L=NULL;
 	ThumbNail **TH,*th;
 	void *pt;
@@ -6882,6 +6883,50 @@ int kgListRemoveDup(void *Wid) {
 	TH[i]=NULL;
 	kgSetList(Wid,(void **)TH);
 	Dfree(L);
+	return 1;
+}
+int kgListRemoveDup(void *Wid) {
+	Dlink *L=NULL,*Dup=NULL;
+	ThumbNail **TH,*th;
+	void *pt;
+	int i,n,j;
+	int Got=0;
+	TH = (ThumbNail **)kgGetList(Wid);
+	if (TH == NULL) return 0;
+	if(TH[0]==NULL)return 0;
+	L = Dopen();
+	Dadd(L,TH[0]);
+	i=1;
+	while(TH[i] != NULL) {
+		Resetlink(L);
+		Got=0;
+		while( (th= (ThumbNail*)Getrecord(L))!= NULL) {
+		  if(uiDupItem(th,TH[i])==1) {
+			  Got =1;
+			  break;
+		  }
+		}
+		if(Got) {
+			if(Dup==NULL) Dup=Dopen();
+			Dappend(Dup,TH[i]);
+		}
+		else Dappend(L,TH[i]);
+		i++;
+	}
+	n = Dcount(L)+1;
+	Resetlink(L);
+	i=0;
+	while( (pt=Getrecord(L))!= NULL) {TH[i]=pt;i++;}
+	TH[i]=NULL;
+	kgSetList(Wid,(void **)TH);
+	Dfree(L);
+	if(Dup != NULL) {
+		Resetlink(Dup);
+		while ((pt=Getrecord(Dup))!= NULL){
+			kgFreeThumbNail((ThumbNail *)pt);
+		}
+		Dfree(Dup);
+	}
 	return 1;
 }
 int kgGetSwitch(void *Tmp,int item) {
