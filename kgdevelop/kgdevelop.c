@@ -6018,16 +6018,42 @@ void DeleteControl(DIALOG *D) {
   Convert_gui_data();
   Dfree(L);
 }
-int get_t_length(char *c,int sz)
+static int GetStrlen(char *s) {
+	int i=0;
+	int ch;
+	int ln =0;
+	while((ch=s[i])!='\0') {
+		if(ch=='!') {
+	          i++;
+		  switch(s[i]) {
+			  case '!': i++;ln++; break;
+		          case 'g': i++; break;
+		          case '\0':  break;
+		          default : i = i+3;
+
+		  }
+		}
+		else {ln++;i++;}
+	}
+	return ln;
+}
+int get_t_length(char *ctmp,int sz)
  {
   int i=0,no=0,j=0;
-  int lng;
-  while(*(c+j)== ' ') j++;
-  c = c+j;
+  int lng,ln;
+  char *c=NULL;
+  char buf[300];
+  while(*(ctmp+j)== ' ') j++;
+  c = ctmp+j;
+  strcpy(buf,c);
+  i=0;
   while((*(c+i) !='%')&&(*(c+i) != '\0'))i++;
-  if(*(c+i)=='\0') { lng = i*9+8+158;}
+  buf[i]='\0';
+  ln = GetStrlen(buf);
+  if(*(c+i)=='\0') { lng = ln*9+8+158;}
   else {
-   if(i!=0) lng= i*9+8;
+//   if(i!=0) lng= i*9+8;
+   if(i!=0) lng= ln*9*1.0+8;
    else lng =0;
    i++; if(isdigit(*(c+i))) no =no*10+(*(c+i)-'0');
    i++; if(isdigit(*(c+i))){ no =no*10+(*(c+i)-'0');i++;}
@@ -6640,7 +6666,7 @@ DIT * Making_t_box_o(DIALOG *D)
    DIT *T=NULL;
    T_ELMT *E=NULL;
    int i,n,k,j,code=0,size=0,l;
-   char buf[60],buf1[30]=" ",buf2[6]=" ",ch;
+   char buf[60],buf1[30]=" ",buf2[6]=" ",buf3[30],ch;
    int  nx=1,ny=1,lngth=0,ln,width,lnx[1000];
    float x1=10,y1=10,x2,y2;
    double *ftmp;
@@ -6667,6 +6693,7 @@ DIT * Making_t_box_o(DIALOG *D)
      ln=0;
      for(j=0;j<nx;j++) {
        buf1[0]='\0';
+       buf3[0]='\0';
        buf2[0]='\0';
        sprintf(buf,"Prompt for ITEM %-d %%20sFormat for ITEM %-d %%4s",i+1,i+1);
        gscanf(Parent,buf,buf1,buf2);
@@ -6677,6 +6704,10 @@ DIT * Making_t_box_o(DIALOG *D)
           clstwin(Parent);
        }
        strcat(buf1,buf2);
+       l=0;
+       while(buf1[l]== ' ') l++;
+       strcpy(buf3,buf1+l);
+       strcpy(buf1,buf3);
        ln =get_t_length(buf1,9);
        if(ln >lnx[j])lnx[j]=ln;
        strcpy(E[i].fmt,buf1);

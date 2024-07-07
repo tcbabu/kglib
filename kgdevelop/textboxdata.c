@@ -312,7 +312,7 @@ void *Runtextboxdata(void *arg) {
 
 *************************************************/
    char *buf;
-   char  v0[100]=" " ;
+   char  v0[100]="" ;
    int   v1 = 10;
    int   v2 = 1;
    void* v[3];
