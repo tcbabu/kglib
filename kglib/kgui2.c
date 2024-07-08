@@ -1183,6 +1183,7 @@ DIT * Read_data_textbox(FILE *fp) {
   sscanf(buff,"%d%d%d",&(t->row),&(t->col),&(t->bordr));
   GETDATALINE;
   sscanf(buff,"%d%d%d",&(t->Font),&(t->FontSize),&(t->hide));
+  t->type = 0;
   if((t->hide != 0) &&(t->hide!=1)) t->hide=0;
   t->arg = NULL;
   t->Update = NULL;

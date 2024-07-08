@@ -6777,6 +6777,7 @@ DIT * Making_t_box(DIALOG *D)
    T->nx = nx; T->ny = ny;
    T->Font=18;
    T->FontSize=9;
+   T->type = 0;
    sprintf(T->Wid,"%-sWidget%-d",DiaName,++WidCount);
    if( !Runtextboxesdata(T) ) {
      free(T);
@@ -6868,6 +6869,7 @@ DIT * Making_T_box(DIALOG *D)
    T->hide =0;
    T->Font=18;
    T->FontSize=9;
+   T->type =0;
    sprintf(T->Wid,"%-sWidget%-d",DiaName,++WidCount);
 //   gscanf(Parent,(char *)"No. of Columns%2dNo of Rows%2dName%20s",&nx,&ny,T->Wid);
    T->nx = nx; T->ny = ny;
