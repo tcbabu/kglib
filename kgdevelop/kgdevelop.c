@@ -5121,7 +5121,7 @@ void Make_gui_code(DIALOG *D,char *flname,char *dianame){
   fprintf(fp1,"  D.parent = parent;    /*  1 for not showing in task bar*/\n");
   fprintf(fp1,"  D.pt = pt;    /*  any data to be passed by user*/\n");
 
-  fprintf(fp1,"//  strcpy(D.name,\"Kulina Designer ver 1.0\");    /*  Dialog name you may change */\n");
+  fprintf(fp1,"//  strcpy(D.name,\"Kulina Designer ver 2.0\");    /*  Dialog name you may change */\n");
   fprintf(fp1,"  if(D.fullscreen!=1) {    /*  if not fullscreen mode */\n");
   fprintf(fp1,"     int xres,yres; \n");
   fprintf(fp1,"     kgDisplaySize(&xres,&yres); \n");
