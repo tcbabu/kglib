@@ -1,5 +1,6 @@
 #include <kulina.h>
 extern DIALOG *Parent;
+int kgGetButnType(void *);
 int  buttondatatextbox1callback(int key,int i,void *Tmp) {
   DIALOG *D;DIT *T;T_ELMT *e; 
   int ret=1;
@@ -178,7 +179,7 @@ int buttondataResizeCallBack(void *Tmp) {
   kgRedrawDialog(D);
   return ret;
 }
-int buttondataGroup( DIALOG *D,void **v,void *pt) {
+int buttondataGroup_o( DIALOG *D,void **v,void *pt) {
   int GrpId=0,oitems=0,i,j;
   DIA *d=NULL,*dtmp;
   T_ELMT *e0  ; 
@@ -366,6 +367,270 @@ int buttondataGroup( DIALOG *D,void **v,void *pt) {
 
 /* One can also use the following code to add Widgets to an existing Dialog */
 
+int  buttondatasplbutton1callback(int butno,int i,void *Tmp) {
+  /*********************************** 
+    butno : selected item (1 to max_item) 
+    i :  Index of Widget  (0 to max_widgets-1) 
+    Tmp :  Pointer to DIALOG  
+   ***********************************/ 
+  DIALOG *D;DIL *B; 
+  int n,ret=1; 
+  D = (DIALOG *)Tmp;
+  B = (DIL *) kgGetWidget(Tmp,i);
+  n = B->nx;
+  switch(butno) {
+    case 1: 
+      break;
+    case 2: 
+      break;
+  }
+  return ret;
+}
+void  buttondatasplbutton1init(DIL *B,void *pt) {
+}
+int  buttondatabutton1callback(int butno,int i,void *Tmp) {
+  /*********************************** 
+    butno : selected item (1 to max_item) 
+    i :  Index of Widget  (0 to max_widgets-1) 
+    Tmp :  Pointer to DIALOG  
+   ***********************************/ 
+  DIALOG *D;DIN *B; 
+  int n,ret =0; 
+  char Buf[100];
+  D = (DIALOG *)Tmp;
+  B = (DIN *)kgGetWidget(Tmp,i);
+  n = B->nx*B->ny;
+  DIN *b;
+  void *pt; 
+  b = (DIN *)D->pt;
+  b->type = kgGetButnType(Tmp);
+  DIM *M=(DIM *)kgGetNamedWidget(Tmp,(char *)"buttondataWidget4");
+  sprintf(Buf,"!w32!f21Selected Button: !f23!h32!c36%d",b->type);
+  kgWrite(M,Buf);
+  kgUpdateOn(Tmp);
+  switch(butno) {
+    case 1: 
+      break;
+  }
+  return ret;
+}
+void  buttondatabutton1init(DIN *B,void *pt) {
+}
+void ModifybuttondataGc(void *Tmp) {
+   DIALOG *D;
+   Gclr *gc;
+   D = (DIALOG *)Tmp;
+   gc = &(D->gc);
+/*
+//  You may change default settings here 
+//  probably you can allow the user to create a config in $HOME
+//  and try to read that file (if exits); so dynamic configuration is possible
+   kgColorTheme(D,220,220,200);
+   kgColorTheme1(D,220,220,200);
+   kgColorTheme2(D,220,220,200);
+   kgDefaultGuiTheme(gc);
+   kgGrayGuiTheme(gc);
+   gc->FontSize =8;
+   gc->Font=23;
+   kgMkgclr("buttondata",Tmp);
+*/
+}
+int buttondataGroup( DIALOG *D,void **v,void *pt) {
+  int GrpId=0,oitems=0,i,j;
+  DIA *d=NULL,*dtmp;
+  T_ELMT *e0  ; 
+  e0 =(T_ELMT *)malloc(sizeof(T_ELMT)*8);
+  e0[0].fmt = (char *)malloc(18);
+  strcpy(e0[0].fmt,(char *)"!w32!f21Length%3d");
+  e0[0].v=(void *)v[0];
+  e0[0].sw=1;
+  e0[0].noecho=0;
+  e0[0].img=NULL;
+  e0[1].fmt = (char *)malloc(17);
+  strcpy(e0[1].fmt,(char *)"!w32!f21Width%3d");
+  e0[1].v=(void *)v[1];
+  e0[1].sw=1;
+  e0[1].noecho=0;
+  e0[1].img=NULL;
+  e0[2].fmt = (char *)malloc(14);
+  strcpy(e0[2].fmt,(char *)"!w32!f21Nx%3d");
+  e0[2].v=(void *)v[2];
+  e0[2].sw=1;
+  e0[2].noecho=0;
+  e0[2].img=NULL;
+  e0[3].fmt = (char *)malloc(14);
+  strcpy(e0[3].fmt,(char *)"!w32!f21Ny%3d");
+  e0[3].v=(void *)v[3];
+  e0[3].sw=1;
+  e0[3].noecho=0;
+  e0[3].img=NULL;
+  e0[4].fmt = (char *)malloc(16);
+  strcpy(e0[4].fmt,(char *)"!w32!f21Xgap%3d");
+  e0[4].v=(void *)v[4];
+  e0[4].sw=1;
+  e0[4].noecho=0;
+  e0[4].img=NULL;
+  e0[5].fmt = (char *)malloc(16);
+  strcpy(e0[5].fmt,(char *)"!w32!f21Ygap%3d");
+  e0[5].v=(void *)v[5];
+  e0[5].sw=1;
+  e0[5].noecho=0;
+  e0[5].img=NULL;
+  e0[6].fmt = (char *)malloc(25);
+  strcpy(e0[6].fmt,(char *)"!w32!f21Rounding Fac.%5F");
+  e0[6].v=(void *)v[6];
+  e0[6].sw=1;
+  e0[6].noecho=0;
+  e0[6].img=NULL;
+  e0[7].fmt = (char *)malloc(17);
+  strcpy(e0[7].fmt,(char *)"!w32!f21Name%20s");
+  e0[7].v=(void *)v[7];
+  e0[7].sw=1;
+  e0[7].noecho=0;
+  e0[7].img=NULL;
+  DIT t0 = { 
+    't',
+    17,24,  
+    363,275,
+    20, 
+    1,8, 
+    e0,
+    1,1,
+    NULL,buttondatatextbox1callback,0,0,18,9 /* args,Call back */
+  };
+  strcpy(t0.Wid,(char *)"buttondataWidget2");
+  t0.pt=NULL;
+  t0.type = 1;
+  t0.item = -1;
+  DIM m1 = { 
+    'm',
+    17,284,  
+    234,317,  
+    1,0  
+  };
+  strncpy(m1.msg,(char *)"!w32!f21Button type : 5",499);
+  strcpy(m1.Wid,(char *)"buttondataWidget4");
+  m1.item = -1;
+  char *menu2[]  = { 
+    (char *)"!w32!f21Hide",
+    (char *)"!w32!f21Border",
+    (char *)"!w32!f21Clean Background",
+    NULL 
+  };
+  ThumbNail **th0 ;
+  DICH c2 = { 
+    'c',
+    3,318,  
+    436,353,   
+    8,0,  
+    120, 
+    25, 
+    1,3, 
+    0,1, 
+    (int *)v[8], 
+    NULL, 
+    NULL, 
+    NULL,buttondatabrowser1callback, /* *args, callback */
+    2,  /* Border Offset  */
+     2,  /* Scroll width  */
+     0,  /* Type  */
+     0, /* item highlight */
+    1, /* bordr */
+    0, /* bkgr */
+    0  /* =1 hide  */
+   };
+  th0 = (ThumbNail **)kgStringToThumbNails((char **)menu2);
+  c2.list=(void **)th0;
+  strcpy(c2.Wid,(char *)"buttondataWidget5");
+  c2.item = -1;
+  BUT_STR  *butn3=NULL; 
+  butn3= (BUT_STR *)malloc(sizeof(BUT_STR)*2);
+  butn3[0].sw=1;
+  strcpy(butn3[0].title,(char *)"!w32!f21!c03Cancel");
+  butn3[0].xpmn=NULL;
+  butn3[0].xpmp=NULL;
+  butn3[0].xpmh=NULL;
+  butn3[0].bkgr=-235255250;
+  butn3[0].butncode='';
+  butn3[1].sw=1;
+  strcpy(butn3[1].title,(char *)"!w32!f21!c38Continue");
+  butn3[1].xpmn=NULL;
+  butn3[1].xpmp=NULL;
+  butn3[1].xpmh=NULL;
+  butn3[1].bkgr=-235255250;
+  butn3[1].butncode='';
+  DIL h3 = { 
+    'h',
+    141,358,  
+    321,391,
+    2,0,  
+    84, 
+    25, 
+    2,1, 
+    2,0.500000,0,0,0,1, /* button type and roundinfg factor(0-0.5),bordr,hide ,nodrawbkgr*/
+ 
+    butn3, 
+    buttondatasplbutton1callback, /*  Callbak */
+      NULL  /* any args */
+  };
+  strcpy(h3.Wid,(char *)"buttondataWidget7");
+  h3.item = -1;
+  BUT_STR  *butn4=NULL; 
+  butn4= (BUT_STR *)malloc(sizeof(BUT_STR)*1);
+  butn4[0].sw=1;
+  strcpy(butn4[0].title,(char *)"!w32!f21Browse");
+  butn4[0].xpmn=NULL;
+  butn4[0].xpmp=NULL;
+  butn4[0].xpmh=NULL;
+  butn4[0].bkgr=-1;
+  butn4[0].butncode='';
+  DIN b4 = { 
+    'n',
+    235,283,  
+    329,317,
+    2,2,  
+    84, 
+    24, 
+    1,1, 
+    4,0.500000,0,0,0,1, /* button type and roundinfg factor(0-0.5),bordr,hide ,nodrawbkgr*/
+ 
+    butn4, 
+    buttondatabutton1callback, /*  Callbak */
+      NULL  /* any args */
+  };
+  strcpy(b4.Wid,(char *)"buttondataWidget8");
+  b4.item = -1;
+  dtmp = D->d;
+  i=0;
+  if(dtmp!= NULL) while(dtmp[i].t!=NULL)i++;
+  dtmp = (DIA *)realloc(dtmp,sizeof(DIA )*(i+6));
+  d =dtmp+i; 
+  d[5].t=NULL;
+  d[0].t = (DIT *)malloc(sizeof(DIT));
+  *d[0].t = t0;
+  d[0].t->item = -1;
+  d[1].t = (DIT *)malloc(sizeof(DIM));
+  *d[1].m = m1;
+  d[1].m->item = -1;
+  d[2].t = (DIT *)malloc(sizeof(DICH));
+  *d[2].c = c2;
+  d[2].c->item = -1;
+  buttondatabrowser1init(d[2].c,pt) ;
+  d[3].t = (DIT *)malloc(sizeof(DIL));
+  *d[3].h = h3;
+  d[3].h->item = -1;
+  buttondatasplbutton1init(d[3].h,pt) ;
+  d[4].t = (DIT *)malloc(sizeof(DIN));
+  *d[4].N = b4;
+  d[4].N->item = -1;
+  buttondatabutton1init(d[4].N,pt) ;
+  d[5].t = NULL;
+  GrpId=kgOpenGrp(D);
+  D->d = dtmp;
+  j=0;
+  while(d[j].t!=NULL){ kgAddtoGrp(D,GrpId,(void *)(d[j].t));j++;}
+  return GrpId;
+} 
 
 int buttondata( void *parent,void **v,void *pt) {
   int ret=1,GrpId,k;
@@ -387,7 +652,9 @@ int buttondata( void *parent,void **v,void *pt) {
   D.xo = 200;   /* Position of Dialog */ 
   D.yo = 100;
   D.xl = 533;    /*  Length of Dialog */
+  D.xl = 485;    /*  Length of Dialog */
   D.yl = 314;    /*  Width  of Dialog */
+  D.yl = 420;    /*  Width  of Dialog */
   D.Initfun = buttondatainit;    /*   init fuction for Dialog */
   D.Cleanupfun = buttondatacleanup;    /*   init fuction for Dialog */
   D.kbattn = 0;    /*  1 for drawing keyborad attention */
