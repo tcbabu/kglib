@@ -438,7 +438,238 @@ int textboxesdataResizeCallBack(void *Tmp) {
   kgRedrawDialog(D);
   return ret;
 }
+int  textboxesdatasplbutton1callback(int butno,int i,void *Tmp) {
+  /*********************************** 
+    butno : selected item (1 to max_item) 
+    i :  Index of Widget  (0 to max_widgets-1) 
+    Tmp :  Pointer to DIALOG  
+   ***********************************/ 
+  DIALOG *D;DIL *B; 
+  int n,ret=1; 
+  D = (DIALOG *)Tmp;
+  B = (DIL *) kgGetWidget(Tmp,i);
+  n = B->nx;
+  switch(butno) {
+    case 1: 
+      break;
+    case 2: 
+      break;
+  }
+  return ret;
+}
+void  textboxesdatasplbutton1init(DIL *B,void *pt) {
+}
+int  textboxesdatabrowser2callback(int item,int i,void *Tmp) {
+  /*********************************** 
+    item : selected item (1 to max_item)  not any specific relevence
+    i :  Index of Widget  (0 to max_widgets-1) 
+    Tmp :  Pointer to DIALOG  
+   ***********************************/ 
+  DIRA *R;DIALOG *D;void *pt; 
+  ThumbNail **th; 
+  int ret=1; 
+  D = (DIALOG *)Tmp;
+  pt = D->pt;
+  R = (DIRA *)kgGetWidget(Tmp,i);
+  th = (ThumbNail **) R->list;
+  int **ptrs;
+  ptrs = (int **)D->pt;
+  *ptrs[2]=item-1;
+  return ret;
+}
+void  textboxesdatabrowser2init(DIRA *R,void *pt) {
+}
+void ModifytextboxesdataGc(void *Tmp) {
+   DIALOG *D;
+   Gclr *gc;
+   D = (DIALOG *)Tmp;
+   gc = &(D->gc);
+/*
+//  You may change default settings here 
+//  probably you can allow the user to create a config in $HOME
+//  and try to read that file (if exits); so dynamic configuration is possible
+   kgColorTheme(D,220,220,200);
+   kgColorTheme1(D,220,220,200);
+   kgColorTheme2(D,220,220,200);
+   kgDefaultGuiTheme(gc);
+   kgGrayGuiTheme(gc);
+   gc->FontSize =8;
+   gc->Font=23;
+   kgMkgclr("textboxesdata",Tmp);
+*/
+}
 int textboxesdataGroup( DIALOG *D,void **v,void *pt) {
+  int GrpId=0,oitems=0,i,j;
+  DIA *d=NULL,*dtmp;
+  T_ELMT *e0  ; 
+  e0 =(T_ELMT *)malloc(sizeof(T_ELMT)*3);
+  e0[0].fmt = (char *)malloc(32);
+  strcpy(e0[0].fmt,(char *)"!w32!f21Boxes in X direction%4d");
+  e0[0].v=(void *)v[0];
+  e0[0].sw=1;
+  e0[0].noecho=0;
+  e0[0].img=NULL;
+  e0[1].fmt = (char *)malloc(32);
+  strcpy(e0[1].fmt,(char *)"!w32!f21Boxes in Y Direction%4d");
+  e0[1].v=(void *)v[1];
+  e0[1].sw=1;
+  e0[1].noecho=0;
+  e0[1].img=NULL;
+  e0[2].fmt = (char *)malloc(24);
+  strcpy(e0[2].fmt,(char *)"!w32!f21Widget Name%20s");
+  e0[2].v=(void *)v[2];
+  e0[2].sw=1;
+  e0[2].noecho=0;
+  e0[2].img=NULL;
+  DIT t0 = { 
+    't',
+    45,13,  
+    454,106,
+    20, 
+    1,3, 
+    e0,
+    1,1,
+    NULL,textboxesdatatextbox1callback,0,0,18,9 /* args,Call back */
+  };
+  strcpy(t0.Wid,(char *)"textboxesdataWidget1");
+  t0.pt=NULL;
+  t0.type = 0;
+  t0.item = -1;
+  char *menu1[]  = { 
+    (char *)"!w32!f21Draw Border",
+    (char *)"!w32!f21Hide Widget",
+    NULL 
+  };
+  ThumbNail **th0 ;
+  DICH c1 = { 
+    'c',
+    46,156,  
+    350,191,   
+    8,0,  
+    140, 
+    25, 
+    1,2, 
+    0,1, 
+    (int *)v[3], 
+    NULL, 
+    NULL, 
+    NULL,textboxesdatabrowser1callback, /* *args, callback */
+    1,  /* Border Offset  */
+     2,  /* Scroll width  */
+     0,  /* Type  */
+     0, /* item highlight */
+    1, /* bordr */
+    0, /* bkgr */
+    0  /* =1 hide  */
+   };
+  th0 = (ThumbNail **)kgStringToThumbNails((char **)menu1);
+  c1.list=(void **)th0;
+  strcpy(c1.Wid,(char *)"textboxesdataWidget2");
+  c1.item = -1;
+  BUT_STR  *butn2=NULL; 
+  butn2= (BUT_STR *)malloc(sizeof(BUT_STR)*2);
+  butn2[0].sw=1;
+  strcpy(butn2[0].title,(char *)"!c03!w32!f23Cancel");
+  butn2[0].xpmn=NULL;
+  butn2[0].xpmp=NULL;
+  butn2[0].xpmh=NULL;
+  butn2[0].bkgr=-235255250;
+  butn2[0].butncode='';
+  butn2[1].sw=1;
+  strcpy(butn2[1].title,(char *)"!c37!w32!f23Continue");
+  butn2[1].xpmn=NULL;
+  butn2[1].xpmp=NULL;
+  butn2[1].xpmh=NULL;
+  butn2[1].bkgr=-235255250;
+  butn2[1].butncode='';
+  DIL h2 = { 
+    'h',
+    162,201,  
+    342,234,
+    2,0,  
+    84, 
+    25, 
+    2,1, 
+    5,0.500000,0,0,0,1, /* button type and roundinfg factor(0-0.5),bordr,hide ,nodrawbkgr*/
+ 
+    butn2, 
+    textboxesdatasplbutton1callback, /*  Callbak */
+      NULL  /* any args */
+  };
+  strcpy(h2.Wid,(char *)"textboxesdataWidget4");
+  h2.item = -1;
+  char *menu3[]  = { 
+    (char *)"!w32!f21Default",
+    (char *)"!w32!f21Type1",
+    NULL 
+  };
+  ThumbNail **th1 ;
+  DIRA r3 = { 
+    'r',
+    181,115,  
+    422,149,   
+    8,0,  
+    90, 
+    25, 
+    1,2, 
+    0,1, 
+    (int *)v[4], 
+    NULL, 
+    NULL ,
+    NULL,textboxesdatabrowser2callback, /* *args, callback */
+    1,  /* Border Offset  */
+     2,  /* Scroll width  */
+     0,  /* Type  */
+     0, /* item highlight */
+    1, /* bordr */
+    0, /* bkgr */
+    0  /* =1 hide  */
+   };
+  th1 = (ThumbNail **)kgStringToThumbNails((char **)menu3);
+  r3.list=(void **)th1;
+  strcpy(r3.Wid,(char *)"textboxesdataWidget5");
+  r3.item = -1;
+  DIM m4 = { 
+    'm',
+    42,119,  
+    182,143,  
+    1,0  
+  };
+  strncpy(m4.msg,(char *)"!w32!f21Text Box Type",499);
+  strcpy(m4.Wid,(char *)"textboxesdataWidget6");
+  m4.item = -1;
+  dtmp = D->d;
+  i=0;
+  if(dtmp!= NULL) while(dtmp[i].t!=NULL)i++;
+  dtmp = (DIA *)realloc(dtmp,sizeof(DIA )*(i+6));
+  d =dtmp+i; 
+  d[5].t=NULL;
+  d[0].t = (DIT *)malloc(sizeof(DIT));
+  *d[0].t = t0;
+  d[0].t->item = -1;
+  d[1].t = (DIT *)malloc(sizeof(DICH));
+  *d[1].c = c1;
+  d[1].c->item = -1;
+  textboxesdatabrowser1init(d[1].c,pt) ;
+  d[2].t = (DIT *)malloc(sizeof(DIL));
+  *d[2].h = h2;
+  d[2].h->item = -1;
+  textboxesdatasplbutton1init(d[2].h,pt) ;
+  d[3].t = (DIT *)malloc(sizeof(DIRA));
+  *d[3].r = r3;
+  d[3].r->item = -1;
+  textboxesdatabrowser2init(d[3].r,pt) ;
+  d[4].t = (DIT *)malloc(sizeof(DIM));
+  *d[4].m = m4;
+  d[4].m->item = -1;
+  d[5].t = NULL;
+  GrpId=kgOpenGrp(D);
+  D->d = dtmp;
+  j=0;
+  while(d[j].t!=NULL){ kgAddtoGrp(D,GrpId,(void *)(d[j].t));j++;}
+  return GrpId;
+} 
+int textboxesdataGroup_o( DIALOG *D,void **v,void *pt) {
   int GrpId=0,oitems=0,i,j;
   DIA *d=NULL,*dtmp;
   T_ELMT *e0  ; 
@@ -587,7 +818,7 @@ int textboxesdata( void *parent,void **v,void *pt) {
   D.xo = 289;   /* Position of Dialog */ 
   D.yo = 141;
   D.xl = 472;    /*  Length of Dialog */
-  D.yl = 219;    /*  Width  of Dialog */
+  D.yl = 250;    /*  Width  of Dialog */
   D.Initfun = textboxesdatainit;    /*   init fuction for Dialog */
   D.Cleanupfun = textboxesdatacleanup;    /*   init fuction for Dialog */
   D.kbattn = 0;    /*  1 for drawing keyborad attention */
@@ -644,22 +875,26 @@ int Runtextboxesdata(void *arg) {
    int   v1 = 1;
    char  v2[100]=" " ;
    int   v3 = 1;
-   void* v[4];
-   void *pt[2];
+   int   v4 = 1;
+   void* v[5];
+   void *pt[3];
    DIT *t;
-   int hide,bordr;
+   int hide,bordr,type;
    t = (DIT *) arg;
    v[0]=(void *)(&v0);
    v[1]=(void *)(&v1);
    v[2]=(void *)(v2);
    v[3]=(void *)(&v3);
+   v[4]=(void *)(&v4);
    hide = t->hide;
    bordr =t->bordr;
+   type =t->type;
    v0 = t->nx;
    v1 = t->ny;
    strcpy(v2,t->Wid);
    pt[0]=&hide;
    pt[1]=&bordr;
+   pt[2]=&type;
    ret = textboxesdata(NULL,v,pt );
    if(ret) {
      t->nx = v0;
@@ -667,6 +902,7 @@ int Runtextboxesdata(void *arg) {
      strcpy(t->Wid,v2);
      t->hide = hide;
      t->bordr = bordr;
+     t->type = type;
    }
    return ret;
 }

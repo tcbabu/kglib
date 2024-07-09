@@ -1186,7 +1186,6 @@ DIT * Read_data_textbox(FILE *fp) {
   sscanf(buff,"%d%d%d",&(t->row),&(t->col),&(bordr));
   t->bordr = bordr%10;
   t->type =  bordr/10;
-  printf("Type: %d Birdr: %d Val:%d\n",t->type,t->bordr,bordr);
   GETDATALINE;
   sscanf(buff,"%d%d%d",&(t->Font),&(t->FontSize),&(t->hide));
   if((t->hide != 0) &&(t->hide!=1)) t->hide=0;
@@ -2040,7 +2039,6 @@ void kgPrintWidgetData(void *W,FILE *fp1) {
    switch(t->code) {
      case 't':
       fprintf(fp1,"//Text Box\nt\n");
-      printf("Type: %d Bordr: %d\n",t->type,t->bordr);
       Print_data_textbox(fp1,(DIT *)t);
       break;
      case 'x':
