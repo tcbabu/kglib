@@ -2508,7 +2508,7 @@ void Print_textbox(FILE *fp,DIT *t,int control,char *dianame) {
   t->Wid[49]='\0';
   fprintf(fp,"  strcpy(t%-d.Wid,(char *)\"%-s\");\n",Tbox,t->Wid);
   fprintf(fp,"  t%-d.pt=NULL;\n",Tbox);
-  fprintf(fp,"  t%-d.type = 0;\n",Tbox);
+  fprintf(fp,"  t%-d.type = %d;\n",Tbox,t->type);
   fprintf(fp,"  t%-d.item = -1;\n",Tbox);
   Tbox++;
   t->y1 = t->y1;
@@ -2522,6 +2522,7 @@ DIT * Read_textbox(void) {
   double *ftmp;
   int *itmp;
   char ch;
+  int bordr=0;
   selmt = sizeof(T_ELMT);
   t = (DIT *) malloc(sizeof(DIT));
   GETDATALINE;
@@ -2566,7 +2567,10 @@ DIT * Read_textbox(void) {
   GETDATALINE;
   sscanf(buff,"%d%d",&(t->x2),&(t->y2));
   GETDATALINE;
-  sscanf(buff,"%d%d%d",&(t->row),&(t->col),&(t->bordr));
+  sscanf(buff,"%d%d%d",&(t->row),&(t->col),&(bordr));
+  t->bordr=bordr%10;
+  t->type =bordr/10;
+  printf("Read: %d %d\n",t->type,t->bordr);
   GETDATALINE;
   sscanf(buff,"%d",&(t->hide));
   if((t->hide != 0) &&(t->hide!=1)) t->hide=0;

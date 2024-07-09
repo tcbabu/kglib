@@ -1112,6 +1112,7 @@ DIG *Read_data_graphbox(FILE *fp) {
 void Print_data_textbox(FILE *fp,DIT *t) {
   int i, n;
   T_ELMT *e;
+  int type =0,bordr=1;
   fprintf(fp,"%c     //code\n",t->code);
   fprintf(fp,"%d %d  //x1,y1\n",t->x1,t->y1);
   fprintf(fp,"%d //Width \n",t->width);
@@ -1123,7 +1124,8 @@ void Print_data_textbox(FILE *fp,DIT *t) {
     fprintf(fp,"\"%-s\"\n",e[i].fmt);
   }
   fprintf(fp,"%d %d  //x2,y2\n",t->x2,t->y2);
-  fprintf(fp,"%d %d %d //Cursor Position\n",t->row,t->col,t->bordr);
+  bordr = t->bordr+t->type*10;
+  fprintf(fp,"%d %d %d //Cursor Position,bordr+10*type(%d:%d)\n",t->row,t->col,bordr,t->type,t->bordr);
   fprintf(fp,"%d %d %d //hide\n",t->Font,t->FontSize,t->hide);
   _uiPrintWid(fp,t->Wid);
 }
@@ -1136,6 +1138,7 @@ DIT * Read_data_textbox(FILE *fp) {
   double *ftmp;
   int *itmp;
   char ch;
+  int bordr;
   selmt = sizeof(T_ELMT);
   t = (DIT *) Malloc(sizeof(DIT));
   GETDATALINE;
@@ -1180,10 +1183,12 @@ DIT * Read_data_textbox(FILE *fp) {
   GETDATALINE;
   sscanf(buff,"%d%d",&(t->x2),&(t->y2));
   GETDATALINE;
-  sscanf(buff,"%d%d%d",&(t->row),&(t->col),&(t->bordr));
+  sscanf(buff,"%d%d%d",&(t->row),&(t->col),&(bordr));
+  t->bordr = bordr%10;
+  t->type =  bordr/10;
+  printf("Type: %d Birdr: %d Val:%d\n",t->type,t->bordr,bordr);
   GETDATALINE;
   sscanf(buff,"%d%d%d",&(t->Font),&(t->FontSize),&(t->hide));
-  t->type = 0;
   if((t->hide != 0) &&(t->hide!=1)) t->hide=0;
   t->arg = NULL;
   t->Update = NULL;
@@ -2035,6 +2040,7 @@ void kgPrintWidgetData(void *W,FILE *fp1) {
    switch(t->code) {
      case 't':
       fprintf(fp1,"//Text Box\nt\n");
+      printf("Type: %d Bordr: %d\n",t->type,t->bordr);
       Print_data_textbox(fp1,(DIT *)t);
       break;
      case 'x':

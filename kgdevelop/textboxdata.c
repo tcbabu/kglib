@@ -45,6 +45,25 @@ int  textboxdatahoribar1callback(int butno,int i,void *Tmp) {
 }
 void  textboxdatahbutton1init(DILN *H,void *pt) {
 }
+int  textboxdatasplbutton1callback(int butno,int i,void *Tmp) {
+  /*********************************** 
+    butno : selected item (1 to max_item) 
+    i :  Index of Widget  (0 to max_widgets-1) 
+    Tmp :  Pointer to DIALOG  
+   ***********************************/ 
+  DIALOG *D;DIL *B; 
+  int n,ret=1; 
+  D = (DIALOG *)Tmp;
+  B = (DIL *) kgGetWidget(Tmp,i);
+  n = B->nx;
+  switch(butno) {
+    case 1: 
+      break;
+  }
+  return ret;
+}
+void  textboxdatasplbutton1init(DIL *B,void *pt) {
+}
 int textboxdatainit(void *Tmp) {
   /*********************************** 
     Tmp :  Pointer to DIALOG  
@@ -98,7 +117,7 @@ int textboxdataResizeCallBack(void *Tmp) {
   kgRedrawDialog(D);
   return ret;
 }
-int textboxdataGroup( DIALOG *D,void **v,void *pt) {
+int textboxdataGroup_exp( DIALOG *D,void **v,void *pt) {
   int GrpId=0,oitems=0,i,j;
   DIA *d=NULL,*dtmp;
   T_ELMT *e0  ; 
@@ -238,6 +257,161 @@ int textboxdataGroup( DIALOG *D,void **v,void *pt) {
   return GrpId;
 } 
 
+void ModifytextboxdataGc(void *Tmp) {
+   DIALOG *D;
+   Gclr *gc;
+   D = (DIALOG *)Tmp;
+   gc = &(D->gc);
+/*
+//  You may change default settings here 
+//  probably you can allow the user to create a config in $HOME
+//  and try to read that file (if exits); so dynamic configuration is possible
+   kgColorTheme(D,220,220,200);
+   kgColorTheme1(D,220,220,200);
+   kgColorTheme2(D,220,220,200);
+   kgDefaultGuiTheme(gc);
+   kgGrayGuiTheme(gc);
+   gc->FontSize =8;
+   gc->Font=23;
+   kgMkgclr("textboxdata",Tmp);
+*/
+}
+int textboxdataGroup( DIALOG *D,void **v,void *pt) {
+  int GrpId=0,oitems=0,i,j;
+  DIA *d=NULL,*dtmp;
+  T_ELMT *e0  ; 
+  e0 =(T_ELMT *)malloc(sizeof(T_ELMT)*2);
+  e0[0].fmt = (char *)malloc(26);
+  strcpy(e0[0].fmt,(char *)"!w32!f21Prompt String%20s");
+  e0[0].v=(void *)v[0];
+  e0[0].sw=1;
+  e0[0].noecho=0;
+  e0[0].img=NULL;
+  e0[1].fmt = (char *)malloc(29);
+  strcpy(e0[1].fmt,(char *)"!w32!f21Data Field Length%4d");
+  e0[1].v=(void *)v[1];
+  e0[1].sw=1;
+  e0[1].noecho=0;
+  e0[1].img=NULL;
+  DIT t0 = { 
+    't',
+    31,41,  
+    418,105,
+    20, 
+    1,2, 
+    e0,
+    1,1,
+    NULL,textboxdatatextbox1callback,0,0,18,9 /* args,Call back */
+  };
+  strcpy(t0.Wid,(char *)"textboxdataWidget2");
+  t0.pt=NULL;
+  t0.type = 0;
+  t0.item = -1;
+  char *menu1[]  = { 
+    (char *)"!w32!f21Integer",
+    (char *)"!w32!f21Double",
+    (char *)"!w32!f21String",
+    NULL 
+  };
+  ThumbNail **th0 ;
+  DIRA r1 = { 
+    'r',
+    112,114,  
+    472,149,   
+    8,0,  
+    100, 
+    25, 
+    1,3, 
+    1,1, 
+    (int *)v[2], 
+    NULL, 
+    NULL ,
+    NULL,textboxdatabrowser1callback, /* *args, callback */
+    1,  /* Border Offset  */
+     22,  /* Scroll width  */
+     0,  /* Type  */
+     0, /* item highlight */
+    1, /* bordr */
+    0, /* bkgr */
+    0  /* =1 hide  */
+   };
+  th0 = (ThumbNail **)kgStringToThumbNails((char **)menu1);
+  r1.list=(void **)th0;
+  strcpy(r1.Wid,(char *)"textboxdataWidget3");
+  r1.item = -1;
+  DIM m2 = { 
+    'm',
+    9,119,  
+    109,143,  
+    1,0  
+  };
+  strncpy(m2.msg,(char *)"!w32!f21Data Type",499);
+  strcpy(m2.Wid,(char *)"textboxdataWidget4");
+  m2.item = -1;
+  BUT_STR  *butn3=NULL; 
+  butn3= (BUT_STR *)malloc(sizeof(BUT_STR)*1);
+  butn3[0].sw=1;
+  strcpy(butn3[0].title,(char *)"!w32!f23Okay");
+  butn3[0].xpmn=NULL;
+  butn3[0].xpmp=NULL;
+  butn3[0].xpmh=NULL;
+  butn3[0].bkgr=-235255250;
+  butn3[0].butncode='';
+  DIL h3 = { 
+    'h',
+    200,187,  
+    282,220,
+    2,0,  
+    72, 
+    25, 
+    1,1, 
+    5,0.500000,0,0,0,1, /* button type and roundinfg factor(0-0.5),bordr,hide ,nodrawbkgr*/
+ 
+    butn3, 
+    textboxdatasplbutton1callback, /*  Callbak */
+      NULL  /* any args */
+  };
+  strcpy(h3.Wid,(char *)"textboxdataWidget5");
+  h3.item = -1;
+  DIM m4 = { 
+    'm',
+    81,160,  
+    409,183,  
+    0,0  
+  };
+  strncpy(m4.msg,(char *)"",499);
+  strcpy(m4.Wid,(char *)"textboxdataWidget6");
+  m4.item = -1;
+  dtmp = D->d;
+  i=0;
+  if(dtmp!= NULL) while(dtmp[i].t!=NULL)i++;
+  dtmp = (DIA *)realloc(dtmp,sizeof(DIA )*(i+6));
+  d =dtmp+i; 
+  d[5].t=NULL;
+  d[0].t = (DIT *)malloc(sizeof(DIT));
+  *d[0].t = t0;
+  d[0].t->item = -1;
+  d[1].t = (DIT *)malloc(sizeof(DIRA));
+  *d[1].r = r1;
+  d[1].r->item = -1;
+  textboxdatabrowser1init(d[1].r,pt) ;
+  d[2].t = (DIT *)malloc(sizeof(DIM));
+  *d[2].m = m2;
+  d[2].m->item = -1;
+  d[3].t = (DIT *)malloc(sizeof(DIL));
+  *d[3].h = h3;
+  d[3].h->item = -1;
+  textboxdatasplbutton1init(d[3].h,pt) ;
+  d[4].t = (DIT *)malloc(sizeof(DIM));
+  *d[4].m = m4;
+  d[4].m->item = -1;
+  d[5].t = NULL;
+  GrpId=kgOpenGrp(D);
+  D->d = dtmp;
+  j=0;
+  while(d[j].t!=NULL){ kgAddtoGrp(D,GrpId,(void *)(d[j].t));j++;}
+  return GrpId;
+} 
 
 int textboxdata( void *parent,void **v,void *pt) {
   int ret=1,GrpId,k;
