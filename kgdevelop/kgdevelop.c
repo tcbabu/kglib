@@ -67,6 +67,7 @@ int Runbuttondata(void *arg);
 int Runhbuttondata(void *arg);
 int Runmessagedata(void *arg);
 void *Runtextboxdata(void *arg);
+void *Runtextelementdata(void *,int,int);
 int Runtextboxesdata(void *arg);
 int Runtableboxesdata(void *arg);
 void *Runtableboxdata(void *arg,char *msg);
@@ -1025,6 +1026,7 @@ void ModifymakeguidiaGc(Gclr *gc) {
    gc->FontSize =8;
    gc->Font=23;
 */
+   gc->FontSize =10;
 }
 int makeguidiaGroup( DIALOG *D,void **v,void *pt) {
   int GrpId=0,oitems=0,i,j;
@@ -2608,7 +2610,7 @@ void Print_tablebox(FILE *fp,DIT *t,int control,char *dianame) {
   t->Wid[49]='\0';
   fprintf(fp,"  strcpy(T%-d.Wid,(char *)\"%-s\");\n",Tbox,t->Wid);
   fprintf(fp,"  T%-d.pt=NULL;\n",Tbox);
-  fprintf(fp,"  T%-d.type = 0;\n",Tbox);
+  fprintf(fp,"  T%-d.type = %d;\n",Tbox,t->type);
   fprintf(fp,"  T%-d.item = -1;\n",Tbox);
   Tbox++;
 }
@@ -2621,6 +2623,7 @@ DIT * Read_tablebox(void) {
   double *ftmp;
   int *itmp;
   char ch;
+  int bordr;
   selmt = sizeof(T_ELMT);
   t = (DIT *) malloc(sizeof(DIT));
   GETDATALINE;
@@ -2672,7 +2675,10 @@ DIT * Read_tablebox(void) {
   GETDATALINE;
   sscanf(buff,"%d%d",&(t->x2),&(t->y2));
   GETDATALINE;
-  sscanf(buff,"%d%d%d",&(t->row),&(t->col),&(t->bordr));
+//  sscanf(buff,"%d%d%d",&(t->row),&(t->col),&(t->bordr));
+  sscanf(buff,"%d%d%d",&(t->row),&(t->col),&(bordr));
+  t->bordr=bordr%10;
+  t->type =bordr/10;
   GETDATALINE;
   sscanf(buff,"%d",&(t->hide));
   if((t->hide != 0) &&(t->hide!=1)) t->hide=0;
@@ -3773,6 +3779,7 @@ void WriteTextBoxCallback(int count,FILE *fp,char *dianame) {
  fprintf(fp,"   *************************************************/ \n");
  fprintf(fp,"  DIALOG *D;DIT *T;T_ELMT *e; \n");
  fprintf(fp,"  int ret=1;\n");
+ fprintf(fp,"  void *pt= (void *)kgGetArgPointer(Tmp); // Change as required\n");
  fprintf(fp,"  D = (DIALOG *)Tmp;\n");
  fprintf(fp,"  T = (DIT *)kgGetWidget(Tmp,i);\n");
  fprintf(fp,"  e = T->elmt;\n");
@@ -3795,6 +3802,7 @@ void WriteTableBoxCallback(int count,FILE *fp,char *dianame) {
  fprintf(fp,"   Tmp   : Pointer to DIALOG \n");
  fprintf(fp,"   *************************************************/ \n");
  fprintf(fp,"  DIALOG *D;DIT *T;T_ELMT *e; \n");
+ fprintf(fp,"  void *pt= (void *)kgGetArgPointer(Tmp); // Change as required\n");
  fprintf(fp,"  int ret=1;\n");
  fprintf(fp,"  D = (DIALOG *)Tmp;\n");
  fprintf(fp,"  T = (DIT *)kgGetWidget(Tmp,i);\n");
@@ -3813,10 +3821,10 @@ void WriteSelectmenuCallback(int count,FILE *fp,char *dianame) {
  fprintf(fp,"    i :  Index of Widget  (0 to max_widgets-1) \n");
  fprintf(fp,"    Tmp :  Pointer to DIALOG  \n");
  fprintf(fp,"   ***********************************/ \n");
- fprintf(fp,"  DIALOG *D;DIX *X;void *pt; \n");
+ fprintf(fp,"  DIALOG *D;DIX *X; \n");
  fprintf(fp,"  int ret=1; \n");
+ fprintf(fp,"  void *pt= (void *)kgGetArgPointer(Tmp); // Change as required\n");
  fprintf(fp,"  D = (DIALOG *)Tmp;\n");
- fprintf(fp,"  pt = D->pt;\n");
  fprintf(fp,"  X = (DIX *)kgGetWidget(Tmp,i);\n");
  fprintf(fp,"  switch(item) {\n");
  fprintf(fp,"    case 1: \n      break;\n");
@@ -3835,15 +3843,15 @@ void WriteThumbnailBrowserCallback(int count,FILE *fp,char *dianame) {
              dianame,count);
  fprintf(fp,"int  %-sbrowser%-dcallback(int item,int i,void *Tmp) {\n",
              dianame,count);
- fprintf(fp,"  DIALOG *D;DIY *Y;void *pt; \n");
+ fprintf(fp,"  DIALOG *D;DIY *Y; \n");
  fprintf(fp,"  /*********************************** \n");
  fprintf(fp,"    item : selected item (1 to max_item) \n");
  fprintf(fp,"    i :  Index of Widget  (0 to max_widgets-1) \n");
  fprintf(fp,"    Tmp :  Pointer to DIALOG  \n");
  fprintf(fp,"   ***********************************/ \n");
  fprintf(fp,"  int ret=1; \n");
+ fprintf(fp,"  void *pt= (void *)kgGetArgPointer(Tmp); // Change as required\n");
  fprintf(fp,"  D = (DIALOG *)Tmp;\n");
- fprintf(fp,"  pt = D->pt;\n");
  fprintf(fp,"  Y = (DIY *)kgGetWidget(Tmp,i);\n");
  fprintf(fp,"  switch(item) {\n");
  fprintf(fp,"    case 1: \n      break;\n");
@@ -3867,11 +3875,11 @@ void WriteRadioButtonsCallback(int count,FILE *fp,char *dianame) {
  fprintf(fp,"    i :  Index of Widget  (0 to max_widgets-1) \n");
  fprintf(fp,"    Tmp :  Pointer to DIALOG  \n");
  fprintf(fp,"   ***********************************/ \n");
- fprintf(fp,"  DIRA *R;DIALOG *D;void *pt; \n");
+ fprintf(fp,"  DIRA *R;DIALOG *D; \n");
+ fprintf(fp,"  void *pt= (void *)kgGetArgPointer(Tmp); // Change as required\n");
  fprintf(fp,"  ThumbNail **th; \n");
  fprintf(fp,"  int ret=1; \n");
  fprintf(fp,"  D = (DIALOG *)Tmp;\n");
- fprintf(fp,"  pt = D->pt;\n");
  fprintf(fp,"  R = (DIRA *)kgGetWidget(Tmp,i);\n");
  fprintf(fp,"  th = (ThumbNail **) R->list;\n");
  fprintf(fp,"  return ret;\n");
@@ -3891,11 +3899,11 @@ void WriteCheckBoxCallback(int count,FILE *fp,char *dianame) {
  fprintf(fp,"    i :  Index of Widget  (0 to max_widgets-1) \n");
  fprintf(fp,"    Tmp :  Pointer to DIALOG  \n");
  fprintf(fp,"   ***********************************/ \n");
- fprintf(fp,"  DICH *C;DIALOG *D;void *pt; \n");
+ fprintf(fp,"  DICH *C;DIALOG *D; \n");
+ fprintf(fp,"  void *pt= (void *)kgGetArgPointer(Tmp); // Change as required\n");
  fprintf(fp,"  ThumbNail **th; \n");
  fprintf(fp,"  int ret=1; \n");
  fprintf(fp,"  D = (DIALOG *)Tmp;\n");
- fprintf(fp,"  pt = D->pt;\n");
  fprintf(fp,"  C = (DICH *)kgGetWidget(Tmp,i);\n");
  fprintf(fp,"  th = (ThumbNail **) C->list;\n");
  fprintf(fp,"  return ret;\n");
@@ -3912,6 +3920,7 @@ void WriteButnBoxNewCallback(int count,int nb,FILE *fp,char *dianame) {
              dianame,count);
  fprintf(fp,"  DIALOG *D;DIBN *B; \n");
  fprintf(fp,"  int n,ret =0; \n");
+ fprintf(fp,"  void *pt= (void *)kgGetArgPointer(Tmp); // Change as required\n");
  fprintf(fp,"  D = (DIALOG *)Tmp;\n");
  fprintf(fp,"  B = (DIBN *)kgGetWidget(Tmp,i);\n");
  fprintf(fp,"  n = B->nx*B->ny;\n");
@@ -3939,6 +3948,7 @@ void WriteButnBoxCallback(int count,int nb,FILE *fp,char *dianame) {
  fprintf(fp,"   ***********************************/ \n");
  fprintf(fp,"  DIALOG *D;DIB *B; \n");
  fprintf(fp,"  int n,ret =0; \n");
+ fprintf(fp,"  void *pt= (void *)kgGetArgPointer(Tmp); // Change as required\n");
  fprintf(fp,"  D = (DIALOG *)Tmp;\n");
  fprintf(fp,"  B = (DIB *)kgGetWidget(Tmp,i);\n");
  fprintf(fp,"  n = B->nx*B->ny;\n");
@@ -3966,6 +3976,7 @@ void WriteButnBoxnCallback(int count,int nb,FILE *fp,char *dianame) {
  fprintf(fp,"   ***********************************/ \n");
  fprintf(fp,"  DIALOG *D;DIN *B; \n");
  fprintf(fp,"  int n,ret =0; \n");
+ fprintf(fp,"  void *pt= (void *)kgGetArgPointer(Tmp); // Change as required\n");
  fprintf(fp,"  D = (DIALOG *)Tmp;\n");
  fprintf(fp,"  B = (DIN *)kgGetWidget(Tmp,i);\n");
  fprintf(fp,"  n = B->nx*B->ny;\n");
@@ -3993,6 +4004,7 @@ void WriteHoriBarCallback(int count,int nb,FILE *fp,char *dianame) {
  fprintf(fp,"   ***********************************/ \n");
  fprintf(fp,"  DIALOG *D;DIL *B; \n");
  fprintf(fp,"  int n,ret=1; \n");
+ fprintf(fp,"  void *pt= (void *)kgGetArgPointer(Tmp); // Change as required\n");
  fprintf(fp,"  D = (DIALOG *)Tmp;\n");
  fprintf(fp,"  B = (DIL *) kgGetWidget(Tmp,i);\n");
  fprintf(fp,"  n = B->nx;\n");
@@ -4020,6 +4032,7 @@ void WriteHoriBarNewCallback(int count,int nb,FILE *fp,char *dianame) {
  fprintf(fp,"   ***********************************/ \n");
  fprintf(fp,"  DIALOG *D;DILN *B; \n");
  fprintf(fp,"  int n,ret=1; \n");
+ fprintf(fp,"  void *pt= (void *)kgGetArgPointer(Tmp); // Change as required\n");
  fprintf(fp,"  D = (DIALOG *)Tmp;\n");
  fprintf(fp,"  B = (DILN *) kgGetWidget(Tmp,i);\n");
  fprintf(fp,"  n = B->nx;\n");
@@ -4047,6 +4060,7 @@ void WriteBrowserCallback(int count,FILE *fp,char *dianame) {
  fprintf(fp,"   ***********************************/ \n");
  fprintf(fp,"  DIALOG *D;DIW *B; \n");
  fprintf(fp,"  int ret=1; \n");
+ fprintf(fp,"  void *pt= (void *)kgGetArgPointer(Tmp); // Change as required\n");
  fprintf(fp,"  D = (DIALOG *)Tmp;\n");
  fprintf(fp,"  B = (DIW *) kgGetWidget(Tmp,i);\n");
  fprintf(fp,"  switch(item) {\n");
@@ -4066,10 +4080,10 @@ void WriteScrollmenuCallback(int count,FILE *fp,char *dianame) {
  fprintf(fp,"    i :  Index of Widget  (0 to max_widgets-1) \n");
  fprintf(fp,"    Tmp :  Pointer to DIALOG  \n");
  fprintf(fp,"   ***********************************/ \n");
- fprintf(fp,"  DIALOG *D;DIE *E;void *pt; \n");
+ fprintf(fp,"  DIALOG *D;DIE *E; \n");
  fprintf(fp,"  int ret=1; \n");
+ fprintf(fp,"  void *pt= (void *)kgGetArgPointer(Tmp); // Change as required\n");
  fprintf(fp,"  D = (DIALOG *)Tmp;\n");
- fprintf(fp,"  pt = D->pt;\n");
  fprintf(fp,"  E = (DIE *)kgGetWidget(Tmp,i);\n");
  fprintf(fp,"  switch(item) {\n");
  fprintf(fp,"    case 1: \n      break;\n");
@@ -4099,6 +4113,7 @@ void WriteSlideDCallback(int count,FILE *fp,char *dianame) {
  fprintf(fp,"   ***********************************/ \n");
  fprintf(fp,"  DIALOG *D;DID *SD; \n");
  fprintf(fp,"  int ret=1; \n");
+ fprintf(fp,"  void *pt= (void *)kgGetArgPointer(Tmp); // Change as required\n");
  fprintf(fp,"  D = (DIALOG *)Tmp;\n");
  fprintf(fp,"  SD = (DID *) kgGetWidget(Tmp,i);\n");
  fprintf(fp,"  return ret;\n");
@@ -4117,6 +4132,7 @@ void WriteSlideHCallback(int count,FILE *fp,char *dianame) {
  fprintf(fp,"   ***********************************/ \n");
  fprintf(fp,"  DIALOG *D;DIHB *SD; \n");
  fprintf(fp,"  int ret=1; \n");
+ fprintf(fp,"  void *pt= (void *)kgGetArgPointer(Tmp); // Change as required\n");
  fprintf(fp,"  D = (DIALOG *)Tmp;\n");
  fprintf(fp,"  SD = (DIHB *) kgGetWidget(Tmp,i);\n");
  fprintf(fp,"  return ret;\n");
@@ -4135,6 +4151,7 @@ void WriteSlideFCallback(int count,FILE *fp,char *dianame) {
  fprintf(fp,"   ***********************************/ \n");
  fprintf(fp,"  DIALOG *D;DIF *F; \n");
  fprintf(fp,"  int ret=1; \n");
+ fprintf(fp,"  void *pt= (void *)kgGetArgPointer(Tmp); // Change as required\n");
  fprintf(fp,"  D = (DIALOG *)Tmp;\n");
  fprintf(fp,"  F = (DIF *) kgGetWidget(Tmp,i);\n");
  fprintf(fp,"  return ret;\n");
@@ -4153,6 +4170,7 @@ void WriteVertScrollCallback(int count,FILE *fp,char *dianame) {
  fprintf(fp,"   ***********************************/ \n");
  fprintf(fp,"  DIALOG *D;DIV *V; \n");
  fprintf(fp,"  int ret=1; \n");
+ fprintf(fp,"  void *pt= (void *)kgGetArgPointer(Tmp); // Change as required\n");
  fprintf(fp,"  D = (DIALOG *)Tmp;\n");
  fprintf(fp,"  V = (DIV *) kgGetWidget(Tmp,i);\n");
  fprintf(fp,"  return ret;\n");
@@ -4171,6 +4189,7 @@ void WriteHorizScrollCallback(int count,FILE *fp,char *dianame) {
  fprintf(fp,"   ***********************************/ \n");
  fprintf(fp,"  DIALOG *D;DIZ *Z; \n");
  fprintf(fp,"  int ret=1; \n");
+ fprintf(fp,"  void *pt= (void *)kgGetArgPointer(Tmp); // Change as required\n");
  fprintf(fp,"  D = (DIALOG *)Tmp;\n");
  fprintf(fp,"  Z = (DIZ *) kgGetWidget(Tmp,i);\n");
  fprintf(fp,"  return ret;\n");
@@ -4185,9 +4204,9 @@ int Writeinitroutine(FILE *fp,char *dianame) {
  fprintf(fp,"   ***********************************/ \n");
  fprintf(fp,"  /* you add any initialisation here */\n");
  fprintf(fp,"  int ret = 1;\n");
- fprintf(fp,"  DIALOG *D;void *pt;\n");
+ fprintf(fp,"  DIALOG *D;\n");
  fprintf(fp,"  D = (DIALOG *)Tmp;\n");
- fprintf(fp,"  pt = D->pt;\n");
+ fprintf(fp,"  void *pt= (void *)kgGetArgPointer(Tmp); // Change as required\n");
  fprintf(fp,"  return ret;\n");
  fprintf(fp,"}\n");
  fprintf(fp,"int %-scleanup(void *Tmp) {\n",dianame);
@@ -4196,9 +4215,9 @@ int Writeinitroutine(FILE *fp,char *dianame) {
  fprintf(fp,"    Tmp :  Pointer to DIALOG  \n");
  fprintf(fp,"   ***********************************/ \n");
  fprintf(fp,"  int ret = 1;\n");
- fprintf(fp,"  DIALOG *D;void *pt;\n");
+ fprintf(fp,"  DIALOG *D;\n");
  fprintf(fp,"  D = (DIALOG *)Tmp;\n");
- fprintf(fp,"  pt = D->pt;\n");
+ fprintf(fp,"  void *pt= (void *)kgGetArgPointer(Tmp); // Change as required\n");
  fprintf(fp,"  return ret;\n");
  fprintf(fp,"}\n");
  return 1;
@@ -4208,6 +4227,7 @@ int WriteDefaultCallback(FILE *fp,char *dianame) {
  fprintf(fp,"int Modify%-s(void *Tmp,int GrpId) {\n",dianame);
  fprintf(fp,"  DIALOG *D;\n");
  fprintf(fp,"  D = (DIALOG *)Tmp;\n");
+ fprintf(fp,"  void *pt= (void *)kgGetArgPointer(Tmp); // Change as required\n");
  fprintf(fp,"  DIA *d;\n");
  fprintf(fp,"  int i,n;\n");
  fprintf(fp,"  d = D->d;\n");
@@ -4226,6 +4246,7 @@ int WriteDefaultCallback(FILE *fp,char *dianame) {
  fprintf(fp,"   ***********************************/ \n");
  fprintf(fp,"  int ret = 0;\n");
  fprintf(fp,"  DIALOG *D;\n");
+ fprintf(fp,"  void *pt= (void *)kgGetArgPointer(Tmp); // Change as required\n");
  fprintf(fp,"  KBEVENT *kbe;\n");
  fprintf(fp,"  D = (DIALOG *)Tmp;\n");
  fprintf(fp,"  kbe = (KBEVENT *)tmp;\n");
@@ -4244,6 +4265,7 @@ int WriteDefaultCallback(FILE *fp,char *dianame) {
  fprintf(fp,"  int ret = 0;\n");
  fprintf(fp,"  int xres,yres,dx,dy;\n");
  fprintf(fp,"  DIALOG *D;\n");
+ fprintf(fp,"  void *pt= (void *)kgGetArgPointer(Tmp); // Change as required\n");
  fprintf(fp,"  D = (DIALOG *)Tmp;\n");
  fprintf(fp,"  kgGetWindowSize(D,&xres,&yres);\n");
  fprintf(fp,"  dx = xres - D->xl;\n");
@@ -4261,6 +4283,7 @@ int WriteDefaultCallback(FILE *fp,char *dianame) {
  fprintf(fp,"    return value 1 will close the the UI  \n");
  fprintf(fp,"   ***********************************/ \n");
  fprintf(fp,"  int ret = 0;\n");
+ fprintf(fp,"  void *pt= (void *)kgGetArgPointer(Tmp); // Change as required\n");
  fprintf(fp,"  return ret;\n");
  fprintf(fp,"}\n");
  return 1;
@@ -4271,10 +4294,10 @@ int WriteGboxinit(int control,FILE *fp,char *dianame){
  fprintf(fp,"  /*********************************** \n");
  fprintf(fp,"    int routine for grahics area \n");
  fprintf(fp,"   ***********************************/ \n");
-  fprintf(fp,"  DIALOG *D;void *pt;\n");
+  fprintf(fp,"  DIALOG *D;\n");
   fprintf(fp,"  DIG *G;\n");
   fprintf(fp,"  D = (DIALOG *)Tmp;\n");
-  fprintf(fp,"  pt = D->pt;\n");
+ fprintf(fp,"  void *pt= (void *)kgGetArgPointer(Tmp); // Change as required\n");
   fprintf(fp,"  G = D->d[i].g;\n");
   fprintf(fp,"  G->D = (void *)(Tmp);\n");
   fprintf(fp,"  return ;\n");
@@ -4916,6 +4939,7 @@ void Write_gui_variables(char *codes,FILE *fp1){
     else              fprintf(fp1,"   v[%d]=(void *)(&v%-d);\n",i,i);
   }
   fprintf(fp1,"   void *pt=NULL; /* pointer to send any extra information */\n");
+  fprintf(fp1,"                  /* it will be aviilable in Callbacks */\n");
 }
 void Write_group_variables(char *codes,FILE *fp1){
   int i,n;
@@ -4955,6 +4979,7 @@ void Write_group_variables(char *codes,FILE *fp1){
     else              fprintf(fp1,"   v[%d]=(void *)(v%-d);\n",i,i);
   }
   fprintf(fp1,"   void *pt=NULL; /* pointer to send any extra information */\n");
+  fprintf(fp1,"                  /* it will be aviilable in Callbacks */\n");
 }
 void Write_gui_args(char *codes,FILE *fp1) {
   int i,n;
@@ -5017,7 +5042,13 @@ void Make_gui_code(DIALOG *D,char *flname,char *dianame){
   fprintf(fpg,"   kgColorTheme2(D,220,220,200);\n");
   fprintf(fpg,"   kgDefaultGuiTheme(gc);\n");
   fprintf(fpg,"   kgGrayGuiTheme(gc);\n");
-  fprintf(fpg,"   gc->FontSize =8;\n");
+  fprintf(fpg,"   gc->FontSize =9;\n");
+  fprintf(fpg,"   gc->FontGuiSize =9;\n");
+  fprintf(fpg,"   gc->InputFontSize =8;\n");
+  fprintf(fpg,"   gc->MenuFont = 21;\n");
+  fprintf(fpg,"   gc->PromptFont = 21;\n");
+  fprintf(fpg,"   gc->ButtonFont = 21;\n");
+  fprintf(fpg,"   gc->MsgFont = 21;\n");
   fprintf(fpg,"   gc->Font=23;\n");
   fprintf(fpg,"   kgMkgclr(\"%-s\",Tmp);\n",dianame);
   fprintf(fpg,"*/\n");
@@ -6771,6 +6802,7 @@ DIT * Making_t_box(DIALOG *D)
    double *ftmp;
    int   *itmp;
    char  *ctmp;
+   char **pmts;
    DIT Tmp = {'t',10L,10L,0,0,20L,1L,1L,NULL,0,0,NULL,NULL};
    T = (DIT *)malloc(sizeof(DIT));
    Tmp.Wid[0]='\0';
@@ -6791,15 +6823,18 @@ DIT * Making_t_box(DIALOG *D)
    ny = T->ny;
    E = (T_ELMT *)malloc(sizeof(T_ELMT)*nx*ny);
    i=0;
+   pmts = (char **)Runtextelementdata(NULL,nx,ny);
    for(j=0;j<ny;j++) {
      for(k=0;k<(nx) ;k++) {
        sprintf(buf,"For Textbox: (%d,%d)",k+1,j+1);
-       E[i].fmt = (char *)Runtextboxdata(buf);
+//       E[i].fmt = (char *)Runtextboxdata(buf);
+       E[i].fmt = (char *)pmts[i];
        E[i].noecho = 0;
        E[i].img=NULL;
        i++;
      }
    }
+   free(pmts);
    T->elmt = E;
    width = (ny)*T->width+(ny-1)*10;
    for(j=0;j<nx;j++) lnx[j]=0;

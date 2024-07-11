@@ -1,1 +1,15 @@
-#include "../kglib/kulina.h"
+  DIN *N;
+  int *index;
+  void **ptrs;
+  ptrs = (void **)(D->pt);
+  N = (DIN *)ptrs[0];
+  n = N->nx*N->ny;
+  index = (int *)ptrs[1];
+  if(*index==1) return ret;
+  GetButton(D,N,*index);
+  *index = (*index - 1);
+  SetButton(D,N,*index);
+  if(*index==1)  {
+	  B->hide=1;
+	  kgUpdateOn(Tmp);
+  }

@@ -921,12 +921,16 @@ int  tableboxesdatabrowser1callback(int item,int i,void *Tmp) {
     Tmp :  Pointer to DIALOG  
    ***********************************/ 
   DICH *C;DIALOG *D;void *pt; 
+  int **ptrs;
   ThumbNail **th; 
   int ret=1; 
   D = (DIALOG *)Tmp;
-  pt = D->pt;
+  ptrs = (int **)D->pt;
   C = (DICH *)kgGetWidget(Tmp,i);
   th = (ThumbNail **) C->list;
+  *ptrs[0]=th[1]->sw;
+  *ptrs[1]=th[0]->sw;
+  *ptrs[2]=th[2]->sw;
   return ret;
 }
 void  tableboxesdatabrowser1init(DICH *C,void *pt) {
@@ -1034,22 +1038,23 @@ int tableboxesdataGroup( DIALOG *D,void **v,void *pt) {
   char *menu1[]  = { 
     (char *)"Draw Border",
     (char *)"Hide Widget",
+    (char *)"Type1",
     NULL 
   };
   ThumbNail **th0 ;
   DICH c1 = { 
     'c',
     127,125,  
-    344,163,   
+    444,163,   
     0,0,  
     100, 
     25, 
-    1,2, 
+    1,3, 
     -1077952577,1, 
     (int *)v[3], 
     NULL, 
     NULL, 
-    NULL,textboxesdatabrowser1callback, /* *args, callback */
+    NULL,tableboxesdatabrowser1callback, /* *args, callback */
     0,  /* Border Offset  */
      2,  /* Scroll width  */
      0,  /* Type  */
@@ -1208,21 +1213,24 @@ int Runtableboxesdata(void *arg) {
    char  v2[100]=" " ;
    int   v3 = 1;
    void* v[4];
-   void *pt[2];
+   void *pt[3];
    DIT *t;
-   int hide,bordr;
+   int hide,bordr,type=0;
    t = (DIT *) arg;
    v[0]=(void *)(&v0);
    v[1]=(void *)(&v1);
    v[2]=(void *)(v2);
    v[3]=(void *)(&v3);
+   if(t->type != 0) t->type=1;
    hide = t->hide;
    bordr =t->bordr;
+   type  =t->type;
    v0 = t->nx;
    v1 = t->ny;
    strcpy(v2,t->Wid);
    pt[0]=&hide;
    pt[1]=&bordr;
+   pt[2]=&type;
    ret = tableboxesdata(NULL,v,pt );
    if(ret) {
      t->nx = v0;
@@ -1230,6 +1238,7 @@ int Runtableboxesdata(void *arg) {
      strcpy(t->Wid,v2);
      t->hide = hide;
      t->bordr = bordr;
+     t->type = type;
    }
    return ret;
 }

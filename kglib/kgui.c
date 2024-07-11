@@ -9774,3 +9774,6 @@ void *kgGetProcessedImage(void *timg,int Bsize,float rfac,
 int kgGetVersion(void) {
    return VER;
 }
+void *kgGetArgPointer(void *Tmp) {
+	return ((DIALOG *)Tmp)->pt;
+}

@@ -1,0 +1,15 @@
+int  textelementdatatextbox1callback(int cellno,int i,void *Tmp);
+int  textelementdatabrowser1callback(int item,int i,void *Tmp) ;
+void  textelementdatabrowser1init(DIRA *R,void *pt) ;
+int  textelementdatasplbutton1callback(int butno,int i,void *Tmp) ;
+void  textelementdatasplbutton1init(DIL *B,void *pt) ;
+int  textelementdatabutton1callback(int butno,int i,void *Tmp) ;
+void  textelementdatabutton1init(DIN *B,void *pt) ;
+int  textelementdatabutton2callback(int butno,int i,void *Tmp) ;
+void  textelementdatabutton2init(DIN *B,void *pt) ;
+int textelementdatainit(void *Tmp) ;
+int textelementdatacleanup(void *Tmp) ;
+int Modifytextelementdata(void *Tmp,int GrpId) ;
+int textelementdataCallBack(void *Tmp,void *tmp) ;
+int textelementdataResizeCallBack(void *Tmp) ;
+int textelementdataWaitCallBack(void *Tmp) ;

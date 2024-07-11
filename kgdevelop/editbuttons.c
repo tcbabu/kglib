@@ -1,6 +1,6 @@
 #include <kulina.h>
 extern DIALOG *Parent;
-int kgGetButnType(void *);
+int kgGetButnType(void *,int *);
 int  buttondatatextbox1callback(int key,int i,void *Tmp) {
   DIALOG *D;DIT *T;T_ELMT *e; 
   int ret=1;
@@ -396,6 +396,7 @@ int  buttondatabutton1callback(int butno,int i,void *Tmp) {
    ***********************************/ 
   DIALOG *D;DIN *B; 
   int n,ret =0; 
+  int type;
   char Buf[100];
   D = (DIALOG *)Tmp;
   B = (DIN *)kgGetWidget(Tmp,i);
@@ -403,7 +404,8 @@ int  buttondatabutton1callback(int butno,int i,void *Tmp) {
   DIN *b;
   void *pt; 
   b = (DIN *)D->pt;
-  b->type = kgGetButnType(Tmp);
+  type = b->type;
+  b->type = kgGetButnType(Tmp,&type);
   DIM *M=(DIM *)kgGetNamedWidget(Tmp,(char *)"buttondataWidget4");
   sprintf(Buf,"!w32!f21Selected Button: !f23!h32!c36%d",b->type);
   kgWrite(M,Buf);

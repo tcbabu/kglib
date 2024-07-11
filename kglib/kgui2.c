@@ -1199,6 +1199,7 @@ DIT * Read_data_textbox(FILE *fp) {
 
 void Print_data_tablebox(FILE *fp,DIT *t) {
   int i, n;
+  int bordr=1,type=0;
   T_ELMT *e;
   fprintf(fp,"%c     //code\n",t->code);
   fprintf(fp,"%d %d  //x1,y1\n",t->x1,t->y1);
@@ -1212,7 +1213,9 @@ void Print_data_tablebox(FILE *fp,DIT *t) {
     fprintf(fp,"\"%-s\"\n",e[i].fmt);
   }
   fprintf(fp,"%d %d  //x2,y2\n",t->x2,t->y2);
-  fprintf(fp,"%d %d %d //Cursor Position\n",t->row,t->col,t->bordr);
+//  fprintf(fp,"%d %d %d //Cursor Position\n",t->row,t->col,t->bordr);
+  bordr = t->bordr+t->type*10;
+  fprintf(fp,"%d %d %d //Cursor Position,bordr+10*type(%d:%d)\n",t->row,t->col,bordr,t->type,t->bordr);
   fprintf(fp,"%d %d %d //hide\n",t->Font,t->FontSize,t->hide);
   _uiPrintWid(fp,t->Wid);
 }
@@ -1234,6 +1237,7 @@ DIT * Read_data_tablebox(FILE *fp) {
   char temp[200];
   char buff[500];
   int i, n,l,selmt,nx,ny,j,k,sw;
+  int bordr;
   DIT *t;
   T_ELMT *e;
   char *ctmp;
@@ -1291,7 +1295,10 @@ DIT * Read_data_tablebox(FILE *fp) {
   GETDATALINE;
   sscanf(buff,"%d%d",&(t->x2),&(t->y2));
   GETDATALINE;
-  sscanf(buff,"%d%d%d",&(t->row),&(t->col),&(t->bordr));
+//  sscanf(buff,"%d%d%d",&(t->row),&(t->col),&(t->bordr));
+  sscanf(buff,"%d%d%d",&(t->row),&(t->col),&(bordr));
+  t->bordr = bordr%10;
+  t->type =  bordr/10;
   GETDATALINE;
   sscanf(buff,"%d%d%d",&(t->Font),&(t->FontSize),&(t->hide));
   if((t->hide != 0) &&(t->hide!=1)) t->hide=0;

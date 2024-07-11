@@ -1496,6 +1496,7 @@ DIF * kgCreateDoubleSlide(int xo,int yo,int length,double min,double max,double 
 /* end of create widgets */
 void kgPrintWidgetData(void *W,FILE *fp1); // prints widget data
 int kgGetWidgetSize(void *wid,int *xsize,int *ysize);
+void *kgGetArgPointer(void *Tmp);
 /***********************************/
 
 /* String Manupulation       */

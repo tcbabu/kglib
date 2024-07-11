@@ -14103,6 +14103,7 @@ int _uiMake_Ta (DIT *T) {
   int size,Fz;
   unsigned int tempc,tempf,tempt,tempff;
   char *str;
+  int type=T->type;
   kgWC *wc;
   kgDC *dc;
   D = T->D;
@@ -14191,7 +14192,8 @@ int _uiMake_Ta (DIT *T) {
        (tx->elmt[k].y1) = ty1;
        (tx->elmt[k].x2) = tx2;
        (tx->elmt[k].y2) = ty2;
-       _uirect_fill(wc,tx1,D->evgay-ty1,tx2-1,D->evgay-ty2,tx->gc.tabl_fill);
+       if(type==0)_uirect_fill(wc,tx1,D->evgay-ty1,tx2-1,D->evgay-ty2,tx->gc.tabl_fill);
+       if(type==1) _uirect_fill(wc,tx1,D->evgay-ty1+2,tx2,D->evgay-ty2-2,tx->gc.tabl_fill);
 //       uiSetGuiFixFontSize(D,D->gc.FontSize);
        str = elmt[k].df+elmt[k].startchar;
 #if 0
@@ -14202,14 +14204,14 @@ int _uiMake_Ta (DIT *T) {
           uiPutString(D,str,tx1+T->FontSize/2,ty2-T->FontSize/2,tx->gc.tabl_hchar,T->Font,T->FontSize);
        else uiPutString(D,str,tx1+T->FontSize/2,ty2-T->FontSize/2,tx->gc.tabl_char,T->Font,T->FontSize);
 #endif
-        _ui_draw_bound((D),x1,D->evgay-y1,x2,D->evgay-y2,tx->gc.tabl_line);
+       if(type== 0) _ui_draw_bound((D),x1,D->evgay-y1,x2,D->evgay-y2,tx->gc.tabl_line);
 //       uiDefaultGuiFontSize(D);
        y1=y2;
        k++;
      }
      x1 =x2+xgap;
     }
-    uidraw_proj(D,X1-2,D->evgay-Y1+2,X2+2,D->evgay-Y2-2);
+    if(type==0) uidraw_proj(D,X1-2,D->evgay-Y1+2,X2+2,D->evgay-Y2-2);
   }
   else {
 #if 0
