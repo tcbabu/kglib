@@ -1,0 +1,17 @@
+int  tableelmttextbox1callback(int cellno,int i,void *Tmp);
+int  tableelmtbrowser1callback(int item,int i,void *Tmp) ;
+void  tableelmtbrowser1init(DIRA *R,void *pt) ;
+int  tableelmtbrowser2callback(int item,int i,void *Tmp) ;
+void  tableelmtbrowser2init(DIRA *R,void *pt) ;
+int  tableelmtbutton1callback(int butno,int i,void *Tmp) ;
+void  tableelmtbutton1init(DIN *B,void *pt) ;
+int  tableelmtbutton2callback(int butno,int i,void *Tmp) ;
+void  tableelmtbutton2init(DIN *B,void *pt) ;
+int  tableelmtsplbutton1callback(int butno,int i,void *Tmp) ;
+void  tableelmtsplbutton1init(DIL *B,void *pt) ;
+int tableelmtinit(void *Tmp) ;
+int tableelmtcleanup(void *Tmp) ;
+int Modifytableelmt(void *Tmp,int GrpId) ;
+int tableelmtCallBack(void *Tmp,void *tmp) ;
+int tableelmtResizeCallBack(void *Tmp) ;
+int tableelmtWaitCallBack(void *Tmp) ;

@@ -5,6 +5,7 @@
 #include "string.h"
 static void StringCopy(char *d,char *s) {
   int i=0,l,j;
+  int ch;
   while((s[i]>=' ')&&(s[i]!= '"')) { i++; }
   if(s[i] < ' ') {
     d[0] ='\0';
@@ -19,9 +20,11 @@ static void StringCopy(char *d,char *s) {
       return;
     }
     else {
+      ch = s[i];
       s[i]='\0';
       l = strlen(s+j);
       strcpy(d,s+j);
+      s[i] =ch;
     }
   }
 }
@@ -1113,6 +1116,7 @@ void Print_data_textbox(FILE *fp,DIT *t) {
   int i, n;
   T_ELMT *e;
   int type =0,bordr=1;
+  int sw;
   fprintf(fp,"%c     //code\n",t->code);
   fprintf(fp,"%d %d  //x1,y1\n",t->x1,t->y1);
   fprintf(fp,"%d //Width \n",t->width);
@@ -1121,7 +1125,8 @@ void Print_data_textbox(FILE *fp,DIT *t) {
   e = t->elmt;
   fprintf(fp,"//element formats\n");
   for(i=0;i<n;i++) {
-    fprintf(fp,"\"%-s\"\n",e[i].fmt);
+    sw = e[i].sw+10*e[i].noecho;
+    fprintf(fp,"\"%-s\" sw: %d\n",e[i].fmt,sw);
   }
   fprintf(fp,"%d %d  //x2,y2\n",t->x2,t->y2);
   bordr = t->bordr+t->type*10;
@@ -1138,7 +1143,7 @@ DIT * Read_data_textbox(FILE *fp) {
   double *ftmp;
   int *itmp;
   char ch;
-  int bordr;
+  int bordr,sw;
   selmt = sizeof(T_ELMT);
   t = (DIT *) Malloc(sizeof(DIT));
   GETDATALINE;
@@ -1157,6 +1162,13 @@ DIT * Read_data_textbox(FILE *fp) {
     e[i].fmt = (char *)Malloc(100);
     StringCopy(e[i].fmt,buff);
     e[i].sw =1;
+    e[i].noecho =0;
+    ctmp = strstr(buff,"sw:");
+    if(ctmp != NULL) {
+	   sscanf(ctmp+3,"%d",&sw);
+	   e[i].sw = sw%10;
+	   e[i].noecho = sw/10;
+    }
     l = strlen(e[i].fmt) - 1;
     while( e[i].fmt[l] <= ' ') l--;
     ch = e[i].fmt[l];
@@ -1199,7 +1211,7 @@ DIT * Read_data_textbox(FILE *fp) {
 
 void Print_data_tablebox(FILE *fp,DIT *t) {
   int i, n;
-  int bordr=1,type=0;
+  int bordr=1,type=0,sw;
   T_ELMT *e;
   fprintf(fp,"%c     //code\n",t->code);
   fprintf(fp,"%d %d  //x1,y1\n",t->x1,t->y1);
@@ -1207,13 +1219,15 @@ void Print_data_tablebox(FILE *fp,DIT *t) {
   fprintf(fp,"%d %d  //Nx,Ny,\n",t->nx,t->ny);
   n = t->nx*t->ny;
   e = t->elmt;
-  fprintf(fp,"//element switch and formats\n");
+  fprintf(fp,"//element switch+10*noecho  and formats\n");
   for(i=0;i<t->nx;i++) {
-    fprintf(fp,"%-d\n",e[i].sw);
+    sw = e[i].sw+10*e[i].noecho;
+    fprintf(fp,"%-d\n",sw);
     fprintf(fp,"\"%-s\"\n",e[i].fmt);
   }
   fprintf(fp,"%d %d  //x2,y2\n",t->x2,t->y2);
 //  fprintf(fp,"%d %d %d //Cursor Position\n",t->row,t->col,t->bordr);
+//  bordr = t->bordr+t->type*10;
   bordr = t->bordr+t->type*10;
   fprintf(fp,"%d %d %d //Cursor Position,bordr+10*type(%d:%d)\n",t->row,t->col,bordr,t->type,t->bordr);
   fprintf(fp,"%d %d %d //hide\n",t->Font,t->FontSize,t->hide);
@@ -1269,7 +1283,8 @@ DIT * Read_data_tablebox(FILE *fp) {
       i = k*nx+j;
       e[i].fmt = (char *)Malloc(100);
       StringCopy(e[i].fmt,buff);
-      e[i].sw =sw;
+      e[i].sw =sw%10;
+      e[i].noecho =sw/10;
       l = strlen(e[i].fmt) - 1;
       while( e[i].fmt[l] <= ' ') l--;
       ch = e[i].fmt[l];
@@ -1298,7 +1313,7 @@ DIT * Read_data_tablebox(FILE *fp) {
 //  sscanf(buff,"%d%d%d",&(t->row),&(t->col),&(t->bordr));
   sscanf(buff,"%d%d%d",&(t->row),&(t->col),&(bordr));
   t->bordr = bordr%10;
-  t->type =  bordr/10;
+  t->type =  (bordr/10)%10;
   GETDATALINE;
   sscanf(buff,"%d%d%d",&(t->Font),&(t->FontSize),&(t->hide));
   if((t->hide != 0) &&(t->hide!=1)) t->hide=0;

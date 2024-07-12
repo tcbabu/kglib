@@ -7,6 +7,8 @@ int  textelementdatabutton1callback(int butno,int i,void *Tmp) ;
 void  textelementdatabutton1init(DIN *B,void *pt) ;
 int  textelementdatabutton2callback(int butno,int i,void *Tmp) ;
 void  textelementdatabutton2init(DIN *B,void *pt) ;
+int  textelementdatabrowser2callback(int item,int i,void *Tmp) ;
+void  textelementdatabrowser2init(DIRA *R,void *pt) ;
 int textelementdatainit(void *Tmp) ;
 int textelementdatacleanup(void *Tmp) ;
 int Modifytextelementdata(void *Tmp,int GrpId) ;

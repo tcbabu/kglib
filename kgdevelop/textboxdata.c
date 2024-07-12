@@ -1195,7 +1195,7 @@ int tableboxesdata( void *parent,void **v,void *pt) {
   }    /*  end of fullscreen mode */
 //  kgColorTheme(&D,210,210,210);    /*  set colors for gui*/
 //  ModifytableboxesdataGc(&(D.gc));    /*  set colors for gui*/
-  Print_gui_data(&D,(char *)"tableboxesdata.rc");
+//  Print_gui_data(&D,(char *)"tableboxesdata.rc");
   ret= kgUi(&D);
   kgCleanUi(&D);
   return ret-1;

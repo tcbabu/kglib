@@ -68,6 +68,8 @@ int Runhbuttondata(void *arg);
 int Runmessagedata(void *arg);
 void *Runtextboxdata(void *arg);
 void *Runtextelementdata(void *,int,int);
+void *kgGetTableElements(void *,int,int);
+void *kgGetTextElmts(void *,int,int);
 int Runtextboxesdata(void *arg);
 int Runtableboxesdata(void *arg);
 void *Runtableboxdata(void *arg,char *msg);
@@ -2493,8 +2495,8 @@ void Print_textbox(FILE *fp,DIT *t,int control,char *dianame) {
     fprintf(fp,"  e%-d[%-d].fmt = (char *)malloc(%d);\n",Tbox,i,strlen(e[i].fmt)+1);
     fprintf(fp,"  strcpy(e%-d[%-d].fmt,(char *)\"%-s\");\n",Tbox,i,e[i].fmt);
     fprintf(fp,"  e%-d[%-d].v=(void *)v[%-d];\n",Tbox,i,Vcount++);
-    fprintf(fp,"  e%-d[%-d].sw=1;\n",Tbox,i);
-    fprintf(fp,"  e%-d[%-d].noecho=0;\n",Tbox,i);
+    fprintf(fp,"  e%-d[%-d].sw=%d;\n",Tbox,i,e[i].sw);
+    fprintf(fp,"  e%-d[%-d].noecho=%d;\n",Tbox,i,e[i].noecho);
     fprintf(fp,"  e%-d[%-d].img=NULL;\n",Tbox,i);
   }
   fprintf(fp,"  DIT t%-d = { \n",Tbox);
@@ -2582,7 +2584,7 @@ DIT * Read_textbox(void) {
   t->y2 = t->y2;
   return t;
 }
-void Print_tablebox(FILE *fp,DIT *t,int control,char *dianame) {
+void Print_tablebox_old(FILE *fp,DIT *t,int control,char *dianame) {
   int i, n;
   T_ELMT *e;
   n = t->nx*t->ny;
@@ -2596,6 +2598,57 @@ void Print_tablebox(FILE *fp,DIT *t,int control,char *dianame) {
     fprintf(fp,"  e%-d[%-d].sw=%d;\n",Tbox,i,e[i].sw);
     fprintf(fp,"  e%-d[%-d].noecho=0;\n",Tbox,i);
     fprintf(fp,"  e%-d[%-d].img=NULL;\n",Tbox,i);
+  }
+  fprintf(fp,"  DIT T%-d = { \n",Tbox);
+  fprintf(fp,"    \'%c\',\n",t->code);
+  fprintf(fp,"    %d,%d,  \n",t->x1,t->y1);
+  fprintf(fp,"    %d,%d,\n",t->x2,t->y2);
+  fprintf(fp,"    %d, \n",t->width);
+  fprintf(fp,"    %d,%d, \n",t->nx,t->ny);
+  fprintf(fp,"    e%-d,\n",Tbox);
+  fprintf(fp,"    %d,%d,\n",t->row,t->col);
+  fprintf(fp,"    NULL,%-stablebox%-dcallback,%d,%d,%d,%d /* args,Call back */\n  };\n",
+                  dianame,control,t->bordr,t->hide,t->Font,t->FontSize);
+  t->Wid[49]='\0';
+  fprintf(fp,"  strcpy(T%-d.Wid,(char *)\"%-s\");\n",Tbox,t->Wid);
+  fprintf(fp,"  T%-d.pt=NULL;\n",Tbox);
+  fprintf(fp,"  T%-d.type = %d;\n",Tbox,t->type);
+  fprintf(fp,"  T%-d.item = -1;\n",Tbox);
+  Tbox++;
+}
+void Print_tablebox(FILE *fp,DIT *t,int control,char *dianame) {
+  int i, n,k=0;
+  int nx,ny;
+  T_ELMT *e;
+  n = t->nx*t->ny;
+  nx = t->nx;
+  ny = t->ny;
+  e = t->elmt;
+  fprintf(fp,"  T_ELMT *e%-d  ; \n",Tbox);
+  fprintf(fp,"  e%-d =(T_ELMT *)malloc(sizeof(T_ELMT)*%-d);\n",Tbox,n);
+  k=0;
+  for(i=0;i<nx;i++) {
+    fprintf(fp,"  e%-d[%-d].fmt = (char *)malloc(%d);\n",Tbox,i,strlen(e[i].fmt)+1);
+    fprintf(fp,"  strcpy(e%-d[%-d].fmt,(char *)\"%-s\");\n",Tbox,i,e[i].fmt);
+    fprintf(fp,"  e%-d[%-d].v=(void *)v[%-d];\n",Tbox,i,Vcount++);
+    fprintf(fp,"  e%-d[%-d].sw=%d;\n",Tbox,i,e[i].sw);
+    fprintf(fp,"  e%-d[%-d].noecho=%d;\n",Tbox,i,e[i].noecho);
+    fprintf(fp,"  e%-d[%-d].img=NULL;\n",Tbox,i);
+    k++;
+  }
+  if(ny > 1) {
+    fprintf(fp,"   int Count%-d= %d;\n",Tbox,Vcount);
+    fprintf(fp,"   for(int j=1;j<%d;j++) {\n",ny);
+    fprintf(fp,"     for(int i=0;i<%d;i++) {\n",nx);
+    fprintf(fp,"       e%-d[j*%d+i].fmt = (char *)malloc(strlen(e%-d[i].fmt)+1);\n",Tbox,nx,Tbox);
+    fprintf(fp,"       strcpy(e%-d[(j)*%d+i].fmt, e%-d[i].fmt);\n",Tbox,nx,Tbox);
+    fprintf(fp,"       e%-d[(j)*%-d+i].v = (void *)v[Count%-d+(j-1)*%d+i];\n",Tbox,nx,Tbox,nx);
+    fprintf(fp,"       e%-d[(j)*%-d+i].sw = e%-d[i].sw;\n",Tbox,nx,Tbox);
+    fprintf(fp,"       e%-d[(j)*%-d+i].noecho = e%-d[i].noecho;\n",Tbox,nx,Tbox);
+    fprintf(fp,"       e%-d[(j)*%-d+i].img = NULL;\n",Tbox,nx);
+    fprintf(fp,"     }\n");
+    fprintf(fp,"   }\n");
+    Vcount += ((ny-1)*nx);
   }
   fprintf(fp,"  DIT T%-d = { \n",Tbox);
   fprintf(fp,"    \'%c\',\n",t->code);
@@ -3418,7 +3471,6 @@ Dlink *Read_gui_data(DIALOG *D,char *flname){
    Dadd(Dialink,tmp);
  }
  fclose(fp);
-// printf("Read Data\n");
  return Dialink;
 }
 void Print_gui_structures(Dlink *Dialink,FILE *fp1,char *dianame) {
@@ -6821,6 +6873,7 @@ DIT * Making_t_box(DIALOG *D)
    }
    nx = T->nx;
    ny = T->ny;
+#if 0
    E = (T_ELMT *)malloc(sizeof(T_ELMT)*nx*ny);
    i=0;
    pmts = (char **)Runtextelementdata(NULL,nx,ny);
@@ -6835,6 +6888,9 @@ DIT * Making_t_box(DIALOG *D)
      }
    }
    free(pmts);
+#else
+   E = (T_ELMT *)kgGetTextElmts(D,nx,ny);
+#endif
    T->elmt = E;
    width = (ny)*T->width+(ny-1)*10;
    for(j=0;j<nx;j++) lnx[j]=0;
@@ -6918,6 +6974,7 @@ DIT * Making_T_box(DIALOG *D)
    }
    nx = T->nx;
    ny = T->ny;
+#if 0
    E = (T_ELMT *)malloc(sizeof(T_ELMT)*nx*ny);
    for(i=0;i<(nx*ny) ;i++) {
      E[i].fmt = (char *)malloc(150);
@@ -6933,6 +6990,10 @@ DIT * Making_T_box(DIALOG *D)
           E[i+j*nx].sw = E[i].sw;
        }
    }
+#else
+   E = (T_ELMT *) kgGetTableElements(NULL,nx,ny);
+   T->elmt = E;
+#endif
    width = (ny)*T->width;
    i=0;
    ln=0;

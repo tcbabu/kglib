@@ -1244,7 +1244,9 @@ int uiDraw_Dialog(DIALOG *D) {
          }
          break;
        case 't':
+#if 1
          _uiDrawTextBox(D,i);
+#endif
          if(kgGetWidgetVisibility(kgGetWidget(D,i))!=0){
             controls++;
             D->df = i;

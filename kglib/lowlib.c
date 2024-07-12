@@ -14753,10 +14753,12 @@ void _uiDrawTextBox (DIALOG* D,int item) {
    tx->y2=Y1;
    tx->col =0;
    if(elmt[tx->col].sw != 1 ) tx->col =tx->col+1;
+#if 1
    if(tx->col >= nx ) {
      printf("Error In Text Box: No input box\n");
      exit(0);
    }
+#endif
    tx->row =0;
    tx->gc= Dtmp->gc;
    tx->D= D;

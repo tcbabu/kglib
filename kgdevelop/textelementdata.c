@@ -6,8 +6,10 @@ typedef struct _Estr {
 	int ny;
 	int n;
 	char **Prompt;
+	int *sw;
 	int *Field;
 	int *Type;
+	int *noecho;
 }ESTR;
 static int InitEstr(ESTR *e,int nx,int ny) {
 	int i,j,k=0;
@@ -18,6 +20,8 @@ static int InitEstr(ESTR *e,int nx,int ny) {
 	e->Prompt = (char **)malloc(sizeof(char *)*nx*ny);
 	e->Field =  (int *)malloc(sizeof(int)*nx*ny);
 	e->Type  =  (int *)malloc(sizeof(int)*nx*ny);
+	e->sw    =  (int *)malloc(sizeof(int)*nx*ny);
+	e->noecho    =  (int *)malloc(sizeof(int)*nx*ny);
 	k = 0;
 	for(j=0;j<ny;j++) {
 		for(i=0;i<nx;i++){
@@ -25,12 +29,15 @@ static int InitEstr(ESTR *e,int nx,int ny) {
 			strcpy(e->Prompt[k],"");
 			e->Field[k]=10;
 			e->Type[k]= 2;
+			e->sw[k]= 0;
+			e->noecho[k]= 0;
 			k++;
 		}
 	}
 	return 1;
 }
 //#include "Gclrtextelementdata.c"
+
 int textelementdataGroup( DIALOG *D,void **v,void *pt) {
   int GrpId=0,oitems=0,i,j;
   DIA *d=NULL,*dtmp;
@@ -123,8 +130,8 @@ int textelementdataGroup( DIALOG *D,void **v,void *pt) {
   butn4[0].butncode='';
   DIL h4 = { 
     'h',
-    196,196,  
-    290,229,
+    196,259,  
+    290,292,
     2,0,  
     84, 
     25, 
@@ -148,8 +155,8 @@ int textelementdataGroup( DIALOG *D,void **v,void *pt) {
   butn5[0].butncode='';
   DIN b5 = { 
     'n',
-    11,195,  
-    105,229,
+    11,259,  
+    105,293,
     2,2,  
     84, 
     24, 
@@ -173,8 +180,8 @@ int textelementdataGroup( DIALOG *D,void **v,void *pt) {
   butn6[0].butncode='';
   DIN b6 = { 
     'n',
-    386,195,  
-    480,229,
+    386,258,  
+    480,292,
     2,2,  
     84, 
     24, 
@@ -187,12 +194,52 @@ int textelementdataGroup( DIALOG *D,void **v,void *pt) {
   };
   strcpy(b6.Wid,(char *)"elementNext");
   b6.item = -1;
+  char *menu7[]  = { 
+    (char *)"!w32Yes",
+    (char *)"!w32No",
+    NULL 
+  };
+  ThumbNail **th1 ;
+  DIRA r7 = { 
+    'r',
+    132,192,  
+    352,227,   
+    8,0,  
+    90, 
+    25, 
+    1,2, 
+    0,1, 
+    (int *)v[3], 
+    NULL, 
+    NULL ,
+    NULL,textelementdatabrowser2callback, /* *args, callback */
+    1,  /* Border Offset  */
+     2,  /* Scroll width  */
+     0,  /* Type  */
+     0, /* item highlight */
+    1, /* bordr */
+    0, /* bkgr */
+    0  /* =1 hide  */
+   };
+  th1 = (ThumbNail **)kgStringToThumbNails((char **)menu7);
+  r7.list=(void **)th1;
+  strcpy(r7.Wid,(char *)"elementRadio2");
+  r7.item = -1;
+  DIM m8 = { 
+    'm',
+    31,197,  
+    131,221,  
+    1,0  
+  };
+  strncpy(m8.msg,(char *)"!w32Echo",499);
+  strcpy(m8.Wid,(char *)"textelementdataWidget9");
+  m8.item = -1;
   dtmp = D->d;
   i=0;
   if(dtmp!= NULL) while(dtmp[i].t!=NULL)i++;
-  dtmp = (DIA *)realloc(dtmp,sizeof(DIA )*(i+8));
+  dtmp = (DIA *)realloc(dtmp,sizeof(DIA )*(i+10));
   d =dtmp+i; 
-  d[7].t=NULL;
+  d[9].t=NULL;
   d[0].t = (DIT *)malloc(sizeof(DIM));
   *d[0].m = m0;
   d[0].m->item = -1;
@@ -218,14 +265,20 @@ int textelementdataGroup( DIALOG *D,void **v,void *pt) {
   *d[6].N = b6;
   d[6].N->item = -1;
   textelementdatabutton2init(d[6].N,pt) ;
-  d[7].t = NULL;
+  d[7].t = (DIT *)malloc(sizeof(DIRA));
+  *d[7].r = r7;
+  d[7].r->item = -1;
+  textelementdatabrowser2init(d[7].r,pt) ;
+  d[8].t = (DIT *)malloc(sizeof(DIM));
+  *d[8].m = m8;
+  d[8].m->item = -1;
+  d[9].t = NULL;
   GrpId=kgOpenGrp(D);
   D->d = dtmp;
   j=0;
   while(d[j].t!=NULL){ kgAddtoGrp(D,GrpId,(void *)(d[j].t));j++;}
   return GrpId;
 } 
-
 /* One can also use the following code to add Widgets to an existing Dialog */
 
 int MaketextelementdataGroup(DIALOG *D,void *arg) {
@@ -282,7 +335,7 @@ int textelementdata( void *parent,void **v,void *pt) {
   D.xo = 667;   /* Position of Dialog */ 
   D.yo = 162;
   D.xl = 495;    /*  Length of Dialog */
-  D.yl = 238;    /*  Width  of Dialog */
+  D.yl = 298;    /*  Width  of Dialog */
   D.Initfun = textelementdatainit;    /*   init fuction for Dialog */
   D.Cleanupfun = textelementdatacleanup;    /*   init fuction for Dialog */
   D.kbattn = 0;    /*  1 for drawing keyborad attention */
@@ -333,7 +386,8 @@ int textelementdata( void *parent,void **v,void *pt) {
   kgCleanUi(&D);
   return ret;
 }
-void *Runtextelementdata(void *arg,int nx,int ny) {
+//void *Runtextelementdata(void *arg,int nx,int ny) {
+void *kgGetTextElmts (void *arg,int nx,int ny) {
 /*************************************************
 
     Text_Box1  2 data values
@@ -345,22 +399,31 @@ void *Runtextelementdata(void *arg,int nx,int ny) {
    char  v0[500]="" ;
    int   v1 = 10;
    int   v2 = 2;
-   void* v[3];
+   int   v3 = 1;
+   void* v[4];
+   T_ELMT *elmt;
    ESTR e;
    InitEstr(&e,nx,ny);
    v[0]=(void *)(v0);
    v[1]=(void *)(&v1);
    v[2]=(void *)(&v2);
+   v[3]=(void *)(&v3);
    v2=3;
    void *pt=&e; /* pointer to send any extra information */
    textelementdata(NULL,v,pt );
+   elmt = (T_ELMT *)malloc(sizeof(T_ELMT)*nx*ny);
    for(k=0;k<(nx*ny);k++) {
 	   sprintf(v0,"%-s%%%d%c",e.Prompt[k],e.Field[k],Code[e.Type[k]]);
            free(e.Prompt[k]);
 	   e.Prompt[k] = (char *)malloc(strlen(v0)+1);
 	   strcpy(e.Prompt[k],v0);
+	   elmt[k].noecho=e.noecho[k];
+           elmt[k].img=NULL;
+           elmt[k].sw = (e.sw[k]+1)%2;
+           elmt[k].fmt = e.Prompt[k];
    }
    free(e.Field);
    free(e.Type);
-   return e.Prompt;
+   free(e.sw);
+   return elmt;
 }
