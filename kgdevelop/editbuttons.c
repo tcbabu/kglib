@@ -98,6 +98,7 @@ void  buttondatahbutton1init(DILN *H,void *pt) {
 int buttondatainit(void *Tmp) {
   /* you add any initialisation here */
   int ret = 1;
+  char Buf[100];
   ThumbNail **th;
   DICH *C;
   DIN *B;
@@ -111,7 +112,10 @@ int buttondatainit(void *Tmp) {
   if(B->nodrawbkgr != 1) B->nodrawbkgr=0;
   th[2]->sw=(B->nodrawbkgr+1)%2;
   kgUpdateWidget(C);
-  kgUpdateOn(D);
+  DIM *M=(DIM *)kgGetNamedWidget(Tmp,(char *)"buttondataWidget4");
+  sprintf(Buf,"!w32!f21Button Type : !f23!h32!c36%d",B->type);
+  kgWrite(M,Buf);
+  kgUpdateOn(Tmp);
   return ret;
 }
 int hbuttondatainit(void *Tmp) {

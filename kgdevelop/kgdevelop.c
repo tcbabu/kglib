@@ -8,6 +8,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include "image.c"
+//#include "Wimages.c"
 #define VER 2107030000
 char kulinahome[500];
 char CWD[500];
@@ -28,6 +29,7 @@ DIALOG *Dia=NULL;
 int Get_data_line();
 int Pid =-1;
 static int Xoff=7,Yoff=46,Evgay;
+void *RunEditWidgets(void *arg);
 int Runslidebaropt(void *arg);
 int RunOptions(void *Tmp);
 int RunBorderoptdia(void *Tmp);
@@ -64,6 +66,7 @@ int buttoninfo(void *parent,char *msg,  void *v0, void *v1, void *v2 );
 
 void Make_gui_code(DIALOG *D,char *flname,char *dianame);
 int Runbuttondata(void *arg);
+int Runbuttonedit(void *arg);
 int Runhbuttondata(void *arg);
 int Runmessagedata(void *arg);
 void *Runtextboxdata(void *arg);
@@ -415,6 +418,339 @@ void Convert_gui_data(void) {
     }
   }
   Dfree(L);
+}
+Dlink *GetGuiList(void) {
+  DIALOG *D;int Yshift;int yfac;
+  FILE *fp1;
+  DIT *t;
+  Dlink *L;
+  DIA *d;
+  D = Dia;
+  int i,n,no;
+  int x1,y1,x2,y2,xl,yl;
+  float xoff,yoff;
+  L = Dopen();
+  d = D->d;
+  i=0;while(d[i].t != NULL) {Dadd(L,d[i].t);i++;};
+  Resetlink(L);
+  return L;
+}
+int ResetGuiList(Dlink *L) {
+  DIALOG *D;int Yshift;int yfac;
+  FILE *fp1;
+  DIT *t;
+  DIA *d;
+  D = Dia;
+  int i,n,no;
+  int x1,y1,x2,y2,xl,yl;
+  float xoff,yoff;
+  if(L==NULL) return 0;
+  d = D->d;
+  Resetlink(L);
+  i=0;
+  while ( (t=(DIT *)Getrecord(L)) != NULL) d[i++].t =t;
+  return 1;
+}
+void *CreateWimage(int size,char *Text1,char *Text2) {
+	void *Img;
+	DIG *img;
+	float th,tw,fac;
+	float length,TSize=16;
+	int txtcolor =54;
+	float xo,yo,xl,yl;
+	img = (DIG *)kgInitImage(size,size,8);
+	kgUserFrame(img,-0.5,-0.5,size+0.5,size+0.5);
+	th = TSize;
+	tw = TSize;
+	xo = size*0.5;
+	yo = size*0.5;
+	xl = size;
+	yl = size;
+	kgRoundedRectangleFill(img,xo,yo,xl,yl,0,50,0.15);
+      kgRoundedRectangleRing3(img,xo,yo,xl,yl,250.,250.,250.,0.15,3.0);
+	kgTextFont(img,21);
+	kgTextSize(img,th,tw,1.0);
+	length=kgStringLength(img,Text1);
+      if(length>size*0.85) {
+        fac = size*0.85/length;
+        kgTextSize(img,th,tw*fac,1.0);
+	length=kgStringLength(img,Text1);
+      }
+      kgMove2f(img,(size - length)*0.5, size-th*1.9);
+      kgTextColor(img,txtcolor);
+      kgWriteText(img,Text1);
+      kgTextSize(img,th,tw,1.0);
+      length=kgStringLength(img,Text2);
+      if(length>size*0.85) {
+        fac = size*0.85/length;
+        kgTextSize(img,th,tw*fac,1.0);
+	length=kgStringLength(img,Text2);
+      }
+      kgMove2f(img,(size - length)*0.5, th*0.9);
+      kgWriteText(img,Text2);
+      Img = kgGetSharpImage(img);
+      kgCloseImage(img);
+//      kgWriteImage(Img,"image.png");
+      return(Img);
+}
+static void InsertThumbNailImages(Dlink *L,ThumbNail **Th) {
+	int i=0;
+	DIT *t;
+	char *cpt;
+	void *img,*IMG;
+	char Buff[500];
+	Resetlink(L);
+	i=0;
+	while((t=(DIT *)Getrecord(L))!= NULL ) {
+          switch(t->code) {
+           case 't':
+                  IMG = CreateWimage(64,(char *)"Text",(char *)"Box");
+		  Th[i++]->img = IMG;
+            break;
+           case 'x':
+                  IMG = CreateWimage(64,(char *)"Selection",(char *)"Menu");
+		  Th[i++]->img = IMG;
+            break;
+           case 'y':
+		  Th[i++]->img = CreateWimage(64,(char *)"ThumbNail",(char *)"Browser");
+            break;
+           case 'r':
+		  Th[i++]->img = CreateWimage(64,(char *)"Radio",(char *)"Buttons");
+            break;
+           case 'c':
+		  Th[i++]->img = CreateWimage(64,(char *)"Check",(char *)"Box");
+            break;
+           case 'w':
+		  Th[i++]->img = CreateWimage(64,(char *)"Pulldown",(char *)"Menu");
+            break;
+           case 'e':
+		  Th[i++]->img = CreateWimage(64,(char *)"Scroll",(char *)"Menu");
+            break;
+           case 's':
+		  Th[i++]->img = CreateWimage(64,(char *)"Message",(char *)"Scroll");
+            break;
+           case 'b':
+           case 'n':
+           case 'N':
+		  Th[i++]->img = CreateWimage(64,(char *)"Button",(char *)"Widget");
+            break;
+           case 'h':
+           case 'H':
+		  Th[i++]->img = CreateWimage(64,(char *)"Special",(char *)"Button");
+            break;
+           case 'p':
+		  Th[i++]->img = CreateWimage(64,(char *)"Image",(char *)"Box");
+            break;
+           case 'i':
+		  Th[i++]->img = CreateWimage(64,(char *)"Info.",(char *)"Box");
+            break;
+           case 'g':
+		  Th[i++]->img = CreateWimage(64,(char *)"Drawing",(char *)"Area");
+            break;
+           case 'm':
+		  Th[i++]->img = CreateWimage(64,(char *)"Message",(char *)"(Type1)");
+            break;
+           case 'B':
+		  Th[i++]->img = CreateWimage(64,(char *)"Message",(char *)"(Type2)");
+            break;
+           case 'M':
+		  Th[i++]->img = CreateWimage(64,(char *)"Display",(char *)"Area");
+            break;
+           case 'o':
+		  Th[i++]->img = CreateWimage(64,(char *)"Progress",(char *)"Bar");
+            break;
+           case 'v':
+		  Th[i++]->img = CreateWimage(64,(char *)"Vertical",(char *)"Scroll");
+            break;
+           case 'z':
+		  Th[i++]->img = CreateWimage(64,(char *)"Horiz.",(char *)"Scroll");
+            break;
+           case 'T':
+		  Th[i++]->img = CreateWimage(64,(char *)"Table",(char *)"Widget");
+            break;
+           case 'f':
+		  Th[i++]->img = CreateWimage(64,(char *)"Float",(char *)"Slide");
+            break;
+           case 'd':
+		  Th[i++]->img = CreateWimage(64,(char *)"Integer",(char *)"Slide");
+            break;
+           case 'P':
+		  Th[i++]->img = CreateWimage(64,(char *)"Horiz.",(char *)"Slide");
+            break;
+           deafault:
+		  Th[i++]->img = CreateWimage(64,(char *)"Unknown",(char *)"Widget");
+            break;
+          }
+	}
+
+}
+ThumbNail **GetGuiThumbNails(void) {
+	int i=0;
+	DIT *t;
+	Dlink *L=(Dlink *)GetGuiList();
+	ThumbNail **Th;
+	int n = Dcount(L);
+	if(n==0) {
+		Dempty(L); return NULL;
+	}
+	char **Names= (char **)malloc(sizeof(char *)*(n+1));
+	char *cpt;
+	Names[n]=NULL;
+	Resetlink(L);
+	i=0;
+	while((t=(DIT *)Getrecord(L))!= NULL ) {
+          switch(t->code) {
+           case 't':
+		   Names[i++]= t->Wid;
+            break;
+           case 'x':
+            {
+            DIX *x;
+            x = (DIX *) t;
+		   Names[i++]= x->Wid;
+            }
+            break;
+           case 'y':
+           case 'r':
+           case 'c':
+            {
+            DIY *x;
+            x = (DIY *) t;
+		   Names[i++]= x->Wid;
+            }
+            break;
+           case 'w':
+           case 'e':
+           case 's':
+            {
+            DIW *x;
+            x = (DIW *) t;
+		   Names[i++]= x->Wid;
+            }
+            break;
+           case 'b':
+            {
+            DIB *x;
+            x = (DIB *) t;
+		   Names[i++]= x->Wid;
+            }
+            break;
+           case 'n':
+            {
+            DIN *x;
+            x = (DIN *) t;
+		   Names[i++]= x->Wid;
+            }
+            break;
+           case 'N':
+            {
+            DIBN *x;
+            x = (DIBN *) t;
+		   Names[i++]= x->Wid;
+            }
+            break;
+           case 'h':
+            {
+            DIL *x;
+            x = (DIL *) t;
+		   Names[i++]= x->Wid;
+            }
+            break;
+           case 'H':
+            {
+            DILN *x;
+            x = (DILN *) t;
+		   Names[i++]= x->Wid;
+            }
+            break;
+           case 'p':
+            {
+            DIP *x;
+            x = (DIP *) t;
+		   Names[i++]= x->Wid;
+            }
+            break;
+           case 'i':
+            {
+            DII *x;
+            x = (DII *) t;
+		   Names[i++]= x->Wid;
+            }
+            break;
+           case 'g':
+            {
+            DIG *x;
+            x = (DIG *) t;
+		   Names[i++]= x->Wid;
+            }
+            break;
+           case 'm':
+           case 'B':
+           case 'M':
+            {
+            DIM *x;
+            x = (DIM *) t;
+		   Names[i++]= x->Wid;
+            }
+            break;
+           case 'o':
+            {
+            DIO *x;
+            x = (DIO *) t;
+		   Names[i++]= x->Wid;
+            }
+            break;
+           case 'v':
+            {
+            DIV *x;
+            x = (DIV *) t;
+		   Names[i++]= x->Wid;
+            }
+            break;
+           case 'z':
+            {
+            DIZ *x;
+            x = (DIZ *) t;
+		   Names[i++]= x->Wid;
+            }
+            break;
+           case 'T':
+            {
+            DIT *x;
+            x = (DIT *) t;
+		   Names[i++]= x->Wid;
+            }
+            break;
+           case 'f':
+            {
+            DIF *x;
+            x = (DIF *) t;
+		   Names[i++]= x->Wid;
+            }
+            break;
+           case 'd':
+            {
+            DID *x;
+            x = (DID *) t;
+		   Names[i++]= x->Wid;
+            }
+            break;
+           case 'P':
+            {
+            DIHB *x;
+            x = (DIHB *) t;
+		   Names[i++]= x->Wid;
+            }
+            break;
+           deafault:
+            break;
+          }
+	}
+	Th = (ThumbNail **) kgStringToThumbNails(Names);
+	InsertThumbNailImages(L,Th);
+	Dfree(L);
+
+     return Th;
 }
 void Draw_gui_box(void) {
   DIALOG *D;int Yshift;int yfac;
@@ -5102,7 +5438,7 @@ void Make_gui_code(DIALOG *D,char *flname,char *dianame){
   fprintf(fpg,"   gc->ButtonFont = 21;\n");
   fprintf(fpg,"   gc->MsgFont = 21;\n");
   fprintf(fpg,"   gc->Font=23;\n");
-  fprintf(fpg,"   kgMkgclr(\"%-s\",Tmp);\n",dianame);
+  fprintf(fpg,"   kgMkgclr((char *)\"%-s\",Tmp);\n",dianame);
   fprintf(fpg,"*/\n");
   fprintf(fpg,"}\n");
   fclose(fpg);
@@ -6352,6 +6688,14 @@ DIN * Making_Buttons(DIALOG *D) { /* NEW TYPE */
    h->y2 = y2;
    return h;
  }
+DIN * Edit_Buttons(DIN *h) { /* NEW TYPE */
+   DIN *htmp;
+   if( !Runbuttondata(h)) {
+     return NULL;
+   }
+   Runbutnopt(Parent,h);
+   return h;
+ }
 DIL * Making_SplButtons(DIALOG *D) { /* NEW TYPE */
    DIL *h;
    int i,n=0,sw,offset=4;
@@ -6889,7 +7233,7 @@ DIT * Making_t_box(DIALOG *D)
    }
    free(pmts);
 #else
-   E = (T_ELMT *)kgGetTextElmts(D,nx,ny);
+   E = (T_ELMT *)kgGetTextElmts(Parent,nx,ny);
 #endif
    T->elmt = E;
    width = (ny)*T->width+(ny-1)*10;
@@ -6991,7 +7335,7 @@ DIT * Making_T_box(DIALOG *D)
        }
    }
 #else
-   E = (T_ELMT *) kgGetTableElements(NULL,nx,ny);
+   E = (T_ELMT *) kgGetTableElements(Parent,nx,ny);
    T->elmt = E;
 #endif
    width = (ny)*T->width;
@@ -7758,10 +8102,34 @@ void AddControl(DIALOG *D,void *T) {
   int  but = 1    ;
   static float xpos=50,ypos=50;
   int ixpos=50,iypos=50,OK=0,i;
-  char *addmenu[]={(char *)"Spl. Buttons",(char *)"Buttons",(char *)"Pulldown Browser",(char *)"Textbox",(char *)"Tablebox",(char *)"Slidebar(I)",
-                  (char *)"Slidebar(F)",(char *)"Imagebox",(char *)"Drawing area",(char *)"Info box",(char *)"Message",(char *)"Display Box",(char *)"Message(B)",
-                   (char *)"Scroll Menu",(char *)"Msg Scroll",(char *)"Hori Slide Bar",(char *)"Selection Menu",(char *)"Radio Buttons",
-                   (char *)"Check Box",(char *)"ThumbnailBrowser",(char *)"ProgressBar",(char *)"Vert. Scroll",(char *)"Horiz. Scroll",NULL};
+#define D_NOCLENCC
+  char *addmenu[]={
+	  (char *)"Spl. Buttons",
+	  (char *)"Buttons",
+	  (char *)"Pulldown Browser",
+	  (char *)"Textbox",
+	  (char *)"Tablebox",
+	  (char *)"Slidebar(I)",
+          (char *)"Slidebar(F)",
+  	  (char *)"Imagebox",
+	  (char *)"Drawing area",
+	  (char *)"Info box",
+	  (char *)"Message",
+	  (char *)"Display Box",
+	  (char *)"Message(B)",
+          (char *)"Scroll Menu",
+	  (char *)"Msg Scroll",
+	  (char *)"Hori Slide Bar",
+	  (char *)"Selection Menu",
+	  (char *)"Radio Buttons",
+          (char *)"Check Box",
+	  (char *)"ThumbnailBrowser",
+	  (char *)"ProgressBar",
+	  (char *)"Vert. Scroll",
+	  (char *)"Horiz. Scroll",
+	  NULL
+  };
+#define D_CLEANCC
   Convert_gui_data();
   d = D->d;
   L = Dopen();

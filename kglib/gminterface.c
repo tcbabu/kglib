@@ -743,7 +743,11 @@ void *uiThumbnailgmImage(GMIMG *png,unsigned long w,unsigned long h) {
   return png;
 }
 void *kgThumbNailImage(void *img,unsigned long w,unsigned long h) {
-  return uiThumbnailgmImage((GMIMG *)img, w, h);
+	void *IMG,*img1;
+	IMG = kgGetImageCopy(NULL,img);
+	img1 = uiThumbnailgmImage((GMIMG *)IMG, w, h);
+	kgFreeImage(IMG);
+  return img1;
 }
 void *uiChangeSizegmImage(GMIMG *png,unsigned long w,unsigned long h,int Fltr) {
   int xoffset,yoffset,bkgrclr;

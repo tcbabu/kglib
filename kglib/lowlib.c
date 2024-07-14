@@ -10205,7 +10205,7 @@ void uiMakeEbrowserImages(DIE *w,int lng) {
 #else
    w->imgs= (void **) uiMenuStringImages(D,w->menu,
                  lng,w->width,D->gc.MenuFont,D->gc.menu_char,
-                 D->gc.FontSize,-1,2);
+                 D->gc.FontSize,-1,8);
 #endif
    return;
 }

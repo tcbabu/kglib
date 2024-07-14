@@ -410,7 +410,7 @@ void *kgGetTextElmts (void *arg,int nx,int ny) {
    v[3]=(void *)(&v3);
    v2=3;
    void *pt=&e; /* pointer to send any extra information */
-   textelementdata(NULL,v,pt );
+   textelementdata(arg,v,pt );
    elmt = (T_ELMT *)malloc(sizeof(T_ELMT)*nx*ny);
    for(k=0;k<(nx*ny);k++) {
 	   sprintf(v0,"%-s%%%d%c",e.Prompt[k],e.Field[k],Code[e.Type[k]]);

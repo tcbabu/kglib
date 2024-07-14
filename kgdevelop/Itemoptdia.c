@@ -3,6 +3,7 @@ extern DIALOG *Parent;
 extern int Evgay;
 extern DIALOG *Dia;
 extern void *T;
+void *RunEditWidgets(void *arg);
 void uitwin_wprintf(DIALOG *D,void *Tmp,char *s);
 void ChangeControlSize(DIALOG *D);
 void ChangeControlPos(DIALOG *D);
@@ -27,9 +28,10 @@ int RunItemoptdia(void *arg) {
     Buttonbox1 (new) 1 data value
 
 *************************************************/
-   char *menu[]={(char *)"Add",(char *)"Delete",(char *)"Resize",(char *)"Repos",(char *)"Toggle Visibility",(char *)"Vert. Align",(char *)"Hoz. Align",NULL};
+   char *menu[]={(char *)"Add",(char *)"Delete",(char *)"Resize",(char *)"Repos",(char *)"Toggle Visibility",(char *)"Vert. Align",(char *)"Hoz. Align",
+	   (char *)"Edit Widgets",NULL};
    int   v0 = 1;
-   switch(kgMenu1(Parent,120,45,0,menu,7,NULL,NULL)) {
+   switch(kgMenu1(Parent,120,45,0,menu,8,NULL,NULL)) {
       case 1:
         AddControl(Dia,T);
         DRAW_DIALOG(Dia);
@@ -56,6 +58,11 @@ int RunItemoptdia(void *arg) {
         break;
       case 7:
         Vert_Align_items(Dia);
+        DRAW_DIALOG(Dia);
+        break;
+      case 8:
+//        RunEditWidgets(Parent);
+        RunEditWidgets(NULL);
         DRAW_DIALOG(Dia);
         break;
        default:
