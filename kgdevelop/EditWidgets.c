@@ -220,8 +220,8 @@ int EditWidgets( void *parent,void **v,void *pt) {
   D.rw = 4;
   D.xo = 638;   /* Position of Dialog */ 
   D.yo = 179;
-  D.xl = 407;    /*  Length of Dialog */
-  D.yl = 422;    /*  Width  of Dialog */
+  D.xl = 507;    /*  Length of Dialog */
+  D.yl = 452;    /*  Width  of Dialog */
   D.Initfun = EditWidgetsinit;    /*   init fuction for Dialog */
   D.Cleanupfun = EditWidgetscleanup;    /*   init fuction for Dialog */
   D.kbattn = 0;    /*  1 for drawing keyborad attention */

@@ -65,7 +65,7 @@ void Convert_gui_data(void);
 int buttoninfo(void *parent,char *msg,  void *v0, void *v1, void *v2 );
 
 void Make_gui_code(DIALOG *D,char *flname,char *dianame);
-int Runbuttondata(void *arg);
+int Runbuttondata(void *arg,void *wdg);
 int Runbuttonedit(void *arg);
 int Runhbuttondata(void *arg);
 int Runmessagedata(void *arg);
@@ -6653,7 +6653,7 @@ DIN * Making_Buttons(DIALOG *D) { /* NEW TYPE */
    htmp.type= type;
    htmp.fac =fac;
    htmp.nodrawbkgr=0;
-   if( !Runbuttondata(&htmp)) {
+   if( !Runbuttondata(Parent,&htmp)) {
      return NULL;
    }
    h = kgCreateButtons(10,10,htmp.nx,htmp.ny,htmp.lngth,htmp.width,NULL,htmp.Wid);
@@ -6688,12 +6688,12 @@ DIN * Making_Buttons(DIALOG *D) { /* NEW TYPE */
    h->y2 = y2;
    return h;
  }
-DIN * Edit_Buttons(DIN *h) { /* NEW TYPE */
+DIN * Edit_Buttons(void * Dtmp,DIN *h) { /* NEW TYPE */
    DIN *htmp;
-   if( !Runbuttondata(h)) {
+   if( !Runbuttondata(Dtmp,h)) {
      return NULL;
    }
-   Runbutnopt(Parent,h);
+   Runbutnopt(Dtmp,h);
    return h;
  }
 DIL * Making_SplButtons(DIALOG *D) { /* NEW TYPE */
@@ -6717,7 +6717,7 @@ DIL * Making_SplButtons(DIALOG *D) { /* NEW TYPE */
    htmp.type= type;
    htmp.fac =fac;
    htmp.nodrawbkgr=0;
-   if( !Runbuttondata(&htmp)) {
+   if( !Runbuttondata(Parent,&htmp)) {
      return NULL;
    }
    h = kgCreateSplButtons(10,10,htmp.nx,htmp.ny,htmp.lngth,htmp.width,NULL,htmp.Wid);
@@ -6771,7 +6771,7 @@ DIB * Making_Buttonsn(DIALOG *D) { /* NEW TYPE */
    sprintf(htmp.Wid,"%-sWidget%-d",DiaName,++WidCount);
    htmp.type= type;
    htmp.fac =fac;
-   if( !Runbuttondata(&htmp)) {
+   if( !Runbuttondata(Parent,&htmp)) {
      return NULL;
    }
    h = kgCreateButtonsb(10,10,htmp.nx,htmp.ny,htmp.lngth,htmp.width,NULL,htmp.Wid);

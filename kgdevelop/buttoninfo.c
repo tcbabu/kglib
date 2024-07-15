@@ -4,6 +4,7 @@
 extern char CWD[500];
 char icondir[500];
 int Bindex=1;
+extern DIALOG *Parent;
 static void SetButton_old(DIALOG *D,DIN *B,int index) {
   char buff[200];
   ThumbNail **th;
@@ -206,7 +207,8 @@ int  butnoptbutnbox1callback(int butno,int i,void *Tmp) {
     r = ((clr/1000000)%1000)%256;
   }
   else kgGetDefaultRGB(clr,&r,&g,&b);
-  kgGetColor(Tmp,100,100,&r,&g,&b);
+  if(Tmp == Parent) kgGetColor(Tmp,100,100,&r,&g,&b);
+  else kgGetColor(Tmp,1,1,&r,&g,&b);
   clr = r*1000000+g*1000+b;
   clr = -clr;
 //  if(clr == D->gc.fill_clr) clr=-1;
@@ -1327,6 +1329,10 @@ int butnopt( void *parent,void **v,void *pt) {
   D.rw = 4;
   D.xo = 275;   /* Position of Dialog */ 
   D.yo = 109;
+  if(parent != Parent) {
+    D.xo = 0;   /* Position of Dialog */ 
+    D.yo = 0;
+  }
   D.xl = 461;    /*  Length of Dialog */
   D.yl = 378;    /*  Width  of Dialog */
   D.xl = 440;    /*  Length of Dialog */
@@ -1375,7 +1381,7 @@ int butnopt( void *parent,void **v,void *pt) {
   kgCleanUi(&D);
   return ret;
 }
-void *Runbutnopt(void *Parent,void *arg) {
+void *Runbutnopt(void *parent,void *arg) {
 /*************************************************
 
     Text_Box1  1 data values
@@ -1401,6 +1407,6 @@ void *Runbutnopt(void *Parent,void *arg) {
    v[5]=(void *)(&v5);
    ptrs[0]=arg;
    ptrs[1]=&index;
-   butnopt(Parent,v,ptrs );
+   butnopt(parent,v,ptrs );
    return NULL;
 }

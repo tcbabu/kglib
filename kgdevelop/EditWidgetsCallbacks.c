@@ -2,7 +2,7 @@
 Dlink *GetGuiList(void);
 int ResetGuiList(Dlink *L);
 ThumbNail **GetGuiThumbNails(void);
-DIN * Edit_Buttons(DIN *h);
+DIN * Edit_Buttons(void *Dtmp,DIN *h);
 static Dlink *Glist=NULL;
 static void** Garry=NULL;
   static int ClearSelection ( void *Wid ) {
@@ -86,10 +86,10 @@ int  EditWidgetsbrowser1callback(int item,int i,void *Tmp) {
   code = T->code;
   switch(code) {
     case 'n': 
-      Edit_Buttons((DIN *)T);
+      Edit_Buttons(Tmp,(DIN *)T);
       break;
     case 'h': 
-      Edit_Buttons((DIN *)T);
+      Edit_Buttons(Tmp,(DIN *)T);
       break;
   }
   return ret;

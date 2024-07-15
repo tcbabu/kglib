@@ -657,6 +657,10 @@ int buttondata( void *parent,void **v,void *pt) {
   D.rw = 4;
   D.xo = 200;   /* Position of Dialog */ 
   D.yo = 100;
+  if(parent != Parent) {
+    D.xo = 0;   /* Position of Dialog */ 
+    D.yo = 0;
+  }
   D.xl = 533;    /*  Length of Dialog */
   D.xl = 485;    /*  Length of Dialog */
   D.yl = 314;    /*  Width  of Dialog */
@@ -687,6 +691,7 @@ int buttondata( void *parent,void **v,void *pt) {
   D.StackPos = 0;    /* -1,0,1 for for Stack Position -1:below 0:normal 1:above*/
   D.Shapexpm = NULL;    /*  PNG/jpeg file for window shape;Black color will not be drawn */
   D.parent = Parent;    /*  1 for not showing in task bar*/
+  D.parent = parent;    /*  1 for not showing in task bar*/
   D.pt = pt;    /*  any data to be passed by user*/
 //  strcpy(D.name,"Kulina Designer ver 1.0");    /*  Dialog name you may change */
   if(D.fullscreen!=1) {    /*  if not fullscreen mode */
@@ -999,7 +1004,7 @@ int hbuttondata( void *parent,void **v,void *pt) {
   kgCleanUi(&D);
   return ret-1;
 }
-int Runbuttondata(void *arg) {
+int Runbuttondata(void *arg,void *wdg) {
 /*************************************************
 
     Text_Box1  8 data values
@@ -1020,7 +1025,7 @@ int Runbuttondata(void *arg) {
    int   v8 = 1;
    int   v9 = 1;
    void* v[10];
-   B = (DIN *)arg;
+   B = (DIN *)wdg;
    v9= B->type+1;
    v[0]=(void *)(&B->lngth);
    v[1]=(void *)(&B->width);
@@ -1033,8 +1038,8 @@ int Runbuttondata(void *arg) {
    v[7]=(void *)(B->Wid);
    v[8]=(void *)(&v8);
    v[9]=(void *)(&v9);
-   void *pt=arg; /* pointer to send any extra information */
-   ret=buttondata(NULL,v,pt );
+   void *pt=wdg; /* pointer to send any extra information */
+   ret=buttondata(arg,v,pt );
    B->fac = v6;
    return ret;
 }
