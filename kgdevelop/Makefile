@@ -8,6 +8,8 @@ kgdevelop	: kgdevelop.o Fileoptdia.o Itemoptdia.o Borderoptdia.o getStrings.o Op
 		  textelementdata.o textelementdataCallbacks.o \
 		  tableelmt.o tableelmtCallbacks.o \
 		  EditWidgets.o EditWidgetsCallbacks.o \
+		  edittextboxes.o edittextboxesCallbacks.o \
+		  defaultEdit.o defaultEditCallbacks.o \
 		 $(KULINA)/lib/libkulina.a 
 		 $(CC) $(CFLAGS) -o kgdevelop kgdevelop.o Fileoptdia.o \
 		 Itemoptdia.o  Borderoptdia.o  getStrings.o Options.o \
@@ -17,6 +19,8 @@ kgdevelop	: kgdevelop.o Fileoptdia.o Itemoptdia.o Borderoptdia.o getStrings.o Op
 		  textelementdata.o textelementdataCallbacks.o \
 		  tableelmt.o tableelmtCallbacks.o \
 		  EditWidgets.o EditWidgetsCallbacks.o \
+		  edittextboxes.o edittextboxesCallbacks.o \
+		  defaultEdit.o defaultEditCallbacks.o \
 		 $(KULINA)/lib/libkulina.a $(KULINA)/lib/libgm.a -L/usr/X11R6/lib -lX11 -lXext -lm -lpthread  
 clean	:
 	 rm -f *.o kgdevelop

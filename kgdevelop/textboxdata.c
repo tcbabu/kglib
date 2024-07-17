@@ -25,6 +25,9 @@ int  textboxdatabrowser1callback(int item,int i,void *Tmp) {
   return ret;
 }
 void  textboxdatabrowser1init(DIRA *R,void *pt) {
+	int *I = (int *)pt;
+//	printf("I[2] = %d\n",I[2]);
+//	kgSetSelection(R,I[2]+1);
 }
 int  textboxdatahoribar1callback(int butno,int i,void *Tmp) {
   /*********************************** 
@@ -304,7 +307,7 @@ int textboxdata( void *parent,void **v,void *pt) {
   kgCleanUi(&D);
   return ret-1;
 }
-void *Runtextboxdata(void *arg) {
+void *Runtextboxdata(void *Dia,void *arg) {
 /*************************************************
 
     Text_Box1  2 data values
@@ -320,7 +323,7 @@ void *Runtextboxdata(void *arg) {
    v[1]=(void *)(&v1);
    v[2]=(void *)(&v2);
    void *pt=arg; /* pointer to send any extra information */
-   textboxdata(NULL,v,pt );
+   textboxdata(Dia,v,pt );
    buf = (char *)malloc(200);
    switch(v2) {
      case 1:
@@ -478,6 +481,9 @@ int  textboxesdatabrowser2callback(int item,int i,void *Tmp) {
   return ret;
 }
 void  textboxesdatabrowser2init(DIRA *R,void *pt) {
+  int **ptrs;
+  ptrs = (int **)pt;
+  kgSetSelection(R,*ptrs[2]+1);
 }
 void ModifytextboxesdataGc(void *Tmp) {
    DIALOG *D;
@@ -817,6 +823,10 @@ int textboxesdata( void *parent,void **v,void *pt) {
   D.rw = 4;
   D.xo = 289;   /* Position of Dialog */ 
   D.yo = 141;
+  if(parent != Parent) {
+    D.xo = 0;   /* Position of Dialog */ 
+    D.yo = 0;
+  }
   D.xl = 472;    /*  Length of Dialog */
   D.yl = 250;    /*  Width  of Dialog */
   D.Initfun = textboxesdatainit;    /*   init fuction for Dialog */
@@ -844,7 +854,7 @@ int textboxesdata( void *parent,void **v,void *pt) {
   D.NoTaskBar = 0;    /*  1 for not showing in task bar*/
   D.StackPos = 0;    /* -1,0,1 for for Stack Position -1:below 0:normal 1:above*/
   D.Shapexpm = NULL;    /*  PNG/jpeg file for window shape;Black color will not be drawn */
-  D.parent = Parent;    /*  1 for not showing in task bar*/
+  D.parent = parent;    /*  1 for not showing in task bar*/
   D.pt = pt;    /*  any data to be passed by user*/
 //  strcpy(D.name,"Kulina Designer ver 1.0");    /*  Dialog name you may change */
   if(D.fullscreen!=1) {    /*  if not fullscreen mode */
@@ -863,7 +873,7 @@ int textboxesdata( void *parent,void **v,void *pt) {
   kgCleanUi(&D);
   return ret-1;
 }
-int Runtextboxesdata(void *arg) {
+int Runtextboxesdata(void *Dia,void *arg) {
 /*************************************************
 
     Text_Box1  3 data values
@@ -895,7 +905,7 @@ int Runtextboxesdata(void *arg) {
    pt[0]=&hide;
    pt[1]=&bordr;
    pt[2]=&type;
-   ret = textboxesdata(NULL,v,pt );
+   ret = textboxesdata(Dia,v,pt );
    if(ret) {
      t->nx = v0;
      t->ny = v1;
@@ -1200,7 +1210,7 @@ int tableboxesdata( void *parent,void **v,void *pt) {
   kgCleanUi(&D);
   return ret-1;
 }
-int Runtableboxesdata(void *arg) {
+int Runtableboxesdata(void *Dia,void *arg) {
 /*************************************************
 
     Text_Box1  3 data values
@@ -1231,7 +1241,7 @@ int Runtableboxesdata(void *arg) {
    pt[0]=&hide;
    pt[1]=&bordr;
    pt[2]=&type;
-   ret = tableboxesdata(NULL,v,pt );
+   ret = tableboxesdata(Dia,v,pt );
    if(ret) {
      t->nx = v0;
      t->ny = v1;

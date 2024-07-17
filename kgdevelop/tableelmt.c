@@ -1,6 +1,7 @@
 #include <kulina.h>
 #include "tableelmtCallbacks.h"
 //#include "Gclrtableelmt.c"
+extern DIALOG *Parent;
 
 typedef struct _Tbstr {
         int index;
@@ -11,6 +12,38 @@ typedef struct _Tbstr {
         int *Field;
         int *Type;
 }TBSTR;
+static int SetTbstr(TBSTR *e,DIT *T) {
+	int i,j,k=0,nx,ny,ln;
+	T_ELMT *elmt=T->elmt;
+	char Code[3]={'d','F','s'};
+	char ch;
+	char *pt;
+	nx = T->nx;
+	ny = T->ny;
+        e->index =0;
+        e->nx = nx;
+        e->ny = ny;
+        e->n  = nx;
+        e->Field =  (int *)malloc(sizeof(int)*nx);
+        e->Type  =  (int *)malloc(sizeof(int)*nx);
+        e->sw    =  (int *)malloc(sizeof(int)*nx);
+        k = 0;
+        for(i=0;i<nx;i++){
+			ln = strlen(elmt[k].fmt);
+                        ch = elmt[k].fmt[ln-1];
+			if(ch == 'd') e->Type[k]= 0;
+			else if(ch == 'F') e->Type[k]= 1;
+    			     else  e->Type[k]= 2;
+			elmt[k].fmt[ln-1]='\0';
+			pt = strstr(elmt[k].fmt,"\%");
+			sscanf(pt+1,"%d",e->Field+k);
+			*pt='\0';
+			if(elmt[k].sw==1) e->sw[k]  = 0;
+			else e->sw[k]=1;
+                        k++;
+        }
+        return 1;
+}
 static int InitTbstr(TBSTR *e,int nx,int ny) {
         int i,j,k=0;
         e->index =0;
@@ -323,6 +356,11 @@ int tableelmt( void *parent,void **v,void *pt) {
   D.rw = 4;
   D.xo = 727;   /* Position of Dialog */ 
   D.yo = 301;
+  if(parent != Parent) {
+	  if(parent != NULL) {
+		  D.xo = 0; D.yo=150;
+	  }
+  }
   D.xl = 542;    /*  Length of Dialog */
   D.yl = 279;    /*  Width  of Dialog */
   D.Initfun = tableelmtinit;    /*   init fuction for Dialog */
@@ -405,6 +443,52 @@ void *kgGetTableElements(void *arg,int nx,int ny) {
    k=0;
    for(j=0;j<ny;j++) {
 	   for(i=0;i<nx;i++) {
+		   elmt[k].noecho=0;
+		   elmt[k].img=NULL;
+		   elmt[k].sw = (e.sw[i]+1)%2;
+		   elmt[k].fmt = (char *)malloc(5);
+		   sprintf(elmt[k].fmt,"%%%d%c",e.Field[i],Code[e.Type[i]]);
+//		   printf(" %s ",elmt[k].fmt);
+		   k++;
+	   }
+//	   printf("\n");
+   }
+   free(e.Field);
+   free(e.Type);
+   free(e.sw);
+   return elmt;
+}
+void *kgEditTableElements(void *arg,void *Tmp) {
+/*************************************************
+
+    Text_Box1  1 data values
+    RadioButtons1  1 data value
+    RadioButtons2  1 data value
+
+*************************************************/
+   int i,j,k;
+   DIT *T=(DIT *)Tmp;
+   T_ELMT *elmt;
+   char Code[3]={'d','F','s'};
+   int   v0 = 1;
+   int   v1 = 1;
+   int   v2 = 1;
+   void* v[3];
+   TBSTR e;
+   SetTbstr(&e,T);
+   v[0]=(void *)(&v0);
+   v[1]=(void *)(&v1);
+   v[2]=(void *)(&v2);
+   v0 = e.Field[0];
+   v1 = e.Type[0]+1;
+   v2 = (e.sw[0]+1);
+   elmt = T->elmt;
+   void *pt=&e; /* pointer to send any extra information */
+                  /* it will be aviilable in Callbacks */
+   tableelmt(arg,v,pt );
+   k=0;
+   for(j=0;j<T->ny;j++) {
+	   for(i=0;i<T->nx;i++) {
 		   elmt[k].noecho=0;
 		   elmt[k].img=NULL;
 		   elmt[k].sw = (e.sw[i]+1)%2;

@@ -1,0 +1,13 @@
+int  edittextboxestextbox1callback(int cellno,int i,void *Tmp);
+int  edittextboxesbrowser1callback(int item,int i,void *Tmp) ;
+void  edittextboxesbrowser1init(DICH *C,void *pt) ;
+int  edittextboxessplbutton1callback(int butno,int i,void *Tmp) ;
+void  edittextboxessplbutton1init(DIL *B,void *pt) ;
+int  edittextboxesbrowser2callback(int item,int i,void *Tmp) ;
+void  edittextboxesbrowser2init(DIRA *R,void *pt) ;
+int edittextboxesinit(void *Tmp) ;
+int edittextboxescleanup(void *Tmp) ;
+int Modifyedittextboxes(void *Tmp,int GrpId) ;
+int edittextboxesCallBack(void *Tmp,void *tmp) ;
+int edittextboxesResizeCallBack(void *Tmp) ;
+int edittextboxesWaitCallBack(void *Tmp) ;

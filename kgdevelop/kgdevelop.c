@@ -69,12 +69,15 @@ int Runbuttondata(void *arg,void *wdg);
 int Runbuttonedit(void *arg);
 int Runhbuttondata(void *arg);
 int Runmessagedata(void *arg);
-void *Runtextboxdata(void *arg);
+void *Runtextboxdata(void *Dia,void *arg);
 void *Runtextelementdata(void *,int,int);
 void *kgGetTableElements(void *,int,int);
 void *kgGetTextElmts(void *,int,int);
-int Runtextboxesdata(void *arg);
-int Runtableboxesdata(void *arg);
+void *kgEditTextElmts (void *arg,void *Ttmp);
+void *kgEditTableElements(void *arg,void *Tmp) ;
+int Runtextboxesdata(void *arg,void *t);
+int Runedittextboxes(void *arg,void *t);
+int Runtableboxesdata(void *arg,void *T);
 void *Runtableboxdata(void *arg,char *msg);
 
 static char flname[100],Sourcecode[100],DiaName[200],Callbackcode[100],
@@ -7211,7 +7214,7 @@ DIT * Making_t_box(DIALOG *D)
    T->FontSize=9;
    T->type = 0;
    sprintf(T->Wid,"%-sWidget%-d",DiaName,++WidCount);
-   if( !Runtextboxesdata(T) ) {
+   if( !Runtextboxesdata(Parent,T) ) {
      free(T);
      return NULL;
    }
@@ -7289,6 +7292,62 @@ DIT * Making_t_box(DIALOG *D)
    T->row = 1;
    return T;
  }
+void *Edit_t_box(void *Dtmp,void *ttmp) {
+   int i,n,k,j,code=0,size=0,l;
+   DIT *T = (DIT *)ttmp;
+   char ch;
+   int  nx=1,ny=1,lngth=0,ln,width,lnx[1000];
+   double *ftmp;
+   int   *itmp;
+   char  *ctmp;
+   char **pmts;
+   T_ELMT *E= T->elmt;
+   if( !Runedittextboxes(Dtmp,ttmp) ) {
+     return NULL;
+   }
+   else  {
+      nx = T->nx;
+      ny = T->ny;
+      kgEditTextElmts(Dtmp,ttmp);
+   width = (ny)*T->width+(ny-1)*10;
+   for(j=0;j<nx;j++) lnx[j]=0;
+   i=0;
+   for(k=0;k<ny;k++){
+     ln=0;
+     for(j=0;j<nx;j++) {
+       ln =get_t_length(E[i].fmt,9);
+       if(ln >lnx[j])lnx[j]=ln;
+       l = strlen(E[i].fmt) - 1;
+       while( E[i].fmt[l] <= ' ') l--;
+       ch = E[i].fmt[l];
+       switch(ch) {
+         case 'F':
+           ftmp = (double *)malloc(sizeof(double));
+           *ftmp =0.;
+	   free(E[i].v);
+           E[i].v = (void *)ftmp;
+           break;
+         case 'd':
+           itmp = (int *)malloc(sizeof(int));
+           *itmp = 1;
+	   free(E[i].v);
+           E[i].v = (void *)itmp;
+           break;
+         case 's':
+           ctmp = (char *)malloc(500);
+           ctmp[0]='\0';
+	   free(E[i].v);
+           E[i].v = (void *) ctmp;
+           break;
+       }
+       E[i].sw = 1;
+       i++;
+     }
+     if( ln>lngth) lngth = ln;
+   }
+   }
+   return ttmp;
+}
 DIT * Making_T_box(DIALOG *D)
  {
    DIT *T=NULL;
@@ -7312,7 +7371,7 @@ DIT * Making_T_box(DIALOG *D)
    sprintf(T->Wid,"%-sWidget%-d",DiaName,++WidCount);
 //   gscanf(Parent,(char *)"No. of Columns%2dNo of Rows%2dName%20s",&nx,&ny,T->Wid);
    T->nx = nx; T->ny = ny;
-   if( !Runtableboxesdata(T) ) {
+   if( !Runtableboxesdata(Parent,T) ) {
      free(T);
      return NULL;
    }
@@ -7388,6 +7447,63 @@ DIT * Making_T_box(DIALOG *D)
    T->row = 1;
    return T;
  }
+void *Edit_T_box(void *Dtmp,void *ttmp) {
+   int i,n,k,j,code=0,size=0,l;
+   DIT *T = (DIT *)ttmp;
+   char ch;
+   int  nx=1,ny=1,lngth=0,ln,width,lnx[1000];
+   double *ftmp;
+   int   *itmp;
+   char  *ctmp;
+   char **pmts;
+   T_ELMT *E= T->elmt;
+   if( !Runedittextboxes(Dtmp,ttmp) ) {
+     return NULL;
+   }
+   else  {
+      nx = T->nx;
+      ny = T->ny;
+      kgEditTableElements(Dtmp,ttmp);
+      width = (ny)*T->width+(ny-1)*10;
+      ln =0;
+      for(j=0;j<nx;j++) {
+          ln +=(get_t_length(E[j].fmt,T->FontSize));
+      }
+      lngth = ln;
+      i=0;
+      for(k=0;k<ny;k++){
+        for(j=0;j<nx;j++) {
+          l = strlen(E[i].fmt) - 1;
+          while( E[i].fmt[l] <= ' ') l--;
+          ch = E[i].fmt[l];
+          switch(ch) {
+            case 'F':
+              ftmp = (double *)malloc(sizeof(double));
+              *ftmp =0.;
+	      free(E[i].v);
+              E[i].v = (void *)ftmp;
+              break;
+            case 'd':
+              itmp = (int *)malloc(sizeof(int));
+              *itmp = 1;
+	      free(E[i].v);
+              E[i].v = (void *)itmp;
+              break;
+            case 's':
+              ctmp = (char *)malloc(500);
+              ctmp[0]='\0';
+	      free(E[i].v);
+              E[i].v = (void *) ctmp;
+           break;
+          }
+       i++;
+     }
+   }
+   lngth += 2*4+1;
+   T->x2 = T->x1 +lngth;
+ }
+ return ttmp;
+}
 DIBN * Making_Buttonsnew(DIALOG *D) {
    DIBN *N;
    int i,n;

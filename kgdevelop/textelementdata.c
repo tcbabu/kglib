@@ -1,5 +1,6 @@
 #include <kulina.h>
 #include "textelementdataCallbacks.h"
+extern DIALOG *Parent;
 typedef struct _Estr {
 	int index;
 	int nx;
@@ -31,6 +32,44 @@ static int InitEstr(ESTR *e,int nx,int ny) {
 			e->Type[k]= 2;
 			e->sw[k]= 0;
 			e->noecho[k]= 0;
+			k++;
+		}
+	}
+	return 1;
+}
+static int SetEstr(ESTR *e,DIT *T) {
+	int i,j,k=0,nx,ny,ln;
+	T_ELMT *elmt=T->elmt;
+	char Code[3]={'d','F','s'};
+	char ch;
+	char *pt;
+	nx = T->nx;
+	ny = T->ny;
+	e->index =0;
+	e->nx = T->nx;
+	e->ny = T->ny;
+	e->n  = nx*ny;
+	e->Prompt = (char **)malloc(sizeof(char *)*nx*ny);
+	e->Field =  (int *)malloc(sizeof(int)*nx*ny);
+	e->Type  =  (int *)malloc(sizeof(int)*nx*ny);
+	e->sw    =  (int *)malloc(sizeof(int)*nx*ny);
+	e->noecho    =  (int *)malloc(sizeof(int)*nx*ny);
+	k = 0;
+	for(j=0;j<ny;j++) {
+		for(i=0;i<nx;i++){
+			e->Prompt[k] = (char *)malloc(100);
+			ln = strlen(elmt[k].fmt);
+                        ch = elmt[k].fmt[ln-1];
+			if(ch == 'd') e->Type[k]= 0;
+			else if(ch == 'F') e->Type[k]= 1;
+    			     else  e->Type[k]= 2;
+			elmt[k].fmt[ln-1]='\0';
+			pt = strstr(elmt[k].fmt,"\%");
+			sscanf(pt+1,"%d",e->Field+k);
+			*pt='\0';
+			strcpy(e->Prompt[k] , elmt[k].fmt);
+			e->sw[k]= elmt[k].sw;
+			e->noecho[k]= elmt[k].noecho;
 			k++;
 		}
 	}
@@ -334,6 +373,10 @@ int textelementdata( void *parent,void **v,void *pt) {
   D.rw = 4;
   D.xo = 667;   /* Position of Dialog */ 
   D.yo = 162;
+  if(parent != Parent) {
+    D.xo = 10;   /* Position of Dialog */ 
+    D.yo = 150;
+  }
   D.xl = 495;    /*  Length of Dialog */
   D.yl = 298;    /*  Width  of Dialog */
   D.Initfun = textelementdatainit;    /*   init fuction for Dialog */
@@ -420,6 +463,100 @@ void *kgGetTextElmts (void *arg,int nx,int ny) {
 	   elmt[k].noecho=e.noecho[k];
            elmt[k].img=NULL;
            elmt[k].sw = (e.sw[k]+1)%2;
+           elmt[k].fmt = e.Prompt[k];
+   }
+   free(e.Field);
+   free(e.Type);
+   free(e.sw);
+   return elmt;
+}
+void *kgEditTextElmts (void *arg,void *Ttmp) {
+/*************************************************
+
+    Text_Box1  2 data values
+    RadioButtons1  1 data value
+
+*************************************************/
+   int i,j,k;
+   char Code[3]={'d','F','s'};
+   char  v0[500]="" ;
+   int   v1 = 10;
+   int   v2 = 2;
+   int   v3 = 1;
+   void* v[4];
+   int nx,ny;
+   DIT *T = (DIT *)Ttmp;
+   T_ELMT *elmt = T->elmt;
+   ESTR e;
+   nx = T->nx;
+   ny = T->ny;
+   SetEstr(&e,T);
+   strcpy(v0,e.Prompt[0]);
+   v[0]=(void *)(v0);
+   v1 = e.Field[0];
+   v[1]=(void *)(&v1);
+   v2 = e.Type[0]+1;
+   v[2]=(void *)(&v2);
+   v3 = elmt[0].noecho;
+   v[3]=(void *)(&v3);
+   void *pt=&e; /* pointer to send any extra information */
+   textelementdata(arg,v,pt );
+   for(k=0;k<(nx*ny);k++) {
+	   sprintf(v0,"%-s%%%d%c",e.Prompt[k],e.Field[k],Code[e.Type[k]]);
+           free(e.Prompt[k]);
+	   e.Prompt[k] = (char *)malloc(strlen(v0)+1);
+	   strcpy(e.Prompt[k],v0);
+	   elmt[k].noecho=e.noecho[k];
+           elmt[k].img=NULL;
+           elmt[k].sw = (e.sw[k]+1)%2;
+	   free(elmt[k].fmt);
+           elmt[k].fmt = e.Prompt[k];
+   }
+   free(e.Field);
+   free(e.Type);
+   free(e.sw);
+   return elmt;
+}
+void *kgEditTableElmts (void *arg,void *Ttmp) {
+/*************************************************
+
+    Text_Box1  2 data values
+    RadioButtons1  1 data value
+
+*************************************************/
+   int i,j,k;
+   char Code[3]={'d','F','s'};
+   char  v0[500]="" ;
+   int   v1 = 10;
+   int   v2 = 2;
+   int   v3 = 1;
+   void* v[4];
+   int nx,ny;
+   DIT *T = (DIT *)Ttmp;
+   T_ELMT *elmt = T->elmt;
+   ESTR e;
+   nx = T->nx;
+   ny = T->ny;
+   SetEstr(&e,T);
+   strcpy(v0,e.Prompt[0]);
+   v[0]=(void *)(v0);
+   v1 = e.Field[0];
+   v[1]=(void *)(&v1);
+   v2 = e.Type[0]+1;
+   v[2]=(void *)(&v2);
+   v3 = elmt[0].noecho;
+   v[3]=(void *)(&v3);
+   void *pt=&e; /* pointer to send any extra information */
+   textelementdata(arg,v,pt );
+   for(k=0;k<(nx);k++) {
+	   sprintf(v0,"%-s%%%d%c",e.Prompt[k],e.Field[k],Code[e.Type[k]]);
+           free(e.Prompt[k]);
+	   e.Prompt[k] = (char *)malloc(strlen(v0)+1);
+	   strcpy(e.Prompt[k],v0);
+	   elmt[k].noecho=e.noecho[k];
+           elmt[k].img=NULL;
+           elmt[k].sw = (e.sw[k]+1)%2;
+	   free(elmt[k].fmt);
            elmt[k].fmt = e.Prompt[k];
    }
    free(e.Field);

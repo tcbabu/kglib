@@ -1,8 +1,12 @@
 #include <kulina.h>
 Dlink *GetGuiList(void);
 int ResetGuiList(Dlink *L);
+void *RundefaultEdit(void *,char *,char *);
 ThumbNail **GetGuiThumbNails(void);
 DIN * Edit_Buttons(void *Dtmp,DIN *h);
+void * Edit_t_box(void *Dtmp,void *ttmp);
+void * Edit_T_box(void *Dtmp,void *ttmp);
+int Runtextboxesdata(void *arg,void *t);
 static Dlink *Glist=NULL;
 static void** Garry=NULL;
   static int ClearSelection ( void *Wid ) {
@@ -36,6 +40,7 @@ static void** Garry=NULL;
       int sid , did;
       char *des = NULL;
       int same = 0;
+      int k;
       if ( kgDragThumbNail ( FY , item , & x , & y ) ) {
           tw = ( DIT * ) kgGetLocationWidget ( Tmp , x , y ) ;
           if ( tw == fw ) {
@@ -46,7 +51,20 @@ static void** Garry=NULL;
 		  if(positem != item){
 	            Th = (ThumbNail **)kgGetList(FY);
 		    tth = Th[item];
+#if 0
 		    Th[item]= Th[positem];
+#else
+		    if(positem < item) {
+			    for(k=item-1;k>=positem; k--){
+				    Th[k+1] = Th[k];
+			    }
+		    }
+		    else {
+			    for(k=item+1;k<=positem; k++){
+				    Th[k-1] = Th[k];
+			    }
+		    }
+#endif
 		    Th[positem]= tth;
 		    kgSetList(FY,(void **)Th);
                     ClearSelection ( FY ) ;
@@ -60,6 +78,16 @@ static void** Garry=NULL;
       }
       return 0;
   }
+#define UpdateList( str) { \
+      Th = (ThumbNail **)kgGetList(Y); \
+      free(Th[item -1]->name); \
+      Th[item-1]->name = (char *)malloc(strlen(str)+1); \
+      strcpy(Th[item-1]->name,str); \
+      kgSetList(Y,(void **)Th); \
+      ClearSelection ( Y ) ; \
+      kgUpdateWidget(Y); \
+      kgUpdateOn(Tmp); \
+}
 int  EditWidgetsbrowser1callback(int item,int i,void *Tmp) {
   DIALOG *D;DIY *Y; 
   /*********************************** 
@@ -73,13 +101,31 @@ int  EditWidgetsbrowser1callback(int item,int i,void *Tmp) {
   void *pt= (void *)kgGetArgPointer(Tmp); // Change as required
   ThumbNail **Th;
   char code;
+  int k;
   DIT *T;
   D = (DIALOG *)Tmp;
   Y = (DIY *)kgGetWidget(Tmp,i);
   if ((pos=kgDragRearrange(Tmp,Y,item-1))) {
 	  ptmp = Garry[item-1];
+#if 0
 	  Garry[item-1]= Garry[pos-1];
 	  Garry[pos-1]= ptmp;
+#else
+	  pos = pos -1;
+	  item = item -1;
+
+		    if(pos < item) {
+			    for(k=item-1;k>=pos; k--){
+				    Garry[k+1] = Garry[k];
+			    }
+		    }
+		    else {
+			    for(k=item+1;k<=pos; k++){
+				    Garry[k-1] = Garry[k];
+			    }
+		    }
+		    Garry[pos]= ptmp;;
+#endif
 	  return 1;
   }
   T = (DIT *)Garry[item-1];
@@ -87,9 +133,108 @@ int  EditWidgetsbrowser1callback(int item,int i,void *Tmp) {
   switch(code) {
     case 'n': 
       Edit_Buttons(Tmp,(DIN *)T);
+      UpdateList((((DIN *)T)->Wid));
       break;
     case 'h': 
       Edit_Buttons(Tmp,(DIN *)T);
+      UpdateList((((DIN *)T)->Wid));
+      break;
+    case 't': 
+      Edit_t_box(Tmp,T);
+      UpdateList((((DIT *)T)->Wid));
+      break;
+    case 'm':
+      RundefaultEdit(Tmp,(char *)"Message Type1",((DIM *)T)->Wid);
+#if 0
+      Th = (ThumbNail **)kgGetList(Y);
+      free(Th[item -1]->name);
+      Th[item-1]->name = (char *)malloc(strlen(((DIM *)T)->Wid)+1);
+      strcpy(Th[item-1]->name,((DIM *)T)->Wid);
+      kgSetList(Y,(void **)Th);
+      ClearSelection ( Y ) ;
+      kgUpdateWidget(Y);
+      kgUpdateOn(Tmp);d
+#else
+      UpdateList((((DIM *)T)->Wid));
+#endif
+      break;
+    case 'T':
+      Edit_T_box(Tmp,T);
+      UpdateList((((DIT *)T)->Wid));
+      break;
+    case 'M':
+      RundefaultEdit(Tmp,(char *)"Display Box",((DIM *)T)->Wid);
+      UpdateList((((DIM *)T)->Wid));
+      break;
+    case 'B':
+      RundefaultEdit(Tmp,(char *)"Message Type2",((DIM *)T)->Wid);
+      UpdateList((((DIM *)T)->Wid));
+      break;
+    case 'x':
+      RundefaultEdit(Tmp,(char *)"Selection Menu",((DIX *)T)->Wid);
+      UpdateList((((DIX *)T)->Wid));
+      break;
+    case 'y':
+      RundefaultEdit(Tmp,(char *)"ThumbNail Browser",((DIY *)T)->Wid);
+      UpdateList((((DIY *)T)->Wid));
+      break;
+    case 'c':
+      RundefaultEdit(Tmp,(char *)"Check Box",((DICH *)T)->Wid);
+      UpdateList((((DICH *)T)->Wid));
+      break;
+    case 'r':
+      RundefaultEdit(Tmp,(char *)"Radio Buttons",((DIRA *)T)->Wid);
+      UpdateList((((DIRA *)T)->Wid));
+      break;
+    case 'w':
+      RundefaultEdit(Tmp,(char *)"Pulldown Menu",((DIW *)T)->Wid);
+      UpdateList((((DIW *)T)->Wid));
+      break;
+    case 'e':
+      RundefaultEdit(Tmp,(char *)"Scroll Menu",((DIE *)T)->Wid);
+      UpdateList((((DIE *)T)->Wid));
+      break;
+    case 's':
+      RundefaultEdit(Tmp,(char *)"Scroll Message",((DIS *)T)->Wid);
+      UpdateList((((DIS *)T)->Wid));
+      break;
+    case 'i':
+      RundefaultEdit(Tmp,(char *)"Info Box",((DII *)T)->Wid);
+      UpdateList((((DII *)T)->Wid));
+      break;
+    case 'o':
+      RundefaultEdit(Tmp,(char *)"Progress Bar",((DIO *)T)->Wid);
+      UpdateList((((DIO *)T)->Wid));
+      break;
+    case 'v':
+      RundefaultEdit(Tmp,(char *)"Vertical Scroll Bar",((DIV *)T)->Wid);
+      UpdateList((((DIV *)T)->Wid));
+      break;
+    case 'z':
+      RundefaultEdit(Tmp,(char *)"Horizondal Scroll Bar",((DIZ *)T)->Wid);
+      UpdateList((((DIZ *)T)->Wid));
+      break;
+    case 'p':
+      RundefaultEdit(Tmp,(char *)"Display Box",((DIP *)T)->Wid);
+      UpdateList((((DIP *)T)->Wid));
+      break;
+    case 'g':
+      RundefaultEdit(Tmp,(char *)"Drawing Area",((DIG *)T)->Wid);
+      UpdateList((((DIG *)T)->Wid));
+      break;
+    case 'd':
+      RundefaultEdit(Tmp,(char *)"Integer Slide",((DID *)T)->Wid);
+      UpdateList((((DID *)T)->Wid));
+      break;
+    case 'f':
+      RundefaultEdit(Tmp,(char *)"Float Slide",((DIF *)T)->Wid);
+      UpdateList((((DIF *)T)->Wid));
+      break;
+    case 'P':
+      RundefaultEdit(Tmp,(char *)"Horizontal Slide",((DIF *)T)->Wid);
+      UpdateList((((DIF *)T)->Wid));
+      break;
+    default:
       break;
   }
   return ret;

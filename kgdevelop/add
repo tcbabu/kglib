@@ -1,1 +1,38 @@
-ThumbNail **GetGuiThumbNails(NULL) {
+static int SetEstr(ESTR *e,DIT *T) {
+	int i,j,k=0,nx,ny,ln;
+	T_ELMT *elmt=T->elmt;
+	char Code[3]={'d','F','s'};
+	char ch;
+	char *pt;
+	nx = T->nx;
+	ny = T->ny;
+	e->index =0;
+	e->nx = T->nx;
+	e->ny = T->ny;
+	e->n  = nx*ny;
+	e->Prompt = (char **)malloc(sizeof(char *)*nx*ny);
+	e->Field =  (int *)malloc(sizeof(int)*nx*ny);
+	e->Type  =  (int *)malloc(sizeof(int)*nx*ny);
+	e->sw    =  (int *)malloc(sizeof(int)*nx*ny);
+	e->noecho    =  (int *)malloc(sizeof(int)*nx*ny);
+	k = 0;
+	for(j=0;j<ny;j++) {
+		for(i=0;i<nx;i++){
+			e->Prompt[k] = (char *)malloc(100);
+			ln = strlen(elmt[k].fmt);
+                        ch = elmt[k].fmt[ln-1];
+			if(ch == 'd') e->Type[k]= 0;
+			else if(ch == 'F') e->Type[k]= 1;
+    			     else  e->Type[k]= 2;
+			elmt[k].fmt[ln-1]='\0';
+			pt = strstr(elmt[k].fmt,"\%");
+			sscanf(pt+1,"%d",e->Field+k);
+			*pt='\0';
+			strcpy(e->Prompt[k] , elmt[k].fmt);
+			e->sw[k]= elmt[k].sw;
+			e->noecho[k]= elmt[k].noecho;
+			k++;
+		}
+	}
+	return 1;
+}

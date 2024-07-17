@@ -1330,8 +1330,8 @@ int butnopt( void *parent,void **v,void *pt) {
   D.xo = 275;   /* Position of Dialog */ 
   D.yo = 109;
   if(parent != Parent) {
-    D.xo = 0;   /* Position of Dialog */ 
-    D.yo = 0;
+    D.xo = 20;   /* Position of Dialog */ 
+    D.yo = 40;
   }
   D.xl = 461;    /*  Length of Dialog */
   D.yl = 378;    /*  Width  of Dialog */

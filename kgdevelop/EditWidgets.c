@@ -1,6 +1,7 @@
 #include <kulina.h>
 #include "EditWidgetsCallbacks.h"
 //#include "GclrEditWidgets.c"
+extern DIALOG *Parent;
 void ModifyEditWidgetsGc(void *Tmp) { 
   DIALOG *D;
   Gclr *gc;
@@ -95,8 +96,8 @@ int EditWidgetsGroup( DIALOG *D,void **v,void *pt) {
   DIY y0 = { 
     'y',
     5,49,  
-    398,368,   
-    250,30,  
+    540,388,   
+    110,30,  
     55, 
     64, 
     1,9879771, 
@@ -134,8 +135,8 @@ int EditWidgetsGroup( DIALOG *D,void **v,void *pt) {
   butn2[0].butncode='';
   DIL h2 = { 
     'h',
-    163,377,  
-    245,410,
+    213,407,  
+    295,440,
     2,0,  
     72, 
     25, 
@@ -220,7 +221,12 @@ int EditWidgets( void *parent,void **v,void *pt) {
   D.rw = 4;
   D.xo = 638;   /* Position of Dialog */ 
   D.yo = 179;
-  D.xl = 507;    /*  Length of Dialog */
+#if 0
+  if(parent != Parent) {
+	  D.xo =0; D.yo = 0;
+  }
+#endif
+  D.xl = 550;    /*  Length of Dialog */
   D.yl = 452;    /*  Width  of Dialog */
   D.Initfun = EditWidgetsinit;    /*   init fuction for Dialog */
   D.Cleanupfun = EditWidgetscleanup;    /*   init fuction for Dialog */
