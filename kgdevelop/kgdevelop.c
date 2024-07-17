@@ -29,6 +29,8 @@ DIALOG *Dia=NULL;
 int Get_data_line();
 int Pid =-1;
 static int Xoff=7,Yoff=46,Evgay;
+int  ModifyWidget(void *Tpt);
+void * GetClickedWidget(int x,int y);
 void *RunEditWidgets(void *arg);
 int Runslidebaropt(void *arg);
 int RunOptions(void *Tmp);
@@ -173,6 +175,34 @@ int DiaCallBack(void *Tmp,void *tmp) {
 int DiaHoribarCallback(int key,int i,void *Tmp) {
    return 1;
 }
+void * GetClickedWidget(int x,int y) {
+  int ret = -1;
+  DIT *t;
+  Dlink *L;
+  DIA *d;
+  DIALOG *D = Dia;
+  d = D->d;
+  int i,n,no;
+  int x1,y1,x2,y2,xl,yl;
+  int yo ;
+  yo = Evgay - D->yo;
+
+  i=0;
+  while((t=d[i].t) != NULL){
+      x1 = D->xo+t->x1;
+      x2 = D->xo+t->x2;
+      y1 = yo+(Evgay-t->y1) ;
+      y2 = yo+(Evgay-t->y2) ;
+      xl = (x -x1)*(x2 -x);
+      yl = (y -y1)*(y2 -y);
+//      printf("(%d:%d %d:%d) \n",t->x1,t->y1,t->x2,t->y2);
+//      printf("(%d:%d %d:%d) %d %d\n",x1,y1,x2,y2,x,y);
+      if((xl> 0) &&(yl> 0) ) return t;
+      i++;
+  }
+  return NULL;
+}
+
 void Convert_gui_data(void) {
   DIALOG *D;int Yshift;int yfac;
   FILE *fp1;
@@ -1190,12 +1220,23 @@ int makeguidiaCallBack(void *Tmp,void *tmp) {
     tmp :  Pointer to KBEVENT  
    ***********************************/ 
   int ret = 0;
+  int xo,yo;
   DIALOG *D;
   KBEVENT *kbe;
+  DIT *T=NULL;
   D = (DIALOG *)Tmp;
   kbe = (KBEVENT *)tmp;
+  yo = Evgay -Dia->yo;
+  xo = Dia->xo;
   if(kbe->event ==1) {
-    if(kbe->button ==1) {
+    if(kbe->button ==3) {
+	    T = (DIT *)GetClickedWidget( kbe->x-Xoff, kbe->y-Yoff);
+//	    printf (" X: Y = %d %d : %d %d\n",kbe->x-Xoff ,kbe->y-Yoff ,xo,yo);
+	    if( T != NULL) {
+		    ModifyWidget(T);
+		    DRAW_DIALOG(Dia);
+//		    printf("Clicked Widget\n");
+	    }
     }
   }
   return ret;
@@ -7345,6 +7386,11 @@ void *Edit_t_box(void *Dtmp,void *ttmp) {
      }
      if( ln>lngth) lngth = ln;
    }
+   lngth=0;
+   for(j=0;j<nx;j++) lngth+=lnx[j];
+   lngth = (nx-1)*10+lngth;
+   lngth += (10+4);
+   T->x2 = T->x1+lngth;
    }
    return ttmp;
 }

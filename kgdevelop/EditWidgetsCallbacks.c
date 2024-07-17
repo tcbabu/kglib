@@ -9,6 +9,7 @@ void * Edit_T_box(void *Dtmp,void *ttmp);
 int Runtextboxesdata(void *arg,void *t);
 static Dlink *Glist=NULL;
 static void** Garry=NULL;
+extern DIALOG *Parent;
   static int ClearSelection ( void *Wid ) {
       int i;
       ThumbNail **Th = ( ThumbNail ** ) kgGetList ( Wid ) ;
@@ -233,6 +234,89 @@ int  EditWidgetsbrowser1callback(int item,int i,void *Tmp) {
     case 'P':
       RundefaultEdit(Tmp,(char *)"Horizontal Slide",((DIF *)T)->Wid);
       UpdateList((((DIF *)T)->Wid));
+      break;
+    default:
+      break;
+  }
+  return ret;
+}
+int  ModifyWidget(void *Tpt) {
+  int ret=1; 
+  ThumbNail **Th;
+  char code;
+  int k;
+  DIT *T= (DIT *)Tpt;
+  DIALOG *Tmp = Parent;
+  code = T->code;
+  switch(code) {
+    case 'n': 
+      Edit_Buttons(Tmp,(DIN *)T);
+      break;
+    case 'h': 
+      Edit_Buttons(Tmp,(DIN *)T);
+      break;
+    case 't': 
+      Edit_t_box(Tmp,T);
+      break;
+    case 'm':
+      RundefaultEdit(Tmp,(char *)"Message Type1",((DIM *)T)->Wid);
+      break;
+    case 'T':
+      Edit_T_box(Tmp,T);
+      break;
+    case 'M':
+      RundefaultEdit(Tmp,(char *)"Display Box",((DIM *)T)->Wid);
+      break;
+    case 'B':
+      RundefaultEdit(Tmp,(char *)"Message Type2",((DIM *)T)->Wid);
+      break;
+    case 'x':
+      RundefaultEdit(Tmp,(char *)"Selection Menu",((DIX *)T)->Wid);
+      break;
+    case 'y':
+      RundefaultEdit(Tmp,(char *)"ThumbNail Browser",((DIY *)T)->Wid);
+      break;
+    case 'c':
+      RundefaultEdit(Tmp,(char *)"Check Box",((DICH *)T)->Wid);
+      break;
+    case 'r':
+      RundefaultEdit(Tmp,(char *)"Radio Buttons",((DIRA *)T)->Wid);
+      break;
+    case 'w':
+      RundefaultEdit(Tmp,(char *)"Pulldown Menu",((DIW *)T)->Wid);
+      break;
+    case 'e':
+      RundefaultEdit(Tmp,(char *)"Scroll Menu",((DIE *)T)->Wid);
+      break;
+    case 's':
+      RundefaultEdit(Tmp,(char *)"Scroll Message",((DIS *)T)->Wid);
+      break;
+    case 'i':
+      RundefaultEdit(Tmp,(char *)"Info Box",((DII *)T)->Wid);
+      break;
+    case 'o':
+      RundefaultEdit(Tmp,(char *)"Progress Bar",((DIO *)T)->Wid);
+      break;
+    case 'v':
+      RundefaultEdit(Tmp,(char *)"Vertical Scroll Bar",((DIV *)T)->Wid);
+      break;
+    case 'z':
+      RundefaultEdit(Tmp,(char *)"Horizondal Scroll Bar",((DIZ *)T)->Wid);
+      break;
+    case 'p':
+      RundefaultEdit(Tmp,(char *)"Display Box",((DIP *)T)->Wid);
+      break;
+    case 'g':
+      RundefaultEdit(Tmp,(char *)"Drawing Area",((DIG *)T)->Wid);
+      break;
+    case 'd':
+      RundefaultEdit(Tmp,(char *)"Integer Slide",((DID *)T)->Wid);
+      break;
+    case 'f':
+      RundefaultEdit(Tmp,(char *)"Float Slide",((DIF *)T)->Wid);
+      break;
+    case 'P':
+      RundefaultEdit(Tmp,(char *)"Horizontal Slide",((DIF *)T)->Wid);
       break;
     default:
       break;
