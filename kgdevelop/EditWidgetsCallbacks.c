@@ -7,6 +7,9 @@ DIN * Edit_Buttons(void *Dtmp,DIN *h);
 void * Edit_t_box(void *Dtmp,void *ttmp);
 void * Edit_T_box(void *Dtmp,void *ttmp);
 int Runtextboxesdata(void *arg,void *t);
+void *Runselectmenu(void *Dia,void *arg);
+void *Runthumbnail(void *Dia,void *arg);
+
 static Dlink *Glist=NULL;
 static void** Garry=NULL;
 extern DIALOG *Parent;
@@ -245,6 +248,8 @@ int  ModifyWidget(void *Tpt) {
   ThumbNail **Th;
   char code;
   int k;
+  DIX *X;
+  DIY *Y;
   DIT *T= (DIT *)Tpt;
   DIALOG *Tmp = Parent;
   code = T->code;
@@ -271,10 +276,16 @@ int  ModifyWidget(void *Tpt) {
       RundefaultEdit(Tmp,(char *)"Message Type2",((DIM *)T)->Wid);
       break;
     case 'x':
-      RundefaultEdit(Tmp,(char *)"Selection Menu",((DIX *)T)->Wid);
+      X=(DIX *)T;
+//      RundefaultEdit(Tmp,(char *)"Selection Menu",((DIX *)T)->Wid);
+      Runselectmenu(Tmp,X);
+      X->y2 = X->y1 - abs(X->y2 -X->y1);
       break;
     case 'y':
-      RundefaultEdit(Tmp,(char *)"ThumbNail Browser",((DIY *)T)->Wid);
+      Y=(DIY *)T;
+//      RundefaultEdit(Tmp,(char *)"ThumbNail Browser",((DIY *)T)->Wid);
+      Runthumbnail(Tmp,Y);
+      Y->y2 = Y->y1 - abs(Y->y2 -Y->y1);
       break;
     case 'c':
       RundefaultEdit(Tmp,(char *)"Check Box",((DICH *)T)->Wid);

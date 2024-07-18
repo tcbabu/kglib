@@ -79,7 +79,7 @@ void  selectmenubrowser2init(DICH *C,void *pt) {
 #if 1
   for(i=0;i<4;i++) th[i]->sw=0;
   if(X->itemhi != 0) th[0]->sw=1;
-  if(X->bkgr != 0) th[0]->sw=1;
+  if(X->bkgr != 0) th[1]->sw=1;
   if(X->bordr != 0) th[2]->sw=1;
   if(X->hide != 0) th[3]->sw=1;
 #endif
@@ -335,6 +335,12 @@ int selectmenu( void *parent,void **v,void *pt) {
   D.yo = 137;
   D.xl = 445;    /*  Length of Dialog */
   D.yl = 298;    /*  Width  of Dialog */
+  if(parent==Parent) {
+     int xres,yres; 
+     kgDisplaySize(&xres,&yres); 
+     D.xo = (xres - D.xl)*0.5;
+     D.yo = (yres - D.yl)*0.25;
+  }
   D.Initfun = selectmenuinit;    /*   init fuction for Dialog */
   D.kbattn = 0;    /*  1 for drawing keyborad attention */
   D.butattn = 0;    /*  1 for drawing button attention */
@@ -395,7 +401,7 @@ int selectmenu( void *parent,void **v,void *pt) {
   kgCleanUi(&D);
   return ret;
 }
-void *Runselectmenu(void *arg) {
+void *Runselectmenu(void *Dia,void *arg) {
 /*************************************************
 
     Text_Box1  6 data values
@@ -427,13 +433,13 @@ void *Runselectmenu(void *arg) {
    void *pt=arg; /* pointer to send any extra information */
    X = (DIX *)arg;
    v0 = X->x2-X->x1;
-   v1 = X->y2-X->y1;
+   v1 = abs(X->y2-X->y1);
    v2 = X->lngth;
    v3 = X->width;
    v4 = X->offset;
    v5 = X->w;
    strcpy(v8,X->Wid);
-   selectmenu(Parent,v,pt );
+   selectmenu(Dia,v,pt );
    X->x2=X->x1+v0;
    X->y2=X->y1+v1;
    X->lngth = v2;

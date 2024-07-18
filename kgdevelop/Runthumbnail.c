@@ -320,6 +320,12 @@ int thumbnail( void *parent,void **v,void *pt) {
   D.yo = 137;
   D.xl = 447;    /*  Length of Dialog */
   D.yl = 340;    /*  Width  of Dialog */
+  if(parent==Parent)  {
+     int xres,yres; 
+     kgDisplaySize(&xres,&yres); 
+     D.xo = (xres - D.xl)*0.5;
+     D.yo = (yres - D.yl)*0.25;
+  }
   D.Initfun = thumbnailinit;    /*   init fuction for Dialog */
   D.kbattn = 0;    /*  1 for drawing keyborad attention */
   D.butattn = 0;    /*  1 for drawing button attention */
@@ -376,7 +382,7 @@ int thumbnail( void *parent,void **v,void *pt) {
   kgCleanUi(&D);
   return ret;
 }
-void *Runthumbnail(void *arg) {
+void *Runthumbnail(void *Dia,void *arg) {
 /*************************************************
 
     Text_Box1  7 data values
@@ -385,7 +391,7 @@ void *Runthumbnail(void *arg) {
     Text_Box2  1 data values
 
 *************************************************/
-   DIX *X;
+   DIY *X;
    int   v0 = 1;
    int   v1 = 1;
    int   v2 = 1;
@@ -408,16 +414,16 @@ void *Runthumbnail(void *arg) {
    v[8]=(void *)(&v8);
    v[9]=(void *)(v9);
    void *pt=arg; /* pointer to send any extra information */
-   X = (DIX *)arg;
+   X = (DIY *)arg;
    v0 = X->x2-X->x1;
-   v1 = X->y2-X->y1;
+   v1 = abs(X->y2-X->y1);
    v2 = X->width;
    v3 = X->xgap;
    v4 = X->ygap;
    v5 = X->offset;
    v6 = X->w;
    strcpy(v9,X->Wid);
-   thumbnail(Parent,v,pt );
+   thumbnail(Dia,v,pt );
    X->x2=X->x1+v0;
    X->y2=X->y1+v1;
    X->width = v2;

@@ -657,14 +657,18 @@ int buttondata( void *parent,void **v,void *pt) {
   D.rw = 4;
   D.xo = 200;   /* Position of Dialog */ 
   D.yo = 100;
+  D.xl = 485;    /*  Length of Dialog */
+  D.yl = 420;    /*  Width  of Dialog */
   if(parent != Parent) {
     D.xo = 0;   /* Position of Dialog */ 
     D.yo = 0;
   }
-  D.xl = 533;    /*  Length of Dialog */
-  D.xl = 485;    /*  Length of Dialog */
-  D.yl = 314;    /*  Width  of Dialog */
-  D.yl = 420;    /*  Width  of Dialog */
+  else {
+     int xres,yres; 
+     kgDisplaySize(&xres,&yres); 
+     D.xo = (xres - D.xl)*0.5;
+     D.yo = (yres - D.yl)*0.25;
+  }
   D.Initfun = buttondatainit;    /*   init fuction for Dialog */
   D.Cleanupfun = buttondatacleanup;    /*   init fuction for Dialog */
   D.kbattn = 0;    /*  1 for drawing keyborad attention */

@@ -152,7 +152,7 @@ int edittextboxesGroup( DIALOG *D,void **v,void *pt) {
     182,143,  
     1,0  
   };
-  strncpy(m4.msg,(char *)"!w32!f21Text Bo Boxx/Table  Type",499);
+  strncpy(m4.msg,(char *)"!w32!f21Text Box/Table  Type",499);
   strcpy(m4.Wid,(char *)"edittextMsg1");
   m4.item = -1;
   dtmp = D->d;
@@ -244,11 +244,17 @@ int edittextboxes( void *parent,void **v,void *pt) {
   D.rw = 4;
   D.xo = 585;   /* Position of Dialog */ 
   D.yo = 322;
+  D.xl = 478;    /*  Length of Dialog */
+  D.yl = 246;    /*  Width  of Dialog */
   if(parent != Parent) {
 	  D.xo=0;D.yo=200;
   }
-  D.xl = 478;    /*  Length of Dialog */
-  D.yl = 246;    /*  Width  of Dialog */
+  else {
+     int xres,yres; 
+     kgDisplaySize(&xres,&yres); 
+     D.xo = (xres - D.xl)*0.5;
+     D.yo = (yres - D.yl)*0.25;
+  }
   D.Initfun = edittextboxesinit;    /*   init fuction for Dialog */
   D.Cleanupfun = edittextboxescleanup;    /*   init fuction for Dialog */
   D.kbattn = 0;    /*  1 for drawing keyborad attention */

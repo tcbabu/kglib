@@ -1329,14 +1329,18 @@ int butnopt( void *parent,void **v,void *pt) {
   D.rw = 4;
   D.xo = 275;   /* Position of Dialog */ 
   D.yo = 109;
+  D.xl = 440;    /*  Length of Dialog */
+  D.yl = 407;    /*  Width  of Dialog */
   if(parent != Parent) {
     D.xo = 20;   /* Position of Dialog */ 
     D.yo = 40;
   }
-  D.xl = 461;    /*  Length of Dialog */
-  D.yl = 378;    /*  Width  of Dialog */
-  D.xl = 440;    /*  Length of Dialog */
-  D.yl = 407;    /*  Width  of Dialog */
+  else {
+     int xres,yres; 
+     kgDisplaySize(&xres,&yres); 
+     D.xo = (xres - D.xl)*0.5;
+     D.yo = (yres - D.yl)*0.25;
+  }
   D.Initfun = butnoptinit;    /*   init fuction for Dialog */
   D.Cleanupfun = butnoptcleanup;    /*   init fuction for Dialog */
   D.kbattn = 0;    /*  1 for drawing keyborad attention */

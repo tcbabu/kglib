@@ -11032,7 +11032,9 @@ int _uiMake_Y(DIY *y)
    bwsr->y2 =y->y2+y1;
   if(y->hide!=1) {
    CHECKLIMITS(y);
-   if(y->Bimg== NULL) y->Bimg=kgGetBackground(D,bwsr->x1,bwsr->y1,bwsr->x2,bwsr->y2 );
+   if(y->Bimg== NULL) {
+	   y->Bimg=kgGetBackground(D,bwsr->x1,bwsr->y1,bwsr->x2,bwsr->y2 );
+   }
    bwsr->df=*(y->df);
    bwsr->size = y->ny;
    bwsr->xb= bwsr->x2;
@@ -18407,7 +18409,7 @@ void _uiPutYmenu( DIY *y){
       br->pos=pos;
       pos= (pos/y->nx)*y->nx;
       menu=list+pos;
-      _dvrect_fill(WC(D),(br->x1+xoffset),(br->y1+xoffset),(br->x2-xoffset-w), (br->y2-xoffset),D->gc.twin_fill);
+      if(y->bkgr==1) _dvrect_fill(WC(D),(br->x1+xoffset),(br->y1+xoffset),(br->x2-xoffset-w), (br->y2-xoffset),D->gc.twin_fill);
       if(y->bordr==1) {
       _dv_draw_bound(D,(br->x1+xoffset),(br->y1+xoffset),(br->x2-xoffset-w), (br->y2-xoffset),D->gc.twin_bodr);
       _dv_draw_bound(D,(br->x1+xoffset+1),(br->y1+xoffset+1),(br->x2-xoffset-w-1), (br->y2-xoffset-1),D->gc.twin_bodr);
