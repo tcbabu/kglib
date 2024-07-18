@@ -1,5 +1,6 @@
 #include <kulina.h>
 extern void *Parent;
+void *RunEditThumbnails(void *arg,int items,void *Th);
 int  checkboxtextbox1callback(int key,int i,void *Tmp) {
   DIALOG *D;DIT *T;T_ELMT *e; 
   int ret=1;
@@ -256,6 +257,12 @@ int checkbox( void *parent,void **v,void *pt) {
   D.yo = 137;
   D.xl = 441;    /*  Length of Dialog */
   D.yl = 332;    /*  Width  of Dialog */
+  if(parent ==Parent ) {
+     int xres,yres; 
+     kgDisplaySize(&xres,&yres); 
+     D.xo = (xres - D.xl)*0.5;
+     D.yo = (yres - D.yl)*0.25;
+  }
   D.Initfun = NULL;
   D.kbattn = 0;    /*  1 for drawing keyborad attention */
   D.butattn = 0;    /*  1 for drawing button attention */
@@ -316,7 +323,7 @@ int checkbox( void *parent,void **v,void *pt) {
   kgCleanUi(&D);
   return ret;
 }
-void *Runcheckbox(void *arg) {
+void *Runcheckbox(void *Dia,void *arg) {
 /*************************************************
 
     Text_Box1  7 data values
@@ -347,19 +354,20 @@ void *Runcheckbox(void *arg) {
    void *pt=arg; /* pointer to send any extra information */
    X = (DIX *)arg;
    v0 = X->x2-X->x1;
-   v1 = X->y2-X->y1;
+   v1 = abs(X->y2-X->y1);
    v2 = X->lngth;
    v3 = X->width;
-   v4 = X->ny;
+   v4 = X->ny*X->nx;
    v5 = X->offset;
    v6 = X->w;
    strcpy(v8,X->Wid);
-   checkbox(Parent,v,pt );
+   checkbox(Dia,v,pt );
    X->x2=X->x1+v0;
    X->y2=X->y1+v1;
    X->lngth = v2;
    X->width = v3;
    X->ny = v4;
+   X->nx = 1;
    X->offset=v5;
    if(v5==0) v5=2;
    X->w = v6;

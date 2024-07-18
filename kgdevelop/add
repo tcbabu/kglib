@@ -1,4 +1,4 @@
-  else {
+  if(parent ==Parent ) {
      int xres,yres; 
      kgDisplaySize(&xres,&yres); 
      D.xo = (xres - D.xl)*0.5;

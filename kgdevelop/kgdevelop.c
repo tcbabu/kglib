@@ -45,7 +45,7 @@ char **RuneditStrings(void *parent,char **v);
 ThumbNail **RuneditThumbNails(void *parent,ThumbNail **th);
 void *Runselectmenu(void *Dia,void *arg);
 void *Runthumbnail(void *Dia,void *arg);
-void *Runcheckbox(void *arg);
+void *Runcheckbox(void *Dia,void *arg);
 void *Runradiobuttons(void *arg);
 void ChangeControlSize(DIALOG *D);
 void ChangeControlPos(DIALOG *D);
@@ -8030,7 +8030,7 @@ DIRA * Making_RadioButtons(DIALOG *D) {
    W->xgap=8;
    W->ygap=0;
    sprintf(W->Wid,"%-sWidget%-d",DiaName,++WidCount);
-   Runcheckbox(W);
+   Runcheckbox(Parent,W);
    W->prompt=(char *)" ";
    W->size = 2;
    W->df = (int *)malloc(sizeof(int));
@@ -8098,7 +8098,7 @@ DICH * Making_CheckBox(DIALOG *D) {
    sprintf(W->Wid,"%-sWidget%-d",DiaName,++WidCount);
    W->xgap=8;
    W->ygap=0;
-   Runcheckbox(W);
+   Runcheckbox(Parent,W);
    W->prompt=(char *)" ";
    W->size = 2;
    W->df = (int *)malloc(sizeof(int));

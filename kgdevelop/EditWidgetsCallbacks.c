@@ -9,6 +9,9 @@ void * Edit_T_box(void *Dtmp,void *ttmp);
 int Runtextboxesdata(void *arg,void *t);
 void *Runselectmenu(void *Dia,void *arg);
 void *Runthumbnail(void *Dia,void *arg);
+void *Runcheckbox(void *Dia,void *arg);
+void *Runradiobuttons(void *Dia,void *arg);
+void *RunEditThumbnails(void *arg,int items,void *Th);
 
 static Dlink *Glist=NULL;
 static void** Garry=NULL;
@@ -250,6 +253,9 @@ int  ModifyWidget(void *Tpt) {
   int k;
   DIX *X;
   DIY *Y;
+  DICH *C;
+  DIRA *R;
+  DIS  *S;
   DIT *T= (DIT *)Tpt;
   DIALOG *Tmp = Parent;
   code = T->code;
@@ -288,10 +294,18 @@ int  ModifyWidget(void *Tpt) {
       Y->y2 = Y->y1 - abs(Y->y2 -Y->y1);
       break;
     case 'c':
-      RundefaultEdit(Tmp,(char *)"Check Box",((DICH *)T)->Wid);
+      C = (DICH *)T;
+//      RundefaultEdit(Tmp,(char *)"Check Box",((DICH *)T)->Wid);
+      Runcheckbox(Tmp,C);
+      C->y2 = C->y1 - abs(C->y2 -C->y1);
+      kgSetList(C,(void **)RunEditThumbnails(Tmp,C->ny,(void*)kgGetList(C)));
       break;
     case 'r':
-      RundefaultEdit(Tmp,(char *)"Radio Buttons",((DIRA *)T)->Wid);
+      R = (DIRA *) T;
+//      RundefaultEdit(Tmp,(char *)"Radio Buttons",((DIRA *)T)->Wid);
+      Runcheckbox(Tmp,R);
+      R->y2 = R->y1 - abs(R->y2 -R->y1);
+      kgSetList(R,(void **)RunEditThumbnails(Tmp,R->ny,(void*)kgGetList(R)));
       break;
     case 'w':
       RundefaultEdit(Tmp,(char *)"Pulldown Menu",((DIW *)T)->Wid);

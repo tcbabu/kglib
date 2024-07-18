@@ -18410,6 +18410,7 @@ void _uiPutYmenu( DIY *y){
       pos= (pos/y->nx)*y->nx;
       menu=list+pos;
       if(y->bkgr==1) _dvrect_fill(WC(D),(br->x1+xoffset),(br->y1+xoffset),(br->x2-xoffset-w), (br->y2-xoffset),D->gc.twin_fill);
+      else _dvrect_fill(WC(D),(br->x1+xoffset),(br->y1+xoffset),(br->x2-xoffset-w), (br->y2-xoffset),D->gc.fill_clr);
       if(y->bordr==1) {
       _dv_draw_bound(D,(br->x1+xoffset),(br->y1+xoffset),(br->x2-xoffset-w), (br->y2-xoffset),D->gc.twin_bodr);
       _dv_draw_bound(D,(br->x1+xoffset+1),(br->y1+xoffset+1),(br->x2-xoffset-w-1), (br->y2-xoffset-1),D->gc.twin_bodr);
@@ -19927,15 +19928,16 @@ void _uiDrawDialogY(DIY *y) {
 //   _dvrect_fill(WC(D), br->x1+offset,br->y1+offset,br->x2-offset,br->y2-offset,gc.fill_clr);
    if(y->Bimg== NULL) y->Bimg=kgGetBackground(D,br->x1,br->y1,br->x2,br->y2 );
    else kgRestoreImage(D,y->Bimg,br->x1,br->y1,(br->x2-br->x1+1),(br->y2-br->y1+1));
-   if((D->DrawBkgr!=0)&&(y->bkgr==1)) {
-#if 0
-    _dvrect_fill(WC(D), br->x1+(offset),br->y1+(offset),br->x2-(offset), br->y2-(offset),gc.twin_fill);
-    _dvbordertype0(D, br->x1+(offset),br->y1+(offset),br->x2-(offset), br->y2-(offset),gc.twin_bodr);
-//    _dvbordertype4(D, br->x1+(offset),br->y1+(offset),br->x2-(offset), br->y2-(offset));
-#else
+//   if((D->DrawBkgr!=0)&&(y->bkgr==1)) {
+   if((D->DrawBkgr!=0)) {
+    if((y->bkgr==1)) {
     img = kgBorderedRectangle(br->x2-br->x1,br->y2-br->y1,gc.twin_fill,0.0);
     kgImage(D,img, br->x1,br->y1,br->x2-br->x1,br->y2-br->y1,0.0,1.0);
-#endif
+    }
+    else {
+    img = kgBorderedRectangle(br->x2-br->x1,br->y2-br->y1,gc.fill_clr,0.0);
+    kgImage(D,img, br->x1,br->y1,br->x2-br->x1,br->y2-br->y1,0.0,1.0);
+    }
    }
    if(y->nitems!=0) {
     if(br->scroll) {
