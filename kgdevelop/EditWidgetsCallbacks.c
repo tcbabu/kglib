@@ -247,9 +247,10 @@ int  EditWidgetsbrowser1callback(int item,int i,void *Tmp) {
   return ret;
 }
 int  ModifyWidget(void *Tpt) {
-  int ret=1; 
+  int ret=1,j; 
   ThumbNail **Th;
   char code;
+  void **Thret=NULL;
   int k;
   DIX *X;
   DIY *Y;
@@ -298,14 +299,22 @@ int  ModifyWidget(void *Tpt) {
 //      RundefaultEdit(Tmp,(char *)"Check Box",((DICH *)T)->Wid);
       Runcheckbox(Tmp,C);
       C->y2 = C->y1 - abs(C->y2 -C->y1);
-      kgSetList(C,(void **)RunEditThumbnails(Tmp,C->ny,(void*)kgGetList(C)));
+      Thret = (void **)RunEditThumbnails(Tmp,C->ny,(void*)kgGetList(C));
+      j=0;while(Thret[j]!= NULL) j++;
+      C->nx=1;
+      C->ny = j;
+      C->list = Thret;
       break;
     case 'r':
       R = (DIRA *) T;
 //      RundefaultEdit(Tmp,(char *)"Radio Buttons",((DIRA *)T)->Wid);
       Runcheckbox(Tmp,R);
       R->y2 = R->y1 - abs(R->y2 -R->y1);
-      kgSetList(R,(void **)RunEditThumbnails(Tmp,R->ny,(void*)kgGetList(R)));
+      Thret = (void **)RunEditThumbnails(Tmp,R->ny,(void*)kgGetList(R));
+      j=0;while(Thret[j]!= NULL) j++;
+      R->nx=1;
+      R->ny = j;
+      R->list = Thret;
       break;
     case 'w':
       RundefaultEdit(Tmp,(char *)"Pulldown Menu",((DIW *)T)->Wid);

@@ -12,12 +12,12 @@ int  checkboxtextbox1callback(int key,int i,void *Tmp) {
 int  checkboxbrowser1callback(int item,int i,void *Tmp) {
   ThumbNail **th;
   DICH *C;DIALOG *D;void *pt; 
-  DIX *X;
+  DICH *X;
   int ret=1; 
   int k,*sw;
   D = (DIALOG *)Tmp;
   pt = D->pt;
-  X = (DIX *)pt;
+  X = (DICH *)pt;
   C = (DICH *)kgGetWidget(Tmp,i);
   th = (ThumbNail **)C->list;
 #if 1
@@ -35,9 +35,9 @@ int  checkboxbrowser1callback(int item,int i,void *Tmp) {
 void  checkboxbrowser1init(DICH *C,void *pt) {
   ThumbNail **th;
   char **menu=NULL;int *sw=NULL;void **xpm; 
-  DIX *X;
+  DICH *X;
   int type,i;
-  X = (DIX *)pt;
+  X = (DICH *)pt;
   th = (ThumbNail **)C->list;
 #if 1
   for(i=0;i<4;i++) th[i]->sw=0;
@@ -146,7 +146,7 @@ int checkboxGroup( DIALOG *D,void **v,void *pt) {
     (int *)v[7], 
     NULL, 
     NULL, 
-    NULL,NULL, /* *args, callback */
+    NULL,checkboxbrowser1callback, /* *args, callback */
     6,  /* Border Offset  */
      22,  /* Scroll width  */
      0,  /* Type  */
@@ -222,6 +222,7 @@ int checkboxGroup( DIALOG *D,void **v,void *pt) {
   d[1].t = (DIT *)malloc(sizeof(DICH));
   *d[1].c = c1;
   d[1].c->item = -1;
+  checkboxbrowser1init(d[1].c,pt);
   d[2].t = (DIT *)malloc(sizeof(DILN));
   *d[2].H = H2;
   d[2].H->item = -1;
@@ -331,7 +332,7 @@ void *Runcheckbox(void *Dia,void *arg) {
     Text_Box2  1 data values
 
 *************************************************/
-   DIX *X;
+   DICH *X;
    int   v0 = 1;
    int   v1 = 1;
    int   v2 = 1;
@@ -352,7 +353,7 @@ void *Runcheckbox(void *Dia,void *arg) {
    v[7]=(void *)(&v7);
    v[8]=(void *)(v8);
    void *pt=arg; /* pointer to send any extra information */
-   X = (DIX *)arg;
+   X = (DICH *)arg;
    v0 = X->x2-X->x1;
    v1 = abs(X->y2-X->y1);
    v2 = X->lngth;
@@ -371,6 +372,7 @@ void *Runcheckbox(void *Dia,void *arg) {
    X->offset=v5;
    if(v5==0) v5=2;
    X->w = v6;
+//   printf("Bkgr: %d Bordr: %d\n",X->bkgr,X->bordr);
    strcpy(X->Wid,v8);
    return NULL;
 }

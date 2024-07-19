@@ -6,6 +6,9 @@ static int Nitems=0;
 static DIY *Y=NULL;
 static DIM *M=NULL;
 static char Buf[200];
+extern DIALOG *Parent;
+static DIALOG *Dtmp;
+void *RunAddItem(void *arg,char *Prompt);
 
 ThumbNail **MakeStringThumbNails(char **Str,int l,int w);
 //extern DIALOG *Parent;
@@ -58,9 +61,13 @@ ThumbNail **MakeStringThumbNails(char **Str,int l,int w);
       DIY *Y = (DIY *)Wid;
       void *pt;
       char *Str[2];
+      char *cpt;
       i = 0;
       Buf[0]='\0';
-      gscanf(NULL,(char *)"String To Add:%30s",Buf);
+//      gscanf(Parent,(char *)"String To Add:%30s",Buf);
+      cpt = (char *)RunAddItem((void *)Dtmp,(char *)"New Brwoser Item");
+      strcpy(Buf,cpt);
+      free(cpt);
       Str[0]=Buf;
       Str[1]=NULL;
       Tadd = (ThumbNail **) MakeStringThumbNails(Str,Y->lngth+Y->xgap,Y->width);
@@ -74,10 +81,12 @@ ThumbNail **MakeStringThumbNails(char **Str,int l,int w);
 	  Dadd(Glist,Tadd[i]);
           i++;
       }
+      if(Tadd!=NULL) free(Tadd);
       Resetlink(Glist);
-      free(Th);
+      if(Th != NULL) free(Th);
       Th = (ThumbNail **)malloc(sizeof(ThumbNail *)*(Dcount(Glist)+1));
       i=0;
+      Resetlink(Glist);
       while( (pt= Getrecord(Glist)) != NULL) {
 	      Th[i++]= (ThumbNail *)pt;
       }
@@ -227,6 +236,7 @@ int  EditThumbnailsbutton1callback(int butno,int i,void *Tmp) {
   int n,ret =0; 
   void *pt= (void *)kgGetArgPointer(Tmp); // Change as required
   D = (DIALOG *)Tmp;
+  Dtmp = D;
   B = (DIN *)kgGetWidget(Tmp,i);
   n = B->nx*B->ny;
   switch(butno) {
@@ -253,6 +263,7 @@ int  EditThumbnailssplbutton1callback(int butno,int i,void *Tmp) {
   DIALOG *D;DIL *B; 
   int n,ret=1,j; 
   ThumbNail **Th= (ThumbNail **)kgGetList(Y);
+  ThumbNail **Thret=NULL;
   void *pt= (void *)kgGetArgPointer(Tmp); // Change as required
   void **ptmp= (void **)pt;
   int *nitems = (int *)ptmp[0];
@@ -262,9 +273,17 @@ int  EditThumbnailssplbutton1callback(int butno,int i,void *Tmp) {
   j=0;
   while(Th[j]!=NULL) j++;
   if(j!= *nitems) {
-    ret = kgWarnMenu(NULL,0,0,(char *)"Items Not Matching !!!",0);
+    ret = kgWarnMenu(Parent,100,100,(char *)"Items Not Matching !!!!!! (But you may..)",0);
   }
-  ptmp[1]=(void *)Th;
+  if(ret) {
+    Thret = (ThumbNail **)malloc(sizeof(ThumbNail *)*(j+1));
+    j=0;
+    while(Th[j]!=NULL) {Thret[j]=Th[j];j++;}
+    Thret[j]=NULL;
+    Th[0]=NULL;
+    kgSetList(Y,(void **)Th);
+    ptmp[1]=(void *)Thret;
+  }
   switch(butno) {
     case 1: 
       break;
