@@ -6556,7 +6556,7 @@ void transch(int c) {
 //   fid = kgInitImage((int)(xsize),ysize,2);
           fid = kgInitImage ( ( int ) ( xsize ) , ysize , RESIZE ) ;
           kgUserFrame ( fid , 0. , 0. , ( float ) xsize , ( float ) ysize ) ;
-          th = FontSize*1.1;
+          th = FontSize*1.6;
           tw = FontSize;
           kgTextFont ( fid , Font ) ;
           kgTextSize ( fid , th , tw , GAP*tw ) ;
