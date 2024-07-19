@@ -6556,13 +6556,13 @@ void transch(int c) {
 //   fid = kgInitImage((int)(xsize),ysize,2);
           fid = kgInitImage ( ( int ) ( xsize ) , ysize , RESIZE ) ;
           kgUserFrame ( fid , 0. , 0. , ( float ) xsize , ( float ) ysize ) ;
-          th = FontSize*1.6;
+          th = FontSize*1.75;
           tw = FontSize;
           kgTextFont ( fid , Font ) ;
           kgTextSize ( fid , th , tw , GAP*tw ) ;
           kgTextColor ( fid , char_clr ) ;
           xx = 0.0;
-          yy = 0.5*FontSize;
+          yy = 0.3*FontSize;
           i = 0;
           while ( str [ i ] >= ' ' ) {
               kgMove2f ( fid , xx , yy ) ;
