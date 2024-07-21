@@ -1600,7 +1600,7 @@ void  *kgCreateSubWindow (void *Tmp) {
   fixpos=D->Fixpos;NoTaskBar=D->NoTaskBar;
   StackPos=D->StackPos;ShapeXpm=D->Shapexpm;
   Resize = D->Resize;
-  hints.flags = 2;   // Specify that we're changing the window decorations.
+  hints.flags = 2;   // Specify that we are changing the window decorations.
   hints.decorations = dec;  // 0 (false) means that window decorations should go bye-bye.
   
   wc = (kgWC *)Malloc(sizeof(kgWC));
@@ -2081,7 +2081,7 @@ void  *kgCreateWindow (void *Tmp) {
   StackPos=D->StackPos;ShapeXpm=D->Shapexpm;
   Resize = D->Resize;
   NoWinMngr=D->NoWinMngr;
-  hints.flags = 2;   // Specify that we're changing the window decorations.
+  hints.flags = 2;   // Specify that we are changing the window decorations.
   hints.decorations = dec;  // 0 (false) means that window decorations should go bye-bye.
   wc = (kgWC *)Malloc(sizeof(kgWC));
   D->wc= wc;
@@ -2470,7 +2470,7 @@ void  *ui_create_window(int xpos,int ypos,int xres,int yres,char *title,int dec,
                 unsigned long   status;
                 } Hints;
    Hints   hints;
-   hints.flags = 2;   // Specify that we're changing the window decorations.
+   hints.flags = 2;   // Specify that we are changing the window decorations.
    hints.decorations = dec;  // 0 (false) means that window decorations should go bye-bye.
 /* End of Additions */
 //  Pixmap Pix;
@@ -6626,7 +6626,7 @@ void kgImage_o(void *Dtmp,void *tmp,int x0,int y0,int width,int height,float tra
           }
           else printf("ReadPngImage: Image NULL\n");
        }
-       else {
+//       else {
 #else
        {
 #endif
