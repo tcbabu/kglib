@@ -12105,8 +12105,11 @@ void transch(int c) {
   int _ui_processtableboxpress ( TX_STR *t , KBEVENT kbe ) {
       int button , col , row , box , ln , x , y , OK = 0 , pos , curbox;
       int FontSize;
+      int Active;
+      int k;
       DIALOG *D;
       T_ELMT *elmt;
+      DIT *T= (DIT *)t->T;
       button = kbe.button;
 //  tit = t->tit;
       elmt = t->elmt;
@@ -12115,6 +12118,15 @@ void transch(int c) {
       x = kbe.x;
       y = kbe.y;
       box = 0;
+      Active =0;
+      k=0;
+      for ( row = 0; row < t->ny; row++ ) {
+          for ( col = 0; col < t->nx; col++ ) {
+		   if(t->elmt [ k ] .sw == 1) {Active =1; break;}
+		   k++;
+	  }
+      }
+      if(Active ==0) return -1;
       for ( row = 0; row < t->ny; row++ ) {
           for ( col = 0; col < t->nx; col++ ) {
               if ( _uiCheckBox ( kbe , elmt [ box ] .x1 , elmt [ box ] .y1 , elmt [ box ] .x2 , elmt [ box ] .y2 ) )  \
@@ -12125,11 +12137,19 @@ void transch(int c) {
                   _ui_cleantablecursor ( t ) ;
                   curbox = row*t->nx+col;
                   while ( t->elmt [ curbox ] .sw != 1 ) {
+#if 0 //Original
                       col = ( col+1 ) %t->nx;
                       curbox = row*t->nx+col;
+#else
+		      curbox = ( curbox+1 );
+		      if(curbox >= (t->nx*t->ny)) curbox =0;
+#endif
                   }
-                  t->col = col;
-                  t->row = row;
+		  
+                  t->col =curbox%t->nx;
+                  t->row = curbox/t->nx;
+		  T->col = t->col;
+		  T->row = t->row;
                   if ( pos <= ln ) {
 //          if(pos >= t->ln[box])pos = t->ln[box]-1;
                       if ( pos >= elmt [ box ] .ln ) pos = elmt [ box ] .ln-1;
@@ -12418,9 +12438,21 @@ void transch(int c) {
   int _ui_processTablekey ( TX_STR *t , KBEVENT kbe , int code ) {
       int key , col , row , curbox , ln;
       T_ELMT *elmt;
+      int Active=0;
+      DIT *T=(DIT *)t->T;
+      int k;
       key = kbe.key;
 //  tit = t->tit;
       elmt = t->elmt;
+      Active =0;
+      k=0;
+      for ( row = 0; row < t->ny; row++ ) {
+          for ( col = 0; col < t->nx; col++ ) {
+		   if(t->elmt [ k ] .sw == 1) {Active =1; break;}
+		   k++;
+	  }
+      }
+      if(Active ==0) return -1;
       if ( ui_Uparrow ( key ) ) {
           row = t->row;
           row = ( row-1 ) ;
@@ -12428,12 +12460,23 @@ void transch(int c) {
               col = t->col;
               curbox = row*t->nx+col;
               while ( t->elmt [ curbox ] .sw != 1 ) {
+#if 0  // original
                   col = ( col+1 ) %t->nx;
                   curbox = row*t->nx+col;
+#else
+		  row = row -1;
+		  if(row >= 0) curbox = row*t->nx+col;
+		  else {
+		  uiUpdateOn ( t->D ) ;
+                  return SCROLL_UP;
+		  }
+#endif
               }
               _ui_cleantablecursor ( t ) ;
-              t->col = col;
-              t->row = row;
+              t->col = curbox%t->nx;
+              t->row = curbox/t->nx;
+	      T->col = t->col;
+	      T->row = t->row;
               _ui_drawtablecursor ( t ) ;
               uiUpdateOn ( t->D ) ;
               return -1;
@@ -12450,12 +12493,23 @@ void transch(int c) {
               col = t->col;
               curbox = row*t->nx+col;
               while ( t->elmt [ curbox ] .sw != 1 ) {
+#if 0 // org
                   col = ( col+1 ) %t->nx;
                   curbox = row*t->nx+col;
+#else
+		  row = row +1;
+		  if(row < t->ny) curbox = row*t->nx+col;
+		  else {
+		  uiUpdateOn ( t->D ) ;
+                  return SCROLL_DOWN;
+		  }
+#endif
               }
               _ui_cleantablecursor ( t ) ;
-              t->col = col;
-              t->row = row;
+              t->col = curbox%t->nx;
+              t->row = curbox/t->nx;
+	      T->col = t->col;
+	      T->row = t->row;
               _ui_drawtablecursor ( t ) ;
               uiUpdateOn ( t->D ) ;
               return -1;
@@ -14140,6 +14194,7 @@ void transch(int c) {
       unsigned int tempc , tempf , tempt , tempff;
       char *str;
       int type = T->type;
+      int curpos=0;
       kgWC *wc;
       kgDC *dc;
       D = T->D;
@@ -14176,6 +14231,14 @@ void transch(int c) {
               elmt [ i ] .cursor = 0;
               elmt [ i ] .startchar = 0;
           }
+	  curpos=-1;
+          for ( i = 0; i < n; i++ ) { 
+		  if (T->elmt[i].sw == 1) {curpos=i; break;}
+	  }
+	  if(curpos >=0 ) {
+		  tx->col = curpos%tx->nx;
+		  tx->row =  curpos/tx->nx;
+	  }
           for ( i = 0; i < nx; i++ ) {
               lng = 0;
               for ( j = 0; j < ny; j++ ) {

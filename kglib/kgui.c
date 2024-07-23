@@ -7137,6 +7137,18 @@
       if ( ret ) D->CurWid = Wid;
       return ret;
   }
+int  kgSetAttnWidget(void *Tmp,void *Wid){
+	int id = kgGetWidgetId((DIALOG *)Tmp,Wid);
+	return  kgSetCurrentWidget (Tmp,id);
+}
+int  kgSetDefaultAttnWidget(void *Tmp,void *Wid){
+/*
+   to be used only in Ui init function 
+   to set the input attention
+*/
+	int id = kgGetWidgetId((DIALOG *)Tmp,Wid);
+	return  kgSetDefaultWidget (Tmp,id);
+}
   int kgSetDefaultWidget ( void *Tmp , int Wid ) {
 /*
    to be used only in Ui init function 
@@ -9720,4 +9732,89 @@
   }
   void *kgGetArgPointer ( void *Tmp ) {
       return ( ( DIALOG * ) Tmp )->pt;
+  }
+  int kgSetOnTableCell(void *Tmp,int col,int row) {
+	  DIT *T= (DIT *) Tmp;
+	  T_ELMT *E = T->elmt;
+	  if(T->code != 'T') {
+		  fprintf(stderr,"Not a table\n");
+		  return 0;
+	  }
+	  if( (col < 0) || (col>= T->nx)) {
+		  fprintf(stderr,"invalid cell\n");
+		  return 0;
+	  }
+	  if( (row < 0) || (row>= T->ny)) {
+		  fprintf(stderr,"invalid cell\n");
+		  return 0;
+	  }
+	  E[row*T->nx+col].sw = 1;
+	  return 1;
+  }
+  int kgSetOffTableCell(void *Tmp,int col,int row) {
+	  DIT *T= (DIT *) Tmp;
+	  if(T->code != 'T') {
+		  fprintf(stderr,"Not a table\n");
+		  return 0;
+	  }
+	  if( (col < 0) || (col>= T->nx)) {
+		  fprintf(stderr,"invalid cell\n");
+		  return 0;
+	  }
+	  if( (row < 0) || (row>= T->ny)) {
+		  fprintf(stderr,"invalid cell\n");
+		  return 0;
+	  }
+	  T_ELMT *E = T->elmt;
+	  E[row*T->nx+col].sw = 0;
+	  return 1;
+  }
+  int kgGetTableRow(void *Tmp) {
+	  DIT *T= (DIT *) Tmp;
+	  if(T->code != 'T') {
+		  fprintf(stderr,"Not a table\n");
+		  return -1;
+	  }
+	  TX_STR *Tx= (TX_STR *)T->tstr;
+	  T_ELMT *E = T->elmt;
+//	  printf("Tx->row: %d\n",Tx->row);
+	  return Tx->row;
+  }
+  int kgGetTableColumn(void *Tmp) {
+	  DIT *T= (DIT *) Tmp;
+	  if(T->code != 'T') {
+		  fprintf(stderr,"Not a table\n");
+		  return -1;
+	  }
+	  TX_STR *Tx= (TX_STR *)T->tstr;
+	  T_ELMT *E = T->elmt;
+	  return Tx->col;
+  }
+  int kgSetTableCursor(void * Tmp,int col,int row) {
+	  DIT *T= (DIT *) Tmp;
+	  int box;
+          if(T->code != 'T') {
+                  fprintf(stderr,"Not a table\n");
+                  return 0;
+          }
+	  TX_STR *Tx= (TX_STR *)T->tstr;
+          if( (col < 0) || (col>= T->nx)) {
+                  fprintf(stderr,"invalid cell\n");
+                  return 0;
+          }
+          if( (row < 0) || (row>= T->ny)) {
+                  fprintf(stderr,"invalid cell\n");
+                  return 0;
+          }
+	  T_ELMT *E = T->elmt;
+	  box = row*Tx->nx+col;
+	  if(E[box].sw ==1) {
+          E[box].cursor =0;
+	  Tx->col = col;
+	  Tx->row = row;
+	  T->col = col;
+	  T->row = row;
+	  _ui_drawtablecursor ( Tx ) ;
+	  } 
+	  return 1;
   }

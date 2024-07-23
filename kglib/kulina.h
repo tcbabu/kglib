@@ -968,7 +968,9 @@ void  kgGetClickedPosition(void *Dtmp,int *x,int *y);
 void * kgGetLocationWidget(void *Dtmp,int x1,int y1);
 int  kgGetWidgetLocation(void *wid,int *x1,int *y1);
 int  kgSetCurrentWidget(void *Tmp,int Wid);
+int  kgSetAttnWidget(void *Tmp,void *Widget);
 int  kgSetDefaultWidget(void *Tmp,int Wid); // to be used only in Ui init function
+int  kgSetDefaultAttnWidget(void *Tmp,void *Widget); // to be used only in Ui init function
 int  kgSetWidgetVisibility(void *Widget,int vis);
 int  kgGetWidgetVisibility(void *Widget);
 int  kgUpdateTextBox(void *tmp,int no);
@@ -1003,6 +1005,11 @@ long   kgGetLong(void *Widget,int item) ;
 long   kgSetLong(void *Widget,int item,long val) ;
 char * kgGetString(void *Widget,int item) ;
 char * kgSetString(void *Widget,int item,char * val) ;
+int kgSetOffTableCell(void *Tmp,int col,int row);
+int kgSetOnTableCell(void *Tmp,int col,int row);
+int kgGetTableColumn(void *Tmp);
+int kgGetTableRow(void *Tmp);
+int kgSetTableCursor(void * Tmp,int col,int row);
 void * kgSetWidgetImage(void *Widget,void *img);
 void * kgGetWidgetImage(void *Widget);
 void kgSetTextItemEcho(void *Tmp,int item, int echo);
