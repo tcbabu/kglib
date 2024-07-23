@@ -103,80 +103,80 @@
   static int Sldwd = 20 , Sw = 8 , Sdpw = 7;
   int TextSize = 8 , Ht = 12 , Wd = 7 , Gap = 2 , Bt = 1;
 #define CHECKLIMITS(w) {\
-  DIALOG *D; \
-      int x1 , y1 , x2 , y2; \
-      D = ( DIALOG * ) ( ( w )->D ) ; \
-      if ( w->x1 < 0 ) return 0; \
-      if ( w->y1 < 0 ) return 0; \
-      if ( w->x2 > D->xl ) return 0; \
-      if ( w->y2 > D->yl ) return 0; \
-  }
+   DIALOG *D; \
+       int x1 , y1 , x2 , y2; \
+       D = ( DIALOG * ) ( ( w )->D ) ; \
+       if ( w->x1 < 0 ) return 0; \
+       if ( w->y1 < 0 ) return 0; \
+       if ( w->x2 > D->xl ) return 0; \
+       if ( w->y2 > D->yl ) return 0; \
+   }
 #define BACKUPWIDGETAREA(w) {\
-  DIALOG *D; \
-      int x1 , y1 , x2 , y2; \
-      D = ( DIALOG * ) ( ( w )->D ) ; \
-      x1 = D->xo+ ( w )->x1; \
-      y1 = D->yo+ ( w )->y1; \
-      x2 = D->xo+ ( w )->x2; \
-      y2 = D->yo+ ( w )->y2; \
-      if ( ( w )->Bimg == NULL ) ( w )->Bimg = kgGetBackground ( D , x1 , y1 , x2 , y2 ) ; \
-  }
+   DIALOG *D; \
+       int x1 , y1 , x2 , y2; \
+       D = ( DIALOG * ) ( ( w )->D ) ; \
+       x1 = D->xo+ ( w )->x1; \
+       y1 = D->yo+ ( w )->y1; \
+       x2 = D->xo+ ( w )->x2; \
+       y2 = D->yo+ ( w )->y2; \
+       if ( ( w )->Bimg == NULL ) ( w )->Bimg = kgGetBackground ( D , x1 , y1 , x2 , y2 ) ; \
+   }
 #define RESTOREWIDGETAREA(w) {\
-  DIALOG *D; \
-      int x1 , y1 , xl , yl; \
-      D = ( DIALOG * ) ( ( w )->D ) ; \
-      x1 = D->xo+ ( w )->x1; \
-      y1 = D->yo+ ( w )->y1; \
-      xl = ( w )->x2- ( w )->x1+1; \
-      yl = ( w )->y2- ( w )->y1+1; \
-      if ( ( w )->Bimg != NULL ) kgRestoreImage ( D , ( w )->Bimg , x1 , y1 , xl , yl ) ; \
-  }
+   DIALOG *D; \
+       int x1 , y1 , xl , yl; \
+       D = ( DIALOG * ) ( ( w )->D ) ; \
+       x1 = D->xo+ ( w )->x1; \
+       y1 = D->yo+ ( w )->y1; \
+       xl = ( w )->x2- ( w )->x1+1; \
+       yl = ( w )->y2- ( w )->y1+1; \
+       if ( ( w )->Bimg != NULL ) kgRestoreImage ( D , ( w )->Bimg , x1 , y1 , xl , yl ) ; \
+   }
 #define RESTOREWIDGETAREAPART(w,xp1,yp1,xp2,yp2) {\
-  DIALOG *D; \
-      int x1 , y1 , xl , yl , xoff , yoff; \
-      D = ( DIALOG * ) ( ( w )->D ) ; \
-      x1 = D->xo+ ( w )->x1; \
-      y1 = D->yo+ ( w )->y1; \
-      xoff = ( xp1 ) -x1; \
-      yoff = ( yp1 ) -y1; \
-      xl = ( xp2 ) - ( xp1 ) +1; \
-      yl = ( yp2 ) - ( yp1 ) +1; \
-      if ( ( w )->Bimg != NULL ) kgRestoreImagePart ( D , ( w )->Bimg , xp1 , yp1 , xoff , yoff , xl , yl ) ; \
-  }
+   DIALOG *D; \
+       int x1 , y1 , xl , yl , xoff , yoff; \
+       D = ( DIALOG * ) ( ( w )->D ) ; \
+       x1 = D->xo+ ( w )->x1; \
+       y1 = D->yo+ ( w )->y1; \
+       xoff = ( xp1 ) -x1; \
+       yoff = ( yp1 ) -y1; \
+       xl = ( xp2 ) - ( xp1 ) +1; \
+       yl = ( yp2 ) - ( yp1 ) +1; \
+       if ( ( w )->Bimg != NULL ) kgRestoreImagePart ( D , ( w )->Bimg , xp1 , yp1 , xoff , yoff , xl , yl ) ; \
+   }
 #define set_greek {\
-  if ( greek > 0 ) {\
-          icpostmp = icpos; \
-          icxvtmp = icxv; \
-          icyvtmp = icyv; \
-          icpos = icposf0; \
-          icxv = icxvf0; \
-          icyv = icyvf0; \
-      }\
-  }
+   if ( greek > 0 ) {\
+           icpostmp = icpos; \
+           icxvtmp = icxv; \
+           icyvtmp = icyv; \
+           icpos = icposf0; \
+           icxv = icxvf0; \
+           icyv = icyvf0; \
+       }\
+   }
 #define uireset_greek {\
-  if ( dc->greek > 0 ) {\
-          dc->icpos = dc->icpostmp; \
-          dc->icxv = dc->icxvtmp; \
-          dc->icyv = dc->icyvtmp; \
-      }\
-  }
+   if ( dc->greek > 0 ) {\
+           dc->icpos = dc->icpostmp; \
+           dc->icxv = dc->icxvtmp; \
+           dc->icyv = dc->icyvtmp; \
+       }\
+   }
 #define uiset_greek {\
-  if ( dc->greek > 0 ) {\
-          dc->icpostmp = dc->icpos; \
-          dc->icxvtmp = dc->icxv; \
-          dc->icyvtmp = dc->icyv; \
-          dc->icpos = dc->icposf0; \
-          dc->icxv = dc->icxvf0; \
-          dc->icyv = dc->icyvf0; \
-      }\
-  }
+   if ( dc->greek > 0 ) {\
+           dc->icpostmp = dc->icpos; \
+           dc->icxvtmp = dc->icxv; \
+           dc->icyvtmp = dc->icyv; \
+           dc->icpos = dc->icposf0; \
+           dc->icxv = dc->icxvf0; \
+           dc->icyv = dc->icyvf0; \
+       }\
+   }
 #define reset_greek {\
-  if ( greek > 0 ) {\
-          icpos = icpostmp; \
-          icxv = icxvtmp; \
-          icyv = icyvtmp; \
-      }\
-  }
+   if ( greek > 0 ) {\
+           icpos = icpostmp; \
+           icxv = icxvtmp; \
+           icyv = icyvtmp; \
+       }\
+   }
   extern int NCLRS;
 #define uiTX(x,y) (dc->cx +(x)*dc->cost+(y)*dc->sint)
 #define uiTY(x,y) (dc->cy -(x)*dc->sint+(y)*dc->cost)
@@ -216,7 +216,7 @@
   static unsigned char RED [ 4 ] = {0x00 , 0x04 , 0x20 , 0x24 };
   static unsigned char BLUE [ 4 ] = {0x00 , 0x01 , 0x08 , 0x09 };
   static unsigned char GREEN [ 4 ] = {0x00 , 0x02 , 0x10 , 0x12 };
-  static char Posfmt [ 200 ] = {"%14.5g , %-14.5g"} , Xfmt [ 7 ] = 
+  static char Posfmt [ 200 ] = {"%14.5g , %-14.5g"} , Xfmt [ 7 ] =  \
       {" 14.5g"} , Yfmt [ 7 ] = {"-14.5g"};
   static union kbinp { short kbint; char kbc [ 2 ] ; } kb;
   void *kgBorderedRectangle ( int width , int height , int fillclr , float rfac ) ;
@@ -253,7 +253,7 @@
       return GetPointer ( x , y ) ;
   }
 #endif
-  void uig_scroll_up ( DIALOG *D , short x1 , short y1 , short x2 , short y2 , short jmp ) 
+  void uig_scroll_up ( DIALOG *D , short x1 , short y1 , short x2 , short y2 , short jmp )  \
       {
       int yy1 , yy2;
       int EVGAY;
@@ -288,7 +288,7 @@
               }
               else{
                   for ( i = 0; i < n; i++ ) {
-                      if ( ( ( r [ i ] .x1-dx ) * ( r [ i ] .x2-dx ) <= 0 ) && 
+                      if ( ( ( r [ i ] .x1-dx ) * ( r [ i ] .x2-dx ) <= 0 ) &&  \
                           ( ( r [ i ] .y1-yy ) * ( r [ i ] .y2-yy ) <= 0 ) ) {
                           if ( i != *old_i ) {
                               *old_i = i;
@@ -441,15 +441,15 @@
       wc->Clip = Dopen ( ) ;
       wc->SBlist = Dopen ( ) ;
 #endif
-      uiset_sup_clip_limits ( wc , ( dc->v_x1+dc->D_x ) , D->evgay- ( dc->v_y2+dc->D_y ) , 
+      uiset_sup_clip_limits ( wc , ( dc->v_x1+dc->D_x ) , D->evgay- ( dc->v_y2+dc->D_y ) ,  \
           ( dc->v_x2+dc->D_x ) , D->evgay- ( dc->v_y1+dc->D_y ) ) ;
-      uiset_clip_limits ( wc , ( dc->v_x1+dc->D_x ) , D->evgay- ( dc->v_y2+dc->D_y ) , 
+      uiset_clip_limits ( wc , ( dc->v_x1+dc->D_x ) , D->evgay- ( dc->v_y2+dc->D_y ) ,  \
           ( dc->v_x2+dc->D_x ) , D->evgay- ( dc->v_y1+dc->D_y ) ) ;
-      uiset_clip_limits ( wc , ( dc->v_x1+dc->D_x ) , D->evgay- ( dc->v_y2+dc->D_y ) , 
+      uiset_clip_limits ( wc , ( dc->v_x1+dc->D_x ) , D->evgay- ( dc->v_y2+dc->D_y ) ,  \
           ( dc->v_x2+dc->D_x ) , D->evgay- ( dc->v_y1+dc->D_y ) ) ;
-      uiset_sup_clip_limits ( wc , ( dc->v_x1+dc->D_x ) , ( dc->v_y1+dc->D_y ) , 
+      uiset_sup_clip_limits ( wc , ( dc->v_x1+dc->D_x ) , ( dc->v_y1+dc->D_y ) ,  \
           ( dc->v_x2+dc->D_x ) , ( dc->v_y2+dc->D_y ) ) ;
-      uiset_clip_limits ( wc , ( dc->v_x1+dc->D_x ) , ( dc->v_y1+dc->D_y ) , 
+      uiset_clip_limits ( wc , ( dc->v_x1+dc->D_x ) , ( dc->v_y1+dc->D_y ) ,  \
           ( dc->v_x2+dc->D_x ) , ( dc->v_y2+dc->D_y ) ) ;
   /*for (i=0;i<NCLRS;i++) df_clr(i,(int)icode[i][0],(int)icode[i][1],(int)icode[i][2]);*/
       dc->msg_x += G->x1+D->xo;
@@ -486,7 +486,7 @@
           _draw_line ( x-3*fac , y+3*fac , x+3*fac , y-3*fac ) ;
           break;
           case 2 :
-          _box_fill ( x-3*fac , y-3*fac , x+3*fac , y+3*fac , 
+          _box_fill ( x-3*fac , y-3*fac , x+3*fac , y+3*fac ,  \
               ( unsigned int ) c_color ) ;
           break;
           case 3 : _draw_line ( x , y-4*fac , x , y+4*fac ) ;
@@ -538,25 +538,25 @@
           case 9 :
           px [ 0 ] = x+4*fac; py [ 0 ] = y; px [ 1 ] = x-4*fac; py [ 1 ] = y+4*fac;
           px [ 2 ] = x-4*fac; py [ 2 ] = y-4*fac;
-          _poly_fill ( ( short ) 3 , px , py , ( short ) 0 , 
+          _poly_fill ( ( short ) 3 , px , py , ( short ) 0 ,  \
               ( unsigned int ) c_color ) ;
           break;
           case 10:
           px [ 0 ] = x-4*fac; py [ 0 ] = y; px [ 1 ] = x+4*fac; py [ 1 ] = y+4*fac;
           px [ 2 ] = x+4*fac; py [ 2 ] = y-4*fac;
-          _poly_fill ( ( short ) 3 , px , py , ( short ) 0 , 
+          _poly_fill ( ( short ) 3 , px , py , ( short ) 0 ,  \
               ( unsigned int ) c_color ) ;
           break;
           case 11:
           px [ 0 ] = x; py [ 0 ] = y+4*fac; px [ 1 ] = x-4*fac; py [ 1 ] = y-4*fac;
           px [ 2 ] = x+4*fac; py [ 2 ] = y-4*fac;
-          _poly_fill ( ( short ) 3 , px , py , ( short ) 0 , 
+          _poly_fill ( ( short ) 3 , px , py , ( short ) 0 ,  \
               ( unsigned int ) c_color ) ;
           break;
           case 12:
           px [ 0 ] = x; py [ 0 ] = y-4*fac; px [ 1 ] = x-4*fac; py [ 1 ] = y+4*fac;
           px [ 2 ] = x+4*fac; py [ 2 ] = y+4*fac;
-          _poly_fill ( ( short ) 3 , px , py , ( short ) 0 , 
+          _poly_fill ( ( short ) 3 , px , py , ( short ) 0 ,  \
               ( unsigned int ) c_color ) ;
           break;
           case 13 :
@@ -573,25 +573,25 @@
           case 16:
           px [ 0 ] = x+2*fac; py [ 0 ] = y; px [ 1 ] = x-2*fac; py [ 1 ] = y+2*fac;
           px [ 2 ] = x-2*fac; py [ 2 ] = y-2*fac;
-          _poly_fill ( ( short ) 3 , px , py , ( short ) 0 , 
+          _poly_fill ( ( short ) 3 , px , py , ( short ) 0 ,  \
               ( unsigned int ) c_color ) ;
           break;
           case 17:
           px [ 0 ] = x-2*fac; py [ 0 ] = y; px [ 1 ] = x+2*fac; py [ 1 ] = y+2*fac;
           px [ 2 ] = x+2*fac; py [ 2 ] = y-2*fac;
-          _poly_fill ( ( short ) 3 , px , py , ( short ) 0 , 
+          _poly_fill ( ( short ) 3 , px , py , ( short ) 0 ,  \
               ( unsigned int ) c_color ) ;
           break;
           case 18:
           px [ 0 ] = x; py [ 0 ] = y+2*fac; px [ 1 ] = x-2*fac; py [ 1 ] = y-2*fac;
           px [ 2 ] = x+2*fac; py [ 2 ] = y-2*fac;
-          _poly_fill ( ( short ) 3 , px , py , ( short ) 0 , 
+          _poly_fill ( ( short ) 3 , px , py , ( short ) 0 ,  \
               ( unsigned int ) c_color ) ;
           break;
           case 19:
           px [ 0 ] = x; py [ 0 ] = y-2*fac; px [ 1 ] = x-2*fac; py [ 1 ] = y+2*fac;
           px [ 2 ] = x+2*fac; py [ 2 ] = y+2*fac;
-          _poly_fill ( ( short ) 3 , px , py , ( short ) 0 , 
+          _poly_fill ( ( short ) 3 , px , py , ( short ) 0 ,  \
               ( unsigned int ) c_color ) ;
           break;
           default :break;
@@ -757,7 +757,7 @@
           if ( c & 1 ) {
               if ( tx == 0 ) return ( 0 ) ;
               y = ( int ) ( *ya+ ( wc->c_v_x1- ( *xa ) ) *ty/tx ) ;
-              if ( ( y == ys ) && ( ( ys > wc->c_v_y2 ) 
+              if ( ( y == ys ) && ( ( ys > wc->c_v_y2 )  \
                   || ( ys < wc->c_v_y1 ) ) ) return ( 0 ) ;
               ys = y;
               x = wc->c_v_x1;
@@ -766,7 +766,7 @@
           if ( c & 2 ) {
               if ( tx == 0 ) return ( 0 ) ;
               y = ( int ) ( *ya+ ( wc->c_v_x2- ( *xa ) ) *ty/tx ) ;
-              if ( ( y == ys ) && ( ( ys > wc->c_v_y2 ) 
+              if ( ( y == ys ) && ( ( ys > wc->c_v_y2 )  \
                   || ( ys < wc->c_v_y1 ) ) ) return ( 0 ) ;
               ys = y;
               x = wc->c_v_x2;
@@ -775,7 +775,7 @@
           if ( c & 8 ) {
               if ( ty == 0 ) return ( 0 ) ;
               x = ( int ) ( *xa+ ( wc->c_v_y2- ( *ya ) ) *tx/ty ) ;
-              if ( x == xs && ( ( xs < wc->c_v_x1 ) || 
+              if ( x == xs && ( ( xs < wc->c_v_x1 ) ||  \
                   ( xs > wc->c_v_x2 ) ) ) return ( 0 ) ;
               xs = x;
               y = wc->c_v_y2;
@@ -784,7 +784,7 @@
           if ( c & 4 ) {
               if ( ty == 0 ) return ( 0 ) ;
               x = ( int ) ( *xa+ ( wc->c_v_y1- ( *ya ) ) *tx/ty ) ;
-              if ( x == xs && ( ( xs < wc->c_v_x1 ) || 
+              if ( x == xs && ( ( xs < wc->c_v_x1 ) ||  \
                   ( xs > wc->c_v_x2 ) ) ) return ( 0 ) ;
               xs = x;
               y = wc->c_v_y1;
@@ -948,7 +948,7 @@
       dc->cur_y = y;
       return;
   }
-  int berzier_o ( int *xp , int *yp , float x1 , float y1 , float x4 , float y4 , float x2 , float y2 , float x3 , float y3 ) 
+  int berzier_o ( int *xp , int *yp , float x1 , float y1 , float x4 , float y4 , float x2 , float y2 , float x3 , float y3 )  \
       {
       float t , tm , x , y , xm , ym , dist , dt;
       int n , notok , i;
@@ -1014,7 +1014,7 @@
       if ( n > 20 ) n = 20;
       return n;
   }
-  int berzier ( int *xp , int *yp , float x1 , float y1 , float x4 , float y4 , float x2 , float y2 , float x3 , float y3 ) 
+  int berzier ( int *xp , int *yp , float x1 , float y1 , float x4 , float y4 , float x2 , float y2 , float x3 , float y3 )  \
       {
       float t , tm , x , y , xm , ym , dist , dt , r1 , r2;
       double ax , bx , cx , ay , by , cy , dum1 , dum2;
@@ -1070,7 +1070,7 @@
       xp++, yp++;
       return ( n ) ;
   }
-  int ui_fillchr ( kgWC *wc , float *x , float *y , int n , int *x1 , int *y1 , int *x2 , int*y2 ) 
+  int ui_fillchr ( kgWC *wc , float *x , float *y , int n , int *x1 , int *y1 , int *x2 , int*y2 )  \
       {
       int xp , yp , temp;
       float xx , yy , xx0 , yy0 , xx1 , xx2 , yy1 , yy2 , xx3 , xx4 , yy3 , yy4;
@@ -1085,7 +1085,7 @@
           j1 = j-1;
           if ( ( xx0 == xx1 ) && ( yy0 == yy1 ) ) {
               xp = ( xx*Mag+0.5 ) ; yp = ( yy*Mag+0.5 ) ;
-              if ( ( xp != x1 [ j1 ] ) || ( yp != y1 [ j1 ] ) ) 
+              if ( ( xp != x1 [ j1 ] ) || ( yp != y1 [ j1 ] ) )  \
                   {x1 [ j ] = xp; y1 [ j ] = yp; j++; };
           }
           else {
@@ -1105,7 +1105,7 @@
           xx0 = xx; yy0 = yy;
       }
       i = 1;
-      while ( i < j ) { if ( ( x1 [ i ] == x1 [ i-1 ] ) && ( y1 [ i ] == y1 [ i-1 ] ) ) 
+      while ( i < j ) { if ( ( x1 [ i ] == x1 [ i-1 ] ) && ( y1 [ i ] == y1 [ i-1 ] ) )  \
           { j--; for ( k = i; k < j; k++ ) {x1 [ k ] = x1 [ k+1 ] ;
           y1 [ k ] = y1 [ k+1 ] ; }}
           else i++;
@@ -1114,7 +1114,7 @@
       x2 [ j-1 ] = x1 [ 0 ] ; y2 [ j-1 ] = y1 [ 0 ] ;
       return ( j ) ;
   }
-  void _uimpoly_fill ( kgWC *wc , int n , int *px , int *py , int *px1 , int *py1 , unsigned int b_color ) 
+  void _uimpoly_fill ( kgWC *wc , int n , int *px , int *py , int *px1 , int *py1 , unsigned int b_color )  \
       {
 #if 1
       short j , imd;
@@ -1165,7 +1165,7 @@
           xmin [ j+1 ] = txn;
       }
       ind = 0;
-      if ( ( scan/Mag > wc->c_v_y2 ) || ( ygrt/Mag < wc->c_v_y1 ) || 
+      if ( ( scan/Mag > wc->c_v_y2 ) || ( ygrt/Mag < wc->c_v_y1 ) ||  \
           ( xlow/Mag > wc->c_v_x2 ) || ( xup/Mag < wc->c_v_x1 ) ) return;
       tempc = wc->c_color;
       wcset_clr ( wc , b_color ) ;
@@ -1176,7 +1176,7 @@
           for ( i = ind; i < n; ++i ) {
               if ( ymin [ i ] <= scan ) {
                   if ( ymax [ i ] != ymin [ i ] ) {
-                      xcord [ cnt ] = ( ( ( float ) ( xmax [ i ] -xmin [ i ] ) / ( ymax [ i ] -ymin [ i ] ) * 
+                      xcord [ cnt ] = ( ( ( float ) ( xmax [ i ] -xmin [ i ] ) / ( ymax [ i ] -ymin [ i ] ) *  \
                           ( scan-ymin [ i ] ) +xmin [ i ] +0.5 ) ) ;
                       ++cnt;
                   }
@@ -1191,7 +1191,7 @@
           }
  /*displaying scan lines*/
           for ( i = 0; i < cnt; i+= 2 ) {
-              _uimhori_line ( wc , ( int ) ( xcord [ i ] /Mag+0.5 ) , ( int ) 
+              _uimhori_line ( wc , ( int ) ( xcord [ i ] /Mag+0.5 ) , ( int )  \
                   ( xcord [ i+1 ] /Mag ) , ( ( float ) scan/Mag+0.5 ) ) ;
           }
           scan++;
@@ -1336,7 +1336,7 @@
       if ( pnt < 0 ) return;
       if ( pnt > 223 ) return;
       ptr = icpos [ pnt ] ;
-      if ( ( xo >= c_v_xt1 ) && ( xo <= c_v_x2 ) && 
+      if ( ( xo >= c_v_xt1 ) && ( xo <= c_v_x2 ) &&  \
           ( yo >= c_v_yt1 ) && ( yo <= c_v_y2 ) ) {
           code = icxv [ ptr ] ; n = icyv [ ptr ] ;
           while ( code >= 0 ) {
@@ -1383,7 +1383,7 @@
       ptr = icpos [ pnt ] ;
       xa = ( cx+ ( xo ) *cost+yo*sint ) ;
       ya = ( cy- ( xo ) *sint+yo*cost ) ;
-      if ( ( xa >= c_v_xt1 ) && ( xa <= c_v_x2 ) && 
+      if ( ( xa >= c_v_xt1 ) && ( xa <= c_v_x2 ) &&  \
           ( ya >= c_v_yt1 ) && ( ya <= c_v_y2 ) ) {
           code = icxv [ ptr ] ; n = icyv [ ptr ] ;
           while ( code >= 0 ) {
@@ -1421,7 +1421,7 @@
       if ( pr_txt == 0 ) { xo += ( 1.-fact ) *0.5*txt_wt;
       fact = 1.0; }
       yo = ( int ) ( cy+yp ) ;
-      if ( ( xo >= c_v_xt1 ) && ( xo <= c_v_x2 ) && 
+      if ( ( xo >= c_v_xt1 ) && ( xo <= c_v_x2 ) &&  \
           ( yo >= c_v_yt1 ) && ( yo <= c_v_y2 ) ) {
           if ( pnt >= 0 ) {
               j = icpos [ pnt ] ;
@@ -1467,7 +1467,7 @@
       if ( pr_txt > 0 ) fact = m_f [ pnt+1 ] ;
       xa = ( int ) ( cx+ ( xp ) *cost+yp*sint ) ;
       ya = ( int ) ( cy- ( xp ) *sint+yp*cost ) ;
-      if ( ( xa >= c_v_xt1 ) && ( xa <= c_v_x2 ) && 
+      if ( ( xa >= c_v_xt1 ) && ( xa <= c_v_x2 ) &&  \
           ( ya >= c_v_yt1 ) && ( ya <= c_v_y2 ) ) {
           if ( pnt >= 0 ) {
               j = icpos [ pnt ] ;
@@ -1502,7 +1502,7 @@
       char chr [ 4 ] ;
       short err;
       float val;
-      chr [ 0 ] = *ch; chr [ 1 ] = * ( ch+1 ) ; chr [ 2 ] = * 
+      chr [ 0 ] = *ch; chr [ 1 ] = * ( ch+1 ) ; chr [ 2 ] = *  \
           ( ch+2 ) ; chr [ 3 ] = ' ';
       err = sscanf ( chr , "%f" , & val ) ;
       if ( err < 1 ) return ( 1.0 ) ;
@@ -1557,7 +1557,7 @@
       dc->txt_ht = dc->txt_ht/SSF;
       return;
   }
-  void _uipoly_fill ( DIG *G , int n , int *px , int *py , int flag , unsigned int color ) 
+  void _uipoly_fill ( DIG *G , int n , int *px , int *py , int flag , unsigned int color )  \
       {
       short j , imd;
       short i , cnt , ind;
@@ -1611,7 +1611,7 @@
           xmin [ j+1 ] = txn;
       }
       ind = 0;
-      if ( ( scan > wc->c_v_y2 ) || ( ygrt < wc->c_v_y1 ) || 
+      if ( ( scan > wc->c_v_y2 ) || ( ygrt < wc->c_v_y1 ) ||  \
           ( xlow > wc->c_v_x2 ) || ( xup < wc->c_v_x1 ) ) return;
       tempc = wc->c_color;
       wcset_clr ( wc , color ) ;
@@ -1622,7 +1622,7 @@
           for ( i = ind; i < n; ++i ) {
               if ( ymin [ i ] <= scan ) {
                   if ( ymax [ i ] != ymin [ i ] ) {
-                      xcord [ cnt ] = ( ( ( float ) ( xmax [ i ] -xmin [ i ] ) / ( ymax [ i ] -ymin [ i ] ) * 
+                      xcord [ cnt ] = ( ( ( float ) ( xmax [ i ] -xmin [ i ] ) / ( ymax [ i ] -ymin [ i ] ) *  \
                           ( scan-ymin [ i ] ) +xmin [ i ] ) +0.5 ) ;
                       ++cnt;
                   }
@@ -1641,7 +1641,7 @@
           scan++;
       }
       wcset_clr ( wc , dc->ln_color ) ;
-      if ( flag == 1 ) for ( i = 0; i < n; i++ ) _uidraw_line ( wc , px [ i ] , py [ i ] , px [ 
+      if ( flag == 1 ) for ( i = 0; i < n; i++ ) _uidraw_line ( wc , px [ i ] , py [ i ] , px [  \
           ( i+1 ) %n ] , py [ ( i+1 ) %n ] ) ;
       wcset_clr ( wc , tempc ) ;
   }
@@ -1815,7 +1815,7 @@
           if ( ( kb.kbint = get_kb ( ) ) > 0 ) {
               ch = kb.kbc [ 0 ] ;
               if ( ch != '\0' ) {
-                  if ( ( isdigit ( ch ) ) && ( ch != '0' ) ) {jmp = ch-'0'; jmpy = 
+                  if ( ( isdigit ( ch ) ) && ( ch != '0' ) ) {jmp = ch-'0'; jmpy =  \
                       ( float ) jmp/ ( v_x2-v_x1 ) * ( v_y2-v_y1 ) ; };
                   if ( ch == '\r' ) goto jump;
               }
@@ -2126,7 +2126,7 @@
       draw_rcur ( D ) ;
   }
 #endif
-  void _uigodard_fill ( DIG *G , int n , int *px , int *py , int flag , float *pv ) 
+  void _uigodard_fill ( DIG *G , int n , int *px , int *py , int flag , float *pv )  \
       {
       short j , imd;
       short i , cnt , ind;
@@ -2191,7 +2191,7 @@
           pmin [ j+1 ] = tpn;
       }
       ind = 0;
-      if ( ( scan > wc->c_v_y2 ) || ( ygrt < wc->c_v_y1 ) || 
+      if ( ( scan > wc->c_v_y2 ) || ( ygrt < wc->c_v_y1 ) ||  \
           ( xlow > wc->c_v_x2 ) || ( xup < wc->c_v_x1 ) ) return;
       if ( ymax [ ind ] == scan ) ind++;
       while ( scan <= ygrt ) {
@@ -2200,9 +2200,9 @@
           for ( i = ind; i < n; ++i ) {
               if ( ymin [ i ] <= scan ) {
                   if ( ymax [ i ] != ymin [ i ] ) {
-                      xcord [ cnt ] = ( ( ( float ) ( xmax [ i ] -xmin [ i ] ) / ( ymax [ i ] -ymin [ i ] ) * 
+                      xcord [ cnt ] = ( ( ( float ) ( xmax [ i ] -xmin [ i ] ) / ( ymax [ i ] -ymin [ i ] ) *  \
                           ( scan-ymin [ i ] ) +xmin [ i ] ) +0.5 ) ;
-                      pcord [ cnt ] = ( ( ( float ) ( pmax [ i ] -pmin [ i ] ) / ( ymax [ i ] -ymin [ i ] ) * 
+                      pcord [ cnt ] = ( ( ( float ) ( pmax [ i ] -pmin [ i ] ) / ( ymax [ i ] -ymin [ i ] ) *  \
                           ( scan-ymin [ i ] ) +pmin [ i ] ) ) ;
                       ++cnt;
                   }
@@ -2225,7 +2225,7 @@
               
           scan++;
       }
-      if ( flag == 1 ) for ( i = 0; i < n; i++ ) _uidraw_line ( wc , px [ i ] , py [ i ] , px [ 
+      if ( flag == 1 ) for ( i = 0; i < n; i++ ) _uidraw_line ( wc , px [ i ] , py [ i ] , px [  \
           ( i+1 ) %n ] , py [ ( i+1 ) %n ] ) ;
   }
   void uigodr_line ( DIG *G , int xa , int xb , int y , float pa , float pb ) {
@@ -2333,9 +2333,9 @@
 //   uiset_clip_limits(wc,(dc->v_x1+dc->D_x),(dc->v_y1+dc->D_y),(dc->v_x2+dc->D_x),(dc->v_y2+dc->D_y));
 // uiset_sup_clip_limits(wc,(dc->v_x1+dc->D_x),D->evgay-(dc->v_y2+dc->D_y),(dc->v_x2+dc->D_x),D->evgay-(dc->v_y1+dc->D_y));
 // uiset_clip_limits(wc,(dc->v_x1+dc->D_x),D->evgay-(dc->v_y2+dc->D_y),(dc->v_x2+dc->D_x),D->evgay-(dc->v_y1+dc->D_y));
-      uiset_sup_clip_limits ( wc , ( dc->D_x ) , D->evgay- ( dc->V_y+dc->D_y ) , 
+      uiset_sup_clip_limits ( wc , ( dc->D_x ) , D->evgay- ( dc->V_y+dc->D_y ) ,  \
           ( dc->V_x+dc->D_x ) , D->evgay- ( dc->D_y ) ) ;
-      uiset_clip_limits ( wc , ( dc->D_x ) , D->evgay- ( dc->V_y+dc->D_y ) , 
+      uiset_clip_limits ( wc , ( dc->D_x ) , D->evgay- ( dc->V_y+dc->D_y ) ,  \
           ( dc->V_x+dc->D_x ) , D->evgay- ( dc->D_y ) ) ;
 //  uiset_sup_clip_limits(wc,(dc->D_x),(dc->D_y),(dc->V_x+dc->D_x),(dc->V_y+dc->D_y));
 //  uiset_clip_limits(wc,(dc->D_x),(dc->D_y),(dc->V_x+dc->D_x),(dc->V_y+dc->D_y));
@@ -2375,9 +2375,9 @@
       dc->lcur_y = dc->D_y;
       dc->rcur_x = dc->D_x+dc->V_x;
       dc->rcur_y = dc->D_y+dc->V_y;
-      uiset_sup_clip_limits ( wc , ( dc->v_x1+dc->D_x ) , ( dc->v_y1+dc->D_y ) , 
+      uiset_sup_clip_limits ( wc , ( dc->v_x1+dc->D_x ) , ( dc->v_y1+dc->D_y ) ,  \
           ( dc->v_x2+dc->D_x ) , ( dc->v_y2+dc->D_y ) ) ;
-      uiset_clip_limits ( wc , ( dc->v_x1+dc->D_x ) , ( dc->v_y1+dc->D_y ) , 
+      uiset_clip_limits ( wc , ( dc->v_x1+dc->D_x ) , ( dc->v_y1+dc->D_y ) ,  \
           ( dc->v_x2+dc->D_x ) , ( dc->v_y2+dc->D_y ) ) ;
   }
   void ui_window ( DIG *G , float x1 , float y1 , float x2 , float y2 ) {
@@ -2428,7 +2428,7 @@
       uiset_clr ( G->D , dc->ln_color ) ;
       _uidraw ( G , x1 , y1 ) ;
   }
-  void ui_drawimage_org ( DIG *G , void *imgfile , float x1 , float y1 , float x2 , float y2 ) 
+  void ui_drawimage_org ( DIG *G , void *imgfile , float x1 , float y1 , float x2 , float y2 )  \
       {
       float fac;
       GMIMG *img , *rzimg;
@@ -2487,7 +2487,7 @@
       uiFreeImage ( rzimg ) ;
       if ( ! IMG ) uiFreeImage ( img ) ;
   }
-  void ui_drawimage ( DIG *G , void *imgfile , float x1 , float y1 , float x2 , float y2 ) 
+  void ui_drawimage ( DIG *G , void *imgfile , float x1 , float y1 , float x2 , float y2 )  \
       {
       float fac;
       GMIMG *img , *rzimg;
@@ -2581,7 +2581,7 @@
       dc = G->dc;
       dc->t_color = color;
   }
-  void ui_txt_size ( DIG *G , float ht , float wt , float sp , float htx , float wty , float spy ) 
+  void ui_txt_size ( DIG *G , float ht , float wt , float sp , float htx , float wty , float spy )  \
       {
       kgDC *dc;
       kgWC *wc;
@@ -2593,11 +2593,11 @@
       dc->txt_htx = htx;
       dc->txt_wty = wty;
       dc->txt_spy = spy;
-      dc->txt_wt = dc->sint*dc->sint*dc->txt_wty* ( dc->w_x2-dc->w_x1 ) / 
+      dc->txt_wt = dc->sint*dc->sint*dc->txt_wty* ( dc->w_x2-dc->w_x1 ) /  \
           ( dc->w_y2-dc->w_y1 ) +dc->cost*dc->cost*dc->txt_wtx;
-      dc->txt_sp = dc->sint*dc->sint*dc->txt_spy* ( dc->w_x2-dc->w_x1 ) / 
+      dc->txt_sp = dc->sint*dc->sint*dc->txt_spy* ( dc->w_x2-dc->w_x1 ) /  \
           ( dc->w_y2-dc->w_y1 ) +dc->cost*dc->cost*dc->txt_spx;
-      dc->txt_ht = dc->sint*dc->sint*dc->txt_htx/ ( dc->w_x2-dc->w_x1 ) * 
+      dc->txt_ht = dc->sint*dc->sint*dc->txt_htx/ ( dc->w_x2-dc->w_x1 ) *  \
           ( dc->w_y2-dc->w_y1 ) +dc->cost*dc->cost*dc->txt_hty;
       dc->txt_ht = dc->txt_ht*dc->V_y/ ( dc->w_y2-dc->w_y1 ) ;
       dc->txt_wt = dc->txt_wt*dc->V_x/ ( dc->w_x2-dc->w_x1 ) ;
@@ -2615,11 +2615,11 @@
       dc->theta = -t*rad;
       dc->cost = cos ( dc->theta ) ;
       dc->sint = sin ( dc->theta ) ;
-      dc->txt_wt = dc->sint*dc->sint*dc->txt_wty* ( dc->w_x2-dc->w_x1 ) / 
+      dc->txt_wt = dc->sint*dc->sint*dc->txt_wty* ( dc->w_x2-dc->w_x1 ) /  \
           ( dc->w_y2-dc->w_y1 ) +dc->cost*dc->cost*dc->txt_wtx;
-      dc->txt_sp = dc->sint*dc->sint*dc->txt_spy* ( dc->w_x2-dc->w_x1 ) / 
+      dc->txt_sp = dc->sint*dc->sint*dc->txt_spy* ( dc->w_x2-dc->w_x1 ) /  \
           ( dc->w_y2-dc->w_y1 ) +dc->cost*dc->cost*dc->txt_spx;
-      dc->txt_ht = dc->sint*dc->sint*dc->txt_htx/ ( dc->w_x2-dc->w_x1 ) * 
+      dc->txt_ht = dc->sint*dc->sint*dc->txt_htx/ ( dc->w_x2-dc->w_x1 ) *  \
           ( dc->w_y2-dc->w_y1 ) +dc->cost*dc->cost*dc->txt_hty;
       dc->txt_ht = dc->txt_ht*dc->V_y/ ( dc->w_y2-dc->w_y1 ) ;
       dc->txt_wt = dc->txt_wt*dc->V_x/ ( dc->w_x2-dc->w_x1 ) ;
@@ -2672,7 +2672,7 @@
                   i++;
                   if ( txt [ i ] == '\0' ) break;
                   cntl = txt [ i ] ;
-                  if ( ( cntl == 'S' ) || ( cntl == 's' ) ) uisetsubsup 
+                  if ( ( cntl == 'S' ) || ( cntl == 's' ) ) uisetsubsup  \
                       ( G , & fact , & ishft , cntl ) ;
                   else {
                       switch ( cntl ) {
@@ -2836,15 +2836,15 @@
       while ( pt != NULL ) {
           if ( pt->x2 < 0. ) pt->x2 = dc->xp;
           if ( pt->p == 'U' ) {
-              _uimove ( G , uiTX ( ( pt->x1 ) , pt->ymin ) , uiTY 
+              _uimove ( G , uiTX ( ( pt->x1 ) , pt->ymin ) , uiTY  \
                   ( ( pt->x1 ) , pt->ymin ) ) ;
-              _uidraw ( G , uiTX ( ( pt->x2 ) , pt->ymin ) , uiTY 
+              _uidraw ( G , uiTX ( ( pt->x2 ) , pt->ymin ) , uiTY  \
                   ( ( pt->x2 ) , pt->ymin ) ) ;
           }
           else{
-              _uimove ( G , uiTX ( ( pt->x1 ) , pt->ymax ) , uiTY 
+              _uimove ( G , uiTX ( ( pt->x1 ) , pt->ymax ) , uiTY  \
                   ( ( pt->x1 ) , pt->ymax ) ) ;
-              _uidraw ( G , uiTX ( ( pt->x2 ) , pt->ymax ) , uiTY 
+              _uidraw ( G , uiTX ( ( pt->x2 ) , pt->ymax ) , uiTY  \
                   ( ( pt->x2 ) , pt->ymax ) ) ;
           }
           dc->O_L = pt;
@@ -2876,7 +2876,7 @@
       else _uibox_fill ( G->wc , dc->D_x+dc->v_x1 , dc->D_y+dc->v_y1 , dc->v_x2+dc->D_x , dc->v_y2+dc->D_y , 0 ) ;
           
   }
-  void ui_panel ( DIG *G , float *x , float *y , int color , int flag , int n ) 
+  void ui_panel ( DIG *G , float *x , float *y , int color , int flag , int n )  \
       {
       int *x1 , *y1;
       int xo , yo , xv , yv;
@@ -2904,11 +2904,11 @@
               xo = xv , yo = yv; j++;
           }
       }
-      if ( ( j > 2 ) && ( j < 500 ) ) _uipoly_fill ( G , j , x1 , y1 , flag , 
+      if ( ( j > 2 ) && ( j < 500 ) ) _uipoly_fill ( G , j , x1 , y1 , flag ,  \
           ( unsigned int ) color ) ;
       free ( x1 ) , free ( y1 ) ;
   }
-  void ui_box_fill ( DIG *G , float x1 , float y1 , float x2 , float y2 , int color , int ib ) 
+  void ui_box_fill ( DIG *G , float x1 , float y1 , float x2 , float y2 , int color , int ib )  \
       {
       int xa , ya , xb , yb;
       kgDC *dc;
@@ -2921,7 +2921,7 @@
       yb = uiscr_y ( y2 ) ;
       _uibox_fill ( wc , xa , ya , xb , yb , color ) ;
   }
-  void ui_set_godr ( DIG *G , float p2 , float p1 , int sclr , int n , int ib ) 
+  void ui_set_godr ( DIG *G , float p2 , float p1 , int sclr , int n , int ib )  \
       {
       kgDC *dc;
       dc = G->dc;
@@ -2951,7 +2951,7 @@
           if ( ymax < y1 [ i ] ) ymax = y1 [ i ] ;
       }
       if ( ( xmin == xmax ) || ( ymin == ymax ) ) return;
-      if ( ( xmax < dc->v_x1 ) || ( xmin > dc->v_x2 ) || ( ymax < dc->v_y1 ) 
+      if ( ( xmax < dc->v_x1 ) || ( xmin > dc->v_x2 ) || ( ymax < dc->v_y1 )  \
           || ( ymin > dc->v_y2 ) ) return;
       for ( i = 0; i < n; i++ ) {pv = * ( p++ ) , p1 [ i ] = uipclr ( pv ) ; }
       _uigodard_fill ( G , n , x1 , y1 , dc->ibdr , p1 ) ;
@@ -3623,7 +3623,7 @@ void transch(int c) {
       uiRest_clip_limits ( wc ) ;
   }
 #if 0
-  int rect_pointer ( kgWC *wc , int x0 , int y0 , int *xx , int *yy , int *entry ) 
+  int rect_pointer ( kgWC *wc , int x0 , int y0 , int *xx , int *yy , int *entry )  \
       {
       static int key , x1 , y1;
       static int x2 , y2;
@@ -3727,7 +3727,7 @@ void transch(int c) {
       return ( key ) ;
   }
 #if 0
-  int box_pointer ( DIALOG *D , int x0 , int y0 , int *xx , int *yy , int *entry ) 
+  int box_pointer ( DIALOG *D , int x0 , int y0 , int *xx , int *yy , int *entry )  \
       {
       static int key , x1 , y1;
       static int x2 , y2;
@@ -3874,7 +3874,7 @@ void transch(int c) {
 #endif
       return;
   }
-  void _uibox_fill ( kgWC *wc , int x1 , int y1 , int x2 , int y2 , unsigned int color ) 
+  void _uibox_fill ( kgWC *wc , int x1 , int y1 , int x2 , int y2 , unsigned int color )  \
       {
       int x_min , y_min , x_max , x_max1 , x_min1 , y_max , i , j;
       short po1;
@@ -3899,7 +3899,7 @@ void transch(int c) {
       wcset_clr ( wc , temp ) ;
       return;
   }
-  void ui_PointerZoom ( DIG *G , float *xmin , float *ymin , float *xmax , float *ymax ) 
+  void ui_PointerZoom ( DIG *G , float *xmin , float *ymin , float *xmax , float *ymax )  \
       {
       short it = 7 , item = 1;
       int EVGAY , DBLBUF = 0 , MAG = 0;
@@ -3979,7 +3979,7 @@ void transch(int c) {
       *xmin = dc->gw_x1 , *xmax = dc->gw_x2;
       *ymin = dc->gw_y1 , *ymax = dc->gw_y2;
   }
-  void ui_PointerAntialiasedZoom ( DIG *G , float *xmin , float *ymin , float *xmax , float *ymax ) 
+  void ui_PointerAntialiasedZoom ( DIG *G , float *xmin , float *ymin , float *xmax , float *ymax )  \
       {
       int EVGAY , DBLBUF = 0; ;
       short it = 7 , item = 1;
@@ -4040,7 +4040,7 @@ void transch(int c) {
  AS ON 25th Sept 2002
  This routine is added for interactive zooming
 *************************************************/
-  void ui_PointerZoomPan ( DIG *G , float *xmin , float *ymin , float *xmax , float *ymax ) 
+  void ui_PointerZoomPan ( DIG *G , float *xmin , float *ymin , float *xmax , float *ymax )  \
       {
       int xpo , ypo , key , xpo1 , ypo1;
       float xm , ym , dx , dy , sx , sy;
@@ -4060,7 +4060,7 @@ void transch(int c) {
       while ( 1 ) {
           key = GetPointer ( & xpo , & ypo ) ;
           if ( key <= 0 ) continue;
-          if ( ( xpo < dc->v_x1 ) || ( xpo > dc->v_x2 ) || ( ( EVGAY -ypo ) < dc->v_y1 ) 
+          if ( ( xpo < dc->v_x1 ) || ( xpo > dc->v_x2 ) || ( ( EVGAY -ypo ) < dc->v_y1 )  \
               || ( ( EVGAY -ypo ) > dc->v_y2 ) ) break;
           switch ( key ) {
               case 1:
@@ -4080,7 +4080,7 @@ void transch(int c) {
               key = GetPointer ( & xpo1 , & ypo1 ) ;
               while ( key == 2 ) {
                   if ( ( xpo1 != xpo ) && ( ypo1 != ypo ) ) {
-                      if ( ( xpo < dc->v_x1 ) || ( xpo > dc->v_x2 ) || ( ( EVGAY -ypo ) < dc->v_y1 ) 
+                      if ( ( xpo < dc->v_x1 ) || ( xpo > dc->v_x2 ) || ( ( EVGAY -ypo ) < dc->v_y1 )  \
                           || ( ( EVGAY -ypo ) > dc->v_y2 ) ) break;
                       sx = uiusr_x ( xpo1 ) - uiusr_x ( xpo ) ;
                       sy = uiusr_y ( EVGAY -ypo1 ) - uiusr_y ( EVGAY -ypo ) ;
@@ -4418,15 +4418,15 @@ void transch(int c) {
           xpo = kbevent.x;
           ypo = kbevent.y;
           switch ( event ) {
-               case 0: // pointer movement
+              case 0: // pointer movement
 //     case 2:  // button release
-               case 3: // button press and movement
+              case 3: // button press and movement
               if ( ( xpo != dc->gcur_x ) || ( ypo != dc->gcur_y ) ) {
                   dc->gcur_x = xpo , dc->gcur_y = ypo;
                   draw_po_cursor ( G ) ;
               }
               break;
-               case 1: // button press
+              case 1: // button press
               if ( ( xpo != dc->gcur_x ) || ( ypo != dc->gcur_y ) ) {
                   dc->gcur_x = xpo , dc->gcur_y = ypo;
                   draw_po_cursor ( G ) ;
@@ -4435,7 +4435,7 @@ void transch(int c) {
               if ( button == 3 ) key = '.';
               OK = 1;
               continue;
-               case 5: // key release
+              case 5: // key release
               key = kb;
               if ( ui_Linefeed ( kb ) ) { key = '\r'; OK = 1; continue; }
               if ( ui_Return ( kb ) ) {key = '\r'; OK = 1; continue; }
@@ -4462,7 +4462,7 @@ void transch(int c) {
       return ( key ) ;
   }
   void uiput_pixel ( kgWC *wc , int col , int row ) {
-      if ( ( col > wc->c_v_x2 ) || ( col < wc->c_v_x1 ) || ( row > wc->c_v_y2 ) 
+      if ( ( col > wc->c_v_x2 ) || ( col < wc->c_v_x1 ) || ( row > wc->c_v_y2 )  \
           || ( row < wc->c_v_y1 ) ) return;
       uiput_pixl ( wc , col , wc->EVGAY-row ) ;
       return;
@@ -4548,7 +4548,7 @@ void transch(int c) {
   /*XDraw((short)xa,(short)y,(short)xb,(short)y);*/
       _dvLine ( wc , xa , ( y ) , xb , ( y ) ) ;
   }
-  char kgBoxCursor ( DIG *G , float *xx , float *yy , float *xbgn , float *ybgn ) 
+  char kgBoxCursor ( DIG *G , float *xx , float *yy , float *xbgn , float *ybgn )  \
       {
       KBEVENT kbevent;
       DIALOG *D;
@@ -4593,16 +4593,16 @@ void transch(int c) {
           xpo = kbevent.x;
           ypo = kbevent.y;
           switch ( event ) {
-               case 0: // pointer movement
+              case 0: // pointer movement
 //     case 2:  // button release
-               case 3: // button press and movement
+              case 3: // button press and movement
               if ( ( xpo != dc->gcur_x ) || ( ypo != dc->gcur_y ) ) {
                   dc->gcur_x = xpo , dc->gcur_y = ypo;
                   draw_box_cursor ( G , xorg , yorg , dc->gcur_x , dc->gcur_y ) ;
                   draw_po_cursor ( G ) ;
               }
               break;
-               case 1: // button press
+              case 1: // button press
               if ( ( xpo != dc->gcur_x ) || ( ypo != dc->gcur_y ) ) {
                   dc->gcur_x = xpo , dc->gcur_y = ypo;
                   draw_box_cursor ( G , xorg , yorg , dc->gcur_x , dc->gcur_y ) ;
@@ -4612,7 +4612,7 @@ void transch(int c) {
               if ( button == 3 ) key = '.';
               OK = 1;
               continue;
-               case 5: // key release
+              case 5: // key release
               key = kb;
               if ( ui_Linefeed ( kb ) ) { key = '\r'; OK = 1; continue; }
               if ( ui_Return ( kb ) ) {key = '\r'; OK = 1; continue; }
@@ -4621,13 +4621,13 @@ void transch(int c) {
               if ( ( kb == '.' ) || ( kb == 'u' ) || ( kb == 'U' ) ) {
                   OK = 1; continue;
               }
-              if ( ui_Uparrow ( kb ) ) { cursor_up ( dc ) ; draw_box_cursor 
+              if ( ui_Uparrow ( kb ) ) { cursor_up ( dc ) ; draw_box_cursor  \
                   ( G , xorg , yorg , dc->gcur_x , dc->gcur_y ) ; break; }
-              if ( ui_Downarrow ( kb ) ) { cursor_down ( dc ) ; draw_box_cursor 
+              if ( ui_Downarrow ( kb ) ) { cursor_down ( dc ) ; draw_box_cursor  \
                   ( G , xorg , yorg , dc->gcur_x , dc->gcur_y ) ; break; }
-              if ( ui_Leftarrow ( kb ) ) { cursor_left ( dc ) ; draw_box_cursor 
+              if ( ui_Leftarrow ( kb ) ) { cursor_left ( dc ) ; draw_box_cursor  \
                   ( G , xorg , yorg , dc->gcur_x , dc->gcur_y ) ; break; }
-              if ( ui_Rightarrow ( kb ) ) { cursor_right ( dc ) ; draw_box_cursor 
+              if ( ui_Rightarrow ( kb ) ) { cursor_right ( dc ) ; draw_box_cursor  \
                   ( G , xorg , yorg , dc->gcur_x , dc->gcur_y ) ; break; }
               break;
               default:
@@ -4652,7 +4652,7 @@ void transch(int c) {
       }
       return ( key ) ;
   }
-  char kgRectCursor ( DIG *G , float *xx , float *yy , float *xbgn , float *ybgn ) 
+  char kgRectCursor ( DIG *G , float *xx , float *yy , float *xbgn , float *ybgn )  \
       {
       KBEVENT kbevent;
       int kb , button , event , OK = 0;
@@ -4691,16 +4691,16 @@ void transch(int c) {
           xpo = kbevent.x;
           ypo = kbevent.y;
           switch ( event ) {
-               case 0: // pointer movement
+              case 0: // pointer movement
 //     case 2:  // button release
-               case 3: // button press and movement
+              case 3: // button press and movement
               if ( ( xpo != dc->gcur_x ) || ( ypo != dc->gcur_y ) ) {
                   dc->gcur_x = xpo , dc->gcur_y = ypo;
                   draw_rect_cursor ( G , xorg , yorg , dc->gcur_x , dc->gcur_y ) ;
                   draw_po_cursor ( G ) ;
               }
               break;
-               case 1: // button press
+              case 1: // button press
               if ( ( xpo != dc->gcur_x ) || ( ypo != dc->gcur_y ) ) {
                   dc->gcur_x = xpo , dc->gcur_y = ypo;
                   draw_rect_cursor ( G , xorg , yorg , dc->gcur_x , dc->gcur_y ) ;
@@ -4710,7 +4710,7 @@ void transch(int c) {
               if ( button == 3 ) key = '.';
               OK = 1;
               continue;
-               case 5: // key release
+              case 5: // key release
               key = kb;
               if ( ui_Linefeed ( kb ) ) { key = '\r'; OK = 1; continue; }
               if ( ui_Return ( kb ) ) {key = '\r'; OK = 1; continue; }
@@ -4719,13 +4719,13 @@ void transch(int c) {
               if ( ( kb == '.' ) || ( kb == 'u' ) || ( kb == 'U' ) ) {
                   OK = 1; continue;
               }
-              if ( ui_Uparrow ( kb ) ) { cursor_up ( dc ) ; draw_rect_cursor 
+              if ( ui_Uparrow ( kb ) ) { cursor_up ( dc ) ; draw_rect_cursor  \
                   ( G , xorg , yorg , dc->gcur_x , dc->gcur_y ) ; break; }
-              if ( ui_Downarrow ( kb ) ) { cursor_down ( dc ) ; draw_rect_cursor 
+              if ( ui_Downarrow ( kb ) ) { cursor_down ( dc ) ; draw_rect_cursor  \
                   ( G , xorg , yorg , dc->gcur_x , dc->gcur_y ) ; break; }
-              if ( ui_Leftarrow ( kb ) ) { cursor_left ( dc ) ; draw_rect_cursor 
+              if ( ui_Leftarrow ( kb ) ) { cursor_left ( dc ) ; draw_rect_cursor  \
                   ( G , xorg , yorg , dc->gcur_x , dc->gcur_y ) ; break; }
-              if ( ui_Rightarrow ( kb ) ) { cursor_right ( dc ) ; draw_rect_cursor 
+              if ( ui_Rightarrow ( kb ) ) { cursor_right ( dc ) ; draw_rect_cursor  \
                   ( G , xorg , yorg , dc->gcur_x , dc->gcur_y ) ; break; }
               break;
               default:
@@ -4819,9 +4819,9 @@ void transch(int c) {
           ypo = kbevent.y;
 //    printf("event=%d\n",event);
           switch ( event ) {
-               case 0: // pointer movement
+              case 0: // pointer movement
 //     case 2:  // button release
-               case 3: // button press and movement
+              case 3: // button press and movement
 //       printf("Mouse Move %d\n",event);
               if ( ( xpo != dc->gcur_x ) || ( ypo != dc->gcur_y ) ) {
                   dc->gcur_x = xpo , dc->gcur_y = ypo;
@@ -4829,7 +4829,7 @@ void transch(int c) {
                   draw_po_cursor ( G ) ;
               }
               break;
-               case 1: // button press
+              case 1: // button press
               if ( ( xpo != dc->gcur_x ) || ( ypo != dc->gcur_y ) ) {
                   dc->gcur_x = xpo , dc->gcur_y = ypo;
                   draw_cross_cursor ( G , dc->gcur_x , dc->gcur_y ) ;
@@ -4839,7 +4839,7 @@ void transch(int c) {
               if ( button == 3 ) key = '.';
               OK = 1;
               continue;
-               case 5: // key release
+              case 5: // key release
               key = kb;
               if ( ui_Linefeed ( kb ) ) { key = '\r'; OK = 1; continue; }
               if ( ui_Return ( kb ) ) {key = '\r'; OK = 1; continue; }
@@ -4848,13 +4848,13 @@ void transch(int c) {
               if ( ( kb == '.' ) || ( kb == 'u' ) || ( kb == 'U' ) ) {
                   OK = 1; continue;
               }
-              if ( ui_Uparrow ( kb ) ) { cursor_up ( dc ) ; draw_cross_cursor 
+              if ( ui_Uparrow ( kb ) ) { cursor_up ( dc ) ; draw_cross_cursor  \
                   ( G , dc->gcur_x , dc->gcur_y ) ; break; }
-              if ( ui_Downarrow ( kb ) ) { cursor_down ( dc ) ; draw_cross_cursor 
+              if ( ui_Downarrow ( kb ) ) { cursor_down ( dc ) ; draw_cross_cursor  \
                   ( G , dc->gcur_x , dc->gcur_y ) ; break; }
-              if ( ui_Leftarrow ( kb ) ) { cursor_left ( dc ) ; draw_cross_cursor 
+              if ( ui_Leftarrow ( kb ) ) { cursor_left ( dc ) ; draw_cross_cursor  \
                   ( G , dc->gcur_x , dc->gcur_y ) ; break; }
-              if ( ui_Rightarrow ( kb ) ) { cursor_right ( dc ) ; draw_cross_cursor 
+              if ( ui_Rightarrow ( kb ) ) { cursor_right ( dc ) ; draw_cross_cursor  \
                   ( G , dc->gcur_x , dc->gcur_y ) ; break; }
               break;
               default:
@@ -4952,7 +4952,7 @@ void transch(int c) {
       return ( key ) ;
   }
 #endif
-  char kgDblCursor ( DIG *G , float *xx , float *yy , float *xbgn , float *ybgn ) 
+  char kgDblCursor ( DIG *G , float *xx , float *yy , float *xbgn , float *ybgn )  \
       {
       int ch , key , c_color;
       int xpo , ypo , but , pointer , xorg , yorg;
@@ -4997,16 +4997,16 @@ void transch(int c) {
           xpo = kbevent.x;
           ypo = kbevent.y;
           switch ( event ) {
-               case 0: // pointer movement
+              case 0: // pointer movement
 //     case 2:  // button release
-               case 3: // button press and movement
+              case 3: // button press and movement
               if ( ( xpo != dc->gcur_x ) || ( ypo != dc->gcur_y ) ) {
                   dc->gcur_x = xpo , dc->gcur_y = ypo;
                   draw_cross_cursor ( G , dc->gcur_x , dc->gcur_y ) ;
                   draw_po_cursor ( G ) ;
               }
               break;
-               case 1: // button press
+              case 1: // button press
               if ( ( xpo != dc->gcur_x ) || ( ypo != dc->gcur_y ) ) {
                   dc->gcur_x = xpo , dc->gcur_y = ypo;
                   draw_cross_cursor ( G , dc->gcur_x , dc->gcur_y ) ;
@@ -5016,7 +5016,7 @@ void transch(int c) {
               if ( button == 3 ) key = '.';
               OK = 1;
               continue;
-               case 5: // key release
+              case 5: // key release
               key = kb;
               if ( ui_Linefeed ( kb ) ) { key = '\r'; OK = 1; continue; }
               if ( ui_Return ( kb ) ) {key = '\r'; OK = 1; continue; }
@@ -5025,13 +5025,13 @@ void transch(int c) {
               if ( ( kb == '.' ) || ( kb == 'u' ) || ( kb == 'U' ) ) {
                   OK = 1; continue;
               }
-              if ( ui_Uparrow ( kb ) ) { cursor_up ( dc ) ; draw_cross_cursor 
+              if ( ui_Uparrow ( kb ) ) { cursor_up ( dc ) ; draw_cross_cursor  \
                   ( G , dc->gcur_x , dc->gcur_y ) ; break; }
-              if ( ui_Downarrow ( kb ) ) { cursor_down ( dc ) ; draw_cross_cursor 
+              if ( ui_Downarrow ( kb ) ) { cursor_down ( dc ) ; draw_cross_cursor  \
                   ( G , dc->gcur_x , dc->gcur_y ) ; break; }
-              if ( ui_Leftarrow ( kb ) ) { cursor_left ( dc ) ; draw_cross_cursor 
+              if ( ui_Leftarrow ( kb ) ) { cursor_left ( dc ) ; draw_cross_cursor  \
                   ( G , dc->gcur_x , dc->gcur_y ) ; break; }
-              if ( ui_Rightarrow ( kb ) ) { cursor_right ( dc ) ; draw_cross_cursor 
+              if ( ui_Rightarrow ( kb ) ) { cursor_right ( dc ) ; draw_cross_cursor  \
                   ( G , dc->gcur_x , dc->gcur_y ) ; break; }
               break;
               default:
@@ -5094,7 +5094,7 @@ void transch(int c) {
       uiUpdateOn ( D ) ;
       return ( key ) ;
   }
-  char kgRbrCursor ( DIG *G , float *xx , float *yy , float *xbgn , float *ybgn ) 
+  char kgRbrCursor ( DIG *G , float *xx , float *yy , float *xbgn , float *ybgn )  \
       {
       KBEVENT kbevent;
       int kb , button , event , OK = 0 , c_color;
@@ -5139,16 +5139,16 @@ void transch(int c) {
           xpo = kbevent.x;
           ypo = kbevent.y;
           switch ( event ) {
-               case 0: // pointer movement
+              case 0: // pointer movement
 //     case 2:  // button release
-               case 3: // button press and movement
+              case 3: // button press and movement
               if ( ( xpo != dc->gcur_x ) || ( ypo != dc->gcur_y ) ) {
                   dc->gcur_x = xpo , dc->gcur_y = ypo;
                   draw_rbr_cursor ( G , xorg , yorg , dc->gcur_x , dc->gcur_y ) ;
                   draw_po_cursor ( G ) ;
               }
               break;
-               case 1: // button press
+              case 1: // button press
               if ( ( xpo != dc->gcur_x ) || ( ypo != dc->gcur_y ) ) {
                   dc->gcur_x = xpo , dc->gcur_y = ypo;
                   draw_rbr_cursor ( G , xorg , yorg , dc->gcur_x , dc->gcur_y ) ;
@@ -5158,7 +5158,7 @@ void transch(int c) {
               if ( button == 3 ) key = '.';
               OK = 1;
               continue;
-               case 5: // key release
+              case 5: // key release
               key = kb;
               if ( ui_Linefeed ( kb ) ) { key = '\r'; OK = 1; continue; }
               if ( ui_Return ( kb ) ) {key = '\r'; OK = 1; continue; }
@@ -5167,13 +5167,13 @@ void transch(int c) {
               if ( ( kb == '.' ) || ( kb == 'u' ) || ( kb == 'U' ) ) {
                   OK = 1; continue;
               }
-              if ( ui_Uparrow ( kb ) ) { cursor_up ( dc ) ; draw_rbr_cursor 
+              if ( ui_Uparrow ( kb ) ) { cursor_up ( dc ) ; draw_rbr_cursor  \
                   ( G , xorg , yorg , dc->gcur_x , dc->gcur_y ) ; break; }
-              if ( ui_Downarrow ( kb ) ) { cursor_down ( dc ) ; draw_rbr_cursor 
+              if ( ui_Downarrow ( kb ) ) { cursor_down ( dc ) ; draw_rbr_cursor  \
                   ( G , xorg , yorg , dc->gcur_x , dc->gcur_y ) ; break; }
-              if ( ui_Leftarrow ( kb ) ) { cursor_left ( dc ) ; draw_rbr_cursor 
+              if ( ui_Leftarrow ( kb ) ) { cursor_left ( dc ) ; draw_rbr_cursor  \
                   ( G , xorg , yorg , dc->gcur_x , dc->gcur_y ) ; break; }
-              if ( ui_Rightarrow ( kb ) ) { cursor_right ( dc ) ; draw_rbr_cursor 
+              if ( ui_Rightarrow ( kb ) ) { cursor_right ( dc ) ; draw_rbr_cursor  \
                   ( G , xorg , yorg , dc->gcur_x , dc->gcur_y ) ; break; }
               break;
               default:
@@ -5202,7 +5202,7 @@ void transch(int c) {
   }
 #if 0
 #endif
-  char kgArcCursor ( DIG *G , float *xx , float *yy , float *xbgn , float *ybgn ) 
+  char kgArcCursor ( DIG *G , float *xx , float *yy , float *xbgn , float *ybgn )  \
       {
       KBEVENT kbevent;
       int kb , button , event , OK = 0;
@@ -5229,7 +5229,7 @@ void transch(int c) {
       dc->gcur_y = ( D->evgay ) -uiscr_y ( *yy ) ;
       xorg = uiscr_x ( *xbgn ) ;
       yorg = ( D->evgay ) -uiscr_y ( *ybgn ) ;
-      dc->gcur_r = sqrt ( ( double ) ( ( dc->gcur_x-xorg ) * ( dc->gcur_x-xorg ) + 
+      dc->gcur_r = sqrt ( ( double ) ( ( dc->gcur_x-xorg ) * ( dc->gcur_x-xorg ) +  \
           ( dc->gcur_y-yorg ) * ( dc->gcur_y-yorg ) ) ) ;
       uiScrn_back ( wc , dc->msg_x , dc->msg_y , 34 ) ;
       kg_scr_back ( wc , 0 , yorg , ( D->evgax+1 ) , yorg ) ;
@@ -5254,9 +5254,9 @@ void transch(int c) {
           xpo = kbevent.x;
           ypo = kbevent.y;
           switch ( event ) {
-               case 0: // pointer movement
+              case 0: // pointer movement
 //     case 2:  // button release
-               case 3: // button press and movement
+              case 3: // button press and movement
               if ( ( xpo != dc->gcur_x ) || ( ypo != dc->gcur_y ) ) {
                   dc->gcur_x = xpo , dc->gcur_y = ypo;
                   gcurx = dc->gcur_x; gcury = dc->gcur_y;
@@ -5267,7 +5267,7 @@ void transch(int c) {
                   draw_arc_cursor ( G ) ;
               }
               break;
-               case 1: // button press
+              case 1: // button press
               if ( ( xpo != dc->gcur_x ) || ( ypo != dc->gcur_y ) ) {
                   dc->gcur_x = xpo , dc->gcur_y = ypo;
                   gcurx = dc->gcur_x; gcury = dc->gcur_y;
@@ -5281,7 +5281,7 @@ void transch(int c) {
               if ( button == 3 ) key = '.';
               OK = 1;
               continue;
-               case 5: // key release
+              case 5: // key release
               key = kb;
               if ( ui_Linefeed ( kb ) ) { key = '\r'; OK = 1; continue; }
               if ( ui_Return ( kb ) ) {key = '\r'; OK = 1; continue; }
@@ -5376,7 +5376,7 @@ void transch(int c) {
       _uiLINE ( wc , xa , ( EVGAY-ya ) , xb , ( EVGAY-yb ) ) ;
       wcset_clr ( wc , tempc ) ;
   }
-  void _uirect_fill ( kgWC *wc , int x1 , int y1 , int x2 , int y2 , unsigned int color ) 
+  void _uirect_fill ( kgWC *wc , int x1 , int y1 , int x2 , int y2 , unsigned int color )  \
       {
       short x_min , y_min , x_max , x_max1 , x_min1 , y_max , i , j , po1;
       unsigned int temp;
@@ -5394,14 +5394,14 @@ void transch(int c) {
               if ( x_min < 0 ) x_min = 0;
               if ( y_max > ( D->evgay ) ) y_max = ( D->evgay ) ;
               if ( y_min < 0 ) y_min = 0;
-              _uiBox_Fill ( wc , x_min , ( D->evgay ) -y_max , x_max1 , 
+              _uiBox_Fill ( wc , x_min , ( D->evgay ) -y_max , x_max1 ,  \
                   ( D->evgay ) -y_min ) ;
           }
       }
       uiset_clr ( D , temp ) ;
       return;
   }
-  void _dvrect_fill ( kgWC *wc , int x1 , int y1 , int x2 , int y2 , unsigned int color ) 
+  void _dvrect_fill ( kgWC *wc , int x1 , int y1 , int x2 , int y2 , unsigned int color )  \
       {
       short x_min , y_min , x_max , x_max1 , x_min1 , y_max , i , j , po1;
       unsigned int temp;
@@ -5425,7 +5425,7 @@ void transch(int c) {
       uiset_clr ( D , temp ) ;
       return;
   }
-  void _uirect_fill_transparent ( kgWC *wc , int x1 , int y1 , int x2 , int y2 , unsigned int color , float transparency ) 
+  void _uirect_fill_transparent ( kgWC *wc , int x1 , int y1 , int x2 , int y2 , unsigned int color , float transparency )  \
       {
       short x_min , y_min , x_max , x_max1 , x_min1 , y_max , i , j , po1;
       unsigned int temp;
@@ -5446,14 +5446,14 @@ void transch(int c) {
               if ( x_min < 0 ) x_min = 0;
               if ( y_max > ( D->evgay ) ) y_max = ( D->evgay ) ;
               if ( y_min < 0 ) y_min = 0;
-              _dvBox_Fill_Transparent ( wc , x_min , ( D->evgay ) -y_max , x_max1 , 
+              _dvBox_Fill_Transparent ( wc , x_min , ( D->evgay ) -y_max , x_max1 ,  \
                   ( D->evgay ) -y_min , transparency ) ;
           }
       }
       uiset_clr ( D , temp ) ;
       return;
   }
-  void _dvrect_fill_transparent ( kgWC *wc , int x1 , int y1 , int x2 , int y2 , unsigned int color , float transparency ) 
+  void _dvrect_fill_transparent ( kgWC *wc , int x1 , int y1 , int x2 , int y2 , unsigned int color , float transparency )  \
       {
       short x_min , y_min , x_max , x_max1 , x_min1 , y_max , i , j , po1;
       unsigned int temp;
@@ -5485,7 +5485,7 @@ void transch(int c) {
       uiset_clr ( D , temp ) ;
       return;
   }
-  void uiMenuString ( DIALOG *D , char *Str , int x , int y , int width , int height , int font , int color , int FontSize , int status ) 
+  void uiMenuString ( DIALOG *D , char *Str , int x , int y , int width , int height , int font , int color , int FontSize , int status )  \
       {
       void * fid;
       int ln , i , maxchar , temp , justification = -1;
@@ -5557,7 +5557,7 @@ void transch(int c) {
       }
       return ;
   }
-  void *uiMenuStringImage ( DIALOG *D , char *Str , int width , int height , int font , int color , int FontSize , int justification ) 
+  void *uiMenuStringImage ( DIALOG *D , char *Str , int width , int height , int font , int color , int FontSize , int justification )  \
       {
       void * fid;
       int ln , i , maxchar , temp;
@@ -5615,7 +5615,7 @@ void transch(int c) {
       }
       return img;
   }
-  void **uiMenuStringImages ( DIALOG *D , char **Strs , int width , int height , int font , int color , int FontSize , int justification , int Mag ) 
+  void **uiMenuStringImages ( DIALOG *D , char **Strs , int width , int height , int font , int color , int FontSize , int justification , int Mag )  \
       {
       void * fid;
       void **imgs;
@@ -5685,7 +5685,7 @@ void transch(int c) {
       }
       return imgs;
   }
-  void **uiMenuNailImages ( DIALOG *D , ThumbNail **Strs , int width , int height , int font , int color , int FontSize , int justification , int Mag ) 
+  void **uiMenuNailImages ( DIALOG *D , ThumbNail **Strs , int width , int height , int font , int color , int FontSize , int justification , int Mag )  \
       {
       void * fid;
       void **imgs;
@@ -5832,13 +5832,13 @@ void transch(int c) {
               kgLineColor ( fid , color ) ;
               kgChangeColor ( fid , 0 , 0 , 0 , 0 ) ;
               kgChangeColor ( fid , 15 , 255 , 255 , 255 ) ;
-              kgRoundedRectangleFill ( fid , xp+ ( float ) BxSize , yp+0.25*BxSize , 
+              kgRoundedRectangleFill ( fid , xp+ ( float ) BxSize , yp+0.25*BxSize ,  \
                   ( float ) BxSize , ( float ) BxSize , 0 , 15 , 0.5 ) ;
-              kgRoundedRectanglePressed ( fid , xp+ ( float ) BxSize , yp+0.25*BxSize , 
+              kgRoundedRectanglePressed ( fid , xp+ ( float ) BxSize , yp+0.25*BxSize ,  \
                   ( float ) BxSize , ( float ) BxSize , color , 0.5 , 4 ) ;
               kgMove2f ( fid , xp+ ( float ) BxSize+0.5*FontSize , yp ) ;
               if ( status > 0 ) {
-                  kgArcFill ( fid , xp+BxSize , yp+0.25*BxSize , 
+                  kgArcFill ( fid , xp+BxSize , yp+0.25*BxSize ,  \
                       ( float ) BxSize*0.2 , 0. , 360. , 0 , 0 ) ;
               }
           }
@@ -5877,14 +5877,14 @@ void transch(int c) {
 #if 0
               kgLineColor ( fid , color ) ;
               kgCircle2f ( fid , 1.0*BxSize , yp+0.25*BxSize , ( float ) BxSize*0.35 ) ;
-              kgCircle2f ( fid , 1.0*BxSize , yp+0.25*BxSize , 
+              kgCircle2f ( fid , 1.0*BxSize , yp+0.25*BxSize ,  \
                   ( float ) ( BxSize+2 ) *0.35 ) ;
-              kgCircle2f ( fid , 1.0*BxSize , yp+0.25*BxSize , 
+              kgCircle2f ( fid , 1.0*BxSize , yp+0.25*BxSize ,  \
                   ( float ) ( BxSize+3 ) *0.35 ) ;
 #else
               kgGetDefaultRGB ( color , & r , & g , & b ) ;
               rf = r , gf = g , bf = b;
-              kgRoundedRectangleRing ( fid , 1.0*BxSize , yp+0.25*BxSize , ( float ) BxSize*0.7 , 
+              kgRoundedRectangleRing ( fid , 1.0*BxSize , yp+0.25*BxSize , ( float ) BxSize*0.7 ,  \
                   ( float ) BxSize*0.7 , rf , gf , bf , 0.5 , 0.7 ) ;
 #endif
               kgMove2f ( fid , ( float ) BxSize-0.4*FontSize , yp+0.1*BxSize ) ;
@@ -5895,7 +5895,7 @@ void transch(int c) {
       }
       return img;
   }
-  void uiCheckString ( DIALOG *D , char *Str , int x , int y , int width , int height , int font , int color , int FontSize , int status ) 
+  void uiCheckString ( DIALOG *D , char *Str , int x , int y , int width , int height , int font , int color , int FontSize , int status )  \
       {
       void * fid;
       int ln , i , maxchar , temp , justification = -1;
@@ -5947,9 +5947,9 @@ void transch(int c) {
 #if 0
 #else
               kgCircle2f ( fid , 1.0*BxSize , xp+0.25*BxSize , ( float ) BxSize*0.35 ) ;
-              kgCircle2f ( fid , 1.0*BxSize , xp+0.25*BxSize , 
+              kgCircle2f ( fid , 1.0*BxSize , xp+0.25*BxSize ,  \
                   ( float ) ( BxSize+2 ) *0.35 ) ;
-              kgCircle2f ( fid , 1.0*BxSize , xp+0.25*BxSize , 
+              kgCircle2f ( fid , 1.0*BxSize , xp+0.25*BxSize ,  \
                   ( float ) ( BxSize+3 ) *0.35 ) ;
 #endif
               kgMove2f ( fid , ( float ) BxSize-0.4*FontSize , xp+0.1*BxSize ) ;
@@ -5965,7 +5965,7 @@ void transch(int c) {
       }
       return ;
   }
-  void uiRadioString ( DIALOG *D , char *Str , int x , int y , int width , int height , int font , int color , int FontSize , int status ) 
+  void uiRadioString ( DIALOG *D , char *Str , int x , int y , int width , int height , int font , int color , int FontSize , int status )  \
       {
       void * fid;
       int ln , i , maxchar , temp , justification = -1;
@@ -6021,14 +6021,14 @@ void transch(int c) {
 #else
               kgChangeColor ( fid , 0 , 0 , 0 , 0 ) ;
               kgChangeColor ( fid , 15 , 255 , 255 , 255 ) ;
-              kgRoundedRectangleFill ( fid , ( float ) 1.0*BxSize , xp+0.25*BxSize , 
+              kgRoundedRectangleFill ( fid , ( float ) 1.0*BxSize , xp+0.25*BxSize ,  \
                   ( float ) BxSize , ( float ) BxSize , 0 , 15 , 0.5 ) ;
-              kgRoundedRectanglePressed ( fid , ( float ) 1.0*BxSize , xp+0.25*BxSize , 
+              kgRoundedRectanglePressed ( fid , ( float ) 1.0*BxSize , xp+0.25*BxSize ,  \
                   ( float ) BxSize , ( float ) BxSize , D->gc.fill_clr , 0.5 , 4 ) ;
 #endif
               kgMove2f ( fid , ( float ) BxSize+0.5*FontSize , xp ) ;
               if ( status > 0 ) {
-                  kgArcFill ( fid , 1.0*BxSize , xp+0.25*BxSize , 
+                  kgArcFill ( fid , 1.0*BxSize , xp+0.25*BxSize ,  \
                       ( float ) BxSize*0.2 , 0. , 360. , 0 , 0 ) ;
               }
           }
@@ -6042,7 +6042,7 @@ void transch(int c) {
       }
       return ;
   }
-  void uiString ( DIALOG *D , char *str , int x , int y , int width , int height , int font , int color , int FontSize , int justfic , int bkcolor ) 
+  void uiString ( DIALOG *D , char *str , int x , int y , int width , int height , int font , int color , int FontSize , int justfic , int bkcolor )  \
       {
 /*
    Write a string in Dialog Area;
@@ -6067,7 +6067,7 @@ void transch(int c) {
       }
       else printf ( "img == NULL\n" ) ;
   }
-  void uiMsgString ( DIALOG *D , char *str , int x1 , int y1 , int char_clr , int Font , int FontSize ) 
+  void uiMsgString ( DIALOG *D , char *str , int x1 , int y1 , int char_clr , int Font , int FontSize )  \
       {
  /* writes a string in fixed font mod */
       void *fid , *img;
@@ -6102,7 +6102,7 @@ void transch(int c) {
       }
       return;
   }
-  void uiBoxedString ( DIALOG *D , char *str , int x , int y , int width , int height , int font , int border , int highli , int charclr , int FontSize , int justfic , float rfac , int state ) 
+  void uiBoxedString ( DIALOG *D , char *str , int x , int y , int width , int height , int font , int border , int highli , int charclr , int FontSize , int justfic , float rfac , int state )  \
       {
 /*
    Write a string in Dialog Area;
@@ -6129,7 +6129,7 @@ void transch(int c) {
           uiFreeImage ( img ) ;
       }
   }
-  void uiFilledString ( DIALOG *D , char *str , int x , int y , int width , int height , int font , int fillcolor , int highli , int color , int FontSize , int justfic , float rfac , int state , float depthfac ) 
+  void uiFilledString ( DIALOG *D , char *str , int x , int y , int width , int height , int font , int fillcolor , int highli , int color , int FontSize , int justfic , float rfac , int state , float depthfac )  \
       {
 /*
    Write a string in Dialog Area;
@@ -6156,7 +6156,7 @@ void transch(int c) {
           uiFreeImage ( img ) ;
       }
   }
-  void uiFilledString1 ( DIALOG *D , char *str , int x , int y , int width , int height , int font , int fillcolor , int highli , int color , int FontSize , int justfic , float rfac , int state , float depthfac ) 
+  void uiFilledString1 ( DIALOG *D , char *str , int x , int y , int width , int height , int font , int fillcolor , int highli , int color , int FontSize , int justfic , float rfac , int state , float depthfac )  \
       {
 /*
    Write a string in Dialog Area;
@@ -6183,7 +6183,7 @@ void transch(int c) {
           uiFreeImage ( img ) ;
       }
   }
-  void uiSplashString ( DIALOG *D , char *str , int x , int y , int width , int height , int font , int fillcolor , int color , int FontSize , int justfic , float rfac ) 
+  void uiSplashString ( DIALOG *D , char *str , int x , int y , int width , int height , int font , int fillcolor , int color , int FontSize , int justfic , float rfac )  \
       {
 /*
    Write a string in Dialog Area;
@@ -6210,7 +6210,7 @@ void transch(int c) {
           uiFreeImage ( img ) ;
       }
   }
-  void uiShadedString ( DIALOG *D , char *str , int x , int y , int width , int height , int font , int fillcolor , int highli , int color , int FontSize , int justfic , float rfac , int state , int type ) 
+  void uiShadedString ( DIALOG *D , char *str , int x , int y , int width , int height , int font , int fillcolor , int highli , int color , int FontSize , int justfic , float rfac , int state , int type )  \
       {
 /*
    Write a string in Dialog Area;
@@ -6256,12 +6256,12 @@ void transch(int c) {
           }
           return;
           default:
-          uiFilledString ( D , str , x , y , width , height , font , fillcolor , highli , color , FontSize , justfic , rfac , state , 
+          uiFilledString ( D , str , x , y , width , height , font , fillcolor , highli , color , FontSize , justfic , rfac , state ,  \
               ( float ) ( type-6 ) ) ;
           return;
       }
   }
-  void uiShadedStringImage ( DIALOG *D , char *str , void *image , int x , int y , int width , int height , int font , int fillcolor , int highli , int color , int FontSize , int justfic , float rfac , int state , int type ) 
+  void uiShadedStringImage ( DIALOG *D , char *str , void *image , int x , int y , int width , int height , int font , int fillcolor , int highli , int color , int FontSize , int justfic , float rfac , int state , int type )  \
       {
 /*
    Write a string in Dialog Area;
@@ -6338,7 +6338,7 @@ void transch(int c) {
               
           return;
           default:
-          uiFilledString1 ( D , NULL , x , y , width , height , font , fillcolor , highli , color , FontSize , justfic , rfac , state , 
+          uiFilledString1 ( D , NULL , x , y , width , height , font , fillcolor , highli , color , FontSize , justfic , rfac , state ,  \
               ( float ) ( type-3. ) ) ;
           if ( image != NULL ) { kgImage ( D , image , x+1 , y+1 , width-2 , height-2 , 0.0 , 1.0 ) ;
               
@@ -6348,7 +6348,7 @@ void transch(int c) {
           return;
       }
   }
-  void *uiMakeStringImage ( DIALOG *D , char *str , void *image , int x , int y , int width , int height , int font , int fillcolor , int highli , int color , int FontSize , int justfic , float rfac , int state , int type ) 
+  void *uiMakeStringImage ( DIALOG *D , char *str , void *image , int x , int y , int width , int height , int font , int fillcolor , int highli , int color , int FontSize , int justfic , float rfac , int state , int type )  \
       {
 /*
    Write a string in Dialog Area;
@@ -6549,7 +6549,7 @@ void transch(int c) {
       uiset_clr ( D , temp ) ;
       return;
   }
-  void uiPutString ( DIALOG *D , char *str , int x1 , int y1 , int char_clr , int Font , int FontSize ) 
+  void uiPutString ( DIALOG *D , char *str , int x1 , int y1 , int char_clr , int Font , int FontSize )  \
       {
  /* writes a string in fixed font mod */
       void *fid , *img;
@@ -6589,7 +6589,7 @@ void transch(int c) {
       }
       return;
   }
-  void uiwrite_string ( DIALOG *D , char* c , int ix1 , int iy1 , int char_clr ) 
+  void uiwrite_string ( DIALOG *D , char* c , int ix1 , int iy1 , int char_clr )  \
       {
       short jj , k , i , iy;
       unsigned int temp;
@@ -6601,7 +6601,7 @@ void transch(int c) {
       uiset_clr ( D , temp ) ;
       return;
   }
-  void *ui_set_graphics ( int xpos , int ypos , int xres , int yres , char *title , int dec , float transparency ) 
+  void *ui_set_graphics ( int xpos , int ypos , int xres , int yres , char *title , int dec , float transparency )  \
       {
       kgWC *wc;
       wc = ui_create_window ( xpos , ypos , xres , yres , title , dec , transparency , 0 , 0 , 0 , 0 , NULL ) ;
@@ -6611,7 +6611,7 @@ void transch(int c) {
 //  ui_initialise(wc);
       return wc;
   }
-  void *ui_set_graphics_sticky ( int xpos , int ypos , int xres , int yres , char *title , int dec , float transparency , int sticky , int fixpos , int NoTaskBar , int StackPos , void *Shapexpm ) 
+  void *ui_set_graphics_sticky ( int xpos , int ypos , int xres , int yres , char *title , int dec , float transparency , int sticky , int fixpos , int NoTaskBar , int StackPos , void *Shapexpm )  \
       {
       kgWC *wc;
       wc = ui_create_window ( xpos , ypos , xres , yres , title , dec , transparency , sticky , fixpos , NoTaskBar , StackPos , Shapexpm ) ;
@@ -6625,7 +6625,7 @@ void transch(int c) {
       kgWC *wc;
       DIALOG *D;
       D = ( DIALOG * ) Tmp;
-      if ( ( D->parent != NULL ) && ( D->SUBWIN == 1 ) ) wc = kgCreateSubWindow 
+      if ( ( D->parent != NULL ) && ( D->SUBWIN == 1 ) ) wc = kgCreateSubWindow  \
           ( Tmp ) ;
       else wc = kgCreateWindow ( Tmp ) ;
       uiset_sup_clip_limits ( wc , 0 , 0 , wc->EVGAX , wc->EVGAY ) ;
@@ -6684,7 +6684,7 @@ void transch(int c) {
       }
       return 1;
   }
-  int XpmImageScaled ( char *flname , float x0 , float y0 , float x1 , float y1 ) 
+  int XpmImageScaled ( char *flname , float x0 , float y0 , float x1 , float y1 )  \
       {
       int xo , yo , w , h , ix0 , iy0 , ix1 , iy1;
       int i;
@@ -6709,7 +6709,7 @@ void transch(int c) {
       }
       return 1;
   }
-  int XpmImageRotated ( char *flname , float x0 , float y0 , float x1 , float y1 , float ang ) 
+  int XpmImageRotated ( char *flname , float x0 , float y0 , float x1 , float y1 , float ang )  \
       {
       int xo , yo , w , h , ix0 , iy0 , ix1 , iy1;
       int i;
@@ -6737,7 +6737,7 @@ void transch(int c) {
   }
 #endif
 #if 0
-  int ImgImageScaled ( char *flname , float x0 , float y0 , float x1 , float y1 ) 
+  int ImgImageScaled ( char *flname , float x0 , float y0 , float x1 , float y1 )  \
       {
       int xo , yo , w , h , ix0 , iy0 , ix1 , iy1;
       int i;
@@ -6755,7 +6755,7 @@ void transch(int c) {
       img_image_scaled ( flname , xo , yo , w , h ) ;
       return 1;
   }
-  int ImgImageRotated ( char *flname , float x0 , float y0 , float x1 , float y1 , float ang ) 
+  int ImgImageRotated ( char *flname , float x0 , float y0 , float x1 , float y1 , float ang )  \
       {
       int xo , yo , w , h , ix0 , iy0 , ix1 , iy1;
       int i;
@@ -6847,7 +6847,7 @@ void transch(int c) {
       int temp;
       uiwrite_string ( D , m , x , D->evgay-y , D->gc.txt_pchar ) ;
   }
-  void _uiborder3d ( void *parent , int xmin , int ymin , int xmax , int ymax ) 
+  void _uiborder3d ( void *parent , int xmin , int ymin , int xmax , int ymax )  \
       {
       int temp;
       DIALOG *D;
@@ -6865,7 +6865,7 @@ void transch(int c) {
       _ui_v_line ( WC ( D ) , ymin-4 , ymax+4 , xmin+4 ) ;
       uiset_clr ( D , temp ) ;
   }
-  void _uibordertype0 ( DIALOG *D , int xmin , int ymin , int xmax , int ymax , int bright ) 
+  void _uibordertype0 ( DIALOG *D , int xmin , int ymin , int xmax , int ymax , int bright )  \
       {
       int temp;
       temp = WC ( D )->c_color;
@@ -6877,7 +6877,7 @@ void transch(int c) {
       _ui_v_line ( WC ( D ) , ymin , ymax , xmax ) ;
       uiset_clr ( D , temp ) ;
   }
-  void _uibordertype1 ( DIALOG *D , int xmin , int ymin , int xmax , int ymax ) 
+  void _uibordertype1 ( DIALOG *D , int xmin , int ymin , int xmax , int ymax )  \
       {
       int temp;
       temp = WC ( D )->c_color;
@@ -6888,7 +6888,7 @@ void transch(int c) {
       _ui_v_line ( WC ( D ) , ymin , ymax , xmax ) ;
       uiset_clr ( D , temp ) ;
   }
-  void _uibordertype2 ( DIALOG *D , int xmin , int ymin , int xmax , int ymax , int tw , int lw , int rw , int bw ) 
+  void _uibordertype2 ( DIALOG *D , int xmin , int ymin , int xmax , int ymax , int tw , int lw , int rw , int bw )  \
       {
       int temp;
       temp = WC ( D )->c_color;
@@ -6904,7 +6904,7 @@ void transch(int c) {
       _ui_v_line ( WC ( D ) , ymin+tw , ymax-bw , xmin+lw ) ;
       uiset_clr ( D , temp ) ;
   }
-  void _uibordertype3 ( DIALOG *D , int xmin , int ymin , int xmax , int ymax , int tw , int lw , int rw , int bw ) 
+  void _uibordertype3 ( DIALOG *D , int xmin , int ymin , int xmax , int ymax , int tw , int lw , int rw , int bw )  \
       {
       int temp;
       temp = WC ( D )->c_color;
@@ -6939,7 +6939,7 @@ void transch(int c) {
       _ui_v_line ( WC ( D ) , ymax+4 , ymin-4 , xmax-4 ) ;
       uiset_clr ( D , temp ) ;
   }
-  void _uibordertype4 ( DIALOG *D , int xmin , int ymin , int xmax , int ymax ) 
+  void _uibordertype4 ( DIALOG *D , int xmin , int ymin , int xmax , int ymax )  \
       {
       int temp;
       temp = WC ( D )->c_color;
@@ -6960,7 +6960,7 @@ void transch(int c) {
       _ui_v_line ( WC ( D ) , ymin-1 , ymax+1 , xmax-1 ) ;
       uiset_clr ( D , temp ) ;
   }
-  void _dvbordertype0 ( DIALOG *D , int xmin , int ymin , int xmax , int ymax , int bright ) 
+  void _dvbordertype0 ( DIALOG *D , int xmin , int ymin , int xmax , int ymax , int bright )  \
       {
       int temp;
       temp = WC ( D )->c_color;
@@ -6981,7 +6981,7 @@ void transch(int c) {
       _dv_v_line ( WC ( D ) , ymin+2 , ymax-2 , xmax-2 ) ;
       uiset_clr ( D , temp ) ;
   }
-  void _dvbordertype1 ( DIALOG *D , int xmin , int ymin , int xmax , int ymax ) 
+  void _dvbordertype1 ( DIALOG *D , int xmin , int ymin , int xmax , int ymax )  \
       {
       int temp;
       temp = WC ( D )->c_color;
@@ -6992,7 +6992,7 @@ void transch(int c) {
       _dv_v_line ( WC ( D ) , ymin , ymax , xmax ) ;
       uiset_clr ( D , temp ) ;
   }
-  void _dvbordertype2 ( DIALOG *D , int xmin , int ymin , int xmax , int ymax , int tw , int lw , int rw , int bw ) 
+  void _dvbordertype2 ( DIALOG *D , int xmin , int ymin , int xmax , int ymax , int tw , int lw , int rw , int bw )  \
       {
       int temp;
       temp = WC ( D )->c_color;
@@ -7008,7 +7008,7 @@ void transch(int c) {
       _dv_v_line ( WC ( D ) , ymin+tw , ymax-bw , xmin+lw ) ;
       uiset_clr ( D , temp ) ;
   }
-  void _dvbordertype3 ( DIALOG *D , int xmin , int ymin , int xmax , int ymax ) 
+  void _dvbordertype3 ( DIALOG *D , int xmin , int ymin , int xmax , int ymax )  \
       {
       int temp;
       temp = WC ( D )->c_color;
@@ -7044,7 +7044,7 @@ void transch(int c) {
       _dv_v_line ( WC ( D ) , ymax-4 , ymin+4 , xmax-4 ) ;
       uiset_clr ( D , temp ) ;
   }
-  void _dvbordertype4 ( DIALOG *D , int xmin , int ymin , int xmax , int ymax ) 
+  void _dvbordertype4 ( DIALOG *D , int xmin , int ymin , int xmax , int ymax )  \
       {
       int temp;
       temp = WC ( D )->c_color;
@@ -7163,7 +7163,7 @@ void transch(int c) {
       uiRest_clip_limits ( wc ) ;
       return ;
   }
-  void * make_but_str ( DIALOG *D , int x1 , int y1 , int xgap , int ygap , int nxb , int nyb , int b_w , int b_h , int df , char **title , void **xpm , int *bkgr , int *sw ) 
+  void * make_but_str ( DIALOG *D , int x1 , int y1 , int xgap , int ygap , int nxb , int nyb , int b_w , int b_h , int df , char **title , void **xpm , int *bkgr , int *sw )  \
       {
       int i = 0 , k , x2 , y2;
       int EVGAY;
@@ -7196,7 +7196,7 @@ void transch(int c) {
       ptr->Hsize = 1;
       return ( void * ) ptr;
   }
-  void _ui_jpg_draw ( BUTS *bt , int k , int x1 , int y1 , int x2 , int y2 , int color ) 
+  void _ui_jpg_draw ( BUTS *bt , int k , int x1 , int y1 , int x2 , int y2 , int color )  \
       {
       char **buf;
       int x0 , y0 , Hsize;
@@ -7218,7 +7218,7 @@ void transch(int c) {
       x0 = x1; y0 = y1;
       if ( x2 < x0 ) x0 = x2;
       if ( ( y2 ) < y0 ) y0 = y2;
-      if ( color >= 0 ) _uibox_fill ( wc , x1+2 , EVGAY-y1+2 , x2-2 , EVGAY-y2-2 , 
+      if ( color >= 0 ) _uibox_fill ( wc , x1+2 , EVGAY-y1+2 , x2-2 , EVGAY-y2-2 ,  \
           ( unsigned int ) color ) ;
       if ( buf != NULL ) {
 //        printf("Calling kgImage\n");
@@ -7226,7 +7226,7 @@ void transch(int c) {
       }
       uiRest_clip_limits ( wc ) ;
   }
-  void _ui_jpg_newdraw ( BUTS *bt , int k , int x1 , int y1 , int x2 , int y2 , int color , float transparency , float highfac ) 
+  void _ui_jpg_newdraw ( BUTS *bt , int k , int x1 , int y1 , int x2 , int y2 , int color , float transparency , float highfac )  \
       {
       char **buf;
       int x0 , y0 , Hsize;
@@ -7454,9 +7454,9 @@ void transch(int c) {
       uiBkup_clip_limits ( wc ) ;
       uiSet_full_scrn ( wc ) ;
 //   Get_resolution(&EVGAX,&EVGAY);
-      if ( ( bt->nyb ) > 1 ) ygap = ( ( float ) ( ( bt->y2-bt->y1 ) -height*bt->nyb ) / 
+      if ( ( bt->nyb ) > 1 ) ygap = ( ( float ) ( ( bt->y2-bt->y1 ) -height*bt->nyb ) /  \
           ( bt->nyb-1.0 ) +0.5 ) ;
-      if ( ( bt->nxb ) > 1 ) xgap = ( float ) ( ( bt->x2-bt->x1 ) -width*bt->nxb ) / 
+      if ( ( bt->nxb ) > 1 ) xgap = ( float ) ( ( bt->x2-bt->x1 ) -width*bt->nxb ) /  \
           ( bt->nxb-1.0 ) +0.5;
       sw = bt->sw;
       k = 0;
@@ -7493,9 +7493,9 @@ void transch(int c) {
       wc = WC ( D ) ;
       EVGAY = D->evgay;
       width = bt->b_w; height = bt->b_h;
-      if ( ( bt->nyb ) > 1 ) ygap = ( ( float ) ( ( bt->y2-bt->y1 ) -height*bt->nyb ) / 
+      if ( ( bt->nyb ) > 1 ) ygap = ( ( float ) ( ( bt->y2-bt->y1 ) -height*bt->nyb ) /  \
           ( bt->nyb-1.0 ) +0.5 ) ;
-      if ( ( bt->nxb ) > 1 ) xgap = ( float ) ( ( bt->x2-bt->x1 ) -width*bt->nxb ) / 
+      if ( ( bt->nxb ) > 1 ) xgap = ( float ) ( ( bt->x2-bt->x1 ) -width*bt->nxb ) /  \
           ( bt->nxb-1.0 ) +0.5;
       k = 0;
       for ( j = 0; j < ( bt->nyb ) ; j++ ) {
@@ -7523,26 +7523,26 @@ void transch(int c) {
       }
       bt->df = df;
   }
-  int uiCheckClickPosition ( int x1 , int y1 , int x2 , int y2 , int PON_X , int PON_Y ) 
+  int uiCheckClickPosition ( int x1 , int y1 , int x2 , int y2 , int PON_X , int PON_Y )  \
       {
       int xp , yp;
       xp = PON_X;
       yp = PON_Y;
-      if ( ( x1 > ( xp ) ) || ( x2 < ( xp ) ) || ( y2 < 
+      if ( ( x1 > ( xp ) ) || ( x2 < ( xp ) ) || ( y2 <  \
           ( yp ) ) || ( y1 > ( yp ) ) ) return ( 0 ) ;
       else return ( 1 ) ;
   }
-  void uiMenustr ( DIALOG *D , int ixp , int iyp , char *cmenu , int char_clr ) 
+  void uiMenustr ( DIALOG *D , int ixp , int iyp , char *cmenu , int char_clr )  \
       {
       uiwrite_string ( D , cmenu , ( int ) ixp , ( int ) iyp , char_clr ) ;
   }
-  void _ui_draw_pressed_button ( int x1 , int y1 , int x2 , int y2 , BUTS *bt , int k ) 
+  void _ui_draw_pressed_button ( int x1 , int y1 , int x2 , int y2 , BUTS *bt , int k )  \
       {
       unsigned int temp , pointer , tempch;
       int bkgr , n;
       DIALOG *D;
       kgWC *wc;
-       if ( bt->sw [ k ] < 1 ) return; //not active
+      if ( bt->sw [ k ] < 1 ) return; //not active
 //   if(bt->sw[k]!=  1) return; //not active
       D = ( DIALOG * ) ( bt->D ) ;
       wc = WC ( D ) ;
@@ -7575,7 +7575,7 @@ void transch(int c) {
       uiset_clr ( D , temp ) ;
       uiRest_clip_limits ( wc ) ;
   }
-  void _ui_draw_pressed_newbutton ( int x1 , int y1 , int x2 , int y2 , BUTS *bt , int k , float transparency ) 
+  void _ui_draw_pressed_newbutton ( int x1 , int y1 , int x2 , int y2 , BUTS *bt , int k , float transparency )  \
       {
       unsigned int temp , pointer , tempch;
       int bkgr , lnwidth = 1 , highli = 0 , xgap , ygap;
@@ -7584,7 +7584,7 @@ void transch(int c) {
       int EVGAY;
       DIALOG *D;
       kgWC *wc;
-       if ( bt->sw [ k ] < 1 ) return; //not active
+      if ( bt->sw [ k ] < 1 ) return; //not active
       D = ( DIALOG * ) ( bt->D ) ;
       wc = WC ( D ) ;
       EVGAY = D->evgay;
@@ -7615,7 +7615,7 @@ void transch(int c) {
       uiset_clr ( D , temp ) ;
       uiRest_clip_limits ( wc ) ;
   }
-  void _ui_draw_bound ( DIALOG *D , int x1 , int y1 , int x2 , int y2 , int c_bound ) 
+  void _ui_draw_bound ( DIALOG *D , int x1 , int y1 , int x2 , int y2 , int c_bound )  \
       {
       unsigned int temp;
       kgWC *wc;
@@ -7632,7 +7632,7 @@ void transch(int c) {
       uiRest_clip_limits ( wc ) ;
       return;
   }
-  void _dv_draw_bound ( DIALOG *D , int x1 , int y1 , int x2 , int y2 , int c_bound ) 
+  void _dv_draw_bound ( DIALOG *D , int x1 , int y1 , int x2 , int y2 , int c_bound )  \
       {
       unsigned int temp;
       kgWC *wc;
@@ -7649,13 +7649,13 @@ void transch(int c) {
       uiRest_clip_limits ( wc ) ;
       return;
   }
-  void _ui_draw_button ( int x1 , int y1 , int x2 , int y2 , BUTS *bt , int k ) 
+  void _ui_draw_button ( int x1 , int y1 , int x2 , int y2 , BUTS *bt , int k )  \
       {
       unsigned int temp , pointer , tempch;
       int bkgr;
       DIALOG *D , *Parent;
       kgWC *wc;
-       if ( bt->sw [ k ] < 1 ) return; //not active
+      if ( bt->sw [ k ] < 1 ) return; //not active
 //   if(bt->sw[k]!=  1) return; //not active
 //     printf("Inside _ui_draw_button:title:%s\n",bt->title[k]);
       D = ( DIALOG * ) ( bt->D ) ;
@@ -7668,7 +7668,7 @@ void transch(int c) {
       if ( bt->xpm != NULL ) {
           if ( bt->bkgr == NULL ) bkgr = -1;
           else bkgr = bt->bkgr [ k ] ;
-          if ( ( bt->xpm != NULL ) && ( bt->xpm [ k ] != NULL ) ) _ui_jpg_draw 
+          if ( ( bt->xpm != NULL ) && ( bt->xpm [ k ] != NULL ) ) _ui_jpg_draw  \
               ( bt , k , x1 , D->evgay-y2+1 , x2 , D->evgay-y1+1 , bkgr ) ;
           else if ( bkgr >= 0 ) _uirect_fill ( wc , x1+4 , y1-4 , x2-4 , y2+4 , bkgr ) ;
       }
@@ -7686,13 +7686,13 @@ void transch(int c) {
       uiset_clr ( D , temp ) ;
       uiRest_clip_limits ( wc ) ;
   }
-  void _ui_redraw_button ( int x1 , int y1 , int x2 , int y2 , BUTS *bt , int k ) 
+  void _ui_redraw_button ( int x1 , int y1 , int x2 , int y2 , BUTS *bt , int k )  \
       {
       unsigned int temp , pointer , tempch;
       DIALOG *D , *Parent;
       kgWC *wc;
 //   if(bt->sw[k]< 1) return; //not active
-       if ( bt->sw [ k ] != 1 ) return; //Need not Draw
+      if ( bt->sw [ k ] != 1 ) return; //Need not Draw
       D = ( DIALOG * ) ( bt->D ) ;
       wc = WC ( D ) ;
       Parent = ( D ) ;
@@ -7759,7 +7759,7 @@ void transch(int c) {
           }
           break;
           default:
-           if ( B->sw [ k ] < 1 ) return; //not active
+          if ( B->sw [ k ] < 1 ) return; //not active
           EVGAY = D->evgay;
           temp = WC ( D )->c_color;
           xpm = B->xpm;
@@ -7834,16 +7834,16 @@ void transch(int c) {
 //     _dvrect_fill_transparent(wc,x1,y1,x2,y2,D->gc.fill_clr,transparency);
           }
       }
-       bkgrdraw = 0; //forcing ; no more required
+      bkgrdraw = 0; //forcing ; no more required
       if ( bkgrdraw ) {
           _dvrect_fill_transparent ( wc , x1 , y1 , x2 , y2 , D->gc.fill_clr , transparency ) ;
               
       }
       else {
-          if ( butn [ k ] .Bimg == NULL ) butn [ k ] .Bimg = kgGetBackground 
+          if ( butn [ k ] .Bimg == NULL ) butn [ k ] .Bimg = kgGetBackground  \
               ( D , x1 , y1 , x2 , y2 ) ;
 //     else kgImage(D,butn[k].Bimg,x1,y1,(x2-x1+1),(y2-y1+1),0.0,1.0);
-          else kgRestoreImage ( D , butn [ k ] .Bimg , x1 , y1 , 
+          else kgRestoreImage ( D , butn [ k ] .Bimg , x1 , y1 ,  \
               ( x2-x1+1 ) , ( y2-y1+1 ) ) ;
       }
 //       switch(butn[k].state) {
@@ -7860,7 +7860,7 @@ void transch(int c) {
           break;
       }
   }
-  void _ui_draw_newbutton ( int x1 , int y1 , int x2 , int y2 , BUTS *bt , int k , float transparency ) 
+  void _ui_draw_newbutton ( int x1 , int y1 , int x2 , int y2 , BUTS *bt , int k , float transparency )  \
       {
       unsigned char temp , pointer , tempch;
       int bkgr , lnwidth = 1 , highli = 0 , xgap , ygap , n;
@@ -7869,7 +7869,7 @@ void transch(int c) {
       DIALOG *D;
       kgWC *wc;
       void *xpm = NULL;
-       if ( bt->sw [ k ] < 1 ) return; //not active
+      if ( bt->sw [ k ] < 1 ) return; //not active
       D = ( DIALOG * ) ( bt->D ) ;
       wc = WC ( D ) ;
       EVGAY = D->evgay;
@@ -7900,14 +7900,14 @@ void transch(int c) {
       uiset_clr ( D , temp ) ;
       uiRest_clip_limits ( wc ) ;
   }
-  void _ui_rmvattn_newbutton ( int x1 , int y1 , int x2 , int y2 , BUTS *bt , int k , float transparency ) 
+  void _ui_rmvattn_newbutton ( int x1 , int y1 , int x2 , int y2 , BUTS *bt , int k , float transparency )  \
       {
       unsigned char temp , pointer , tempch;
       int bkgr , lnwidth = 1 , highli = 0 , xgap , ygap; ;
       int EVGAY;
       DIALOG *D;
       kgWC *wc;
-       if ( bt->sw [ k ] < 1 ) return; //not active
+      if ( bt->sw [ k ] < 1 ) return; //not active
       xgap = bt->xgap/2;
       ygap = bt->ygap/2;
       D = ( DIALOG * ) ( bt->D ) ;
@@ -7924,7 +7924,7 @@ void transch(int c) {
       else bkgr = bt->bkgr [ k ] ;
       if ( bkgr < 0 ) bkgr = D->gc.fill_clr;
       highli = 0;
-      uiShadedString ( D , bt->title [ k ] , x1 , D->evgay- ( y1 ) , ( x2-x1 ) , 
+      uiShadedString ( D , bt->title [ k ] , x1 , D->evgay- ( y1 ) , ( x2-x1 ) ,  \
           ( y1-y2 ) , D->gc.ButtonFont , bkgr , highli , D->gc.but_char , D->gc.FontSize , 0 , bt->fac , 0 , bt->type ) ;
           
       if ( ( bt->xpm != NULL ) && ( bt->xpm [ k ] != NULL ) ) {
@@ -7934,13 +7934,13 @@ void transch(int c) {
       uiset_clr ( D , temp ) ;
       uiRest_clip_limits ( wc ) ;
   }
-  void _ui_redraw_newbutton ( int x1 , int y1 , int x2 , int y2 , BUTS *bt , int k ) 
+  void _ui_redraw_newbutton ( int x1 , int y1 , int x2 , int y2 , BUTS *bt , int k )  \
       {
       unsigned char temp , pointer , tempch;
       DIALOG *D;
       kgWC *wc;
 //   if(bt->sw[k]< 1) return; //not active
-       if ( bt->sw [ k ] != 1 ) return; //Need not Draw
+      if ( bt->sw [ k ] != 1 ) return; //Need not Draw
       D = ( DIALOG * ) ( bt->D ) ;
       wc = WC ( D ) ;
       temp = WC ( D )->c_color;
@@ -7959,9 +7959,9 @@ void transch(int c) {
       int xgap = 0 , ygap = 0 , i , j , k , xx , yy , width , height;
       int pointer;
       width = bt->b_w; height = bt->b_h;
-      if ( ( bt->nyb ) > 1 ) ygap = ( ( float ) ( ( bt->y2-bt->y1 ) -height*bt->nyb ) / 
+      if ( ( bt->nyb ) > 1 ) ygap = ( ( float ) ( ( bt->y2-bt->y1 ) -height*bt->nyb ) /  \
           ( bt->nyb-1.0 ) +0.5 ) ;
-      if ( ( bt->nxb ) > 1 ) xgap = ( float ) ( ( bt->x2-bt->x1 ) -width*bt->nxb ) / 
+      if ( ( bt->nxb ) > 1 ) xgap = ( float ) ( ( bt->x2-bt->x1 ) -width*bt->nxb ) /  \
           ( bt->nxb-1.0 ) +0.5;
       k = 0;
       for ( j = 0; j < ( bt->nyb ) ; j++ ) {
@@ -7989,9 +7989,9 @@ void transch(int c) {
       int xgap = 0 , ygap = 0 , i , j , xx , yy , width , height;
       int pointer , kk;
       width = bt->b_w; height = bt->b_h;
-      if ( ( bt->nyb ) > 1 ) ygap = ( ( float ) ( ( bt->y2-bt->y1 ) -height*bt->nyb ) / 
+      if ( ( bt->nyb ) > 1 ) ygap = ( ( float ) ( ( bt->y2-bt->y1 ) -height*bt->nyb ) /  \
           ( bt->nyb-1.0 ) +0.5 ) ;
-      if ( ( bt->nxb ) > 1 ) xgap = ( float ) ( ( bt->x2-bt->x1 ) -width*bt->nxb ) / 
+      if ( ( bt->nxb ) > 1 ) xgap = ( float ) ( ( bt->x2-bt->x1 ) -width*bt->nxb ) /  \
           ( bt->nxb-1.0 ) +0.5;
       kk = 0;
       for ( j = 0; j < ( bt->nyb ) ; j++ ) {
@@ -8011,9 +8011,9 @@ void transch(int c) {
       int pointer;
       uiUpdateOff ( bt->D ) ;
       width = bt->b_w; height = bt->b_h;
-      if ( ( bt->nyb ) > 1 ) ygap = ( ( float ) ( ( bt->y2-bt->y1 ) -height*bt->nyb ) / 
+      if ( ( bt->nyb ) > 1 ) ygap = ( ( float ) ( ( bt->y2-bt->y1 ) -height*bt->nyb ) /  \
           ( bt->nyb-1.0 ) +0.5 ) ;
-      if ( ( bt->nxb ) > 1 ) xgap = ( float ) ( ( bt->x2-bt->x1 ) -width*bt->nxb ) / 
+      if ( ( bt->nxb ) > 1 ) xgap = ( float ) ( ( bt->x2-bt->x1 ) -width*bt->nxb ) /  \
           ( bt->nxb-1.0 ) +0.5;
       k = 0;
       for ( j = 0; j < ( bt->nyb ) ; j++ ) {
@@ -8102,9 +8102,9 @@ void transch(int c) {
       EVGAY = D->evgay;
       uiUpdateOff ( D ) ;
       width = bt->b_w; height = bt->b_h;
-      if ( ( bt->nyb ) > 1 ) ygap = ( ( float ) ( ( bt->y2-bt->y1 ) -height*bt->nyb ) / 
+      if ( ( bt->nyb ) > 1 ) ygap = ( ( float ) ( ( bt->y2-bt->y1 ) -height*bt->nyb ) /  \
           ( bt->nyb-1.0 ) +0.5 ) ;
-      if ( ( bt->nxb ) > 1 ) xgap = ( float ) ( ( bt->x2-bt->x1 ) -width*bt->nxb ) / 
+      if ( ( bt->nxb ) > 1 ) xgap = ( float ) ( ( bt->x2-bt->x1 ) -width*bt->nxb ) /  \
           ( bt->nxb-1.0 ) +0.5;
       k = 0;
       for ( j = 0; j < ( bt->nyb ) ; j++ ) {
@@ -8136,7 +8136,7 @@ void transch(int c) {
 //   uidia_message(D,b->x1+x1,b->y1+12+y1+b->width/2,b->prompt+i);
       uiString ( D , b->prompt+i , b->x1+x1 , b->y1+y1+b->width/2-10 , n*9-5 , 20 , D->gc.PromptFont , D->gc.txt_pchar , D->gc.FontSize , 1 , D->gc.fill_clr ) ;
           
-      b->buts = make_but_str ( D , b->x1+x1+lngth , b->y1+y1+Hsize+2 , b->xgap , b->ygap , b->nx , b->ny , b->lngth , b->width , * 
+      b->buts = make_but_str ( D , b->x1+x1+lngth , b->y1+y1+Hsize+2 , b->xgap , b->ygap , b->nx , b->ny , b->lngth , b->width , *  \
           ( b->df ) , b->titles , b->xpm , b->bkgr , NULL ) ;
       buts = ( BUTS * ) ( b->buts ) ;
       buts->D = D;
@@ -8169,7 +8169,7 @@ void transch(int c) {
 //   uiString(D,b->prompt+i,b->x1+x1,b->y1+y1+b->width/2-10,n*9-5,20,D->gc.PromptFont,D->gc.txt_pchar,D->gc.FontSize,1,D->gc.fill_clr);
       uiString ( D , b->prompt+i , b->x1+x1 , b->y1+y1 , n*9-5 , b->width , D->gc.PromptFont , D->gc.txt_pchar , D->gc.FontSize , 1 , D->gc.fill_clr ) ;
           
-      b->buts = make_but_str ( D , b->x1+x1+lngth , b->y1+y1+Hsize+2 , b->xgap , b->ygap , b->nx , b->ny , b->lngth , b->width , * 
+      b->buts = make_but_str ( D , b->x1+x1+lngth , b->y1+y1+Hsize+2 , b->xgap , b->ygap , b->nx , b->ny , b->lngth , b->width , *  \
           ( b->df ) , b->titles , b->xpm , b->bkgr , NULL ) ;
       buts = ( BUTS * ) ( b->buts ) ;
       buts->D = D;
@@ -8208,7 +8208,7 @@ void transch(int c) {
           uiBkup_clip_limits ( wc ) ;
           uiSet_full_scrn ( wc ) ;
           if ( b->bordr == 1 ) {
-              _dv_draw_bound ( D , ( x1+2 ) , ( y1+2 ) , 
+              _dv_draw_bound ( D , ( x1+2 ) , ( y1+2 ) ,  \
                   ( x2-2 ) , ( y2-2 ) , D->gc.high_clr ) ;
           }
           _uiDrawButtons ( b ) ;
@@ -8219,7 +8219,7 @@ void transch(int c) {
           ret = 0;
           uiBkup_clip_limits ( wc ) ;
           uiSet_full_scrn ( wc ) ;
-          _dvrect_fill_transparent ( wc , ( x1 ) , ( y1 ) , ( x2 ) , 
+          _dvrect_fill_transparent ( wc , ( x1 ) , ( y1 ) , ( x2 ) ,  \
               ( y2 ) , D->gc.fill_clr , D->transparency ) ;
           uiRest_clip_limits ( wc ) ;
 #endif
@@ -8295,7 +8295,7 @@ void transch(int c) {
           uiSet_full_scrn ( wc ) ;
           _uiUpdateType0Buts ( b ) ;
           if ( b->bordr == 1 ) {
-              _dv_draw_bound ( D , ( x1+2 ) , ( y1+2 ) , 
+              _dv_draw_bound ( D , ( x1+2 ) , ( y1+2 ) ,  \
                   ( x2-2 ) , ( y2-2 ) , D->gc.high_clr ) ;
           }
           _uiDrawButtons_n ( b ) ;
@@ -8307,7 +8307,7 @@ void transch(int c) {
           if ( backgr ) {
               uiBkup_clip_limits ( wc ) ;
               uiSet_full_scrn ( wc ) ;
-              _dvrect_fill_transparent ( wc , ( x1 ) , ( y1 ) , ( x2 ) , 
+              _dvrect_fill_transparent ( wc , ( x1 ) , ( y1 ) , ( x2 ) ,  \
                   ( y2 ) , D->gc.fill_clr , D->transparency ) ;
               uiRest_clip_limits ( wc ) ;
           }
@@ -8325,7 +8325,7 @@ void transch(int c) {
       y1 = D->yo;
       lngth = D->Hsize+2;
 //   uiDefaultGuiFontSize(D);
-      b->buts = make_but_str ( D , b->x1+x1+lngth , b->y1+y1+lngth , b->xgap , b->ygap , b->nx , b->ny , b->lngth , b->width , * 
+      b->buts = make_but_str ( D , b->x1+x1+lngth , b->y1+y1+lngth , b->xgap , b->ygap , b->nx , b->ny , b->lngth , b->width , *  \
           ( b->df ) , b->titles , b->xpm , b->bkgr , b->sw ) ;
       buts = ( BUTS * ) ( b->buts ) ;
       buts->D = D;
@@ -8357,7 +8357,7 @@ void transch(int c) {
           y2 = b->y2+D->yo;
           uiBkup_clip_limits ( wc ) ;
           uiSet_full_scrn ( wc ) ;
-          _dvrect_fill_transparent ( wc , ( x1 ) , ( y1 ) , ( x2 ) , 
+          _dvrect_fill_transparent ( wc , ( x1 ) , ( y1 ) , ( x2 ) ,  \
               ( y2 ) , D->gc.fill_clr , D->transparency ) ;
           uiRest_clip_limits ( wc ) ;
 #endif
@@ -8365,7 +8365,7 @@ void transch(int c) {
       }
       return ( ret ) ;
   }
-  int uidraw_g_box ( DIALOG *D , int x1 , int y1 , int x2 , int y2 , int clr , void *xpm ) 
+  int uidraw_g_box ( DIALOG *D , int x1 , int y1 , int x2 , int y2 , int clr , void *xpm )  \
       {
       int EVGAY;
 //    int offset=4;
@@ -8380,7 +8380,7 @@ void transch(int c) {
       else if ( clr >= 0 ) _uibox_fill ( wc , x1 , EVGAY-y1 , x2 , EVGAY-y2 , clr ) ;
           
       if ( D->DrawBkgr != 0 ) {
-          _dvbordertype0 ( D , x1- ( offset ) , y1- ( offset ) , x2+ 
+          _dvbordertype0 ( D , x1- ( offset ) , y1- ( offset ) , x2+  \
               ( offset ) , y2+ ( offset ) , D->gc.vbright ) ;
       }
       uiRest_clip_limits ( wc ) ;
@@ -8443,7 +8443,7 @@ void transch(int c) {
           y2 = g->y2+D->yo+offset+1;
           uiBkup_clip_limits ( wc ) ;
           uiSet_full_scrn ( wc ) ;
-          _dvrect_fill_transparent ( wc , ( x1 ) , ( y1 ) , ( x2 ) , 
+          _dvrect_fill_transparent ( wc , ( x1 ) , ( y1 ) , ( x2 ) ,  \
               ( y2 ) , D->gc.fill_clr , D->transparency ) ;
           uiRest_clip_limits ( wc ) ;
 #endif
@@ -8600,7 +8600,7 @@ void transch(int c) {
           
       uiRest_clip_limits ( wc ) ;
   }
-  void _dvleft_dir ( DIALOG *D , int x , int y , int w , float rfac , int type ) 
+  void _dvleft_dir ( DIALOG *D , int x , int y , int w , float rfac , int type )  \
       {
       char tmp;
       int xx , yy , ww , i;
@@ -8614,7 +8614,7 @@ void transch(int c) {
           
       uiRest_clip_limits ( wc ) ;
   }
-  void _dvright_dir ( DIALOG *D , int x , int y , int w , float rfac , int type ) 
+  void _dvright_dir ( DIALOG *D , int x , int y , int w , float rfac , int type )  \
       {
       char tmp;
       int xx , yy , ww , i;
@@ -8679,7 +8679,7 @@ void transch(int c) {
       uiSet_full_scrn ( wc ) ;
 //TCBTCB
 //   _dvrect_fill_transparent(wc,x,y-w-3,x+l,y+w+3,gc.fill_clr,D->transparency);
-      kgRestoreImagePart ( D , Bimg , x , y-w-3 , 
+      kgRestoreImagePart ( D , Bimg , x , y-w-3 ,  \
           ( x-x1 ) , - ( y1-y+w+3 ) , l+1 , w+w+7 ) ;
       y = EVGAY-y;
 //   _uirect_fill(wc,x,y+w,x+l,y-w,gc.fill_clr);
@@ -8825,9 +8825,9 @@ void transch(int c) {
           
       _uirect_fill ( wc , x1+1 , y1-1 , x2-2 , y2+2 , gc->fill_clr ) ;
 #else
-      kgRestoreImagePart ( D , Bimg , x1-2 , EVGAY-y1-5 , ( x1-2-xo ) , 
+      kgRestoreImagePart ( D , Bimg , x1-2 , EVGAY-y1-5 , ( x1-2-xo ) ,  \
           ( EVGAY-y1-4-yo ) , ( x2+5-x1 ) , abs ( y2-9-y1 ) ) ;
-      kgRestoreImagePart ( D , Bimg , x1+1 , EVGAY-y1+1 , ( x1+1-xo ) , 
+      kgRestoreImagePart ( D , Bimg , x1+1 , EVGAY-y1+1 , ( x1+1-xo ) ,  \
           ( EVGAY-y1+2-yo ) , ( x2-2-x1 ) , abs ( y2+4-y1 ) ) ;
 #endif
       _uirect_fill ( wc , x+w+1+sw/2 , y-pt->Sdpw , x+l-w-1-sw/2 , y+pt->Sdpw-w , gc->dim ) ;
@@ -8855,7 +8855,7 @@ void transch(int c) {
       uiset_clr ( D , tmp ) ;
       uiRest_clip_limits ( wc ) ;
   }
-  void * _ui_setslide ( void *tmp , int min , int max , int x , int y , int l , int df , char ch , double cf , double sh ) 
+  void * _ui_setslide ( void *tmp , int min , int max , int x , int y , int l , int df , char ch , double cf , double sh )  \
       {
       DIALOG *D;
       DIF *f;
@@ -8947,11 +8947,11 @@ void transch(int c) {
           y2 = f->y2+D->yo;
           uiBkup_clip_limits ( wc ) ;
           uiSet_full_scrn ( wc ) ;
-          _dvrect_fill_transparent ( wc , ( x1 ) , ( y1 ) , ( x2 ) , 
+          _dvrect_fill_transparent ( wc , ( x1 ) , ( y1 ) , ( x2 ) ,  \
               ( y2 ) , D->gc.fill_clr , D->transparency ) ;
           uiRest_clip_limits ( wc ) ;
 #endif
-          if ( f->Bimg != NULL ) kgRestoreImage ( D , f->Bimg , x1 , y1 , 
+          if ( f->Bimg != NULL ) kgRestoreImage ( D , f->Bimg , x1 , y1 ,  \
               ( x2-x1+1 ) , ( y2-y1+1 ) ) ;
       }
       return ret;
@@ -9000,11 +9000,11 @@ void transch(int c) {
           y2 = f->y2+D->yo;
           uiBkup_clip_limits ( wc ) ;
           uiSet_full_scrn ( wc ) ;
-          _dvrect_fill_transparent ( wc , ( x1 ) , ( y1 ) , ( x2 ) , 
+          _dvrect_fill_transparent ( wc , ( x1 ) , ( y1 ) , ( x2 ) ,  \
               ( y2 ) , D->gc.fill_clr , D->transparency ) ;
           uiRest_clip_limits ( wc ) ;
 #endif
-          if ( f->Bimg != NULL ) kgRestoreImage ( D , f->Bimg , x1 , y1 , 
+          if ( f->Bimg != NULL ) kgRestoreImage ( D , f->Bimg , x1 , y1 ,  \
               ( x2-x1+1 ) , ( y2-y1+1 ) ) ;
       }
       return ret;
@@ -9043,16 +9043,16 @@ void transch(int c) {
           y2 = f->y2+D->yo;
           uiBkup_clip_limits ( wc ) ;
           uiSet_full_scrn ( wc ) ;
-          _dvrect_fill_transparent ( wc , ( x1 ) , ( y1 ) , ( x2 ) , 
+          _dvrect_fill_transparent ( wc , ( x1 ) , ( y1 ) , ( x2 ) ,  \
               ( y2 ) , D->gc.fill_clr , D->transparency ) ;
           uiRest_clip_limits ( wc ) ;
 #endif
-          if ( f->Bimg != NULL ) kgRestoreImage ( D , f->Bimg , x1 , y1 , 
+          if ( f->Bimg != NULL ) kgRestoreImage ( D , f->Bimg , x1 , y1 ,  \
               ( x2-x1+1 ) , ( y2-y1+1 ) ) ;
       }
       return ret;
   }
-  void * _ui_sethbar ( DIHB *B , int min , int max , int x , int y , int l , int df , char ch , double cf , double sh ) 
+  void * _ui_sethbar ( DIHB *B , int min , int max , int x , int y , int l , int df , char ch , double cf , double sh )  \
       {
       DIALOG *D;
       S_STR *ptr;
@@ -9190,7 +9190,7 @@ void transch(int c) {
       df = ( * ( f->df ) -sh ) /ch+0.5;
       sptr = ( S_STR * ) f->sptr;
       sptr->Widget = f;
-      _ui_setslide ( f , min , max , ( int ) f->x1+lngth+x1+2 , ( int ) f->y1+y1+22 , 
+      _ui_setslide ( f , min , max , ( int ) f->x1+lngth+x1+2 , ( int ) f->y1+y1+22 ,  \
           ( int ) f->lngth , df , 'f' , ch , sh ) ;
       return ( ret ) ;
   }
@@ -9210,7 +9210,7 @@ void transch(int c) {
       df = ( * ( d->df ) -sh ) /ch+0.5;
       sptr = ( S_STR * ) d->sptr;
       sptr->Widget = d;
-      _ui_setslide ( d , min , max , ( int ) d->x1+lngth+x1+2 , ( int ) d->y1+y1+22 , 
+      _ui_setslide ( d , min , max , ( int ) d->x1+lngth+x1+2 , ( int ) d->y1+y1+22 ,  \
           ( int ) d->lngth , df , 'd' , ch , sh ) ;
       return ( ret ) ;
   }
@@ -9278,15 +9278,15 @@ void transch(int c) {
       w = pt->Sw+of;
       l = pt->l+pt->Sldwd+of;
       fid = ( DIG * ) kgInitImage ( l , w , RESIZE ) ;
-      kgUserFrame ( fid , - ( float ) l*0.5 , - ( float ) w*0.5 , 
+      kgUserFrame ( fid , - ( float ) l*0.5 , - ( float ) w*0.5 ,  \
           ( float ) l*0.5 , ( float ) w*0.5 ) ;
-      kgRoundedRectangleFill ( fid , ( float ) .0 , .0 , ( float ) ( l+of*0.5 ) , 
+      kgRoundedRectangleFill ( fid , ( float ) .0 , .0 , ( float ) ( l+of*0.5 ) ,  \
           ( float ) ( w+of*0.5 ) , 0 , D->gc.fill_clr , 0.5 ) ;
-      kgRoundedRectangleFill ( fid , ( float ) 1.0 , -1.0 , ( float ) 
+      kgRoundedRectangleFill ( fid , ( float ) 1.0 , -1.0 , ( float )  \
           ( l-of ) , ( float ) ( w-of ) , 0 , D->gc. vbright , 0.5 ) ;
-      kgRoundedRectangleFill ( fid , ( float ) -1.0 , 0.0 , ( float ) 
+      kgRoundedRectangleFill ( fid , ( float ) -1.0 , 0.0 , ( float )  \
           ( l-of ) , ( float ) ( w-of ) , 0 , D->gc.v_dim , 0.5 ) ;
-      kgRoundedRectangleFill ( fid , ( float ) 0.0 , 0.0 , ( float ) 
+      kgRoundedRectangleFill ( fid , ( float ) 0.0 , 0.0 , ( float )  \
           ( l-of ) , ( float ) ( w-of ) , 0 , D->gc.dim , 0.5 ) ;
 // kgRoundedRectanglePressed(fid,0.,0.,(float)l,(float)w,D->gc.v_dim,0.5,1);
       pt->bimg = ( void * ) kgGetResizedImage ( fid ) ;
@@ -9294,7 +9294,7 @@ void transch(int c) {
       w = w;
       l = pt->Sldwd+of;
       fid = ( DIG * ) kgInitImage ( l , w , RESIZE ) ;
-      kgUserFrame ( fid , - ( float ) l*0.5 , - ( float ) w*0.5 , 
+      kgUserFrame ( fid , - ( float ) l*0.5 , - ( float ) w*0.5 ,  \
           ( float ) l*0.5 , ( float ) w*0.5 ) ;
       fillcolor = color;
       xsize = ( l-of ) -0.5*of; ysize = ( w-of ) -0.5*of;
@@ -9318,48 +9318,48 @@ void transch(int c) {
       if ( vmax > 1.0 ) vmax = 1.0;
       vmin = vmax*0.75;
 #if 0
-      kgRoundedRectangleFill ( fid , -1.0 , 0.0 , ( float ) xsize , 
+      kgRoundedRectangleFill ( fid , -1.0 , 0.0 , ( float ) xsize ,  \
           ( float ) ysize , 0 , 15 , rfac ) ;
-      kgRoundedRectangleFill ( fid , 1.0 , -1.0 , ( float ) xsize , 
+      kgRoundedRectangleFill ( fid , 1.0 , -1.0 , ( float ) xsize ,  \
           ( float ) ysize , 0 , 0 , rfac ) ;
 #endif
       switch ( type ) {
           case 0:
-          kgRoundedRectangleShade0 ( fid , 0.0 , 0.0 , ( float ) xsize , 
+          kgRoundedRectangleShade0 ( fid , 0.0 , 0.0 , ( float ) xsize ,  \
               ( float ) ysize , fillcolor , rfac , vmin , vmax ) ;
           break;
           case 1:
-          kgRoundedRectangleShade1 ( fid , 0.0 , 0.0 , ( float ) xsize , 
+          kgRoundedRectangleShade1 ( fid , 0.0 , 0.0 , ( float ) xsize ,  \
               ( float ) ysize , fillcolor , rfac , vmin , vmax*0.95 ) ;
           break;
           case 2:
-          kgRoundedRectangleFill ( fid , -1.0 , 1.0 , ( float ) xsize , 
+          kgRoundedRectangleFill ( fid , -1.0 , 1.0 , ( float ) xsize ,  \
               ( float ) ysize , 0 , 15 , rfac ) ;
-          kgRoundedRectangleShade ( fid , 0.0 , 1.0 , ( float ) xsize , 
+          kgRoundedRectangleShade ( fid , 0.0 , 1.0 , ( float ) xsize ,  \
               ( float ) ysize , fillcolor , rfac , vmin*1.2 , vmax ) ;
           break;
           case 3:
-          kgRoundedRectangleFill ( fid , -1.0 , 1.0 , ( float ) xsize , 
+          kgRoundedRectangleFill ( fid , -1.0 , 1.0 , ( float ) xsize ,  \
               ( float ) ysize , 0 , 15 , rfac ) ;
-          kgRoundedRectangleShade0 ( fid , 0.0 , 0.0 , ( float ) xsize , 
+          kgRoundedRectangleShade0 ( fid , 0.0 , 0.0 , ( float ) xsize ,  \
               ( float ) ysize , fillcolor , rfac , v , vmax*0.95 ) ;
           break;
           case 4:
-          kgRoundedRectangleFill ( fid , -1.0 , +1.0 , ( float ) xsize , 
+          kgRoundedRectangleFill ( fid , -1.0 , +1.0 , ( float ) xsize ,  \
               ( float ) ysize , 0 , 15 , rfac ) ;
-          kgRoundedRectangleShade ( fid , 0.0 , 0.0 , ( float ) xsize , 
+          kgRoundedRectangleShade ( fid , 0.0 , 0.0 , ( float ) xsize ,  \
               ( float ) ysize , fillcolor , rfac , vmin , vmax*0.95 ) ;
           break;
           default:
-          kgRoundedRectangleFill ( fid , -1.0 , 0.5 , ( float ) xsize , 
+          kgRoundedRectangleFill ( fid , -1.0 , 0.5 , ( float ) xsize ,  \
               ( float ) ysize , 0 , 15 , rfac ) ;
-          kgRoundedRectangleFill ( fid , 0.0 , 0.0 , ( float ) xsize , 
+          kgRoundedRectangleFill ( fid , 0.0 , 0.0 , ( float ) xsize ,  \
               ( float ) ysize , 0 , fillcolor , rfac ) ;
           break;
       }
 //TCB
 #if 0
-      kgRoundedRectangle ( fid , 0.0 , .0 , ( float ) xsize+1.0 , 
+      kgRoundedRectangle ( fid , 0.0 , .0 , ( float ) xsize+1.0 ,  \
           ( float ) ysize+1.0 , D->gc.v_dim , rfac , 0.5 ) ;
 #endif
       kgLineColor ( fid , 0 ) ;
@@ -9388,7 +9388,7 @@ void transch(int c) {
       w = pt->Sw+of;
       l = pt->l+pt->Sldwd+of;
       fid = ( DIG * ) kgInitImage ( l , w , RESIZE ) ;
-      kgUserFrame ( fid , - ( float ) l*0.5 , - ( float ) w*0.5 , 
+      kgUserFrame ( fid , - ( float ) l*0.5 , - ( float ) w*0.5 ,  \
           ( float ) l*0.5 , ( float ) w*0.5 ) ;
       fillcolor = D->gc.fill_clr;
       if ( fillcolor >= 0 ) kgGetRGB ( ( DIG * ) fid , fillcolor , & r , & g , & b ) ;
@@ -9409,16 +9409,16 @@ void transch(int c) {
       kgChangeColor ( fid , 150 , ( int ) red , ( int ) green , ( int ) blue ) ;
       kgChangeColor ( fid , 0 , 0 , 0 , 0 ) ;
       kgChangeColor ( fid , 15 , 255 , 255 , 255 ) ;
-      kgRoundedRectanglePressed ( fid , 0. , 0. , ( float ) ( l-of ) , 
+      kgRoundedRectanglePressed ( fid , 0. , 0. , ( float ) ( l-of ) ,  \
           ( float ) ( w-of ) , D->gc.fill_clr , 0.5 , 3 ) ;
-      kgRoundedRectangleFill ( fid , 0. , 0. , ( float ) ( l-of-4.5 ) , 
+      kgRoundedRectangleFill ( fid , 0. , 0. , ( float ) ( l-of-4.5 ) ,  \
           ( float ) ( w-of-4.5 ) , 0 , 15 , 0.5 ) ;
       pt->bimg = ( void * ) kgGetResizedImage ( fid ) ;
       kgCloseImage ( fid ) ;
       w = w;
       l = pt->Sldwd+of;
       fid = ( DIG * ) kgInitImage ( l , w , RESIZE ) ;
-      kgUserFrame ( fid , - ( float ) l*0.5 , - ( float ) w*0.5 , 
+      kgUserFrame ( fid , - ( float ) l*0.5 , - ( float ) w*0.5 ,  \
           ( float ) l*0.5 , ( float ) w*0.5 ) ;
       xsize = ( l-of ) -0.5*of; ysize = ( w-of ) -0.5*of;
       fillcolor = color;
@@ -9441,39 +9441,39 @@ void transch(int c) {
       HSVtoRGB ( & red , & green , & blue , h , s , vmax ) ;
       kgChangeColor ( fid , 150 , ( int ) red , ( int ) green , ( int ) blue ) ;
       vmin = vmax*0.75;
-      kgRoundedRectangleRaised ( fid , 0. , 0. , ( float ) ( l-of ) , 
+      kgRoundedRectangleRaised ( fid , 0. , 0. , ( float ) ( l-of ) ,  \
           ( float ) ( w-of ) , fillcolor , 0.5 , 1 ) ;
       switch ( type ) {
           case 0:
-          kgRoundedRectangleShade0 ( fid , 0.0 , 0.0 , ( float ) xsize , 
+          kgRoundedRectangleShade0 ( fid , 0.0 , 0.0 , ( float ) xsize ,  \
               ( float ) ysize , fillcolor , rfac , vmin , vmax ) ;
           break;
           case 1:
-          kgRoundedRectangleShade1 ( fid , 0.0 , 0.0 , ( float ) xsize , 
+          kgRoundedRectangleShade1 ( fid , 0.0 , 0.0 , ( float ) xsize ,  \
               ( float ) ysize , fillcolor , rfac , vmin , vmax*0.95 ) ;
           break;
           case 2:
-          kgRoundedRectangleFill ( fid , -1.0 , 1.0 , ( float ) xsize , 
+          kgRoundedRectangleFill ( fid , -1.0 , 1.0 , ( float ) xsize ,  \
               ( float ) ysize , 0 , 150 , rfac ) ;
-          kgRoundedRectangleShade ( fid , 0.0 , 1.0 , ( float ) xsize , 
+          kgRoundedRectangleShade ( fid , 0.0 , 1.0 , ( float ) xsize ,  \
               ( float ) ysize , fillcolor , rfac , vmin*1.2 , vmax ) ;
           break;
           case 3:
-          kgRoundedRectangleFill ( fid , -1.0 , 1.0 , ( float ) xsize , 
+          kgRoundedRectangleFill ( fid , -1.0 , 1.0 , ( float ) xsize ,  \
               ( float ) ysize , 0 , 150 , rfac ) ;
-          kgRoundedRectangleShade0 ( fid , 0.0 , 0.0 , ( float ) xsize , 
+          kgRoundedRectangleShade0 ( fid , 0.0 , 0.0 , ( float ) xsize ,  \
               ( float ) ysize , fillcolor , rfac , v , vmax*0.95 ) ;
           break;
           case 4:
-          kgRoundedRectangleFill ( fid , -1.0 , +1.0 , ( float ) xsize , 
+          kgRoundedRectangleFill ( fid , -1.0 , +1.0 , ( float ) xsize ,  \
               ( float ) ysize , 0 , 150 , rfac ) ;
-          kgRoundedRectangleShade ( fid , 0.0 , 0.0 , ( float ) xsize , 
+          kgRoundedRectangleShade ( fid , 0.0 , 0.0 , ( float ) xsize ,  \
               ( float ) ysize , fillcolor , rfac , vmin , vmax*0.95 ) ;
           break;
           default:
-          kgRoundedRectangleFill ( fid , -1.0 , 0.5 , ( float ) xsize , 
+          kgRoundedRectangleFill ( fid , -1.0 , 0.5 , ( float ) xsize ,  \
               ( float ) ysize , 0 , 150 , rfac ) ;
-          kgRoundedRectangleFill ( fid , 0.0 , 0.0 , ( float ) xsize , 
+          kgRoundedRectangleFill ( fid , 0.0 , 0.0 , ( float ) xsize ,  \
               ( float ) ysize , 0 , fillcolor , rfac ) ;
           break;
       }
@@ -9514,7 +9514,7 @@ void transch(int c) {
       w = 3+of;
       l = pt->l+pt->Sldwd+of;
       fid = ( DIG * ) kgInitImage ( l , w , RESIZE ) ;
-      kgUserFrame ( fid , - ( float ) l*0.5-0.1 , - ( float ) w*0.5-0.1 , 
+      kgUserFrame ( fid , - ( float ) l*0.5-0.1 , - ( float ) w*0.5-0.1 ,  \
           ( float ) l*0.5+0.1 , ( float ) w*0.5+0.1 ) ;
       fillcolor = color;
       if ( fillcolor >= 0 ) kgGetRGB ( ( DIG * ) fid , fillcolor , & r , & g , & b ) ;
@@ -9532,7 +9532,7 @@ void transch(int c) {
       HSVtoRGB ( & red , & green , & blue , h , s , vmax*0.6 ) ;
       kgChangeColor ( fid , 140 , ( int ) red , ( int ) green , ( int ) blue ) ;
 // kgRoundedRectangleFill(fid,(float).5,-.5,(float)(pt->l+3),(float)(3),0,140,0.5);
-      kgRoundedRectangleFill ( fid , ( float ) .0 , .0 , ( float ) 
+      kgRoundedRectangleFill ( fid , ( float ) .0 , .0 , ( float )  \
           ( pt->l+3 ) , ( float ) ( 3.0 ) , 0 , fillcolor , 0.5 ) ;
       pt->bimg = ( void * ) kgGetResizedImage ( fid ) ;
       kgCloseImage ( fid ) ;
@@ -9540,7 +9540,7 @@ void transch(int c) {
       l = pt->Sldwd+of;
 #if 1
       fid = ( DIG * ) kgInitImage ( l , w , RESIZE ) ;
-      kgUserFrame ( fid , - ( float ) l*0.5 , - ( float ) w*0.5 , 
+      kgUserFrame ( fid , - ( float ) l*0.5 , - ( float ) w*0.5 ,  \
           ( float ) l*0.5 , ( float ) w*0.5 ) ;
       xsize = ( w-of ) -.75*of; ysize = ( w-of ) -.75*of;
       fillcolor = color;
@@ -9564,11 +9564,11 @@ void transch(int c) {
 #if 0
       HSVtoRGB ( & red , & green , & blue , h , s , vmax ) ;
       kgChangeColor ( fid , 150 , ( int ) red , ( int ) green , ( int ) blue ) ;
-      kgRoundedRectangleFill ( fid , ( float ) -1.0 , 0.0 , ( float ) 
+      kgRoundedRectangleFill ( fid , ( float ) -1.0 , 0.0 , ( float )  \
           ( w-of ) , ( float ) ( w-of ) , 0 , 150 , 0.5 ) ;
-      kgRoundedRectangleFill ( fid , ( float ) 0.5 , -0.5 , ( float ) 
+      kgRoundedRectangleFill ( fid , ( float ) 0.5 , -0.5 , ( float )  \
           ( w-of ) , ( float ) ( w-of ) , 0 , 0 , 0.5 ) ;
-      kgRoundedRectangleFill ( fid , ( float ) 0.0 , 0.0 , ( float ) 
+      kgRoundedRectangleFill ( fid , ( float ) 0.0 , 0.0 , ( float )  \
           ( w-of ) , ( float ) ( w-of ) , 0 , fillcolor , 0.5 ) ;
 // kgRoundedRectangleRaised(fid,0.,0.,(float)(w-of),(float)(w-of),fillcolor,0.5,1);
 // RGBtoHSV((float)r,(float)g,(float)b,&h,&s,&v);
@@ -9579,7 +9579,7 @@ void transch(int c) {
       vmax = 1.5*v;
       if ( vmax > 1.0 ) vmax = 1.0;
       vmin = vmax*0.85;
-      kgRoundedRectangleShade0 ( fid , 0.0 , 0.0 , ( float ) xsize , 
+      kgRoundedRectangleShade0 ( fid , 0.0 , 0.0 , ( float ) xsize ,  \
           ( float ) ysize , fillcolor , rfac , v , vmax*0.95 ) ;
 // kgRoundedRectangleShade1(fid,0.0,0.0,(float)xsize,(float)ysize,fillcolor,rfac,vmin,vmin);
 #else
@@ -9591,13 +9591,13 @@ void transch(int c) {
       kgChangeColor ( fid , 153 , ( int ) red , ( int ) green , ( int ) blue ) ;
       HSVtoRGB ( & red , & green , & blue , h , s , vmax*0.95 ) ;
       kgChangeColor ( fid , 152 , ( int ) red , ( int ) green , ( int ) blue ) ;
-      kgRoundedRectangleFill ( fid , ( float ) 0.0 , -.0 , ( float ) 
+      kgRoundedRectangleFill ( fid , ( float ) 0.0 , -.0 , ( float )  \
           ( w-of ) , ( float ) ( w-of ) , 0 , 150 , 0.5 ) ;
-      kgRoundedRectangleFill ( fid , ( float ) 0.0 , 0.0 , ( float ) 
+      kgRoundedRectangleFill ( fid , ( float ) 0.0 , 0.0 , ( float )  \
           ( w-of-1 ) , ( float ) ( w-of-1 ) , 0 , 153 , 0.5 ) ;
-      kgRoundedRectangleFill ( fid , ( float ) 0.0 , 0.0 , ( float ) 
+      kgRoundedRectangleFill ( fid , ( float ) 0.0 , 0.0 , ( float )  \
           ( w-of-3.0 ) , ( float ) ( w-of-3.0 ) , 0 , 152 , 0.5 ) ;
-      kgRoundedRectangleFill ( fid , ( float ) 0.0 , 0.0 , ( float ) 
+      kgRoundedRectangleFill ( fid , ( float ) 0.0 , 0.0 , ( float )  \
           ( w-of-6 ) , ( float ) ( w-of-6 ) , 0 , 151 , 0.5 ) ;
 #endif
       kgLineColor ( fid , 0 ) ;
@@ -9610,7 +9610,7 @@ void transch(int c) {
       pt->fimg = ( void * ) kgGetSmoothImage ( fid ) ;
       kgCloseImage ( fid ) ;
 #else
-      pt->fimg = kgBorderedRectangle ( ( int ) ( w-of ) , 
+      pt->fimg = kgBorderedRectangle ( ( int ) ( w-of ) ,  \
           ( int ) ( w-of ) , color , 0.5 ) ;
 #endif
       if ( B->direction == 1 ) {
@@ -9642,23 +9642,23 @@ void transch(int c) {
       w = 7+of;
       l = pt->l+pt->Sldwd+of;
       fid = ( DIG * ) kgInitImage ( l , w , RESIZE ) ;
-      kgUserFrame ( fid , - ( float ) l*0.5 , - ( float ) w*0.5 , 
+      kgUserFrame ( fid , - ( float ) l*0.5 , - ( float ) w*0.5 ,  \
           ( float ) l*0.5 , ( float ) w*0.5 ) ;
       b = ( 30 ) ;
       g = ( 30 ) ;
       r = ( 30 ) ;
       fillcolor = 127;
       kgChangeColor ( fid , fillcolor , r , g , b ) ;
-      kgRoundedRectangleFill ( fid , 0. , 0. , ( float ) ( l-of ) , 
+      kgRoundedRectangleFill ( fid , 0. , 0. , ( float ) ( l-of ) ,  \
           ( float ) ( w-of ) , 0 , fillcolor , 0.2 ) ;
-      kgRoundedRectanglePressed ( fid , 0. , 0. , ( float ) ( l-of ) , 
+      kgRoundedRectanglePressed ( fid , 0. , 0. , ( float ) ( l-of ) ,  \
           ( float ) ( w-of ) , D->gc.fill_clr , 0.2 , 2 ) ;
       pt->bimg = ( void * ) kgGetResizedImage ( fid ) ;
       kgCloseImage ( fid ) ;
       w = pt->Sw+of;
       l = pt->Sldwd+of;
       fid = ( DIG * ) kgInitImage ( l , w , RESIZE ) ;
-      kgUserFrame ( fid , - ( float ) l*0.5 , - ( float ) w*0.5 , 
+      kgUserFrame ( fid , - ( float ) l*0.5 , - ( float ) w*0.5 ,  \
           ( float ) l*0.5 , ( float ) w*0.5 ) ;
       xsize = ( l ) -.75*of; ysize = ( w-of ) -.75*of;
       fillcolor = color;
@@ -9674,11 +9674,11 @@ void transch(int c) {
           kgChangeColor ( fid , fillcolor , r , g , b ) ;
       }
 #if 0
-      kgRoundedRectangleFill ( fid , ( float ) -1.0 , 0.0 , ( float ) 
+      kgRoundedRectangleFill ( fid , ( float ) -1.0 , 0.0 , ( float )  \
           ( w-of ) , ( float ) ( w-of ) , 0 , 15 , 0.5 ) ;
-      kgRoundedRectangleFill ( fid , ( float ) 0.5 , -0.5 , ( float ) 
+      kgRoundedRectangleFill ( fid , ( float ) 0.5 , -0.5 , ( float )  \
           ( w-of ) , ( float ) ( w-of ) , 0 , 0 , 0.5 ) ;
-      kgRoundedRectangleFill ( fid , ( float ) 0.0 , 0.0 , ( float ) 
+      kgRoundedRectangleFill ( fid , ( float ) 0.0 , 0.0 , ( float )  \
           ( w-of ) , ( float ) ( w-of ) , 0 , fillcolor , 0.5 ) ;
 #endif
 // kgChangeColor(fid,fillcolor,220,220,220);
@@ -9690,11 +9690,11 @@ void transch(int c) {
       HSVtoRGB ( & red , & green , & blue , h , s , vmax ) ;
       kgChangeColor ( fid , 150 , ( int ) red , ( int ) green , ( int ) blue ) ;
       vmin = vmax*0.75;
-      kgRoundedRectangleFill ( fid , ( float ) -0.5 , 0.5 , 
+      kgRoundedRectangleFill ( fid , ( float ) -0.5 , 0.5 ,  \
           ( float ) xsize , ( float ) ysize , 0 , 150 , rfac ) ;
-      kgRoundedRectangleFill ( fid , ( float ) 0.5 , -0.5 , 
+      kgRoundedRectangleFill ( fid , ( float ) 0.5 , -0.5 ,  \
           ( float ) xsize , ( float ) ysize , 0 , 0 , rfac ) ;
-      kgRoundedRectangleShade0 ( fid , 0.0 , 0.0 , ( float ) xsize , 
+      kgRoundedRectangleShade0 ( fid , 0.0 , 0.0 , ( float ) xsize ,  \
           ( float ) ysize , fillcolor , rfac , vmin , vmax*0.95 ) ;
       kgLineColor ( fid , 0 ) ;
       kgMove2f ( fid , 0.0 , ysize*.5 ) ;
@@ -9733,7 +9733,7 @@ void transch(int c) {
       w = 5+of;
       l = pt->l+pt->Sldwd+of;
       fid = ( DIG * ) kgInitImage ( l , w , RESIZE ) ;
-      kgUserFrame ( fid , - ( float ) l*0.5 , - ( float ) w*0.5 , 
+      kgUserFrame ( fid , - ( float ) l*0.5 , - ( float ) w*0.5 ,  \
           ( float ) l*0.5 , ( float ) w*0.5 ) ;
       fillcolor = color;
       if ( fillcolor >= 0 ) kgGetRGB ( ( DIG * ) fid , fillcolor , & r , & g , & b ) ;
@@ -9747,7 +9747,7 @@ void transch(int c) {
           fillcolor = 127;
           kgChangeColor ( fid , fillcolor , r , g , b ) ;
       }
-      kgRoundedRectangleFill ( fid , 0. , 0. , ( float ) ( l-of ) , 
+      kgRoundedRectangleFill ( fid , 0. , 0. , ( float ) ( l-of ) ,  \
           ( float ) ( w-of ) , 0 , fillcolor , 0.2 ) ;
 // kgRoundedRectanglePressed(fid,0.,0.,(float)(l-of),(float)(w-of),D->gc.fill_clr,0.2,2);
       pt->bimg = ( void * ) kgGetResizedImage ( fid ) ;
@@ -9755,7 +9755,7 @@ void transch(int c) {
       w = pt->Sw+of;
       l = pt->Sldwd+of;
       fid = ( DIG * ) kgInitImage ( l , w , RESIZE ) ;
-      kgUserFrame ( fid , - ( float ) l*0.5 , - ( float ) w*0.5 , 
+      kgUserFrame ( fid , - ( float ) l*0.5 , - ( float ) w*0.5 ,  \
           ( float ) l*0.5 , ( float ) w*0.5 ) ;
       xsize = ( l ) -.75*of; ysize = ( w-of ) -.75*of;
       fillcolor = color;
@@ -9779,11 +9779,11 @@ void transch(int c) {
       HSVtoRGB ( & red , & green , & blue , h , s , vmax ) ;
       kgChangeColor ( fid , 150 , ( int ) red , ( int ) green , ( int ) blue ) ;
       vmin = vmax*0.75;
-      kgRoundedRectangleFill ( fid , ( float ) -0.5 , 0.5 , 
+      kgRoundedRectangleFill ( fid , ( float ) -0.5 , 0.5 ,  \
           ( float ) xsize , ( float ) ysize , 0 , 150 , rfac ) ;
-      kgRoundedRectangleFill ( fid , ( float ) 0.5 , -0.5 , 
+      kgRoundedRectangleFill ( fid , ( float ) 0.5 , -0.5 ,  \
           ( float ) xsize , ( float ) ysize , 0 , 0 , rfac ) ;
-      kgRoundedRectangleShade0 ( fid , 0.0 , 0.0 , ( float ) xsize , 
+      kgRoundedRectangleShade0 ( fid , 0.0 , 0.0 , ( float ) xsize ,  \
           ( float ) ysize , fillcolor , rfac , vmin , vmax*0.95 ) ;
       kgLineColor ( fid , 0 ) ;
       kgMove2f ( fid , 0.0 , ysize*.5 ) ;
@@ -9967,7 +9967,7 @@ void transch(int c) {
           
       uiRest_clip_limits ( wc ) ;
   }
-  void _uidown_dir ( DIALOG *D , int x , int y , int w , float rfac , int type ) 
+  void _uidown_dir ( DIALOG *D , int x , int y , int w , float rfac , int type )  \
       {
       kgWC *wc;
       wc = WC ( D ) ;
@@ -9988,7 +9988,7 @@ void transch(int c) {
           
       uiRest_clip_limits ( wc ) ;
   }
-  void _dvdown_dir ( DIALOG *D , int x , int y , int w , float rfac , int type ) 
+  void _dvdown_dir ( DIALOG *D , int x , int y , int w , float rfac , int type )  \
       {
       kgWC *wc;
       wc = WC ( D ) ;
@@ -10066,7 +10066,7 @@ void transch(int c) {
       x2 = w->x2+D->xo;
       y2 = w->y2+D->yo;
       if ( w->Bimg == NULL ) w->Bimg = kgGetBackground ( D , x1 , y1 , x2 , y2 ) ;
-      if ( w->Bimg != NULL ) kgRestoreImage ( D , w->Bimg , x1 , y1 , 
+      if ( w->Bimg != NULL ) kgRestoreImage ( D , w->Bimg , x1 , y1 ,  \
           ( x2-x1+1 ) , ( y2-y1+1 ) ) ;
       if ( n > 0 ) {
           uiString ( D , w->prompt , x1 , y1 , lngth , w->y2-w->y1 , D->gc.PromptFont , D->gc.txt_pchar , D->gc.FontSize , 1 , D->gc.fill_clr ) ;
@@ -10490,11 +10490,11 @@ void transch(int c) {
 #if 0
           uiBkup_clip_limits ( wc ) ;
           uiSet_full_scrn ( wc ) ;
-          _dvrect_fill_transparent ( wc , ( x1 ) , ( y1 ) , ( x2 ) , 
+          _dvrect_fill_transparent ( wc , ( x1 ) , ( y1 ) , ( x2 ) ,  \
               ( y2 ) , D->gc.fill_clr , D->transparency ) ;
           uiRest_clip_limits ( wc ) ;
 #endif
-          if ( w->Bimg != NULL ) kgRestoreImage ( D , w->Bimg , x1 , y1 , 
+          if ( w->Bimg != NULL ) kgRestoreImage ( D , w->Bimg , x1 , y1 ,  \
               ( x2-x1+1 ) , ( y2-y1+1 ) ) ;
       }
       return ret;
@@ -10513,7 +10513,7 @@ void transch(int c) {
       bwsr->D = D;
       return ( ret ) ;
   }
-  void * make_menu_str ( DIALOG *D , int xx1 , int yy1 , int pos , int df , char **menu , int size ) 
+  void * make_menu_str ( DIALOG *D , int xx1 , int yy1 , int pos , int df , char **menu , int size )  \
       {
       int i = 0 , ret , n = 0;
       int lngth = 0. , lng = 0.;
@@ -10556,7 +10556,7 @@ void transch(int c) {
       return ( void * ) br;
   }
 //void * make_dialog_menu_str(int xx1,int yy1,int pos,int df,char **menu,int size)
-  void * make_dialog_menu_str ( DIALOG *D , DIE *w , int pos , int df , char **menu , int size ) 
+  void * make_dialog_menu_str ( DIALOG *D , DIE *w , int pos , int df , char **menu , int size )  \
       {
       int i = 0 , ret , n = 0;
       int lngth = 0. , lng = 0.;
@@ -10581,7 +10581,7 @@ void transch(int c) {
       br->width = 20;
       return ( void * ) br;
   }
-  void * make_dialog_newmenu_str ( DIALOG *D , DIX *x , int pos , int df , char **menu , int size ) 
+  void * make_dialog_newmenu_str ( DIALOG *D , DIX *x , int pos , int df , char **menu , int size )  \
       {
       int i = 0 , ret , n = 0;
       int lngth = 0. , lng = 0.;
@@ -10608,7 +10608,7 @@ void transch(int c) {
       br->width = x->width+x->ygap;
       return ( void * ) br;
   }
-  void * make_dialog_y_str ( DIALOG *D , DIY *y , int pos , int df , char **menu , int size ) 
+  void * make_dialog_y_str ( DIALOG *D , DIY *y , int pos , int df , char **menu , int size )  \
       {
       int i = 0 , ret , n = 0;
       int lngth = 0. , lng = 0.;
@@ -10830,7 +10830,7 @@ void transch(int c) {
       wc = WC ( D ) ;
       if ( n != 0 ) {n++; lngth = 8; }
       lngth += n*9;
-      w->bwsr = make_dialog_menu_str ( D , w , * ( w->df ) , * 
+      w->bwsr = make_dialog_menu_str ( D , w , * ( w->df ) , *  \
           ( w->df ) , w->menu , w->size ) ;
       bwsr = ( BRW_STR * ) w->bwsr;
       bwsr->D = ( DIALOG* ) D;
@@ -10953,7 +10953,7 @@ void transch(int c) {
       if ( * ( y->df ) < 1 ) * ( y->df ) = 0;
       if ( * ( y->df ) > n ) * ( y->df ) = n;
       df = * ( y->df ) -1;
-      if ( ( ( ( y->type ) %10 ) != 0 ) && ( menu != NULL ) && ( menu [ 0 ] != NULL ) && 
+      if ( ( ( ( y->type ) %10 ) != 0 ) && ( menu != NULL ) && ( menu [ 0 ] != NULL ) &&  \
           ( df >= 0 ) ) menu [ df ]->sw = 1;
       n = 0;
 #if 0
@@ -11045,11 +11045,11 @@ void transch(int c) {
 #if 0
           uiBkup_clip_limits ( wc ) ;
           uiSet_full_scrn ( wc ) ;
-          _dvrect_fill_transparent ( wc , ( bwsr->x1 ) , ( bwsr->y1 ) , ( bwsr->x2 ) , 
+          _dvrect_fill_transparent ( wc , ( bwsr->x1 ) , ( bwsr->y1 ) , ( bwsr->x2 ) ,  \
               ( bwsr->y2 ) , D->gc.fill_clr , D->transparency ) ;
           uiRest_clip_limits ( wc ) ;
 #endif
-          if ( y->Bimg != NULL ) kgRestoreImage ( D , y->Bimg , bwsr->x1 , bwsr->y1 , 
+          if ( y->Bimg != NULL ) kgRestoreImage ( D , y->Bimg , bwsr->x1 , bwsr->y1 ,  \
               ( bwsr->x2-bwsr->x1+1 ) , ( bwsr->y2-bwsr->y1+1 ) ) ;
       }
       return ( ret ) ;
@@ -11143,11 +11143,11 @@ void transch(int c) {
 #if 0
           uiBkup_clip_limits ( wc ) ;
           uiSet_full_scrn ( wc ) ;
-          _dvrect_fill_transparent ( wc , ( bwsr->x1 ) , ( bwsr->y1 ) , ( bwsr->x2 ) , 
+          _dvrect_fill_transparent ( wc , ( bwsr->x1 ) , ( bwsr->y1 ) , ( bwsr->x2 ) ,  \
               ( bwsr->y2 ) , D->gc.fill_clr , D->transparency ) ;
           uiRest_clip_limits ( wc ) ;
 #endif
-          if ( y->Bimg != NULL ) kgRestoreImage ( D , y->Bimg , bwsr->x1 , bwsr->y1 , 
+          if ( y->Bimg != NULL ) kgRestoreImage ( D , y->Bimg , bwsr->x1 , bwsr->y1 ,  \
               ( bwsr->x2-bwsr->x1+1 ) , ( bwsr->y2-bwsr->y1+1 ) ) ;
       }
       return ( ret ) ;
@@ -11234,11 +11234,11 @@ void transch(int c) {
 #if 0
           uiBkup_clip_limits ( wc ) ;
           uiSet_full_scrn ( wc ) ;
-          _dvrect_fill_transparent ( wc , ( bwsr->x1 ) , ( bwsr->y1 ) , ( bwsr->x2 ) , 
+          _dvrect_fill_transparent ( wc , ( bwsr->x1 ) , ( bwsr->y1 ) , ( bwsr->x2 ) ,  \
               ( bwsr->y2 ) , D->gc.fill_clr , D->transparency ) ;
           uiRest_clip_limits ( wc ) ;
 #endif
-          if ( y->Bimg != NULL ) kgRestoreImage ( D , y->Bimg , bwsr->x1 , bwsr->y1 , 
+          if ( y->Bimg != NULL ) kgRestoreImage ( D , y->Bimg , bwsr->x1 , bwsr->y1 ,  \
               ( bwsr->x2-bwsr->x1+1 ) , ( bwsr->y2-bwsr->y1+1 ) ) ;
       }
       return ( ret ) ;
@@ -11265,7 +11265,7 @@ void transch(int c) {
       if ( * ( y->df ) > n ) * ( y->df ) = n;
 //   y->nx = 1;
       df = * ( y->df ) -1;
-      if ( ( ( ( y->type ) %10 ) != 0 ) && ( menu != NULL ) && ( menu [ 0 ] != NULL ) && 
+      if ( ( ( ( y->type ) %10 ) != 0 ) && ( menu != NULL ) && ( menu [ 0 ] != NULL ) &&  \
           ( df >= 0 ) ) menu [ df ]->sw = 1;
       bwsr = ( BRW_STR * ) y->bwsr;
       bwsr->D = ( DIALOG* ) D;
@@ -11339,11 +11339,11 @@ void transch(int c) {
 #if 0
           uiBkup_clip_limits ( wc ) ;
           uiSet_full_scrn ( wc ) ;
-          _dvrect_fill_transparent ( wc , ( bwsr->x1 ) , ( bwsr->y1 ) , ( bwsr->x2 ) , 
+          _dvrect_fill_transparent ( wc , ( bwsr->x1 ) , ( bwsr->y1 ) , ( bwsr->x2 ) ,  \
               ( bwsr->y2 ) , D->gc.fill_clr , D->transparency ) ;
           uiRest_clip_limits ( wc ) ;
 #endif
-          if ( y->Bimg != NULL ) kgRestoreImage ( D , y->Bimg , bwsr->x1 , bwsr->y1 , 
+          if ( y->Bimg != NULL ) kgRestoreImage ( D , y->Bimg , bwsr->x1 , bwsr->y1 ,  \
               ( bwsr->x2-bwsr->x1+1 ) , ( bwsr->y2-bwsr->y1+1 ) ) ;
       }
       return ( ret ) ;
@@ -11371,7 +11371,7 @@ void transch(int c) {
           ret = 0;
           uiBkup_clip_limits ( wc ) ;
           uiSet_full_scrn ( wc ) ;
-          _dvrect_fill_transparent ( wc , ( y->x1+x1 ) , ( y->y1+y1 ) , ( y->x2+x1 ) , 
+          _dvrect_fill_transparent ( wc , ( y->x1+x1 ) , ( y->y1+y1 ) , ( y->x2+x1 ) ,  \
               ( y->y2+y1 ) , D->gc.fill_clr , D->transparency ) ;
           uiRest_clip_limits ( wc ) ;
 #else
@@ -11403,7 +11403,7 @@ void transch(int c) {
           ret = 0;
           uiBkup_clip_limits ( wc ) ;
           uiSet_full_scrn ( wc ) ;
-          _dvrect_fill_transparent ( wc , ( y->x1+x1 ) , ( y->y1+y1 ) , ( y->x2+x1 ) , 
+          _dvrect_fill_transparent ( wc , ( y->x1+x1 ) , ( y->y1+y1 ) , ( y->x2+x1 ) ,  \
               ( y->y2+y1 ) , D->gc.fill_clr , D->transparency ) ;
           uiRest_clip_limits ( wc ) ;
 #else
@@ -11495,11 +11495,11 @@ void transch(int c) {
 #if 0
           uiBkup_clip_limits ( wc ) ;
           uiSet_full_scrn ( wc ) ;
-          _dvrect_fill_transparent ( wc , ( bwsr->x1 ) , ( bwsr->y1 ) , ( bwsr->x2 ) , 
+          _dvrect_fill_transparent ( wc , ( bwsr->x1 ) , ( bwsr->y1 ) , ( bwsr->x2 ) ,  \
               ( bwsr->y2 ) , D->gc.fill_clr , D->transparency ) ;
           uiRest_clip_limits ( wc ) ;
 #else
-          if ( y->Bimg != NULL ) kgRestoreImage ( D , y->Bimg , bwsr->x1 , bwsr->y1 , 
+          if ( y->Bimg != NULL ) kgRestoreImage ( D , y->Bimg , bwsr->x1 , bwsr->y1 ,  \
               ( bwsr->x2-bwsr->x1+1 ) , ( bwsr->y2-bwsr->y1+1 ) ) ;
 #endif
       }
@@ -11614,24 +11614,24 @@ void transch(int c) {
           if ( bclr == -1 ) bclr = D->gc.ProgBodrColor;
           if ( bclr < 0 ) {
               bclr = -bclr;
-              kgChangeColor ( fid , 777 , bclr/1000000 , 
+              kgChangeColor ( fid , 777 , bclr/1000000 ,  \
                   ( bclr%1000000 ) /1000 , bclr%1000 ) ;
               bclr = 777;
           }
           if ( color < 0 ) {
               color = -color;
-              kgChangeColor ( fid , 778 , color/1000000 , 
+              kgChangeColor ( fid , 778 , color/1000000 ,  \
                   ( color%1000000 ) /1000 , color%1000 ) ;
               color = 778;
           }
           kgLineColor ( fid , bclr ) ;
-          kgRoundedRectangleFill ( fid , xp , yp , ( float ) width , 
+          kgRoundedRectangleFill ( fid , xp , yp , ( float ) width ,  \
               ( float ) height , 1 , bclr , 0.25 ) ;
           kgLineColor ( fid , D->gc.ProgFillColor ) ;
-          kgRoundedRectangleFill ( fid , xp , yp , ( float ) width-2.0 , 
+          kgRoundedRectangleFill ( fid , xp , yp , ( float ) width-2.0 ,  \
               ( float ) height-3.0 , 1 , D->gc.ProgFillColor , 0.25 ) ;
 #if 0
-          kgRoundedRectangle ( fid , xp , yp , ( float ) width , 
+          kgRoundedRectangle ( fid , xp , yp , ( float ) width ,  \
               ( float ) height , D->gc.ProgBodrColor , 0.25 , 0.5 ) ;
 #endif
           kgLineColor ( fid , color ) ;
@@ -11688,24 +11688,24 @@ void transch(int c) {
           if ( bclr == -1 ) bclr = D->gc.ProgBodrColor;
           if ( bclr < 0 ) {
               bclr = -bclr;
-              kgChangeColor ( fid , 777 , bclr/1000000 , 
+              kgChangeColor ( fid , 777 , bclr/1000000 ,  \
                   ( bclr%1000000 ) /1000 , bclr%1000 ) ;
               bclr = 777;
           }
           if ( color < 0 ) {
               color = -color;
-              kgChangeColor ( fid , 778 , color/1000000 , 
+              kgChangeColor ( fid , 778 , color/1000000 ,  \
                   ( color%1000000 ) /1000 , color%1000 ) ;
               color = 778;
           }
           kgLineColor ( fid , bclr ) ;
 #if 1
-          kgRoundedRectangle ( fid , xp , yp , ( float ) width , 
+          kgRoundedRectangle ( fid , xp , yp , ( float ) width ,  \
               ( float ) height , bclr , 0.2 , 0.2 ) ;
 #else
-          kgRoundedRectangleFill ( fid , xp , yp , ( float ) width , 
+          kgRoundedRectangleFill ( fid , xp , yp , ( float ) width ,  \
               ( float ) height , 1 , bclr , 0.2 ) ;
-          kgRoundedRectangleFill ( fid , xp , yp , ( float ) width-2 , 
+          kgRoundedRectangleFill ( fid , xp , yp , ( float ) width-2 ,  \
               ( float ) height-2 , 1 , D->gc.fill_clr , 0.2 ) ;
 #endif
           kgLineColor ( fid , color ) ;
@@ -11767,41 +11767,41 @@ void transch(int c) {
       if ( color == -1 ) color = D->gc.ProgColor;
       fid = kgInitImage ( width , height , RESIZE ) ;
       if ( fid != NULL ) {
-          kgUserFrame ( fid , -1.0 , -1.0 , ( float ) width+1.0 , 
+          kgUserFrame ( fid , -1.0 , -1.0 , ( float ) width+1.0 ,  \
               ( float ) height+1.0 ) ;
           bclr = o->bordr;
           if ( bclr == -1 ) bclr = D->gc.ProgBodrColor;
           if ( bclr < 0 ) {
               bclr = -bclr;
-              kgChangeColor ( fid , 777 , bclr/1000000 , 
+              kgChangeColor ( fid , 777 , bclr/1000000 ,  \
                   ( bclr%1000000 ) /1000 , bclr%1000 ) ;
               bclr = 777;
           }
           if ( color < 0 ) {
               color = -color;
-              kgChangeColor ( fid , 778 , color/1000000 , 
+              kgChangeColor ( fid , 778 , color/1000000 ,  \
                   ( color%1000000 ) /1000 , color%1000 ) ;
               color = 778;
           }
           kgLineColor ( fid , bclr ) ;
           if ( o->direction == 0 ) {
-              kgRoundedRectangleFill ( fid , l*0.5+offset , yp , ( float ) l , 
+              kgRoundedRectangleFill ( fid , l*0.5+offset , yp , ( float ) l ,  \
                   ( float ) w , 0 , D->gc.ProgFillColor , 0.5 ) ;
               if ( lp > 0 ) kgRoundedRectangleFill ( fid , lp*0.5+offset , yp , lp , w , 0 , color , 0.5 ) ;
                   
-              kgRoundedRectangleFill ( fid , lp+offset , yp , ( float ) w*3.0 , 
+              kgRoundedRectangleFill ( fid , lp+offset , yp , ( float ) w*3.0 ,  \
                   ( float ) w*3.0 , 1 , color , 0.5 ) ;
-              kgRoundedRectangleFill ( fid , lp+offset , yp , ( float ) w*2.0 , 
+              kgRoundedRectangleFill ( fid , lp+offset , yp , ( float ) w*2.0 ,  \
                   ( float ) w*2.0 , 1 , color , 0.5 ) ;
           }
           else {
-              kgRoundedRectangleFill ( fid , xp , w*0.5+offset , ( float ) l , 
+              kgRoundedRectangleFill ( fid , xp , w*0.5+offset , ( float ) l ,  \
                   ( float ) w , color , D->gc.ProgFillColor , 0.5 ) ;
               if ( o->percent > 0 ) kgRoundedRectangleFill ( fid , xp , lp*0.5+offset , l , lp , color , color , 0.5 ) ;
                   
-              kgRoundedRectangleFill ( fid , xp , lp+offset , ( float ) l*3.0 , 
+              kgRoundedRectangleFill ( fid , xp , lp+offset , ( float ) l*3.0 ,  \
                   ( float ) l*3.0 , 1 , color , 0.5 ) ;
-              kgRoundedRectangleFill ( fid , xp , lp+offset , ( float ) l*2.0 , 
+              kgRoundedRectangleFill ( fid , xp , lp+offset , ( float ) l*2.0 ,  \
                   ( float ) l*2.0 , 1 , color , 0.5 ) ;
           }
           img = kgGetResizedImage ( fid ) ;
@@ -11834,7 +11834,7 @@ void transch(int c) {
           uiSet_full_scrn ( wc ) ;
 //    _dvrect_fill_transparent(wc,(x1),(y1),(x2), (y2),D->gc.fill_clr,D->transparency);
           CHECKLIMITS ( o ) ;
-          if ( o->Bimg == NULL ) o->Bimg = kgGetBackground 
+          if ( o->Bimg == NULL ) o->Bimg = kgGetBackground  \
               ( D , x1-1 , y1-1 , x2+1 , y2+1 ) ;
           if ( o->hide != 1 ) {
               switch ( o->type ) {
@@ -11878,7 +11878,7 @@ void transch(int c) {
           ret = 0;
           uiBkup_clip_limits ( wc ) ;
           uiSet_full_scrn ( wc ) ;
-          _dvrect_fill_transparent ( wc , ( x1 ) , ( y1 ) , ( x2 ) , 
+          _dvrect_fill_transparent ( wc , ( x1 ) , ( y1 ) , ( x2 ) ,  \
               ( y2 ) , D->gc.fill_clr , D->transparency ) ;
           uiRest_clip_limits ( wc ) ;
 #endif
@@ -12005,11 +12005,11 @@ void transch(int c) {
           ret = 0;
           uiBkup_clip_limits ( wc ) ;
           uiSet_full_scrn ( wc ) ;
-          _dvrect_fill_transparent ( wc , ( bwsr->x1 ) , ( bwsr->y1 ) , ( bwsr->x2 ) , 
+          _dvrect_fill_transparent ( wc , ( bwsr->x1 ) , ( bwsr->y1 ) , ( bwsr->x2 ) ,  \
               ( bwsr->y2 ) , D->gc.fill_clr , D->transparency ) ;
           uiRest_clip_limits ( wc ) ;
 #else
-          if ( y->Bimg != NULL ) kgRestoreImage ( D , y->Bimg , ( bwsr->x1 ) , 
+          if ( y->Bimg != NULL ) kgRestoreImage ( D , y->Bimg , ( bwsr->x1 ) ,  \
               ( bwsr->y1 ) , ( bwsr->x2-bwsr->x1+1 ) , ( bwsr->y2-bwsr->y1+1 ) ) ;
 #endif
       }
@@ -12031,7 +12031,7 @@ void transch(int c) {
       box = 0;
       for ( row = 0; row < t->ny; row++ ) {
           for ( col = 0; col < t->nx; col++ ) {
-              if ( _uiCheckBox ( kbe , elmt [ box ] .x1 , elmt [ box ] .y1 , elmt [ box ] .x2 , elmt [ box ] .y2 ) ) 
+              if ( _uiCheckBox ( kbe , elmt [ box ] .x1 , elmt [ box ] .y1 , elmt [ box ] .x2 , elmt [ box ] .y2 ) )  \
                   {
                   pos = ( x - elmt [ box ] .x1 -5 ) / ( Gap+Wd ) ;
                   ln = strlen ( elmt [ box ] .df+elmt [ box ] .startchar ) ;
@@ -12073,7 +12073,7 @@ void transch(int c) {
       box = 0;
       for ( row = 0; row < t->ny; row++ ) {
           for ( col = 0; col < t->nx; col++ ) {
-              if ( _uiCheckBox ( kbe , elmt [ box ] .x1 , elmt [ box ] .y1 , elmt [ box ] .x2 , elmt [ box ] .y2 ) ) 
+              if ( _uiCheckBox ( kbe , elmt [ box ] .x1 , elmt [ box ] .y1 , elmt [ box ] .x2 , elmt [ box ] .y2 ) )  \
                   {
                   pos = ( x - elmt [ box ] .x1 -5 ) / ( Gap+Wd ) ;
                   if ( pos < 0 ) pos = 0;
@@ -12117,7 +12117,7 @@ void transch(int c) {
       box = 0;
       for ( row = 0; row < t->ny; row++ ) {
           for ( col = 0; col < t->nx; col++ ) {
-              if ( _uiCheckBox ( kbe , elmt [ box ] .x1 , elmt [ box ] .y1 , elmt [ box ] .x2 , elmt [ box ] .y2 ) ) 
+              if ( _uiCheckBox ( kbe , elmt [ box ] .x1 , elmt [ box ] .y1 , elmt [ box ] .x2 , elmt [ box ] .y2 ) )  \
                   {
                   pos = ( x - elmt [ box ] .x1 -FontSize/2 ) / ( FontSize ) ;
                   if ( pos < 0 ) pos = 0;
@@ -12357,7 +12357,7 @@ void transch(int c) {
           col = t->col;
           row = t->row;
           curbox = row*t->nx+col;
-          if ( _ui_deletechar ( t->elmt [ curbox ] .df , t->elmt [ curbox ] .cursor ) ) 
+          if ( _ui_deletechar ( t->elmt [ curbox ] .df , t->elmt [ curbox ] .cursor ) )  \
               {
               if ( code == 't' ) _ui_drawtextcursor ( t ) ;
               else _ui_drawtablecursor ( t ) ;
@@ -12373,7 +12373,7 @@ void transch(int c) {
               if ( t->elmt [ curbox ] .startchar > 0 ) {
                   t->elmt [ curbox ] .startchar -= 1;
                   t->elmt [ curbox ] .cursor -= 1;
-                  if ( _ui_deletechar ( t->elmt [ curbox ] .df , t->elmt [ curbox ] .cursor ) ) 
+                  if ( _ui_deletechar ( t->elmt [ curbox ] .df , t->elmt [ curbox ] .cursor ) )  \
                       {
                       if ( code == 't' ) _ui_drawtextcursor ( t ) ;
                       else _ui_drawtablecursor ( t ) ;
@@ -12384,7 +12384,7 @@ void transch(int c) {
                   t->elmt [ curbox ] .cursor -= 1;
                   if ( ( t->elmt [ curbox ] .cursor < t->elmt [ curbox ] .startchar ) ) t->elmt [ curbox ] .startchar = t->elmt [ curbox ] .cursor;
                       
-                  if ( _ui_deletechar ( t->elmt [ curbox ] .df , t->elmt [ curbox ] .cursor ) ) 
+                  if ( _ui_deletechar ( t->elmt [ curbox ] .df , t->elmt [ curbox ] .cursor ) )  \
                       {
                       if ( code == 't' ) _ui_drawtextcursor ( t ) ;
                       else _ui_drawtablecursor ( t ) ;
@@ -12400,7 +12400,7 @@ void transch(int c) {
           row = t->row;
           curbox = row*t->nx+col;
 //    if(key== ' ') printf("Got Space :%s %d %d %d\n",t->elmt[curbox].df,col,row,curbox);
-          if ( ( ret = _ui_insertchar ( t->elmt [ curbox ] .df , t->elmt [ curbox ] .cursor , MAXTITEMLN-2 , key ) ) ) 
+          if ( ( ret = _ui_insertchar ( t->elmt [ curbox ] .df , t->elmt [ curbox ] .cursor , MAXTITEMLN-2 , key ) ) )  \
               {
               t->elmt [ curbox ] .cursor += ret;
               ln = t->elmt [ curbox ] .ln;
@@ -12605,7 +12605,7 @@ void transch(int c) {
           col = t->col;
           row = t->row;
           curbox = row*t->nx+col;
-          if ( _ui_deletechar ( t->elmt [ curbox ] .df , t->elmt [ curbox ] .cursor ) ) 
+          if ( _ui_deletechar ( t->elmt [ curbox ] .df , t->elmt [ curbox ] .cursor ) )  \
               {
               _ui_drawtablecursor ( t ) ;
               uiUpdateOn ( t->D ) ;
@@ -12620,7 +12620,7 @@ void transch(int c) {
               if ( t->elmt [ curbox ] .startchar > 0 ) {
                   t->elmt [ curbox ] .startchar -= 1;
                   t->elmt [ curbox ] .cursor -= 1;
-                  if ( _ui_deletechar ( t->elmt [ curbox ] .df , t->elmt [ curbox ] .cursor ) ) 
+                  if ( _ui_deletechar ( t->elmt [ curbox ] .df , t->elmt [ curbox ] .cursor ) )  \
                       {
                       _ui_drawtablecursor ( t ) ;
                       uiUpdateOn ( t->D ) ;
@@ -12630,7 +12630,7 @@ void transch(int c) {
                   t->elmt [ curbox ] .cursor -= 1;
                   if ( ( t->elmt [ curbox ] .cursor < t->elmt [ curbox ] .startchar ) ) t->elmt [ curbox ] .startchar = t->elmt [ curbox ] .cursor;
                       
-                  if ( _ui_deletechar ( t->elmt [ curbox ] .df , t->elmt [ curbox ] .cursor ) ) 
+                  if ( _ui_deletechar ( t->elmt [ curbox ] .df , t->elmt [ curbox ] .cursor ) )  \
                       {
                       _ui_drawtablecursor ( t ) ;
                       uiUpdateOn ( t->D ) ;
@@ -12644,7 +12644,7 @@ void transch(int c) {
           col = t->col;
           row = t->row;
           curbox = row*t->nx+col;
-          if ( ( ret = _ui_insertchar ( t->elmt [ curbox ] .df , t->elmt [ curbox ] .cursor , MAXTITEMLN-2 , key ) ) ) 
+          if ( ( ret = _ui_insertchar ( t->elmt [ curbox ] .df , t->elmt [ curbox ] .cursor , MAXTITEMLN-2 , key ) ) )  \
               {
               t->elmt [ curbox ] .cursor += ret;
               ln = t->elmt [ curbox ] .ln;
@@ -12852,7 +12852,7 @@ void transch(int c) {
       w = x2 -x1;
       l = ( y2 - y1 ) ;
       if ( color >= 0 ) {
-          _uibox_fill ( wc , x1 , D->evgay-y1 , x2-2 , D->evgay-y2+1 , 
+          _uibox_fill ( wc , x1 , D->evgay-y1 , x2-2 , D->evgay-y2+1 ,  \
               ( unsigned int ) color ) ;
       }
       else {
@@ -12860,7 +12860,7 @@ void transch(int c) {
           color = gc.fill_clr;
       }
       if ( buf != NULL ) {
-          if ( ! ( ( pt [ 0 ] == '#' ) && ( pt [ 1 ] == '#' ) && 
+          if ( ! ( ( pt [ 0 ] == '#' ) && ( pt [ 1 ] == '#' ) &&  \
               ( pt [ 2 ] <= ' ' ) ) ) {
 //       jpg_image(p->xpm,x1,y1,w,l);
               kgImage ( D , p->xpm , x1 , y1 , w , l , 0.0 , 1.0 ) ;
@@ -12904,7 +12904,7 @@ void transch(int c) {
       w = x2 -x1;
       l = ( y2 - y1 ) ;
       if ( color >= 0 ) {
-          _uibox_fill ( wc , x1 , D->evgay-y1 , x2-2 , D->evgay-y2+1 , 
+          _uibox_fill ( wc , x1 , D->evgay-y1 , x2-2 , D->evgay-y2+1 ,  \
               ( unsigned int ) color ) ;
       }
       else {
@@ -12912,7 +12912,7 @@ void transch(int c) {
           color = gc.fill_clr;
       }
       if ( buf != NULL ) {
-          if ( ! ( ( pt [ 0 ] == '#' ) && ( pt [ 1 ] == '#' ) && 
+          if ( ! ( ( pt [ 0 ] == '#' ) && ( pt [ 1 ] == '#' ) &&  \
               ( pt [ 2 ] <= ' ' ) ) ) {
 //       jpg_image_transparent(p->xpm,x1,y1,w,l,D->transparency);
 //       jpg_image(p->xpm,x1,y1,w,l);
@@ -12953,7 +12953,7 @@ void transch(int c) {
 //    if(p->img!= NULL) kgFreeImage(p->img);
               if ( buf != NULL ) {
                   img1 = NULL;
-                  if ( ! ( ( pt [ 0 ] == '#' ) && ( pt [ 1 ] == '#' ) && 
+                  if ( ! ( ( pt [ 0 ] == '#' ) && ( pt [ 1 ] == '#' ) &&  \
                       ( pt [ 2 ] <= ' ' ) ) ) {
                       img1 = kgGetImageCopy ( D , p->xpm ) ;
                   }
@@ -12969,25 +12969,25 @@ void transch(int c) {
                   else kgRestoreImage ( D , p->Bimg , x1 , y1 , w+1 , l+1 ) ;
               }
               else kgRestoreImage ( D , p->Bimg , x1 , y1 , w+1 , l+1 ) ;
-           } // f transparency
+          } // f transparency
           else {
               kgRestoreImage ( D , p->Bimg , x1 , y1 , w+1 , l+1 ) ;
               if ( D->DrawBkgr != 0 ) {
                   if ( color >= 0 ) {
-                      _dvrect_fill_transparent ( wc , x1 , y1 , x2 , y2 , 
+                      _dvrect_fill_transparent ( wc , x1 , y1 , x2 , y2 ,  \
                           ( unsigned int ) color , 0.0 ) ;
                   }
 #if 0
                   else {
                       gc = D->gc;
                       color = gc.fill_clr;
-                      _dvrect_fill_transparent ( wc , x1 , y1 , x2 , y2 , 
+                      _dvrect_fill_transparent ( wc , x1 , y1 , x2 , y2 ,  \
                           ( unsigned int ) color , D->transparency ) ;
                   }
 #endif
               }
               if ( buf != NULL ) {
-                  if ( ! ( ( pt [ 0 ] == '#' ) && ( pt [ 1 ] == '#' ) && 
+                  if ( ! ( ( pt [ 0 ] == '#' ) && ( pt [ 1 ] == '#' ) &&  \
                       ( pt [ 2 ] <= ' ' ) ) ) {
                       kgImage ( D , p->xpm , x1 , y1 , w , l , D->transparency , 1.0 ) ;
                   }
@@ -13029,7 +13029,7 @@ void transch(int c) {
                   dvdraw_protru ( D , x1-offset , y1-offset , x2+offset , y2+offset ) ;
                   break;
               }
-           }// else transparency
+          }// else transparency
       }
       else {
           ret = 0;
@@ -13039,7 +13039,7 @@ void transch(int c) {
 #if 0
           else {
 //      printf("p->img  NULL\n");
-              _dvrect_fill_transparent ( wc , ( x1 ) , ( y1 ) , ( x2 ) , 
+              _dvrect_fill_transparent ( wc , ( x1 ) , ( y1 ) , ( x2 ) ,  \
                   ( y2 ) , D->gc.fill_clr , D->transparency ) ;
           }
 #endif
@@ -13061,7 +13061,7 @@ void transch(int c) {
       p->Bimg = NULL;
       if ( p->hide != 1 ) _uiMake_P ( p ) ;
   }
-  void _ui_draw_info_bound ( DIALOG *D , int x1 , int y1 , int x2 , int y2 , int bright , int dim ) 
+  void _ui_draw_info_bound ( DIALOG *D , int x1 , int y1 , int x2 , int y2 , int bright , int dim )  \
       {
       unsigned int temp;
       kgWC *wc;
@@ -13105,7 +13105,7 @@ void transch(int c) {
       I->D = D;
       I->item = item; ;
       I->Bimg = NULL;
-      I->twin = _uiput_txtwin ( D , I->x1+D->xo , ( I->y1+D->yo ) , I->x2+D->xo , 
+      I->twin = _uiput_txtwin ( D , I->x1+D->xo , ( I->y1+D->yo ) , I->x2+D->xo ,  \
           ( I->y2+D->yo ) ) ;
       return;
   }
@@ -13149,7 +13149,7 @@ void transch(int c) {
           ret = 0;
           uiBkup_clip_limits ( wc ) ;
           uiSet_full_scrn ( wc ) ;
-          _dvrect_fill_transparent ( wc , ( x1 ) , ( y1 ) , ( x2 ) , 
+          _dvrect_fill_transparent ( wc , ( x1 ) , ( y1 ) , ( x2 ) ,  \
               ( y2 ) , D->gc.fill_clr , D->transparency ) ;
           uiRest_clip_limits ( wc ) ;
 #endif
@@ -13309,7 +13309,7 @@ void transch(int c) {
           }
       }
       cy = ( elmt [ curbox ] .y2+elmt [ curbox ] .y1 ) /2+6;
-      cx = elmt [ curbox ] .x1+6+ ( elmt [ curbox ] .cursor-elmt [ curbox ] .startchar ) * 
+      cx = elmt [ curbox ] .x1+6+ ( elmt [ curbox ] .cursor-elmt [ curbox ] .startchar ) *  \
           ( Gap+Wd ) ;
       cy = D->evgay-cy;
       _uirect_fill ( WC ( D ) , cx+Gap+1 , cy-Bt , cx+Gap+1+Wd , cy+Ht , tx->gc.cur_clr ) ;
@@ -13388,7 +13388,7 @@ void transch(int c) {
           df [ ln ] = '\0';
 //TCB
           cy = ( elmt [ curbox ] .y2+elmt [ curbox ] .y1 ) /2+6;
-          cx = elmt [ curbox ] .x1+6+ ( elmt [ curbox ] .cursor- elmt [ curbox ] .startchar ) * 
+          cx = elmt [ curbox ] .x1+6+ ( elmt [ curbox ] .cursor- elmt [ curbox ] .startchar ) *  \
               ( Gap+Wd ) ;
           cy = D->evgay-cy;
           if ( i == curbox ) {
@@ -13539,7 +13539,7 @@ void transch(int c) {
       df = elmt [ curbox ] .df+elmt [ curbox ] .startchar;
       _uirect_fill ( WC ( D ) , elmt [ curbox ] .x1 , D->evgay-elmt [ curbox ] .y1 , elmt [ curbox ] .x2-1 , D->evgay-elmt [ curbox ] .y2+1 , tx->gc.tabl_fill ) ;
           
-      cx = elmt [ curbox ] .x1+T->FontSize/2+ ( elmt [ curbox ] .cursor-elmt [ curbox ] .startchar ) * 
+      cx = elmt [ curbox ] .x1+T->FontSize/2+ ( elmt [ curbox ] .cursor-elmt [ curbox ] .startchar ) *  \
           ( T->FontSize ) ;
       cy = ( elmt [ curbox ] .y1+2 ) ;
       _dvrect_fill ( WC ( D ) , cx , cy , cx+T->FontSize , elmt [ curbox ] .y2-2 , D->gc.cur_clr ) ;
@@ -13767,7 +13767,7 @@ void transch(int c) {
               _dv_draw_bound ( D , ( X1 ) , ( Y1 ) , ( X2 ) , ( Y2 ) , D->gc.high_clr ) ;
           }
       }
-      else _dvrect_fill_transparent ( wc , ( x1 ) , ( y1 ) , 
+      else _dvrect_fill_transparent ( wc , ( x1 ) , ( y1 ) ,  \
           ( x2 ) , ( y2 ) , D->gc.fill_clr , D->transparency ) ;
       uiRest_clip_limits ( wc ) ;
       return 1;
@@ -13860,9 +13860,9 @@ void transch(int c) {
       if ( T->hide != 1 ) {
 #if 1
           CHECKLIMITS ( T ) ;
-          if ( T->Bimg == NULL ) T->Bimg = kgGetBackground 
+          if ( T->Bimg == NULL ) T->Bimg = kgGetBackground  \
               ( D , ( X1 ) , ( Y1 ) , ( X2 ) , ( Y2 ) ) ;
-          else kgRestoreImage ( D , T->Bimg , ( X1 ) , 
+          else kgRestoreImage ( D , T->Bimg , ( X1 ) ,  \
               ( Y1 ) , ( X2-X1+1 ) , ( Y2-Y1+1 ) ) ;
           for ( j = 0; j < nx; j++ ) {
               prsize = 0;
@@ -13914,7 +13914,7 @@ void transch(int c) {
           x1 = xx1+xgap/2;
 #endif
 #if 0
-          _dvrect_fill_transparent ( WC ( D ) , ( X1 ) , ( Y1 ) , 
+          _dvrect_fill_transparent ( WC ( D ) , ( X1 ) , ( Y1 ) ,  \
               ( X2 ) , ( Y2 ) , D->gc.fill_clr , D->transparency ) ;
 #endif
           tx->col = 0;
@@ -13974,7 +13974,7 @@ void transch(int c) {
                       _uirect_fill ( wc , hxs , cy-Bt , hxe , cy+Ht , tx->gc.high_clr ) ;
                   }
                   if ( k == 0 ) {
-                      cx = elmt [ k ] .x1+6+ ( elmt [ k ] .cursor-elmt [ k ] .startchar ) * 
+                      cx = elmt [ k ] .x1+6+ ( elmt [ k ] .cursor-elmt [ k ] .startchar ) *  \
                           ( Gap+Wd ) ;
                       cy = ( elmt [ k ] .y2+elmt [ k ] .y1 ) /2+6;
                       cy = D->evgay-cy;
@@ -14018,7 +14018,7 @@ void transch(int c) {
       }
       else{
 // _dvrect_fill_transparent(WC(D),(X1),(Y1),(X2), (Y2),D->gc.fill_clr,D->transparency);
-          if ( T->Bimg != NULL ) kgRestoreImage ( D , T->Bimg , 
+          if ( T->Bimg != NULL ) kgRestoreImage ( D , T->Bimg ,  \
               ( X1 ) , ( Y1 ) , ( X2-X1+1 ) , ( Y2-Y1+1 ) ) ;
       }
       uiRest_clip_limits ( wc ) ;
@@ -14260,7 +14260,7 @@ void transch(int c) {
 #if 0
           X1 = T->x1+D->xo; X2 = T->x2+D->xo;
           Y1 = T->y1+D->yo; Y2 = T->y2+D->yo;
-          _dvrect_fill_transparent ( wc , ( X1 ) , ( Y1 ) , ( X2 ) , 
+          _dvrect_fill_transparent ( wc , ( X1 ) , ( Y1 ) , ( X2 ) ,  \
               ( Y2 ) , D->gc.fill_clr , D->transparency ) ;
 #endif
           RESTOREWIDGETAREA ( T ) ;
@@ -14724,7 +14724,7 @@ void transch(int c) {
                   strcpy ( wrk , elmt->df ) ;
                   i = strlen ( wrk ) -1;
                   if ( ( i > 0 ) && ( wrk [ i ] == ' ' ) ) {wrk [ i ] = '\0'; i--; }
-                  while ( ( i >= 0 ) && ( ( wrk [ i ] < ' ' ) || ( wrk [ i ] > 127 ) ) ) 
+                  while ( ( i >= 0 ) && ( ( wrk [ i ] < ' ' ) || ( wrk [ i ] > 127 ) ) )  \
                       {wrk [ i ] = '\0'; i--; }
                   if ( strcmp ( chpt , wrk ) != 0 ) {
                       strcpy ( chpt , wrk ) ;
@@ -14878,7 +14878,7 @@ void transch(int c) {
       b->item = item;
       b->Bimg = NULL;
       if ( b->df == NULL ) { b->df = ( int * ) ( & ( b->bval ) ) ; }
-      b->buts = make_but_str ( D , b->x1+x1+lngth , b->y1+y1+lngth , b->xgap , b->ygap , b->nx , b->ny , b->lngth , b->width , * 
+      b->buts = make_but_str ( D , b->x1+x1+lngth , b->y1+y1+lngth , b->xgap , b->ygap , b->nx , b->ny , b->lngth , b->width , *  \
           ( b->df ) , b->titles , b->xpm , b->bkgr , b->sw ) ;
       buts = ( BUTS * ) ( b->buts ) ;
       buts->D = D;
@@ -15169,7 +15169,7 @@ void transch(int c) {
       butns [ i ] .imgn = uiMakeStringImage ( D , butns [ i ] .title , Bcopy , x1 , y1 , ln+mfp , wd+mfp , D->gc.ButtonFont , bkgr , 0 , D->gc.but_char , D->gc.GuiFontSize , 0 , B->fac , 0 , B->type ) ;
           
       kgFreeImage ( Bcopy ) ; Bcopy = NULL;
-      if ( butns [ i ] .xpmp != NULL ) timg = kgGetImageCopy 
+      if ( butns [ i ] .xpmp != NULL ) timg = kgGetImageCopy  \
           ( D , butns [ i ] .xpmp ) ;
       else {
           timg = kgGetImageCopy ( NULL , xpm ) ;
@@ -15181,7 +15181,7 @@ void transch(int c) {
           
       kgFreeImage ( Bcopy ) ; Bcopy = NULL;
       kgFreeImage ( timg ) ; timg = NULL;
-      if ( butns [ i ] .xpmh != NULL ) timg = kgGetImageCopy 
+      if ( butns [ i ] .xpmh != NULL ) timg = kgGetImageCopy  \
           ( D , butns [ i ] .xpmh ) ;
       else {
           timg = kgGetImageCopy ( NULL , xpm ) ;
@@ -15318,7 +15318,7 @@ void transch(int c) {
               if ( butns [ i ] .Bimg0 == NULL ) {
                   butns [ i ] .Bimg0 = kgGetBackground ( D , x1 , y1 , x2 , y2 ) ;
               }
-              else kgRestoreImage ( D , butns [ i ] .Bimg0 , x1 , y1 , 
+              else kgRestoreImage ( D , butns [ i ] .Bimg0 , x1 , y1 ,  \
                   ( x2-x1+1 ) , ( y2-y1+1 ) ) ;
               uiString ( D , butns [ i ] .title , x1 , y1 , width , ygap-1 , D->gc.ButtonFont , D->gc.but_char , D->gc.GuiFontSize , 0 , -1 ) ;
                   
@@ -15350,7 +15350,7 @@ void transch(int c) {
           while ( ( b->prompt [ i+n ] ) != '\0' ) n++;
           if ( n != 0 ) n++;
           lngth = n*9+Hsize+2;
-          b->buts = make_but_str ( D , b->x1+x1+lngth , b->y1+y1+Hsize+2 , b->xgap , b->ygap , b->nx , b->ny , b->lngth , b->width , * 
+          b->buts = make_but_str ( D , b->x1+x1+lngth , b->y1+y1+Hsize+2 , b->xgap , b->ygap , b->nx , b->ny , b->lngth , b->width , *  \
               ( b->df ) , b->titles , b->xpm , b->bkgr , sw ) ;
           buts = ( BUTS * ) ( b->buts ) ;
           buts->D = D;
@@ -15424,7 +15424,7 @@ void transch(int c) {
       mvnt = 0;
       if ( _uiGetSItem ( kbe , xx+3 , yy+3 , xx+w-3 , yy+w-3 ) ) { mvnt = -1; }
       if ( _uiGetSItem ( kbe , xx+l-w+3 , yy+3 , xx+l-3 , yy+w-3 ) ) mvnt = 1;
-      if ( _uiGetSItem ( kbe , xx+w+3 , yy+3 , xx+l-w-3 , yy+w-3 ) ) 
+      if ( _uiGetSItem ( kbe , xx+w+3 , yy+3 , xx+l-w-3 , yy+w-3 ) )  \
           { mvnt = kbe.x-xx -w -3+2- pt->df; }
       if ( mvnt ) {
           df = pt->df;
@@ -15439,7 +15439,7 @@ void transch(int c) {
 #if 0
               switch ( d->code ) {
                   case 'd':
-                  if ( d->Update != NULL ) d->Update ( _ui_getdslidevalue 
+                  if ( d->Update != NULL ) d->Update ( _ui_getdslidevalue  \
                       ( pt ) , pt->id , pt->D ) ;
                   break;
                   default:
@@ -15480,7 +15480,7 @@ void transch(int c) {
           yy1 = pt->y-pt->Sldwd/2;
           xx1 = pt->x-w/2;
           yy = pt->y;
-          if ( _uiGetSItem ( kbe , xx1 , yy1 , xx1+w , yy1+l1 ) ) mvnt = 
+          if ( _uiGetSItem ( kbe , xx1 , yy1 , xx1+w , yy1+l1 ) ) mvnt =  \
               ( kbe.y-yy-B->lngth+ pt->df ) ;
           df = pt->df;
           pt->df = pt->df-mvnt;
@@ -15540,12 +15540,12 @@ void transch(int c) {
 //           if(d->Update != NULL) d->Update(_ui_getdslidevalue(pt),i,D);
                       switch ( d->code ) {
                           case 'd':
-                          if ( d->Update != NULL ) d->Update ( _ui_getdslidevalue 
+                          if ( d->Update != NULL ) d->Update ( _ui_getdslidevalue  \
                               ( pt ) , pt->id , pt->D ) ;
                           break;
                           case 'f':
                           f = ( DIF * ) d;
-                          if ( f->Update != NULL ) f->Update ( _ui_getfslidevalue 
+                          if ( f->Update != NULL ) f->Update ( _ui_getfslidevalue  \
                               ( pt ) , pt->id , pt->D ) ;
                           break;
                           default:
@@ -15563,7 +15563,7 @@ void transch(int c) {
               }
 #else
               count = 0;
-              while ( ( ( evnt = kgCheckEvent ( pt->D , & kb ) ) != 0 ) && 
+              while ( ( ( evnt = kgCheckEvent ( pt->D , & kb ) ) != 0 ) &&  \
                   ( kb.event == 3 ) ) {
                   count++;
                   kbe = kb;
@@ -15625,7 +15625,7 @@ void transch(int c) {
                   if ( pt->df > ( pt->l ) ) pt->df = pt->l;
                   if ( df != pt->df ) {
                       _ui_movehslidepointer ( B ) ;
-                      if ( B->Update != NULL ) B->Update ( _ui_getdslidevalue 
+                      if ( B->Update != NULL ) B->Update ( _ui_getdslidevalue  \
                           ( pt ) , B->item , D ) ;
                       else { kbd->x = kbe.x; kbd->y = kbe.y; kbd->event = 1; }
                       uiUpdateOn ( pt->D ) ;
@@ -16015,7 +16015,7 @@ void transch(int c) {
 //   Make_viewport(D,item);
       if ( w->hide != 1 ) _uiMake_G ( w ) ;
   }
-  void _ui_diamessage ( DIALOG *D , int x1 , int y1 , int x2 , int y2 , char *m ) 
+  void _ui_diamessage ( DIALOG *D , int x1 , int y1 , int x2 , int y2 , char *m )  \
       {
 //   int x2,y2,l;
       int l;
@@ -16082,7 +16082,7 @@ void transch(int c) {
               case 'm':
               fillclr = D->gc.fill_clr;
               if ( D->transparency != 0.0 ) fillclr = -1;
-              uiString ( D , m->msg , ( int ) ( x1 ) , ( int ) ( ( y1 ) ) , ( x2-x1 ) , 
+              uiString ( D , m->msg , ( int ) ( x1 ) , ( int ) ( ( y1 ) ) , ( x2-x1 ) ,  \
                   ( y2-y1 ) , D->gc.MsgFont , D->gc.msg_char , D->gc.FontSize , just , fillclr ) ;
                   
               break;
@@ -16116,7 +16116,7 @@ void transch(int c) {
           x2 = m->x2+D->xo;
           y1 = m->y1+D->yo;
           y2 = m->y2+D->yo;
-          if ( m->Bimg != NULL ) kgRestoreImage ( D , m->Bimg , x1 , y1 , 
+          if ( m->Bimg != NULL ) kgRestoreImage ( D , m->Bimg , x1 , y1 ,  \
               ( x2-x1+1 ) , ( y2-y1+1 ) ) ;
       }
       return ret;
@@ -16330,7 +16330,7 @@ void transch(int c) {
                   }
 #else
                   count = 0;
-                  while ( ( ( evnt = kgCheckEvent ( br->D , & kb ) ) != 0 ) && 
+                  while ( ( ( evnt = kgCheckEvent ( br->D , & kb ) ) != 0 ) &&  \
                       ( kb.event == 3 ) ) {
                       count++;
                       kbe = kb;
@@ -16444,12 +16444,12 @@ void transch(int c) {
                   if ( item < Y->nitems ) {
                       ret = item;
                   }
-               } // eof if ( ( ix > 0 ) && ( ix < y->nx ) ) 
-           }// eof if ( ( iy > 0 ) && ( iy < y->size ) ) 
+              } // eof if ( ( ix > 0 ) && ( ix < y->nx ) ) 
+          }// eof if ( ( iy > 0 ) && ( iy < y->size ) ) 
       }
       return ret;
   }
-  int kgGetThumbNailItemRectangle ( DIY *Y , int item , int *x1 , int *y1 , int *x2 , int *y2 ) 
+  int kgGetThumbNailItemRectangle ( DIY *Y , int item , int *x1 , int *y1 , int *x2 , int *y2 )  \
       {
       int ret = 0 , ix , iy , xoffset , yoffset , size;
       BRW_STR *br;
@@ -16513,8 +16513,8 @@ void transch(int c) {
                       uiUpdateOn ( br->D ) ;
                       ret = 1;
                   }
-               } // eof if ( ( ix > 0 ) && ( ix < y->nx ) ) 
-           }// eof if ( ( iy > 0 ) && ( iy < y->size ) ) 
+              } // eof if ( ( ix > 0 ) && ( ix < y->nx ) ) 
+          }// eof if ( ( iy > 0 ) && ( iy < y->size ) ) 
       }
       else {
           item = _uiGetSItem ( kbe , br->rsx1 , br->rsy1 , br->rsx2 , br->rsy2 ) ;
@@ -16617,7 +16617,7 @@ void transch(int c) {
                   }
 #else
                   count = 0;
-                  while ( ( ( evnt = kgCheckEvent ( y->D , & kb ) ) != 0 ) && 
+                  while ( ( ( evnt = kgCheckEvent ( y->D , & kb ) ) != 0 ) &&  \
                       ( kb.event == 3 ) ) {
                       count++;
                       kbe = kb;
@@ -16866,7 +16866,7 @@ void transch(int c) {
                   }
                   ret = -1;
                   count = 0;
-                  while ( ( ( evnt = kgCheckEvent ( y->D , & kb ) ) != 0 ) && 
+                  while ( ( ( evnt = kgCheckEvent ( y->D , & kb ) ) != 0 ) &&  \
                       ( kb.event == 3 ) ) {
                       count++;
                       kbe = kb;
@@ -17019,7 +17019,7 @@ void transch(int c) {
                   }
                   ret = -1;
                   count = 0;
-                  while ( ( ( evnt = kgCheckEvent ( y->D , & kb ) ) != 0 ) && 
+                  while ( ( ( evnt = kgCheckEvent ( y->D , & kb ) ) != 0 ) &&  \
                       ( kb.event == 3 ) ) {
                       count++;
                       kbe = kb;
@@ -17112,8 +17112,8 @@ void transch(int c) {
                       uiUpdateOn ( br->D ) ;
                       ret = 1;
                   }
-               } // eof if ( ( ix > 0 ) && ( ix < y->nx ) ) 
-           }// eof if ( ( iy > 0 ) && ( iy < y->size ) ) 
+              } // eof if ( ( ix > 0 ) && ( ix < y->nx ) ) 
+          }// eof if ( ( iy > 0 ) && ( iy < y->size ) ) 
       }
       else {
           item = _uiGetSItem ( kbe , br->rsx1 , br->rsy1 , br->rsx2 , br->rsy2 ) ;
@@ -17218,7 +17218,7 @@ void transch(int c) {
                   }
 #else
                   count = 0;
-                  while ( ( ( evnt = kgCheckEvent ( y->D , & kb ) ) != 0 ) && 
+                  while ( ( ( evnt = kgCheckEvent ( y->D , & kb ) ) != 0 ) &&  \
                       ( kb.event == 3 ) ) {
                       count++;
                       kbe = kb;
@@ -17308,8 +17308,8 @@ void transch(int c) {
                       uiUpdateOn ( br->D ) ;
                       ret = 1;
                   }
-               } // eof if ( ( ix > 0 ) && ( ix < y->nx ) ) 
-           }// eof if ( ( iy > 0 ) && ( iy < y->size ) ) 
+              } // eof if ( ( ix > 0 ) && ( ix < y->nx ) ) 
+          }// eof if ( ( iy > 0 ) && ( iy < y->size ) ) 
       }
       else {
           item = _uiGetSItem ( kbe , br->rsx1 , br->rsy1 , br->rsx2 , br->rsy2 ) ;
@@ -17412,7 +17412,7 @@ void transch(int c) {
                   }
 #else
                   count = 0;
-                  while ( ( ( evnt = kgCheckEvent ( y->D , & kb ) ) != 0 ) && 
+                  while ( ( ( evnt = kgCheckEvent ( y->D , & kb ) ) != 0 ) &&  \
                       ( kb.event == 3 ) ) {
                       count++;
                       kbe = kb;
@@ -17499,8 +17499,8 @@ void transch(int c) {
                       uiUpdateOn ( br->D ) ;
                       ret = 1;
                   }
-               } // eof if ( ( ix > 0 ) && ( ix < y->nx ) ) 
-           }// eof if ( ( iy > 0 ) && ( iy < y->size ) ) 
+              } // eof if ( ( ix > 0 ) && ( ix < y->nx ) ) 
+          }// eof if ( ( iy > 0 ) && ( iy < y->size ) ) 
       }
       else {
           item = _uiGetSItem ( kbe , br->rsx1 , br->rsy1 , br->rsx2 , br->rsy2 ) ;
@@ -17603,7 +17603,7 @@ void transch(int c) {
                   }
 #else
                   count = 0;
-                  while ( ( ( evnt = kgCheckEvent ( y->D , & kb ) ) != 0 ) && 
+                  while ( ( ( evnt = kgCheckEvent ( y->D , & kb ) ) != 0 ) &&  \
                       ( kb.event == 3 ) ) {
                       count++;
                       kbe = kb;
@@ -17774,7 +17774,7 @@ void transch(int c) {
                   }
 #else
                   count = 0;
-                  while ( ( ( evnt = kgCheckEvent ( y->D , & kb ) ) != 0 ) && 
+                  while ( ( ( evnt = kgCheckEvent ( y->D , & kb ) ) != 0 ) &&  \
                       ( kb.event == 3 ) ) {
                       count++;
                       kbe = kb;
@@ -17966,7 +17966,7 @@ void transch(int c) {
                   }
 #else
                   count = 0;
-                  while ( ( ( evnt = kgCheckEvent ( y->D , & kb ) ) != 0 ) && 
+                  while ( ( ( evnt = kgCheckEvent ( y->D , & kb ) ) != 0 ) &&  \
                       ( kb.event == 3 ) ) {
                       count++;
                       kbe = kb;
@@ -18057,8 +18057,8 @@ void transch(int c) {
                       uiUpdateOn ( br->D ) ;
                       ret = 1;
                   }
-               } // eof if ( ( ix > 0 ) && ( ix < y->nx ) ) 
-           }// eof if ( ( iy > 0 ) && ( iy < y->size ) ) 
+              } // eof if ( ( ix > 0 ) && ( ix < y->nx ) ) 
+          }// eof if ( ( iy > 0 ) && ( iy < y->size ) ) 
       }
       else {
           item = _uiGetSItem ( kbe , br->rsx1 , br->rsy1 , br->rsx2 , br->rsy2 ) ;
@@ -18161,7 +18161,7 @@ void transch(int c) {
                   }
 #else
                   count = 0;
-                  while ( ( ( evnt = kgCheckEvent ( y->D , & kb ) ) != 0 ) && 
+                  while ( ( ( evnt = kgCheckEvent ( y->D , & kb ) ) != 0 ) &&  \
                       ( kb.event == 3 ) ) {
                       count++;
                       kbe = kb;
@@ -18362,7 +18362,7 @@ void transch(int c) {
 //      Get_resolution(&EVGAX,&EVGAY);
       return;
   }
-  void _ui_draw_menu_bound ( DIALOG *D , int x1 , int y1 , int x2 , int y2 , int c_bound ) 
+  void _ui_draw_menu_bound ( DIALOG *D , int x1 , int y1 , int x2 , int y2 , int c_bound )  \
       {
       unsigned int temp;
       int EVGAY;
@@ -18409,24 +18409,24 @@ void transch(int c) {
       br->pos = pos;
       ixmid = br->MS.ixx+br->MS.ixl/2;
       iy = br->MS.iyy+1;
-      _uirect_fill ( WC ( D ) , ( br->MS.ixx+1 ) , ( EVGAY-br->MS.iyy ) , 
+      _uirect_fill ( WC ( D ) , ( br->MS.ixx+1 ) , ( EVGAY-br->MS.iyy ) ,  \
           ( br->MS.ixu-1 ) , ( EVGAY-br->MS.iyu ) , br->MS.color1 ) ;
 #if 0
 #else
 #if 1
-      if ( br->D != NULL ) _ui_draw_bound ( D , br->MS.ixx+1 , ( EVGAY-br->MS.iyy-1 ) , br->MS.ixu-1 , 
+      if ( br->D != NULL ) _ui_draw_bound ( D , br->MS.ixx+1 , ( EVGAY-br->MS.iyy-1 ) , br->MS.ixu-1 ,  \
           ( EVGAY-br->MS.iyu+1 ) , br->MS.color2 ) ;
-      else _ui_draw_menu_bound ( D , br->MS.ixx , ( EVGAY-br->MS.iyy ) , br->MS.ixu , 
+      else _ui_draw_menu_bound ( D , br->MS.ixx , ( EVGAY-br->MS.iyy ) , br->MS.ixu ,  \
           ( EVGAY-br->MS.iyu ) , br->MS.color2 ) ;
 #else
-      _ui_draw_menu_bound ( D , br->MS.ixx , ( EVGAY-br->MS.iyy ) , br->MS.ixu , 
+      _ui_draw_menu_bound ( D , br->MS.ixx , ( EVGAY-br->MS.iyy ) , br->MS.ixu ,  \
           ( EVGAY-br->MS.iyu ) , br->MS.color2 ) ;
 #endif
 #endif
       k = 1;
       if ( ( br->MS.item > 0 ) && ( br->MS.item <= br->MS.imenu ) ) k = br->MS.item;
       jj = iy + ( k ) *br->MS.thirty;
-      _uirect_fill ( WC ( D ) , ( br->MS.ixx+4 ) , ( EVGAY-jj-12 ) , 
+      _uirect_fill ( WC ( D ) , ( br->MS.ixx+4 ) , ( EVGAY-jj-12 ) ,  \
           ( br->MS.ixu-4 ) , ( EVGAY-jj+8 ) , br->MS.color2 ) ;
       jj = iy;
 //TCB
@@ -18436,7 +18436,7 @@ void transch(int c) {
           ixp = br->MS.ixx+10;
 #if 0
           iyp = EVGAY-jj-7;
-          uiwrite_string ( D , br->MS.menu [ kk ] , ( int ) ixp , 
+          uiwrite_string ( D , br->MS.menu [ kk ] , ( int ) ixp ,  \
               ( int ) iyp , br->MS.char_clr ) ;
 #else
           ixp = br->MS.ixx+5;
@@ -18494,14 +18494,14 @@ void transch(int c) {
       br->pos = pos;
       pos = ( pos/y->nx ) *y->nx;
       menu = list+pos;
-      if ( y->bkgr == 1 ) _dvrect_fill ( WC ( D ) , ( br->x1+xoffset ) , ( br->y1+xoffset ) , 
+      if ( y->bkgr == 1 ) _dvrect_fill ( WC ( D ) , ( br->x1+xoffset ) , ( br->y1+xoffset ) ,  \
           ( br->x2-xoffset-w ) , ( br->y2-xoffset ) , D->gc.twin_fill ) ;
-      else _dvrect_fill ( WC ( D ) , ( br->x1+xoffset ) , ( br->y1+xoffset ) , 
+      else _dvrect_fill ( WC ( D ) , ( br->x1+xoffset ) , ( br->y1+xoffset ) ,  \
           ( br->x2-xoffset-w ) , ( br->y2-xoffset ) , D->gc.fill_clr ) ;
       if ( y->bordr == 1 ) {
-          _dv_draw_bound ( D , ( br->x1+xoffset ) , ( br->y1+xoffset ) , 
+          _dv_draw_bound ( D , ( br->x1+xoffset ) , ( br->y1+xoffset ) ,  \
               ( br->x2-xoffset-w ) , ( br->y2-xoffset ) , D->gc.twin_bodr ) ;
-          _dv_draw_bound ( D , ( br->x1+xoffset+1 ) , ( br->y1+xoffset+1 ) , 
+          _dv_draw_bound ( D , ( br->x1+xoffset+1 ) , ( br->y1+xoffset+1 ) ,  \
               ( br->x2-xoffset-w-1 ) , ( br->y2-xoffset-1 ) , D->gc.twin_bodr ) ;
 //      _dv_draw_bound(D,(br->x1+xoffset+2),(br->y1+xoffset+2),(br->x2-xoffset-w-2), (br->y2-xoffset-2),D->gc.twin_bodr);
       }
@@ -18607,21 +18607,21 @@ void transch(int c) {
 #ifndef D_RESTORE
 //      _dvrect_fill(WC(D),(br->x1+xoffset),(br->y1+xoffset),(br->x2-xoffset-w)-1, (br->y2-xoffset),D->gc.fill_clr);
       if ( y->bkgr == 1 ) {
-          _dvrect_fill ( WC ( D ) , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2- 
+          _dvrect_fill ( WC ( D ) , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2-  \
               ( offset ) , br->y2- ( offset ) , gc.txt_fill ) ;
       }
       else {
-          _dvrect_fill ( WC ( D ) , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2- 
+          _dvrect_fill ( WC ( D ) , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2-  \
               ( offset ) , br->y2- ( offset ) , gc.fill_clr ) ;
       }
 #else
       dx = ( br->x2-xoffset-w ) - ( br->x1+xoffset ) ;
       dy = ( br->y2-xoffset ) - ( br->y1+xoffset ) +1;
-      kgRestoreImagePart ( D , y->Bimg , ( br->x1+xoffset ) , 
+      kgRestoreImagePart ( D , y->Bimg , ( br->x1+xoffset ) ,  \
           ( br->y1+xoffset ) , xoffset , xoffset , dx , dy ) ;
 #endif
       if ( y->bordr == 1 ) {
-          _dv_draw_bound ( D , ( br->x1+xoffset ) , ( br->y1+xoffset ) , ( br->x2-xoffset-w ) -1 , 
+          _dv_draw_bound ( D , ( br->x1+xoffset ) , ( br->y1+xoffset ) , ( br->x2-xoffset-w ) -1 ,  \
               ( br->y2-xoffset ) , D->gc.high_clr ) ;
       }
       jj = iy;
@@ -18670,16 +18670,16 @@ void transch(int c) {
           }
 #endif
 #if 0
-          if ( ( menu != NULL ) ) uiCheckString ( D , menu [ kk ]->name , ( int ) ixp , 
+          if ( ( menu != NULL ) ) uiCheckString ( D , menu [ kk ]->name , ( int ) ixp ,  \
               ( int ) iyp , bxln , th , D->gc.Font , D->gc.menu_char , D->gc.FontSize , swv ) ;
               
 #endif
           if ( menu != NULL ) {
-              kgImage ( D , y->imgs [ kk+pos ] , ( int ) ( ixp+3.0*D->gc.FontSize ) , 
+              kgImage ( D , y->imgs [ kk+pos ] , ( int ) ( ixp+3.0*D->gc.FontSize ) ,  \
                   ( int ) iyp , ( bxln -4*D->gc.FontSize ) , th , 0.0 , 1.0 ) ;
-              if ( swv == 0 ) kgImage ( D , y->nimg , ( int ) ixp , 
+              if ( swv == 0 ) kgImage ( D , y->nimg , ( int ) ixp ,  \
                   ( int ) iyp , 4*D->gc.FontSize , th , 0.0 , 1.0 ) ;
-              if ( swv == 1 ) kgImage ( D , y->himg , ( int ) ixp , 
+              if ( swv == 1 ) kgImage ( D , y->himg , ( int ) ixp ,  \
                   ( int ) iyp , 4*D->gc.FontSize , th , 0.0 , 1.0 ) ;
           }
           kk++;
@@ -18745,21 +18745,21 @@ void transch(int c) {
       if ( list != NULL ) menu = list+pos;
 #ifndef D_RESTORE
       if ( y->bkgr == 1 ) {
-          _dvrect_fill ( WC ( D ) , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2- 
+          _dvrect_fill ( WC ( D ) , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2-  \
               ( offset ) , br->y2- ( offset ) , gc.twin_fill ) ;
       }
       else {
-          _dvrect_fill ( WC ( D ) , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2- 
+          _dvrect_fill ( WC ( D ) , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2-  \
               ( offset ) , br->y2- ( offset ) , gc.fill_clr ) ;
       }
 #else
       dx = ( br->x2-xoffset-w ) - ( br->x1+xoffset ) ;
       dy = ( br->y2-xoffset ) - ( br->y1+xoffset ) +1;
-      kgRestoreImagePart ( D , y->Bimg , ( br->x1+xoffset ) , 
+      kgRestoreImagePart ( D , y->Bimg , ( br->x1+xoffset ) ,  \
           ( br->y1+xoffset ) , xoffset , xoffset , dx , dy ) ;
 #endif
       if ( y->bordr == 1 ) {
-          _dv_draw_bound ( D , ( br->x1+xoffset ) , ( br->y1+xoffset ) , ( br->x2-xoffset-w ) -1 , 
+          _dv_draw_bound ( D , ( br->x1+xoffset ) , ( br->y1+xoffset ) , ( br->x2-xoffset-w ) -1 ,  \
               ( br->y2-xoffset ) , D->gc.twin_bodr ) ;
       }
       jj = iy;
@@ -18807,7 +18807,7 @@ void transch(int c) {
           }
           if ( ( menu != NULL ) && ( menu [ kk ]->name != NULL ) ) {
 #if 0
-              if ( y->type <= 1 ) uiMenuString ( D , menu [ kk ]->name , ( int ) ixp , 
+              if ( y->type <= 1 ) uiMenuString ( D , menu [ kk ]->name , ( int ) ixp ,  \
                   ( int ) iyp , bxln , y->width , D->gc.Font , D->gc.menu_char , D->gc.FontSize , swv ) ;
                   
               else uiString ( D , menu [ kk ]->name , ( int ) ixp , ( int ) iyp , bxln , y->width , D->gc.Font , D->gc.menu_char , D->gc.FontSize , -1 , -1 ) ;
@@ -18816,13 +18816,13 @@ void transch(int c) {
               if ( ( ( y->type ) %10 ) <= 1 ) {
                   kgImage ( D , y->imgs [ kk+pos ] , ( int ) ixp , ( int ) iyp , bxln-y->width , y->width , 0.0 , 1.0 ) ;
                       
-                  if ( swv == 0 ) kgImage ( D , y->nimg , ( int ) ixp+bxln-y->width , 
+                  if ( swv == 0 ) kgImage ( D , y->nimg , ( int ) ixp+bxln-y->width ,  \
                       ( int ) iyp , y->width , y->width , 0.0 , 1.0 ) ;
-                  if ( swv == 1 ) kgImage ( D , y->himg , ( int ) ixp+bxln-y->width , 
+                  if ( swv == 1 ) kgImage ( D , y->himg , ( int ) ixp+bxln-y->width ,  \
                       ( int ) iyp , y->width , y->width , 0.0 , 1.0 ) ;
               }
               else {
-                  kgImage ( D , y->imgs [ kk+pos ] , ( int ) ixp , 
+                  kgImage ( D , y->imgs [ kk+pos ] , ( int ) ixp ,  \
                       ( int ) iyp , bxln , y->width , 0.0 , 1.0 ) ;
               }
 #endif
@@ -18876,16 +18876,16 @@ void transch(int c) {
       menu = NULL;
       if ( list != NULL ) menu = list+pos;
 #ifndef D_RESTORE
-      _dvrect_fill ( WC ( D ) , ( br->x1+xoffset ) , ( br->y1+xoffset ) , 
+      _dvrect_fill ( WC ( D ) , ( br->x1+xoffset ) , ( br->y1+xoffset ) ,  \
           ( br->x2-xoffset-w ) -1 , ( br->y2-xoffset ) , D->gc.fill_clr ) ;
 #else
       dx = ( br->x2-xoffset-w ) - ( br->x1+xoffset ) ;
       dy = ( br->y2-xoffset ) - ( br->y1+xoffset ) +1;
-      kgRestoreImagePart ( D , y->Bimg , ( br->x1+xoffset ) , 
+      kgRestoreImagePart ( D , y->Bimg , ( br->x1+xoffset ) ,  \
           ( br->y1+xoffset ) , xoffset , xoffset , dx , dy ) ;
 #endif
       if ( y->bordr == 1 ) {
-          _dv_draw_bound ( D , ( br->x1+xoffset ) , ( br->y1+xoffset ) , ( br->x2-xoffset-w ) -1 , 
+          _dv_draw_bound ( D , ( br->x1+xoffset ) , ( br->y1+xoffset ) , ( br->x2-xoffset-w ) -1 ,  \
               ( br->y2-xoffset ) , D->gc.high_clr ) ;
       }
       jj = iy;
@@ -18917,7 +18917,7 @@ void transch(int c) {
           if ( ( list != NULL ) && ( list [ kk+pos ] != NULL ) ) {
 //            uiString(D,list[kk+pos], (int)ixp+xoff*y->width,(int)iyp,bxln,y->width,D->gc.Font,
 //                    D->gc.menu_char,D->gc.FontSize,-1,-1);
-              kgImage ( D , y->imgs [ kk+pos ] , ( int ) ixp+xoff*y->width , 
+              kgImage ( D , y->imgs [ kk+pos ] , ( int ) ixp+xoff*y->width ,  \
                   ( int ) iyp , bxln , y->width , 0.0 , 1.0 ) ;
           }
           kk++;
@@ -18969,21 +18969,21 @@ void transch(int c) {
       if ( y->nitems > y->size ) menu += ( y->nitems - y->size ) ;
 #endif
 #if 0
-      _dvrect_fill ( WC ( D ) , ( br->x1+xoffset ) , ( br->y1+xoffset ) , 
+      _dvrect_fill ( WC ( D ) , ( br->x1+xoffset ) , ( br->y1+xoffset ) ,  \
           ( br->x2-xoffset-w ) -1 , ( br->y2-xoffset ) , D->gc.info_fill ) ;
       if ( y->bordr == 1 ) {
-          _dv_draw_bound ( D , ( br->x1+xoffset ) , ( br->y1+xoffset ) , ( br->x2-xoffset-w ) -1 , 
+          _dv_draw_bound ( D , ( br->x1+xoffset ) , ( br->y1+xoffset ) , ( br->x2-xoffset-w ) -1 ,  \
               ( br->y2-xoffset ) , D->gc.high_clr ) ;
       }
 #else
-      _dvrect_fill ( WC ( D ) , ( br->x1+xoffset ) , ( br->y1+xoffset ) , 
+      _dvrect_fill ( WC ( D ) , ( br->x1+xoffset ) , ( br->y1+xoffset ) ,  \
           ( br->x2-xoffset-w ) -1 , ( br->y2-xoffset ) , br->MS.color1 ) ;
 #if 0
       if ( y->bordr == 1 ) {
 //      _dv_draw_bound(D,(br->x1+xoffset),(br->y1+xoffset),(br->x2-xoffset-w)-1, (br->y2-xoffset),br->MS.color2);
-          _dvrect_fill ( WC ( D ) , ( br->x1+xoffset ) , ( br->y1+xoffset ) , 
+          _dvrect_fill ( WC ( D ) , ( br->x1+xoffset ) , ( br->y1+xoffset ) ,  \
               ( br->x2-xoffset-w ) -1 , ( br->y2-xoffset ) , br->MS.color2 ) ;
-          _dvrect_fill ( WC ( D ) , ( br->x1+xoffset+offset ) , ( br->y1+xoffset+offset ) , 
+          _dvrect_fill ( WC ( D ) , ( br->x1+xoffset+offset ) , ( br->y1+xoffset+offset ) ,  \
               ( br->x2-xoffset-w-1-offset ) , ( br->y2-xoffset-offset ) , br->MS.color1 ) ;
       }
 #endif
@@ -19058,10 +19058,10 @@ void transch(int c) {
       br->pos = pos;
       menu = NULL;
       if ( list != NULL ) menu = list+pos;
-      _dvrect_fill ( WC ( D ) , ( br->x1+xoffset ) , ( br->y1+xoffset ) , 
+      _dvrect_fill ( WC ( D ) , ( br->x1+xoffset ) , ( br->y1+xoffset ) ,  \
           ( br->x2-xoffset-w ) -1 , ( br->y2-xoffset ) , D->gc.fill_clr ) ;
       if ( y->bordr == 1 ) {
-          _dv_draw_bound ( D , ( br->x1+xoffset ) , ( br->y1+xoffset ) , ( br->x2-xoffset-w ) -1 , 
+          _dv_draw_bound ( D , ( br->x1+xoffset ) , ( br->y1+xoffset ) , ( br->x2-xoffset-w ) -1 ,  \
               ( br->y2-xoffset ) , D->gc.high_clr ) ;
       }
       jj = iy;
@@ -19095,7 +19095,7 @@ void transch(int c) {
           if ( ( list != NULL ) && ( list [ kk+pos ] != NULL ) ) {
 //            uiString(D,list[kk+pos], (int)ixp+xoff*y->width,(int)iyp,bxln,y->width,D->gc.Font,
 //                    D->gc.menu_char,D->gc.FontSize,-1,-1);
-              kgImage ( D , y->imgs [ kk+pos ] , ( int ) ixp+xoff*y->width , 
+              kgImage ( D , y->imgs [ kk+pos ] , ( int ) ixp+xoff*y->width ,  \
                   ( int ) iyp , bxln , y->width , 0.0 , 1.0 ) ;
           }
           kk++;
@@ -19161,21 +19161,21 @@ void transch(int c) {
 #ifndef D_RESTORE
 //      _dvrect_fill(WC(D),(br->x1+xoffset),(br->y1+xoffset),(br->x2-xoffset-w)-1, (br->y2-xoffset),D->gc.fill_clr);
       if ( y->bkgr == 1 ) {
-          _dvrect_fill ( WC ( D ) , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2- 
+          _dvrect_fill ( WC ( D ) , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2-  \
               ( offset ) , br->y2- ( offset ) , gc.txt_fill ) ;
       }
       else {
-          _dvrect_fill ( WC ( D ) , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2- 
+          _dvrect_fill ( WC ( D ) , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2-  \
               ( offset ) , br->y2- ( offset ) , gc.fill_clr ) ;
       }
 #else
       dx = ( br->x2-xoffset-w ) - ( br->x1+xoffset ) ;
       dy = ( br->y2-xoffset ) - ( br->y1+xoffset ) +1;
-      kgRestoreImagePart ( D , y->Bimg , ( br->x1+xoffset ) , 
+      kgRestoreImagePart ( D , y->Bimg , ( br->x1+xoffset ) ,  \
           ( br->y1+xoffset ) , xoffset , xoffset , dx , dy ) ;
 #endif
       if ( y->bordr == 1 ) {
-          _dv_draw_bound ( D , ( br->x1+xoffset ) , ( br->y1+xoffset ) , ( br->x2-xoffset-w ) -1 , 
+          _dv_draw_bound ( D , ( br->x1+xoffset ) , ( br->y1+xoffset ) , ( br->x2-xoffset-w ) -1 ,  \
               ( br->y2-xoffset ) , D->gc.high_clr ) ;
       }
       jj = iy;
@@ -19224,15 +19224,15 @@ void transch(int c) {
           }
 #endif
           if ( list != NULL ) {
-              kgImage ( D , y->imgs [ kk+pos ] , ( int ) ( ixp+3.0*D->gc.FontSize ) , 
+              kgImage ( D , y->imgs [ kk+pos ] , ( int ) ( ixp+3.0*D->gc.FontSize ) ,  \
                   ( int ) iyp , ( bxln -4*D->gc.FontSize ) , th , 0.0 , 1.0 ) ;
-              if ( swv == 0 ) kgImage ( D , y->nimg , ( int ) ixp , 
+              if ( swv == 0 ) kgImage ( D , y->nimg , ( int ) ixp ,  \
                   ( int ) iyp , 4*D->gc.FontSize , th , 0.0 , 1.0 ) ;
-              if ( swv == 1 ) kgImage ( D , y->himg , ( int ) ixp , 
+              if ( swv == 1 ) kgImage ( D , y->himg , ( int ) ixp ,  \
                   ( int ) iyp , 4*D->gc.FontSize , th , 0.0 , 1.0 ) ;
           }
 #if 0
-          if ( ( list != NULL ) && ( menu [ kk ]->name != NULL ) ) uiRadioString 
+          if ( ( list != NULL ) && ( menu [ kk ]->name != NULL ) ) uiRadioString  \
               ( D , menu [ kk ]->name , ( int ) ixp , ( int ) iyp , bxln , th , D->gc.Font , D->gc.menu_char , D->gc.FontSize , swv ) ;
               
 #endif
@@ -19264,9 +19264,9 @@ void transch(int c) {
       ixmid = br->MS.ixx+br->MS.ixl/2;
       iy = br->MS.iyy+1;
 //      _uirect_fill(WC(D),(br->MS.ixx-1),(EVGAY-br->MS.iyy),(br->MS.ixu+1),(EVGAY-br->MS.iyu),br->gc.info_fill);
-      _uirect_fill ( WC ( D ) , ( br->MS.ixx ) , ( EVGAY-br->MS.iyy-1 ) , 
+      _uirect_fill ( WC ( D ) , ( br->MS.ixx ) , ( EVGAY-br->MS.iyy-1 ) ,  \
           ( br->MS.ixu ) , ( EVGAY-br->MS.iyu+1 ) , br->gc.msg_fill ) ;
-      _ui_draw_bound ( D , br->MS.ixx , ( EVGAY-br->MS.iyy-1 ) , br->MS.ixu , 
+      _ui_draw_bound ( D , br->MS.ixx , ( EVGAY-br->MS.iyy-1 ) , br->MS.ixu ,  \
           ( EVGAY-br->MS.iyu+1 ) , br->gc.msg_bodr ) ;
       k = 1;
       jj = iy + ( k ) *br->MS.thirty;
@@ -19279,12 +19279,12 @@ void transch(int c) {
           iyp = EVGAY-jj-7;
 //        if(br->MS.menu[kk]== NULL) break;
 //        write_string(br->MS.menu[kk],(int)ixp,(int)iyp,br->gc.info_char);
-          if ( ( br->menu != NULL ) && ( ( kk+pos ) < n ) && 
+          if ( ( br->menu != NULL ) && ( ( kk+pos ) < n ) &&  \
               ( br->menu [ kk+pos ] != NULL ) ) {
-              uiwrite_string ( D , br->menu [ kk+pos ] , ( int ) ixp , 
+              uiwrite_string ( D , br->menu [ kk+pos ] , ( int ) ixp ,  \
                   ( int ) iyp , br->gc.msg_char ) ;
           }
-          else uiwrite_string ( D , " " , ( int ) ixp , 
+          else uiwrite_string ( D , " " , ( int ) ixp ,  \
               ( int ) iyp , br->gc.msg_char ) ;
       }
       uiDefaultGuiFontSize ( D ) ;
@@ -19412,7 +19412,7 @@ void transch(int c) {
       _dvdown_dir ( D , xx , yy , w , 0.2 , 4 ) ;
       uiRest_clip_limits ( WC ( D ) ) ;
   }
-  void _uimove_vert_pointer ( DIALOG *D , int x , int y , int w , int h , int sy , int sh ) 
+  void _uimove_vert_pointer ( DIALOG *D , int x , int y , int w , int h , int sy , int sh )  \
       {
       char tmp;
       int x1 , y1 , x2 , y2;
@@ -19465,7 +19465,7 @@ void transch(int c) {
       sh = fac*br->size+0.5;
       if ( sh < MINV ) sh = MINV;
       fac = 0.0;
-      if ( br->MS.nitems-br->size != 0 ) fac = ( scr_ln-sh ) / 
+      if ( br->MS.nitems-br->size != 0 ) fac = ( scr_ln-sh ) /  \
           ( float ) ( br->MS.nitems-br->size ) ;
       else return;
       br->MS.fac = fac;
@@ -19503,7 +19503,7 @@ void transch(int c) {
       sh = fac*br->size+0.5;
       if ( sh < MINV ) sh = MINV;
       fac = 0.0;
-      if ( br->MS.nitems-br->size != 0 ) fac = ( scr_ln-sh ) / 
+      if ( br->MS.nitems-br->size != 0 ) fac = ( scr_ln-sh ) /  \
           ( float ) ( br->MS.nitems-br->size ) ;
       else return;
       br->MS.fac = fac;
@@ -19517,7 +19517,7 @@ void transch(int c) {
       return;
   }
 //TCBTCB
-  void _dvmove_vert_pointer ( DIALOG *D , int x , int y , int w , int h , int sy , int sh ) 
+  void _dvmove_vert_pointer ( DIALOG *D , int x , int y , int w , int h , int sy , int sh )  \
       {
       char tmp;
       int x1 , y1 , x2 , y2 , w2;
@@ -19542,7 +19542,7 @@ void transch(int c) {
       uiset_clr ( D , tmp ) ;
       uiRest_clip_limits ( WC ( D ) ) ;
   }
-  void _dvmove_hori_pointer ( DIALOG *D , int x , int y , int w , int h , int sy , int sh ) 
+  void _dvmove_hori_pointer ( DIALOG *D , int x , int y , int w , int h , int sy , int sh )  \
       {
       char tmp;
       int x1 , y1 , x2 , y2;
@@ -19588,7 +19588,7 @@ void transch(int c) {
       sh = fac*y->size+0.5;
       if ( sh < MINV ) sh = MINV;
       fac = 0.0;
-      if ( ( y->ny-y->size ) > 0 ) fac = ( scr_ln-sh ) / 
+      if ( ( y->ny-y->size ) > 0 ) fac = ( scr_ln-sh ) /  \
           ( float ) ( y->ny-y->size ) ;
       else return;
       br->MS.fac = fac;
@@ -19670,7 +19670,7 @@ void transch(int c) {
       sh = fac*y->size+0.5;
       if ( sh < MINV ) sh = MINV;
       fac = 0.0;
-      if ( ( y->nitems-y->size ) > 0 ) fac = ( scr_ln-sh ) / 
+      if ( ( y->nitems-y->size ) > 0 ) fac = ( scr_ln-sh ) /  \
           ( float ) ( y->nitems-y->size ) ;
       else return;
       br->MS.fac = fac;
@@ -19710,7 +19710,7 @@ void transch(int c) {
       sh = fac*y->size+0.5;
       if ( sh < MINV ) sh = MINV;
       fac = 0.0;
-      if ( ( y->nitems-y->size ) > 0 ) fac = ( scr_ln-sh ) / 
+      if ( ( y->nitems-y->size ) > 0 ) fac = ( scr_ln-sh ) /  \
           ( float ) ( y->nitems-y->size ) ;
       else return;
       br->MS.fac = fac;
@@ -19750,7 +19750,7 @@ void transch(int c) {
       sh = fac*y->size+0.5;
       if ( sh < MINV ) sh = MINV;
       fac = 0.0;
-      if ( ( y->nitems-y->size ) > 0 ) fac = ( scr_ln-sh ) / 
+      if ( ( y->nitems-y->size ) > 0 ) fac = ( scr_ln-sh ) /  \
           ( float ) ( y->nitems-y->size ) ;
       else return;
       br->MS.fac = fac;
@@ -19807,14 +19807,14 @@ void transch(int c) {
       br->MS.ixl = ( max*9+15 ) ;
       br->MS.iyu = br->MS.iyy +br->MS.iyl;
       br->MS.ixu = br->MS.ixx+br->MS.ixl-1;
-      kg_scr_back ( WC ( D ) , br->MS.ixx-8 , br->MS.iyy-18 , ( br->MS.ixx+br->MS.ixl+31 ) , 
+      kg_scr_back ( WC ( D ) , br->MS.ixx-8 , br->MS.iyy-18 , ( br->MS.ixx+br->MS.ixl+31 ) ,  \
           ( br->MS.iyy+br->MS.iyl+18 ) ) ;
       uiBkup_clip_limits ( WC ( D ) ) ;
       uiSet_full_scrn ( WC ( D ) ) ;
-      _uirect_fill ( WC ( D ) , br->MS.ixx-8 , EVGAY-br->MS.iyy+18 , ( br->MS.ixx+br->MS.ixl+31 ) , EVGAY- 
+      _uirect_fill ( WC ( D ) , br->MS.ixx-8 , EVGAY-br->MS.iyy+18 , ( br->MS.ixx+br->MS.ixl+31 ) , EVGAY-  \
           ( br->MS.iyy+br->MS.iyl+18 ) , gc.fill_clr ) ;
 //   _uiborder3d(D, br->MS.ixx-8,br->MS.iyy-18,(br->MS.ixx+br->MS.ixl+31),(br->MS.iyy+br->MS.iyl+18));
-      _uibordertype4 ( D , br->MS.ixx-8 , br->MS.iyy-18 , ( br->MS.ixx+br->MS.ixl+31 ) , 
+      _uibordertype4 ( D , br->MS.ixx-8 , br->MS.iyy-18 , ( br->MS.ixx+br->MS.ixl+31 ) ,  \
           ( br->MS.iyy+br->MS.iyl+18 ) ) ;
       uiRest_clip_limits ( WC ( D ) ) ;
       pos = 1;
@@ -20035,13 +20035,13 @@ void transch(int c) {
           uiBkup_clip_limits ( WC ( D ) ) ;
           uiSet_full_scrn ( WC ( D ) ) ;
 //    offset=scroll*4;
-          _uirect_fill ( WC ( D ) , br->x1+ ( offset+2 ) , D->evgay-br->y1- ( offset+2 ) , br->x2- 
+          _uirect_fill ( WC ( D ) , br->x1+ ( offset+2 ) , D->evgay-br->y1- ( offset+2 ) , br->x2-  \
               ( offset+2 ) , D->evgay-br->y2+ ( offset+2 ) , gc.txt_fill ) ;
 #if 0
-          _uibordertype0 ( D , br->x1+ ( offset+2 ) , D->evgay-br->y1- ( offset+2 ) , br->x2- 
+          _uibordertype0 ( D , br->x1+ ( offset+2 ) , D->evgay-br->y1- ( offset+2 ) , br->x2-  \
               ( ( offset+2 ) -1 ) , D->evgay-br->y2+ ( ( offset+2 ) -1 ) , gc.vbright ) ;
 #else
-          _uibordertype1 ( D , br->x1+ ( offset+2 ) , D->evgay-br->y1- ( offset+2 ) , br->x2- 
+          _uibordertype1 ( D , br->x1+ ( offset+2 ) , D->evgay-br->y1- ( offset+2 ) , br->x2-  \
               ( ( offset+2 ) -1 ) , D->evgay-br->y2+ ( ( offset+2 ) -1 ) ) ;
 #endif
           uiRest_clip_limits ( WC ( D ) ) ;
@@ -20080,9 +20080,9 @@ void transch(int c) {
       uiSet_full_scrn ( WC ( D ) ) ;
       if ( y->hide != 1 ) {
 //   _dvrect_fill(WC(D), br->x1+offset,br->y1+offset,br->x2-offset,br->y2-offset,gc.fill_clr);
-          if ( y->Bimg == NULL ) y->Bimg = kgGetBackground 
+          if ( y->Bimg == NULL ) y->Bimg = kgGetBackground  \
               ( D , br->x1 , br->y1 , br->x2 , br->y2 ) ;
-          else kgRestoreImage ( D , y->Bimg , br->x1 , br->y1 , 
+          else kgRestoreImage ( D , y->Bimg , br->x1 , br->y1 ,  \
               ( br->x2-br->x1+1 ) , ( br->y2-br->y1+1 ) ) ;
 //   if((D->DrawBkgr!=0)&&(y->bkgr==1)) {
           if ( ( D->DrawBkgr != 0 ) ) {
@@ -20109,7 +20109,7 @@ void transch(int c) {
       }
       else{
 //    _dvrect_fill(WC(D), br->x1,br->y1,br->x2,br->y2,gc.fill_clr);
-          if ( y->Bimg != NULL ) kgRestoreImage ( D , y->Bimg , br->x1 , br->y1 , 
+          if ( y->Bimg != NULL ) kgRestoreImage ( D , y->Bimg , br->x1 , br->y1 ,  \
               ( br->x2-br->x1+1 ) , ( br->y2-br->y1+1 ) ) ;
           uiRest_clip_limits ( WC ( D ) ) ;
       }
@@ -20126,24 +20126,24 @@ void transch(int c) {
       gc = D->gc;
       if ( y->hide != 1 ) {
 //   _dvrect_fill(WC(D), br->x1+(offset),br->y1+(offset),br->x2-(offset), br->y2-(offset),gc.fill_clr);
-          if ( y->Bimg == NULL ) y->Bimg = kgGetBackground 
+          if ( y->Bimg == NULL ) y->Bimg = kgGetBackground  \
               ( D , br->x1 , br->y1 , br->x2 , br->y2 ) ;
-          else kgRestoreImage ( D , y->Bimg , br->x1 , br->y1 , 
+          else kgRestoreImage ( D , y->Bimg , br->x1 , br->y1 ,  \
               ( br->x2-br->x1+1 ) , ( br->y2-br->y1+1 ) ) ;
 //   if((D->DrawBkgr!=0)&&(y->bkgr==1)) {
           if ( ( D->DrawBkgr != 0 ) ) {
               uiBkup_clip_limits ( WC ( D ) ) ;
               uiSet_full_scrn ( WC ( D ) ) ;
               if ( ( y->bkgr == 1 ) ) {
-                  _dvrect_fill ( WC ( D ) , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2- 
+                  _dvrect_fill ( WC ( D ) , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2-  \
                       ( offset ) , br->y2- ( offset ) , gc.txt_fill ) ;
               }
               else {
-                  _dvrect_fill ( WC ( D ) , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2- 
+                  _dvrect_fill ( WC ( D ) , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2-  \
                       ( offset ) , br->y2- ( offset ) , gc.fill_clr ) ;
               }
               if ( y->bordr == 1 ) {
-                  _dvbordertype0 ( D , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2- 
+                  _dvbordertype0 ( D , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2-  \
                       ( offset ) , br->y2- ( offset ) , gc.vbright ) ;
               }
               uiRest_clip_limits ( WC ( D ) ) ;
@@ -20159,7 +20159,7 @@ void transch(int c) {
 //  else _dvrect_fill(WC(D), br->x1,br->y1,br->x2,br->y2,gc.fill_clr);
 //  uiUpdateOn(br->D);
       else {
-          if ( y->Bimg != NULL ) kgRestoreImage ( D , y->Bimg , br->x1 , br->y1 , 
+          if ( y->Bimg != NULL ) kgRestoreImage ( D , y->Bimg , br->x1 , br->y1 ,  \
               ( br->x2-br->x1+1 ) , ( br->y2-br->y1+1 ) ) ;
       }
       return;
@@ -20176,22 +20176,22 @@ void transch(int c) {
       uiSet_full_scrn ( WC ( D ) ) ;
       if ( y->hide != 1 ) {
 //   _dvrect_fill(WC(D), br->x1+(offset),br->y1+(offset),br->x2-(offset), br->y2-(offset),gc.fill_clr);
-          if ( y->Bimg == NULL ) y->Bimg = kgGetBackground 
+          if ( y->Bimg == NULL ) y->Bimg = kgGetBackground  \
               ( D , br->x1 , br->y1 , br->x2 , br->y2 ) ;
-          if ( y->Bimg != NULL ) kgRestoreImage ( D , y->Bimg , br->x1 , br->y1 , 
+          if ( y->Bimg != NULL ) kgRestoreImage ( D , y->Bimg , br->x1 , br->y1 ,  \
               ( br->x2-br->x1+1 ) , ( br->y2-br->y1+1 ) ) ;
 //   if((D->DrawBkgr!=0)&&(y->bkgr==1)) {
           if ( ( D->DrawBkgr != 0 ) ) {
               if ( y->bkgr == 1 ) {
-                  _dvrect_fill ( WC ( D ) , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2- 
+                  _dvrect_fill ( WC ( D ) , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2-  \
                       ( offset ) , br->y2- ( offset ) , gc.txt_fill ) ;
               }
               else {
-                  _dvrect_fill ( WC ( D ) , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2- 
+                  _dvrect_fill ( WC ( D ) , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2-  \
                       ( offset ) , br->y2- ( offset ) , gc.fill_clr ) ;
               }
               if ( y->bordr == 1 ) {
-                  _dvbordertype0 ( D , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2- 
+                  _dvbordertype0 ( D , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2-  \
                       ( offset ) , br->y2- ( offset ) , gc.vbright ) ;
               }
           }
@@ -20205,7 +20205,7 @@ void transch(int c) {
       }
       else {
 //    _dvrect_fill(WC(D), br->x1,br->y1,br->x2,br->y2,gc.fill_clr);
-          if ( y->Bimg != NULL ) kgRestoreImage ( D , y->Bimg , br->x1 , br->y1 , 
+          if ( y->Bimg != NULL ) kgRestoreImage ( D , y->Bimg , br->x1 , br->y1 ,  \
               ( br->x2-br->x1+1 ) , ( br->y2-br->y1+1 ) ) ;
       }
       uiRest_clip_limits ( WC ( D ) ) ;
@@ -20226,15 +20226,15 @@ void transch(int c) {
       uiSet_full_scrn ( WC ( D ) ) ;
       if ( y->hide != 1 ) {
 //   _dvrect_fill(WC(D), br->x1+(offset),br->y1+(offset),br->x2-(offset), br->y2-(offset),gc.fill_clr);
-          if ( y->Bimg == NULL ) y->Bimg = kgGetBackground 
+          if ( y->Bimg == NULL ) y->Bimg = kgGetBackground  \
               ( D , br->x1 , br->y1 , br->x2 , br->y2 ) ;
-          if ( y->Bimg != NULL ) kgRestoreImage ( D , y->Bimg , br->x1 , br->y1 , 
+          if ( y->Bimg != NULL ) kgRestoreImage ( D , y->Bimg , br->x1 , br->y1 ,  \
               ( br->x2-br->x1+1 ) , ( br->y2-br->y1+1 ) ) ;
           if ( ( D->DrawBkgr != 0 ) && ( y->bkgr == 1 ) ) {
 #if 0
-              _dvrect_fill ( WC ( D ) , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2- 
+              _dvrect_fill ( WC ( D ) , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2-  \
                   ( offset ) , br->y2- ( offset ) , gc.twin_fill ) ;
-              _dvbordertype0 ( D , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2- 
+              _dvbordertype0 ( D , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2-  \
                   ( offset ) , br->y2- ( offset ) , gc.twin_bodr ) ;
 //    _dvbordertype4(D, br->x1+(offset),br->y1+(offset),br->x2-(offset), br->y2-(offset));
 #else
@@ -20254,7 +20254,7 @@ void transch(int c) {
       }
       else{
 //    _dvrect_fill(WC(D), br->x1,br->y1,br->x2,br->y2,gc.fill_clr);
-          if ( y->Bimg != NULL ) kgRestoreImage ( D , y->Bimg , br->x1 , br->y1 , 
+          if ( y->Bimg != NULL ) kgRestoreImage ( D , y->Bimg , br->x1 , br->y1 ,  \
               ( br->x2-br->x1+1 ) , ( br->y2-br->y1+1 ) ) ;
       }
       uiRest_clip_limits ( WC ( D ) ) ;
@@ -20277,7 +20277,7 @@ void transch(int c) {
 #ifndef D_RESTORE
           _dvrect_fill ( WC ( D ) , x1+1 , y1+1 , x2-1 , y2-1 , gc.fill_clr ) ;
 #else
-          if ( y->Bimg != NULL ) kgRestoreImagePart ( D , y->Bimg , x1+1 , y1+1 , 1 , 1 , 
+          if ( y->Bimg != NULL ) kgRestoreImagePart ( D , y->Bimg , x1+1 , y1+1 , 1 , 1 ,  \
               ( x2-x1-1 ) , ( y2-y1-1 ) ) ;
 #endif
           _ui_vert_scroll_vbar ( y ) ;
@@ -20285,7 +20285,7 @@ void transch(int c) {
       }
       else {
 //   _dvrect_fill(WC(D), x1,y1,x2,y2,gc.fill_clr);
-          if ( y->Bimg != NULL ) kgRestoreImage ( D , y->Bimg , x1 , y1 , 
+          if ( y->Bimg != NULL ) kgRestoreImage ( D , y->Bimg , x1 , y1 ,  \
               ( x2-x1+1 ) , ( y2-y1+1 ) ) ;
       }
       uiRest_clip_limits ( WC ( D ) ) ;
@@ -20308,7 +20308,7 @@ void transch(int c) {
 #ifndef D_RESTORE
           _dvrect_fill ( WC ( D ) , x1+1 , y1+1 , x2-1 , y2-1 , gc.fill_clr ) ;
 #else
-          if ( y->Bimg != NULL ) kgRestoreImagePart ( D , y->Bimg , x1+1 , y1+1 , 1 , 1 , 
+          if ( y->Bimg != NULL ) kgRestoreImagePart ( D , y->Bimg , x1+1 , y1+1 , 1 , 1 ,  \
               ( x2-x1-1 ) , ( y2-y1-1 ) ) ;
 #endif
           _ui_vert_scroll_vbar ( y ) ;
@@ -20317,7 +20317,7 @@ void transch(int c) {
       }
       else{
 //    _dvrect_fill(WC(D), x1,y1,x2,y2,gc.fill_clr);
-          if ( y->Bimg != NULL ) kgRestoreImage ( D , y->Bimg , x1 , y1 , 
+          if ( y->Bimg != NULL ) kgRestoreImage ( D , y->Bimg , x1 , y1 ,  \
               ( x2-x1+1 ) , ( y2-y1+1 ) ) ;
       }
       uiRest_clip_limits ( WC ( D ) ) ;
@@ -20337,14 +20337,14 @@ void transch(int c) {
 //  if(offset<y->offset) offset=y->offset;
       if ( y->hide != 1 ) {
 //   _dvrect_fill(WC(D), br->x1+(offset),br->y1+(offset),br->x2-(offset), br->y2-(offset),gc.fill_clr);
-          if ( y->Bimg == NULL ) y->Bimg = kgGetBackground 
+          if ( y->Bimg == NULL ) y->Bimg = kgGetBackground  \
               ( D , br->x1 , br->y1 , br->x2 , br->y2 ) ;
-          else kgRestoreImage ( D , y->Bimg , br->x1 , br->y1 , 
+          else kgRestoreImage ( D , y->Bimg , br->x1 , br->y1 ,  \
               ( br->x2-br->x1+1 ) , ( br->y2-br->y1+1 ) ) ;
           if ( ( D->DrawBkgr != 0 ) && ( y->bkgr == 1 ) ) {
-              _dvrect_fill ( WC ( D ) , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2- 
+              _dvrect_fill ( WC ( D ) , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2-  \
                   ( offset ) , br->y2- ( offset ) , gc.txt_fill ) ;
-              _dvbordertype0 ( D , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2- 
+              _dvbordertype0 ( D , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2-  \
                   ( offset ) , br->y2- ( offset ) , gc.vbright ) ;
           }
           if ( y->nitems != 0 ) {
@@ -20357,7 +20357,7 @@ void transch(int c) {
       }
       else {
 //   _dvrect_fill(WC(D), br->x1,br->y1,br->x2,br->y2,gc.fill_clr);
-          if ( y->Bimg != NULL ) kgRestoreImage ( D , y->Bimg , br->x1 , br->y1 , 
+          if ( y->Bimg != NULL ) kgRestoreImage ( D , y->Bimg , br->x1 , br->y1 ,  \
               ( br->x2-br->x1+1 ) , ( br->y2-br->y1+1 ) ) ;
       }
       uiRest_clip_limits ( WC ( D ) ) ;
@@ -20376,27 +20376,27 @@ void transch(int c) {
       uiBkup_clip_limits ( WC ( D ) ) ;
       uiSet_full_scrn ( WC ( D ) ) ;
 #if 0
-      _dvrect_fill ( WC ( D ) , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2- 
+      _dvrect_fill ( WC ( D ) , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2-  \
           ( offset ) , br->y2- ( offset ) , gc.fill_clr ) ;
       if ( ( D->DrawBkgr != 0 ) && ( y->bkgr == 1 ) ) {
-          _dvrect_fill ( WC ( D ) , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2- 
+          _dvrect_fill ( WC ( D ) , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2-  \
               ( offset ) , br->y2- ( offset ) , gc.txt_fill ) ;
-          _dvbordertype0 ( D , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2- 
+          _dvbordertype0 ( D , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2-  \
               ( offset ) , br->y2- ( offset ) , gc.vbright ) ;
       }
 #else
-      _dvrect_fill ( WC ( D ) , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2- 
+      _dvrect_fill ( WC ( D ) , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2-  \
           ( offset ) , br->y2- ( offset ) , gc.fill_clr ) ;
       if ( ( D->DrawBkgr != 0 ) && ( y->bkgr == 1 ) ) {
 #if 0
-          _dvrect_fill ( WC ( D ) , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2- 
+          _dvrect_fill ( WC ( D ) , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2-  \
               ( offset ) , br->y2- ( offset ) , br->MS.color1 ) ;
-          _dvbordertype0 ( D , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2- 
+          _dvbordertype0 ( D , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2-  \
               ( offset ) , br->y2- ( offset ) , br->MS.color2 ) ;
 #else
-          _dvrect_fill ( WC ( D ) , ( br->x1+offset ) , ( br->y1+offset ) , 
+          _dvrect_fill ( WC ( D ) , ( br->x1+offset ) , ( br->y1+offset ) ,  \
               ( br->x2-offset ) , ( br->y2-offset ) , br->MS.color2 ) ;
-          _dvrect_fill ( WC ( D ) , ( br->x1+offset ) +3 , ( br->y1+offset ) +3 , 
+          _dvrect_fill ( WC ( D ) , ( br->x1+offset ) +3 , ( br->y1+offset ) +3 ,  \
               ( br->x2-offset ) -3 , ( br->y2-offset ) -3 , br->MS.color1 ) ;
 #endif
       }
@@ -20422,9 +20422,9 @@ void transch(int c) {
       gc = D->gc;
       uiBkup_clip_limits ( WC ( D ) ) ;
       uiSet_full_scrn ( WC ( D ) ) ;
-      _dvrect_fill ( WC ( D ) , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2- 
+      _dvrect_fill ( WC ( D ) , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2-  \
           ( offset ) , br->y2- ( offset ) , gc.txt_fill ) ;
-      _dvbordertype0 ( D , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2- 
+      _dvbordertype0 ( D , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2-  \
           ( offset ) , br->y2- ( offset ) , gc.vbright ) ;
       if ( y->nitems != 0 ) {
           if ( br->scroll ) {
@@ -20511,9 +20511,9 @@ void transch(int c) {
           
 #else
       if ( ( D->DrawBkgr != 0 ) && ( w->bkgr == 1 ) ) {
-          _dvrect_fill ( WC ( D ) , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2- 
+          _dvrect_fill ( WC ( D ) , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2-  \
               ( offset ) , br->y2- ( offset ) , br->MS.color1 ) ;
-          _dvbordertype0 ( D , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2- 
+          _dvbordertype0 ( D , br->x1+ ( offset ) , br->y1+ ( offset ) , br->x2-  \
               ( offset ) , br->y2- ( offset ) , br->MS.color2 ) ;
       }
 #endif
@@ -20536,7 +20536,7 @@ void transch(int c) {
 //  uiUpdateOn(br->D);
       return;
   }
-  void uiwrt_msg ( DIALOG *Dtmp , int ix , int iy , int max1 , char *ch1 , int fill_clr , int char_clr ) 
+  void uiwrt_msg ( DIALOG *Dtmp , int ix , int iy , int max1 , char *ch1 , int fill_clr , int char_clr )  \
       {
       int l , in = 0 , j , x1 , y1 , x2 , y2 , i , menu_x , menu_y;
       int nx , ny;
@@ -20584,7 +20584,7 @@ void transch(int c) {
       int EVGAX , EVGAY;
       EVGAX = D->evgax;
       EVGAY = D->evgay;
-      uig_scroll_up ( D , ( int ) Twin->xl , EVGAY- ( int ) Twin->yl , 
+      uig_scroll_up ( D , ( int ) Twin->xl , EVGAY- ( int ) Twin->yl ,  \
           ( int ) Twin->xu , EVGAY- ( int ) Twin->yu , Twin->w ) ;
 #else
       int yy1 , yy2 , jmp;
@@ -20592,7 +20592,7 @@ void transch(int c) {
       yy2 = ( int ) Twin->yu;
       jmp = Twin->w;
       if ( yy1+jmp > yy2 ) return;
-      uiscr_scroll_back ( D , ( int ) Twin->xl , yy1+jmp , 
+      uiscr_scroll_back ( D , ( int ) Twin->xl , yy1+jmp ,  \
           ( int ) Twin->xu , yy2 , jmp ) ;
 #endif
       return;
@@ -20605,7 +20605,7 @@ void transch(int c) {
       if ( Twin == NULL ) return;
       EVGAX = D->evgax;
       EVGAY = D->evgay;
-      uig_scroll_up ( D , ( int ) Twin->xl , EVGAY- ( int ) Twin->yl , 
+      uig_scroll_up ( D , ( int ) Twin->xl , EVGAY- ( int ) Twin->yl ,  \
           ( int ) Twin->xu , EVGAY- ( int ) Twin->yu , 22 ) ;
       return;
   }
@@ -20627,13 +20627,13 @@ void transch(int c) {
       i = 0;
       do {
           j = 0;
-          while ( ( ( * ( s+i ) >= ' ' ) || ( * ( s+i ) == '\t' ) ) && 
+          while ( ( ( * ( s+i ) >= ' ' ) || ( * ( s+i ) == '\t' ) ) &&  \
               ( j < n ) ) {buf [ j ] = * ( s+i ) ; i++; j++; }
           buf [ j ] = '\0';
           if ( yp > yu ) { yp-= 22; uiscroll_up_twin ( D , Twin ) ; };
           uiwrt_msg ( D , xp+3 , yp , n , buf , D->gc.twin_fill , D->gc.twin_char ) ;
           if ( * ( s+i ) != '\r' ) yp += 22;
-          if ( ( * ( s+i ) < ' ' ) && ( * ( s+i ) != '\0' ) && 
+          if ( ( * ( s+i ) < ' ' ) && ( * ( s+i ) != '\0' ) &&  \
               ( * ( s+i ) != '\n' ) ) i++;
       } while ( ( * ( s+i ) != '\0' ) && ( * ( s+i ) != '\n' ) ) ;
       Twin->yp = yp;
@@ -20664,13 +20664,13 @@ void transch(int c) {
   /*x2 = ((x2/8)+2)*8;*/
       y2 = ( 22*lines+iy+5 ) ;
       kg_scr_back ( WC ( D ) , ( int ) ix-3 , ( int ) ( iy-3 ) , x2+3 , y2+3 ) ;
-      _uirect_fill ( WC ( D ) , ( int ) ix , ( int ) EVGAY-iy , 
+      _uirect_fill ( WC ( D ) , ( int ) ix , ( int ) EVGAY-iy ,  \
           ( int ) x2 , ( int ) EVGAY-y2 , D->gc.twin_fill ) ;
-      _ui_draw_bound ( D , ( int ) ix-1 , ( int ) EVGAY-iy+1 , 
+      _ui_draw_bound ( D , ( int ) ix-1 , ( int ) EVGAY-iy+1 ,  \
           ( int ) x2+1 , ( int ) EVGAY-y2-1 , D->gc.twin_bodr ) ;
-      _ui_draw_bound ( D , ( int ) ix-2 , ( int ) EVGAY-iy+2 , 
+      _ui_draw_bound ( D , ( int ) ix-2 , ( int ) EVGAY-iy+2 ,  \
           ( int ) x2+2 , ( int ) EVGAY-y2-2 , D->gc.twin_bodr ) ;
-      _ui_draw_bound ( D , ( int ) ix-3 , ( int ) EVGAY-iy+3 , 
+      _ui_draw_bound ( D , ( int ) ix-3 , ( int ) EVGAY-iy+3 ,  \
           ( int ) x2+3 , ( int ) EVGAY-y2-3 , D->gc.twin_bodr ) ;
       Twin = ( TWIN * ) Malloc ( sizeof ( TWIN ) ) ;
       Twin->xl = ix; Twin->yl = iy; Twin->xu = x2;
@@ -20681,7 +20681,7 @@ void transch(int c) {
       Dappend ( ( Dlink * ) WC ( D )->TLIST , Twin ) ;
       uiUpdateOn ( D ) ;
   }
-  void ui_txtwinnew ( DIALOG *D , int ix , int iy , int chrs , int lines , int xbdr , int ybdr ) 
+  void ui_txtwinnew ( DIALOG *D , int ix , int iy , int chrs , int lines , int xbdr , int ybdr )  \
       {
       int x2 , y , y2;
       int pointer;
@@ -20700,13 +20700,13 @@ void transch(int c) {
       kg_scr_back ( WC ( D ) , ( int ) ix-dx , ( int ) ( iy-dy ) , x2+dx , y2+dy ) ;
       ix -= xbdr;
       iy -= ybdr;
-      _uirect_fill ( WC ( D ) , ( int ) ix , ( int ) EVGAY-iy , 
+      _uirect_fill ( WC ( D ) , ( int ) ix , ( int ) EVGAY-iy ,  \
           ( int ) x2 , ( int ) EVGAY-y2 , D->gc.twin_fill ) ;
-      _ui_draw_bound ( D , ( int ) ix-1 , ( int ) EVGAY-iy+1 , 
+      _ui_draw_bound ( D , ( int ) ix-1 , ( int ) EVGAY-iy+1 ,  \
           ( int ) x2+1 , ( int ) EVGAY-y2-1 , D->gc.twin_bodr ) ;
-      _ui_draw_bound ( D , ( int ) ix-2 , ( int ) EVGAY-iy+2 , 
+      _ui_draw_bound ( D , ( int ) ix-2 , ( int ) EVGAY-iy+2 ,  \
           ( int ) x2+2 , ( int ) EVGAY-y2-2 , D->gc.twin_bodr ) ;
-      _ui_draw_bound ( D , ( int ) ix-3 , ( int ) EVGAY-iy+3 , 
+      _ui_draw_bound ( D , ( int ) ix-3 , ( int ) EVGAY-iy+3 ,  \
           ( int ) x2+3 , ( int ) EVGAY-y2-3 , D->gc.twin_bodr ) ;
       Twin = ( TWIN * ) Malloc ( sizeof ( TWIN ) ) ;
       Twin->xl = ix; Twin->yl = iy; Twin->xu = x2;
@@ -20735,13 +20735,13 @@ void transch(int c) {
       i = 0;
       do {
           j = 0;
-          while ( ( ( * ( s+i ) >= ' ' ) || ( * ( s+i ) == '\t' ) ) && 
+          while ( ( ( * ( s+i ) >= ' ' ) || ( * ( s+i ) == '\t' ) ) &&  \
               ( j < n ) ) {buf [ j ] = * ( s+i ) ; i++; j++; }
           buf [ j ] = '\0';
           if ( yp > yu ) { yp-= 22; uiscroll_up_twin ( D , Twin ) ; };
           uiwrt_msg ( D , xp+3 , yp , n , buf , D->gc.twin_fill , D->gc.twin_char ) ;
           if ( * ( s+i ) != '\r' ) yp += 22;
-          if ( ( * ( s+i ) < ' ' ) && ( * ( s+i ) != '\0' ) && 
+          if ( ( * ( s+i ) < ' ' ) && ( * ( s+i ) != '\0' ) &&  \
               ( * ( s+i ) != '\n' ) ) i++;
       } while ( ( * ( s+i ) != '\0' ) && ( * ( s+i ) != '\n' ) ) ;
       Twin->yp = yp;
@@ -20763,7 +20763,7 @@ void transch(int c) {
           j = 0;
 //TCB made these modifications as on 19th Oct 13
 //    while(( (*(s+i) >=' ')||(*(s+i)=='\t'))&&(j<n)) {buf[j]=*(s+i);i++;j++;}
-          while ( ( ( * ( s+i ) >= ' ' ) || ( * ( s+i ) == '\t' ) ) ) 
+          while ( ( ( * ( s+i ) >= ' ' ) || ( * ( s+i ) == '\t' ) ) )  \
               {buf [ j ] = * ( s+i ) ; i++; j++; }
           buf [ j ] = '\0';
           if ( yp > yu ) { yp-= lw; uiscroll_up_twin ( D , Twin ) ; };
@@ -20771,7 +20771,7 @@ void transch(int c) {
           uiString ( D , buf , xp , yp , ln , lw , D->gc.MsgFont , D->gc.info_char , D->gc.FontSize , -1 , D->gc.info_fill ) ;
               
           if ( * ( s+i ) != '\r' ) yp += lw;
-          if ( ( * ( s+i ) < ' ' ) && ( * ( s+i ) != '\0' ) && 
+          if ( ( * ( s+i ) < ' ' ) && ( * ( s+i ) != '\0' ) &&  \
               ( * ( s+i ) != '\n' ) ) i++;
       } while ( ( * ( s+i ) != '\0' ) && ( * ( s+i ) != '\n' ) ) ;
       Twin->yp = yp;

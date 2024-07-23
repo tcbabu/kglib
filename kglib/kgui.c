@@ -40,17 +40,17 @@
   static int SLASH = 47;
   static char SLASHS [ 2 ] = "/";
 #define FreeImg(x) { \
-  {\
-          if ( ( x ) != NULL ) kgFreeImage ( ( x ) ) ;\
+   {\
+           if ( ( x ) != NULL ) kgFreeImage ( ( x ) ) ;\
            ( x ) = NULL;\
-      }\
-  }
+       }\
+   }
 #define Free(x) {\
-  {\
-          if ( ( x ) != NULL ) free ( ( x ) ) ;\
+   {\
+           if ( ( x ) != NULL ) free ( ( x ) ) ;\
            ( x ) = NULL;\
-      }\
-  }
+       }\
+   }
   static void uiFreemenu ( char **m ) {
       int i;
       if ( m != NULL ) {
@@ -74,7 +74,7 @@
       char *pt , **m , *res = NULL , *cpt;
       char path [ 5000 ] ;
       Dlink *L;
-       if ( pgr [ 0 ] == '/' ) { // full path is given
+      if ( pgr [ 0 ] == '/' ) { // full path is given
           int l;
           char **m , *pt1;
           strcpy ( path , pgr ) ;
@@ -203,7 +203,7 @@
                       break;
                   }
               }
-           } // Files [ 0 ] 
+          } // Files [ 0 ] 
           kgFreeDouble ( ( void ** ) Files ) ;
           if ( res != NULL ) return res;
       }
@@ -228,7 +228,7 @@
       if ( App ) {
 	  /* if an app folder is available only thar folder is checked */
           i = 0;
-          while ( Dirs [ i ] != NULL ) {if ( strstr ( Dirs [ i ] , "app" ) != NULL ) Dadd 
+          while ( Dirs [ i ] != NULL ) {if ( strstr ( Dirs [ i ] , "app" ) != NULL ) Dadd  \
               ( L , Dirs [ i ] ) ;i++;}
       }
       else {
@@ -428,23 +428,22 @@
   int _uiMenu_new ( BRW_STR *br ) {
       int ret;
       DIALOG *D;
-      ret = br-> df;
-      D = br-> D;
+      ret = br->df;
+      D = br->D;
 //   printf("Calling kgMenu\n");
-      ret = kgMenu ( br-> D , br-> x1 , br-> y1 , ret , ret , br-> menu , br-> size ) ;
-          
-      br-> df = ret;
+      ret = kgMenu ( br->D , br->x1 , br->y1 , ret , ret , br->menu , br->size ) ;
+      br->df = ret;
 //   ui_draw_browser((DIW *)br->wid);
-      _uiMake_W ( ( DIW * ) br-> wid ) ;
-      uiUpdateOn ( br-> D ) ;
+      _uiMake_W ( ( DIW * ) br->wid ) ;
+      uiUpdateOn ( br->D ) ;
       return ret;
   }
   void opntwin ( DIALOG *D , int ix , int iy , int chrs , int lines ) {
       ui_txtwin ( D , ( int ) ix , ( int ) iy , ( int ) chrs , ( int ) lines ) ;
   }
-  void Opntwin ( DIALOG *D , int ix , int iy , int chrs , int lines , int xbdr , int ybdr ) 
+  void Opntwin ( DIALOG *D , int ix , int iy , int chrs , int lines , int xbdr , int ybdr )  \
       {
-      ui_txtwinnew ( D , ( int ) ix , ( int ) iy , ( int ) chrs , 
+      ui_txtwinnew ( D , ( int ) ix , ( int ) iy , ( int ) chrs ,  \
           ( int ) lines , xbdr , ybdr ) ;
   }
   void clstwin ( DIALOG *D ) {
@@ -489,7 +488,7 @@
       if ( *pt != '\0' ) wprintf ( D , pt ) ;
       if ( No_w ) { getch ( ) ; clstwin ( D ) ; }
 #else
-      kgSplashMessage ( D , 10 , 10 , strlen ( s ) *8 , 22 , 
+      kgSplashMessage ( D , 10 , 10 , strlen ( s ) *8 , 22 ,  \
           ( char * ) s , 12 , 0 , 15 ) ;
 #endif
   }
@@ -557,7 +556,7 @@
                   cpt++;
               }
               fln [ item ] = size+1;
-              if ( ( *cpt != 'd' ) && ( *cpt != 'f' ) && 
+              if ( ( *cpt != 'd' ) && ( *cpt != 'f' ) &&  \
                   ( *cpt != 's' ) && ( *cpt != 'F' ) ) {
                   normal ( ) ;
                   printf ( "Error in gscanf: /%s/\n" , ( char* ) pt ) ;
@@ -677,229 +676,214 @@
       for ( i = 0;i < n-1;i++ ) {
           for ( j = i+1;j < n;j++ ) {
               if ( strcmp ( m [ i ] , m [ j ] ) > 0 ) {pt = m [ j ] ;
-                  m [ j ] = m [ i ] ;m [ i ] = pt;}
+              m [ j ] = m [ i ] ;m [ i ] = pt;}
           }
       }
   }
   int Up_Tx_Table ( int code , int i , DIA *d ) {
       DIALOG *D;
       int ret = 1;
-      D = ( DIALOG * ) ( d [ i ] .t-> D ) ;
-      if ( d [ i ] .t-> Update != NULL ) ret = d [ i ] .t-> Update 
-          ( code , i , d ) ;
-      else if ( D-> Callback != NULL ) ret = D-> Callback ( D , & ( D-> kb ) ) ;
+      D = ( DIALOG * ) ( d [ i ] .t->D ) ;
+      if ( d [ i ] .t->Update != NULL ) ret = d [ i ] .t->Update ( code , i , d ) ;
+      else if ( D->Callback != NULL ) ret = D->Callback ( D , & ( D->kb ) ) ;
       return ret;
   }
   int Up_Bt_Box ( int code , int i , DIA *d ) {
       DIALOG *D;
       int ret = 1;
-      D = ( DIALOG * ) ( d [ i ] .b-> D ) ;
-      if ( d [ i ] .b-> Update != NULL ) ret = d [ i ] .b-> Update 
-          ( code , i , d ) ;
-      else if ( D-> Callback != NULL ) ret = D-> Callback ( D , & ( D-> kb ) ) ;
+      D = ( DIALOG * ) ( d [ i ] .b->D ) ;
+      if ( d [ i ] .b->Update != NULL ) ret = d [ i ] .b->Update ( code , i , d ) ;
+      else if ( D->Callback != NULL ) ret = D->Callback ( D , & ( D->kb ) ) ;
       return ret;
   }
   int Up_Fsld_Bar ( double code , int i , DIALOG *D ) {
       int ret = 1;
       DIA *d;
-      d = D-> d;
-      if ( d [ i ] .f-> Update != NULL ) ret = d [ i ] .f-> Update 
-          ( code , i , D ) ;
-      else if ( D-> Callback != NULL ) ret = D-> Callback ( D , & ( D-> kb ) ) ;
+      d = D->d;
+      if ( d [ i ] .f->Update != NULL ) ret = d [ i ] .f->Update ( code , i , D ) ;
+      else if ( D->Callback != NULL ) ret = D->Callback ( D , & ( D->kb ) ) ;
       return ret;
   }
   int Up_Isld_Bar ( int code , int i , DIALOG *D ) {
       int ret = 1;
       DIA *d;
-      d = D-> d;
-      if ( d [ i ] .d-> Update != NULL ) ret = d [ i ] .d-> Update 
-          ( code , i , D ) ;
-      else if ( D-> Callback != NULL ) ret = D-> Callback ( D , & ( D-> kb ) ) ;
+      d = D->d;
+      if ( d [ i ] .d->Update != NULL ) ret = d [ i ] .d->Update ( code , i , D ) ;
+      else if ( D->Callback != NULL ) ret = D->Callback ( D , & ( D->kb ) ) ;
       return ret;
   }
   int Up_Hsld_Bar ( int code , int i , DIALOG *D ) {
       int ret = 1;
       DIA *d;
-      d = D-> d;
-      if ( d [ i ] .B-> Update != NULL ) ret = d [ i ] .B-> Update 
-          ( code , i , D ) ;
-      else if ( D-> Callback != NULL ) ret = D-> Callback ( D , & ( D-> kb ) ) ;
+      d = D->d;
+      if ( d [ i ] .B->Update != NULL ) ret = d [ i ] .B->Update ( code , i , D ) ;
+      else if ( D->Callback != NULL ) ret = D->Callback ( D , & ( D->kb ) ) ;
       return ret;
   }
   int Up_D_Tx_Table ( int code , int i , DIALOG *D ) {
       int ret = 1;
       DIA *d;
-      d = D-> d;
-      if ( d [ i ] .t-> Update != NULL ) ret = d [ i ] .t-> Update 
-          ( code , i , D ) ;
-      else if ( D-> Callback != NULL ) ret = D-> Callback ( D , & ( D-> kb ) ) ;
+      d = D->d;
+      if ( d [ i ] .t->Update != NULL ) ret = d [ i ] .t->Update ( code , i , D ) ;
+      else if ( D->Callback != NULL ) ret = D->Callback ( D , & ( D->kb ) ) ;
       return ret;
   }
   int Up_D_Table ( int code , int i , DIALOG *D ) {
       int ret = 1;
       DIA *d;
-      d = D-> d;
-      if ( d [ i ] .t-> Update != NULL ) ret = d [ i ] .t-> Update 
-          ( code , i , D ) ;
-      else if ( D-> Callback != NULL ) ret = D-> Callback ( D , & ( D-> kb ) ) ;
+      d = D->d;
+      if ( d [ i ] .t->Update != NULL ) ret = d [ i ] .t->Update ( code , i , D ) ;
+      else if ( D->Callback != NULL ) ret = D->Callback ( D , & ( D->kb ) ) ;
       return ret;
   }
   int Up_D_Y_Box ( int code , int i , DIALOG *D ) {
       int ret = 1;
       DIA *d;
-      d = D-> d;
-      if ( d [ i ] .y-> Update != NULL ) ret = d [ i ] .y-> Update 
-          ( code , i , D ) ;
-      else if ( D-> Callback != NULL ) ret = D-> Callback ( D , & ( D-> kb ) ) ;
+      d = D->d;
+      if ( d [ i ] .y->Update != NULL ) ret = d [ i ] .y->Update ( code , i , D ) ;
+      else if ( D->Callback != NULL ) ret = D->Callback ( D , & ( D->kb ) ) ;
       return ret;
   }
   int Up_D_Bt_Box ( int code , int i , DIALOG *D ) {
       int ret = 1;
       DIA *d;
-      d = D-> d;
-      if ( d [ i ] .b-> Update != NULL ) ret = d [ i ] .b-> Update 
-          ( code , i , D ) ;
-      else if ( D-> Callback != NULL ) ret = D-> Callback ( D , & ( D-> kb ) ) ;
+      d = D->d;
+      if ( d [ i ] .b->Update != NULL ) ret = d [ i ] .b->Update ( code , i , D ) ;
+      else if ( D->Callback != NULL ) ret = D->Callback ( D , & ( D->kb ) ) ;
       return ret;
   }
   int Up_D_Btn_Box ( int code , int i , DIALOG *D ) {
       int ret = 1;
       DIA *d;
-      d = D-> d;
-      if ( d [ i ] .N-> Update != NULL ) ret = d [ i ] .N-> Update 
-          ( code , i , D ) ;
-      else if ( D-> Callback != NULL ) ret = D-> Callback ( D , & ( D-> kb ) ) ;
+      d = D->d;
+      if ( d [ i ] .N->Update != NULL ) ret = d [ i ] .N->Update ( code , i , D ) ;
+      else if ( D->Callback != NULL ) ret = D->Callback ( D , & ( D->kb ) ) ;
       return ret;
   }
   int Up_D_SplBt_Box ( int code , int i , DIALOG *D ) {
       int ret = 1;
       DIA *d;
-      d = D-> d;
-      if ( d [ i ] .h-> Update != NULL ) ret = d [ i ] .h-> Update 
-          ( code , i , D ) ;
-      else if ( D-> Callback != NULL ) ret = D-> Callback ( D , & ( D-> kb ) ) ;
+      d = D->d;
+      if ( d [ i ] .h->Update != NULL ) ret = d [ i ] .h->Update ( code , i , D ) ;
+      else if ( D->Callback != NULL ) ret = D->Callback ( D , & ( D->kb ) ) ;
       return ret;
   }
   int Up_D_Ht_Box ( int code , int i , DIALOG *D ) {
       int ret = 1;
       DIA *d;
-      d = D-> d;
-      if ( d [ i ] .H-> Update != NULL ) ret = d [ i ] .H-> Update 
-          ( code , i , D ) ;
-      else if ( D-> Callback != NULL ) ret = D-> Callback ( D , & ( D-> kb ) ) ;
+      d = D->d;
+      if ( d [ i ] .H->Update != NULL ) ret = d [ i ] .H->Update ( code , i , D ) ;
+      else if ( D->Callback != NULL ) ret = D->Callback ( D , & ( D->kb ) ) ;
       return ret;
   }
   int Up_D_Brw_Box ( int code , int i , DIALOG *D ) {
       int ret = 1;
       DIA *d;
-      d = D-> d;
-      if ( d [ i ] .w-> Update != NULL ) ret = d [ i ] .w-> Update 
-          ( code , i , D ) ;
-      else if ( D-> Callback != NULL ) ret = D-> Callback ( D , & ( D-> kb ) ) ;
+      d = D->d;
+      if ( d [ i ] .w->Update != NULL ) ret = d [ i ] .w->Update ( code , i , D ) ;
+      else if ( D->Callback != NULL ) ret = D->Callback ( D , & ( D->kb ) ) ;
       return ret;
   }
   int Up_D_Menu_Box ( int code , int i , DIALOG *D ) {
       int ret = 1;
       DIA *d;
-      d = D-> d;
-      if ( d [ i ] .e-> Update != NULL ) ret = d [ i ] .e-> Update 
-          ( code , i , D ) ;
-      else if ( D-> Callback != NULL ) ret = D-> Callback ( D , & ( D-> kb ) ) ;
+      d = D->d;
+      if ( d [ i ] .e->Update != NULL ) ret = d [ i ] .e->Update ( code , i , D ) ;
+      else if ( D->Callback != NULL ) ret = D->Callback ( D , & ( D->kb ) ) ;
       return ret;
   }
   int Up_D_NewMenu_Box ( int code , int i , DIALOG *D ) {
       int ret = 1;
       DIA *d;
-      d = D-> d;
-      if ( d [ i ] .x-> Update != NULL ) ret = d [ i ] .x-> Update 
-          ( code , i , D ) ;
-      else if ( D-> Callback != NULL ) ret = D-> Callback ( D , & ( D-> kb ) ) ;
+      d = D->d;
+      if ( d [ i ] .x->Update != NULL ) ret = d [ i ] .x->Update ( code , i , D ) ;
+      else if ( D->Callback != NULL ) ret = D->Callback ( D , & ( D->kb ) ) ;
       return ret;
   }
   int uiCheckClickinDialog ( DIALOG *D ) {
       int i , ret = 0 , ch;
-      if ( D-> PON_X < D-> xo ) return 0;
-      if ( D-> PON_X > ( D-> xo+D-> xl ) ) return 0;
-      if ( D-> PON_Y < D-> yo ) return 0;
-      if ( D-> PON_Y > ( D-> yo+D-> yl ) ) return 0;
+      if ( D->PON_X < D->xo ) return 0;
+      if ( D->PON_X > ( D->xo+D->xl ) ) return 0;
+      if ( D->PON_Y < D->yo ) return 0;
+      if ( D->PON_Y > ( D->yo+D->yl ) ) return 0;
       return 1;
   }
   int check_pointer_click ( DIALOG *D , int *nr , int x1 , int y1 , DIA *d ) {
 /* modified to add dynamic addition of widgets */
       int i , ret = 0 , ch , n;
-      if ( D-> PON_X < D-> xo ) return -1;
-      if ( D-> PON_X > ( D-> xo+D-> xl ) ) return -1;
-      if ( D-> PON_Y < D-> yo ) return -1;
-      if ( D-> PON_Y > ( D-> yo+D-> yl ) ) return -1;
+      if ( D->PON_X < D->xo ) return -1;
+      if ( D->PON_X > ( D->xo+D->xl ) ) return -1;
+      if ( D->PON_Y < D->yo ) return -1;
+      if ( D->PON_Y > ( D->yo+D->yl ) ) return -1;
       i = 0; while ( d [ i ] .t != NULL ) i++;
       n = i;
       *nr = n;
       for ( i = 0;i < n;i++ ) {
           if ( kgGetWidgetVisibility ( kgGetWidget ( D , i ) ) == 0 ) continue;
-          ch = ( d [ i ] .t-> code ) ;
+          ch = ( d [ i ] .t->code ) ;
           switch ( ch ) {
               case 't':
               case 'T':
-              if ( uiCheckClickPosition ( d [ i ] .t-> x1+x1 , d [ i ] .t-> y1+y1 , d [ i ] .t-> x2+x1 , d [ i ] .t-> y2+y1 , D-> PON_X , D-> PON_Y ) == 1 ) return i%n;
+              if ( uiCheckClickPosition ( d [ i ] .t->x1+x1 , d [ i ] .t->y1+y1 , d [ i ] .t->x2+x1 , d [ i ] .t->y2+y1 , D->PON_X , D->PON_Y ) == 1 ) return i%n;
                   
               break;
               case 'y':
-              if ( uiCheckClickPosition ( d [ i ] .y-> x1+x1 , d [ i ] .y-> y1+y1 , d [ i ] .y-> x2+x1 , d [ i ] .y-> y2+y1 , D-> PON_X , D-> PON_Y ) == 1 ) return i%n;
+              if ( uiCheckClickPosition ( d [ i ] .y->x1+x1 , d [ i ] .y->y1+y1 , d [ i ] .y->x2+x1 , d [ i ] .y->y2+y1 , D->PON_X , D->PON_Y ) == 1 ) return i%n;
                   
               break;
               case 'c':
-              if ( uiCheckClickPosition ( d [ i ] .c-> x1+x1 , d [ i ] .c-> y1+y1 , d [ i ] .c-> x2+x1 , d [ i ] .c-> y2+y1 , D-> PON_X , D-> PON_Y ) == 1 ) return i%n;
+              if ( uiCheckClickPosition ( d [ i ] .c->x1+x1 , d [ i ] .c->y1+y1 , d [ i ] .c->x2+x1 , d [ i ] .c->y2+y1 , D->PON_X , D->PON_Y ) == 1 ) return i%n;
                   
               break;
               case 'r':
-              if ( uiCheckClickPosition ( d [ i ] .r-> x1+x1 , d [ i ] .r-> y1+y1 , d [ i ] .r-> x2+x1 , d [ i ] .r-> y2+y1 , D-> PON_X , D-> PON_Y ) == 1 ) return i%n;
+              if ( uiCheckClickPosition ( d [ i ] .r->x1+x1 , d [ i ] .r->y1+y1 , d [ i ] .r->x2+x1 , d [ i ] .r->y2+y1 , D->PON_X , D->PON_Y ) == 1 ) return i%n;
                   
               break;
               case 'h':
               case 'H':
-              if ( uiCheckClickPosition ( d [ i ] .h-> x1+x1 , d [ i ] .h-> y1+y1 , d [ i ] .h-> x2+x1 , d [ i ] .h-> y2+y1 , D-> PON_X , D-> PON_Y ) == 1 ) return i%n;
+              if ( uiCheckClickPosition ( d [ i ] .h->x1+x1 , d [ i ] .h->y1+y1 , d [ i ] .h->x2+x1 , d [ i ] .h->y2+y1 , D->PON_X , D->PON_Y ) == 1 ) return i%n;
                   
               break;
               case 'b':
               case 'n':
               case 'N':
-              if ( uiCheckClickPosition ( d [ i ] .b-> x1+x1 , d [ i ] .b-> y1+y1 , d [ i ] .b-> x2+x1 , d [ i ] .b-> y2+y1 , D-> PON_X , D-> PON_Y ) == 1 ) return i%n;
+              if ( uiCheckClickPosition ( d [ i ] .b->x1+x1 , d [ i ] .b->y1+y1 , d [ i ] .b->x2+x1 , d [ i ] .b->y2+y1 , D->PON_X , D->PON_Y ) == 1 ) return i%n;
                   
               break;
               case 'f':
-              if ( uiCheckClickPosition ( d [ i ] .f-> x1+x1 , d [ i ] .f-> y1+y1 , d [ i ] .f-> x2+x1 , d [ i ] .f-> y2+y1 , D-> PON_X , D-> PON_Y ) == 1 ) return i%n;
+              if ( uiCheckClickPosition ( d [ i ] .f->x1+x1 , d [ i ] .f->y1+y1 , d [ i ] .f->x2+x1 , d [ i ] .f->y2+y1 , D->PON_X , D->PON_Y ) == 1 ) return i%n;
                   
               break;
               case 'd':
-              if ( uiCheckClickPosition ( d [ i ] .d-> x1+x1 , d [ i ] .d-> y1+y1 , d [ i ] .d-> x2+x1 , d [ i ] .d-> y2+y1 , D-> PON_X , D-> PON_Y ) == 1 ) return i%n;
+              if ( uiCheckClickPosition ( d [ i ] .d->x1+x1 , d [ i ] .d->y1+y1 , d [ i ] .d->x2+x1 , d [ i ] .d->y2+y1 , D->PON_X , D->PON_Y ) == 1 ) return i%n;
                   
               break;
               case 'P':
-              if ( uiCheckClickPosition ( d [ i ] .B-> x1+x1 , d [ i ] .B-> y1+y1 , d [ i ] .B-> x2+x1 , d [ i ] .B-> y2+y1 , D-> PON_X , D-> PON_Y ) == 1 ) return i%n;
+              if ( uiCheckClickPosition ( d [ i ] .B->x1+x1 , d [ i ] .B->y1+y1 , d [ i ] .B->x2+x1 , d [ i ] .B->y2+y1 , D->PON_X , D->PON_Y ) == 1 ) return i%n;
                   
               break;
               case 'w':
-              if ( uiCheckClickPosition ( d [ i ] .w-> x1+x1 , d [ i ] .w-> y1+y1 , d [ i ] .w-> x2+x1 , d [ i ] .w-> y2+y1 , D-> PON_X , D-> PON_Y ) == 1 ) return i%n;
+              if ( uiCheckClickPosition ( d [ i ] .w->x1+x1 , d [ i ] .w->y1+y1 , d [ i ] .w->x2+x1 , d [ i ] .w->y2+y1 , D->PON_X , D->PON_Y ) == 1 ) return i%n;
                   
               break;
               case 'x':
-              if ( uiCheckClickPosition ( d [ i ] .x-> x1+x1 , d [ i ] .x-> y1+y1 , d [ i ] .x-> x2+x1 , d [ i ] .x-> y2+y1 , D-> PON_X , D-> PON_Y ) == 1 ) return i%n;
+              if ( uiCheckClickPosition ( d [ i ] .x->x1+x1 , d [ i ] .x->y1+y1 , d [ i ] .x->x2+x1 , d [ i ] .x->y2+y1 , D->PON_X , D->PON_Y ) == 1 ) return i%n;
                   
               break;
               case 'e':
-              if ( uiCheckClickPosition ( d [ i ] .e-> x1+x1 , d [ i ] .e-> y1+y1 , d [ i ] .e-> x2+x1 , d [ i ] .e-> y2+y1 , D-> PON_X , D-> PON_Y ) == 1 ) return i%n;
+              if ( uiCheckClickPosition ( d [ i ] .e->x1+x1 , d [ i ] .e->y1+y1 , d [ i ] .e->x2+x1 , d [ i ] .e->y2+y1 , D->PON_X , D->PON_Y ) == 1 ) return i%n;
                   
               break;
               case 's':
-              if ( uiCheckClickPosition ( d [ i ] .s-> x1+x1 , d [ i ] .s-> y1+y1 , d [ i ] .s-> x2+x1 , d [ i ] .s-> y2+y1 , D-> PON_X , D-> PON_Y ) == 1 ) return i%n;
+              if ( uiCheckClickPosition ( d [ i ] .s->x1+x1 , d [ i ] .s->y1+y1 , d [ i ] .s->x2+x1 , d [ i ] .s->y2+y1 , D->PON_X , D->PON_Y ) == 1 ) return i%n;
                   
               break;
               case 'v':
-              if ( uiCheckClickPosition ( d [ i ] .v-> x1+x1 , d [ i ] .v-> y1+y1 , d [ i ] .v-> x2+x1 , d [ i ] .v-> y2+y1 , D-> PON_X , D-> PON_Y ) == 1 ) return i%n;
+              if ( uiCheckClickPosition ( d [ i ] .v->x1+x1 , d [ i ] .v->y1+y1 , d [ i ] .v->x2+x1 , d [ i ] .v->y2+y1 , D->PON_X , D->PON_Y ) == 1 ) return i%n;
                   
               break;
               case 'z':
-              if ( uiCheckClickPosition ( d [ i ] .z-> x1+x1 , d [ i ] .z-> y1+y1 , d [ i ] .z-> x2+x1 , d [ i ] .z-> y2+y1 , D-> PON_X , D-> PON_Y ) == 1 ) return i%n;
+              if ( uiCheckClickPosition ( d [ i ] .z->x1+x1 , d [ i ] .z->y1+y1 , d [ i ] .z->x2+x1 , d [ i ] .z->y2+y1 , D->PON_X , D->PON_Y ) == 1 ) return i%n;
                   
               break;
               default:
@@ -912,115 +896,115 @@
       int x1;int y1;DIA *d;
       int ret = 0 , ch;
       int X1 , Y1 , X2 , Y2;
-      if ( ! D-> kbattn ) return 0;
-      x1 = D-> xo;
-      y1 = D-> yo;
-      d = D-> d;
-      ch = ( d [ i ] .t-> code ) ;
+      if ( ! D->kbattn ) return 0;
+      x1 = D->xo;
+      y1 = D->yo;
+      d = D->d;
+      ch = ( d [ i ] .t->code ) ;
       switch ( ch ) {
           case 't':
-          X1 = d [ i ] .t-> x1+x1;
-          Y1 = d [ i ] .t-> y1+y1;
-          X2 = d [ i ] .t-> x2+x1;
-          Y2 = d [ i ] .t-> y2+y1;
+          X1 = d [ i ] .t->x1+x1;
+          Y1 = d [ i ] .t->y1+y1;
+          X2 = d [ i ] .t->x2+x1;
+          Y2 = d [ i ] .t->y2+y1;
           break;
           case 'T':
-          X1 = d [ i ] .t-> x1+x1;
-          Y1 = d [ i ] .t-> y1+y1;
-          X2 = d [ i ] .t-> x2+x1;
-          Y2 = d [ i ] .t-> y2+y1;
+          X1 = d [ i ] .t->x1+x1;
+          Y1 = d [ i ] .t->y1+y1;
+          X2 = d [ i ] .t->x2+x1;
+          Y2 = d [ i ] .t->y2+y1;
           break;
           case 'v':
-          X1 = d [ i ] .v-> x1+x1;
-          Y1 = d [ i ] .v-> y1+y1;
-          X2 = d [ i ] .v-> x2+x1;
-          Y2 = d [ i ] .v-> y2+y1;
+          X1 = d [ i ] .v->x1+x1;
+          Y1 = d [ i ] .v->y1+y1;
+          X2 = d [ i ] .v->x2+x1;
+          Y2 = d [ i ] .v->y2+y1;
           break;
           case 'z':
-          X1 = d [ i ] .z-> x1+x1;
-          Y1 = d [ i ] .z-> y1+y1;
-          X2 = d [ i ] .z-> x2+x1;
-          Y2 = d [ i ] .z-> y2+y1;
+          X1 = d [ i ] .z->x1+x1;
+          Y1 = d [ i ] .z->y1+y1;
+          X2 = d [ i ] .z->x2+x1;
+          Y2 = d [ i ] .z->y2+y1;
           break;
           case 'x':
-          X1 = d [ i ] .x-> x1+x1;
-          Y1 = d [ i ] .x-> y1+y1;
-          X2 = d [ i ] .x-> x2+x1;
-          Y2 = d [ i ] .x-> y2+y1;
+          X1 = d [ i ] .x->x1+x1;
+          Y1 = d [ i ] .x->y1+y1;
+          X2 = d [ i ] .x->x2+x1;
+          Y2 = d [ i ] .x->y2+y1;
           break;
           case 'y':
-          X1 = d [ i ] .y-> x1+x1;
-          Y1 = d [ i ] .x-> y1+y1;
-          X2 = d [ i ] .y-> x2+x1;
-          Y2 = d [ i ] .y-> y2+y1;
+          X1 = d [ i ] .y->x1+x1;
+          Y1 = d [ i ] .x->y1+y1;
+          X2 = d [ i ] .y->x2+x1;
+          Y2 = d [ i ] .y->y2+y1;
           break;
           case 'r':
-          X1 = d [ i ] .r-> x1+x1;
-          Y1 = d [ i ] .r-> y1+y1;
-          X2 = d [ i ] .r-> x2+x1;
-          Y2 = d [ i ] .r-> y2+y1;
+          X1 = d [ i ] .r->x1+x1;
+          Y1 = d [ i ] .r->y1+y1;
+          X2 = d [ i ] .r->x2+x1;
+          Y2 = d [ i ] .r->y2+y1;
           break;
           case 'c':
-          X1 = d [ i ] .c-> x1+x1;
-          Y1 = d [ i ] .c-> y1+y1;
-          X2 = d [ i ] .c-> x2+x1;
-          Y2 = d [ i ] .c-> y2+y1;
+          X1 = d [ i ] .c->x1+x1;
+          Y1 = d [ i ] .c->y1+y1;
+          X2 = d [ i ] .c->x2+x1;
+          Y2 = d [ i ] .c->y2+y1;
           break;
           case 'h':
           case 'H':
-          X1 = d [ i ] .h-> x1+x1;
-          Y1 = d [ i ] .h-> y1+y1;
-          X2 = d [ i ] .h-> x2+x1;
-          Y2 = d [ i ] .h-> y2+y1;
+          X1 = d [ i ] .h->x1+x1;
+          Y1 = d [ i ] .h->y1+y1;
+          X2 = d [ i ] .h->x2+x1;
+          Y2 = d [ i ] .h->y2+y1;
           break;
           case 'b':
           case 'n':
           case 'N':
-          X1 = d [ i ] .b-> x1+x1;
-          Y1 = d [ i ] .b-> y1+y1;
-          X2 = d [ i ] .b-> x2+x1;
-          Y2 = d [ i ] .b-> y2+y1;
+          X1 = d [ i ] .b->x1+x1;
+          Y1 = d [ i ] .b->y1+y1;
+          X2 = d [ i ] .b->x2+x1;
+          Y2 = d [ i ] .b->y2+y1;
           break;
           case 'f':
-          X1 = d [ i ] .f-> x1+x1;
-          Y1 = d [ i ] .f-> y1+y1;
-          X2 = d [ i ] .f-> x2+x1;
-          Y2 = d [ i ] .f-> y2+y1;
+          X1 = d [ i ] .f->x1+x1;
+          Y1 = d [ i ] .f->y1+y1;
+          X2 = d [ i ] .f->x2+x1;
+          Y2 = d [ i ] .f->y2+y1;
           break;
           case 'd':
-          X1 = d [ i ] .d-> x1+x1;
-          Y1 = d [ i ] .d-> y1+y1;
-          X2 = d [ i ] .d-> x2+x1;
-          Y2 = d [ i ] .d-> y2+y1;
+          X1 = d [ i ] .d->x1+x1;
+          Y1 = d [ i ] .d->y1+y1;
+          X2 = d [ i ] .d->x2+x1;
+          Y2 = d [ i ] .d->y2+y1;
           break;
           case 'P':
-          X1 = d [ i ] .B-> x1+x1;
-          Y1 = d [ i ] .B-> y1+y1;
-          X2 = d [ i ] .B-> x2+x1;
-          Y2 = d [ i ] .B-> y2+y1;
+          X1 = d [ i ] .B->x1+x1;
+          Y1 = d [ i ] .B->y1+y1;
+          X2 = d [ i ] .B->x2+x1;
+          Y2 = d [ i ] .B->y2+y1;
           break;
           case 'w':
-          X1 = d [ i ] .w-> x1+x1;
-          Y1 = d [ i ] .w-> y1+y1;
-          X2 = d [ i ] .w-> x2+x1;
-          Y2 = d [ i ] .w-> y2+y1;
+          X1 = d [ i ] .w->x1+x1;
+          Y1 = d [ i ] .w->y1+y1;
+          X2 = d [ i ] .w->x2+x1;
+          Y2 = d [ i ] .w->y2+y1;
           break;
           case 'e':
-          X1 = d [ i ] .e-> x1+x1;
-          Y1 = d [ i ] .e-> y1+y1;
-          X2 = d [ i ] .e-> x2+x1;
-          Y2 = d [ i ] .e-> y2+y1;
+          X1 = d [ i ] .e->x1+x1;
+          Y1 = d [ i ] .e->y1+y1;
+          X2 = d [ i ] .e->x2+x1;
+          Y2 = d [ i ] .e->y2+y1;
           break;
           case 's':
-          X1 = d [ i ] .s-> x1+x1;
-          Y1 = d [ i ] .s-> y1+y1;
-          X2 = d [ i ] .s-> x2+x1;
-          Y2 = d [ i ] .s-> y2+y1;
+          X1 = d [ i ] .s->x1+x1;
+          Y1 = d [ i ] .s->y1+y1;
+          X2 = d [ i ] .s->x2+x1;
+          Y2 = d [ i ] .s->y2+y1;
           break;
           default:
           return -1;
       }
-      switch ( D-> kbattn ) {
+      switch ( D->kbattn ) {
           default:
           _ui_draw_attention ( D , X1 , Y1 , X2 , Y2 ) ;
           break;
@@ -1031,115 +1015,115 @@
       int x1;int y1;DIA *d;
       int ret = 0 , ch;
       int X1 , Y1 , X2 , Y2;
-      if ( ! D-> kbattn ) return 0;
-      x1 = D-> xo;
-      y1 = D-> yo;
-      d = D-> d;
-      ch = ( d [ i ] .t-> code ) ;
+      if ( ! D->kbattn ) return 0;
+      x1 = D->xo;
+      y1 = D->yo;
+      d = D->d;
+      ch = ( d [ i ] .t->code ) ;
       switch ( ch ) {
           case 't':
-          X1 = d [ i ] .t-> x1+x1;
-          Y1 = d [ i ] .t-> y1+y1;
-          X2 = d [ i ] .t-> x2+x1;
-          Y2 = d [ i ] .t-> y2+y1;
+          X1 = d [ i ] .t->x1+x1;
+          Y1 = d [ i ] .t->y1+y1;
+          X2 = d [ i ] .t->x2+x1;
+          Y2 = d [ i ] .t->y2+y1;
           break;
           case 'T':
-          X1 = d [ i ] .t-> x1+x1;
-          Y1 = d [ i ] .t-> y1+y1;
-          X2 = d [ i ] .t-> x2+x1;
-          Y2 = d [ i ] .t-> y2+y1;
+          X1 = d [ i ] .t->x1+x1;
+          Y1 = d [ i ] .t->y1+y1;
+          X2 = d [ i ] .t->x2+x1;
+          Y2 = d [ i ] .t->y2+y1;
           break;
           case 'v':
-          X1 = d [ i ] .v-> x1+x1;
-          Y1 = d [ i ] .v-> y1+y1;
-          X2 = d [ i ] .v-> x2+x1;
-          Y2 = d [ i ] .v-> y2+y1;
+          X1 = d [ i ] .v->x1+x1;
+          Y1 = d [ i ] .v->y1+y1;
+          X2 = d [ i ] .v->x2+x1;
+          Y2 = d [ i ] .v->y2+y1;
           break;
           case 'z':
-          X1 = d [ i ] .z-> x1+x1;
-          Y1 = d [ i ] .z-> y1+y1;
-          X2 = d [ i ] .z-> x2+x1;
-          Y2 = d [ i ] .z-> y2+y1;
+          X1 = d [ i ] .z->x1+x1;
+          Y1 = d [ i ] .z->y1+y1;
+          X2 = d [ i ] .z->x2+x1;
+          Y2 = d [ i ] .z->y2+y1;
           break;
           case 'x':
-          X1 = d [ i ] .x-> x1+x1;
-          Y1 = d [ i ] .x-> y1+y1;
-          X2 = d [ i ] .x-> x2+x1;
-          Y2 = d [ i ] .x-> y2+y1;
+          X1 = d [ i ] .x->x1+x1;
+          Y1 = d [ i ] .x->y1+y1;
+          X2 = d [ i ] .x->x2+x1;
+          Y2 = d [ i ] .x->y2+y1;
           break;
           case 'y':
-          X1 = d [ i ] .y-> x1+x1;
-          Y1 = d [ i ] .y-> y1+y1;
-          X2 = d [ i ] .y-> x2+x1;
-          Y2 = d [ i ] .y-> y2+y1;
+          X1 = d [ i ] .y->x1+x1;
+          Y1 = d [ i ] .y->y1+y1;
+          X2 = d [ i ] .y->x2+x1;
+          Y2 = d [ i ] .y->y2+y1;
           break;
           case 'r':
-          X1 = d [ i ] .r-> x1+x1;
-          Y1 = d [ i ] .r-> y1+y1;
-          X2 = d [ i ] .r-> x2+x1;
-          Y2 = d [ i ] .r-> y2+y1;
+          X1 = d [ i ] .r->x1+x1;
+          Y1 = d [ i ] .r->y1+y1;
+          X2 = d [ i ] .r->x2+x1;
+          Y2 = d [ i ] .r->y2+y1;
           break;
           case 'c':
-          X1 = d [ i ] .c-> x1+x1;
-          Y1 = d [ i ] .c-> y1+y1;
-          X2 = d [ i ] .c-> x2+x1;
-          Y2 = d [ i ] .c-> y2+y1;
+          X1 = d [ i ] .c->x1+x1;
+          Y1 = d [ i ] .c->y1+y1;
+          X2 = d [ i ] .c->x2+x1;
+          Y2 = d [ i ] .c->y2+y1;
           break;
           case 'h':
           case 'H':
-          X1 = d [ i ] .h-> x1+x1;
-          Y1 = d [ i ] .h-> y1+y1;
-          X2 = d [ i ] .h-> x2+x1;
-          Y2 = d [ i ] .h-> y2+y1;
+          X1 = d [ i ] .h->x1+x1;
+          Y1 = d [ i ] .h->y1+y1;
+          X2 = d [ i ] .h->x2+x1;
+          Y2 = d [ i ] .h->y2+y1;
           break;
           case 'b':
           case 'n':
           case 'N':
-          X1 = d [ i ] .b-> x1+x1;
-          Y1 = d [ i ] .b-> y1+y1;
-          X2 = d [ i ] .b-> x2+x1;
-          Y2 = d [ i ] .b-> y2+y1;
+          X1 = d [ i ] .b->x1+x1;
+          Y1 = d [ i ] .b->y1+y1;
+          X2 = d [ i ] .b->x2+x1;
+          Y2 = d [ i ] .b->y2+y1;
           break;
           case 'f':
-          X1 = d [ i ] .f-> x1+x1;
-          Y1 = d [ i ] .f-> y1+y1;
-          X2 = d [ i ] .f-> x2+x1;
-          Y2 = d [ i ] .f-> y2+y1;
+          X1 = d [ i ] .f->x1+x1;
+          Y1 = d [ i ] .f->y1+y1;
+          X2 = d [ i ] .f->x2+x1;
+          Y2 = d [ i ] .f->y2+y1;
           break;
           case 'd':
-          X1 = d [ i ] .d-> x1+x1;
-          Y1 = d [ i ] .d-> y1+y1;
-          X2 = d [ i ] .d-> x2+x1;
-          Y2 = d [ i ] .d-> y2+y1;
+          X1 = d [ i ] .d->x1+x1;
+          Y1 = d [ i ] .d->y1+y1;
+          X2 = d [ i ] .d->x2+x1;
+          Y2 = d [ i ] .d->y2+y1;
           break;
           case 'P':
-          X1 = d [ i ] .B-> x1+x1;
-          Y1 = d [ i ] .B-> y1+y1;
-          X2 = d [ i ] .B-> x2+x1;
-          Y2 = d [ i ] .B-> y2+y1;
+          X1 = d [ i ] .B->x1+x1;
+          Y1 = d [ i ] .B->y1+y1;
+          X2 = d [ i ] .B->x2+x1;
+          Y2 = d [ i ] .B->y2+y1;
           break;
           case 'w':
-          X1 = d [ i ] .w-> x1+x1;
-          Y1 = d [ i ] .w-> y1+y1;
-          X2 = d [ i ] .w-> x2+x1;
-          Y2 = d [ i ] .w-> y2+y1;
+          X1 = d [ i ] .w->x1+x1;
+          Y1 = d [ i ] .w->y1+y1;
+          X2 = d [ i ] .w->x2+x1;
+          Y2 = d [ i ] .w->y2+y1;
           break;
           case 'e':
-          X1 = d [ i ] .e-> x1+x1;
-          Y1 = d [ i ] .e-> y1+y1;
-          X2 = d [ i ] .e-> x2+x1;
-          Y2 = d [ i ] .e-> y2+y1;
+          X1 = d [ i ] .e->x1+x1;
+          Y1 = d [ i ] .e->y1+y1;
+          X2 = d [ i ] .e->x2+x1;
+          Y2 = d [ i ] .e->y2+y1;
           break;
           case 's':
-          X1 = d [ i ] .s-> x1+x1;
-          Y1 = d [ i ] .s-> y1+y1;
-          X2 = d [ i ] .s-> x2+x1;
-          Y2 = d [ i ] .s-> y2+y1;
+          X1 = d [ i ] .s->x1+x1;
+          Y1 = d [ i ] .s->y1+y1;
+          X2 = d [ i ] .s->x2+x1;
+          Y2 = d [ i ] .s->y2+y1;
           break;
           default:
           return -1;
       }
-      switch ( D-> kbattn ) {
+      switch ( D->kbattn ) {
           default:
           _ui_rmv_attention ( D , X1 , Y1 , X2 , Y2 ) ;
           break;
@@ -1150,16 +1134,16 @@
       int n , i , controls = 0 , item , ch , oldi = -1;
       DIA *d;
       DIG *g;
-      d = D-> d;
+      d = D->d;
       i = 0;
       while ( d [ i ] .t != NULL ) {
-          ch = ( d [ i ] .t-> code ) ;
+          ch = ( d [ i ] .t->code ) ;
           if ( ch == 'g' ) {
               g = d [ i ] .g;
-              g-> D = D;
+              g->D = D;
               uiInitGbox ( D , i ) ;
-              if ( g-> initgraph != NULL ) {
-                  g-> initgraph ( i , D ) ;
+              if ( g->initgraph != NULL ) {
+                  g->initgraph ( i , D ) ;
               }
 //       D->df=0;
           }
@@ -1172,14 +1156,14 @@
   int uiDraw_Dialog ( DIALOG *D ) {
       int n , i , controls = 0 , item , ch , oldi = -1;
       DIA *d;
-      d = D-> d;
-      D-> df = 0;
-      if ( D-> DrawBkgr == 1 ) _ui_Draw_Dialog_Area_Transparent ( D ) ;
-      if ( D-> Bkpixmap != NULL ) kgImage ( ( D ) , D-> Bkpixmap , 0 , 0 , D-> xl , D-> yl , D-> transparency , 1.0 ) ;
+      d = D->d;
+      D->df = 0;
+      if ( D->DrawBkgr == 1 ) _ui_Draw_Dialog_Area_Transparent ( D ) ;
+      if ( D->Bkpixmap != NULL ) kgImage ( ( D ) , D->Bkpixmap , 0 , 0 , D->xl , D->yl , D->transparency , 1.0 ) ;
           
       i = 0;
       while ( d [ i ] .t != NULL ) {
-          ch = ( d [ i ] .t-> code ) ;
+          ch = ( d [ i ] .t->code ) ;
           switch ( ( int ) ch ) {
               case 'o': /* progress bar */
               _uiDrawO ( D , i ) ;
@@ -1192,46 +1176,46 @@
 //         _uiDrawInfo(D,i);
               _uiDrawI ( D , i ) ;
               break;
-               case 'x': // new type browser
+              case 'x': // new type browser
               _uiDrawX ( D , i ) ;
               if ( kgGetWidgetVisibility ( kgGetWidget ( D , i ) ) != 0 ) {
                   controls++;
-                  D-> df = i;
+                  D->df = i;
               }
               break;
-               case 'v': // Vert scroll bar
+              case 'v': // Vert scroll bar
               _uiDrawV ( D , i ) ;
               if ( kgGetWidgetVisibility ( kgGetWidget ( D , i ) ) != 0 ) {
                   controls++;
-                  D-> df = i;
+                  D->df = i;
               }
               break;
-               case 'z': // Vert scroll bar
+              case 'z': // Vert scroll bar
               _uiDrawZ ( D , i ) ;
               if ( kgGetWidgetVisibility ( kgGetWidget ( D , i ) ) != 0 ) {
                   controls++;
-                  D-> df = i;
+                  D->df = i;
               }
               break;
-               case 'y': // new type browser
+              case 'y': // new type browser
               _uiDrawY ( D , i ) ;
               if ( kgGetWidgetVisibility ( kgGetWidget ( D , i ) ) != 0 ) {
                   controls++;
-                  D-> df = i;
+                  D->df = i;
               }
               break;
-               case 'r': // new type browser
+              case 'r': // new type browser
               _uiDrawRadioButton ( D , i ) ;
               if ( kgGetWidgetVisibility ( kgGetWidget ( D , i ) ) != 0 ) {
                   controls++;
-                  D-> df = i;
+                  D->df = i;
               }
               break;
-               case 'c': // new type browser
+              case 'c': // new type browser
               _uiDrawCheckBox ( D , i ) ;
               if ( kgGetWidgetVisibility ( kgGetWidget ( D , i ) ) != 0 ) {
                   controls++;
-                  D-> df = i;
+                  D->df = i;
               }
               break;
               case 't':
@@ -1240,37 +1224,37 @@
 #endif
               if ( kgGetWidgetVisibility ( kgGetWidget ( D , i ) ) != 0 ) {
                   controls++;
-                  D-> df = i;
-                  if ( D-> InputWid < 0 ) D-> InputWid = i;
+                  D->df = i;
+                  if ( D->InputWid < 0 ) D->InputWid = i;
               }
               break;
               case 'T':
               _uiDrawTableBox ( D , i ) ;
               if ( kgGetWidgetVisibility ( kgGetWidget ( D , i ) ) != 0 ) {
                   controls++;
-                  D-> df = i;
-                  if ( D-> InputWid < 0 ) D-> InputWid = i;
+                  D->df = i;
+                  if ( D->InputWid < 0 ) D->InputWid = i;
               }
               break;
               case 'h':
               _uiDrawN ( D , i ) ;
               if ( kgGetWidgetVisibility ( kgGetWidget ( D , i ) ) != 0 ) {
                   controls++;
-                  D-> df = i;
+                  D->df = i;
               }
               break;
               case 'H':
               _uiDrawHoriButtons ( D , i ) ;
               if ( kgGetWidgetVisibility ( kgGetWidget ( D , i ) ) != 0 ) {
                   controls++;
-                  D-> df = i;
+                  D->df = i;
               }
               break;
               case 'n':
               _uiDrawN ( D , i ) ;
               if ( kgGetWidgetVisibility ( kgGetWidget ( D , i ) ) != 0 ) {
                   controls++;
-                  D-> df = i;
+                  D->df = i;
               }
               break;
               case 'b':
@@ -1278,49 +1262,49 @@
               _uiDrawB ( D , i ) ;
               if ( kgGetWidgetVisibility ( kgGetWidget ( D , i ) ) != 0 ) {
                   controls++;
-                  D-> df = i;
+                  D->df = i;
               }
               break;
               case 'f':
               _uiDrawSlideFloat ( D , i ) ;
               if ( kgGetWidgetVisibility ( kgGetWidget ( D , i ) ) != 0 ) {
                   controls++;
-                  D-> df = i;
+                  D->df = i;
               }
               break;
               case 'P':
               _uiDrawHbar ( D , i ) ;
               if ( kgGetWidgetVisibility ( kgGetWidget ( D , i ) ) != 0 ) {
                   controls++;
-                  D-> df = i;
+                  D->df = i;
               }
               break;
               case 'd':
               _uiDrawSlideInteger ( D , i ) ;
               if ( kgGetWidgetVisibility ( kgGetWidget ( D , i ) ) != 0 ) {
                   controls++;
-                  D-> df = i;
+                  D->df = i;
               }
               break;
               case 'w':
               _uiDrawBrowser ( D , i ) ;
               if ( kgGetWidgetVisibility ( kgGetWidget ( D , i ) ) != 0 ) {
                   controls++;
-                  D-> df = i;
+                  D->df = i;
               }
               break;
               case 'e':
               _uiDrawE ( D , i ) ;
               if ( kgGetWidgetVisibility ( kgGetWidget ( D , i ) ) != 0 ) {
                   controls++;
-                  D-> df = i;
+                  D->df = i;
               }
               break;
               case 's':
               _uiDrawScrollMsgItem ( D , i ) ;
               if ( kgGetWidgetVisibility ( kgGetWidget ( D , i ) ) != 0 ) {
                   controls++;
-                  D-> df = i;
+                  D->df = i;
               }
               break;
               case 'g':
@@ -1337,8 +1321,8 @@
           }
           i++;
       }
-      D-> controls = controls;
-      D-> TotWid = i;
+      D->controls = controls;
+      D->TotWid = i;
       return controls;
   }
   int kgGetWidgetId ( DIALOG *D , void *Widget ) {
@@ -1346,7 +1330,7 @@
       DIA *d;
       DIT *t;
       if ( D == NULL ) return ret;
-      d = D-> d;
+      d = D->d;
       if ( d == NULL ) return ret;
       i = 0;
       while ( d [ i ] .t != NULL ) {
@@ -1360,107 +1344,107 @@
       int n , controls = 0 , item , ch , oldi = -1 , ret = 0 , i , k;
       DIA *d;
       DIT *t;
-      d = D-> d;
+      d = D->d;
       k = kgGetWidgetId ( D , Widget ) ;
       if ( k != -1 ) {
           i = k;
           t = ( DIT * ) Widget;
           ret = 1;
-          ch = ( t-> code ) ;
+          ch = ( t->code ) ;
           switch ( ( int ) ch ) {
               case 'o': /* progress bar */
-              if ( d [ i ] .o-> item == -1 ) _uiDrawO ( D , i ) ;
+              if ( d [ i ] .o->item == -1 ) _uiDrawO ( D , i ) ;
               else _uiMake_O ( Widget ) ;
               break;
               case 'p': /* new for xpm display */
-              if ( d [ i ] .p-> item == -1 ) _uiDrawP ( D , i ) ;
+              if ( d [ i ] .p->item == -1 ) _uiDrawP ( D , i ) ;
               else _uiMake_P ( Widget ) ;
               break;
               case 'i': /* info box */
-              if ( d [ i ] .i-> item == -1 ) _uiDrawI ( D , i ) ;
+              if ( d [ i ] .i->item == -1 ) _uiDrawI ( D , i ) ;
               else _uiMake_I ( Widget ) ;
               break;
-               case 'x': // new type browser
-              if ( d [ i ] .x-> item == -1 ) _uiDrawX ( D , i ) ;
+              case 'x': // new type browser
+              if ( d [ i ] .x->item == -1 ) _uiDrawX ( D , i ) ;
               else _uiMake_X ( Widget ) ;
               break;
-               case 'v': // Vert scroll bar
-              if ( d [ i ] .v-> item == -1 ) _uiDrawV ( D , i ) ;
+              case 'v': // Vert scroll bar
+              if ( d [ i ] .v->item == -1 ) _uiDrawV ( D , i ) ;
               else _uiMake_V ( Widget ) ;
               break;
-               case 'z': // Vert scroll bar
-              if ( d [ i ] .z-> item == -1 ) _uiDrawZ ( D , i ) ;
+              case 'z': // Vert scroll bar
+              if ( d [ i ] .z->item == -1 ) _uiDrawZ ( D , i ) ;
               else _uiMake_Z ( Widget ) ;
               break;
-               case 'y': // new type browser
-              if ( d [ i ] .y-> item == -1 ) _uiDrawY ( D , i ) ;
+              case 'y': // new type browser
+              if ( d [ i ] .y->item == -1 ) _uiDrawY ( D , i ) ;
               else _uiMake_Y ( Widget ) ;
               break;
-               case 'r': // new type browser
-              if ( d [ i ] .r-> item == -1 ) _uiDrawRadioButton ( D , i ) ;
+              case 'r': // new type browser
+              if ( d [ i ] .r->item == -1 ) _uiDrawRadioButton ( D , i ) ;
               else _uiMake_RadioButton ( Widget ) ;
               break;
-               case 'c': // new type browser
-              if ( d [ i ] .c-> item == -1 ) _uiDrawCheckBox ( D , i ) ;
+              case 'c': // new type browser
+              if ( d [ i ] .c->item == -1 ) _uiDrawCheckBox ( D , i ) ;
               else _uiMake_CheckBox ( Widget ) ;
               break;
               case 't':
-              if ( d [ i ] .t-> item == -1 ) _uiDrawTextBox ( D , i ) ;
+              if ( d [ i ] .t->item == -1 ) _uiDrawTextBox ( D , i ) ;
               else _uiMake_Tx ( Widget ) ;
               break;
               case 'T':
-              if ( d [ i ] .t-> item == -1 ) _uiDrawTableBox ( D , i ) ;
+              if ( d [ i ] .t->item == -1 ) _uiDrawTableBox ( D , i ) ;
               else _uiMake_Ta ( Widget ) ;
               break;
               case 'h':
-              if ( d [ i ] .h-> item == -1 ) _uiDrawN ( D , i ) ;
+              if ( d [ i ] .h->item == -1 ) _uiDrawN ( D , i ) ;
               else _uiMake_N ( Widget ) ;
               break;
               case 'H':
-              if ( d [ i ] .H-> item == -1 ) _uiDrawHoriButtons ( D , i ) ;
+              if ( d [ i ] .H->item == -1 ) _uiDrawHoriButtons ( D , i ) ;
               else _uiMake_H ( Widget ) ;
               break;
               case 'n':
-              if ( d [ i ] .N-> item == -1 ) _uiDrawN ( D , i ) ;
+              if ( d [ i ] .N->item == -1 ) _uiDrawN ( D , i ) ;
               else _uiMake_N ( Widget ) ;
               break;
               case 'b':
               case 'N':
-              if ( d [ i ] .b-> item == -1 ) _uiDrawB ( D , i ) ;
+              if ( d [ i ] .b->item == -1 ) _uiDrawB ( D , i ) ;
               else _uiMake_B ( Widget ) ;
               break;
               case 'f':
-              if ( d [ i ] .f-> item == -1 ) _uiDrawSlideFloat ( D , i ) ;
+              if ( d [ i ] .f->item == -1 ) _uiDrawSlideFloat ( D , i ) ;
               else _uiMake_SF ( Widget ) ;
               break;
               case 'P':
-              if ( d [ i ] .B-> item == -1 ) _uiDrawHbar ( D , i ) ;
+              if ( d [ i ] .B->item == -1 ) _uiDrawHbar ( D , i ) ;
               else _uiMake_SH ( Widget ) ;
               break;
               case 'd':
-              if ( d [ i ] .d-> item == -1 ) _uiDrawSlideInteger ( D , i ) ;
+              if ( d [ i ] .d->item == -1 ) _uiDrawSlideInteger ( D , i ) ;
               else _uiMake_SD ( Widget ) ;
               break;
               case 'w':
-              if ( d [ i ] .w-> item == -1 ) _uiDrawBrowser ( D , i ) ;
+              if ( d [ i ] .w->item == -1 ) _uiDrawBrowser ( D , i ) ;
               else _uiMake_W ( Widget ) ;
               break;
               case 'e':
-              if ( d [ i ] .e-> item == -1 ) _uiDrawE ( D , i ) ;
+              if ( d [ i ] .e->item == -1 ) _uiDrawE ( D , i ) ;
               else _uiMake_E ( Widget ) ;
               break;
               case 's':
-              if ( d [ i ] .s-> item == -1 ) _uiDrawScrollMsgItem ( D , i ) ;
+              if ( d [ i ] .s->item == -1 ) _uiDrawScrollMsgItem ( D , i ) ;
               else _uiMake_MS ( Widget ) ;
               break;
               case 'g':
-              if ( d [ i ] .g-> item == -1 ) _uiDrawGraphicsArea ( D , i ) ;
+              if ( d [ i ] .g->item == -1 ) _uiDrawGraphicsArea ( D , i ) ;
               else _uiMake_G ( Widget ) ;
               break;
               case 'm':
               case 'M':
               case 'B':
-              if ( d [ i ] .m-> item == -1 ) _uiDrawMessage ( D , i ) ;
+              if ( d [ i ] .m->item == -1 ) _uiDrawMessage ( D , i ) ;
               else _uiMake_M ( Widget ) ;
               break;
               default:
@@ -1474,192 +1458,192 @@
   int kgRedrawDialog ( DIALOG *D ) {
       int n , i , controls = 0 , item , ch , oldi = -1;
       DIA *d;
-      d = D-> d;
-      D-> df = 0;
-      if ( D-> DrawBkgr == 1 ) _ui_Draw_Dialog_Area_Transparent ( D ) ;
-      if ( D-> Bkpixmap != NULL ) kgImage ( ( D ) , D-> Bkpixmap , 0 , 0 , D-> xl , D-> yl , D-> transparency , 1.0 ) ;
+      d = D->d;
+      D->df = 0;
+      if ( D->DrawBkgr == 1 ) _ui_Draw_Dialog_Area_Transparent ( D ) ;
+      if ( D->Bkpixmap != NULL ) kgImage ( ( D ) , D->Bkpixmap , 0 , 0 , D->xl , D->yl , D->transparency , 1.0 ) ;
           
       i = 0;
       while ( d [ i ] .t != NULL ) {
-          ch = ( d [ i ] .t-> code ) ;
+          ch = ( d [ i ] .t->code ) ;
 //     printf("ch:%c\n",ch);
           switch ( ( int ) ch ) {
               case 'o': /* progress bar */
-              if ( d [ i ] .o-> hide != 1 ) break;
-              item = d [ i ] .o-> item;
-              if ( d [ i ] .o-> item == -1 ) _uiDrawO ( D , i ) ;
+              if ( d [ i ] .o->hide != 1 ) break;
+              item = d [ i ] .o->item;
+              if ( d [ i ] .o->item == -1 ) _uiDrawO ( D , i ) ;
               else _uiMake_O ( kgGetWidget ( D , i ) ) ;
               break;
               case 'p': /* new for xpm display */
-              if ( d [ i ] .p-> hide != 1 ) break;
-              item = d [ i ] .p-> item;
-              if ( d [ i ] .p-> item == -1 ) _uiDrawP ( D , i ) ;
+              if ( d [ i ] .p->hide != 1 ) break;
+              item = d [ i ] .p->item;
+              if ( d [ i ] .p->item == -1 ) _uiDrawP ( D , i ) ;
               else _uiMake_P ( kgGetWidget ( D , i ) ) ;
               break;
               case 'i': /* info box */
-              if ( d [ i ] .i-> hide != 1 ) break;
-              item = d [ i ] .i-> item;
-              if ( d [ i ] .i-> item == -1 ) _uiDrawI ( D , i ) ;
+              if ( d [ i ] .i->hide != 1 ) break;
+              item = d [ i ] .i->item;
+              if ( d [ i ] .i->item == -1 ) _uiDrawI ( D , i ) ;
               else _uiMake_I ( kgGetWidget ( D , i ) ) ;
               break;
-               case 'x': // new type browser
+              case 'x': // new type browser
               controls++;
-              if ( d [ i ] .x-> hide != 1 ) break;
-              item = d [ i ] .x-> item;
-              if ( d [ i ] .x-> item == -1 ) _uiDrawX ( D , i ) ;
+              if ( d [ i ] .x->hide != 1 ) break;
+              item = d [ i ] .x->item;
+              if ( d [ i ] .x->item == -1 ) _uiDrawX ( D , i ) ;
               else _uiMake_X ( kgGetWidget ( D , i ) ) ;
-              D-> df = i;
+              D->df = i;
               break;
-               case 'v': // Vert scroll bar
+              case 'v': // Vert scroll bar
               controls++;
-              if ( d [ i ] .v-> hide != 1 ) break;
-              item = d [ i ] .v-> item;
-              if ( d [ i ] .v-> item == -1 ) _uiDrawV ( D , i ) ;
+              if ( d [ i ] .v->hide != 1 ) break;
+              item = d [ i ] .v->item;
+              if ( d [ i ] .v->item == -1 ) _uiDrawV ( D , i ) ;
               else _uiMake_V ( kgGetWidget ( D , i ) ) ;
-              D-> df = i;
+              D->df = i;
               break;
-               case 'z': // Vert scroll bar
+              case 'z': // Vert scroll bar
               controls++;
-              if ( d [ i ] .z-> hide != 1 ) break;
-              item = d [ i ] .z-> item;
-              if ( d [ i ] .z-> item == -1 ) _uiDrawZ ( D , i ) ;
+              if ( d [ i ] .z->hide != 1 ) break;
+              item = d [ i ] .z->item;
+              if ( d [ i ] .z->item == -1 ) _uiDrawZ ( D , i ) ;
               else _uiMake_Z ( kgGetWidget ( D , i ) ) ;
-              D-> df = i;
+              D->df = i;
               break;
-               case 'y': // new type browser
+              case 'y': // new type browser
               controls++;
-              if ( d [ i ] .y-> hide != 1 ) break;
-              item = d [ i ] .y-> item;
-              if ( d [ i ] .y-> item == -1 ) _uiDrawY ( D , i ) ;
+              if ( d [ i ] .y->hide != 1 ) break;
+              item = d [ i ] .y->item;
+              if ( d [ i ] .y->item == -1 ) _uiDrawY ( D , i ) ;
               else _uiMake_Y ( kgGetWidget ( D , i ) ) ;
-              D-> df = i;
+              D->df = i;
               break;
-               case 'r': // new type browser
+              case 'r': // new type browser
               controls++;
-              if ( d [ i ] .r-> hide != 1 ) break;
-              item = d [ i ] .r-> item;
-              if ( d [ i ] .r-> item == -1 ) _uiDrawRadioButton ( D , i ) ;
+              if ( d [ i ] .r->hide != 1 ) break;
+              item = d [ i ] .r->item;
+              if ( d [ i ] .r->item == -1 ) _uiDrawRadioButton ( D , i ) ;
               else _uiMake_RadioButton ( kgGetWidget ( D , i ) ) ;
-              D-> df = i;
+              D->df = i;
               break;
-               case 'c': // new type browser
+              case 'c': // new type browser
               controls++;
-              if ( d [ i ] .c-> hide != 1 ) break;
-              item = d [ i ] .c-> item;
-              if ( d [ i ] .c-> item == -1 ) _uiDrawCheckBox ( D , i ) ;
+              if ( d [ i ] .c->hide != 1 ) break;
+              item = d [ i ] .c->item;
+              if ( d [ i ] .c->item == -1 ) _uiDrawCheckBox ( D , i ) ;
               else _uiMake_CheckBox ( kgGetWidget ( D , i ) ) ;
-              D-> df = i;
+              D->df = i;
               break;
               case 't':
               controls++;
-              if ( d [ i ] .t-> hide != 1 ) break;
-              item = d [ i ] .t-> item;
-              if ( d [ i ] .t-> item == -1 ) _uiDrawTextBox ( D , i ) ;
+              if ( d [ i ] .t->hide != 1 ) break;
+              item = d [ i ] .t->item;
+              if ( d [ i ] .t->item == -1 ) _uiDrawTextBox ( D , i ) ;
               else _uiMake_Tx ( kgGetWidget ( D , i ) ) ;
-              D-> df = i;
+              D->df = i;
               break;
               case 'T':
               controls++;
-              if ( d [ i ] .t-> hide != 1 ) break;
-              item = d [ i ] .t-> item;
-              if ( d [ i ] .t-> item == -1 ) _uiDrawTableBox ( D , i ) ;
+              if ( d [ i ] .t->hide != 1 ) break;
+              item = d [ i ] .t->item;
+              if ( d [ i ] .t->item == -1 ) _uiDrawTableBox ( D , i ) ;
               else _uiMake_Ta ( kgGetWidget ( D , i ) ) ;
-              D-> df = i;
+              D->df = i;
               break;
               case 'h':
               controls++;
-              if ( d [ i ] .h-> hide != 1 ) break;
-              item = d [ i ] .h-> item;
-              if ( d [ i ] .h-> item == -1 ) _uiDrawN ( D , i ) ;
+              if ( d [ i ] .h->hide != 1 ) break;
+              item = d [ i ] .h->item;
+              if ( d [ i ] .h->item == -1 ) _uiDrawN ( D , i ) ;
               else _uiMake_N ( kgGetWidget ( D , i ) ) ;
-              D-> df = i;
+              D->df = i;
               break;
               case 'H':
               controls++;
-              D-> df = i;
-              if ( d [ i ] .H-> hide != 1 ) break;
-              item = d [ i ] .H-> item;
-              if ( d [ i ] .H-> item == -1 ) _uiDrawHoriButtons ( D , i ) ;
+              D->df = i;
+              if ( d [ i ] .H->hide != 1 ) break;
+              item = d [ i ] .H->item;
+              if ( d [ i ] .H->item == -1 ) _uiDrawHoriButtons ( D , i ) ;
               else _uiMake_H ( kgGetWidget ( D , i ) ) ;
-              D-> df = i;
+              D->df = i;
               break;
               case 'n':
               controls++;
-              if ( d [ i ] .N-> hide != 1 ) break;
-              item = d [ i ] .N-> item;
-              if ( d [ i ] .N-> item == -1 ) _uiDrawN ( D , i ) ;
+              if ( d [ i ] .N->hide != 1 ) break;
+              item = d [ i ] .N->item;
+              if ( d [ i ] .N->item == -1 ) _uiDrawN ( D , i ) ;
               else _uiMake_N ( kgGetWidget ( D , i ) ) ;
-              D-> df = i;
+              D->df = i;
               break;
               case 'b':
               case 'N':
               controls++;
-              if ( d [ i ] .b-> hide != 1 ) break;
-              item = d [ i ] .b-> item;
-              if ( d [ i ] .b-> item == -1 ) _uiDrawB ( D , i ) ;
+              if ( d [ i ] .b->hide != 1 ) break;
+              item = d [ i ] .b->item;
+              if ( d [ i ] .b->item == -1 ) _uiDrawB ( D , i ) ;
               else _uiMake_B ( kgGetWidget ( D , i ) ) ;
-              D-> df = i;
+              D->df = i;
               break;
               case 'f':
               controls++;
-              if ( d [ i ] .f-> hide != 1 ) break;
-              item = d [ i ] .f-> item;
-              if ( d [ i ] .f-> item == -1 ) _uiDrawSlideFloat ( D , i ) ;
+              if ( d [ i ] .f->hide != 1 ) break;
+              item = d [ i ] .f->item;
+              if ( d [ i ] .f->item == -1 ) _uiDrawSlideFloat ( D , i ) ;
               else _uiMake_SF ( kgGetWidget ( D , i ) ) ;
-              D-> df = i;
+              D->df = i;
               break;
               case 'P':
               controls++;
-              if ( d [ i ] .B-> hide != 1 ) break;
-              item = d [ i ] .B-> item;
-              if ( d [ i ] .B-> item == -1 ) _uiDrawHbar ( D , i ) ;
+              if ( d [ i ] .B->hide != 1 ) break;
+              item = d [ i ] .B->item;
+              if ( d [ i ] .B->item == -1 ) _uiDrawHbar ( D , i ) ;
               else _uiMake_SH ( kgGetWidget ( D , i ) ) ;
-              D-> df = i;
+              D->df = i;
               break;
               case 'd':
               controls++;
-              if ( d [ i ] .d-> hide != 1 ) break;
-              item = d [ i ] .d-> item;
-              if ( d [ i ] .d-> item == -1 ) _uiDrawSlideInteger ( D , i ) ;
+              if ( d [ i ] .d->hide != 1 ) break;
+              item = d [ i ] .d->item;
+              if ( d [ i ] .d->item == -1 ) _uiDrawSlideInteger ( D , i ) ;
               else _uiMake_SD ( kgGetWidget ( D , i ) ) ;
-              D-> df = i;
+              D->df = i;
               break;
               case 'w':
               controls++;
-              if ( d [ i ] .w-> hide != 1 ) break;
-              item = d [ i ] .w-> item;
-              if ( d [ i ] .w-> item == -1 ) _uiDrawBrowser ( D , i ) ;
+              if ( d [ i ] .w->hide != 1 ) break;
+              item = d [ i ] .w->item;
+              if ( d [ i ] .w->item == -1 ) _uiDrawBrowser ( D , i ) ;
               else _uiMake_W ( kgGetWidget ( D , i ) ) ;
-              D-> df = i;
+              D->df = i;
               break;
               case 'e':
               controls++;
-              if ( d [ i ] .e-> hide != 1 ) break;
-              item = d [ i ] .e-> item;
-              if ( d [ i ] .e-> item == -1 ) _uiDrawE ( D , i ) ;
+              if ( d [ i ] .e->hide != 1 ) break;
+              item = d [ i ] .e->item;
+              if ( d [ i ] .e->item == -1 ) _uiDrawE ( D , i ) ;
               else _uiMake_E ( kgGetWidget ( D , i ) ) ;
-              D-> df = i;
+              D->df = i;
               break;
               case 's':
               controls++;
-              if ( d [ i ] .s-> hide != 1 ) break;
-              item = d [ i ] .s-> item;
-              if ( d [ i ] .s-> item == -1 ) _uiDrawScrollMsgItem ( D , i ) ;
+              if ( d [ i ] .s->hide != 1 ) break;
+              item = d [ i ] .s->item;
+              if ( d [ i ] .s->item == -1 ) _uiDrawScrollMsgItem ( D , i ) ;
               else _uiMake_MS ( kgGetWidget ( D , i ) ) ;
-              D-> df = i;
+              D->df = i;
               break;
               case 'g':
-              if ( d [ i ] .g-> hide != 1 ) break;
-              item = d [ i ] .g-> item;
-              if ( d [ i ] .g-> item == -1 ) _uiDrawGraphicsArea ( D , i ) ;
+              if ( d [ i ] .g->hide != 1 ) break;
+              item = d [ i ] .g->item;
+              if ( d [ i ] .g->item == -1 ) _uiDrawGraphicsArea ( D , i ) ;
               else _uiMake_G ( kgGetWidget ( D , i ) ) ;
               break;
               case 'm':
               case 'M':
               case 'B':
-              if ( d [ i ] .m-> hide != 1 ) break;
-              item = d [ i ] .m-> item;
-              if ( d [ i ] .m-> item == -1 ) _uiDrawMessage ( D , i ) ;
+              if ( d [ i ] .m->hide != 1 ) break;
+              item = d [ i ] .m->item;
+              if ( d [ i ] .m->item == -1 ) _uiDrawMessage ( D , i ) ;
               else _uiMake_M ( kgGetWidget ( D , i ) ) ;
               break;
               default:
@@ -1672,184 +1656,184 @@
       controls = 0;
       i = 0;
       while ( d [ i ] .t != NULL ) {
-          ch = ( d [ i ] .t-> code ) ;
+          ch = ( d [ i ] .t->code ) ;
 //     printf("ch:%c\n",ch);
           switch ( ( int ) ch ) {
               case 'o': /* progress bar */
-              if ( d [ i ] .o-> hide == 1 ) break;
-              item = d [ i ] .o-> item;
-              if ( d [ i ] .o-> item == -1 ) _uiDrawO ( D , i ) ;
+              if ( d [ i ] .o->hide == 1 ) break;
+              item = d [ i ] .o->item;
+              if ( d [ i ] .o->item == -1 ) _uiDrawO ( D , i ) ;
               else _uiMake_O ( kgGetWidget ( D , i ) ) ;
               break;
               case 'p': /* new for xpm display */
-              if ( d [ i ] .p-> hide == 1 ) break;
-              item = d [ i ] .p-> item;
-              if ( d [ i ] .p-> item == -1 ) _uiDrawP ( D , i ) ;
+              if ( d [ i ] .p->hide == 1 ) break;
+              item = d [ i ] .p->item;
+              if ( d [ i ] .p->item == -1 ) _uiDrawP ( D , i ) ;
               else _uiMake_P ( kgGetWidget ( D , i ) ) ;
               break;
               case 'i': /* info box */
-              if ( d [ i ] .i-> hide == 1 ) break;
-              item = d [ i ] .i-> item;
-              if ( d [ i ] .i-> item == -1 ) _uiDrawI ( D , i ) ;
+              if ( d [ i ] .i->hide == 1 ) break;
+              item = d [ i ] .i->item;
+              if ( d [ i ] .i->item == -1 ) _uiDrawI ( D , i ) ;
               else _uiMake_I ( kgGetWidget ( D , i ) ) ;
               break;
-               case 'x': // new type browser
+              case 'x': // new type browser
               controls++;
-              if ( d [ i ] .x-> hide == 1 ) break;
-              item = d [ i ] .x-> item;
-              if ( d [ i ] .x-> item == -1 ) _uiDrawX ( D , i ) ;
+              if ( d [ i ] .x->hide == 1 ) break;
+              item = d [ i ] .x->item;
+              if ( d [ i ] .x->item == -1 ) _uiDrawX ( D , i ) ;
               else _uiMake_X ( kgGetWidget ( D , i ) ) ;
-              D-> df = i;
+              D->df = i;
               break;
-               case 'v': // Vert scroll bar
+              case 'v': // Vert scroll bar
               controls++;
-              if ( d [ i ] .v-> hide == 1 ) break;
-              item = d [ i ] .v-> item;
-              if ( d [ i ] .v-> item == -1 ) _uiDrawV ( D , i ) ;
+              if ( d [ i ] .v->hide == 1 ) break;
+              item = d [ i ] .v->item;
+              if ( d [ i ] .v->item == -1 ) _uiDrawV ( D , i ) ;
               else _uiMake_V ( kgGetWidget ( D , i ) ) ;
-              D-> df = i;
+              D->df = i;
               break;
-               case 'z': // Vert scroll bar
+              case 'z': // Vert scroll bar
               controls++;
-              if ( d [ i ] .z-> hide == 1 ) break;
-              item = d [ i ] .z-> item;
-              if ( d [ i ] .z-> item == -1 ) _uiDrawZ ( D , i ) ;
+              if ( d [ i ] .z->hide == 1 ) break;
+              item = d [ i ] .z->item;
+              if ( d [ i ] .z->item == -1 ) _uiDrawZ ( D , i ) ;
               else _uiMake_Z ( kgGetWidget ( D , i ) ) ;
-              D-> df = i;
+              D->df = i;
               break;
-               case 'y': // new type browser
+              case 'y': // new type browser
               controls++;
-              if ( d [ i ] .y-> hide == 1 ) break;
-              item = d [ i ] .y-> item;
-              if ( d [ i ] .y-> item == -1 ) _uiDrawY ( D , i ) ;
+              if ( d [ i ] .y->hide == 1 ) break;
+              item = d [ i ] .y->item;
+              if ( d [ i ] .y->item == -1 ) _uiDrawY ( D , i ) ;
               else _uiMake_Y ( kgGetWidget ( D , i ) ) ;
-              D-> df = i;
+              D->df = i;
               break;
-               case 'r': // new type browser
+              case 'r': // new type browser
               controls++;
-              if ( d [ i ] .r-> hide == 1 ) break;
-              item = d [ i ] .r-> item;
-              if ( d [ i ] .r-> item == -1 ) _uiDrawRadioButton ( D , i ) ;
+              if ( d [ i ] .r->hide == 1 ) break;
+              item = d [ i ] .r->item;
+              if ( d [ i ] .r->item == -1 ) _uiDrawRadioButton ( D , i ) ;
               else _uiMake_RadioButton ( kgGetWidget ( D , i ) ) ;
-              D-> df = i;
+              D->df = i;
               break;
-               case 'c': // new type browser
+              case 'c': // new type browser
               controls++;
-              if ( d [ i ] .c-> hide == 1 ) break;
-              item = d [ i ] .c-> item;
-              if ( d [ i ] .c-> item == -1 ) _uiDrawCheckBox ( D , i ) ;
+              if ( d [ i ] .c->hide == 1 ) break;
+              item = d [ i ] .c->item;
+              if ( d [ i ] .c->item == -1 ) _uiDrawCheckBox ( D , i ) ;
               else _uiMake_CheckBox ( kgGetWidget ( D , i ) ) ;
-              D-> df = i;
+              D->df = i;
               break;
               case 't':
               controls++;
-              if ( d [ i ] .t-> hide == 1 ) break;
-              item = d [ i ] .t-> item;
-              if ( d [ i ] .t-> item == -1 ) _uiDrawTextBox ( D , i ) ;
+              if ( d [ i ] .t->hide == 1 ) break;
+              item = d [ i ] .t->item;
+              if ( d [ i ] .t->item == -1 ) _uiDrawTextBox ( D , i ) ;
               else _uiMake_Tx ( kgGetWidget ( D , i ) ) ;
-              D-> df = i;
+              D->df = i;
               break;
               case 'T':
               controls++;
-              if ( d [ i ] .t-> hide == 1 ) break;
-              item = d [ i ] .t-> item;
-              if ( d [ i ] .t-> item == -1 ) _uiDrawTableBox ( D , i ) ;
+              if ( d [ i ] .t->hide == 1 ) break;
+              item = d [ i ] .t->item;
+              if ( d [ i ] .t->item == -1 ) _uiDrawTableBox ( D , i ) ;
               else _uiMake_Ta ( kgGetWidget ( D , i ) ) ;
-              D-> df = i;
+              D->df = i;
               break;
               case 'h':
               controls++;
-              if ( d [ i ] .h-> hide == 1 ) break;
-              item = d [ i ] .h-> item ;
-              if ( d [ i ] .h-> item == -1 ) _uiDrawN ( D , i ) ;
+              if ( d [ i ] .h->hide == 1 ) break;
+              item = d [ i ] .h->item ;
+              if ( d [ i ] .h->item == -1 ) _uiDrawN ( D , i ) ;
               else _uiMake_N ( kgGetWidget ( D , i ) ) ;
-              D-> df = i;
+              D->df = i;
               break;
               case 'H':
               controls++;
-              if ( d [ i ] .H-> hide == 1 ) break;
-              item = d [ i ] .H-> item;
-              if ( d [ i ] .H-> item == -1 ) _uiDrawHoriButtons ( D , i ) ;
+              if ( d [ i ] .H->hide == 1 ) break;
+              item = d [ i ] .H->item;
+              if ( d [ i ] .H->item == -1 ) _uiDrawHoriButtons ( D , i ) ;
               else _uiMake_H ( kgGetWidget ( D , i ) ) ;
-              D-> df = i;
+              D->df = i;
               break;
               case 'n':
               controls++;
-              if ( d [ i ] .N-> hide == 1 ) break;
-              item = d [ i ] .N-> item;
-              if ( d [ i ] .N-> item == -1 ) _uiDrawN ( D , i ) ;
+              if ( d [ i ] .N->hide == 1 ) break;
+              item = d [ i ] .N->item;
+              if ( d [ i ] .N->item == -1 ) _uiDrawN ( D , i ) ;
               else _uiMake_N ( kgGetWidget ( D , i ) ) ;
-              D-> df = i;
+              D->df = i;
               break;
               case 'b':
               case 'N':
               controls++;
-              if ( d [ i ] .b-> hide == 1 ) break;
-              item = d [ i ] .b-> item;
-              if ( d [ i ] .b-> item == -1 ) _uiDrawB ( D , i ) ;
+              if ( d [ i ] .b->hide == 1 ) break;
+              item = d [ i ] .b->item;
+              if ( d [ i ] .b->item == -1 ) _uiDrawB ( D , i ) ;
               else _uiMake_B ( kgGetWidget ( D , i ) ) ;
-              D-> df = i;
+              D->df = i;
               break;
               case 'f':
               controls++;
-              if ( d [ i ] .f-> hide == 1 ) break;
-              item = d [ i ] .f-> item;
-              if ( d [ i ] .f-> item == -1 ) _uiDrawSlideFloat ( D , i ) ;
+              if ( d [ i ] .f->hide == 1 ) break;
+              item = d [ i ] .f->item;
+              if ( d [ i ] .f->item == -1 ) _uiDrawSlideFloat ( D , i ) ;
               else _uiMake_SF ( kgGetWidget ( D , i ) ) ;
-              D-> df = i;
+              D->df = i;
               break;
               case 'P':
               controls++;
-              if ( d [ i ] .B-> hide == 1 ) break;
-              item = d [ i ] .B-> item;
-              if ( d [ i ] .B-> item == -1 ) _uiDrawHbar ( D , i ) ;
+              if ( d [ i ] .B->hide == 1 ) break;
+              item = d [ i ] .B->item;
+              if ( d [ i ] .B->item == -1 ) _uiDrawHbar ( D , i ) ;
               else _uiMake_SH ( kgGetWidget ( D , i ) ) ;
-              D-> df = i;
+              D->df = i;
               break;
               case 'd':
               controls++;
-              if ( d [ i ] .d-> hide == 1 ) break;
-              item = d [ i ] .d-> item;
-              if ( d [ i ] .d-> item == -1 ) _uiDrawSlideInteger ( D , i ) ;
+              if ( d [ i ] .d->hide == 1 ) break;
+              item = d [ i ] .d->item;
+              if ( d [ i ] .d->item == -1 ) _uiDrawSlideInteger ( D , i ) ;
               else _uiMake_SD ( kgGetWidget ( D , i ) ) ;
-              D-> df = i;
+              D->df = i;
               break;
               case 'w':
               controls++;
-              if ( d [ i ] .w-> hide == 1 ) break;
-              item = d [ i ] .w-> item;
-              if ( d [ i ] .w-> item == -1 ) _uiDrawBrowser ( D , i ) ;
+              if ( d [ i ] .w->hide == 1 ) break;
+              item = d [ i ] .w->item;
+              if ( d [ i ] .w->item == -1 ) _uiDrawBrowser ( D , i ) ;
               else _uiMake_W ( kgGetWidget ( D , i ) ) ;
-              D-> df = i;
+              D->df = i;
               break;
               case 'e':
               controls++;
-              if ( d [ i ] .e-> hide == 1 ) break;
-              item = d [ i ] .e-> item;
-              if ( d [ i ] .e-> item == -1 ) _uiDrawE ( D , i ) ;
+              if ( d [ i ] .e->hide == 1 ) break;
+              item = d [ i ] .e->item;
+              if ( d [ i ] .e->item == -1 ) _uiDrawE ( D , i ) ;
               else _uiMake_E ( kgGetWidget ( D , i ) ) ;
-              D-> df = i;
+              D->df = i;
               break;
               case 's':
               controls++;
-              if ( d [ i ] .s-> hide == 1 ) break;
-              item = d [ i ] .s-> item;
-              if ( d [ i ] .s-> item == -1 ) _uiDrawScrollMsgItem ( D , i ) ;
+              if ( d [ i ] .s->hide == 1 ) break;
+              item = d [ i ] .s->item;
+              if ( d [ i ] .s->item == -1 ) _uiDrawScrollMsgItem ( D , i ) ;
               else _uiMake_MS ( kgGetWidget ( D , i ) ) ;
-              D-> df = i;
+              D->df = i;
               break;
               case 'g':
-              if ( d [ i ] .g-> hide == 1 ) break;
-              item = d [ i ] .g-> item;
-              if ( d [ i ] .g-> item == -1 ) _uiDrawGraphicsArea ( D , i ) ;
+              if ( d [ i ] .g->hide == 1 ) break;
+              item = d [ i ] .g->item;
+              if ( d [ i ] .g->item == -1 ) _uiDrawGraphicsArea ( D , i ) ;
               else _uiMake_G ( kgGetWidget ( D , i ) ) ;
               break;
               case 'm':
               case 'M':
               case 'B':
-              if ( d [ i ] .m-> hide == 1 ) break;
-              item = d [ i ] .m-> item;
-              if ( d [ i ] .m-> item == -1 ) _uiDrawMessage ( D , i ) ;
+              if ( d [ i ] .m->hide == 1 ) break;
+              item = d [ i ] .m->item;
+              if ( d [ i ] .m->item == -1 ) _uiDrawMessage ( D , i ) ;
               else _uiMake_M ( kgGetWidget ( D , i ) ) ;
               break;
               default:
@@ -1860,8 +1844,8 @@
       }
 #endif
       kgUpdateOn ( D ) ;
-      D-> controls = controls;
-      D-> TotWid = i;
+      D->controls = controls;
+      D->TotWid = i;
       return controls;
   }
   void uiFreeMemAlloc ( DIALOG *D ) {
@@ -1869,36 +1853,36 @@
       int i , ch;
       DIA *d;
       BUTS *buts;
-      d = D-> d;
+      d = D->d;
       i = 0;
       while ( d [ i ] .t != NULL ) {
-          ch = ( d [ i ] .t-> code ) ;
+          ch = ( d [ i ] .t->code ) ;
 //     printf("ch:%c\n",ch);
           switch ( ( int ) ch ) {
               case 'v':
-              FreeImg ( ( ( DIV * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIV * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'z':
-              FreeImg ( ( ( DIZ * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIZ * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'o': /* progress bar */
-              FreeImg ( ( ( DIO * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIO * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'p': /* new for xpm display */
               {
                   DIP *p;
                   p = d [ i ] .p;
-                  kgFreeImage ( p-> Bimg ) ;
-                  p-> Bimg = NULL;
+                  kgFreeImage ( p->Bimg ) ;
+                  p->Bimg = NULL;
               }
               break;
               case 'i': /* info box */
               {
                   DII *I;
                   I = d [ i ] .i;
-                  Free ( I-> twin ) ;
+                  Free ( I->twin ) ;
               }
-              FreeImg ( ( ( DII * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DII * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 't':
               {
@@ -1906,19 +1890,19 @@
                   t = d [ i ] .t;
 //         free(((TX_STR *)(t->tstr))->tit);
 //         free(((TX_STR *)(t->tstr))->ln);
-                  Free ( t-> tstr ) ;
+                  Free ( t->tstr ) ;
               }
-              FreeImg ( ( ( DIT * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIT * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'T':
               {
                   DIT *T;
                   T = d [ i ] .t;
 //          free(((TX_STR *)(T->tstr))->ln);
-                  Free ( T-> tstr ) ;
-                  T-> tstr = NULL;
+                  Free ( T->tstr ) ;
+                  T->tstr = NULL;
               }
-              FreeImg ( ( ( DIT * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIT * ) ( d [ i ] .t ) )->Bimg ) ;
          // need addition once Table is implemented
               break;
               case 'h':
@@ -1927,9 +1911,9 @@
                   BUT_STR *butn;
                   int n , k;
                   b = d [ i ] .h;
-                  butn = ( BUT_STR * ) b-> buts;
-                  if ( b-> buts != NULL ) {
-                      n = b-> nx*b-> ny;
+                  butn = ( BUT_STR * ) b->buts;
+                  if ( b->buts != NULL ) {
+                      n = b->nx*b->ny;
                       if ( butn [ 0 ] .imgn != NULL ) {
                           for ( k = 0;k < n;k++ ) {
                               kgFreeImage ( butn [ k ] .imgn ) ;
@@ -1945,21 +1929,21 @@
                           }
                       }
 #if 0  // done in kgCleanUi
-                      Free ( b-> buts ) ;
-                      b-> buts = NULL;
+                      Free ( b->buts ) ;
+                      b->buts = NULL;
 #endif
                   }
               }
-              FreeImg ( ( ( DIL * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIL * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'H':
               {
                   DILN *h;
                   h = d [ i ] .H;
-                  Free ( h-> buts ) ;
-                  h-> buts = NULL;
+                  Free ( h->buts ) ;
+                  h->buts = NULL;
               }
-              FreeImg ( ( ( DILN * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DILN * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'n':
               {
@@ -1967,9 +1951,9 @@
                   BUT_STR *butn;
                   int n , k;
                   b = d [ i ] .N;
-                  butn = ( BUT_STR * ) b-> buts;
-                  if ( b-> buts != NULL ) {
-                      n = b-> nx*b-> ny;
+                  butn = ( BUT_STR * ) b->buts;
+                  if ( b->buts != NULL ) {
+                      n = b->nx*b->ny;
                       if ( butn [ 0 ] .imgn != NULL ) {
                           for ( k = 0;k < n;k++ ) {
                               kgFreeImage ( butn [ k ] .imgn ) ;
@@ -1985,131 +1969,131 @@
                           }
                       }
 #if 0  //done kgCleanUi
-                      Free ( b-> buts ) ;
-                      b-> buts = NULL;
+                      Free ( b->buts ) ;
+                      b->buts = NULL;
 #endif
                   }
               }
-              FreeImg ( ( ( DIN * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIN * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'N':
               {
                   DIBN *n;
                   n = d [ i ] .n;
-                  buts = n-> buts;
+                  buts = n->buts;
                   if ( buts != NULL ) {
-                      Free ( buts-> sw ) ;
+                      Free ( buts->sw ) ;
                       Free ( buts ) ;
-                      n-> buts = NULL;
+                      n->buts = NULL;
                   }
               }
-              FreeImg ( ( ( DIBN * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIBN * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'b':
               {
                   DIB *b;
                   b = d [ i ] .b;
-                  if ( b-> buts != NULL ) {
-                      Free ( b-> buts ) ;
-                      b-> buts = NULL;
+                  if ( b->buts != NULL ) {
+                      Free ( b->buts ) ;
+                      b->buts = NULL;
                   }
               }
-              FreeImg ( ( ( DIB * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIB * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'f':
               {
                   DIF *f;
                   f = d [ i ] .f;
-                  Free ( f-> sptr ) ;
-                  f-> sptr = NULL;
+                  Free ( f->sptr ) ;
+                  f->sptr = NULL;
               }
-              FreeImg ( ( ( DIF * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIF * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'P':
               {
                   DIHB *B;
                   S_STR *pt;
                   B = d [ i ] .B;
-                  pt = B-> sptr;
+                  pt = B->sptr;
                   if ( pt != NULL ) {
-                      kgFreeImage ( pt-> bimg ) ;
-                      kgFreeImage ( pt-> fimg ) ;
-                      Free ( B-> sptr ) ;
-                      B-> sptr = NULL;
+                      kgFreeImage ( pt->bimg ) ;
+                      kgFreeImage ( pt->fimg ) ;
+                      Free ( B->sptr ) ;
+                      B->sptr = NULL;
                   }
               }
-              FreeImg ( ( ( DIHB * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIHB * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'd':
               {
                   DID *di;
                   di = d [ i ] .d;
-                  Free ( di-> sptr ) ;
-                  di-> sptr = NULL;
+                  Free ( di->sptr ) ;
+                  di->sptr = NULL;
               }
-              FreeImg ( ( ( DID * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DID * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'x':
               {
                   DIX *w;
                   w = d [ i ] .x;
-                  Free ( w-> bwsr ) ;
+                  Free ( w->bwsr ) ;
                   uiCleanXImages ( w ) ;
               }
-              FreeImg ( ( ( DIX * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIX * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'y':
               {
                   DIY *w;
                   w = d [ i ] .y;
-                  Free ( w-> bwsr ) ;
+                  Free ( w->bwsr ) ;
                   uiCleanYImages ( w ) ;
               }
-              FreeImg ( ( ( DIY * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIY * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'c':
               {
                   DICH *w;
                   w = d [ i ] .c;
-                  Free ( w-> bwsr ) ;
+                  Free ( w->bwsr ) ;
                   uiCleanCImages ( w ) ;
               }
-              FreeImg ( ( ( DICH * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DICH * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'r':
               {
                   DIRA *w;
                   w = d [ i ] .r;
-                  Free ( w-> bwsr ) ;
+                  Free ( w->bwsr ) ;
                   uiCleanRImages ( w ) ;
               }
-              FreeImg ( ( ( DIRA * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIRA * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'w':
               {
                   DIW *w;
                   w = d [ i ] .w;
-                  Free ( w-> bwsr ) ;
+                  Free ( w->bwsr ) ;
                   uiCleanBrowserImages ( w ) ;
               }
-              FreeImg ( ( ( DIW * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIW * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'e':
               {
                   DIE *w;
                   w = d [ i ] .e;
-                  Free ( w-> bwsr ) ;
+                  Free ( w->bwsr ) ;
                   uiCleanEbrowserImages ( w ) ;
               }
-              FreeImg ( ( ( DIE * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIE * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 's':
               {
                   DIS *w;
                   w = d [ i ] .s;
-                  Free ( w-> bwsr ) ;
+                  Free ( w->bwsr ) ;
               }
-              FreeImg ( ( ( DIS * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIS * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'g':
               {
@@ -2117,27 +2101,27 @@
                   kgWC *wc;
                   g = d [ i ] .g;
                   kgCloseglWindow ( g ) ;
-                  wc = g-> wc;
+                  wc = g->wc;
                   kg_clear_scrn_buffer ( wc ) ;
 //          Dempty(wc->SBlist);
-                  Dempty ( wc-> Clip ) ;
-                  if ( g-> img != NULL ) uiFreeImage ( g-> img ) ;
-                  if ( g-> rzimg != NULL ) uiFreeImage ( g-> rzimg ) ;
-                  g-> img = NULL;
-                  g-> rzimg = NULL;
-                  if ( g-> dc != NULL ) {
+                  Dempty ( wc->Clip ) ;
+                  if ( g->img != NULL ) uiFreeImage ( g->img ) ;
+                  if ( g->rzimg != NULL ) uiFreeImage ( g->rzimg ) ;
+                  g->img = NULL;
+                  g->rzimg = NULL;
+                  if ( g->dc != NULL ) {
                       kgDC *dc;
-                      dc = ( kgDC * ) ( g-> dc ) ;
+                      dc = ( kgDC * ) ( g->dc ) ;
 //            Dfree(dc->Fontlist);
-                      Dempty ( dc-> Fontlist ) ;
-                      Free ( g-> dc ) ;
+                      Dempty ( dc->Fontlist ) ;
+                      Free ( g->dc ) ;
                   }
-                  if ( g-> wc != NULL ) Free ( g-> wc ) ;
+                  if ( g->wc != NULL ) Free ( g->wc ) ;
               }
-              FreeImg ( ( ( DIG * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIG * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'M':
-              FreeImg ( ( ( DIM * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIM * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'm':
               case 'B':
@@ -2145,7 +2129,7 @@
                   DIM *m;
                   m = d [ i ] .m;
               }
-              FreeImg ( ( ( DIM * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIM * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               default:
               printf ( "Error: in dialog : wrong code |%c| \n" , ch ) ;
@@ -2153,8 +2137,8 @@
           }
           i++;
       }
-      Dempty ( ( Dlink * ) ( D-> SearchList ) ) ;
-      D-> SearchList = NULL;
+      Dempty ( ( Dlink * ) ( D->SearchList ) ) ;
+      D->SearchList = NULL;
       return ;
   }
   void kgFreeBimg ( DIALOG *D ) {
@@ -2162,88 +2146,88 @@
       int i , ch;
       DIA *d;
       BUTS *buts;
-      d = D-> d;
+      d = D->d;
       i = 0;
       while ( d [ i ] .t != NULL ) {
-          ch = ( d [ i ] .t-> code ) ;
+          ch = ( d [ i ] .t->code ) ;
 //     printf("ch:%c\n",ch);
           switch ( ( int ) ch ) {
               case 'v':
-              FreeImg ( ( ( DIV * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIV * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'z':
-              FreeImg ( ( ( DIZ * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIZ * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'o': /* progress bar */
-              FreeImg ( ( ( DIO * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIO * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'p': /* new for xpm display */
-              FreeImg ( ( ( DIP * ) ( d [ i ] .p ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIP * ) ( d [ i ] .p ) )->Bimg ) ;
               break;
               case 'i': /* info box */
-              FreeImg ( ( ( DII * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DII * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 't':
-              FreeImg ( ( ( DIT * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIT * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'T':
-              FreeImg ( ( ( DIT * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIT * ) ( d [ i ] .t ) )->Bimg ) ;
          // need addition once Table is implemented
               break;
               case 'h':
-              FreeImg ( ( ( DIL * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIL * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'H':
-              FreeImg ( ( ( DILN * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DILN * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'n':
-              FreeImg ( ( ( DIN * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIN * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'N':
-              FreeImg ( ( ( DIBN * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIBN * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'b':
-              FreeImg ( ( ( DIB * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIB * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'f':
-              FreeImg ( ( ( DIF * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIF * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'P':
-              FreeImg ( ( ( DIHB * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIHB * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'd':
-              FreeImg ( ( ( DID * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DID * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'x':
-              FreeImg ( ( ( DIX * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIX * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'y':
-              FreeImg ( ( ( DIY * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIY * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'c':
-              FreeImg ( ( ( DICH * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DICH * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'r':
-              FreeImg ( ( ( DIRA * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIRA * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'w':
-              FreeImg ( ( ( DIW * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIW * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'e':
-              FreeImg ( ( ( DIE * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIE * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 's':
-              FreeImg ( ( ( DIS * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIS * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'g':
-              FreeImg ( ( ( DIG * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIG * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'M':
-              FreeImg ( ( ( DIM * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIM * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'm':
               case 'B':
-              FreeImg ( ( ( DIM * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIM * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               default:
               printf ( "Error: in dialog : wrong code |%c| \n" , ch ) ;
@@ -2268,65 +2252,65 @@
       DIT *t;
       t = ( DIT * ) Widget;
       if ( t != NULL ) {
-          ch = ( t-> code ) ;
+          ch = ( t->code ) ;
           switch ( ( int ) ch ) {
               case 'v':
-              FreeImg ( ( ( DIV * ) ( t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIV * ) ( t ) )->Bimg ) ;
               break;
               case 'z':
-              FreeImg ( ( ( DIZ * ) ( t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIZ * ) ( t ) )->Bimg ) ;
               break;
               case 'o': /* progress bar */
-              FreeImg ( ( ( DIO * ) ( t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIO * ) ( t ) )->Bimg ) ;
               break;
               case 'p': /* new for xpm display */
               {
                   DIP *p;
                   p = ( DIP * ) Widget;
-                  uiFreeXpm ( p-> xpm ) ;
-                  p-> xpm = NULL;
+                  uiFreeXpm ( p->xpm ) ;
+                  p->xpm = NULL;
               }
-              FreeImg ( ( ( DIP * ) ( t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIP * ) ( t ) )->Bimg ) ;
               break;
               case 'i': /* info box */
               {
                   DII *I;
                   I = ( DII * ) Widget;
               }
-              FreeImg ( ( ( DII * ) ( t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DII * ) ( t ) )->Bimg ) ;
               break;
               case 't':
               {
                   T_ELMT *e;
-                  e = t-> elmt;
-                  n = t-> nx*t-> ny;
+                  e = t->elmt;
+                  n = t->nx*t->ny;
                   if ( e != NULL ) {
                       for ( j = 0;j < n;j++ ) Free ( e [ j ] .fmt ) ;
                       Free ( e ) ;
-                      t-> elmt = NULL;
+                      t->elmt = NULL;
                   }
-                  if ( t-> pt != NULL ) kgFreeDouble ( t-> pt ) ;
-                  t-> pt = NULL;
+                  if ( t->pt != NULL ) kgFreeDouble ( t->pt ) ;
+                  t->pt = NULL;
               }
-              FreeImg ( ( ( DIT * ) ( t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIT * ) ( t ) )->Bimg ) ;
               break;
               case 'T':
               {
                   T_ELMT *e;
                   DIT *T;
                   T = t;
-                  e = T-> elmt;
-                  n = T-> nx*T-> ny;
+                  e = T->elmt;
+                  n = T->nx*T->ny;
                   if ( e != NULL ) {
                       for ( j = 0;j < n;j++ ) Free ( e [ j ] .fmt ) ;
                       Free ( e ) ;
-                      T-> elmt = NULL;
+                      T->elmt = NULL;
                   }
-                  if ( T-> pt != NULL ) kgFreeDouble ( T-> pt ) ;
-                  T-> pt = NULL;
+                  if ( T->pt != NULL ) kgFreeDouble ( T->pt ) ;
+                  T->pt = NULL;
               }
          // need addition once Table is implemented
-              FreeImg ( ( ( DIT * ) ( t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIT * ) ( t ) )->Bimg ) ;
               break;
               case 'h':
               {
@@ -2334,7 +2318,7 @@
                   DIL *b;
                   b = ( DIL * ) Widget;
                   BUT_STR *butn;
-                  butn = ( BUT_STR * ) b-> buts;
+                  butn = ( BUT_STR * ) b->buts;
                   if ( butn != NULL ) {
                       for ( k = 0;k < n;k++ ) {
                           if ( butn [ k ] .xpmn != butn [ k ] .xpmp ) uiFreeXpm ( butn [ k ] .xpmp ) ;
@@ -2361,37 +2345,37 @@
                           }
                       }
                       Free ( butn ) ;
-                      b-> buts = NULL;
+                      b->buts = NULL;
                   }
               }
-              FreeImg ( ( ( DIL * ) ( t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIL * ) ( t ) )->Bimg ) ;
               break;
               case 'H':
               {
                   DILN *h;
                   h = ( DILN * ) Widget;
-                  if ( h-> xpm != NULL ) {
-                      n = h-> nx*h-> ny;
-                      for ( j = 0;j < n;j++ ) uiFreeXpm ( h-> xpm [ j ] ) ;
-                      Free ( h-> xpm ) ;
+                  if ( h->xpm != NULL ) {
+                      n = h->nx*h->ny;
+                      for ( j = 0;j < n;j++ ) uiFreeXpm ( h->xpm [ j ] ) ;
+                      Free ( h->xpm ) ;
                   }
-                  Free ( h-> sw ) ;
-                  Free ( h-> bkgr ) ;
-                  if ( h-> butncode != NULL ) Free ( h-> butncode ) ;
-                  if ( h-> titles != NULL ) {
-                      n = h-> nx*h-> ny;
-                      for ( j = 0;j < n;j++ ) if ( h-> titles [ j ] != NULL ) Free 
-                          ( h-> titles [ j ] ) ;
-                      Free ( h-> titles ) ;
+                  Free ( h->sw ) ;
+                  Free ( h->bkgr ) ;
+                  if ( h->butncode != NULL ) Free ( h->butncode ) ;
+                  if ( h->titles != NULL ) {
+                      n = h->nx*h->ny;
+                      for ( j = 0;j < n;j++ ) if ( h->titles [ j ] != NULL ) Free  \
+                          ( h->titles [ j ] ) ;
+                      Free ( h->titles ) ;
                   }
               }
-              FreeImg ( ( ( DILN * ) ( t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DILN * ) ( t ) )->Bimg ) ;
               break;
               case 'N':
               {
                   DIBN *n;
               }
-              FreeImg ( ( ( DIBN * ) ( t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIBN * ) ( t ) )->Bimg ) ;
               break;
               case 'n':
               {
@@ -2399,7 +2383,7 @@
                   DIN *b;
                   b = ( DIN * ) Widget;
                   BUT_STR *butn;
-                  butn = ( BUT_STR * ) b-> buts;
+                  butn = ( BUT_STR * ) b->buts;
                   if ( butn != NULL ) {
                       for ( k = 0;k < n;k++ ) {
                           if ( butn [ k ] .xpmn != butn [ k ] .xpmp ) uiFreeXpm ( butn [ k ] .xpmp ) ;
@@ -2426,155 +2410,155 @@
                               butn [ k ] .imgh = NULL;
                           }
                       }
-                      Free ( b-> buts ) ;
-                      b-> buts = NULL;
+                      Free ( b->buts ) ;
+                      b->buts = NULL;
                   }
               }
-              FreeImg ( ( ( DIN * ) ( t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIN * ) ( t ) )->Bimg ) ;
               break;
               case 'b':
               {
                   DIB *b;
                   b = ( DIB * ) Widget;
-                  if ( b-> xpm != NULL ) {
-                      n = b-> nx*b-> ny;
-                      for ( j = 0;j < n;j++ ) uiFreeXpm ( b-> xpm [ j ] ) ;
-                      Free ( b-> xpm ) ;
+                  if ( b->xpm != NULL ) {
+                      n = b->nx*b->ny;
+                      for ( j = 0;j < n;j++ ) uiFreeXpm ( b->xpm [ j ] ) ;
+                      Free ( b->xpm ) ;
                   }
-                  Free ( b-> sw ) ;
-                  Free ( b-> bkgr ) ;
-                  if ( b-> butncode != NULL ) Free ( b-> butncode ) ;
-                  if ( b-> titles != NULL ) {
-                      n = b-> nx*b-> ny;
-                      for ( j = 0;j < n;j++ ) if ( b-> titles [ j ] != NULL ) Free 
-                          ( b-> titles [ j ] ) ;
-                      Free ( b-> titles ) ;
+                  Free ( b->sw ) ;
+                  Free ( b->bkgr ) ;
+                  if ( b->butncode != NULL ) Free ( b->butncode ) ;
+                  if ( b->titles != NULL ) {
+                      n = b->nx*b->ny;
+                      for ( j = 0;j < n;j++ ) if ( b->titles [ j ] != NULL ) Free  \
+                          ( b->titles [ j ] ) ;
+                      Free ( b->titles ) ;
                   }
               }
-              FreeImg ( ( ( DIB * ) ( t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIB * ) ( t ) )->Bimg ) ;
               break;
               case 'f':
               {
                   DIF *w;
                   S_STR *pt;
                   w = ( DIF * ) Widget;
-                  pt = w-> sptr;
-                  Free ( w-> sptr ) ;
+                  pt = w->sptr;
+                  Free ( w->sptr ) ;
               }
-              FreeImg ( ( ( DIF * ) ( t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIF * ) ( t ) )->Bimg ) ;
               break;
               case 'P':
               {
                   DIHB *w;
                   S_STR *pt;
                   w = ( DIHB * ) Widget;
-                  pt = w-> sptr;
+                  pt = w->sptr;
                   if ( pt != NULL ) {
-                      kgFreeImage ( pt-> bimg ) ;
-                      kgFreeImage ( pt-> fimg ) ;
+                      kgFreeImage ( pt->bimg ) ;
+                      kgFreeImage ( pt->fimg ) ;
                       Free ( pt ) ;
                   }
-                  w-> sptr = NULL;
+                  w->sptr = NULL;
               }
-              FreeImg ( ( ( DIHB * ) ( t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIHB * ) ( t ) )->Bimg ) ;
               break;
               case 'd':
               {
                   DID *w;
                   S_STR *pt;
                   w = ( DID * ) Widget;
-                  Free ( w-> sptr ) ;
+                  Free ( w->sptr ) ;
               }
-              FreeImg ( ( ( DID * ) ( t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DID * ) ( t ) )->Bimg ) ;
               break;
               case 'x':
               {
                   DIX *w;
                   w = ( DIX * ) Widget;
-                  kgFreeDouble ( ( void ** ) ( w-> pt ) ) ;
-                  w-> pt = NULL;
+                  kgFreeDouble ( ( void ** ) ( w->pt ) ) ;
+                  w->pt = NULL;
                   uiCleanXImages ( w ) ;
               }
-              FreeImg ( ( ( DIX * ) ( t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIX * ) ( t ) )->Bimg ) ;
               break;
               case 'y':
               {
                   DIY *w;
                   w = ( DIY * ) Widget;
-                  kgFreeDouble ( ( void ** ) ( w-> pt ) ) ;
-                  w-> pt = NULL;
+                  kgFreeDouble ( ( void ** ) ( w->pt ) ) ;
+                  w->pt = NULL;
                   uiCleanYImages ( w ) ;
               }
-              FreeImg ( ( ( DIY * ) ( t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIY * ) ( t ) )->Bimg ) ;
               break;
               case 'c':
               {
                   DICH *w;
                   w = ( DICH * ) Widget;
-                  kgFreeDouble ( ( void ** ) ( w-> list ) ) ;
-                  w-> list = NULL;
+                  kgFreeDouble ( ( void ** ) ( w->list ) ) ;
+                  w->list = NULL;
                   uiCleanCImages ( w ) ;
               }
-              FreeImg ( ( ( DICH * ) ( t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DICH * ) ( t ) )->Bimg ) ;
               break;
               case 'r':
               {
                   DIRA *w;
                   w = ( DIRA * ) Widget;
-                  kgFreeDouble ( ( void ** ) ( w-> list ) ) ;
-                  w-> list = NULL;
+                  kgFreeDouble ( ( void ** ) ( w->list ) ) ;
+                  w->list = NULL;
                   uiCleanRImages ( w ) ;
               }
-              FreeImg ( ( ( DIRA * ) ( t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIRA * ) ( t ) )->Bimg ) ;
               break;
               case 'w':
               {
                   DIW *w;
                   w = ( DIW * ) Widget;
-                  if ( w-> prompt != NULL ) Free ( w-> prompt ) ;
-                  kgFreeDouble ( ( void ** ) w-> menu ) ;
-                  w-> menu = NULL;
+                  if ( w->prompt != NULL ) Free ( w->prompt ) ;
+                  kgFreeDouble ( ( void ** ) w->menu ) ;
+                  w->menu = NULL;
                   uiCleanBrowserImages ( w ) ;
               }
-              FreeImg ( ( ( DIW * ) ( t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIW * ) ( t ) )->Bimg ) ;
               break;
               case 'e':
               {
                   DIE *w;
                   w = ( DIE * ) Widget;
-                  kgFreeDouble ( ( void ** ) w-> menu ) ;
-                  w-> menu = NULL;
+                  kgFreeDouble ( ( void ** ) w->menu ) ;
+                  w->menu = NULL;
                   uiCleanEbrowserImages ( w ) ;
               }
-              FreeImg ( ( ( DIE * ) ( t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIE * ) ( t ) )->Bimg ) ;
               break;
               case 's':
               {
                   DIS *w;
                   w = ( DIS * ) Widget;
-                  Free ( w-> bwsr ) ;
+                  Free ( w->bwsr ) ;
               }
-              FreeImg ( ( ( DIS * ) ( t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIS * ) ( t ) )->Bimg ) ;
               break;
               case 'g':
               {
                   DIG *g;
                   kgWC *wc;
                   g = ( DIG * ) Widget;
-                  uiFreeXpm ( g-> xpm ) ;
-                  g-> xpm = NULL;
+                  uiFreeXpm ( g->xpm ) ;
+                  g->xpm = NULL;
               }
-              FreeImg ( ( ( DIG * ) ( t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIG * ) ( t ) )->Bimg ) ;
               break;
               case 'M':
-              FreeImg ( ( ( DIM * ) ( t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIM * ) ( t ) )->Bimg ) ;
               break;
               case 'm':
               case 'B':
               {
                   DIM *m;
               }
-              FreeImg ( ( ( DIM * ) ( t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIM * ) ( t ) )->Bimg ) ;
               break;
               default:
               printf ( "Error: in dialog : wrong code |%c| \n" , ch ) ;
@@ -2588,71 +2572,71 @@
       int i , ch , n , j;
       DIA *d;
       BUTS *buts;
-      d = D-> d;
+      d = D->d;
       i = 0;
       while ( d [ i ] .t != NULL ) {
-          ch = ( d [ i ] .t-> code ) ;
+          ch = ( d [ i ] .t->code ) ;
 //     printf("ch:%c\n",ch);
           switch ( ( int ) ch ) {
               case 'v':
-              FreeImg ( ( ( DIV * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIV * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'z':
-              FreeImg ( ( ( DIZ * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIZ * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'o': /* progress bar */
-              FreeImg ( ( ( DIO * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIO * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'p': /* new for xpm display */
               {
                   DIP *p;
                   p = d [ i ] .p;
-                  uiFreeXpm ( p-> xpm ) ;
-                  p-> xpm = NULL;
+                  uiFreeXpm ( p->xpm ) ;
+                  p->xpm = NULL;
               }
-              FreeImg ( ( ( DIP * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIP * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'i': /* info box */
               {
                   DII *I;
                   I = d [ i ] .i;
               }
-              FreeImg ( ( ( DII * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DII * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 't':
               {
                   T_ELMT *e;
                   DIT *t;
                   t = d [ i ] .t;
-                  e = t-> elmt;
+                  e = t->elmt;
                   if ( e != NULL ) {
-                      n = t-> nx*t-> ny;
+                      n = t->nx*t->ny;
                       for ( j = 0;j < n;j++ ) Free ( e [ j ] .fmt ) ;
                       Free ( e ) ;
-                      t-> elmt = NULL;
+                      t->elmt = NULL;
                   }
-                  if ( t-> pt != NULL ) kgFreeDouble ( t-> pt ) ;
-                  t-> pt = NULL;
+                  if ( t->pt != NULL ) kgFreeDouble ( t->pt ) ;
+                  t->pt = NULL;
               }
-              FreeImg ( ( ( DIT * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIT * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'T':
               {
                   T_ELMT *e;
                   DIT *T;
                   T = d [ i ] .t;
-                  e = T-> elmt;
+                  e = T->elmt;
                   if ( e != NULL ) {
-                      n = T-> nx*T-> ny;
+                      n = T->nx*T->ny;
                       for ( j = 0;j < n;j++ ) Free ( e [ j ] .fmt ) ;
                       Free ( e ) ;
-                      T-> elmt = NULL;
+                      T->elmt = NULL;
                   }
-                  if ( T-> pt != NULL ) kgFreeDouble ( T-> pt ) ;
-                  T-> pt = NULL;
+                  if ( T->pt != NULL ) kgFreeDouble ( T->pt ) ;
+                  T->pt = NULL;
               }
          // need addition once Table is implemented
-              FreeImg ( ( ( DIT * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIT * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'h':
               {
@@ -2660,7 +2644,7 @@
                   DIL *b;
                   BUT_STR *butn;
                   b = d [ i ] .h;
-                  butn = ( BUT_STR * ) b-> buts;
+                  butn = ( BUT_STR * ) b->buts;
                   if ( butn != NULL ) {
                       for ( k = 0;k < n;k++ ) {
                           if ( butn [ k ] .xpmn != butn [ k ] .xpmp ) uiFreeXpm ( butn [ k ] .xpmp ) ;
@@ -2688,32 +2672,32 @@
                       }
                       Free ( butn ) ;
                   }
-                  b-> buts = NULL;
+                  b->buts = NULL;
               }
-              FreeImg ( ( ( DIL * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIL * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'H':
               {
                   DILN *h;
                   h = d [ i ] .H;
-                  if ( h-> xpm != NULL ) {
-                      n = h-> nx*h-> ny;
-                      if ( h-> xpm != NULL ) for ( j = 0;j < n;j++ ) uiFreeXpm ( h-> xpm [ j ] ) ;
-                      Free ( h-> xpm ) ;
-                      h-> xpm = NULL;
+                  if ( h->xpm != NULL ) {
+                      n = h->nx*h->ny;
+                      if ( h->xpm != NULL ) for ( j = 0;j < n;j++ ) uiFreeXpm ( h->xpm [ j ] ) ;
+                      Free ( h->xpm ) ;
+                      h->xpm = NULL;
                   }
-                  Free ( h-> sw ) ;
-                  Free ( h-> bkgr ) ;
-                  if ( h-> butncode != NULL ) Free ( h-> butncode ) ;
-                  if ( h-> titles != NULL ) {
-                      n = h-> nx*h-> ny;
-                      for ( j = 0;j < n;j++ ) if ( h-> titles [ j ] != NULL ) Free 
-                          ( h-> titles [ j ] ) ;
-                      Free ( h-> titles ) ;
-                      h-> titles = NULL;
+                  Free ( h->sw ) ;
+                  Free ( h->bkgr ) ;
+                  if ( h->butncode != NULL ) Free ( h->butncode ) ;
+                  if ( h->titles != NULL ) {
+                      n = h->nx*h->ny;
+                      for ( j = 0;j < n;j++ ) if ( h->titles [ j ] != NULL ) Free  \
+                          ( h->titles [ j ] ) ;
+                      Free ( h->titles ) ;
+                      h->titles = NULL;
                   }
               }
-              FreeImg ( ( ( DILN * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DILN * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'n':
               {
@@ -2721,7 +2705,7 @@
                   DIN *b;
                   BUT_STR *butn;
                   b = d [ i ] .N;
-                  butn = ( BUT_STR * ) b-> buts;
+                  butn = ( BUT_STR * ) b->buts;
                   if ( butn != NULL ) {
                       for ( k = 0;k < n;k++ ) {
                           if ( butn [ k ] .xpmn != butn [ k ] .xpmp ) uiFreeXpm ( butn [ k ] .xpmp ) ;
@@ -2749,161 +2733,161 @@
                       }
                       Free ( butn ) ;
                   }
-                  b-> buts = NULL;
+                  b->buts = NULL;
               }
-              FreeImg ( ( ( DIN * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIN * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'N':
               {
                   DIBN *n;
                   n = d [ i ] .n;
               }
-              FreeImg ( ( ( DIBN * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIBN * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'b':
               {
                   DIB *b;
                   b = d [ i ] .b;
-                  if ( b-> xpm != NULL ) {
-                      n = b-> nx*b-> ny;
-                      for ( j = 0;j < n;j++ ) uiFreeXpm ( b-> xpm [ j ] ) ;
-                      Free ( b-> xpm ) ;
-                      b-> xpm = NULL;
+                  if ( b->xpm != NULL ) {
+                      n = b->nx*b->ny;
+                      for ( j = 0;j < n;j++ ) uiFreeXpm ( b->xpm [ j ] ) ;
+                      Free ( b->xpm ) ;
+                      b->xpm = NULL;
                   }
-                  Free ( b-> sw ) ;
-                  b-> sw = NULL;
-                  Free ( b-> bkgr ) ;
-                  b-> bkgr = NULL;
-                  if ( b-> butncode != NULL ) Free ( b-> butncode ) ;
-                  b-> butncode = NULL;
-                  if ( b-> titles != NULL ) {
-                      n = b-> nx*b-> ny;
-                      for ( j = 0;j < n;j++ ) if ( b-> titles [ j ] != NULL ) Free 
-                          ( b-> titles [ j ] ) ;
-                      Free ( b-> titles ) ;
-                      b-> titles = NULL;
+                  Free ( b->sw ) ;
+                  b->sw = NULL;
+                  Free ( b->bkgr ) ;
+                  b->bkgr = NULL;
+                  if ( b->butncode != NULL ) Free ( b->butncode ) ;
+                  b->butncode = NULL;
+                  if ( b->titles != NULL ) {
+                      n = b->nx*b->ny;
+                      for ( j = 0;j < n;j++ ) if ( b->titles [ j ] != NULL ) Free  \
+                          ( b->titles [ j ] ) ;
+                      Free ( b->titles ) ;
+                      b->titles = NULL;
                   }
               }
-              FreeImg ( ( ( DIB * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIB * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'f':
               {
                   DIF *f;
                   f = d [ i ] .f;
-                  Free ( f-> sptr ) ;
-                  f-> sptr = NULL;
+                  Free ( f->sptr ) ;
+                  f->sptr = NULL;
               }
-              FreeImg ( ( ( DIF * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIF * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'P':
               {
                   DIHB *B;
                   S_STR *pt;
                   B = d [ i ] .B;
-                  pt = B-> sptr;
+                  pt = B->sptr;
                   if ( pt != NULL ) {
-                      kgFreeImage ( pt-> bimg ) ;
-                      kgFreeImage ( pt-> fimg ) ;
+                      kgFreeImage ( pt->bimg ) ;
+                      kgFreeImage ( pt->fimg ) ;
                       Free ( pt ) ;
                   }
-                  B-> sptr = NULL;
+                  B->sptr = NULL;
               }
-              FreeImg ( ( ( DIHB * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIHB * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'd':
               {
                   DID *di;
                   di = d [ i ] .d;
-                  Free ( di-> sptr ) ;
-                  di-> sptr = NULL;
+                  Free ( di->sptr ) ;
+                  di->sptr = NULL;
               }
-              FreeImg ( ( ( DID * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DID * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'x':
               {
                   DIX *w;
                   w = d [ i ] .x;
-                  if ( ( D-> VerId == 1401010200 ) || ( D-> VerId == 2107030000 ) ) {
-                      kgFreeDouble ( ( void ** ) ( w-> pt ) ) ;
-                      w-> pt = NULL;
+                  if ( ( D->VerId == 1401010200 ) || ( D->VerId == 2107030000 ) ) {
+                      kgFreeDouble ( ( void ** ) ( w->pt ) ) ;
+                      w->pt = NULL;
                   }
                   uiCleanXImages ( w ) ;
               }
-              FreeImg ( ( ( DIX * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIX * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'y':
               {
                   DIY *w;
                   w = d [ i ] .y;
-                  if ( ( D-> VerId == 1401010200 ) || ( D-> VerId == 2107030000 ) ) {
-                      kgFreeDouble ( ( void ** ) ( w-> pt ) ) ;
-                      w-> pt = NULL;
+                  if ( ( D->VerId == 1401010200 ) || ( D->VerId == 2107030000 ) ) {
+                      kgFreeDouble ( ( void ** ) ( w->pt ) ) ;
+                      w->pt = NULL;
                   }
                   uiCleanYImages ( w ) ;
               }
-              FreeImg ( ( ( DIY * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIY * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'c':
               {
                   DICH *w;
                   w = d [ i ] .c;
 //         kgFreeDouble((void **)(w->list));
-                  w-> list = NULL;
+                  w->list = NULL;
                   uiCleanCImages ( w ) ;
               }
-              FreeImg ( ( ( DICH * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DICH * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'r':
               {
                   DIRA *w;
                   w = d [ i ] .r;
 //         kgFreeDouble((void **)(w->list));
-                  w-> list = NULL;
+                  w->list = NULL;
                   uiCleanRImages ( w ) ;
               }
-              FreeImg ( ( ( DIRA * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIRA * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'w':
               {
                   DIW *w;
                   w = d [ i ] .w;
-                  if ( w-> prompt != NULL ) Free ( w-> prompt ) ;
-                  kgFreeDouble ( ( void ** ) w-> menu ) ;
-                  w-> menu = NULL;
+                  if ( w->prompt != NULL ) Free ( w->prompt ) ;
+                  kgFreeDouble ( ( void ** ) w->menu ) ;
+                  w->menu = NULL;
                   uiCleanBrowserImages ( w ) ;
               }
-              FreeImg ( ( ( DIW * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIW * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'e':
               {
                   DIE *w;
                   w = d [ i ] .e;
-                  kgFreeDouble ( ( void ** ) w-> menu ) ;
-                  w-> menu = NULL;
+                  kgFreeDouble ( ( void ** ) w->menu ) ;
+                  w->menu = NULL;
                   uiCleanEbrowserImages ( w ) ;
               }
-              FreeImg ( ( ( DIE * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIE * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 's':
               {
                   DIS *w;
                   w = d [ i ] .s;
-                  Free ( w-> bwsr ) ;
+                  Free ( w->bwsr ) ;
               }
-              FreeImg ( ( ( DIS * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIS * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'g':
               {
                   DIG *g;
                   kgWC *wc;
                   g = d [ i ] .g;
-                  uiFreeXpm ( g-> xpm ) ;
-                  g-> xpm = NULL;
+                  uiFreeXpm ( g->xpm ) ;
+                  g->xpm = NULL;
               }
-              FreeImg ( ( ( DIG * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIG * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'M':
-              FreeImg ( ( ( DIM * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIM * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'm':
               case 'B':
@@ -2911,7 +2895,7 @@
                   DIM *m;
                   m = d [ i ] .m;
               }
-              FreeImg ( ( ( DIM * ) ( d [ i ] .t ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIM * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               default:
               printf ( "Error: in dialog : wrong code |%c| \n" , ch ) ;
@@ -2930,31 +2914,31 @@
       kgWC *wc;
       int *sw , code = 1;
       B = ( DIB * ) tmp;
-      D = B-> D;
+      D = B->D;
       wc = WC ( D ) ;
       df = 0;
       key = kbevent.button;
       xpo = kbevent.x , ypo = kbevent.y;
       uiBkup_clip_limits ( wc ) ;
       uiSet_full_scrn ( wc ) ;
-      wd = B-> width;
-      ln = B-> lngth;
-      xgap = B-> xgap;
-      ygap = B-> ygap;
+      wd = B->width;
+      ln = B->lngth;
+      xgap = B->xgap;
+      ygap = B->ygap;
       k = 0;
-      sw = B-> sw;
-      if ( B-> code == 'N' ) code = 0;
+      sw = B->sw;
+      if ( B->code == 'N' ) code = 0;
       else code = 1;
-      for ( j = 0;j < ( B-> ny ) ;j++ ) {
-          yy = B-> y1+D-> yo+ygap/2+j* ( ygap+wd ) ;
-          for ( i = 0; i < ( B-> nx ) ;i++ ) {
+      for ( j = 0;j < ( B->ny ) ;j++ ) {
+          yy = B->y1+D->yo+ygap/2+j* ( ygap+wd ) ;
+          for ( i = 0; i < ( B->nx ) ;i++ ) {
               if ( code && ( sw [ k ] != 1 ) ) continue;
-              xx = B-> x1+D-> xo+xgap/2+i* ( ln+xgap ) ;
+              xx = B->x1+D->xo+xgap/2+i* ( ln+xgap ) ;
               xd = xpo-xx;yd = ypo-yy;
               if ( ( ( xd* ( xd-ln ) ) <= 0 ) && ( ( yd* ( yd-wd ) ) <= 0 ) ) {
                   df = k+1;
                   _dv_draw_newbutton ( B , k , -1 ) ;
-                  * ( B-> df ) = df;
+                  * ( B->df ) = df;
                   uiUpdateOn ( D ) ;
                   break;
               }
@@ -2976,23 +2960,23 @@
       kgWC *wc;
       int *sw , code = 1;
       B = ( DIN * ) tmp;
-      D = B-> D;
+      D = B->D;
       wc = WC ( D ) ;
       df = 0;
       key = kbevent.button;
       xpo = kbevent.x , ypo = kbevent.y;
       uiBkup_clip_limits ( wc ) ;
       uiSet_full_scrn ( wc ) ;
-      wd = B-> width;
-      ln = B-> lngth;
-      xgap = B-> xgap;
-      ygap = B-> ygap;
-      butn = B-> buts;
+      wd = B->width;
+      ln = B->lngth;
+      xgap = B->xgap;
+      ygap = B->ygap;
+      butn = B->buts;
       k = 0;
       nb = -1;
-      for ( j = 0;j < ( B-> ny ) ;j++ ) {
+      for ( j = 0;j < ( B->ny ) ;j++ ) {
 //     yy=B->y1+D->yo+ygap/2+j*(ygap+wd);
-          for ( i = 0; i < ( B-> nx ) ;i++ ) {
+          for ( i = 0; i < ( B->nx ) ;i++ ) {
               nb++;
               if ( ( butn [ nb ] .sw != 1 ) ) continue;
               if ( ( butn [ nb ] .sw == 1 ) ) {
@@ -3003,7 +2987,7 @@
                   if ( ( ( xd* ( xd-ln ) ) <= 0 ) && ( ( yd* ( yd-wd ) ) <= 0 ) ) {
                       df = nb+1;
                       _dv_draw_button ( B , nb , -1 ) ;
-                       ( B-> bval ) = df;
+                       ( B->bval ) = df;
                       uiUpdateOn ( D ) ;
 //TCB 2021
                       usleep ( 50000 ) ;
@@ -3036,7 +3020,7 @@
       B = ( DIB * ) tmp;
       df = -1;
       if ( ( kk = uiGetNewButtonPress ( B , kbevent ) ) > 0 ) {
-          df = * ( B-> df ) ;
+          df = * ( B->df ) ;
       }
       return df;
   }
@@ -3046,7 +3030,7 @@
       B = ( DIN * ) tmp;
       df = -1;
       if ( ( kk = uiGetButtonPress ( B , kbevent ) ) > 0 ) {
-          df = ( B-> bval ) ;
+          df = ( B->bval ) ;
       }
       return df;
   }
@@ -3056,7 +3040,7 @@
       B = ( DIB * ) tmp;
       df = -1;
       if ( ( kk = uiGetNewButtonPress ( B , kbevent ) ) > 0 ) {
-          df = * ( B-> df ) ;
+          df = * ( B->df ) ;
       }
       return df;
   }
@@ -3068,40 +3052,40 @@
       int evgax , evgay;
       DIALOG *D;
       kgWC *wc;
-      D = ( DIALOG * ) ( w-> D ) ;
+      D = ( DIALOG * ) ( w->D ) ;
       wc = WC ( D ) ;
       uiBkup_clip_limits ( wc ) ;
       uiSet_full_scrn ( wc ) ;
       PON_X = kbevent.x;
       PON_Y = kbevent.y;
-      x1 = w-> x2-w-> width-w-> offset+D-> xo;
-      yoff = ( w-> y2+w-> y1 ) *0.5;
-      y1 = D-> yo+yoff-w-> width*.5;
-      x2 = x1+w-> width;
-      y2 = y1+w-> width;
-      if ( ( ( x1 > ( PON_X ) ) || ( x2 < ( PON_X ) ) || ( y1 > 
+      x1 = w->x2-w->width-w->offset+D->xo;
+      yoff = ( w->y2+w->y1 ) *0.5;
+      y1 = D->yo+yoff-w->width*.5;
+      x2 = x1+w->width;
+      y2 = y1+w->width;
+      if ( ( ( x1 > ( PON_X ) ) || ( x2 < ( PON_X ) ) || ( y1 >  \
           ( PON_Y ) ) || ( y2 < ( PON_Y ) ) ) ) {return -1;}
-      y1 = D-> evgay-y1;y2 = D-> evgay-y2;
+      y1 = D->evgay-y1;y2 = D->evgay-y2;
       df = _uiMenu ( w ) ;
 //    kg_scr_recover(wc);
-      gc = D-> gc;
-      br = w-> bwsr;
-      m = br-> menu;
+      gc = D->gc;
+      br = w->bwsr;
+      m = br->menu;
 //TCB
 //    ui_draw_browser(br);
-      * ( w-> df ) = br-> df;
+      * ( w->df ) = br->df;
 //    ui_draw_browser((DIW *)w);
       _uiMake_W ( ( DIW * ) w ) ;
       uiUpdateOn ( D ) ;
       uiRest_clip_limits ( wc ) ;
-      return ( br-> df ) ;
+      return ( br->df ) ;
   }
   int MousePressInBrowser ( DIW *w , KBEVENT kbevent ) {
       int kk , df;
       df = -1;
 //   printf("MousePressInBrowser\n");
       if ( ( kk = uiGetBrowserButtonPress ( w , kbevent ) ) > 0 ) {
-          df = * ( w-> df ) ;
+          df = * ( w->df ) ;
       }
       return df;
   }
@@ -3113,7 +3097,7 @@
       df = -1;
 //   printf("MousePressInFslide\n");
       if ( ( kk = uiGetFslideButtonPress ( sptr , kbevent ) ) > 0 ) {
-          df = sptr-> df;
+          df = sptr->df;
       }
       return df;
   }
@@ -3128,18 +3112,18 @@
       df = -1;
 //   printf("MousePressInDslide \n");
       if ( ( kk = uiGetDslideButtonPress ( sptr , kbevent ) ) > 0 ) {
-          df = sptr-> df;
+          df = sptr->df;
       }
       return df;
   }
   int MousePressInHslideBar ( DIHB *B , KBEVENT kbevent ) {
       int kk , df;
       S_STR *sptr;
-      sptr = B-> sptr;
+      sptr = B->sptr;
       df = -1;
 //   printf("MousePressInDslide \n");
       if ( ( kk = _ui_processhslidepress ( B , kbevent ) ) > 0 ) {
-          df = sptr-> df;
+          df = sptr->df;
       }
       return df;
   }
@@ -3147,13 +3131,13 @@
       int ok = -1 , NOK = 1 , item;
       int ans , df = -1;
       DIALOG *D;
-      D = br-> D;
-      if ( br-> menu == NULL ) return ok;
-      if ( br-> menu [ 0 ] == NULL ) return ok;
-      item = br-> df;
+      D = br->D;
+      if ( br->menu == NULL ) return ok;
+      if ( br->menu [ 0 ] == NULL ) return ok;
+      item = br->df;
       ans = kbevent.key;
  // set_pointer_position(kbevent.x,kbevent.y,kbevent.button);
-      D-> PON_X = kbevent.x; D-> PON_Y = kbevent.y;
+      D->PON_X = kbevent.x; D->PON_Y = kbevent.y;
       switch ( kbevent.event ) {
           case 0:
 //TCB  felt it is unpleasent the item highlights on mouse movement
@@ -3163,7 +3147,7 @@
           case 1:
           ok = _ui_process_scroll_click ( br , kbevent ) ;
           if ( ok >= 0 ) {
-              if ( ok == 0 ) br-> df = item;
+              if ( ok == 0 ) br->df = item;
               NOK = 0;
           }
           break;
@@ -3177,7 +3161,7 @@
           case 5:
           ok = _ui_process_scroll_key ( br , kbevent ) ;
           if ( ok >= 0 ) {
-              if ( ok == 0 ) br-> df = item;
+              if ( ok == 0 ) br->df = item;
               NOK = 0;
           }
           break;
@@ -3191,14 +3175,14 @@
       int ok = -1 , NOK = 1 , item;
       int ans , df = -1;
       DIALOG *D;
-      br = x-> bwsr;
-      D = br-> D;
-      if ( br-> menu == NULL ) return ok;
-      if ( br-> menu [ 0 ] == NULL ) return ok;
-      item = br-> df;
+      br = x->bwsr;
+      D = br->D;
+      if ( br->menu == NULL ) return ok;
+      if ( br->menu [ 0 ] == NULL ) return ok;
+      item = br->df;
       ans = kbevent.key;
  // set_pointer_position(kbevent.x,kbevent.y,kbevent.button);
-      D-> PON_X = kbevent.x; D-> PON_Y = kbevent.y;
+      D->PON_X = kbevent.x; D->PON_Y = kbevent.y;
       switch ( kbevent.event ) {
           case 0:
 //TCB  felt it is unpleasent the item highlights on mouse movement
@@ -3208,7 +3192,7 @@
           case 1:
           ok = _ui_process_x_click ( x , kbevent ) ;
           if ( ok >= 0 ) {
-              if ( ok == 0 ) br-> df = item;
+              if ( ok == 0 ) br->df = item;
               NOK = 0;
           }
           break;
@@ -3222,7 +3206,7 @@
           case 5:
           ok = _ui_process_x_key ( x , kbevent ) ;
           if ( ok >= 0 ) {
-              if ( ok == 0 ) br-> df = item;
+              if ( ok == 0 ) br->df = item;
               NOK = 0;
           }
           break;
@@ -3236,14 +3220,14 @@
       int ok = -1 , NOK = 1 , item;
       int ans , df = -1;
       DIALOG *D;
-      br = x-> bwsr;
-      D = br-> D;
-      if ( br-> menu == NULL ) return ok;
-      if ( br-> menu [ 0 ] == NULL ) return ok;
-      item = br-> df;
+      br = x->bwsr;
+      D = br->D;
+      if ( br->menu == NULL ) return ok;
+      if ( br->menu [ 0 ] == NULL ) return ok;
+      item = br->df;
       ans = kbevent.key;
  // set_pointer_position(kbevent.x,kbevent.y,kbevent.button);
-      D-> PON_X = kbevent.x; D-> PON_Y = kbevent.y;
+      D->PON_X = kbevent.x; D->PON_Y = kbevent.y;
       switch ( kbevent.event ) {
           case 0:
 //TCB  felt it is unpleasent the item highlights on mouse movement
@@ -3253,7 +3237,7 @@
           case 1:
           ok = _ui_process_e_click ( x , kbevent ) ;
           if ( ok >= 0 ) {
-              if ( ok == 0 ) br-> df = item;
+              if ( ok == 0 ) br->df = item;
               NOK = 0;
           }
           break;
@@ -3267,7 +3251,7 @@
           case 5:
           ok = _ui_process_e_key ( x , kbevent ) ;
           if ( ok >= 0 ) {
-              if ( ok == 0 ) br-> df = item;
+              if ( ok == 0 ) br->df = item;
               NOK = 0;
           }
           break;
@@ -3281,14 +3265,14 @@
       int ok = -1 , NOK = 1 , item;
       int ans , df = -1;
       DIALOG *D;
-      br = x-> bwsr;
-      D = br-> D;
-      if ( br-> menu == NULL ) return ok;
-      if ( br-> menu [ 0 ] == NULL ) return ok;
-      item = br-> df;
+      br = x->bwsr;
+      D = br->D;
+      if ( br->menu == NULL ) return ok;
+      if ( br->menu [ 0 ] == NULL ) return ok;
+      item = br->df;
       ans = kbevent.key;
  // set_pointer_position(kbevent.x,kbevent.y,kbevent.button);
-      D-> PON_X = kbevent.x; D-> PON_Y = kbevent.y;
+      D->PON_X = kbevent.x; D->PON_Y = kbevent.y;
       switch ( kbevent.event ) {
           case 0:
 //TCB  felt it is unpleasent the item highlights on mouse movement
@@ -3298,7 +3282,7 @@
           case 1:
           ok = _ui_process_m_click ( x , kbevent ) ;
           if ( ok >= 0 ) {
-              if ( ok == 0 ) br-> df = item;
+              if ( ok == 0 ) br->df = item;
               NOK = 0;
           }
           break;
@@ -3312,7 +3296,7 @@
           case 5:
           ok = _ui_process_m_key ( x , kbevent ) ;
           if ( ok >= 0 ) {
-              if ( ok == 0 ) br-> df = item;
+              if ( ok == 0 ) br->df = item;
               NOK = 0;
           }
           break;
@@ -3326,14 +3310,14 @@
       int ok = -1 , NOK = 1 , item , ret = -1;
       int ans , df = -1;
       DIALOG *D;
-      br = y-> bwsr;
-      D = br-> D;
-      if ( br-> menu == NULL ) return ok;
-      if ( br-> menu [ 0 ] == NULL ) return ok;
-      item = br-> df;
+      br = y->bwsr;
+      D = br->D;
+      if ( br->menu == NULL ) return ok;
+      if ( br->menu [ 0 ] == NULL ) return ok;
+      item = br->df;
       ans = kbevent.key;
  // set_pointer_position(kbevent.x,kbevent.y,kbevent.button);
-      D-> PON_X = kbevent.x; D-> PON_Y = kbevent.y;
+      D->PON_X = kbevent.x; D->PON_Y = kbevent.y;
       switch ( kbevent.event ) {
           case 0:
 //TCB  felt it is unpleasent the item highlights on mouse movement
@@ -3343,7 +3327,7 @@
           case 1:
           ok = _ui_process_y_click ( y , kbevent ) ;
           if ( ok >= 0 ) {
-              if ( ok == 0 ) br-> df = item;
+              if ( ok == 0 ) br->df = item;
               NOK = 0;
           }
           ret = ok;
@@ -3358,7 +3342,7 @@
           case 5:
           ok = _ui_process_y_key ( y , kbevent ) ;
           if ( ok >= 0 ) {
-              if ( ok == 0 ) br-> df = item;
+              if ( ok == 0 ) br->df = item;
               NOK = 0;
           }
           ret = ok;
@@ -3378,12 +3362,12 @@
       T_ELMT *elmt;
       KBEVENT en;
       DIALOG *D;
-      D = t-> D;
+      D = t->D;
       ans = kbevent.key;
-      D-> PON_X = kbevent.x; D-> PON_Y = kbevent.y;
-      elmt = t-> elmt;
-      tx = t-> tstr;
-      k = tx-> row*tx-> nx+tx-> col;
+      D->PON_X = kbevent.x; D->PON_Y = kbevent.y;
+      elmt = t->elmt;
+      tx = t->tstr;
+      k = tx->row*tx->nx+tx->col;
 #if 0
       if ( elmt [ k ] .hlt ) {
           elmt [ k ] .hlt = 0;
@@ -3438,10 +3422,10 @@
           str = _ui_gethighlightstring ( tx ) ;
           if ( str != NULL ) {
 //            printf("hi: %s\n",str);
-              if ( WC ( D ) -> Pstr != NULL ) free ( WC ( D ) -> Pstr ) ;
+              if ( WC ( D )->Pstr != NULL ) free ( WC ( D )->Pstr ) ;
               kgSetPrimary ( D , str ) ;
 //            kgSetClipBoard(D,str);
-              WC ( D ) -> Pstr = str;
+              WC ( D )->Pstr = str;
           }
 //          _ui_cuthighlightstring(tx);
           break;
@@ -3458,9 +3442,9 @@
       int ok = -1 , NOK = 1 , item , ret = -1;
       int ans , df = -1;
       DIALOG *D;
-      D = y-> D;
+      D = y->D;
       ans = kbevent.key;
-      D-> PON_X = kbevent.x; D-> PON_Y = kbevent.y;
+      D->PON_X = kbevent.x; D->PON_Y = kbevent.y;
       switch ( kbevent.event ) {
           case 0:
 //TCB  felt it is unpleasent the item highlights on mouse movement
@@ -3489,9 +3473,9 @@
       int ok = -1 , NOK = 1 , item , ret = -1;
       int ans , df = -1;
       DIALOG *D;
-      D = y-> D;
+      D = y->D;
       ans = kbevent.key;
-      D-> PON_X = kbevent.x; D-> PON_Y = kbevent.y;
+      D->PON_X = kbevent.x; D->PON_Y = kbevent.y;
       switch ( kbevent.event ) {
           case 0:
           break;
@@ -3518,14 +3502,14 @@
       int ok = -1 , NOK = 1 , item , ret = -1;
       int ans , df = -1;
       DIALOG *D;
-      br = y-> bwsr;
-      D = br-> D;
-      if ( br-> menu == NULL ) return ok;
-      if ( br-> menu [ 0 ] == NULL ) return ok;
-      item = br-> df;
+      br = y->bwsr;
+      D = br->D;
+      if ( br->menu == NULL ) return ok;
+      if ( br->menu [ 0 ] == NULL ) return ok;
+      item = br->df;
       ans = kbevent.key;
  // set_pointer_position(kbevent.x,kbevent.y,kbevent.button);
-      D-> PON_X = kbevent.x; D-> PON_Y = kbevent.y;
+      D->PON_X = kbevent.x; D->PON_Y = kbevent.y;
       switch ( kbevent.event ) {
           case 0:
 //TCB  felt it is unpleasent the item highlights on mouse movement
@@ -3535,7 +3519,7 @@
           case 1:
           ok = _ui_process_c_click ( y , kbevent ) ;
           if ( ok >= 0 ) {
-              if ( ok == 0 ) br-> df = item;
+              if ( ok == 0 ) br->df = item;
               NOK = 0;
           }
           ret = ok;
@@ -3550,7 +3534,7 @@
           case 5:
           ok = _ui_process_c_key ( y , kbevent ) ;
           if ( ok >= 0 ) {
-              if ( ok == 0 ) br-> df = item;
+              if ( ok == 0 ) br->df = item;
               NOK = 0;
           }
           ret = ok;
@@ -3565,14 +3549,14 @@
       int ok = -1 , NOK = 1 , item , ret = -1;
       int ans , df = -1;
       DIALOG *D;
-      br = y-> bwsr;
-      D = br-> D;
-      if ( br-> menu == NULL ) return ok;
-      if ( br-> menu [ 0 ] == NULL ) return ok;
-      item = br-> df;
+      br = y->bwsr;
+      D = br->D;
+      if ( br->menu == NULL ) return ok;
+      if ( br->menu [ 0 ] == NULL ) return ok;
+      item = br->df;
       ans = kbevent.key;
  // set_pointer_position(kbevent.x,kbevent.y,kbevent.button);
-      D-> PON_X = kbevent.x; D-> PON_Y = kbevent.y;
+      D->PON_X = kbevent.x; D->PON_Y = kbevent.y;
       switch ( kbevent.event ) {
           case 0:
 //TCB  felt it is unpleasent the item highlights on mouse movement
@@ -3582,7 +3566,7 @@
           case 1:
           ok = _ui_process_r_click ( y , kbevent ) ;
           if ( ok >= 0 ) {
-              if ( ok == 0 ) br-> df = item;
+              if ( ok == 0 ) br->df = item;
               NOK = 0;
           }
           ret = ok;
@@ -3597,7 +3581,7 @@
           case 5:
           ok = _ui_process_r_key ( y , kbevent ) ;
           if ( ok >= 0 ) {
-              if ( ok == 0 ) br-> df = item;
+              if ( ok == 0 ) br->df = item;
               NOK = 0;
           }
           ret = ok;
@@ -3611,13 +3595,13 @@
       int ok = -1 , NOK = 1 , item;
       int ans , df = -1;
       DIALOG *D;
-      D = br-> D;
-      if ( br-> menu == NULL ) return ok;
-      if ( br-> menu [ 0 ] == NULL ) return ok;
-      item = br-> df;
+      D = br->D;
+      if ( br->menu == NULL ) return ok;
+      if ( br->menu [ 0 ] == NULL ) return ok;
+      item = br->df;
       ans = kbevent.key;
 //  set_pointer_position(kbevent.x,kbevent.y,kbevent.button);
-      D-> PON_X = kbevent.x; D-> PON_Y = kbevent.y;
+      D->PON_X = kbevent.x; D->PON_Y = kbevent.y;
       printf ( "Msg Scroll\n" ) ;
       switch ( kbevent.event ) {
           case 0:
@@ -3649,14 +3633,14 @@
       char *str = NULL;
       D = ( DIALOG * ) Tmp;
       kb = ( KBEVENT * ) kbtmp;
-      if ( kb-> event == 1 ) {
-          switch ( kb-> button ) {
+      if ( kb->event == 1 ) {
+          switch ( kb->button ) {
               default:
               break;
-               case 2: // primary
+              case 2: // primary
               str = kgGetPrimary ( Tmp ) ;
               break;
-               case 3: // clipboard
+              case 3: // clipboard
               str = kgGetClipBoard ( Tmp ) ;
               break;
           }
@@ -3682,183 +3666,166 @@
       }
       return ret;
   }
-  int ProcessMousePress ( DIALOG *D , KBEVENT kbevent , int i , int hcontrols , int controls ) 
+  int ProcessMousePress ( DIALOG *D , KBEVENT kbevent , int i , int hcontrols , int controls )  \
       {
       DIA *d;
       int ch , df , OK = 0 , uperr , ret;
-      d = D-> d;
+      d = D->d;
       if ( controls > 0 ) {
-          ch = D-> d [ i ] .t-> code;
+          ch = D->d [ i ] .t->code;
           switch ( ch ) {
               case 'h':
-              df = MousePressInButtonBox ( ( D-> d [ i ] .h ) , kbevent ) ;
+              df = MousePressInButtonBox ( ( D->d [ i ] .h ) , kbevent ) ;
               if ( df >= 0 ) {
                   if ( Up_D_SplBt_Box ( df , i , D ) > 0 ) OK = 1;
                   else { OK = 0;}
-                  _uiDrawButtons_n ( ( D-> d [ i ] .h ) ) ;
+                  _uiDrawButtons_n ( ( D->d [ i ] .h ) ) ;
                   uiUpdateOn ( D ) ;
               }
-               else if ( D-> Callback != NULL ) OK = D-> Callback 
-                   ( D , & kbevent ) ; // Not tested yet
+              else if ( D->Callback != NULL ) OK = D->Callback ( D , & kbevent ) ; // Not tested yet
               break;
               case 'n':
-              df = MousePressInButtonBox ( ( D-> d [ i ] .N ) , kbevent ) ;
+              df = MousePressInButtonBox ( ( D->d [ i ] .N ) , kbevent ) ;
               if ( df >= 0 ) {
-                  uperr = Up_D_Btn_Box ( ( D-> d [ i ] .N-> bval ) , i , D ) ;
+                  uperr = Up_D_Btn_Box ( ( D->d [ i ] .N->bval ) , i , D ) ;
                   if ( ( controls == 1 ) && ( uperr > 0 ) ) {OK = 1; break;}
                   if ( ( hcontrols == 0 ) && ( uperr > 0 ) ) {OK = 1; break;}
-                  _uiDrawButtons_n ( ( D-> d [ i ] .b ) ) ;
+                  _uiDrawButtons_n ( ( D->d [ i ] .b ) ) ;
                   uiUpdateOn ( D ) ;
               }
-               else if ( D-> Callback != NULL ) OK = D-> Callback 
-                   ( D , & kbevent ) ; // Not tested yet
+              else if ( D->Callback != NULL ) OK = D->Callback ( D , & kbevent ) ; // Not tested yet
               break;
               case 'b':
               case 'N':
-              df = MousePressInNewButtonBox ( ( D-> d [ i ] .b ) , kbevent ) ;
+              df = MousePressInNewButtonBox ( ( D->d [ i ] .b ) , kbevent ) ;
               if ( df >= 0 ) {
-                  uperr = Up_D_Bt_Box ( * ( D-> d [ i ] .b-> df ) , i , D ) ;
+                  uperr = Up_D_Bt_Box ( * ( D->d [ i ] .b->df ) , i , D ) ;
                   if ( ( controls == 1 ) && ( uperr > 0 ) ) {OK = 1; break;}
                   if ( ( hcontrols == 0 ) && ( uperr > 0 ) ) {OK = 1; break;}
-                  _uiDrawButtons ( ( D-> d [ i ] .b ) ) ;
+                  _uiDrawButtons ( ( D->d [ i ] .b ) ) ;
                   uiUpdateOn ( D ) ;
               }
-               else if ( D-> Callback != NULL ) OK = D-> Callback 
-                   ( D , & kbevent ) ; // Not tested yet
+              else if ( D->Callback != NULL ) OK = D->Callback ( D , & kbevent ) ; // Not tested yet
               break;
               case 'H':
-              df = MousePressInHBar ( ( D-> d [ i ] .H ) , kbevent ) ;
+              df = MousePressInHBar ( ( D->d [ i ] .H ) , kbevent ) ;
               if ( df >= 0 ) {
                   if ( Up_D_Ht_Box ( df , i , D ) > 0 ) OK = 1;
                   else { OK = 0;}
-                  _uiDrawButtons ( ( D-> d [ i ] .b ) ) ;
+                  _uiDrawButtons ( ( D->d [ i ] .b ) ) ;
                   uiUpdateOn ( D ) ;
               }
-               else if ( D-> Callback != NULL ) OK = D-> Callback 
-                   ( D , & kbevent ) ; // Not tested yet
+              else if ( D->Callback != NULL ) OK = D->Callback ( D , & kbevent ) ; // Not tested yet
               break;
               case 'w':
-              df = MousePressInBrowser ( ( DIW * ) ( D-> d [ i ] .w ) , kbevent ) ;
+              df = MousePressInBrowser ( ( DIW * ) ( D->d [ i ] .w ) , kbevent ) ;
               if ( df >= 0 ) {
                   uperr = Up_D_Brw_Box ( df , i , D ) ;
                   if ( ( controls == 1 ) && ( uperr > 0 ) ) OK = 1;
               }
-               else if ( D-> Callback != NULL ) OK = D-> Callback 
-                   ( D , & kbevent ) ; // Not tested yet
+              else if ( D->Callback != NULL ) OK = D->Callback ( D , & kbevent ) ; // Not tested yet
               break;
               case 'x':
-              ret = EventInNewMenu ( D-> d [ i ] .x , kbevent ) ;
+              ret = EventInNewMenu ( D->d [ i ] .x , kbevent ) ;
               if ( ret > 0 ) {
-                  df = * ( D-> d [ i ] .x-> df ) ;
+                  df = * ( D->d [ i ] .x->df ) ;
                   uperr = Up_D_NewMenu_Box ( df , i , D ) ;
                   if ( ( controls == 1 ) && ( uperr > 0 ) ) OK = 1;
               }
-               else if ( ( ret == -1 ) && ( D-> Callback != NULL ) ) OK = D-> Callback 
-                   ( D , & kbevent ) ; // Not tested yet
+              else if ( ( ret == -1 ) && ( D->Callback != NULL ) ) OK = D->Callback ( D , & kbevent ) ; // Not tested yet
               break;
               case 'v':
-              df = EventInV ( D-> d [ i ] .v , kbevent ) ;
+              df = EventInV ( D->d [ i ] .v , kbevent ) ;
               break;
               case 'z':
-              df = EventInZ ( D-> d [ i ] .z , kbevent ) ;
+              df = EventInZ ( D->d [ i ] .z , kbevent ) ;
               break;
               case 'y':
-              ret = EventInY ( D-> d [ i ] .y , kbevent ) ;
+              ret = EventInY ( D->d [ i ] .y , kbevent ) ;
               if ( ret > 0 ) {
-                  df = * ( D-> d [ i ] .y-> df ) ;
+                  df = * ( D->d [ i ] .y->df ) ;
                   uperr = Up_D_Y_Box ( df , i , D ) ;
                   if ( ( controls == 1 ) && ( uperr > 0 ) ) OK = 1;
               }
-               else if ( ( ret == -1 ) && ( D-> Callback != NULL ) ) OK = D-> Callback 
-                   ( D , & kbevent ) ; // Not tested yet
+              else if ( ( ret == -1 ) && ( D->Callback != NULL ) ) OK = D->Callback ( D , & kbevent ) ; // Not tested yet
               break;
               case 'c':
-              ret = EventInCheckBox ( D-> d [ i ] .c , kbevent ) ;
+              ret = EventInCheckBox ( D->d [ i ] .c , kbevent ) ;
               if ( ret > 0 ) {
-                  df = * ( D-> d [ i ] .c-> df ) ;
+                  df = * ( D->d [ i ] .c->df ) ;
                   uperr = Up_D_Y_Box ( df , i , D ) ;
                   if ( ( controls == 1 ) && ( uperr > 0 ) ) OK = 1;
               }
-               else if ( ( ret == -1 ) && ( D-> Callback != NULL ) ) OK = D-> Callback 
-                   ( D , & kbevent ) ; // Not tested yet
+              else if ( ( ret == -1 ) && ( D->Callback != NULL ) ) OK = D->Callback ( D , & kbevent ) ; // Not tested yet
               break;
               case 'r':
-              ret = EventInRadioButton ( D-> d [ i ] .r , kbevent ) ;
+              ret = EventInRadioButton ( D->d [ i ] .r , kbevent ) ;
               if ( ret > 0 ) {
-                  df = * ( D-> d [ i ] .r-> df ) ;
+                  df = * ( D->d [ i ] .r->df ) ;
                   uperr = Up_D_Y_Box ( df , i , D ) ;
                   if ( ( controls == 1 ) && ( uperr > 0 ) ) OK = 1;
               }
-               else if ( ( ret == -1 ) && ( D-> Callback != NULL ) ) OK = D-> Callback 
-                   ( D , & kbevent ) ; // Not tested yet
+              else if ( ( ret == -1 ) && ( D->Callback != NULL ) ) OK = D->Callback ( D , & kbevent ) ; // Not tested yet
               break;
               case 'f':
-              df = MousePressInFslide ( ( S_STR * ) ( D-> d [ i ] .f-> sptr ) , kbevent ) ;
+              df = MousePressInFslide ( ( S_STR * ) ( D->d [ i ] .f->sptr ) , kbevent ) ;
               if ( df >= 0 ) {
-                  Up_Fsld_Bar ( _ui_getfslidevalue ( ( S_STR * ) 
-                      ( D-> d [ i ] .f-> sptr ) ) , i , D ) ;
+                  Up_Fsld_Bar ( _ui_getfslidevalue ( ( S_STR * )  \
+                      ( D->d [ i ] .f->sptr ) ) , i , D ) ;
                   if ( ( controls == 1 ) ) {OK = 1; break;}
               }
-               else if ( ( D-> Callback != NULL ) ) OK = D-> Callback 
-                   ( D , & kbevent ) ; // Not tested yet
+              else if ( ( D->Callback != NULL ) ) OK = D->Callback ( D , & kbevent ) ; // Not tested yet
               break;
               case 'd':
-              df = MousePressInDslide ( ( S_STR * ) ( D-> d [ i ] .d-> sptr ) , kbevent ) ;
+              df = MousePressInDslide ( ( S_STR * ) ( D->d [ i ] .d->sptr ) , kbevent ) ;
               if ( df >= 0 ) {
-                  Up_Isld_Bar ( _ui_getdslidevalue ( ( S_STR * ) 
-                      ( D-> d [ i ] .d-> sptr ) ) , i , D ) ;
+                  Up_Isld_Bar ( _ui_getdslidevalue ( ( S_STR * )  \
+                      ( D->d [ i ] .d->sptr ) ) , i , D ) ;
                   if ( ( controls == 1 ) ) {OK = 1; break;}
               }
-               else if ( ( D-> Callback != NULL ) ) OK = D-> Callback 
-                   ( D , & kbevent ) ; // Not tested yet
+              else if ( ( D->Callback != NULL ) ) OK = D->Callback ( D , & kbevent ) ; // Not tested yet
               break;
               case 'P':
-              df = MousePressInHslideBar ( ( D-> d [ i ] .B ) , kbevent ) ;
+              df = MousePressInHslideBar ( ( D->d [ i ] .B ) , kbevent ) ;
               if ( df >= 0 ) {
-                  Up_Hsld_Bar ( _ui_getdslidevalue ( ( S_STR * ) 
-                      ( D-> d [ i ] .B-> sptr ) ) , i , D ) ;
+                  Up_Hsld_Bar ( _ui_getdslidevalue ( ( S_STR * )  \
+                      ( D->d [ i ] .B->sptr ) ) , i , D ) ;
 //       _ui_getdslidevalue((S_STR *)(D->d[i].B->sptr));
                   if ( ( controls == 1 ) ) {OK = 1; break;}
               }
-               else if ( ( D-> Callback != NULL ) ) OK = D-> Callback 
-                   ( D , & kbevent ) ; // Not tested yet
+              else if ( ( D->Callback != NULL ) ) OK = D->Callback ( D , & kbevent ) ; // Not tested yet
               break;
               case 't':
-              df = MousePressInTextBox ( ( TX_STR * ) 
-                  ( D-> d [ i ] .t-> tstr ) , kbevent ) ;
+              df = MousePressInTextBox ( ( TX_STR * ) ( D->d [ i ] .t->tstr ) , kbevent ) ;
               kgProcessClips ( ( void * ) D , ( void * ) & kbevent ) ;
               break;
               case 'T':
-              df = MousePressInTableBox ( ( TX_STR * ) 
-                  ( D-> d [ i ] .t-> tstr ) , kbevent ) ;
+              df = MousePressInTableBox ( ( TX_STR * ) ( D->d [ i ] .t->tstr ) , kbevent ) ;
               break;
               case 'e':
-              ret = EventInE ( ( D-> d [ i ] .e ) , kbevent ) ;
+              ret = EventInE ( ( D->d [ i ] .e ) , kbevent ) ;
               if ( ret > 0 ) {
-                  df = * ( D-> d [ i ] .e-> df ) ;
+                  df = * ( D->d [ i ] .e->df ) ;
                   uperr = Up_D_Menu_Box ( df , i , D ) ;
                   if ( ( controls == 1 ) && ( uperr > 0 ) ) OK = 1;
               }
-               else if ( ( ret == -1 ) && ( D-> Callback != NULL ) ) OK = D-> Callback 
-                   ( D , & kbevent ) ; // Not tested yet
+              else if ( ( ret == -1 ) && ( D->Callback != NULL ) ) OK = D->Callback ( D , & kbevent ) ; // Not tested yet
               break;
               case 's':
-              df = EventInMS ( D-> d [ i ] .s , kbevent ) ;
+              df = EventInMS ( D->d [ i ] .s , kbevent ) ;
               if ( df > 0 ) {
                   uperr = Up_D_Menu_Box ( df , i , D ) ;
                   if ( ( controls == 1 ) && ( uperr > 0 ) ) OK = 1;
               }
-               else if ( D-> Callback != NULL ) OK = D-> Callback 
-                   ( D , & kbevent ) ; // Not tested yet
+              else if ( D->Callback != NULL ) OK = D->Callback ( D , & kbevent ) ; // Not tested yet
               break;
               default:
-               if ( D-> Callback != NULL ) OK = D-> Callback 
-                   ( D , & kbevent ) ; // Not tested yet
+              if ( D->Callback != NULL ) OK = D->Callback ( D , & kbevent ) ; // Not tested yet
               break;
           }
       }
       else {
-          if ( D-> Callback != NULL ) OK = D-> Callback ( D , & kbevent ) ;
+          if ( D->Callback != NULL ) OK = D->Callback ( D , & kbevent ) ;
       }
       return OK;
   }
@@ -3870,7 +3837,7 @@
       df = -1;
 //   printf("MouseDragInFslide\n");
       if ( ( kk = uiGetFslideButtonDrag ( sptr , kbevent ) ) > 0 ) {
-          df = sptr-> df;
+          df = sptr->df;
       }
       return df;
   }
@@ -3882,7 +3849,7 @@
       df = -1;
 //   printf("MouseDragInFslide\n");
       if ( ( kk = uiGetDslideButtonDrag ( sptr , kbevent ) ) > 0 ) {
-          df = sptr-> df;
+          df = sptr->df;
       }
       return df;
   }
@@ -3893,20 +3860,20 @@
       int kk , df;
       DIALOG *D;
       S_STR *sptr;
-      sptr = B-> sptr;
-      B-> item = i;
-      D = ( DIALOG * ) B-> D;
+      sptr = B->sptr;
+      B->item = i;
+      D = ( DIALOG * ) B->D;
       df = -1;
 //   printf("MouseDragInFslide\n");
       if ( ( kk = _ui_processhslidedrag ( B , kbevent ) ) > 0 ) {
-          df = sptr-> df;
-          if ( B-> Update == NULL ) {
-              if ( D-> Callback != NULL ) D-> Callback ( D , & ( D-> kb ) ) ;
+          df = sptr->df;
+          if ( B->Update == NULL ) {
+              if ( D->Callback != NULL ) D->Callback ( D , & ( D->kb ) ) ;
           }
       }
       return df;
   }
-  int ProcessMousePressDrag ( DIALOG *D , KBEVENT kbevent , int i , int hcontrols , int controls ) 
+  int ProcessMousePressDrag ( DIALOG *D , KBEVENT kbevent , int i , int hcontrols , int controls )  \
       {
       DIA *d;
       int ch , df , OK = 0 , uperr;
@@ -3914,12 +3881,12 @@
       if ( controls > 0 ) {
           Wid = kgGetLocationWidget ( D , kbevent.x , kbevent.y ) ;
           if ( Wid == NULL ) return OK;
-          d = D-> d;
+          d = D->d;
           if ( Wid != ( void * ) ( d [ i ] .t ) ) {
 //     printf("Not Current Widget\n");
               return OK;
           }
-          ch = D-> d [ i ] .t-> code;
+          ch = D->d [ i ] .t->code;
           switch ( ch ) {
               case 'n':
               case 'b':
@@ -3933,68 +3900,68 @@
 //       ProcessMousePress(D,kbevent,i,hcontrols,controls);
               break;
               case 't':
-              df = EventInTextBox ( D-> d [ i ] .t , kbevent ) ;
+              df = EventInTextBox ( D->d [ i ] .t , kbevent ) ;
               break;
               case 'v':
-              df = EventInV ( D-> d [ i ] .v , kbevent ) ;
+              df = EventInV ( D->d [ i ] .v , kbevent ) ;
               break;
               case 'z':
-              df = EventInZ ( D-> d [ i ] .z , kbevent ) ;
+              df = EventInZ ( D->d [ i ] .z , kbevent ) ;
               break;
               case 'x':
-              df = EventInNewMenu ( D-> d [ i ] .x , kbevent ) ;
+              df = EventInNewMenu ( D->d [ i ] .x , kbevent ) ;
               if ( df > 0 ) {
                   BRW_STR *bwsr;
-                  bwsr = ( BRW_STR * ) ( D-> d [ i ] .x-> bwsr ) ;
-                  uperr = Up_D_NewMenu_Box ( bwsr-> df , i , D ) ;
+                  bwsr = ( BRW_STR * ) ( D->d [ i ] .x->bwsr ) ;
+                  uperr = Up_D_NewMenu_Box ( bwsr->df , i , D ) ;
                   if ( ( controls == 1 ) && ( uperr > 0 ) ) OK = 1;
               }
               break;
               case 'y':
-              df = EventInY ( D-> d [ i ] .y , kbevent ) ;
+              df = EventInY ( D->d [ i ] .y , kbevent ) ;
               if ( df > 0 ) {
                   BRW_STR *bwsr;
-                  bwsr = ( BRW_STR * ) ( D-> d [ i ] .y-> bwsr ) ;
-                  uperr = Up_D_Y_Box ( bwsr-> df , i , D ) ;
+                  bwsr = ( BRW_STR * ) ( D->d [ i ] .y->bwsr ) ;
+                  uperr = Up_D_Y_Box ( bwsr->df , i , D ) ;
                   if ( ( controls == 1 ) && ( uperr > 0 ) ) OK = 1;
               }
               break;
               case 'r':
-              df = EventInRadioButton ( D-> d [ i ] .r , kbevent ) ;
+              df = EventInRadioButton ( D->d [ i ] .r , kbevent ) ;
               if ( df > 0 ) {
                   BRW_STR *bwsr;
-                  bwsr = ( BRW_STR * ) ( D-> d [ i ] .r-> bwsr ) ;
-                  uperr = Up_D_Y_Box ( bwsr-> df , i , D ) ;
+                  bwsr = ( BRW_STR * ) ( D->d [ i ] .r->bwsr ) ;
+                  uperr = Up_D_Y_Box ( bwsr->df , i , D ) ;
                   if ( ( controls == 1 ) && ( uperr > 0 ) ) OK = 1;
               }
               break;
               case 'c':
-              df = EventInCheckBox ( D-> d [ i ] .c , kbevent ) ;
+              df = EventInCheckBox ( D->d [ i ] .c , kbevent ) ;
               if ( df > 0 ) {
                   BRW_STR *bwsr;
-                  bwsr = ( BRW_STR * ) ( D-> d [ i ] .c-> bwsr ) ;
-                  uperr = Up_D_Y_Box ( bwsr-> df , i , D ) ;
+                  bwsr = ( BRW_STR * ) ( D->d [ i ] .c->bwsr ) ;
+                  uperr = Up_D_Y_Box ( bwsr->df , i , D ) ;
                   if ( ( controls == 1 ) && ( uperr > 0 ) ) OK = 1;
               }
               break;
               case 'w':
               break;
               case 'f':
-              df = MouseDragInFslide ( ( S_STR * ) ( D-> d [ i ] .f-> sptr ) , kbevent ) ;
+              df = MouseDragInFslide ( ( S_STR * ) ( D->d [ i ] .f->sptr ) , kbevent ) ;
               if ( df >= 0 ) {
 //         Up_Fsld_Bar(_ui_getfslidevalue((S_STR *)(D->d[i].f->sptr)),i,D);
                   if ( ( controls == 1 ) ) {OK = 1; break;}
               }
               break;
               case 'd':
-              df = MouseDragInDslide ( ( S_STR * ) ( D-> d [ i ] .d-> sptr ) , kbevent ) ;
+              df = MouseDragInDslide ( ( S_STR * ) ( D->d [ i ] .d->sptr ) , kbevent ) ;
               if ( df >= 0 ) {
 //         Up_Isld_Bar(_ui_getdslidevalue((S_STR *)(D->d[i].d->sptr)),i,D);
                   if ( ( controls == 1 ) ) {OK = 1; break;}
               }
               break;
               case 'P':
-              df = MouseDragInHslide ( ( D-> d [ i ] .B ) , kbevent , i ) ;
+              df = MouseDragInHslide ( ( D->d [ i ] .B ) , kbevent , i ) ;
               if ( df >= 0 ) {
 //         Up_Hsld_Bar(_ui_getdslidevalue((S_STR *)(D->d[i].B->sptr)),i,D);
 // Done in lowlib
@@ -4002,16 +3969,16 @@
               }
               break;
               case 'e':
-              df = EventInE ( ( D-> d [ i ] .e ) , kbevent ) ;
+              df = EventInE ( ( D->d [ i ] .e ) , kbevent ) ;
               if ( df > 0 ) {
                   BRW_STR *bwsr;
-                  bwsr = ( BRW_STR * ) ( D-> d [ i ] .e-> bwsr ) ;
-                  uperr = Up_D_Menu_Box ( bwsr-> df , i , D ) ;
+                  bwsr = ( BRW_STR * ) ( D->d [ i ] .e->bwsr ) ;
+                  uperr = Up_D_Menu_Box ( bwsr->df , i , D ) ;
                   if ( ( controls == 1 ) && ( uperr > 0 ) ) OK = 1;
               }
               break;
               case 's':
-              df = EventInMS ( D-> d [ i ] .s , kbevent ) ;
+              df = EventInMS ( D->d [ i ] .s , kbevent ) ;
               if ( df > 0 ) {
                   uperr = Up_D_Menu_Box ( df , i , D ) ;
                   if ( ( controls == 1 ) && ( uperr > 0 ) ) OK = 1;
@@ -4023,13 +3990,13 @@
       }
       return OK;
   }
-  int ProcessMouseMovement ( DIALOG *D , KBEVENT kbevent , int i , int controls ) 
+  int ProcessMouseMovement ( DIALOG *D , KBEVENT kbevent , int i , int controls )  \
       {
       DIA *d;
       int ch , df , OK = 0 , uperr;
       if ( controls > 0 ) {
-          d = D-> d;
-          ch = D-> d [ i ] .t-> code;
+          d = D->d;
+          ch = D->d [ i ] .t->code;
 //  printf("ProcessMouseMovement %c\n",ch);
           switch ( ch ) {
               case 'h':
@@ -4078,9 +4045,9 @@
       int ans , df , dfmt , nbx , nby , dfrm;
       ans = kbevent.key;
       B = ( DIB * ) tmp;
-      df = * ( B-> df ) ;
-      nbx = B-> nx;
-      nby = B-> ny;
+      df = * ( B->df ) ;
+      nbx = B->nx;
+      nby = B->ny;
       if ( ui_Linefeed ( ans ) || ui_Return ( ans ) ) {
 //          printf("Got Line Feed\n");
           return df;
@@ -4090,14 +4057,14 @@
           dfrm = ( df-1 ) %nbx+1;
           dfmt--;if ( dfmt < 0 ) dfmt = nby-1;
           df = dfmt*nbx+dfrm;
-          while ( ( B-> sw [ df-1 ] < 1 ) ) {
+          while ( ( B->sw [ df-1 ] < 1 ) ) {
               dfrm--;if ( dfrm < 1 ) dfrm = nbx;
               df = dfmt*nbx+dfrm;
           }
 //              _uiHighNewButton(bt,df);
-          * ( B-> df ) = df;
+          * ( B->df ) = df;
           _uiDrawButtons ( B ) ;
-          uiUpdateOn ( B-> D ) ;
+          uiUpdateOn ( B->D ) ;
           return -1;
       }
       if ( ui_Downarrow ( ans ) ) {
@@ -4105,14 +4072,14 @@
           dfrm = ( df-1 ) %nbx+1;
           dfmt++;if ( dfmt >= nby ) dfmt = 0;
           df = dfmt*nbx+dfrm;
-          while ( ( B-> sw [ df-1 ] < 1 ) ) {
+          while ( ( B->sw [ df-1 ] < 1 ) ) {
               dfrm++;if ( dfrm > nbx ) dfrm = 1;
               df = dfmt*nbx+dfrm;
           }
 //              _uiHighNewButton(bt,df);
-          * ( B-> df ) = df;
+          * ( B->df ) = df;
           _uiDrawButtons ( B ) ;
-          uiUpdateOn ( B-> D ) ;
+          uiUpdateOn ( B->D ) ;
           return -1;
       }
       if ( ui_Leftarrow ( ans ) ) {
@@ -4120,13 +4087,13 @@
           dfrm = ( df-1 ) %nbx+1;
           dfrm--;if ( dfrm < 1 ) dfrm = nbx;
           df = dfmt*nbx+dfrm;
-          while ( ( B-> sw [ df-1 ] < 1 ) ) {
+          while ( ( B->sw [ df-1 ] < 1 ) ) {
               dfrm--;if ( dfrm < 1 ) dfrm = nbx;
               df = dfmt*nbx+dfrm;
           }
-          * ( B-> df ) = df;
+          * ( B->df ) = df;
           _uiDrawButtons ( B ) ;
-          uiUpdateOn ( B-> D ) ;
+          uiUpdateOn ( B->D ) ;
           return -1;
       }
       if ( ui_Rightarrow ( ans ) ) {
@@ -4134,13 +4101,13 @@
           dfrm = ( df-1 ) %nbx+1;
           dfrm++;if ( dfrm > nbx ) dfrm = 1;
           df = dfmt*nbx+dfrm;
-          while ( ( B-> sw [ df-1 ] < 1 ) ) {
+          while ( ( B->sw [ df-1 ] < 1 ) ) {
               dfrm++;if ( dfrm > nbx ) dfrm = 1;
               df = dfmt*nbx+dfrm;
           }
-          * ( B-> df ) = df;
+          * ( B->df ) = df;
           _uiDrawButtons ( B ) ;
-          uiUpdateOn ( B-> D ) ;
+          uiUpdateOn ( B->D ) ;
           return -1;
       }
   }
@@ -4150,10 +4117,10 @@
       BUT_STR *butn;
       ans = kbevent.key;
       B = ( DIN * ) tmp;
-      df = B-> bval;
-      butn = ( BUT_STR * ) B-> buts;
-      nbx = B-> nx;
-      nby = B-> ny;
+      df = B->bval;
+      butn = ( BUT_STR * ) B->buts;
+      nbx = B->nx;
+      nby = B->ny;
       if ( ui_Linefeed ( ans ) || ui_Return ( ans ) ) {
           return df;
       }
@@ -4166,9 +4133,9 @@
               dfrm--;if ( dfrm < 1 ) dfrm = nbx;
               df = dfmt*nbx+dfrm;
           }
-           ( B-> bval ) = df;
+           ( B->bval ) = df;
           _uiDrawButtons_n ( B ) ;
-          uiUpdateOn ( B-> D ) ;
+          uiUpdateOn ( B->D ) ;
           return -1;
       }
       if ( ui_Downarrow ( ans ) ) {
@@ -4180,9 +4147,9 @@
               dfrm++;if ( dfrm > nbx ) dfrm = 1;
               df = dfmt*nbx+dfrm;
           }
-           ( B-> bval ) = df;
+           ( B->bval ) = df;
           _uiDrawButtons_n ( B ) ;
-          uiUpdateOn ( B-> D ) ;
+          uiUpdateOn ( B->D ) ;
           return -1;
       }
       if ( ui_Leftarrow ( ans ) ) {
@@ -4194,9 +4161,9 @@
               dfrm--;if ( dfrm < 1 ) dfrm = nbx;
               df = dfmt*nbx+dfrm;
           }
-           ( B-> bval ) = df;
+           ( B->bval ) = df;
           _uiDrawButtons_n ( B ) ;
-          uiUpdateOn ( B-> D ) ;
+          uiUpdateOn ( B->D ) ;
           return -1;
       }
       if ( ui_Rightarrow ( ans ) ) {
@@ -4208,9 +4175,9 @@
               dfrm++;if ( dfrm > nbx ) dfrm = 1;
               df = dfmt*nbx+dfrm;
           }
-           ( B-> bval ) = df;
+           ( B->bval ) = df;
           _uiDrawButtons_n ( B ) ;
-          uiUpdateOn ( B-> D ) ;
+          uiUpdateOn ( B->D ) ;
           return -1;
       }
       if ( ( ans >= ' ' ) && ( ans < 128 ) ) {
@@ -4219,9 +4186,9 @@
               if ( butn [ i ] .butncode == ans ) {
                   df = i+1;
                   if ( butn [ i ] .sw >= 1 ) {
-                       ( B-> bval ) = df;
+                       ( B->bval ) = df;
                       _uiDrawButtons_n ( B ) ;
-                      uiUpdateOn ( B-> D ) ;
+                      uiUpdateOn ( B->D ) ;
                       return df;
                   }
               }
@@ -4235,7 +4202,7 @@
       B = ( DIB * ) tmp;
       df = -1;
       if ( ( kk = GetNewButtonKeyRelease ( B , kbevent ) ) > 0 ) {
-          df = * ( B-> df ) ;
+          df = * ( B->df ) ;
       }
       return df;
   }
@@ -4245,7 +4212,7 @@
       B = ( DIN * ) tmp;
       df = -1;
       if ( ( kk = GetButtonKeyRelease ( B , kbevent ) ) > 0 ) {
-          df = ( B-> bval ) ;
+          df = ( B->bval ) ;
       }
       return df;
   }
@@ -4254,11 +4221,11 @@
       df = -1;
 //   printf("KeyReleaseInHBAr\n");
       if ( ( kk = GetNewButtonKeyRelease ( bt , kbevent ) ) > 0 ) {
-          df = bt-> df;
+          df = bt->df;
           if ( ( kk != 0 ) ) {
 //          _uiHighButton(bt,df);
               _uiHighNewButton ( bt , df ) ;
-              uiUpdateOn ( bt-> D ) ;
+              uiUpdateOn ( bt->D ) ;
           }
       }
       return df;
@@ -4274,25 +4241,25 @@
           int evgax , evgay;
           DIALOG *D;
           kgWC *wc;
-          D = ( DIALOG * ) ( w-> D ) ;
+          D = ( DIALOG * ) ( w->D ) ;
           wc = WC ( D ) ;
           uiBkup_clip_limits ( wc ) ;
           uiSet_full_scrn ( wc ) ;
-          evgay = D-> evgay;
-          x1 = w-> x2-w-> width-w-> offset+D-> xo;
-          y1 = w-> y1+D-> yo;
-          x2 = x1+w-> width;
-          y2 = y1+w-> width;
+          evgay = D->evgay;
+          x1 = w->x2-w->width-w->offset+D->xo;
+          y1 = w->y1+D->yo;
+          x2 = x1+w->width;
+          y2 = y1+w->width;
           df = _uiMenu ( w ) ;
-          br = w-> bwsr;
+          br = w->bwsr;
 //    kg_scr_recover(wc);
-          gc = D-> gc;
-          m = br-> menu;
+          gc = D->gc;
+          m = br->menu;
 //    ui_draw_browser((DIW *)w);
           _uiMake_W ( ( DIW * ) w ) ;
           uiUpdateOn ( D ) ;
           uiRest_clip_limits ( wc ) ;
-          return ( br-> df ) ;
+          return ( br->df ) ;
       }
       return df;
   }
@@ -4311,50 +4278,50 @@
   int KeyReleaseInTableBox ( TX_STR *tptr , KBEVENT kbevent ) {
       return _ui_processTablekey ( tptr , kbevent , 'T' ) ;
   }
-  int ProcessKeyRelease ( DIALOG *D , KBEVENT kbevent , int i , int hcontrols , int controls ) 
+  int ProcessKeyRelease ( DIALOG *D , KBEVENT kbevent , int i , int hcontrols , int controls )  \
       {
       DIA *d;
       int ch , df , OK = 0 , uperr , ret;
       if ( controls > 0 ) {
-          d = D-> d;
-          ch = D-> d [ i ] .t-> code;
+          d = D->d;
+          ch = D->d [ i ] .t->code;
           switch ( ch ) {
               case 'h':
-              df = KeyReleaseInButtonBox ( ( D-> d [ i ] .h ) , kbevent ) ;
+              df = KeyReleaseInButtonBox ( ( D->d [ i ] .h ) , kbevent ) ;
               if ( df >= 0 ) {
                   if ( Up_D_SplBt_Box ( df , i , D ) > 0 ) OK = 1;
                   else { OK = 0;}
-                  _uiDrawButtons_n ( ( D-> d [ i ] .H ) ) ;
+                  _uiDrawButtons_n ( ( D->d [ i ] .H ) ) ;
                   uiUpdateOn ( D ) ;
               }
               break;
               case 'n':
-              df = KeyReleaseInButtonBox ( ( D-> d [ i ] .N ) , kbevent ) ;
+              df = KeyReleaseInButtonBox ( ( D->d [ i ] .N ) , kbevent ) ;
               if ( df >= 0 ) {
-                  uperr = Up_D_Btn_Box ( ( D-> d [ i ] .N-> bval ) , i , D ) ;
+                  uperr = Up_D_Btn_Box ( ( D->d [ i ] .N->bval ) , i , D ) ;
                   if ( ( controls == 1 ) && ( uperr > 0 ) ) {OK = 1; break;}
                   if ( ( hcontrols == 0 ) && ( uperr > 0 ) ) {OK = 1; break;}
-                  _uiDrawButtons_n ( ( D-> d [ i ] .n ) ) ;
+                  _uiDrawButtons_n ( ( D->d [ i ] .n ) ) ;
                   uiUpdateOn ( D ) ;
               }
               break;
               case 'b':
               case 'N':
-              df = KeyReleaseInNewButtonBox ( ( D-> d [ i ] .n ) , kbevent ) ;
+              df = KeyReleaseInNewButtonBox ( ( D->d [ i ] .n ) , kbevent ) ;
               if ( df >= 0 ) {
-                  uperr = Up_D_Bt_Box ( ( ( BUTS * ) D-> d [ i ] .n-> buts ) -> df , i , D ) ;
+                  uperr = Up_D_Bt_Box ( ( ( BUTS * ) D->d [ i ] .n->buts )->df , i , D ) ;
                   if ( ( controls == 1 ) && ( uperr > 0 ) ) {OK = 1; break;}
                   if ( ( hcontrols == 0 ) && ( uperr > 0 ) ) {OK = 1; break;}
-                  _uiDrawButtons ( ( D-> d [ i ] .n ) ) ;
+                  _uiDrawButtons ( ( D->d [ i ] .n ) ) ;
                   uiUpdateOn ( D ) ;
               }
               break;
               case 'H':
-              df = KeyReleaseInHBar ( ( BUTS* ) ( D-> d [ i ] .H-> buts ) , kbevent ) ;
+              df = KeyReleaseInHBar ( ( BUTS* ) ( D->d [ i ] .H->buts ) , kbevent ) ;
               if ( df >= 0 ) {
                   if ( Up_D_Ht_Box ( df , i , D ) > 0 ) OK = 1;
                   else { OK = 0;}
-                  _uiDrawButtons ( ( D-> d [ i ] .n ) ) ;
+                  _uiDrawButtons ( ( D->d [ i ] .n ) ) ;
                   uiUpdateOn ( D ) ;
               }
               break;
@@ -4366,87 +4333,86 @@
               }
               break;
               case 'v':
-              df = EventInV ( D-> d [ i ] .v , kbevent ) ;
+              df = EventInV ( D->d [ i ] .v , kbevent ) ;
               break;
               case 'z':
-              df = EventInZ ( D-> d [ i ] .z , kbevent ) ;
+              df = EventInZ ( D->d [ i ] .z , kbevent ) ;
               break;
               case 'x':
-              ret = EventInNewMenu ( D-> d [ i ] .x , kbevent ) ;
+              ret = EventInNewMenu ( D->d [ i ] .x , kbevent ) ;
               if ( ret > 0 ) {
-                  df = * ( D-> d [ i ] .x-> df ) ;
+                  df = * ( D->d [ i ] .x->df ) ;
                   uperr = Up_D_NewMenu_Box ( df , i , D ) ;
                   if ( ( controls == 1 ) && ( uperr > 0 ) ) OK = 1;
               }
               break;
               case 'y':
-              ret = EventInY ( D-> d [ i ] .y , kbevent ) ;
+              ret = EventInY ( D->d [ i ] .y , kbevent ) ;
               if ( ret > 0 ) {
-                  df = * ( D-> d [ i ] .y-> df ) ;
+                  df = * ( D->d [ i ] .y->df ) ;
                   uperr = Up_D_Y_Box ( df , i , D ) ;
                   if ( ( controls == 1 ) && ( uperr > 0 ) ) OK = 1;
               }
               break;
               case 'c':
-              ret = EventInCheckBox ( D-> d [ i ] .c , kbevent ) ;
+              ret = EventInCheckBox ( D->d [ i ] .c , kbevent ) ;
               if ( ret > 0 ) {
-                  df = * ( D-> d [ i ] .c-> df ) ;
+                  df = * ( D->d [ i ] .c->df ) ;
                   uperr = Up_D_Y_Box ( df , i , D ) ;
                   if ( ( controls == 1 ) && ( uperr > 0 ) ) OK = 1;
               }
               break;
               case 'r':
-              ret = EventInRadioButton ( D-> d [ i ] .r , kbevent ) ;
+              ret = EventInRadioButton ( D->d [ i ] .r , kbevent ) ;
               if ( ret > 0 ) {
-                  df = * ( D-> d [ i ] .r-> df ) ;
+                  df = * ( D->d [ i ] .r->df ) ;
                   uperr = Up_D_Y_Box ( df , i , D ) ;
                   if ( ( controls == 1 ) && ( uperr > 0 ) ) OK = 1;
               }
               break;
               case 'e':
-              ret = EventInE ( ( D-> d [ i ] .e ) , kbevent ) ;
+              ret = EventInE ( ( D->d [ i ] .e ) , kbevent ) ;
               if ( ret > 0 ) {
-                  df = * ( D-> d [ i ] .e-> df ) ;
+                  df = * ( D->d [ i ] .e->df ) ;
                   uperr = Up_D_Menu_Box ( df , i , D ) ;
                   if ( ( controls == 1 ) && ( uperr > 0 ) ) OK = 1;
               }
               break;
-               case 's': //Need modification
-              df = EventInMS ( D-> d [ i ] .s , kbevent ) ;
+              case 's': //Need modification
+              df = EventInMS ( D->d [ i ] .s , kbevent ) ;
               if ( df > 0 ) {
                   uperr = Up_D_Menu_Box ( df , i , D ) ;
                   if ( ( controls == 1 ) && ( uperr > 0 ) ) OK = 1;
               }
               break;
               case 'f':
-              df = KeyReleaseInFslide ( ( S_STR * ) ( D-> d [ i ] .f-> sptr ) , kbevent ) ;
+              df = KeyReleaseInFslide ( ( S_STR * ) ( D->d [ i ] .f->sptr ) , kbevent ) ;
               if ( df >= 0 ) {
-                  Up_Fsld_Bar ( _ui_getfslidevalue ( ( S_STR * ) 
-                      ( D-> d [ i ] .f-> sptr ) ) , i , D ) ;
+                  Up_Fsld_Bar ( _ui_getfslidevalue ( ( S_STR * )  \
+                      ( D->d [ i ] .f->sptr ) ) , i , D ) ;
                   if ( ( controls == 1 ) ) {OK = 1; break;}
               }
               break;
               case 'd':
-              df = KeyReleaseInDslide ( ( S_STR * ) ( D-> d [ i ] .d-> sptr ) , kbevent ) ;
+              df = KeyReleaseInDslide ( ( S_STR * ) ( D->d [ i ] .d->sptr ) , kbevent ) ;
               if ( df >= 0 ) {
-                  Up_Isld_Bar ( _ui_getdslidevalue ( ( S_STR * ) 
-                      ( D-> d [ i ] .d-> sptr ) ) , i , D ) ;
+                  Up_Isld_Bar ( _ui_getdslidevalue ( ( S_STR * )  \
+                      ( D->d [ i ] .d->sptr ) ) , i , D ) ;
                   if ( ( controls == 1 ) ) {OK = 1; break;}
               }
               break;
               case 'P':
-              df = KeyReleaseInHslide ( ( D-> d [ i ] .B ) , kbevent ) ;
+              df = KeyReleaseInHslide ( ( D->d [ i ] .B ) , kbevent ) ;
               if ( df >= 0 ) {
-                  Up_Hsld_Bar ( _ui_getdslidevalue ( ( S_STR * ) 
-                      ( D-> d [ i ] .B-> sptr ) ) , i , D ) ;
+                  Up_Hsld_Bar ( _ui_getdslidevalue ( ( S_STR * )  \
+                      ( D->d [ i ] .B->sptr ) ) , i , D ) ;
                   if ( ( controls == 1 ) ) {OK = 1; break;}
               }
               break;
               case 't':
-              df = KeyReleaseInTextBox ( ( TX_STR * ) 
-                  ( D-> d [ i ] .t-> tstr ) , kbevent ) ;
+              df = KeyReleaseInTextBox ( ( TX_STR * ) ( D->d [ i ] .t->tstr ) , kbevent ) ;
               if ( df >= 0 ) {
-                  if ( _ui_readtextbox ( ( TX_STR * ) ( D-> d [ i ] .t-> tstr ) ) < 0 ) {
+                  if ( _ui_readtextbox ( ( TX_STR * ) ( D->d [ i ] .t->tstr ) ) < 0 ) {
                       gprintf ( D , "Error in Text box data" ) ;
                   }
                   else {
@@ -4456,10 +4422,9 @@
               }
               break;
               case 'T':
-              df = KeyReleaseInTableBox ( ( TX_STR * ) 
-                  ( D-> d [ i ] .t-> tstr ) , kbevent ) ;
+              df = KeyReleaseInTableBox ( ( TX_STR * ) ( D->d [ i ] .t->tstr ) , kbevent ) ;
               if ( df != -1 ) {
-                  if ( _ui_readtextbox ( ( TX_STR * ) ( D-> d [ i ] .t-> tstr ) ) < 0 ) {
+                  if ( _ui_readtextbox ( ( TX_STR * ) ( D->d [ i ] .t->tstr ) ) < 0 ) {
                       gprintf ( D , "Error in Table box data" ) ;
                   }
                   else {
@@ -4476,7 +4441,7 @@
   }
   int ui_NotInputBox ( DIALOG *D , int i ) {
       int ch;
-      ch = D-> d [ i ] .t-> code;
+      ch = D->d [ i ] .t->code;
       if ( kgGetWidgetVisibility ( kgGetWidget ( D , i ) ) == 0 ) return 1;
       if ( ch == 't' ) return 0;
       if ( ch == 'T' ) return 0;
@@ -4569,34 +4534,34 @@
       DIA *d;
       int i = 0 , ret = 0;
       int ch;
-      d = D-> d;
+      d = D->d;
       ret = OK;
       uiUpdateOff ( D ) ;
 //   for(i=0;i<n;i++) {
       while ( d [ i ] .t != NULL ) {
-          ch = ( d [ i ] .t-> code ) ;
+          ch = ( d [ i ] .t->code ) ;
           switch ( ( int ) ch ) {
               case 'r':
-              * ( d [ i ] .r-> df ) = ( ( BRW_STR * ) d [ i ] .r-> bwsr ) -> df;
+              * ( d [ i ] .r->df ) = ( ( BRW_STR * ) d [ i ] .r->bwsr )->df;
               break;
               case 'c':
-              * ( d [ i ] .c-> df ) = ( ( BRW_STR * ) d [ i ] .c-> bwsr ) -> df;
+              * ( d [ i ] .c->df ) = ( ( BRW_STR * ) d [ i ] .c->bwsr )->df;
               break;
               case 'y':
-              * ( d [ i ] .y-> df ) = ( ( BRW_STR * ) d [ i ] .y-> bwsr ) -> df;
+              * ( d [ i ] .y->df ) = ( ( BRW_STR * ) d [ i ] .y->bwsr )->df;
               break;
               case 'x':
-              * ( d [ i ] .x-> df ) = ( ( BRW_STR * ) d [ i ] .x-> bwsr ) -> df;
+              * ( d [ i ] .x->df ) = ( ( BRW_STR * ) d [ i ] .x->bwsr )->df;
               break;
               case 't':
               break;
               case 'T':
               break;
               case 'h':
-              ret = ( d [ i ] .h-> bval ) ;
+              ret = ( d [ i ] .h->bval ) ;
               break;
               case 'H':
-              ret = * ( d [ i ] .H-> df ) ;
+              ret = * ( d [ i ] .H->df ) ;
               break;
               case 'n':
               break;
@@ -4604,19 +4569,19 @@
               case 'N':
               break;
               case 'f':
-              * ( d [ i ] .f-> df ) = _ui_getfslidevalue 
-                  ( ( S_STR * ) ( d [ i ] .f-> sptr ) ) ;
+              * ( d [ i ] .f->df ) = _ui_getfslidevalue  \
+                  ( ( S_STR * ) ( d [ i ] .f->sptr ) ) ;
               break;
               case 'd':
-              * ( d [ i ] .d-> df ) = _ui_getdslidevalue 
-                  ( ( S_STR * ) ( d [ i ] .d-> sptr ) ) ;
+              * ( d [ i ] .d->df ) = _ui_getdslidevalue  \
+                  ( ( S_STR * ) ( d [ i ] .d->sptr ) ) ;
               break;
               case 'P':
-              * ( d [ i ] .d-> df ) = _ui_getdslidevalue 
-                  ( ( S_STR * ) ( d [ i ] .B-> sptr ) ) ;
+              * ( d [ i ] .d->df ) = _ui_getdslidevalue  \
+                  ( ( S_STR * ) ( d [ i ] .B->sptr ) ) ;
               break;
               case 'w':
-              * ( d [ i ] .w-> df ) = ( ( BRW_STR * ) d [ i ] .w-> bwsr ) -> df;
+              * ( d [ i ] .w->df ) = ( ( BRW_STR * ) d [ i ] .w->bwsr )->df;
               break;
               case 'g':
               break;
@@ -4631,7 +4596,7 @@
               case 'i':
               break;
               case 'e':
-              * ( d [ i ] .e-> df ) = ( ( BRW_STR * ) d [ i ] .e-> bwsr ) -> df;
+              * ( d [ i ] .e->df ) = ( ( BRW_STR * ) d [ i ] .e->bwsr )->df;
               break;
               case 's':
               break;
@@ -4655,45 +4620,44 @@
   void kgInitUi ( void *Tmp ) {
       DIALOG *D;
       D = ( DIALOG * ) Tmp;
-      D-> xo = D-> yo = 10;
-      D-> xl = D-> yl = 300;
-      D-> bkup = 0;
-      D-> bor_type = 4;
-      D-> tw = D-> bw = D-> lw = D-> rw = 4;
-      D-> df = 0;
-      D-> Initfun = NULL;
-      D-> Cleanupfun = NULL;
-      D-> ResizeCallback = NULL;
-      D-> WaitCallback = NULL;
-      D-> Callback = NULL;
-      D-> kbattn = D-> butattn = 0;
-      kgDefaultGuiTheme ( & ( D-> gc ) ) ;
-      D-> fullscreen = 0;
-      D-> KILL = 0;
-      D-> SUBWIN = 0;
-      D-> PWIN = NULL;
-      D-> NoWinMngr = 0;
-      D-> Maxl = 0;
-      D-> Maxw = 0;
-      D-> ThInfo = NULL;
+      D->xo = D->yo = 10;
+      D->xl = D->yl = 300;
+      D->bkup = 0;
+      D->bor_type = 4;
+      D->tw = D->bw = D->lw = D->rw = 4;
+      D->df = 0;
+      D->Initfun = NULL;
+      D->Cleanupfun = NULL;
+      D->ResizeCallback = NULL;
+      D->WaitCallback = NULL;
+      D->Callback = NULL;
+      D->kbattn = D->butattn = 0;
+      kgDefaultGuiTheme ( & ( D->gc ) ) ;
+      D->fullscreen = 0;
+      D->KILL = 0;
+      D->SUBWIN = 0;
+      D->PWIN = NULL;
+      D->NoWinMngr = 0;
+      D->Maxl = 0;
+      D->Maxw = 0;
+      D->ThInfo = NULL;
 // D->VerId=VER;  //yymmvvss
 // strcpy(D->name,"Kulina Designer");
-      sprintf ( D-> name , "Kulina Designer Ver. %d.%2.2d" , ( 
-          ( D-> VerId%10000 ) /100 ) , ( ( D-> VerId%100 ) ) ) ;
-      D-> Deco = D-> DrawBkgr = D-> Newwin = 1;
-      D-> Sticky = 0;
-      D-> Fixpos = D-> NoTaskBar = 0;
-      D-> transparency = 0.0;
-      D-> StackPos = 0;
-      D-> Resize = 0;
-      D-> MinWidth = 100;
-      D-> MinHeight = 100;
-      D-> wc = D-> parent = D-> pt = D-> Shapexpm = D-> SearchList = D-> GrpList = NULL;
-          
-      D-> TotWid = 0;
-      D-> CurWid = 0;
-      D-> InputWid = -1;
-      D-> Kbrd = NULL;
+      sprintf ( D->name , "Kulina Designer Ver. %d.%2.2d" ,  \
+          ( ( D->VerId%10000 ) /100 ) , ( ( D->VerId%100 ) ) ) ;
+      D->Deco = D->DrawBkgr = D->Newwin = 1;
+      D->Sticky = 0;
+      D->Fixpos = D->NoTaskBar = 0;
+      D->transparency = 0.0;
+      D->StackPos = 0;
+      D->Resize = 0;
+      D->MinWidth = 100;
+      D->MinHeight = 100;
+      D->wc = D->parent = D->pt = D->Shapexpm = D->SearchList = D->GrpList = NULL;
+      D->TotWid = 0;
+      D->CurWid = 0;
+      D->InputWid = -1;
+      D->Kbrd = NULL;
       return;
   }
   void *kgUiFromWindow ( void *Dsp , void * Win , void * cmap ) {
@@ -4702,10 +4666,10 @@
       D = ( DIALOG * ) Malloc ( sizeof ( DIALOG ) ) ;
       kgInitUi ( D ) ;
       wc = ( kgWC * ) Malloc ( sizeof ( kgWC ) ) ;
-      D-> wc = wc;
-      wc-> Dsp = ( Display * ) Dsp;
-      wc-> Win = ( Window ) Win;
-      wc-> Cmap = ( Colormap ) cmap;
+      D->wc = wc;
+      wc->Dsp = ( Display * ) Dsp;
+      wc->Win = ( Window ) Win;
+      wc->Cmap = ( Colormap ) cmap;
 //   uiMakeFontlist();
       return ( void * ) D;
   }
@@ -4713,7 +4677,7 @@
       DIALOG *Dtmp;
       if ( D == NULL ) return;
       Dtmp = ( DIALOG * ) D;
-      if ( Dtmp-> wc != NULL ) Free ( Dtmp-> wc ) ;
+      if ( Dtmp->wc != NULL ) Free ( Dtmp->wc ) ;
       Free ( D ) ;
       return;
   }
@@ -4725,48 +4689,48 @@
       D = ( DIALOG * ) tmp;
       WIDGETGRP *pt = NULL;
 #if 1
-      if ( D-> SearchList != NULL ) Dempty ( ( Dlink * ) D-> SearchList ) ;
-      Grp = ( Dlink * ) D-> GrpList;
+      if ( D->SearchList != NULL ) Dempty ( ( Dlink * ) D->SearchList ) ;
+      Grp = ( Dlink * ) D->GrpList;
       if ( Grp != NULL ) {
           Resetlink ( Grp ) ;
           while ( ( pt = ( WIDGETGRP * ) Getrecord ( Grp ) ) != NULL ) {
-              if ( pt-> CleanupGrp != NULL ) pt-> CleanupGrp ( D ) ;
-              Dfree ( ( Dlink * ) pt-> wlist ) ;
-              if ( pt-> arg != NULL ) kgFreeDouble ( pt-> arg ) ;
-              pt-> arg = NULL;
+              if ( pt->CleanupGrp != NULL ) pt->CleanupGrp ( D ) ;
+              Dfree ( ( Dlink * ) pt->wlist ) ;
+              if ( pt->arg != NULL ) kgFreeDouble ( pt->arg ) ;
+              pt->arg = NULL;
           }
           Dempty ( Grp ) ;
-          D-> GrpList = NULL;
+          D->GrpList = NULL;
       }
-      D-> SearchList = D-> GrpList = NULL;
+      D->SearchList = D->GrpList = NULL;
 #endif
  // TCB Checking
 #if 1
-      switch ( D-> VerId ) {
+      switch ( D->VerId ) {
           case 1401010100:
           uiFreeWidgetMem ( D ) ;
-          kgFreeDouble ( ( void ** ) ( D-> d ) ) ;
-          D-> d = NULL;
+          kgFreeDouble ( ( void ** ) ( D->d ) ) ;
+          D->d = NULL;
           break;
           case 1401010200:
-          if ( D-> Cleanupfun != NULL ) D-> Cleanupfun ( D ) ;
+          if ( D->Cleanupfun != NULL ) D->Cleanupfun ( D ) ;
           uiFreeWidgetMem ( D ) ;
-          kgFreeDouble ( ( void ** ) ( D-> d ) ) ;
-          D-> d = NULL;
+          kgFreeDouble ( ( void ** ) ( D->d ) ) ;
+          D->d = NULL;
           break;
           case 2107030000:
-          if ( D-> Cleanupfun != NULL ) D-> Cleanupfun ( D ) ;
+          if ( D->Cleanupfun != NULL ) D->Cleanupfun ( D ) ;
           uiFreeWidgetMem ( D ) ;
-          Free ( ( D-> Kbrd ) ) ;
-          kgFreeDouble ( ( void ** ) ( D-> d ) ) ;
-          D-> d = NULL;
+          Free ( ( D->Kbrd ) ) ;
+          kgFreeDouble ( ( void ** ) ( D->d ) ) ;
+          D->d = NULL;
           break;
           default :
 #if 0
-          if ( D-> Cleanupfun != NULL ) D-> Cleanupfun ( D ) ;
+          if ( D->Cleanupfun != NULL ) D->Cleanupfun ( D ) ;
           uiFreeWidgetMem ( D ) ;
-          kgFreeDouble ( ( void ** ) ( D-> d ) ) ;
-          D-> d = NULL;
+          kgFreeDouble ( ( void ** ) ( D->d ) ) ;
+          D->d = NULL;
 #endif
           break;
       }
@@ -4781,16 +4745,16 @@
       WIDGETGRP *pt = NULL;
       int gid = 0;
       pt = ( WIDGETGRP * ) Malloc ( sizeof ( WIDGETGRP ) ) ;
-      Grp = ( Dlink * ) D-> GrpList;
+      Grp = ( Dlink * ) D->GrpList;
       if ( Grp == NULL ) {
           Grp = Dopen ( ) ;
-          D-> GrpList = Grp;
+          D->GrpList = Grp;
       }
       Gpt = Dopen ( ) ;
-      pt-> wlist = ( void * ) Gpt;
-      pt-> arg = NULL;
-      pt-> hide = 0;
-      pt-> CleanupGrp = NULL;
+      pt->wlist = ( void * ) Gpt;
+      pt->arg = NULL;
+      pt->hide = 0;
+      pt->CleanupGrp = NULL;
       Dappend ( Grp , pt ) ;
       gid = Dcount ( Grp ) ;
 // printf("Dcount= %d\n",gid);
@@ -4803,7 +4767,7 @@
       Dlink *Grp;
       Dlink *Gpt;
       WIDGETGRP *pt = NULL;
-      Grp = ( Dlink * ) D-> GrpList;
+      Grp = ( Dlink * ) D->GrpList;
       if ( Grp == NULL ) {
           return 0;
       }
@@ -4812,7 +4776,7 @@
       Resetlink ( Grp ) ;
       Dposition ( Grp , grpid ) ;
       pt = ( WIDGETGRP * ) Getrecord ( Grp ) ;
-      Gpt = ( Dlink * ) pt-> wlist;
+      Gpt = ( Dlink * ) pt->wlist;
       Widget = ( int * ) Malloc ( sizeof ( int ) ) ;
       *Widget = WidgetNo;
       Dappend ( Gpt , Widget ) ;
@@ -4824,7 +4788,7 @@
       Dlink *Grp;
       Dlink *Gpt;
       WIDGETGRP *pt = NULL;
-      Grp = ( Dlink * ) D-> GrpList;
+      Grp = ( Dlink * ) D->GrpList;
       if ( Grp == NULL ) {
           return 0;
       }
@@ -4833,7 +4797,7 @@
       Resetlink ( Grp ) ;
       Dposition ( Grp , grpid ) ;
       pt = ( WIDGETGRP * ) Getrecord ( Grp ) ;
-      Gpt = ( Dlink * ) pt-> wlist;
+      Gpt = ( Dlink * ) pt->wlist;
       Dappend ( Gpt , Widget ) ;
       return 1;
   }
@@ -4843,7 +4807,7 @@
       Dlink *Grp;
       Dlink *Gpt;
       WIDGETGRP *pt = NULL;
-      Grp = ( Dlink * ) D-> GrpList;
+      Grp = ( Dlink * ) D->GrpList;
       if ( Grp == NULL ) {
           return 0;
       }
@@ -4852,7 +4816,7 @@
       Resetlink ( Grp ) ;
       Dposition ( Grp , grpid ) ;
       pt = ( WIDGETGRP * ) Getrecord ( Grp ) ;
-      pt-> CleanupGrp = Cleanup;
+      pt->CleanupGrp = Cleanup;
       return 1;
   }
   WIDGETGRP * kgGetWidgetGrp ( void *tmp , int grpid ) {
@@ -4862,7 +4826,7 @@
       Dlink *Grp;
       Dlink *Gpt;
       WIDGETGRP *pt = NULL;
-      Grp = ( Dlink * ) D-> GrpList;
+      Grp = ( Dlink * ) D->GrpList;
       if ( Grp == NULL ) {
           return NULL;
       }
@@ -4878,14 +4842,14 @@
       DIALOG *D;
       DIA *d;
       D = ( DIALOG * ) tmp;
-      d = D-> d;
+      d = D->d;
       i = 0;
       if ( d != NULL ) while ( d [ i ] .t != NULL ) i++;
       i++;
       d = ( DIA * ) realloc ( d , sizeof ( DIA ) * ( i+1 ) ) ;
       d [ i-1 ] .t = ( DIT * ) Widget;
       d [ i ] .t = NULL;
-      D-> d = d;
+      D->d = d;
       return 1;
   }
   int kgDeleteWidget ( void *tmp , void * Widget ) {
@@ -4893,7 +4857,7 @@
       DIALOG *D;
       DIA *d;
       D = ( DIALOG * ) tmp;
-      d = D-> d;
+      d = D->d;
       i = 0;
       if ( d != NULL ) {
           while ( d [ i ] .t != NULL ) {
@@ -4914,7 +4878,7 @@
       DIALOG *D;
       if ( tmp != NULL ) {
           D = ( DIALOG * ) tmp;
-          D-> KILL = 1000;
+          D->KILL = 1000;
           return 1;
       }
       else return 0;
@@ -4930,17 +4894,16 @@
       DIT *T;
       KBEVENT kbevent;
       D = ( DIALOG * ) Tmp;
-      if ( D-> InputWid < 0 ) return;
-      i = D-> InputWid;
-      code = D-> d [ i ] .t-> code;
+      if ( D->InputWid < 0 ) return;
+      i = D->InputWid;
+      code = D->d [ i ] .t->code;
       kbevent.event = 5;
       kbevent.key = ch;
       switch ( code ) {
           case 't':
-          df = KeyReleaseInTextBox ( ( TX_STR * ) 
-              ( D-> d [ i ] .t-> tstr ) , kbevent ) ;
+          df = KeyReleaseInTextBox ( ( TX_STR * ) ( D->d [ i ] .t->tstr ) , kbevent ) ;
           if ( df >= 0 ) {
-              if ( _ui_readtextbox ( ( TX_STR * ) ( D-> d [ i ] .t-> tstr ) ) < 0 ) {
+              if ( _ui_readtextbox ( ( TX_STR * ) ( D->d [ i ] .t->tstr ) ) < 0 ) {
                   gprintf ( D , "Error in Text box data" ) ;
               }
               else {
@@ -4949,10 +4912,9 @@
           }
           break;
           case 'T':
-          df = KeyReleaseInTableBox ( ( TX_STR * ) 
-              ( D-> d [ i ] .t-> tstr ) , kbevent ) ;
+          df = KeyReleaseInTableBox ( ( TX_STR * ) ( D->d [ i ] .t->tstr ) , kbevent ) ;
           if ( df != -1 ) {
-              if ( _ui_readtextbox ( ( TX_STR * ) ( D-> d [ i ] .t-> tstr ) ) < 0 ) {
+              if ( _ui_readtextbox ( ( TX_STR * ) ( D->d [ i ] .t->tstr ) ) < 0 ) {
                   gprintf ( D , "Error in Table box data" ) ;
               }
               else {
@@ -4990,38 +4952,38 @@
       char ch;
       int tempc = 1;
       kgWC *wc;
-      d = D-> d;
-      D-> tmpdir = ui_mktmpdir ( ) ;
-      D-> df = 0;
-      pthread_mutex_init ( & ( D-> Lock ) , NULL ) ;
+      d = D->d;
+      D->tmpdir = ui_mktmpdir ( ) ;
+      D->df = 0;
+      pthread_mutex_init ( & ( D->Lock ) , NULL ) ;
 //   uiMakeFontlist();
       kgInitGm ( ) ;
-      D-> ThInfo = OpenThreads ( getCores ( ) ) ;
+      D->ThInfo = OpenThreads ( getCores ( ) ) ;
 //   D->ThInfo = OpenThreads(1);
-      if ( ( D-> Newwin == 1 ) || ( D-> parent == NULL ) ) {
-          D-> Newwin = 1;
-          D-> bkup = 0;
-          D-> name [ 299 ] = '\0';
-          if ( D-> Resize ) {
-              if ( D-> xl < D-> MinWidth ) { D-> MinWidth = D-> xl/2; }
-              if ( D-> yl < D-> MinHeight ) { D-> MinHeight = D-> yl/2; }
+      if ( ( D->Newwin == 1 ) || ( D->parent == NULL ) ) {
+          D->Newwin = 1;
+          D->bkup = 0;
+          D->name [ 299 ] = '\0';
+          if ( D->Resize ) {
+              if ( D->xl < D->MinWidth ) { D->MinWidth = D->xl/2; }
+              if ( D->yl < D->MinHeight ) { D->MinHeight = D->yl/2; }
           }
           uiDialogWindow ( D ) ;
-          D-> xo = 0 , D-> yo = 0;
+          D->xo = 0 , D->yo = 0;
       }
-      else D-> bkup = 1;
+      else D->bkup = 1;
       Parent = getParentDisplay ( D ) ;
-      if ( D-> Newwin != 1 ) {
-          wc = Parent-> wc;
-          D-> wc = Parent-> wc;
-          tempc = wc-> c_color;
+      if ( D->Newwin != 1 ) {
+          wc = Parent->wc;
+          D->wc = Parent->wc;
+          tempc = wc->c_color;
       }
       wc = WC ( Parent ) ;
-      pthread_mutex_init ( & ( wc-> Rlock ) , NULL ) ;
-      D-> evgax = WC ( Parent ) -> EVGAX;
-      D-> evgay = WC ( Parent ) -> EVGAY;
+      pthread_mutex_init ( & ( wc->Rlock ) , NULL ) ;
+      D->evgax = WC ( Parent )->EVGAX;
+      D->evgay = WC ( Parent )->EVGAY;
       uiDefaultGuiFontSize ( D ) ;
-      if ( D-> SearchList == NULL ) D-> SearchList = ( void * ) Dopen ( ) ;
+      if ( D->SearchList == NULL ) D->SearchList = ( void * ) Dopen ( ) ;
       kgAddSearchDir ( D , "/usr/share/icons" ) ;
       kgAddSearchDir ( D , "/usr/share/icons/kulina" ) ;
       kgAddSearchDir ( D , "/usr/share/local/icons" ) ;
@@ -5034,120 +4996,119 @@
       }
       n = 0; while ( d [ n ] .t != NULL ) n++;
 //   if(n <= 0 ) {return -1;}
-      x2 = D-> xo+D-> xl , y2 = D-> yo+D-> yl;
-      D-> Hsize = Hsize;
+      x2 = D->xo+D->xl , y2 = D->yo+D->yl;
+      D->Hsize = Hsize;
       uiBkup_clip_limits ( WC ( D ) ) ;
-      if ( D-> StackPos == 1 ) kgRaiseWindow ( D ) ;
+      if ( D->StackPos == 1 ) kgRaiseWindow ( D ) ;
       again:
       uiUpdateOff ( D ) ;
       OK = 0;
       err = 0;
-      if ( D-> bkup == 1 ) kg_scr_back ( D-> wc , D-> xo-1 , D-> yo-1 , D-> xo+D-> xl+1 , D-> yo+D-> yl+1 ) ;
+      if ( D->bkup == 1 ) kg_scr_back ( D->wc , D->xo-1 , D->yo-1 , D->xo+D->xl+1 , D->yo+D->yl+1 ) ;
           
       controls = uiDraw_Dialog ( D ) ;
-      if ( D-> Initfun != NULL ) {
-          OK = ( D-> Initfun ( D ) ) ;
+      if ( D->Initfun != NULL ) {
+          OK = ( D->Initfun ( D ) ) ;
       }
       _uiSetupGboxes ( D ) ;
       if ( controls <= 0 ) {
-          if ( D-> Callback == NULL ) {
+          if ( D->Callback == NULL ) {
               OK = 1001;
           }
           else OK = 0;
       }
-      else {if ( D-> Initfun == NULL ) OK = 1;else OK = 0;}
-      oldi = D-> df;
-      D-> df = -1;
+      else {if ( D->Initfun == NULL ) OK = 1;else OK = 0;}
+      oldi = D->df;
+      D->df = -1;
       i = 0;
-      if ( D-> controls > 1 ) {
+      if ( D->controls > 1 ) {
           i = oldi;
-          ch = ( d [ i ] .t-> code ) ;
+          ch = ( d [ i ] .t->code ) ;
           draw_key_board_attn ( i , D ) ;
           hcontrols = 0;
           j = 0;
           while ( d [ j ] .t != NULL ) {
-              if ( ( d [ j ] .t-> code == 'H' ) || ( d [ j ] .t-> code == 'h' ) ) 
+              if ( ( d [ j ] .t->code == 'H' ) || ( d [ j ] .t->code == 'h' ) )  \
                   {hcontrols++;break;}
               else j++;
           }
       }
       uiUpdateOn ( D ) ;
 //   if(D->controls>0){OK=0; kbevent = kgGetEvent(Parent);} // skipping one event to clean
-       if ( D-> controls > 0 ) {OK = 0; kgSkipEvents 
-           ( D ) ;} // skipping one event to clean
-      D-> CurWid = i;
-      WaitThreads ( D-> ThInfo ) ;
-      pthread_mutex_lock ( & ( D-> Lock ) ) ;
+      if ( D->controls > 0 ) {OK = 0; kgSkipEvents ( D ) ;} // skipping one event to clean
+      D->CurWid = i;
+      WaitThreads ( D->ThInfo ) ;
+      pthread_mutex_lock ( & ( D->Lock ) ) ;
       while ( OK < 1 ) {
-          if ( D-> KILL == 1000 ) {OK = 1002;break;}
-          pthread_mutex_unlock ( & ( D-> Lock ) ) ;
-          if ( D-> WaitCallback != NULL ) {
+          if ( D->KILL == 1000 ) {OK = 1002;break;}
+          pthread_mutex_unlock ( & ( D->Lock ) ) ;
+          if ( D->WaitCallback != NULL ) {
               if ( kgGetTimedEvent ( D , & kbevent ) == 0 ) {
-                  OK = D-> WaitCallback ( D ) ;
+                  OK = D->WaitCallback ( D ) ;
                   if ( OK ) OK = 1001;
-                  pthread_mutex_lock ( & ( D-> Lock ) ) ;
+                  pthread_mutex_lock ( & ( D->Lock ) ) ;
                   continue;
               }
           }
           else kbevent = kgSkipMouseMove ( Parent ) ;
-          pthread_mutex_lock ( & ( D-> Lock ) ) ;
-          D-> kb = kbevent;
+          pthread_mutex_lock ( & ( D->Lock ) ) ;
+          D->kb = kbevent;
           KEY = kbevent.event;
-          D-> PON_X = kbevent.x; D-> PON_Y = kbevent.y;
-          wc-> eventback = wc-> event;
+          D->PON_X = kbevent.x; D->PON_Y = kbevent.y;
+          wc->eventback = wc->event;
           if ( KEY == 101 ) {
 //      printf("Got 101\n");
-              if ( D-> ResizeCallback == NULL ) {
+              if ( D->ResizeCallback == NULL ) {
                   int xres , yres;
-                  D-> xl = kbevent.x;
-                  D-> yl = kbevent.y;
-                  D-> xl = xres;
-                  D-> yl = yres;
+                  D->xl = kbevent.x;
+                  D->yl = kbevent.y;
+                  D->xl = xres;
+                  D->yl = yres;
                   kgRedrawDialog ( D ) ;
               }
               else {
-                  D-> ResizeCallback ( D ) ;
+                  D->ResizeCallback ( D ) ;
               }
               continue;
           }
 //    printf("controls: %d KEY = %d\n",controls,KEY);
           if ( KEY < 5 ) if ( ! uiCheckClickinDialog ( D ) ) {
 // As on 28 Jun 2013
-              if ( ( D-> Callback != NULL ) ) OK = D-> Callback ( D , & kbevent ) ;
+              if ( ( D->Callback != NULL ) ) OK = D->Callback ( D , & kbevent ) ;
               else OK = 0;
               if ( OK ) OK = 1001;
               continue;
           }
-          if ( D-> controls > 0 ) {
+          if ( D->controls > 0 ) {
               switch ( KEY ) {
                   case 0:
-                  ProcessMouseMovement ( D , kbevent , i , D-> controls ) ;
+                  ProcessMouseMovement ( D , kbevent , i , D->controls ) ;
                   continue;
-                   case 1: //button press
-                  click = check_pointer_click ( D , & n , D-> xo , D-> yo , d ) ;
+                  case 1: //button press
+                  click = check_pointer_click ( D , & n , D->xo , D->yo , d ) ;
 //         printf("click= %d\n",click);
                   if ( click >= 0 ) {
                       i = click;
-                      D-> CurWid = i;
-                      if ( ( i != oldi ) && ( D-> controls > 1 ) ) {
+                      D->CurWid = i;
+                      if ( ( i != oldi ) && ( D->controls > 1 ) ) {
                           uiUpdateOff ( D ) ;
                           rmv_key_board_attn ( oldi , D ) ;
                           draw_key_board_attn ( i , D ) ;
-                          ch = ( d [ oldi ] .t-> code ) ;
+                          ch = ( d [ oldi ] .t->code ) ;
                           if ( ( ch == 't' ) || ( ( ch == 'T' ) ) ) {
-                              _ui_readtextbox ( ( TX_STR * ) ( d [ oldi ] .t-> tstr ) ) ;
-                              D-> InputWid = oldi;
+                              _ui_readtextbox ( ( TX_STR * ) ( d [ oldi ] .t->tstr ) ) ;
+                              D->InputWid = oldi;
                           }
                           uiUpdateOn ( D ) ;
                           oldi = i;
                       }
-                      OK = ProcessMousePress ( D , kbevent , i , hcontrols , D-> controls ) ;
+                      OK = ProcessMousePress ( D , kbevent , i , hcontrols , D->controls ) ;
                   }
                   else {
             // Mouse Press else where
 //            printf("Got Mouse Press\n");
-                      if ( ( D-> Callback != NULL ) ) {
-                          OK = D-> Callback ( D , & kbevent ) ;
+                      if ( ( D->Callback != NULL ) ) {
+                          OK = D->Callback ( D , & kbevent ) ;
                           if ( OK ) OK = 1001;
                       }
                   }
@@ -5155,24 +5116,24 @@
                   case 2:
                   continue;
                   case 3:
-                  OK = ProcessMousePressDrag ( D , kbevent , i , hcontrols , D-> controls ) ;
+                  OK = ProcessMousePressDrag ( D , kbevent , i , hcontrols , D->controls ) ;
                   continue;
                   case 4:
                   continue;
-                   case 5: // key release
+                  case 5: // key release
                   if ( ui_Tab ( kbevent.key ) ) {
-                      n = D-> TotWid;
+                      n = D->TotWid;
                       i = ( i+1 ) %n;
                       while ( ui_NotInputBox ( D , i ) ) i = ( i+1 ) %n;
-                      D-> CurWid = i;
-                      if ( ( i != oldi ) && ( D-> controls > 1 ) ) {
+                      D->CurWid = i;
+                      if ( ( i != oldi ) && ( D->controls > 1 ) ) {
                           uiUpdateOff ( D ) ;
                           rmv_key_board_attn ( oldi , D ) ;
                           draw_key_board_attn ( i , D ) ;
-                          ch = ( d [ oldi ] .t-> code ) ;
-                          if ( ( ch == 't' ) || ( ch == 'T' ) ) {_ui_readtextbox 
-                              ( ( TX_STR * ) ( d [ oldi ] .t-> tstr ) ) ;}
-                          D-> InputWid = oldi;
+                          ch = ( d [ oldi ] .t->code ) ;
+                          if ( ( ch == 't' ) || ( ch == 'T' ) ) {_ui_readtextbox  \
+                              ( ( TX_STR * ) ( d [ oldi ] .t->tstr ) ) ;}
+                          D->InputWid = oldi;
                           uiUpdateOn ( D ) ;
                           oldi = i;
                       }
@@ -5180,8 +5141,8 @@
                   }
 // New code to support setting current widget for input
 #if 1
-                  i = D-> CurWid;
-                  if ( ( i != oldi ) && ( D-> controls > 1 ) ) {
+                  i = D->CurWid;
+                  if ( ( i != oldi ) && ( D->controls > 1 ) ) {
 //                 printf("New Code\n");
                       uiUpdateOff ( D ) ;
                       rmv_key_board_attn ( oldi , D ) ;
@@ -5190,40 +5151,40 @@
                       oldi = i;
                   }
 #endif
-                  OK = ProcessKeyRelease ( D , kbevent , i , hcontrols , D-> controls ) ;
+                  OK = ProcessKeyRelease ( D , kbevent , i , hcontrols , D->controls ) ;
                   break;
               }
-               if ( OK >= 1 ) { // checking for text box entries
-                  n = D-> TotWid;
+              if ( OK >= 1 ) { // checking for text box entries
+                  n = D->TotWid;
                   for ( j = 0;j < n;j++ ) {
-                      ch = ( d [ j ] .t-> code ) ;
+                      ch = ( d [ j ] .t->code ) ;
                       if ( ( ch == 't' ) || ( ch == 'T' ) ) {
-                          if ( d [ j ] .t-> hide != 1 ) {
-                              if ( _ui_readtextbox ( ( TX_STR * ) ( d [ j ] .t-> tstr ) ) < 0 ) {
+                          if ( d [ j ] .t->hide != 1 ) {
+                              if ( _ui_readtextbox ( ( TX_STR * ) ( d [ j ] .t->tstr ) ) < 0 ) {
                                   gprintf ( Parent , "Error in Text box data" ) ;
                                   OK = -1;
                                   break;
                               }
-                           } // hide
+                          } // hide
                       }
                   }
               }
-           } //if ( control ) 
+          } //if ( control ) 
           else {
-              if ( ( D-> Callback != NULL ) ) OK = D-> Callback ( D , & kbevent ) ;
+              if ( ( D->Callback != NULL ) ) OK = D->Callback ( D , & kbevent ) ;
               else OK = 0;
               if ( OK ) OK = 1001;
           }
-       } // While
+      } // While
       ret = OK;
-      pthread_mutex_unlock ( & ( D-> Lock ) ) ;
-      pthread_mutex_destroy ( & ( D-> Lock ) ) ;
+      pthread_mutex_unlock ( & ( D->Lock ) ) ;
+      pthread_mutex_destroy ( & ( D->Lock ) ) ;
       ret = uiReadinDialogValues ( D , OK ) ;
       if ( OK > 1000 ) ret = OK;
-      if ( D-> bkup == 1 ) {
-          kg_scr_recover ( D-> wc ) ;
+      if ( D->bkup == 1 ) {
+          kg_scr_recover ( D->wc ) ;
       }
-      if ( D-> Newwin == 1 ) {
+      if ( D->Newwin == 1 ) {
           kgSkipButtonRelease ( D ) ;
           kgSkipEvents ( D ) ;
       }
@@ -5232,37 +5193,37 @@
           if ( kgCheckMenu ( D , 10L , 200L , "Error: In reading data retry ?" , 1L ) ) goto again;
               
           else{
-              ui_cleandir ( D-> tmpdir ) ;
-              kgCheckAndRemoveParent ( D-> tmpdir ) ;
+              ui_cleandir ( D->tmpdir ) ;
+              kgCheckAndRemoveParent ( D->tmpdir ) ;
               normal ( ) ;
               fprintf ( stderr , "WRONG DATA ENTRY.. JOB CANCELLED\n" ) ;
               exit ( 0 ) ;
           }
       }
       uiFreeMemAlloc ( D ) ;
-      if ( D-> Newwin ) {
+      if ( D->Newwin ) {
           kgDisableSelection ( D ) ;
-          if ( ! WC ( D ) -> FullScreen ) {
-              pthread_cancel ( WC ( D ) -> Pth ) ;
-              pthread_join ( WC ( D ) -> Pth , NULL ) ;
+          if ( ! WC ( D )->FullScreen ) {
+              pthread_cancel ( WC ( D )->Pth ) ;
+              pthread_join ( WC ( D )->Pth , NULL ) ;
           }
-          Dempty ( WC ( D ) -> Clip ) ;
+          Dempty ( WC ( D )->Clip ) ;
           kg_clear_scrn_buffer ( WC ( D ) ) ;
 //     Dempty(WC(D)->SBlist);
-          Dempty ( WC ( D ) -> TLIST ) ;
-          free ( WC ( D ) -> kgcolors ) ;
+          Dempty ( WC ( D )->TLIST ) ;
+          free ( WC ( D )->kgcolors ) ;
           kgCloseUi ( D ) ;
-          if ( WC ( D ) -> Pstr != NULL ) free ( WC ( D ) -> Pstr ) ;
-          if ( WC ( D ) -> Cstr != NULL ) free ( WC ( D ) -> Cstr ) ;
+          if ( WC ( D )->Pstr != NULL ) free ( WC ( D )->Pstr ) ;
+          if ( WC ( D )->Cstr != NULL ) free ( WC ( D )->Cstr ) ;
           free ( WC ( D ) ) ;
       }
       else wcset_clr ( wc , tempc ) ;
-      ui_cleandir ( D-> tmpdir ) ;
-      kgCheckAndRemoveParent ( D-> tmpdir ) ;
-      Free ( D-> tmpdir ) ;
+      ui_cleandir ( D->tmpdir ) ;
+      kgCheckAndRemoveParent ( D->tmpdir ) ;
+      Free ( D->tmpdir ) ;
 //   fprintf(stderr,"Closing threads\n");
-      CloseThreads ( D-> ThInfo ) ;
-      D-> ThInfo = NULL;
+      CloseThreads ( D->ThInfo ) ;
+      D->ThInfo = NULL;
 //   fprintf(stderr,"Closed Ui\n");
       return ( ret ) ;
   }
@@ -5272,7 +5233,7 @@
   int _check_for_string ( char *s , char *chk ) {
       int ls , lchk , i , k , count , ret = 0 , j , ch;
       ls = strlen ( s ) ;
-      k = 0;while ( ( chk [ k ] != '\0' ) && ( chk [ k ] != '*' ) && 
+      k = 0;while ( ( chk [ k ] != '\0' ) && ( chk [ k ] != '*' ) &&  \
           ( chk [ k ] != '?' ) ) k++;
       ch = chk [ k ] ;chk [ k ] = '\0';
       lchk = strlen ( chk ) ;
@@ -5292,7 +5253,7 @@
   int _check_for_start_string ( char *s , char *chk ) {
       int ls , lchk , i , count , ret = 0 , j , ch;
       ls = strlen ( s ) ;
-      i = 0;while ( ( chk [ i ] != '\0' ) && ( chk [ i ] != '*' ) && 
+      i = 0;while ( ( chk [ i ] != '\0' ) && ( chk [ i ] != '*' ) &&  \
           ( chk [ i ] != '?' ) ) i++;
       ch = chk [ i ] ;chk [ i ] = '\0';
       lchk = strlen ( chk ) ;
@@ -5306,7 +5267,7 @@
   }
   int _skip_string ( char *chk ) {
       int i = 0;
-      while ( ( chk [ i ] != '\0' ) && ( chk [ i ] != '*' ) && 
+      while ( ( chk [ i ] != '\0' ) && ( chk [ i ] != '*' ) &&  \
           ( chk [ i ] != '?' ) ) i++;
       return i;
   }
@@ -5603,6 +5564,12 @@
 //    printf ("entry=0\n");
           pid = getpid ( ) ;
 #if 0
+          if ( chkshm ( ) ) {
+//    printf("tmpfs mounted on /dev/shm\n");
+              sprintf ( dir , "/dev/shm/%-d" , pid ) ;
+              mkdir ( dir , 0700 ) ;
+          }
+//    else {
 #else
           {
 #endif
@@ -5782,20 +5749,20 @@
       float f;
       TX_STR *Tstr;
       DIA *D;DIT *T;T_ELMT *e;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       T = D [ tb ] .t;
-      Tstr = ( TX_STR * ) ( T-> tstr ) ;
+      Tstr = ( TX_STR * ) ( T->tstr ) ;
       _ui_readtextbox ( Tstr ) ;
-      e = T-> elmt;
+      e = T->elmt;
       f = * ( ( float * ) ( e [ item ] .v ) ) ;
       return f;
   }
   float Dsetfloat ( void *Tmp , int tb , int item , float val ) {
       TX_STR *Tstr;
       DIA *D;DIT *T;T_ELMT *e;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       T = D [ tb ] .t;
-      e = T-> elmt;
+      e = T->elmt;
       * ( ( float * ) ( e [ item ] .v ) ) = val;
       kgUpdateWidget ( T ) ;
       return val;
@@ -5804,20 +5771,20 @@
       double f;
       TX_STR *Tstr;
       DIA *D;DIT *T;T_ELMT *e;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       T = D [ tb ] .t;
-      Tstr = ( TX_STR * ) ( T-> tstr ) ;
+      Tstr = ( TX_STR * ) ( T->tstr ) ;
       _ui_readtextbox ( Tstr ) ;
-      e = T-> elmt;
+      e = T->elmt;
       f = * ( ( double * ) ( e [ item ] .v ) ) ;
       return f;
   }
   double Dsetdouble ( void *Tmp , int tb , int item , double val ) {
       TX_STR *Tstr;
       DIA *D;DIT *T;T_ELMT *e;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       T = D [ tb ] .t;
-      e = T-> elmt;
+      e = T->elmt;
       * ( ( double * ) ( e [ item ] .v ) ) = val;
       kgUpdateWidget ( T ) ;
       return val;
@@ -5826,20 +5793,20 @@
       int f;
       TX_STR *Tstr;
       DIA *D;DIT *T;T_ELMT *e;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       T = D [ tb ] .t;
-      Tstr = ( TX_STR * ) ( T-> tstr ) ;
+      Tstr = ( TX_STR * ) ( T->tstr ) ;
       _ui_readtextbox ( Tstr ) ;
-      e = T-> elmt;
+      e = T->elmt;
       f = * ( ( int * ) ( e [ item ] .v ) ) ;
       return f;
   }
   int Dsetint ( void *Tmp , int tb , int item , int val ) {
       TX_STR *Tstr;
       DIA *D;DIT *T;T_ELMT *e;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       T = D [ tb ] .t;
-      e = T-> elmt;
+      e = T->elmt;
       * ( ( int * ) ( e [ item ] .v ) ) = val;
       kgUpdateWidget ( T ) ;
       return val;
@@ -5848,20 +5815,20 @@
       long f;
       TX_STR *Tstr;
       DIA *D;DIT *T;T_ELMT *e;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       T = D [ tb ] .t;
-      Tstr = ( TX_STR * ) ( T-> tstr ) ;
+      Tstr = ( TX_STR * ) ( T->tstr ) ;
       _ui_readtextbox ( Tstr ) ;
-      e = T-> elmt;
+      e = T->elmt;
       f = * ( ( long * ) ( e [ item ] .v ) ) ;
       return f;
   }
   long Dsetlong ( void *Tmp , int tb , int item , long val ) {
       TX_STR *Tstr;
       DIA *D;DIT *T;T_ELMT *e;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       T = D [ tb ] .t;
-      e = T-> elmt;
+      e = T->elmt;
       * ( ( long * ) ( e [ item ] .v ) ) = val;
       kgUpdateWidget ( T ) ;
       return val;
@@ -5870,24 +5837,24 @@
       char * f;
       TX_STR *Tstr;
       DIA *D;DIT *T;T_ELMT *e;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       T = D [ tb ] .t;
-      Tstr = ( TX_STR * ) ( T-> tstr ) ;
+      Tstr = ( TX_STR * ) ( T->tstr ) ;
       _ui_readtextbox ( Tstr ) ;
-      e = T-> elmt;
+      e = T->elmt;
       f = ( ( char * ) ( e [ item ] .v ) ) ;
       return f;
   }
   char * Dsetstring ( void *Tmp , int tb , int item , char * val ) {
       TX_STR *Tstr;
       DIA *D;DIT *T;T_ELMT *e;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       T = D [ tb ] .t;
-      e = T-> elmt;
+      e = T->elmt;
       strcpy ( ( ( char * ) ( e [ item ] .v ) ) , val ) ;
 #if 0
-      Tstr = ( TX_STR * ) ( T-> tstr ) ;
-      Ti = Tstr-> tit;
+      Tstr = ( TX_STR * ) ( T->tstr ) ;
+      Ti = Tstr->tit;
       _ui_updatetextbox ( Tstr ) ;
 #else
       kgUpdateWidget ( T ) ;
@@ -5898,20 +5865,20 @@
       float f;
       TX_STR *Tstr;
       DIA *D;DIT *T;T_ELMT *e;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       T = D [ tb ] .t;
-      Tstr = ( TX_STR * ) ( T-> tstr ) ;
+      Tstr = ( TX_STR * ) ( T->tstr ) ;
       _ui_readtextbox ( Tstr ) ;
-      e = T-> elmt;
+      e = T->elmt;
       f = * ( ( float * ) ( e [ item ] .v ) ) ;
       return f;
   }
   float kgSetfloat ( void *Tmp , int tb , int item , float val ) {
       TX_STR *Tstr;
       DIA *D;DIT *T;T_ELMT *e;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       T = D [ tb ] .t;
-      e = T-> elmt;
+      e = T->elmt;
       * ( ( float * ) ( e [ item ] .v ) ) = val;
 //  kgUpdateWidget(T); // application should do this
       return val;
@@ -5920,20 +5887,20 @@
       double f;
       TX_STR *Tstr;
       DIA *D;DIT *T;T_ELMT *e;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       T = D [ tb ] .t;
-      Tstr = ( TX_STR * ) ( T-> tstr ) ;
+      Tstr = ( TX_STR * ) ( T->tstr ) ;
       _ui_readtextbox ( Tstr ) ;
-      e = T-> elmt;
+      e = T->elmt;
       f = * ( ( double * ) ( e [ item ] .v ) ) ;
       return f;
   }
   double kgSetdouble ( void *Tmp , int tb , int item , double val ) {
       TX_STR *Tstr;
       DIA *D;DIT *T;T_ELMT *e;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       T = D [ tb ] .t;
-      e = T-> elmt;
+      e = T->elmt;
       * ( ( double * ) ( e [ item ] .v ) ) = val;
 //  kgUpdateWidget(T); // application should do this
       return val;
@@ -5942,20 +5909,20 @@
       int f;
       TX_STR *Tstr;
       DIA *D;DIT *T;T_ELMT *e;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       T = D [ tb ] .t;
-      Tstr = ( TX_STR * ) ( T-> tstr ) ;
+      Tstr = ( TX_STR * ) ( T->tstr ) ;
       _ui_readtextbox ( Tstr ) ;
-      e = T-> elmt;
+      e = T->elmt;
       f = * ( ( int * ) ( e [ item ] .v ) ) ;
       return f;
   }
   int kgSetint ( void *Tmp , int tb , int item , int val ) {
       TX_STR *Tstr;
       DIA *D;DIT *T;T_ELMT *e;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       T = D [ tb ] .t;
-      e = T-> elmt;
+      e = T->elmt;
       * ( ( int * ) ( e [ item ] .v ) ) = val;
 //  kgUpdateWidget(T); // application should do this
       return val;
@@ -5964,20 +5931,20 @@
       long f;
       TX_STR *Tstr;
       DIA *D;DIT *T;T_ELMT *e;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       T = D [ tb ] .t;
-      Tstr = ( TX_STR * ) ( T-> tstr ) ;
+      Tstr = ( TX_STR * ) ( T->tstr ) ;
       _ui_readtextbox ( Tstr ) ;
-      e = T-> elmt;
+      e = T->elmt;
       f = * ( ( long * ) ( e [ item ] .v ) ) ;
       return f;
   }
   long kgSetlong ( void *Tmp , int tb , int item , long val ) {
       TX_STR *Tstr;
       DIA *D;DIT *T;T_ELMT *e;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       T = D [ tb ] .t;
-      e = T-> elmt;
+      e = T->elmt;
       * ( ( long * ) ( e [ item ] .v ) ) = val;
 //  kgUpdateWidget(T); // application should do this
       return val;
@@ -5986,20 +5953,20 @@
       char * f;
       TX_STR *Tstr;
       DIA *D;DIT *T;T_ELMT *e;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       T = D [ tb ] .t;
-      Tstr = ( TX_STR * ) ( T-> tstr ) ;
+      Tstr = ( TX_STR * ) ( T->tstr ) ;
       _ui_readtextbox ( Tstr ) ;
-      e = T-> elmt;
+      e = T->elmt;
       f = ( ( char * ) ( e [ item ] .v ) ) ;
       return f;
   }
   char * kgSetstring ( void *Tmp , int tb , int item , char * val ) {
       TX_STR *Tstr;
       DIA *D;DIT *T;T_ELMT *e;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       T = D [ tb ] .t;
-      e = T-> elmt;
+      e = T->elmt;
       strcpy ( ( ( char * ) ( e [ item ] .v ) ) , val ) ;
 //  kgUpdateWidget(T);  // application should do this
       return val;
@@ -6009,9 +5976,9 @@
       TX_STR *Tstr;
       DIA *D;DIT *T;T_ELMT *e;
       T = ( DIT * ) Tmp;
-      Tstr = ( TX_STR * ) ( T-> tstr ) ;
+      Tstr = ( TX_STR * ) ( T->tstr ) ;
       _ui_readtextbox ( Tstr ) ;
-      e = T-> elmt;
+      e = T->elmt;
       f = * ( ( float * ) ( e [ item ] .v ) ) ;
       return f;
   }
@@ -6019,7 +5986,7 @@
       TX_STR *Tstr;
       DIA *D;DIT *T;T_ELMT *e;
       T = ( DIT * ) Tmp;
-      e = T-> elmt;
+      e = T->elmt;
       * ( ( float * ) ( e [ item ] .v ) ) = val;
 //  kgUpdateWidget(T); // application should do this
       return val;
@@ -6029,9 +5996,9 @@
       TX_STR *Tstr;
       DIA *D;DIT *T;T_ELMT *e;
       T = ( DIT * ) Tmp;
-      Tstr = ( TX_STR * ) ( T-> tstr ) ;
+      Tstr = ( TX_STR * ) ( T->tstr ) ;
       _ui_readtextbox ( Tstr ) ;
-      e = T-> elmt;
+      e = T->elmt;
       f = * ( ( double * ) ( e [ item ] .v ) ) ;
       return f;
   }
@@ -6039,7 +6006,7 @@
       TX_STR *Tstr;
       DIA *D;DIT *T;T_ELMT *e;
       T = ( DIT * ) Tmp;
-      e = T-> elmt;
+      e = T->elmt;
       * ( ( double * ) ( e [ item ] .v ) ) = val;
 //  kgUpdateWidget(T); // application should do this
       return val;
@@ -6049,9 +6016,9 @@
       TX_STR *Tstr;
       DIA *D;DIT *T;T_ELMT *e;
       T = ( DIT * ) Tmp;
-      Tstr = ( TX_STR * ) ( T-> tstr ) ;
+      Tstr = ( TX_STR * ) ( T->tstr ) ;
       _ui_readtextbox ( Tstr ) ;
-      e = T-> elmt;
+      e = T->elmt;
       f = * ( ( int * ) ( e [ item ] .v ) ) ;
       return f;
   }
@@ -6059,7 +6026,7 @@
       TX_STR *Tstr;
       DIA *D;DIT *T;T_ELMT *e;
       T = ( DIT * ) Tmp;
-      e = T-> elmt;
+      e = T->elmt;
       * ( ( int * ) ( e [ item ] .v ) ) = val;
 //  kgUpdateWidget(T); // application should do this
       return val;
@@ -6069,9 +6036,9 @@
       TX_STR *Tstr;
       DIA *D;DIT *T;T_ELMT *e;
       T = ( DIT * ) Tmp;
-      Tstr = ( TX_STR * ) ( T-> tstr ) ;
+      Tstr = ( TX_STR * ) ( T->tstr ) ;
       _ui_readtextbox ( Tstr ) ;
-      e = T-> elmt;
+      e = T->elmt;
       f = * ( ( long * ) ( e [ item ] .v ) ) ;
       return f;
   }
@@ -6079,7 +6046,7 @@
       TX_STR *Tstr;
       DIA *D;DIT *T;T_ELMT *e;
       T = ( DIT * ) Tmp;
-      e = T-> elmt;
+      e = T->elmt;
       * ( ( long * ) ( e [ item ] .v ) ) = val;
 //  kgUpdateWidget(T); // application should do this
       return val;
@@ -6089,9 +6056,9 @@
       TX_STR *Tstr;
       DIA *D;DIT *T;T_ELMT *e;
       T = ( DIT * ) Tmp;
-      Tstr = ( TX_STR * ) ( T-> tstr ) ;
+      Tstr = ( TX_STR * ) ( T->tstr ) ;
       _ui_readtextbox ( Tstr ) ;
-      e = T-> elmt;
+      e = T->elmt;
       f = ( ( char * ) ( e [ item ] .v ) ) ;
       return f;
   }
@@ -6099,25 +6066,25 @@
       TX_STR *Tstr;
       DIA *D;DIT *T;T_ELMT *e;
       T = ( DIT * ) Tmp;
-      e = T-> elmt;
+      e = T->elmt;
       strcpy ( ( ( char * ) ( e [ item ] .v ) ) , val ) ;
 //  kgUpdateWidget(T);  // application should do this
       return val;
   }
   int Dprintf ( void *Tmp , int infob , char *str ) {
       DIA *D;DII *I;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       I = D [ infob ] .i;
-      uiinfo_wprintf ( ( DIALOG * ) Tmp , I-> twin , str ) ;
+      uiinfo_wprintf ( ( DIALOG * ) Tmp , I->twin , str ) ;
       return 1;
   }
   int kgPrintf ( void *Tmp , int infob , char *str ) {
       DIA *D;DII *I;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       I = D [ infob ] .i;
-      if ( I-> code == 'i' ) {
-          if ( I-> hide == 1 ) return 0;
-          uiinfo_wprintf ( ( DIALOG * ) Tmp , I-> twin , str ) ;
+      if ( I->code == 'i' ) {
+          if ( I->hide == 1 ) return 0;
+          uiinfo_wprintf ( ( DIALOG * ) Tmp , I->twin , str ) ;
           return 1;
       }
       else return kgSplash ( Tmp , infob , str ) ;
@@ -6126,69 +6093,69 @@
   char *Dgetmenustring ( void *Tmp , int menu ) {
       DIA *D;DIE *E;
       BRW_STR *B;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       E = D [ menu ] .e;
-      B = ( BRW_STR * ) ( E-> bwsr ) ;
-      return E-> menu [ B-> df-1 ] ;
+      B = ( BRW_STR * ) ( E->bwsr ) ;
+      return E->menu [ B->df-1 ] ;
   }
   int Dgetmenuitem ( void *Tmp , int menu ) {
       DIA *D;DIE *E;
       BRW_STR *B;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       E = D [ menu ] .e;
-      B = ( BRW_STR * ) ( E-> bwsr ) ;
-      return B-> df;
+      B = ( BRW_STR * ) ( E->bwsr ) ;
+      return B->df;
   }
   int Dsetmenuitem ( void *Tmp , int menu , int df ) {
       DIA *D;DIE *E;
       BRW_STR *B;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       E = D [ menu ] .e;
-      B = ( BRW_STR * ) ( E-> bwsr ) ;
-      B-> df = df;
-      return B-> df;
+      B = ( BRW_STR * ) ( E->bwsr ) ;
+      B->df = df;
+      return B->df;
   }
   char **Dgetmenu ( void *Tmp , int menu ) {
       DIA *D;DIE *E;
       BRW_STR *B;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       E = D [ menu ] .e;
-      B = ( BRW_STR * ) ( E-> bwsr ) ;
-      return B-> menu;
+      B = ( BRW_STR * ) ( E->bwsr ) ;
+      return B->menu;
   }
   void Dsetmenu ( void *Tmp , int menu , char **list ) {
       DIA *D;DIE *E;
       BRW_STR *B;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       E = D [ menu ] .e;
-      B = ( BRW_STR * ) ( E-> bwsr ) ;
-      B-> menu = list;
-      E-> menu = list;
+      B = ( BRW_STR * ) ( E->bwsr ) ;
+      B->menu = list;
+      E->menu = list;
   }
 // TCB not finished
   void Dsetmsgscroll ( void *Tmp , int menu , char **list ) {
       DIA *D;DIS *S;
       BRW_STR *B;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       S = D [ menu ] .s;
-      S-> menu = list;
+      S->menu = list;
       uiUpdateMsgScroll ( Tmp , menu ) ;
   }
   char **Dgetmsgscroll ( void *Tmp , int menu ) {
       DIA *D;DIS *S;
       BRW_STR *B;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       S = D [ menu ] .s;
-      B = ( BRW_STR * ) ( S-> bwsr ) ;
-      return B-> menu;
+      B = ( BRW_STR * ) ( S->bwsr ) ;
+      return B->menu;
   }
   void Dsetscrollmenu ( void *Tmp , int menu , char **list ) {
 #if 0
       DIA *D;DIE *E;
       BRW_STR *B;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       E = D [ menu ] .e;
-      E-> menu = list;
+      E->menu = list;
 #else
       ui_updatemenu ( Tmp , menu , list ) ;
 #endif
@@ -6196,66 +6163,66 @@
   char **Dgetscrollmenu ( void *Tmp , int menu ) {
       DIA *D;DIE *E;
       BRW_STR *B;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       E = D [ menu ] .e;
-      B = ( BRW_STR * ) ( E-> bwsr ) ;
-      return E-> menu;
+      B = ( BRW_STR * ) ( E->bwsr ) ;
+      return E->menu;
   }
   void Dsetpixmap ( void *Tmp , int menu , void *img ) {
       DIA *D;DIP *E;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       E = D [ menu ] .p;
-      E-> xpm = img;
+      E->xpm = img;
       _uiDrawPicture ( Tmp , menu ) ;
   }
   void Dfreepixmap ( void *Tmp , int menu ) {
       char *cpt;
       DIA *D;DIP *E;
       JPGIMG *img;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       E = D [ menu ] .p;
-      cpt = ( char * ) E-> xpm;
+      cpt = ( char * ) E->xpm;
       if ( cpt == NULL ) return;
       if ( ( cpt [ 0 ] == '#' ) && ( cpt [ 1 ] == '#' ) ) return;
-      img = ( JPGIMG * ) E-> xpm;
+      img = ( JPGIMG * ) E->xpm;
       uiFreeImage ( img ) ;
   }
   void kgChangePixmapImage ( void *Wtmp , void *img ) {
       DIP *p;
       p = ( DIP * ) Wtmp;
-      p-> xpm = img;
+      p->xpm = img;
   }
   void kgFreePixmapImage ( void *Wtmp ) {
       DIP *p;
       char *cpt;
       p = ( DIP * ) Wtmp;
-      cpt = ( char * ) p-> xpm;
+      cpt = ( char * ) p->xpm;
       if ( cpt == NULL ) return;
       if ( ( cpt [ 0 ] == '#' ) && ( cpt [ 1 ] == '#' ) ) return;
-      uiFreeImage ( p-> xpm ) ;
-      p-> xpm = NULL;
+      uiFreeImage ( p->xpm ) ;
+      p->xpm = NULL;
   }
 #if 0
 #endif
   void uiGetViewport ( void *Tmp , int no , float v [ ] ) {
       DIA *D;DIG *G;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       G = D [ no ] .g;
-      v [ 0 ] = G-> vxmin;
-      v [ 1 ] = G-> vymin;
-      v [ 2 ] = G-> vxmax;
-      v [ 3 ] = G-> vymax;
+      v [ 0 ] = G->vxmin;
+      v [ 1 ] = G->vymin;
+      v [ 2 ] = G->vxmax;
+      v [ 3 ] = G->vymax;
       return ;
   }
   int Dsplash ( void *Tmp , int item , char *msg ) {
 /* Application must alloc and free memory for msg */
       DIA *D;
       DIM *m;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       m = D [ item ] .m;
 //  m->msg = msg;
 //  _uiDrawMessage(Tmp,item);
-      strncpy ( m-> msg , msg , 499 ) ;
+      strncpy ( m->msg , msg , 499 ) ;
       _uiMake_M ( m ) ;
       return 1;
   }
@@ -6263,12 +6230,12 @@
 /* Application must alloc and free memory for msg */
       DIA *D;
       DIM *m;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       m = D [ item ] .m;
 //  m->msg = msg;
-      if ( m-> hide == 1 ) return 0;
-      if ( ( m-> code == 'M' ) || ( m-> code == 'm' ) || ( m-> code == 'B' ) ) {
-          strncpy ( m-> msg , msg , 499 ) ;
+      if ( m->hide == 1 ) return 0;
+      if ( ( m->code == 'M' ) || ( m->code == 'm' ) || ( m->code == 'B' ) ) {
+          strncpy ( m->msg , msg , 499 ) ;
           _uiMake_M ( m ) ;
       }
       else printf ( "Wrong Box for Splash message\n" ) ;
@@ -6280,14 +6247,14 @@
       DIM *m;
       DII *I;
       m = ( DIM * ) Tmp;
-      switch ( m-> code ) {
+      switch ( m->code ) {
           case 'M':
           case 'm':
           case 'B':
-          if ( m-> hide == 1 ) return 0;
-          strncpy ( m-> msg , msg , 499 ) ;
+          if ( m->hide == 1 ) return 0;
+          strncpy ( m->msg , msg , 499 ) ;
           kgUpdateWidget ( m ) ;
-          kgUpdateOn ( m-> D ) ;
+          kgUpdateOn ( m->D ) ;
           break;
           case 's':
           {
@@ -6297,7 +6264,7 @@
               char *pt , **menu;
               s = ( DIS * ) m;
               L = Dopen ( ) ;
-              menu = s-> menu;
+              menu = s->menu;
               if ( menu != NULL ) {
                   i = 0;
                   while ( ( pt = menu [ i++ ] ) != NULL ) Dadd ( L , pt ) ;
@@ -6314,17 +6281,17 @@
                   menu [ i ] = pt;i++;
               }
               menu [ i ] = NULL;
-              s-> menu = menu;
+              s->menu = menu;
               Dfree ( L ) ;
               kgUpdateWidget ( s ) ;
-              kgUpdateOn ( s-> D ) ;
+              kgUpdateOn ( s->D ) ;
           }
           break;
           case 'i':
           I = ( DII * ) Tmp;
-          if ( I-> hide == 1 ) return 0;
-          uiinfo_wprintf ( ( DIALOG * ) I-> D , I-> twin , msg ) ;
-          kgUpdateOn ( I-> D ) ;
+          if ( I->hide == 1 ) return 0;
+          uiinfo_wprintf ( ( DIALOG * ) I->D , I->twin , msg ) ;
+          kgUpdateOn ( I->D ) ;
           break;
           default:
           fprintf ( stderr , "Wrong Widget for kgWrite\n" ) ;
@@ -6336,20 +6303,20 @@
       DIA *D;DIX *X;DIW *W;DIE *E;
       int df = 0;
       X = ( DIX * ) tmp;
-      switch ( X-> code ) {
+      switch ( X->code ) {
           case 'x':
           case 'y':
           case 'r':
           case 'c':
-          df = * ( X-> df ) ;
+          df = * ( X->df ) ;
           return df;
           case 'e':
           E = ( DIE * ) X;
-          df = * ( E-> df ) ;
+          df = * ( E->df ) ;
           return df;
           case 'w':
           W = ( DIW * ) X;
-          df = * ( W-> df ) ;
+          df = * ( W->df ) ;
           return df;
           default:
           fprintf ( stderr , "Invalid Widget: kgGetSelection\n" ) ;
@@ -6360,23 +6327,23 @@
       DIA *D;DIX *X;DIW *W;DIE *E;
       int df = 0;
       X = ( DIX * ) tmp;
-      switch ( X-> code ) {
+      switch ( X->code ) {
           case 'x':
           case 'y':
           case 'r':
           case 'c':
-          * ( X-> df ) = val;;
-          df = * ( X-> df ) ;
+          * ( X->df ) = val;;
+          df = * ( X->df ) ;
           return df;
           case 'e':
           E = ( DIE * ) X;
-          * ( E-> df ) = val;
-          df = * ( E-> df ) ;
+          * ( E->df ) = val;
+          df = * ( E->df ) ;
           return df;
           case 'w':
           W = ( DIW * ) X;
-          * ( W-> df ) = val;
-          df = * ( W-> df ) ;
+          * ( W->df ) = val;
+          df = * ( W->df ) ;
           return df;
           default:
           fprintf ( stderr , "Invalid Widget: kgSetSelection\n" ) ;
@@ -6387,11 +6354,11 @@
       DIA *D;DIX *E;
       BRW_STR *B;
       ThumbNail **list;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       E = D [ menu ] .x;
-      B = ( BRW_STR * ) ( E-> bwsr ) ;
-      list = ( ThumbNail ** ) E-> list;
-      return list [ B-> df-1 ] -> name;
+      B = ( BRW_STR * ) ( E->bwsr ) ;
+      list = ( ThumbNail ** ) E->list;
+      return list [ B->df-1 ]->name;
   }
   char *kgGetSelectedString ( void *Tmp ) {
       DIA *D;DIX *X;DIW *W;DIE *E;
@@ -6400,29 +6367,29 @@
       char **m;
       int df;
       X = ( DIX * ) Tmp;
-      switch ( X-> code ) {
+      switch ( X->code ) {
           case 'x':
           case 'y':
           case 'r':
           case 'c':
-          df = * ( X-> df ) -1;
-          list = ( ThumbNail ** ) X-> list;
+          df = * ( X->df ) -1;
+          list = ( ThumbNail ** ) X->list;
           if ( ( list != NULL ) && ( list [ 0 ] != NULL ) ) {
-              return list [ df ] -> name;
+              return list [ df ]->name;
           }
           else return NULL;
           case 'e':
           E = ( DIE * ) X;
-          df = * ( E-> df ) -1;
-          m = ( char ** ) ( ( DIE * ) E ) -> menu;
+          df = * ( E->df ) -1;
+          m = ( char ** ) ( ( DIE * ) E )->menu;
           if ( ( m != NULL ) && ( m [ 0 ] != NULL ) ) {
               return m [ df ] ;
           }
           else return NULL;
           case 'w':
           W = ( DIW * ) X;
-          df = * ( W-> df ) -1;
-          m = ( char ** ) W-> menu;
+          df = * ( W->df ) -1;
+          m = ( char ** ) W->menu;
           if ( ( m != NULL ) && ( m [ 0 ] != NULL ) ) {
               return m [ df ] ;
           }
@@ -6439,23 +6406,23 @@
       char **m;
       int df;
       X = ( DIX * ) Tmp;
-      switch ( X-> code ) {
+      switch ( X->code ) {
           case 'x':
           case 'y':
           case 'r':
           case 'c':
-          df = * ( X-> df ) -1;
-          list = ( ThumbNail ** ) X-> list;
+          df = * ( X->df ) -1;
+          list = ( ThumbNail ** ) X->list;
           return ( void ** ) list;
           case 'e':
           E = ( DIE * ) X;
-          df = * ( E-> df ) -1;
-          m = ( char ** ) ( ( DIE * ) E ) -> menu;
+          df = * ( E->df ) -1;
+          m = ( char ** ) ( ( DIE * ) E )->menu;
           return ( void ** ) m;
           case 'w':
           W = ( DIW * ) X;
-          df = * ( W-> df ) -1;
-          m = ( char ** ) W-> menu;
+          df = * ( W->df ) -1;
+          m = ( char ** ) W->menu;
           return ( void ** ) m;
           default:
           fprintf ( stderr , "Invalid Widget: kgGetList\n" ) ;
@@ -6471,34 +6438,34 @@
       if ( list != NULL ) {
           while ( list [ nitems ] != NULL ) nitems++;
       }
-      switch ( X-> code ) {
+      switch ( X->code ) {
           case 'x':
           case 'c':
-          X-> list = list;
-          X-> nitems = nitems;
-          * ( X-> df ) = 0;
+          X->list = list;
+          X->nitems = nitems;
+          * ( X->df ) = 0;
           uiCleanXImages ( X ) ;
           return ( void ** ) list;
           case 'r':
-          X-> list = list;
-          X-> nitems = nitems;
+          X->list = list;
+          X->nitems = nitems;
           uiCleanRImages ( ( DIRA * ) X ) ;
           return ( void ** ) list;
           case 'y':
-          X-> list = list;
-          X-> nitems = nitems;
-          * ( X-> df ) = 0;
+          X->list = list;
+          X->nitems = nitems;
+          * ( X->df ) = 0;
           uiCleanYImages ( ( DIY * ) X ) ;
           return ( void ** ) list;
           case 'e':
           E = ( DIE * ) X;
           uiCleanEbrowserImages ( E ) ;
-          E-> menu = ( char ** ) list;
+          E->menu = ( char ** ) list;
           return ( void ** ) list;
           case 'w':
           W = ( DIW * ) X;
           uiCleanBrowserImages ( W ) ;
-          W-> menu = ( char ** ) list;
+          W->menu = ( char ** ) list;
           return ( void ** ) list;
           default:
           fprintf ( stderr , "Invalid Widget: kgSetList\n" ) ;
@@ -6510,12 +6477,12 @@
       int nitems = 0;
       X = ( DIX * ) wid;
       ThumbNail **list;
-      switch ( X-> code ) {
+      switch ( X->code ) {
           case 'x':
           case 'y':
           case 'r':
           case 'c':
-          list = ( ThumbNail ** ) X-> list;
+          list = ( ThumbNail ** ) X->list;
           if ( list != NULL ) {
               while ( list [ nitems ] != NULL ) nitems++;
           }
@@ -6533,18 +6500,18 @@
       int nitems = 0;
       X = ( DIX * ) wid;
       ThumbNail **list;
-      switch ( X-> code ) {
+      switch ( X->code ) {
           case 'x':
           case 'y':
           case 'r':
           case 'c':
-          list = ( ThumbNail ** ) X-> list;
+          list = ( ThumbNail ** ) X->list;
           if ( list != NULL ) {
               while ( list [ nitems ] != NULL ) nitems++;
           }
           else return NULL;
           if ( item >= nitems ) return NULL;
-          return list [ item ] -> name;
+          return list [ item ]->name;
           break;
           default:
           break;
@@ -6555,19 +6522,19 @@
       DIX *X;
       X = ( DIX * ) wid;
       ThumbNail **list;
-      switch ( X-> code ) {
+      switch ( X->code ) {
           case 'x':
           case 'y':
           case 'r':
           case 'c':
           int nitems = 0;
-          list = ( ThumbNail ** ) X-> list;
+          list = ( ThumbNail ** ) X->list;
           if ( list != NULL ) {
               while ( list [ nitems ] != NULL ) nitems++;
           }
           else return NULL;
           if ( item >= nitems ) return NULL;
-          return list [ item ] -> img;
+          return list [ item ]->img;
           break;
           default:
           break;
@@ -6578,19 +6545,19 @@
       DIX *X;
       X = ( DIX * ) wid;
       ThumbNail **list;
-      switch ( X-> code ) {
+      switch ( X->code ) {
           case 'x':
           case 'y':
           case 'r':
           case 'c':
           int nitems = 0;
-          list = ( ThumbNail ** ) X-> list;
+          list = ( ThumbNail ** ) X->list;
           if ( list != NULL ) {
               while ( list [ nitems ] != NULL ) nitems++;
           }
           else return NULL;
           if ( item >= nitems ) return NULL;
-          list [ item ] -> img = img;
+          list [ item ]->img = img;
           return img;
           break;
           default:
@@ -6602,20 +6569,20 @@
       DIX *X;
       X = ( DIX * ) wid;
       ThumbNail **list;
-      switch ( X-> code ) {
+      switch ( X->code ) {
           case 'x':
           case 'y':
           case 'r':
           case 'c':
           int nitems = 0;
-          list = ( ThumbNail ** ) X-> list;
+          list = ( ThumbNail ** ) X->list;
           if ( list != NULL ) {
               while ( list [ nitems ] != NULL ) nitems++;
           }
           else return ;
           if ( item >= nitems ) return;
-          list [ item ] -> name = ( char * ) malloc ( strlen ( name ) +1 ) ;
-          strcpy ( list [ item ] -> name , name ) ;
+          list [ item ]->name = ( char * ) malloc ( strlen ( name ) +1 ) ;
+          strcpy ( list [ item ]->name , name ) ;
           return ;
           break;
           default:
@@ -6628,17 +6595,17 @@
       th = ( ThumbNail * ) tmp;
       if ( th == NULL ) return NULL;
       thret = ( ThumbNail * ) malloc ( sizeof ( ThumbNail ) ) ;
-      thret-> name = NULL;
-      thret-> img = NULL;
-      thret-> sw = th-> sw;
-      thret-> id = th-> id;
-      thret-> state = th-> state;
-      if ( th-> name != NULL ) {
-          thret-> name = ( char * ) malloc ( strlen ( th-> name ) +1 ) ;
-          strcpy ( thret-> name , th-> name ) ;
+      thret->name = NULL;
+      thret->img = NULL;
+      thret->sw = th->sw;
+      thret->id = th->id;
+      thret->state = th->state;
+      if ( th->name != NULL ) {
+          thret->name = ( char * ) malloc ( strlen ( th->name ) +1 ) ;
+          strcpy ( thret->name , th->name ) ;
       }
-      if ( th-> img != NULL ) {
-          thret-> img = kgCopyImage ( th-> img ) ;
+      if ( th->img != NULL ) {
+          thret->img = kgCopyImage ( th->img ) ;
       }
       return ( void * ) thret;
   }
@@ -6712,8 +6679,8 @@
       Dposition ( L , pos+1 ) ;
       pdel = Dpick ( L ) ;
       th = ( ThumbNail * ) pdel;
-      if ( th-> img != NULL ) uiFreeImage ( th-> img ) ;
-      if ( th-> name != NULL ) free ( th-> name ) ;
+      if ( th->img != NULL ) uiFreeImage ( th->img ) ;
+      if ( th->name != NULL ) free ( th->name ) ;
       if ( th != NULL ) free ( th ) ;
       n = Dcount ( L ) +1;
       free ( TH ) ;
@@ -6728,8 +6695,8 @@
   }
   void kgFreeThumbNail ( ThumbNail * th ) {
       if ( th != NULL ) {
-          if ( th-> img != NULL ) uiFreeImage ( th-> img ) ;
-          if ( th-> name != NULL ) free ( th-> name ) ;
+          if ( th->img != NULL ) uiFreeImage ( th->img ) ;
+          if ( th->name != NULL ) free ( th->name ) ;
           free ( th ) ;
       }
   }
@@ -6775,16 +6742,16 @@
   void *kgSetWidgetImage ( void *wid , void *img ) {
       DIP *p;
       p = ( DIP * ) wid;
-      if ( p-> code != 'p' ) return NULL;
-      p-> xpm = img;
+      if ( p->code != 'p' ) return NULL;
+      p->xpm = img;
       return img;
   }
   void *kgGetWidgetImage ( void *wid ) {
       DIP *p;
       void *img = NULL;
       p = ( DIP * ) wid;
-      if ( p-> code != 'p' ) return NULL;
-      img = p-> xpm;
+      if ( p->code != 'p' ) return NULL;
+      img = p->xpm;
       return img;
   }
   static int uiDupItem ( void *tmp1 , void *tmp2 ) {
@@ -6792,7 +6759,7 @@
       int ret;
       th1 = ( ThumbNail * ) tmp1;
       th2 = ( ThumbNail * ) tmp2;
-      ret = strcmp ( th1-> name , th2-> name ) ;
+      ret = strcmp ( th1->name , th2->name ) ;
 //	printf("%s : %s :ret = %d\n",th1->name,th2->name,ret);
       if ( ret == 0 ) return 1;
       else return 0;
@@ -6802,7 +6769,7 @@
       int ret;
       th1 = ( ThumbNail * ) tmp1;
       th2 = ( ThumbNail * ) tmp2;
-      ret = strcmp ( th1-> name , th2-> name ) ;
+      ret = strcmp ( th1->name , th2->name ) ;
       if ( ret == 1 ) return 1;
       else return 0;
   }
@@ -6928,13 +6895,13 @@
       ThumbNail **list;
       int df = 0;
       X = ( DIX * ) Tmp;
-      switch ( X-> code ) {
+      switch ( X->code ) {
           case 'x':
           case 'y':
           case 'c':
-          df = * ( X-> df ) -1;
-          list = ( ThumbNail ** ) X-> list;
-          df = list [ item ] -> sw;
+          df = * ( X->df ) -1;
+          list = ( ThumbNail ** ) X->list;
+          df = list [ item ]->sw;
           return df;
           break;
           default:
@@ -6949,38 +6916,38 @@
       int df = 0;
       X = ( DIX * ) Tmp;
       if ( val != 0 ) val = 1;
-      switch ( X-> code ) {
+      switch ( X->code ) {
           case 'x':
-          if ( ( ( X-> type ) %10 ) > 0 ) {
-              df = * ( X-> df ) -1;
-              list = ( ThumbNail ** ) X-> list;
-              list [ item ] -> sw = val;
-              df = list [ item ] -> sw;
+          if ( ( ( X->type ) %10 ) > 0 ) {
+              df = * ( X->df ) -1;
+              list = ( ThumbNail ** ) X->list;
+              list [ item ]->sw = val;
+              df = list [ item ]->sw;
               return df;
           }
           else {
-              list = ( ThumbNail ** ) X-> list;
-              list [ item ] -> sw = val;
+              list = ( ThumbNail ** ) X->list;
+              list [ item ]->sw = val;
           }
           break;
           case 'y':
-          if ( ( ( X-> type ) %10 ) > 0 ) {
-              df = * ( X-> df ) -1;
-              list = ( ThumbNail ** ) X-> list;
-              list [ item ] -> sw = val;
-              df = list [ item ] -> sw;
+          if ( ( ( X->type ) %10 ) > 0 ) {
+              df = * ( X->df ) -1;
+              list = ( ThumbNail ** ) X->list;
+              list [ item ]->sw = val;
+              df = list [ item ]->sw;
               return df;
           }
           else {
-              list = ( ThumbNail ** ) X-> list;
-              list [ item ] -> sw = val;
+              list = ( ThumbNail ** ) X->list;
+              list [ item ]->sw = val;
           }
           break;
           case 'c':
-          df = * ( X-> df ) -1;
-          list = ( ThumbNail ** ) X-> list;
-          list [ item ] -> sw = val;
-          df = list [ item ] -> sw;
+          df = * ( X->df ) -1;
+          list = ( ThumbNail ** ) X->list;
+          list [ item ]->sw = val;
+          df = list [ item ]->sw;
           return df;
           break;
           default:
@@ -6991,10 +6958,10 @@
   void kgSetScrollLength ( void *wid , int percent ) {
       DIV *V;
       V = ( DIV * ) wid;
-      switch ( V-> code ) {
+      switch ( V->code ) {
           case 'v':
           case 'z':
-          V-> ds = percent;
+          V->ds = percent;
           break;
           default:
           break;
@@ -7003,10 +6970,10 @@
   void kgSetScrollPos ( void *wid , int percent ) {
       DIV *V;
       V = ( DIV * ) wid;
-      switch ( V-> code ) {
+      switch ( V->code ) {
           case 'v':
           case 'z':
-          V-> df = percent;
+          V->df = percent;
           break;
           default:
           break;
@@ -7015,10 +6982,10 @@
   int kgGetScrollPos ( void *wid ) {
       DIV *V;
       V = ( DIV * ) wid;
-      switch ( V-> code ) {
+      switch ( V->code ) {
           case 'v':
           case 'z':
-          return V-> df;
+          return V->df;
           break;
           default:
           break;
@@ -7027,10 +6994,10 @@
   int kgGetScrollLength ( void *wid ) {
       DIV *V;
       V = ( DIV * ) wid;
-      switch ( V-> code ) {
+      switch ( V->code ) {
           case 'v':
           case 'z':
-          return V-> ds;
+          return V->ds;
           break;
           default:
           break;
@@ -7042,68 +7009,68 @@
       *ysize = 0;
       if ( wid == NULL ) return 0;
       T = ( DIT * ) wid;
-      *xsize = T-> x2 -T-> x1;
-      *ysize = T-> y2 -T-> y1;
+      *xsize = T->x2 -T->x1;
+      *ysize = T->y2 -T->y1;
       return 1;
   }
   int Dgetselectmenuitem ( void *Tmp , int menu ) {
       DIA *D;DIX *E;
       BRW_STR *B;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       E = D [ menu ] .x;
-      B = ( BRW_STR * ) ( E-> bwsr ) ;
-      return B-> df;
+      B = ( BRW_STR * ) ( E->bwsr ) ;
+      return B->df;
   }
   int Dsetselectmenuitem ( void *Tmp , int menu , int df ) {
       int n = 0;
       ThumbNail **list;
       DIA *D;DIX *E;
       BRW_STR *B;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       E = D [ menu ] .x;
-      B = ( BRW_STR * ) ( E-> bwsr ) ;
+      B = ( BRW_STR * ) ( E->bwsr ) ;
       if ( df < 1 ) df = 1;
-      if ( df > E-> nitems ) df = E-> nitems;
-      B-> df = df;
-      * ( E-> df ) = df;
-      return B-> df;
+      if ( df > E->nitems ) df = E->nitems;
+      B->df = df;
+      * ( E->df ) = df;
+      return B->df;
   }
   void **Dgetselectmenu ( void *Tmp , int menu ) {
       DIA *D;DIX *E;
       BRW_STR *B;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       E = D [ menu ] .x;
-      return E-> list;
+      return E->list;
   }
   void Dsetselectmenu ( void *Tmp , int menu , void **list ) {
       int ny;
       DIA *D;DIX *E;
       BRW_STR *B;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       E = D [ menu ] .x;
-      B = ( BRW_STR * ) ( E-> bwsr ) ;
-      E-> list = list;
+      B = ( BRW_STR * ) ( E->bwsr ) ;
+      E->list = list;
       ny = 0;
       if ( list != NULL ) while ( list [ ny ] != NULL ) ny++;
-      if ( E-> nx < 1 ) E-> nx = 1;
-      E-> ny = ny/E-> nx;
+      if ( E->nx < 1 ) E->nx = 1;
+      E->ny = ny/E->nx;
   }
   int Dgetselectsize ( void *Tmp , int menu ) {
       DIA *D;DIX *E;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       E = D [ menu ] .x;
-      if ( E-> nx < 1 ) E-> nx = 1;
-      return E-> nitems;
+      if ( E->nx < 1 ) E->nx = 1;
+      return E->nitems;
   }
   void Dupdateselectmenu ( void *Tmp , int menu ) {
       DIA *D;DIX *E;DIY *Y;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       kgWC *wc;
       wc = WC ( Tmp ) ;
       E = D [ menu ] .x;
       uiBkup_clip_limits ( wc ) ;
       uiSet_full_scrn ( wc ) ;
-      switch ( E-> code ) {
+      switch ( E->code ) {
           case 'e':
           _uiMake_E ( ( DIE * ) E ) ;
           break;
@@ -7139,27 +7106,27 @@
       void **xpm;
       BRW_STR *B;
       DIA *D;DIX *E;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       kgWC *wc;
       wc = WC ( Tmp ) ;
       E = D [ wid ] .x;
-      uiFreeThumbNails ( ( ThumbNail ** ) E-> list ) ;
-      E-> list = NULL;
+      uiFreeThumbNails ( ( ThumbNail ** ) E->list ) ;
+      E->list = NULL;
   }
   void *uiGetWidget ( void *Tmp , int id ) {
       DIALOG *D;
       D = ( DIALOG * ) Tmp;
-      return ( void * ) ( D-> d [ id ] .x ) ;
+      return ( void * ) ( D->d [ id ] .x ) ;
   }
   void *kgGetWidget ( void *Tmp , int id ) {
       DIALOG *D;
       D = ( DIALOG * ) Tmp;
-      return ( void * ) ( D-> d [ id ] .x ) ;
+      return ( void * ) ( D->d [ id ] .x ) ;
   }
   void *kgGetCurrentWidget ( void *Tmp ) {
       DIALOG *D;
       D = ( DIALOG * ) Tmp;
-      return kgGetWidget ( Tmp , D-> CurWid ) ;
+      return kgGetWidget ( Tmp , D->CurWid ) ;
   }
   int kgSetCurrentWidget ( void *Tmp , int Wid ) {
       int ret;
@@ -7167,7 +7134,7 @@
       D = ( DIALOG * ) Tmp;
       ret = ui_NotInputBox ( D , Wid ) ;
       ret = ( ret+1 ) %2;
-      if ( ret ) D-> CurWid = Wid;
+      if ( ret ) D->CurWid = Wid;
       return ret;
   }
   int kgSetDefaultWidget ( void *Tmp , int Wid ) {
@@ -7180,13 +7147,13 @@
       D = ( DIALOG * ) Tmp;
       ret = ui_NotInputBox ( D , Wid ) ;
       ret = ( ret+1 ) %2;
-      if ( ret ) D-> df = Wid;
+      if ( ret ) D->df = Wid;
       return ret;
   }
   void *kgGetCurrentWidgetName ( void *Tmp ) {
       DIALOG *D;
       D = ( DIALOG * ) Tmp;
-      return kgGetWidgetName ( Tmp , D-> CurWid ) ;
+      return kgGetWidgetName ( Tmp , D->CurWid ) ;
   }
   void * kgGetClickedWidget ( void *Dtmp ) {
       KBEVENT kb;
@@ -7195,22 +7162,22 @@
       DIA *d;
       DIALOG *D;
       D = ( DIALOG * ) Dtmp;
-      kb = D-> kb;
-      d = D-> d;
+      kb = D->kb;
+      d = D->d;
       if ( kb.event != 1 ) return NULL;
       x1 = kb.x;
       y1 = kb.y;
-      if ( x1 < D-> xo ) return NULL;
-      if ( x1 > ( D-> xo+D-> xl ) ) return NULL;
-      if ( y1 < D-> yo ) return NULL;
-      if ( y1 > ( D-> yo+D-> yl ) ) return NULL;
-      xo = D-> xo;
-      yo = D-> yo;
+      if ( x1 < D->xo ) return NULL;
+      if ( x1 > ( D->xo+D->xl ) ) return NULL;
+      if ( y1 < D->yo ) return NULL;
+      if ( y1 > ( D->yo+D->yl ) ) return NULL;
+      xo = D->xo;
+      yo = D->yo;
       i = 0; while ( d [ i ] .t != NULL ) i++;
       n = i;
       for ( i = 0;i < n;i++ ) {
           if ( kgGetWidgetVisibility ( kgGetWidget ( D , i ) ) == 0 ) continue;
-          if ( uiCheckClickPosition ( d [ i ] .t-> x1+xo , d [ i ] .t-> y1+yo , d [ i ] .t-> x2+xo , d [ i ] .t-> y2+yo , x1 , y1 ) == 1 ) 
+          if ( uiCheckClickPosition ( d [ i ] .t->x1+xo , d [ i ] .t->y1+yo , d [ i ] .t->x2+xo , d [ i ] .t->y2+yo , x1 , y1 ) == 1 )  \
               {wid = ( void * ) d [ i ] .t; break;}
       }
       return wid;
@@ -7222,21 +7189,21 @@
       DIA *d;
       DIALOG *D;
       D = ( DIALOG * ) Dtmp;
-      kb = D-> kb;
-      d = D-> d;
+      kb = D->kb;
+      d = D->d;
       *x = -1;*y = -1;
       if ( ( kb.event != 1 ) && ( kb.event != 3 ) ) return ;
       x1 = kb.x;
       y1 = kb.y;
-      *x = x1 - D-> xo;
-      *y = y1 - D-> yo;
+      *x = x1 - D->xo;
+      *y = y1 - D->yo;
       return ;
   }
   int kgGetWidgetLocation ( void *wid , int *x1 , int *y1 ) {
       DIT *T;
       if ( wid != NULL ) {
-          *x1 = T-> x1;
-          *y1 = T-> y1;
+          *x1 = T->x1;
+          *y1 = T->y1;
           return 1;
       }
       return 0;
@@ -7248,20 +7215,20 @@
       DIA *d;
       DIALOG *D;
       D = ( DIALOG * ) Dtmp;
-      kb = D-> kb;
-      d = D-> d;
-      if ( x1 < D-> xo ) return NULL;
-      if ( x1 > ( D-> xo+D-> xl ) ) return NULL;
-      if ( y1 < D-> yo ) return NULL;
-      if ( y1 > ( D-> yo+D-> yl ) ) return NULL;
-      xo = D-> xo;
-      yo = D-> yo;
+      kb = D->kb;
+      d = D->d;
+      if ( x1 < D->xo ) return NULL;
+      if ( x1 > ( D->xo+D->xl ) ) return NULL;
+      if ( y1 < D->yo ) return NULL;
+      if ( y1 > ( D->yo+D->yl ) ) return NULL;
+      xo = D->xo;
+      yo = D->yo;
       i = 0; while ( d [ i ] .t != NULL ) i++;
       n = i;
 // for(i=0;i<n;i++) {
       for ( i = n-1;i >= 0;i-- ) {
           if ( kgGetWidgetVisibility ( kgGetWidget ( D , i ) ) == 0 ) continue;
-          if ( uiCheckClickPosition ( d [ i ] .t-> x1+xo , d [ i ] .t-> y1+yo , d [ i ] .t-> x2+xo , d [ i ] .t-> y2+yo , x1 , y1 ) == 1 ) 
+          if ( uiCheckClickPosition ( d [ i ] .t->x1+xo , d [ i ] .t->y1+yo , d [ i ] .t->x2+xo , d [ i ] .t->y2+yo , x1 , y1 ) == 1 )  \
               {wid = ( void * ) d [ i ] .t; break;}
       }
       return wid;
@@ -7271,15 +7238,15 @@
       int hide = 0;
       x = ( DIX * ) uiGetWidget ( Tmp , id ) ;
       if ( val == 0 ) hide = 1;
-      switch ( x-> code ) {
+      switch ( x->code ) {
           case 'x':
           case 'r':
           case 'c':
           case 'y':
-          x-> hide = hide;
+          x->hide = hide;
           break;
           case 'o':
-           ( ( DIO * ) x ) -> hide = hide;
+           ( ( DIO * ) x )->hide = hide;
           break;
       }
       uiUpdateWidget ( ( void * ) x ) ;
@@ -7289,15 +7256,15 @@
       DIX *x;
       int hide = 0 , ret = 1;
       x = ( DIX * ) uiGetWidget ( Tmp , id ) ;
-      switch ( x-> code ) {
+      switch ( x->code ) {
           case 'x':
           case 'r':
           case 'c':
           case 'y':
-          hide = x-> hide;
+          hide = x->hide;
           break;
           case 'o':
-          hide = ( ( DIO * ) x ) -> hide;
+          hide = ( ( DIO * ) x )->hide;
           break;
       }
       if ( hide == 1 ) ret = 0;
@@ -7307,71 +7274,71 @@
       DIX *x;
       int hide = 0 , ret = 1;
       x = ( DIX * ) ( Tmp ) ;
-      switch ( x-> code ) {
+      switch ( x->code ) {
           case 'x':
           case 'r':
           case 'c':
           case 'y':
-          hide = x-> hide;
+          hide = x->hide;
           break;
           case 'v':
-          hide = ( ( DIV * ) x ) -> hide;
+          hide = ( ( DIV * ) x )->hide;
           break;
           case 'z':
-          hide = ( ( DIZ * ) x ) -> hide;
+          hide = ( ( DIZ * ) x )->hide;
           break;
           case 'o':
-          hide = ( ( DIO * ) x ) -> hide;
+          hide = ( ( DIO * ) x )->hide;
           break;
           case 'p': /* new for xpm display */
-          hide = ( ( DIP * ) x ) -> hide;
+          hide = ( ( DIP * ) x )->hide;
           break;
           case 'i': /* info box */
-          hide = ( ( DII * ) x ) -> hide;
+          hide = ( ( DII * ) x )->hide;
           break;
           case 't':
           case 'T':
 //       printf("Setting visibility: %d\n",val);
-          hide = ( ( DIT * ) x ) -> hide;
+          hide = ( ( DIT * ) x )->hide;
           break;
           case 'h':
-          hide = ( ( DIL * ) x ) -> hide;
+          hide = ( ( DIL * ) x )->hide;
           break;
           case 'H':
-          hide = ( ( DILN * ) x ) -> hide;
+          hide = ( ( DILN * ) x )->hide;
           break;
           case 'n':
-          hide = ( ( DIN * ) x ) -> hide;
+          hide = ( ( DIN * ) x )->hide;
           break;
           case 'b':
           case 'N':
-          hide = ( ( DIBN * ) x ) -> hide;
+          hide = ( ( DIBN * ) x )->hide;
           break;
           case 'f':
-          hide = ( ( DIF * ) x ) -> hide;
+          hide = ( ( DIF * ) x )->hide;
           break;
           case 'P':
-          hide = ( ( DIHB * ) x ) -> hide;
+          hide = ( ( DIHB * ) x )->hide;
           break;
           case 'd':
-          hide = ( ( DID * ) x ) -> hide;
+          hide = ( ( DID * ) x )->hide;
           break;
           case 'w':
-          hide = ( ( DIW * ) x ) -> hide;
+          hide = ( ( DIW * ) x )->hide;
           break;
           case 'e':
-          hide = ( ( DIE * ) x ) -> hide;
+          hide = ( ( DIE * ) x )->hide;
           break;
           case 's':
-          hide = ( ( DIS * ) x ) -> hide;
+          hide = ( ( DIS * ) x )->hide;
           break;
           case 'g':
-          hide = ( ( DIG * ) x ) -> hide;
+          hide = ( ( DIG * ) x )->hide;
           break;
           case 'm':
           case 'M':
           case 'B':
-          hide = ( ( DIM * ) x ) -> hide;
+          hide = ( ( DIM * ) x )->hide;
           break;
           default:
           break;
@@ -7385,112 +7352,112 @@
       DIALOG *D = NULL;
       x = ( DIX * ) ( Tmp ) ;
       if ( val == 0 ) hide = 1;
-      switch ( x-> code ) {
+      switch ( x->code ) {
           case 'x':
           case 'r':
           case 'c':
           case 'y':
-          hideo = x-> hide;
-          x-> hide = hide;
-          D = ( DIALOG * ) ( x-> D ) ;
+          hideo = x->hide;
+          x->hide = hide;
+          D = ( DIALOG * ) ( x->D ) ;
           break;
           case 'v':
-          hideo = ( ( DIV * ) x ) -> hide;
-           ( ( DIV * ) x ) -> hide = hide;
-          D = ( DIALOG * ) ( ( ( DIV * ) x ) -> D ) ;
+          hideo = ( ( DIV * ) x )->hide;
+           ( ( DIV * ) x )->hide = hide;
+          D = ( DIALOG * ) ( ( ( DIV * ) x )->D ) ;
           break;
           case 'z':
-          hideo = ( ( DIZ * ) x ) -> hide;
-           ( ( DIZ * ) x ) -> hide = hide;
-          D = ( DIALOG * ) ( ( ( DIZ * ) x ) -> D ) ;
+          hideo = ( ( DIZ * ) x )->hide;
+           ( ( DIZ * ) x )->hide = hide;
+          D = ( DIALOG * ) ( ( ( DIZ * ) x )->D ) ;
           break;
           case 'o':
-          hideo = ( ( DIO * ) x ) -> hide;
-           ( ( DIO * ) x ) -> hide = hide;
-          D = ( DIALOG * ) ( ( ( DID * ) x ) -> D ) ;
+          hideo = ( ( DIO * ) x )->hide;
+           ( ( DIO * ) x )->hide = hide;
+          D = ( DIALOG * ) ( ( ( DID * ) x )->D ) ;
           break;
           case 'p': /* new for xpm display */
-          hideo = ( ( DIP * ) x ) -> hide;
-           ( ( DIP * ) x ) -> hide = hide;
-          D = ( DIALOG * ) ( ( ( DIP * ) x ) -> D ) ;
+          hideo = ( ( DIP * ) x )->hide;
+           ( ( DIP * ) x )->hide = hide;
+          D = ( DIALOG * ) ( ( ( DIP * ) x )->D ) ;
           break;
           case 'i': /* info box */
-          hideo = ( ( DII * ) x ) -> hide;
-           ( ( DII * ) x ) -> hide = hide;
-          D = ( DIALOG * ) ( ( ( DII * ) x ) -> D ) ;
+          hideo = ( ( DII * ) x )->hide;
+           ( ( DII * ) x )->hide = hide;
+          D = ( DIALOG * ) ( ( ( DII * ) x )->D ) ;
           break;
           case 't':
           case 'T':
 //       printf("Setting visibility: %d\n",val);
-          hideo = ( ( DIT * ) x ) -> hide;
-           ( ( DIT * ) x ) -> hide = hide;
-          D = ( DIALOG * ) ( ( ( DIT * ) x ) -> D ) ;
+          hideo = ( ( DIT * ) x )->hide;
+           ( ( DIT * ) x )->hide = hide;
+          D = ( DIALOG * ) ( ( ( DIT * ) x )->D ) ;
           break;
           case 'h':
-          hideo = ( ( DIL * ) x ) -> hide;
-           ( ( DIL * ) x ) -> hide = hide;
-          D = ( DIALOG * ) ( ( ( DIL * ) x ) -> D ) ;
+          hideo = ( ( DIL * ) x )->hide;
+           ( ( DIL * ) x )->hide = hide;
+          D = ( DIALOG * ) ( ( ( DIL * ) x )->D ) ;
           break;
           case 'H':
-          hideo = ( ( DILN * ) x ) -> hide;
-           ( ( DILN * ) x ) -> hide = hide;
-          D = ( DIALOG * ) ( ( ( DILN * ) x ) -> D ) ;
+          hideo = ( ( DILN * ) x )->hide;
+           ( ( DILN * ) x )->hide = hide;
+          D = ( DIALOG * ) ( ( ( DILN * ) x )->D ) ;
           break;
           case 'n':
-          hideo = ( ( DIN * ) x ) -> hide;
-           ( ( DIN * ) x ) -> hide = hide;
-          D = ( DIALOG * ) ( ( ( DIN * ) x ) -> D ) ;
+          hideo = ( ( DIN * ) x )->hide;
+           ( ( DIN * ) x )->hide = hide;
+          D = ( DIALOG * ) ( ( ( DIN * ) x )->D ) ;
           break;
           case 'b':
-          hideo = ( ( DIB * ) x ) -> hide;
-           ( ( DIB * ) x ) -> hide = hide;
-          D = ( DIALOG * ) ( ( ( DIB * ) x ) -> D ) ;
+          hideo = ( ( DIB * ) x )->hide;
+           ( ( DIB * ) x )->hide = hide;
+          D = ( DIALOG * ) ( ( ( DIB * ) x )->D ) ;
           break;
           case 'N':
-          hideo = ( ( DIBN * ) x ) -> hide;
-           ( ( DIBN * ) x ) -> hide = hide;
-          D = ( DIALOG * ) ( ( ( DIBN * ) x ) -> D ) ;
+          hideo = ( ( DIBN * ) x )->hide;
+           ( ( DIBN * ) x )->hide = hide;
+          D = ( DIALOG * ) ( ( ( DIBN * ) x )->D ) ;
           break;
           case 'f':
-          hideo = ( ( DIF * ) x ) -> hide;
-           ( ( DIF * ) x ) -> hide = hide;
-          D = ( DIALOG * ) ( ( ( DIF * ) x ) -> D ) ;
+          hideo = ( ( DIF * ) x )->hide;
+           ( ( DIF * ) x )->hide = hide;
+          D = ( DIALOG * ) ( ( ( DIF * ) x )->D ) ;
           break;
           case 'P':
-          hideo = ( ( DIHB * ) x ) -> hide;
-           ( ( DIHB * ) x ) -> hide = hide;
-          D = ( DIALOG * ) ( ( ( DIHB * ) x ) -> D ) ;
+          hideo = ( ( DIHB * ) x )->hide;
+           ( ( DIHB * ) x )->hide = hide;
+          D = ( DIALOG * ) ( ( ( DIHB * ) x )->D ) ;
           break;
           case 'd':
-          hideo = ( ( DID * ) x ) -> hide;
-           ( ( DID * ) x ) -> hide = hide;
-          D = ( DIALOG * ) ( ( ( DID * ) x ) -> D ) ;
+          hideo = ( ( DID * ) x )->hide;
+           ( ( DID * ) x )->hide = hide;
+          D = ( DIALOG * ) ( ( ( DID * ) x )->D ) ;
           break;
           case 'w':
-          hideo = ( ( DIW * ) x ) -> hide;
-           ( ( DIW * ) x ) -> hide = hide;
-          D = ( DIALOG * ) ( ( ( DIW * ) x ) -> D ) ;
+          hideo = ( ( DIW * ) x )->hide;
+           ( ( DIW * ) x )->hide = hide;
+          D = ( DIALOG * ) ( ( ( DIW * ) x )->D ) ;
           break;
           case 'e':
-          hideo = ( ( DIE * ) x ) -> hide;
-           ( ( DIE * ) x ) -> hide = hide;
-          D = ( DIALOG * ) ( ( ( DIE * ) x ) -> D ) ;
+          hideo = ( ( DIE * ) x )->hide;
+           ( ( DIE * ) x )->hide = hide;
+          D = ( DIALOG * ) ( ( ( DIE * ) x )->D ) ;
           break;
           case 's':
-          hideo = ( ( DIS * ) x ) -> hide;
-           ( ( DIS * ) x ) -> hide = hide;
-          D = ( DIALOG * ) ( ( ( DIS * ) x ) -> D ) ;
+          hideo = ( ( DIS * ) x )->hide;
+           ( ( DIS * ) x )->hide = hide;
+          D = ( DIALOG * ) ( ( ( DIS * ) x )->D ) ;
           break;
           case 'g':
-          hideo = ( ( DIG * ) x ) -> hide;
-           ( ( DIG * ) x ) -> hide = hide;
+          hideo = ( ( DIG * ) x )->hide;
+           ( ( DIG * ) x )->hide = hide;
           break;
           case 'm':
           case 'M':
           case 'B':
-          hideo = ( ( DIM * ) x ) -> hide;
-           ( ( DIM * ) x ) -> hide = hide;
-          D = ( DIALOG * ) ( ( ( DIM * ) x ) -> D ) ;
+          hideo = ( ( DIM * ) x )->hide;
+           ( ( DIM * ) x )->hide = hide;
+          D = ( DIALOG * ) ( ( ( DIM * ) x )->D ) ;
           break;
           default:
           break;
@@ -7506,70 +7473,70 @@
       DIX *x;
       x = ( DIX * ) kgGetWidget ( Tmp , id ) ;
       if ( x == NULL ) return NULL;
-      switch ( x-> code ) {
+      switch ( x->code ) {
           case 'x':
           case 'r':
           case 'c':
           case 'y':
-          return x-> Wid ;
+          return x->Wid ;
           break;
           case 'v':
-          return ( ( DIV * ) x ) -> Wid ;
+          return ( ( DIV * ) x )->Wid ;
           break;
           case 'z':
-          return ( ( DIZ * ) x ) -> Wid ;
+          return ( ( DIZ * ) x )->Wid ;
           break;
           case 'o':
-          return ( ( DIO * ) x ) -> Wid ;
+          return ( ( DIO * ) x )->Wid ;
           break;
           case 'p': /* new for xpm display */
-          return ( ( DIP * ) x ) -> Wid ;
+          return ( ( DIP * ) x )->Wid ;
           break;
           case 'i': /* info box */
-          return ( ( DII * ) x ) -> Wid ;
+          return ( ( DII * ) x )->Wid ;
           break;
           case 't':
           case 'T':
-          return ( ( DIT * ) x ) -> Wid ;
+          return ( ( DIT * ) x )->Wid ;
           break;
           case 'h':
-          return ( ( DIL * ) x ) -> Wid ;
+          return ( ( DIL * ) x )->Wid ;
           break;
           case 'H':
-          return ( ( DILN * ) x ) -> Wid ;
+          return ( ( DILN * ) x )->Wid ;
           break;
           case 'n':
-          return ( ( DIBN * ) x ) -> Wid ;
+          return ( ( DIBN * ) x )->Wid ;
           break;
           case 'b':
           case 'N':
-          return ( ( DIB * ) x ) -> Wid ;
+          return ( ( DIB * ) x )->Wid ;
           break;
           case 'f':
-          return ( ( DIF * ) x ) -> Wid;
+          return ( ( DIF * ) x )->Wid;
           break;
           case 'P':
-          return ( ( DIHB * ) x ) -> Wid ;
+          return ( ( DIHB * ) x )->Wid ;
           break;
           case 'd':
-          return ( ( DID * ) x ) -> Wid ;
+          return ( ( DID * ) x )->Wid ;
           break;
           case 'w':
-          return ( ( DIW * ) x ) -> Wid ;
+          return ( ( DIW * ) x )->Wid ;
           break;
           case 'e':
-          return ( ( DIE * ) x ) -> Wid ;
+          return ( ( DIE * ) x )->Wid ;
           break;
           case 's':
-          return ( ( DIS * ) x ) -> Wid ;
+          return ( ( DIS * ) x )->Wid ;
           break;
           case 'g':
-          return ( ( DIG * ) x ) -> Wid ;
+          return ( ( DIG * ) x )->Wid ;
           break;
           case 'm':
           case 'M':
           case 'B':
-          return ( ( DIM * ) x ) -> Wid ;
+          return ( ( DIM * ) x )->Wid ;
           break;
           default:
           break;
@@ -7582,74 +7549,74 @@
       DIX *x;
       int i = 0;
       D = ( DIALOG * ) Tmp;
-      d = D-> d;
+      d = D->d;
       while ( d [ i ] .x != NULL ) {
           x = ( DIX * ) d [ i ] .x;
           i++;
-          switch ( x-> code ) {
+          switch ( x->code ) {
               case 'x':
               case 'r':
               case 'c':
               case 'y':
-              if ( strcmp ( x-> Wid , id ) == 0 ) return ( void * ) x;
+              if ( strcmp ( x->Wid , id ) == 0 ) return ( void * ) x;
               break;
               case 'v':
-              if ( strcmp ( ( ( DIV * ) x ) -> Wid , id ) == 0 ) return ( void * ) x;
+              if ( strcmp ( ( ( DIV * ) x )->Wid , id ) == 0 ) return ( void * ) x;
               break;
               case 'z':
-              if ( strcmp ( ( ( DIZ * ) x ) -> Wid , id ) == 0 ) return ( void * ) x;
+              if ( strcmp ( ( ( DIZ * ) x )->Wid , id ) == 0 ) return ( void * ) x;
               break;
               case 'o':
-              if ( strcmp ( ( ( DIO * ) x ) -> Wid , id ) == 0 ) return ( void * ) x;
+              if ( strcmp ( ( ( DIO * ) x )->Wid , id ) == 0 ) return ( void * ) x;
               break;
               case 'p': /* new for xpm display */
-              if ( strcmp ( ( ( DIP * ) x ) -> Wid , id ) == 0 ) return ( void * ) x;
+              if ( strcmp ( ( ( DIP * ) x )->Wid , id ) == 0 ) return ( void * ) x;
               break;
               case 'i': /* info box */
-              if ( strcmp ( ( ( DII * ) x ) -> Wid , id ) == 0 ) return ( void * ) x;
+              if ( strcmp ( ( ( DII * ) x )->Wid , id ) == 0 ) return ( void * ) x;
               break;
               case 't':
               case 'T':
-              if ( strcmp ( ( ( DIT * ) x ) -> Wid , id ) == 0 ) return ( void * ) x;
+              if ( strcmp ( ( ( DIT * ) x )->Wid , id ) == 0 ) return ( void * ) x;
               break;
               case 'h':
-              if ( strcmp ( ( ( DIL * ) x ) -> Wid , id ) == 0 ) return ( void * ) x;
+              if ( strcmp ( ( ( DIL * ) x )->Wid , id ) == 0 ) return ( void * ) x;
               break;
               case 'H':
-              if ( strcmp ( ( ( DILN * ) x ) -> Wid , id ) == 0 ) return ( void * ) x;
+              if ( strcmp ( ( ( DILN * ) x )->Wid , id ) == 0 ) return ( void * ) x;
               break;
               case 'n':
-              if ( strcmp ( ( ( DIN * ) x ) -> Wid , id ) == 0 ) return ( void * ) x;
+              if ( strcmp ( ( ( DIN * ) x )->Wid , id ) == 0 ) return ( void * ) x;
               break;
               case 'b':
               case 'N':
-              if ( strcmp ( ( ( DIB * ) x ) -> Wid , id ) == 0 ) return ( void * ) x;
+              if ( strcmp ( ( ( DIB * ) x )->Wid , id ) == 0 ) return ( void * ) x;
               break;
               case 'f':
-              if ( strcmp ( ( ( DIF * ) x ) -> Wid , id ) == 0 ) return ( void * ) x;
+              if ( strcmp ( ( ( DIF * ) x )->Wid , id ) == 0 ) return ( void * ) x;
               break;
               case 'P':
-              if ( strcmp ( ( ( DIHB * ) x ) -> Wid , id ) == 0 ) return ( void * ) x;
+              if ( strcmp ( ( ( DIHB * ) x )->Wid , id ) == 0 ) return ( void * ) x;
               break;
               case 'd':
-              if ( strcmp ( ( ( DID * ) x ) -> Wid , id ) == 0 ) return ( void * ) x;
+              if ( strcmp ( ( ( DID * ) x )->Wid , id ) == 0 ) return ( void * ) x;
               break;
               case 'w':
-              if ( strcmp ( ( ( DIW * ) x ) -> Wid , id ) == 0 ) return ( void * ) x;
+              if ( strcmp ( ( ( DIW * ) x )->Wid , id ) == 0 ) return ( void * ) x;
               break;
               case 'e':
-              if ( strcmp ( ( ( DIE * ) x ) -> Wid , id ) == 0 ) return ( void * ) x;
+              if ( strcmp ( ( ( DIE * ) x )->Wid , id ) == 0 ) return ( void * ) x;
               break;
               case 's':
-              if ( strcmp ( ( ( DIS * ) x ) -> Wid , id ) == 0 ) return ( void * ) x;
+              if ( strcmp ( ( ( DIS * ) x )->Wid , id ) == 0 ) return ( void * ) x;
               break;
               case 'g':
-              if ( strcmp ( ( ( DIG * ) x ) -> Wid , id ) == 0 ) return ( void * ) x;
+              if ( strcmp ( ( ( DIG * ) x )->Wid , id ) == 0 ) return ( void * ) x;
               break;
               case 'm':
               case 'M':
               case 'B':
-              if ( strcmp ( ( ( DIM * ) x ) -> Wid , id ) == 0 ) return ( void * ) x;
+              if ( strcmp ( ( ( DIM * ) x )->Wid , id ) == 0 ) return ( void * ) x;
               break;
               default:
               break;
@@ -7662,70 +7629,70 @@
       int i = 0;
       int ret = 0;
       x = ( DIX * ) wid;
-      switch ( x-> code ) {
+      switch ( x->code ) {
           case 'x':
           case 'r':
           case 'c':
           case 'y':
-          if ( strcmp ( x-> Wid , name ) == 0 ) return 1;
+          if ( strcmp ( x->Wid , name ) == 0 ) return 1;
           break;
           case 'v':
-          if ( strcmp ( ( ( DIV * ) x ) -> Wid , name ) == 0 ) return 1;
+          if ( strcmp ( ( ( DIV * ) x )->Wid , name ) == 0 ) return 1;
           break;
           case 'z':
-          if ( strcmp ( ( ( DIZ * ) x ) -> Wid , name ) == 0 ) return 1;
+          if ( strcmp ( ( ( DIZ * ) x )->Wid , name ) == 0 ) return 1;
           break;
           case 'o':
-          if ( strcmp ( ( ( DIO * ) x ) -> Wid , name ) == 0 ) return 1;
+          if ( strcmp ( ( ( DIO * ) x )->Wid , name ) == 0 ) return 1;
           break;
           case 'p': /* new for xpm display */
-          if ( strcmp ( ( ( DIP * ) x ) -> Wid , name ) == 0 ) return 1;
+          if ( strcmp ( ( ( DIP * ) x )->Wid , name ) == 0 ) return 1;
           break;
           case 'i': /* info box */
-          if ( strcmp ( ( ( DII * ) x ) -> Wid , name ) == 0 ) return 1;
+          if ( strcmp ( ( ( DII * ) x )->Wid , name ) == 0 ) return 1;
           break;
           case 't':
           case 'T':
-          if ( strcmp ( ( ( DIT * ) x ) -> Wid , name ) == 0 ) return 1;
+          if ( strcmp ( ( ( DIT * ) x )->Wid , name ) == 0 ) return 1;
           break;
           case 'h':
-          if ( strcmp ( ( ( DIL * ) x ) -> Wid , name ) == 0 ) return 1;
+          if ( strcmp ( ( ( DIL * ) x )->Wid , name ) == 0 ) return 1;
           break;
           case 'H':
-          if ( strcmp ( ( ( DILN * ) x ) -> Wid , name ) == 0 ) return 1;
+          if ( strcmp ( ( ( DILN * ) x )->Wid , name ) == 0 ) return 1;
           break;
           case 'n':
-          if ( strcmp ( ( ( DIN * ) x ) -> Wid , name ) == 0 ) return 1;
+          if ( strcmp ( ( ( DIN * ) x )->Wid , name ) == 0 ) return 1;
           break;
           case 'b':
           case 'N':
-          if ( strcmp ( ( ( DIB * ) x ) -> Wid , name ) == 0 ) return 1;
+          if ( strcmp ( ( ( DIB * ) x )->Wid , name ) == 0 ) return 1;
           break;
           case 'f':
-          if ( strcmp ( ( ( DIF * ) x ) -> Wid , name ) == 0 ) return 1;
+          if ( strcmp ( ( ( DIF * ) x )->Wid , name ) == 0 ) return 1;
           break;
           case 'P':
-          if ( strcmp ( ( ( DIHB * ) x ) -> Wid , name ) == 0 ) return 1;
+          if ( strcmp ( ( ( DIHB * ) x )->Wid , name ) == 0 ) return 1;
           break;
           case 'd':
-          if ( strcmp ( ( ( DID * ) x ) -> Wid , name ) == 0 ) return 1;
+          if ( strcmp ( ( ( DID * ) x )->Wid , name ) == 0 ) return 1;
           break;
           case 'w':
-          if ( strcmp ( ( ( DIW * ) x ) -> Wid , name ) == 0 ) return 1;
+          if ( strcmp ( ( ( DIW * ) x )->Wid , name ) == 0 ) return 1;
           break;
           case 'e':
-          if ( strcmp ( ( ( DIE * ) x ) -> Wid , name ) == 0 ) return 1;
+          if ( strcmp ( ( ( DIE * ) x )->Wid , name ) == 0 ) return 1;
           break;
           case 's':
-          if ( strcmp ( ( ( DIS * ) x ) -> Wid , name ) == 0 ) return 1;
+          if ( strcmp ( ( ( DIS * ) x )->Wid , name ) == 0 ) return 1;
           break;
           case 'g':
-          if ( strcmp ( ( ( DIG * ) x ) -> Wid , name ) == 0 ) return 1;
+          if ( strcmp ( ( ( DIG * ) x )->Wid , name ) == 0 ) return 1;
           break;
           case 'm':
           case 'M':
           case 'B':
-          if ( strcmp ( ( ( DIM * ) x ) -> Wid , name ) == 0 ) return 1;
+          if ( strcmp ( ( ( DIM * ) x )->Wid , name ) == 0 ) return 1;
           break;
           default:
           break;
@@ -7741,7 +7708,7 @@
       Dlink *Grp;
       Dlink *Gpt;
       WIDGETGRP *pt = NULL;
-      Grp = ( Dlink * ) D-> GrpList;
+      Grp = ( Dlink * ) D->GrpList;
       if ( Grp == NULL ) {
           return 0;
       }
@@ -7750,117 +7717,117 @@
       Resetlink ( Grp ) ;
       Dposition ( Grp , grpid ) ;
       pt = ( WIDGETGRP * ) Getrecord ( Grp ) ;
-      Gpt = ( Dlink * ) pt-> wlist;
+      Gpt = ( Dlink * ) pt->wlist;
       Resetlink ( Gpt ) ;
       if ( val == 0 ) hide = 1;
       else hide = 0;
-      pt-> hide = hide;
+      pt->hide = hide;
       while ( ( x = ( DIX * ) Getrecord ( Gpt ) ) != NULL ) {
           if ( x == NULL ) continue;
 //  printf("Code = %c\n",x->code);
-          switch ( x-> code ) {
+          switch ( x->code ) {
               case 'x':
-              hideo = x-> hide;
-              x-> hide = hide;
+              hideo = x->hide;
+              x->hide = hide;
               break;
               case 'r':
-              hideo = x-> hide;
-              x-> hide = hide;
+              hideo = x->hide;
+              x->hide = hide;
               break;
               case 'c':
-              hideo = x-> hide;
-              x-> hide = hide;
+              hideo = x->hide;
+              x->hide = hide;
               break;
               case 'y':
-              hideo = x-> hide;
-              x-> hide = hide;
+              hideo = x->hide;
+              x->hide = hide;
               break;
               case 'v':
-              hideo = ( ( DIV * ) x ) -> hide;
-               ( ( DIV * ) x ) -> hide = hide;
+              hideo = ( ( DIV * ) x )->hide;
+               ( ( DIV * ) x )->hide = hide;
               break;
               case 'z':
-              hideo = ( ( DIZ * ) x ) -> hide;
-               ( ( DIZ * ) x ) -> hide = hide;
+              hideo = ( ( DIZ * ) x )->hide;
+               ( ( DIZ * ) x )->hide = hide;
               break;
               case 'o':
-              hideo = ( ( DIO * ) x ) -> hide;
-               ( ( DIO * ) x ) -> hide = hide;
+              hideo = ( ( DIO * ) x )->hide;
+               ( ( DIO * ) x )->hide = hide;
               break;
               case 'p': /* new for xpm display */
-              hideo = ( ( DIP * ) x ) -> hide;
-               ( ( DIP * ) x ) -> hide = hide;
+              hideo = ( ( DIP * ) x )->hide;
+               ( ( DIP * ) x )->hide = hide;
               break;
               case 'i': /* info box */
-              hideo = ( ( DII * ) x ) -> hide;
-               ( ( DII * ) x ) -> hide = hide;
+              hideo = ( ( DII * ) x )->hide;
+               ( ( DII * ) x )->hide = hide;
               break;
               case 't':
-              hideo = ( ( DIT * ) x ) -> hide;
-               ( ( DIT * ) x ) -> hide = hide;
+              hideo = ( ( DIT * ) x )->hide;
+               ( ( DIT * ) x )->hide = hide;
               break;
               case 'T':
-              hideo = ( ( DIT * ) x ) -> hide;
-               ( ( DIT * ) x ) -> hide = hide;
+              hideo = ( ( DIT * ) x )->hide;
+               ( ( DIT * ) x )->hide = hide;
               break;
               case 'h':
-              hideo = ( ( DIL * ) x ) -> hide;
-               ( ( DIL * ) x ) -> hide = hide;
+              hideo = ( ( DIL * ) x )->hide;
+               ( ( DIL * ) x )->hide = hide;
               break;
               case 'H':
-              hideo = ( ( DILN * ) x ) -> hide;
-               ( ( DILN * ) x ) -> hide = hide;
+              hideo = ( ( DILN * ) x )->hide;
+               ( ( DILN * ) x )->hide = hide;
               break;
               case 'n':
-              hideo = ( ( DIN * ) x ) -> hide;
-               ( ( DIN * ) x ) -> hide = hide;
+              hideo = ( ( DIN * ) x )->hide;
+               ( ( DIN * ) x )->hide = hide;
               break;
               case 'b':
-              hideo = ( ( DIB * ) x ) -> hide;
-               ( ( DIB * ) x ) -> hide = hide;
+              hideo = ( ( DIB * ) x )->hide;
+               ( ( DIB * ) x )->hide = hide;
               break;
               case 'N':
-              hideo = ( ( DIBN * ) x ) -> hide;
-               ( ( DIB * ) x ) -> hide = hide;
+              hideo = ( ( DIBN * ) x )->hide;
+               ( ( DIB * ) x )->hide = hide;
               break;
               case 'f':
-              hideo = ( ( DIF * ) x ) -> hide;
-               ( ( DIF * ) x ) -> hide = hide;
+              hideo = ( ( DIF * ) x )->hide;
+               ( ( DIF * ) x )->hide = hide;
               break;
               case 'P':
-              hideo = ( ( DIHB * ) x ) -> hide;
-               ( ( DIHB * ) x ) -> hide = hide;
+              hideo = ( ( DIHB * ) x )->hide;
+               ( ( DIHB * ) x )->hide = hide;
               break;
               case 'd':
-              hideo = ( ( DID * ) x ) -> hide;
-               ( ( DID * ) x ) -> hide = hide;
+              hideo = ( ( DID * ) x )->hide;
+               ( ( DID * ) x )->hide = hide;
               break;
               case 'w':
-              hideo = ( ( DIW * ) x ) -> hide;
-               ( ( DIW * ) x ) -> hide = hide;
+              hideo = ( ( DIW * ) x )->hide;
+               ( ( DIW * ) x )->hide = hide;
               break;
               case 'e':
-              hideo = ( ( DIE * ) x ) -> hide;
-               ( ( DIE * ) x ) -> hide = hide;
+              hideo = ( ( DIE * ) x )->hide;
+               ( ( DIE * ) x )->hide = hide;
               break;
               case 's':
-              hideo = ( ( DIS * ) x ) -> hide;
-               ( ( DIS * ) x ) -> hide = hide;
+              hideo = ( ( DIS * ) x )->hide;
+               ( ( DIS * ) x )->hide = hide;
               break;
               case 'g':
-              hideo = ( ( DIG * ) x ) -> hide;
-               ( ( DIG * ) x ) -> hide = hide;
+              hideo = ( ( DIG * ) x )->hide;
+               ( ( DIG * ) x )->hide = hide;
               break;
               case 'm':
               case 'M':
               case 'B':
-              hideo = ( ( DIM * ) x ) -> hide;
-               ( ( DIM * ) x ) -> hide = hide;
+              hideo = ( ( DIM * ) x )->hide;
+               ( ( DIM * ) x )->hide = hide;
               break;
               default:
               break;
           }
-          if ( ( D-> wc != NULL ) && ( D-> TotWid > 0 ) ) {
+          if ( ( D->wc != NULL ) && ( D->TotWid > 0 ) ) {
               if ( hide != hideo ) kgUpdateWidget ( ( void * ) x ) ;
           }
       }
@@ -7868,28 +7835,28 @@
       return ret;
   }
 #define WMOVE(x) {\
-  xl = x-> x2 - x-> x1;\
-      yl = x-> y2 - x-> y1;\
-      x-> x1 = x1; x-> y1 = y1;\
-      x-> x2 = x1+xl; x-> y2 = y1+yl;\
-      x-> hide = 0;\
-  }
+   xl = x->x2 - x->x1;\
+       yl = x->y2 - x->y1;\
+       x->x1 = x1; x->y1 = y1;\
+       x->x2 = x1+xl; x->y2 = y1+yl;\
+       x->hide = 0;\
+   }
 #define WMOVE_(x) {\
-  xl = x-> x2 - x-> x1;\
-      yl = x-> y2 - x-> y1;\
-      x-> x1 = x1; x-> y1 = y1;\
-      x-> x2 = x1+xl; x-> y2 = y1+yl;\
-  }
+   xl = x->x2 - x->x1;\
+       yl = x->y2 - x->y1;\
+       x->x1 = x1; x->y1 = y1;\
+       x->x2 = x1+xl; x->y2 = y1+yl;\
+   }
 #define WSHIFT_(x,xl,yl) {\
-  x-> x1 += xl; x-> y1+= yl;\
-      x-> x2 += xl; x-> y2 += yl;\
-  }
+   x->x1 += xl; x->y1+= yl;\
+       x->x2 += xl; x->y2 += yl;\
+   }
   void uiCleanTextBoxImages ( DIT *T ) {
       int i , n;
       T_ELMT *elmt;
-      if ( T-> item == -1 ) return;
-      n = T-> nx*T-> ny;
-      elmt = T-> elmt;
+      if ( T->item == -1 ) return;
+      n = T->nx*T->ny;
+      elmt = T->elmt;
       for ( i = 0;i < n;i++ ) {
           if ( elmt [ i ] .img != NULL ) {
               kgFreeImage ( elmt [ i ] .img ) ;
@@ -7902,9 +7869,9 @@
       DIN *b;
       BUT_STR *buts;
       b = ( DIN * ) Tmp;
-      if ( b-> item == -1 ) return;
-      n = b-> nx*b-> ny;
-      buts = ( BUT_STR * ) ( b-> buts ) ;
+      if ( b->item == -1 ) return;
+      n = b->nx*b->ny;
+      buts = ( BUT_STR * ) ( b->buts ) ;
       for ( i = 0;i < n;i++ ) {
           if ( buts [ i ] .imgn != NULL ) kgFreeImage ( buts [ i ] .imgn ) ;
           buts [ i ] .imgn = NULL;
@@ -7931,7 +7898,7 @@
       DIF *f; DIHB *P;DID *d; DIW *w;
       DIE *e; DIS *s; DIG *g; DIM *m;
       DIL *H; DIN *N;
-      Grp = ( Dlink * ) D-> GrpList;
+      Grp = ( Dlink * ) D->GrpList;
       if ( Grp == NULL ) {
           return 0;
       }
@@ -7940,206 +7907,206 @@
       Resetlink ( Grp ) ;
       Dposition ( Grp , grpid ) ;
       pt = ( WIDGETGRP * ) Getrecord ( Grp ) ;
-      Gpt = ( Dlink * ) pt-> wlist;
+      Gpt = ( Dlink * ) pt->wlist;
       Resetlink ( Gpt ) ;
       while ( ( x = ( DIX * ) Getrecord ( Gpt ) ) != NULL ) {
-          if ( x-> D != Tmp ) {WMOVE_ ( x ) ;continue;}
-          switch ( x-> code ) {
+          if ( x->D != Tmp ) {WMOVE_ ( x ) ;continue;}
+          switch ( x->code ) {
               case 'x':
-              x-> hide = 1;
+              x->hide = 1;
               _uiMake_X ( x ) ;
               WMOVE ( x ) ;
-              FreeImg ( ( ( DIX * ) ( x ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIX * ) ( x ) )->Bimg ) ;
               _uiMake_X ( x ) ;
               break;
               case 'r':
               r = ( DIRA * ) x;
-              r-> hide = 1;
+              r->hide = 1;
               _uiMake_RadioButton ( r ) ;
               WMOVE ( r ) ;
-              FreeImg ( ( ( DIRA * ) ( x ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIRA * ) ( x ) )->Bimg ) ;
               _uiMake_RadioButton ( r ) ;
               break;
               case 'c':
               c = ( DICH * ) x;
-              c-> hide = 1;
+              c->hide = 1;
               _uiMake_CheckBox ( ( DICH * ) x ) ;
               WMOVE ( c ) ;
-              FreeImg ( ( ( DICH * ) ( x ) ) -> Bimg ) ;
+              FreeImg ( ( ( DICH * ) ( x ) )->Bimg ) ;
               _uiMake_CheckBox ( ( DICH * ) x ) ;
               break;
               case 'y':
               y = ( DIY * ) x;
-              y-> hide = 1;
+              y->hide = 1;
               _uiMake_Y ( ( DIY * ) x ) ;
               WMOVE ( y ) ;
-              FreeImg ( ( ( DIY * ) ( x ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIY * ) ( x ) )->Bimg ) ;
               _uiMake_Y ( ( DIY * ) x ) ;
               break;
               case 'v':
               v = ( DIV * ) x;
-              v-> hide = 1;
+              v->hide = 1;
               _uiMake_V ( ( DIV * ) x ) ;
               WMOVE ( v ) ;
-              FreeImg ( ( ( DIV * ) ( x ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIV * ) ( x ) )->Bimg ) ;
               _uiMake_V ( ( DIV * ) x ) ;
               break;
               case 'z':
               z = ( DIZ * ) x;
-              z-> hide = 1;
+              z->hide = 1;
               _uiMake_Z ( ( DIZ * ) x ) ;
               WMOVE ( z ) ;
-              FreeImg ( ( ( DIZ * ) ( x ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIZ * ) ( x ) )->Bimg ) ;
               _uiMake_Z ( ( DIZ * ) x ) ;
               break;
               case 'o':
               o = ( DIO * ) x;
-              o-> hide = 1;
+              o->hide = 1;
               _uiMake_O ( ( DIO * ) x ) ;
               WMOVE ( o ) ;
-              FreeImg ( ( ( DIO * ) ( x ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIO * ) ( x ) )->Bimg ) ;
               _uiMake_O ( ( DIO * ) x ) ;
               break;
               case 'p': /* new for xpm display */
               p = ( DIP * ) x;
-              p-> hide = 1;
+              p->hide = 1;
               _uiMake_P ( ( DIP * ) x ) ;
               WMOVE ( p ) ;
-              FreeImg ( ( ( DIP * ) ( x ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIP * ) ( x ) )->Bimg ) ;
               _uiMake_P ( ( DIP * ) x ) ;
               break;
               case 'i': /* info box */
               I = ( DII * ) x;
-              I-> hide = 1;
+              I->hide = 1;
               _uiMake_I ( ( DII * ) x ) ;
               WMOVE ( I ) ;
-              FreeImg ( ( ( DII * ) ( x ) ) -> Bimg ) ;
+              FreeImg ( ( ( DII * ) ( x ) )->Bimg ) ;
               _uiMake_I ( ( DII * ) x ) ;
               break;
               case 't':
               T = ( DIT * ) x;
-              T-> hide = 1;
+              T->hide = 1;
               _uiMake_Tx ( ( DIT * ) x ) ;
               WMOVE ( T ) ;
               uiCleanTextBoxImages ( T ) ;
-              FreeImg ( ( ( DIT * ) ( x ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIT * ) ( x ) )->Bimg ) ;
               _uiMake_Tx ( ( DIT * ) x ) ;
               break;
               case 'T':
               T = ( DIT * ) x;
-              T-> hide = 1;
+              T->hide = 1;
               _uiMake_Ta ( ( DIT * ) x ) ;
               WMOVE ( T ) ;
               uiCleanTextBoxImages ( T ) ;
-              FreeImg ( ( ( DIT * ) ( x ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIT * ) ( x ) )->Bimg ) ;
               _uiMake_Ta ( ( DIT * ) x ) ;
               break;
               case 'h':
               H = ( DIL * ) x;
-              H-> hide = 1;
+              H->hide = 1;
               _uiMake_N ( ( DIL * ) x ) ;
               WMOVE ( H ) ;
               uiCleanButtonBoxImages ( x ) ;
-              FreeImg ( ( ( DIL * ) ( x ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIL * ) ( x ) )->Bimg ) ;
               _uiMake_N ( ( DIL * ) x ) ;
               break;
               case 'H':
               h = ( DILN * ) x;
-              h-> hide = 1;
+              h->hide = 1;
               _uiMake_H ( ( DILN * ) x ) ;
               WMOVE ( h ) ;
-              FreeImg ( ( ( DILN * ) ( x ) ) -> Bimg ) ;
+              FreeImg ( ( ( DILN * ) ( x ) )->Bimg ) ;
               _uiMake_H ( ( DILN * ) x ) ;
               break;
               case 'N':
               n = ( DIBN * ) x;
-              n-> hide = 1;
+              n->hide = 1;
               _uiMake_B ( ( DIBN * ) x ) ;
               WMOVE ( n ) ;
-              FreeImg ( ( ( DIBN * ) ( x ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIBN * ) ( x ) )->Bimg ) ;
               _uiMake_B ( ( DIBN * ) x ) ;
               break;
               case 'n':
               N = ( DIN * ) x;
-              N-> hide = 1;
+              N->hide = 1;
               _uiMake_N ( ( DIN * ) x ) ;
               WMOVE ( N ) ;
               uiCleanButtonBoxImages ( x ) ;
-              FreeImg ( ( ( DIN * ) ( x ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIN * ) ( x ) )->Bimg ) ;
               _uiMake_N ( ( DIN * ) x ) ;
               break;
               case 'b':
               b = ( DIB * ) x;
-              b-> hide = 1;
+              b->hide = 1;
               _uiMake_B ( ( DIBN * ) x ) ;
               WMOVE ( b ) ;
-              FreeImg ( ( ( DIBN * ) ( x ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIBN * ) ( x ) )->Bimg ) ;
               _uiMake_B ( ( DIBN * ) x ) ;
               break;
               case 'f':
               f = ( DIF * ) x;
-              f-> hide = 1;
+              f->hide = 1;
               _uiMake_SF ( ( DIF * ) x ) ;
               WMOVE ( f ) ;
-              FreeImg ( ( ( DIF * ) ( x ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIF * ) ( x ) )->Bimg ) ;
               _uiMake_SF ( ( DIF * ) x ) ;
               break;
               case 'P':
               P = ( DIHB * ) x;
-              P-> hide = 1;
+              P->hide = 1;
               _uiMake_SH ( ( DIHB * ) x ) ;
               WMOVE ( P ) ;
-              FreeImg ( ( ( DIHB * ) ( x ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIHB * ) ( x ) )->Bimg ) ;
               _uiMake_SH ( ( DIHB * ) x ) ;
               break;
               case 'd':
               d = ( DID * ) x;
-              d-> hide = 1;
+              d->hide = 1;
               _uiMake_SD ( ( DID * ) x ) ;
               WMOVE ( d ) ;
-              FreeImg ( ( ( DID * ) ( x ) ) -> Bimg ) ;
+              FreeImg ( ( ( DID * ) ( x ) )->Bimg ) ;
               _uiMake_SD ( ( DID * ) x ) ;
               break;
               case 'w':
               w = ( DIW * ) x;
-              w-> hide = 1;
+              w->hide = 1;
               _uiMake_W ( ( DIW * ) x ) ;
               WMOVE ( w ) ;
-              FreeImg ( ( ( DIW * ) ( x ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIW * ) ( x ) )->Bimg ) ;
               _uiMake_W ( ( DIW * ) x ) ;
               break;
               case 'e':
               e = ( DIE * ) x;
-              e-> hide = 1;
+              e->hide = 1;
               _uiMake_E ( ( DIE * ) x ) ;
               WMOVE ( e ) ;
-              FreeImg ( ( ( DIE * ) ( x ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIE * ) ( x ) )->Bimg ) ;
               _uiMake_E ( ( DIE * ) x ) ;
               break;
               case 's':
               s = ( DIS * ) x;
-              s-> hide = 1;
+              s->hide = 1;
               _uiMake_MS ( ( DIS * ) x ) ;
               WMOVE ( s ) ;
-              FreeImg ( ( ( DIS * ) ( x ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIS * ) ( x ) )->Bimg ) ;
               _uiMake_MS ( ( DIS * ) x ) ;
               break;
               case 'g':
               g = ( DIG * ) x;
-              g-> hide = 1;
+              g->hide = 1;
               _uiMake_G ( ( DIG * ) x ) ;
               WMOVE ( g ) ;
-              FreeImg ( ( ( DIG * ) ( x ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIG * ) ( x ) )->Bimg ) ;
               _uiMake_G ( ( DIG * ) x ) ;
               break;
               case 'm':
               case 'M':
               case 'B':
               m = ( DIM * ) x;
-              m-> hide = 1;
+              m->hide = 1;
               _uiMake_M ( ( DIM * ) x ) ;
               WMOVE ( m ) ;
-              FreeImg ( ( ( DIM * ) ( x ) ) -> Bimg ) ;
+              FreeImg ( ( ( DIM * ) ( x ) )->Bimg ) ;
               _uiMake_M ( ( DIM * ) x ) ;
               break;
               default:
@@ -8150,12 +8117,12 @@
       return ret;
   }
 #define WRESIZE(x) {\
-  x-> x2 = x-> x1+xl; x-> y2 = x-> y1+yl;\
-      x-> hide = 0;\
-  }
+   x->x2 = x->x1+xl; x->y2 = x->y1+yl;\
+       x->hide = 0;\
+   }
 #define WRESIZE_(x) {\
-  x-> x2 = x-> x1+xl; x-> y2 = x-> y1+yl;\
-  }
+   x->x2 = x->x1+xl; x->y2 = x->y1+yl;\
+   }
   int kgResizeGrp ( void *Tmp , int grpid , int xl , int yl ) {
       DIX *x;
       int hide = 0 , hideo = 0 , ret = 0;
@@ -8169,7 +8136,7 @@
       DIF *f; DIHB *P;DID *d; DIW *w;
       DIE *e; DIS *s; DIG *g; DIM *m;
       DIL *H; DIN *N;
-      Grp = ( Dlink * ) D-> GrpList;
+      Grp = ( Dlink * ) D->GrpList;
       if ( Grp == NULL ) {
           return 0;
       }
@@ -8178,76 +8145,76 @@
       Resetlink ( Grp ) ;
       Dposition ( Grp , grpid ) ;
       pt = ( WIDGETGRP * ) Getrecord ( Grp ) ;
-      Gpt = ( Dlink * ) pt-> wlist;
+      Gpt = ( Dlink * ) pt->wlist;
       Resetlink ( Gpt ) ;
       while ( ( x = ( DIX * ) Getrecord ( Gpt ) ) != NULL ) {
-          if ( x-> D != Tmp ) {WRESIZE_ ( x ) ;continue;}
-          switch ( x-> code ) {
+          if ( x->D != Tmp ) {WRESIZE_ ( x ) ;continue;}
+          switch ( x->code ) {
               case 'x':
-              x-> hide = 1;
+              x->hide = 1;
               _uiMake_X ( x ) ;
               WRESIZE ( x ) ;
               _uiMake_X ( x ) ;
               break;
               case 'r':
               r = ( DIRA * ) x;
-              r-> hide = 1;
+              r->hide = 1;
               _uiMake_RadioButton ( r ) ;
               WRESIZE ( r ) ;
               _uiMake_RadioButton ( r ) ;
               break;
               case 'c':
               c = ( DICH * ) x;
-              c-> hide = 1;
+              c->hide = 1;
               _uiMake_CheckBox ( ( DICH * ) x ) ;
               WRESIZE ( c ) ;
               _uiMake_CheckBox ( ( DICH * ) x ) ;
               break;
               case 'y':
               y = ( DIY * ) x;
-              y-> hide = 1;
+              y->hide = 1;
               _uiMake_Y ( ( DIY * ) x ) ;
               WRESIZE ( y ) ;
               _uiMake_Y ( ( DIY * ) x ) ;
               break;
               case 'v':
               v = ( DIV * ) x;
-              v-> hide = 1;
+              v->hide = 1;
               _uiMake_V ( ( DIV * ) x ) ;
               WRESIZE ( v ) ;
               _uiMake_V ( ( DIV * ) x ) ;
               break;
               case 'z':
               z = ( DIZ * ) x;
-              z-> hide = 1;
+              z->hide = 1;
               _uiMake_Z ( ( DIZ * ) x ) ;
               WRESIZE ( z ) ;
               _uiMake_Z ( ( DIZ * ) x ) ;
               break;
               case 'o':
               o = ( DIO * ) x;
-              o-> hide = 1;
+              o->hide = 1;
               _uiMake_O ( ( DIO * ) x ) ;
               WRESIZE ( o ) ;
               _uiMake_O ( ( DIO * ) x ) ;
               break;
               case 'p': /* new for xpm display */
               p = ( DIP * ) x;
-              p-> hide = 1;
+              p->hide = 1;
               _uiMake_P ( ( DIP * ) x ) ;
               WRESIZE ( p ) ;
               _uiMake_P ( ( DIP * ) x ) ;
               break;
               case 'i': /* info box */
               I = ( DII * ) x;
-              I-> hide = 1;
+              I->hide = 1;
               _uiMake_I ( ( DII * ) x ) ;
               WRESIZE ( I ) ;
               _uiMake_I ( ( DII * ) x ) ;
               break;
               case 't':
               T = ( DIT * ) x;
-              T-> hide = 1;
+              T->hide = 1;
               _uiMake_Tx ( ( DIT * ) x ) ;
               WRESIZE ( T ) ;
               uiCleanButtonBoxImages ( x ) ;
@@ -8255,7 +8222,7 @@
               break;
               case 'T':
               T = ( DIT * ) x;
-              T-> hide = 1;
+              T->hide = 1;
               _uiMake_Ta ( ( DIT * ) x ) ;
               WRESIZE ( T ) ;
               uiCleanButtonBoxImages ( x ) ;
@@ -8263,7 +8230,7 @@
               break;
               case 'h':
               H = ( DIL * ) x;
-              H-> hide = 1;
+              H->hide = 1;
               _uiMake_N ( ( DIL * ) x ) ;
               WRESIZE ( H ) ;
               uiCleanButtonBoxImages ( x ) ;
@@ -8271,21 +8238,21 @@
               break;
               case 'H':
               h = ( DILN * ) x;
-              h-> hide = 1;
+              h->hide = 1;
               _uiMake_H ( ( DILN * ) x ) ;
               WRESIZE ( h ) ;
               _uiMake_H ( ( DILN * ) x ) ;
               break;
               case 'N':
               n = ( DIBN * ) x;
-              n-> hide = 1;
+              n->hide = 1;
               _uiMake_B ( ( DIBN * ) x ) ;
               WRESIZE ( n ) ;
               _uiMake_B ( ( DIBN * ) x ) ;
               break;
               case 'n':
               N = ( DIN * ) x;
-              N-> hide = 1;
+              N->hide = 1;
               _uiMake_N ( ( DIN * ) x ) ;
               WRESIZE ( N ) ;
               uiCleanButtonBoxImages ( x ) ;
@@ -8293,56 +8260,56 @@
               break;
               case 'b':
               b = ( DIB * ) x;
-              b-> hide = 1;
+              b->hide = 1;
               _uiMake_B ( ( DIBN * ) x ) ;
               WRESIZE ( b ) ;
               _uiMake_B ( ( DIBN * ) x ) ;
               break;
               case 'f':
               f = ( DIF * ) x;
-              f-> hide = 1;
+              f->hide = 1;
               _uiMake_SF ( ( DIF * ) x ) ;
               WRESIZE ( f ) ;
               _uiMake_SF ( ( DIF * ) x ) ;
               break;
               case 'P':
               P = ( DIHB * ) x;
-              P-> hide = 1;
+              P->hide = 1;
               _uiMake_SH ( ( DIHB * ) x ) ;
               WRESIZE ( P ) ;
               _uiMake_SH ( ( DIHB * ) x ) ;
               break;
               case 'd':
               d = ( DID * ) x;
-              d-> hide = 1;
+              d->hide = 1;
               _uiMake_SD ( ( DID * ) x ) ;
               WRESIZE ( d ) ;
               _uiMake_SD ( ( DID * ) x ) ;
               break;
               case 'w':
               w = ( DIW * ) x;
-              w-> hide = 1;
+              w->hide = 1;
               _uiMake_W ( ( DIW * ) x ) ;
               WRESIZE ( w ) ;
               _uiMake_W ( ( DIW * ) x ) ;
               break;
               case 'e':
               e = ( DIE * ) x;
-              e-> hide = 1;
+              e->hide = 1;
               _uiMake_E ( ( DIE * ) x ) ;
               WRESIZE ( e ) ;
               _uiMake_E ( ( DIE * ) x ) ;
               break;
               case 's':
               s = ( DIS * ) x;
-              s-> hide = 1;
+              s->hide = 1;
               _uiMake_MS ( ( DIS * ) x ) ;
               WRESIZE ( s ) ;
               _uiMake_MS ( ( DIS * ) x ) ;
               break;
               case 'g':
               g = ( DIG * ) x;
-              g-> hide = 1;
+              g->hide = 1;
               _uiMake_G ( ( DIG * ) x ) ;
               WRESIZE ( g ) ;
               _uiMake_G ( ( DIG * ) x ) ;
@@ -8351,7 +8318,7 @@
               case 'M':
               case 'B':
               m = ( DIM * ) x;
-              m-> hide = 1;
+              m->hide = 1;
               _uiMake_M ( ( DIM * ) x ) ;
               WRESIZE ( m ) ;
               _uiMake_M ( ( DIM * ) x ) ;
@@ -8376,7 +8343,7 @@
       DIF *f; DIHB *P;DID *d; DIW *w;
       DIE *e; DIS *s; DIG *g; DIM *m;
       DIL *H; DIN *N;
-      Grp = ( Dlink * ) D-> GrpList;
+      Grp = ( Dlink * ) D->GrpList;
       if ( Grp == NULL ) {
           return 0;
       }
@@ -8385,13 +8352,13 @@
       Resetlink ( Grp ) ;
       Dposition ( Grp , grpid ) ;
       pt = ( WIDGETGRP * ) Getrecord ( Grp ) ;
-      Gpt = ( Dlink * ) pt-> wlist;
+      Gpt = ( Dlink * ) pt->wlist;
       Resetlink ( Gpt ) ;
       while ( ( x = ( DIX * ) Getrecord ( Gpt ) ) != NULL ) {
-          x-> x1 += xs;
-          x-> y1 += ys;
-          x-> x2 += xs;
-          x-> y2 += ys;
+          x->x1 += xs;
+          x->y1 += ys;
+          x->x2 += xs;
+          x->y2 += ys;
       }
       ret = 1;
       return ret;
@@ -8408,77 +8375,77 @@
       DIL *H; DIN *N;
       if ( item < 0 ) return 0;
       x = ( DIX * ) kgGetWidget ( Tmp , item ) ;
-      if ( x-> D != Tmp ) {
+      if ( x->D != Tmp ) {
           WMOVE_ ( x ) ;
           return 1;
       }
       if ( x != NULL ) {
-          switch ( x-> code ) {
+          switch ( x->code ) {
               case 'x':
-              x-> hide = 1;
+              x->hide = 1;
               _uiMake_X ( x ) ;
               WMOVE ( x ) ;
               _uiMake_X ( x ) ;
               break;
               case 'r':
               r = ( DIRA * ) x;
-              r-> hide = 1;
+              r->hide = 1;
               _uiMake_RadioButton ( r ) ;
               WMOVE ( r ) ;
               _uiMake_RadioButton ( r ) ;
               break;
               case 'c':
               c = ( DICH * ) x;
-              c-> hide = 1;
+              c->hide = 1;
               _uiMake_CheckBox ( ( DICH * ) x ) ;
               WMOVE ( c ) ;
               _uiMake_CheckBox ( ( DICH * ) x ) ;
               break;
               case 'y':
               y = ( DIY * ) x;
-              y-> hide = 1;
+              y->hide = 1;
               _uiMake_Y ( ( DIY * ) x ) ;
               WMOVE ( y ) ;
               _uiMake_Y ( ( DIY * ) x ) ;
               break;
               case 'v':
               v = ( DIV * ) x;
-              v-> hide = 1;
+              v->hide = 1;
               _uiMake_V ( ( DIV * ) x ) ;
               WMOVE ( v ) ;
               _uiMake_V ( ( DIV * ) x ) ;
               break;
               case 'z':
               z = ( DIZ * ) x;
-              z-> hide = 1;
+              z->hide = 1;
               _uiMake_Z ( ( DIZ * ) x ) ;
               WMOVE ( z ) ;
               _uiMake_Z ( ( DIZ * ) x ) ;
               break;
               case 'o':
               o = ( DIO * ) x;
-              o-> hide = 1;
+              o->hide = 1;
               _uiMake_O ( ( DIO * ) x ) ;
               WMOVE ( o ) ;
               _uiMake_O ( ( DIO * ) x ) ;
               break;
               case 'p': /* new for xpm display */
               p = ( DIP * ) x;
-              p-> hide = 1;
+              p->hide = 1;
               _uiMake_P ( ( DIP * ) x ) ;
               WMOVE ( p ) ;
               _uiMake_P ( ( DIP * ) x ) ;
               break;
               case 'i': /* info box */
               I = ( DII * ) x;
-              I-> hide = 1;
+              I->hide = 1;
               _uiMake_I ( ( DII * ) x ) ;
               WMOVE ( I ) ;
               _uiMake_I ( ( DII * ) x ) ;
               break;
               case 't':
               T = ( DIT * ) x;
-              T-> hide = 1;
+              T->hide = 1;
               _uiMake_Tx ( ( DIT * ) x ) ;
               WMOVE ( T ) ;
               uiCleanTextBoxImages ( T ) ;
@@ -8486,7 +8453,7 @@
               break;
               case 'T':
               T = ( DIT * ) x;
-              T-> hide = 1;
+              T->hide = 1;
               _uiMake_Ta ( ( DIT * ) x ) ;
               WMOVE ( T ) ;
               uiCleanTextBoxImages ( T ) ;
@@ -8494,7 +8461,7 @@
               break;
               case 'h':
               H = ( DIL * ) x;
-              H-> hide = 1;
+              H->hide = 1;
               _uiMake_N ( ( DIL * ) x ) ;
               WMOVE ( H ) ;
               uiCleanButtonBoxImages ( x ) ;
@@ -8502,21 +8469,21 @@
               break;
               case 'H':
               h = ( DILN * ) x;
-              h-> hide = 1;
+              h->hide = 1;
               _uiMake_H ( ( DILN * ) x ) ;
               WMOVE ( h ) ;
               _uiMake_H ( ( DILN * ) x ) ;
               break;
               case 'N':
               n = ( DIBN * ) x;
-              n-> hide = 1;
+              n->hide = 1;
               _uiMake_B ( ( DIBN * ) x ) ;
               WMOVE ( n ) ;
               _uiMake_B ( ( DIBN * ) x ) ;
               break;
               case 'n':
               N = ( DIN * ) x;
-              N-> hide = 1;
+              N->hide = 1;
               _uiMake_N ( ( DIN * ) x ) ;
               WMOVE ( N ) ;
               uiCleanButtonBoxImages ( x ) ;
@@ -8524,56 +8491,56 @@
               break;
               case 'b':
               b = ( DIB * ) x;
-              b-> hide = 1;
+              b->hide = 1;
               _uiMake_B ( ( DIBN * ) x ) ;
               WMOVE ( b ) ;
               _uiMake_B ( ( DIBN * ) x ) ;
               break;
               case 'f':
               f = ( DIF * ) x;
-              f-> hide = 1;
+              f->hide = 1;
               _uiMake_SF ( ( DIF * ) x ) ;
               WMOVE ( f ) ;
               _uiMake_SF ( ( DIF * ) x ) ;
               break;
               case 'P':
               P = ( DIHB * ) x;
-              P-> hide = 1;
+              P->hide = 1;
               _uiMake_SH ( ( DIHB * ) x ) ;
               WMOVE ( P ) ;
               _uiMake_SH ( ( DIHB * ) x ) ;
               break;
               case 'd':
               d = ( DID * ) x;
-              d-> hide = 1;
+              d->hide = 1;
               _uiMake_SD ( ( DID * ) x ) ;
               WMOVE ( d ) ;
               _uiMake_SD ( ( DID * ) x ) ;
               break;
               case 'w':
               w = ( DIW * ) x;
-              w-> hide = 1;
+              w->hide = 1;
               _uiMake_W ( ( DIW * ) x ) ;
               WMOVE ( w ) ;
               _uiMake_W ( ( DIW * ) x ) ;
               break;
               case 'e':
               e = ( DIE * ) x;
-              e-> hide = 1;
+              e->hide = 1;
               _uiMake_E ( ( DIE * ) x ) ;
               WMOVE ( e ) ;
               _uiMake_E ( ( DIE * ) x ) ;
               break;
               case 's':
               s = ( DIS * ) x;
-              s-> hide = 1;
+              s->hide = 1;
               _uiMake_MS ( ( DIS * ) x ) ;
               WMOVE ( s ) ;
               _uiMake_MS ( ( DIS * ) x ) ;
               break;
               case 'g':
               g = ( DIG * ) x;
-              g-> hide = 1;
+              g->hide = 1;
               _uiMake_G ( ( DIG * ) x ) ;
               WMOVE ( g ) ;
               _uiMake_G ( ( DIG * ) x ) ;
@@ -8582,7 +8549,7 @@
               case 'M':
               case 'B':
               m = ( DIM * ) x;
-              m-> hide = 1;
+              m->hide = 1;
               _uiMake_M ( ( DIM * ) x ) ;
               WMOVE ( m ) ;
               _uiMake_M ( ( DIM * ) x ) ;
@@ -8606,79 +8573,79 @@
       DIL *H; DIN *N;
       if ( item < 0 ) return 0;
       x = ( DIX * ) kgGetWidget ( Tmp , item ) ;
-      x1 = x-> x1+xs;
-      y1 = x-> y1+ys;
-      if ( x-> D != Tmp ) {
+      x1 = x->x1+xs;
+      y1 = x->y1+ys;
+      if ( x->D != Tmp ) {
           WMOVE_ ( x ) ;
           return 1;
       }
       if ( x != NULL ) {
-          switch ( x-> code ) {
+          switch ( x->code ) {
               case 'x':
-              x-> hide = 1;
+              x->hide = 1;
               _uiMake_X ( x ) ;
               WMOVE ( x ) ;
               _uiMake_X ( x ) ;
               break;
               case 'r':
               r = ( DIRA * ) x;
-              r-> hide = 1;
+              r->hide = 1;
               _uiMake_RadioButton ( r ) ;
               WMOVE ( r ) ;
               _uiMake_RadioButton ( r ) ;
               break;
               case 'c':
               c = ( DICH * ) x;
-              c-> hide = 1;
+              c->hide = 1;
               _uiMake_CheckBox ( ( DICH * ) x ) ;
               WMOVE ( c ) ;
               _uiMake_CheckBox ( ( DICH * ) x ) ;
               break;
               case 'y':
               y = ( DIY * ) x;
-              y-> hide = 1;
+              y->hide = 1;
               _uiMake_Y ( ( DIY * ) x ) ;
               WMOVE ( y ) ;
               _uiMake_Y ( ( DIY * ) x ) ;
               break;
               case 'v':
               v = ( DIV * ) x;
-              v-> hide = 1;
+              v->hide = 1;
               _uiMake_V ( ( DIV * ) x ) ;
               WMOVE ( v ) ;
               _uiMake_V ( ( DIV * ) x ) ;
               break;
               case 'z':
               z = ( DIZ * ) x;
-              z-> hide = 1;
+              z->hide = 1;
               _uiMake_Z ( ( DIZ * ) x ) ;
               WMOVE ( z ) ;
               _uiMake_Z ( ( DIZ * ) x ) ;
               break;
               case 'o':
               o = ( DIO * ) x;
-              o-> hide = 1;
+              o->hide = 1;
               _uiMake_O ( ( DIO * ) x ) ;
               WMOVE ( o ) ;
               _uiMake_O ( ( DIO * ) x ) ;
               break;
               case 'p': /* new for xpm display */
               p = ( DIP * ) x;
-              p-> hide = 1;
+              p->hide = 1;
               _uiMake_P ( ( DIP * ) x ) ;
               WMOVE ( p ) ;
               _uiMake_P ( ( DIP * ) x ) ;
               break;
               case 'i': /* info box */
               I = ( DII * ) x;
-              I-> hide = 1;
+              I->hide = 1;
               _uiMake_I ( ( DII * ) x ) ;
               WMOVE ( I ) ;
               _uiMake_I ( ( DII * ) x ) ;
               break;
               case 't':
               T = ( DIT * ) x;
-              T-> hide = 1;
+              T->hide = 1;
               _uiMake_Tx ( ( DIT * ) x ) ;
               WMOVE ( T ) ;
               uiCleanTextBoxImages ( T ) ;
@@ -8686,7 +8653,7 @@
               break;
               case 'T':
               T = ( DIT * ) x;
-              T-> hide = 1;
+              T->hide = 1;
               _uiMake_Ta ( ( DIT * ) x ) ;
               WMOVE ( T ) ;
               uiCleanTextBoxImages ( T ) ;
@@ -8694,7 +8661,7 @@
               break;
               case 'h':
               H = ( DIL * ) x;
-              H-> hide = 1;
+              H->hide = 1;
               _uiMake_N ( ( DIL * ) x ) ;
               WMOVE ( H ) ;
               uiCleanButtonBoxImages ( x ) ;
@@ -8702,21 +8669,21 @@
               break;
               case 'H':
               h = ( DILN * ) x;
-              h-> hide = 1;
+              h->hide = 1;
               _uiMake_H ( ( DILN * ) x ) ;
               WMOVE ( h ) ;
               _uiMake_H ( ( DILN * ) x ) ;
               break;
               case 'N':
               n = ( DIBN * ) x;
-              n-> hide = 1;
+              n->hide = 1;
               _uiMake_B ( ( DIBN * ) x ) ;
               WMOVE ( n ) ;
               _uiMake_B ( ( DIBN * ) x ) ;
               break;
               case 'n':
               N = ( DIN * ) x;
-              N-> hide = 1;
+              N->hide = 1;
               _uiMake_N ( ( DIN * ) x ) ;
               WMOVE ( N ) ;
               uiCleanButtonBoxImages ( x ) ;
@@ -8724,56 +8691,56 @@
               break;
               case 'b':
               b = ( DIB * ) x;
-              b-> hide = 1;
+              b->hide = 1;
               _uiMake_B ( ( DIBN * ) x ) ;
               WMOVE ( b ) ;
               _uiMake_B ( ( DIBN * ) x ) ;
               break;
               case 'f':
               f = ( DIF * ) x;
-              f-> hide = 1;
+              f->hide = 1;
               _uiMake_SF ( ( DIF * ) x ) ;
               WMOVE ( f ) ;
               _uiMake_SF ( ( DIF * ) x ) ;
               break;
               case 'P':
               P = ( DIHB * ) x;
-              P-> hide = 1;
+              P->hide = 1;
               _uiMake_SH ( ( DIHB * ) x ) ;
               WMOVE ( P ) ;
               _uiMake_SH ( ( DIHB * ) x ) ;
               break;
               case 'd':
               d = ( DID * ) x;
-              d-> hide = 1;
+              d->hide = 1;
               _uiMake_SD ( ( DID * ) x ) ;
               WMOVE ( d ) ;
               _uiMake_SD ( ( DID * ) x ) ;
               break;
               case 'w':
               w = ( DIW * ) x;
-              w-> hide = 1;
+              w->hide = 1;
               _uiMake_W ( ( DIW * ) x ) ;
               WMOVE ( w ) ;
               _uiMake_W ( ( DIW * ) x ) ;
               break;
               case 'e':
               e = ( DIE * ) x;
-              e-> hide = 1;
+              e->hide = 1;
               _uiMake_E ( ( DIE * ) x ) ;
               WMOVE ( e ) ;
               _uiMake_E ( ( DIE * ) x ) ;
               break;
               case 's':
               s = ( DIS * ) x;
-              s-> hide = 1;
+              s->hide = 1;
               _uiMake_MS ( ( DIS * ) x ) ;
               WMOVE ( s ) ;
               _uiMake_MS ( ( DIS * ) x ) ;
               break;
               case 'g':
               g = ( DIG * ) x;
-              g-> hide = 1;
+              g->hide = 1;
               _uiMake_G ( ( DIG * ) x ) ;
               WMOVE ( g ) ;
               _uiMake_G ( ( DIG * ) x ) ;
@@ -8782,7 +8749,7 @@
               case 'M':
               case 'B':
               m = ( DIM * ) x;
-              m-> hide = 1;
+              m->hide = 1;
               _uiMake_M ( ( DIM * ) x ) ;
               WMOVE ( m ) ;
               _uiMake_M ( ( DIM * ) x ) ;
@@ -8807,76 +8774,76 @@
       if ( item < 0 ) return 0;
       x = ( DIX * ) kgGetWidget ( Tmp , item ) ;
       if ( x != NULL ) {
-          if ( x-> D != Tmp ) {
+          if ( x->D != Tmp ) {
               WRESIZE_ ( x ) ;
               return 1;
           }
-          switch ( x-> code ) {
+          switch ( x->code ) {
               case 'x':
-              x-> hide = 1;
+              x->hide = 1;
               _uiMake_X ( x ) ;
               WRESIZE ( x ) ;
               _uiMake_X ( x ) ;
               break;
               case 'r':
               r = ( DIRA * ) x;
-              r-> hide = 1;
+              r->hide = 1;
               _uiMake_RadioButton ( r ) ;
               WRESIZE ( r ) ;
               _uiMake_RadioButton ( r ) ;
               break;
               case 'c':
               c = ( DICH * ) x;
-              c-> hide = 1;
+              c->hide = 1;
               _uiMake_CheckBox ( ( DICH * ) x ) ;
               WRESIZE ( c ) ;
               _uiMake_CheckBox ( ( DICH * ) x ) ;
               break;
               case 'y':
               y = ( DIY * ) x;
-              y-> hide = 1;
+              y->hide = 1;
               _uiMake_Y ( ( DIY * ) x ) ;
               WRESIZE ( y ) ;
               _uiMake_Y ( ( DIY * ) x ) ;
               break;
               case 'v':
               v = ( DIV * ) x;
-              v-> hide = 1;
+              v->hide = 1;
               _uiMake_V ( ( DIV * ) x ) ;
               WRESIZE ( v ) ;
               _uiMake_V ( ( DIV * ) x ) ;
               break;
               case 'z':
               z = ( DIZ * ) x;
-              z-> hide = 1;
+              z->hide = 1;
               _uiMake_Z ( ( DIZ * ) x ) ;
               WRESIZE ( z ) ;
               _uiMake_Z ( ( DIZ * ) x ) ;
               break;
               case 'o':
               o = ( DIO * ) x;
-              o-> hide = 1;
+              o->hide = 1;
               _uiMake_O ( ( DIO * ) x ) ;
               WRESIZE ( o ) ;
               _uiMake_O ( ( DIO * ) x ) ;
               break;
               case 'p': /* new for xpm display */
               p = ( DIP * ) x;
-              p-> hide = 1;
+              p->hide = 1;
               _uiMake_P ( ( DIP * ) x ) ;
               WRESIZE ( p ) ;
               _uiMake_P ( ( DIP * ) x ) ;
               break;
               case 'i': /* info box */
               I = ( DII * ) x;
-              I-> hide = 1;
+              I->hide = 1;
               _uiMake_I ( ( DII * ) x ) ;
               WRESIZE ( I ) ;
               _uiMake_I ( ( DII * ) x ) ;
               break;
               case 't':
               T = ( DIT * ) x;
-              T-> hide = 1;
+              T->hide = 1;
               _uiMake_Tx ( ( DIT * ) x ) ;
               WRESIZE ( T ) ;
               uiCleanTextBoxImages ( T ) ;
@@ -8884,7 +8851,7 @@
               break;
               case 'T':
               T = ( DIT * ) x;
-              T-> hide = 1;
+              T->hide = 1;
               _uiMake_Ta ( ( DIT * ) x ) ;
               WRESIZE ( T ) ;
               uiCleanTextBoxImages ( T ) ;
@@ -8892,7 +8859,7 @@
               break;
               case 'h':
               H = ( DIL * ) x;
-              H-> hide = 1;
+              H->hide = 1;
               _uiMake_N ( ( DIL * ) x ) ;
               WRESIZE ( H ) ;
               uiCleanButtonBoxImages ( x ) ;
@@ -8900,21 +8867,21 @@
               break;
               case 'H':
               h = ( DILN * ) x;
-              h-> hide = 1;
+              h->hide = 1;
               _uiMake_H ( ( DILN * ) x ) ;
               WRESIZE ( h ) ;
               _uiMake_H ( ( DILN * ) x ) ;
               break;
               case 'N':
               n = ( DIBN * ) x;
-              n-> hide = 1;
+              n->hide = 1;
               _uiMake_B ( ( DIBN * ) x ) ;
               WRESIZE ( n ) ;
               _uiMake_B ( ( DIBN * ) x ) ;
               break;
               case 'n':
               N = ( DIN * ) x;
-              N-> hide = 1;
+              N->hide = 1;
               _uiMake_N ( ( DIN * ) x ) ;
               WRESIZE ( N ) ;
               uiCleanButtonBoxImages ( x ) ;
@@ -8922,56 +8889,56 @@
               break;
               case 'b':
               b = ( DIB * ) x;
-              b-> hide = 1;
+              b->hide = 1;
               _uiMake_B ( ( DIBN * ) x ) ;
               WRESIZE ( b ) ;
               _uiMake_B ( ( DIBN * ) x ) ;
               break;
               case 'f':
               f = ( DIF * ) x;
-              f-> hide = 1;
+              f->hide = 1;
               _uiMake_SF ( ( DIF * ) x ) ;
               WRESIZE ( f ) ;
               _uiMake_SF ( ( DIF * ) x ) ;
               break;
               case 'P':
               P = ( DIHB * ) x;
-              P-> hide = 1;
+              P->hide = 1;
               _uiMake_SH ( ( DIHB * ) x ) ;
               WRESIZE ( P ) ;
               _uiMake_SH ( ( DIHB * ) x ) ;
               break;
               case 'd':
               d = ( DID * ) x;
-              d-> hide = 1;
+              d->hide = 1;
               _uiMake_SD ( ( DID * ) x ) ;
               WRESIZE ( d ) ;
               _uiMake_SD ( ( DID * ) x ) ;
               break;
               case 'w':
               w = ( DIW * ) x;
-              w-> hide = 1;
+              w->hide = 1;
               _uiMake_W ( ( DIW * ) x ) ;
               WRESIZE ( w ) ;
               _uiMake_W ( ( DIW * ) x ) ;
               break;
               case 'e':
               e = ( DIE * ) x;
-              e-> hide = 1;
+              e->hide = 1;
               _uiMake_E ( ( DIE * ) x ) ;
               WRESIZE ( e ) ;
               _uiMake_E ( ( DIE * ) x ) ;
               break;
               case 's':
               s = ( DIS * ) x;
-              s-> hide = 1;
+              s->hide = 1;
               _uiMake_MS ( ( DIS * ) x ) ;
               WRESIZE ( s ) ;
               _uiMake_MS ( ( DIS * ) x ) ;
               break;
               case 'g':
               g = ( DIG * ) x;
-              g-> hide = 1;
+              g->hide = 1;
               _uiMake_G ( ( DIG * ) x ) ;
               WRESIZE ( g ) ;
               _uiMake_G ( ( DIG * ) x ) ;
@@ -8980,7 +8947,7 @@
               case 'M':
               case 'B':
               m = ( DIM * ) x;
-              m-> hide = 1;
+              m->hide = 1;
               _uiMake_M ( ( DIM * ) x ) ;
               WRESIZE ( m ) ;
               _uiMake_M ( ( DIM * ) x ) ;
@@ -9001,7 +8968,7 @@
       Dlink *Grp;
       Dlink *Gpt;
       WIDGETGRP *pt = NULL;
-      Grp = ( Dlink * ) D-> GrpList;
+      Grp = ( Dlink * ) D->GrpList;
       if ( Grp == NULL ) {
           return 0;
       }
@@ -9010,11 +8977,11 @@
       Resetlink ( Grp ) ;
       Dposition ( Grp , grpid ) ;
       pt = ( WIDGETGRP * ) Getrecord ( Grp ) ;
-      Gpt = ( Dlink * ) pt-> wlist;
+      Gpt = ( Dlink * ) pt->wlist;
       Resetlink ( Gpt ) ;
-      if ( pt-> hide == 0 ) {
+      if ( pt->hide == 0 ) {
           while ( ( x = ( DIX * ) Getrecord ( Gpt ) ) != NULL ) {
-              switch ( x-> code ) {
+              switch ( x->code ) {
                   case 'x':
                   _uiMake_X ( x ) ;
                   break;
@@ -9095,7 +9062,7 @@
       else {
           Dend ( Gpt ) ;
           while ( ( x = ( DIX * ) Getrecordrev ( Gpt ) ) != NULL ) {
-              switch ( x-> code ) {
+              switch ( x->code ) {
                   case 'x':
                   _uiMake_X ( x ) ;
                   break;
@@ -9180,25 +9147,25 @@
   int Dgetbrowseritem ( void *Tmp , int menu ) {
       DIA *D;DIW *E;
       BRW_STR *B;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       E = D [ menu ] .w;
-      B = ( BRW_STR * ) ( E-> bwsr ) ;
-      return B-> df;
+      B = ( BRW_STR * ) ( E->bwsr ) ;
+      return B->df;
   }
   char **Dgetbrowserlist ( void *Tmp , int menu ) {
       DIA *D;DIW *E;
       BRW_STR *B;
-      D = ( ( DIALOG * ) Tmp ) -> d;
+      D = ( ( DIALOG * ) Tmp )->d;
       E = D [ menu ] .w;
-      B = ( BRW_STR * ) ( E-> bwsr ) ;
-      return B-> menu;
+      B = ( BRW_STR * ) ( E->bwsr ) ;
+      return B->menu;
   }
   void Dsetprogressbar ( void *Tmp , int id , int val ) {
       DIALOG *D;
       DIO *o;
       D = ( DIALOG * ) Tmp;
-      o = D-> d [ id ] .o;
-      o-> percent = val;
+      o = D->d [ id ] .o;
+      o->percent = val;
       _uiMake_O ( o ) ;
       uiUpdateOn ( Tmp ) ;
   }
@@ -9206,9 +9173,9 @@
       DIALOG *D;
       DIO *o;
       D = ( DIALOG * ) Tmp;
-      o = D-> d [ id ] .o;
-      if ( hide == o-> hide ) return;
-      o-> hide = hide;
+      o = D->d [ id ] .o;
+      if ( hide == o->hide ) return;
+      o->hide = hide;
       if ( D != NULL ) {
           kgUpdateWidget ( o ) ;
       }
@@ -9217,17 +9184,17 @@
       DIALOG *D;
       DIO *o;
       o = ( DIO * ) Wid;
-      D = ( DIALOG * ) o-> D;
-      if ( o-> hide ) return;
-      if ( val == o-> oldval ) return;
-      o-> percent = val;
+      D = ( DIALOG * ) o->D;
+      if ( o->hide ) return;
+      if ( val == o->oldval ) return;
+      o->percent = val;
       if ( D != NULL ) {
           kgUpdateWidget ( Wid ) ;
 //    _uiMake_O(o);
           kgUpdateOn ( D ) ;
       }
   }
-  int kgChangeButtonColor ( void *Widget , int butno , int red , int green , int blue ) 
+  int kgChangeButtonColor ( void *Widget , int butno , int red , int green , int blue )  \
       {
 /* changes color of the specified button
    and returns old color
@@ -9236,12 +9203,12 @@
       DIN *B;
       BUT_STR *buts;
       B = ( DIN * ) Widget;
-      buts = ( BUT_STR * ) B-> buts;
+      buts = ( BUT_STR * ) B->buts;
       color = blue+green*1000+red*1000000;
       color = -color;
       ocolor = buts [ butno ] .bkgr;
       buts [ butno ] .bkgr = color;
-      if ( B-> item != -1 ) {
+      if ( B->item != -1 ) {
 #if 0
           if ( buts [ 0 ] .imgn != NULL ) kgFreeImage ( buts [ 0 ] .imgn ) ;
           buts [ 0 ] .imgn = NULL;
@@ -9264,10 +9231,10 @@
       DIN *B;
       BUT_STR *buts;
       B = ( DIN * ) Widget;
-      buts = ( BUT_STR * ) B-> buts;
+      buts = ( BUT_STR * ) B->buts;
       oimg = buts [ butno ] .xpmn;
       buts [ butno ] .xpmn = img;
-      if ( B-> item != -1 ) {
+      if ( B->item != -1 ) {
 #if 0
           if ( buts [ 0 ] .imgn != NULL ) kgFreeImage ( buts [ 0 ] .imgn ) ;
           buts [ 0 ] .imgn = NULL;
@@ -9290,10 +9257,10 @@
       DIN *B;
       BUT_STR *buts;
       B = ( DIN * ) Widget;
-      buts = ( BUT_STR * ) B-> buts;
+      buts = ( BUT_STR * ) B->buts;
       oimg = buts [ butno ] .xpmp;
       buts [ butno ] .xpmp = img;
-      if ( B-> item != -1 ) {
+      if ( B->item != -1 ) {
 #if 0
           if ( buts [ 0 ] .imgn != NULL ) kgFreeImage ( buts [ 0 ] .imgn ) ;
           buts [ 0 ] .imgn = NULL;
@@ -9316,10 +9283,10 @@
       DIN *B;
       BUT_STR *buts;
       B = ( DIN * ) Widget;
-      buts = ( BUT_STR * ) B-> buts;
+      buts = ( BUT_STR * ) B->buts;
       oimg = buts [ butno ] .xpmh;
       buts [ butno ] .xpmh = img;
-      if ( B-> item != -1 ) {
+      if ( B->item != -1 ) {
 #if 0
           if ( buts [ 0 ] .imgn != NULL ) kgFreeImage ( buts [ 0 ] .imgn ) ;
           buts [ 0 ] .imgn = NULL;
@@ -9342,9 +9309,9 @@
       DIN *B;
       BUT_STR *buts;
       B = ( DIN * ) Widget;
-      buts = ( BUT_STR * ) B-> buts;
+      buts = ( BUT_STR * ) B->buts;
       strcpy ( buts [ butno ] .title , title ) ;;
-      if ( B-> item != -1 ) {
+      if ( B->item != -1 ) {
 #if 0
           if ( buts [ 0 ] .imgn != NULL ) kgFreeImage ( buts [ 0 ] .imgn ) ;
           buts [ 0 ] .imgn = NULL;
@@ -9367,7 +9334,7 @@
       DIN *B;
       BUT_STR *buts;
       B = ( DIN * ) Widget;
-      buts = ( BUT_STR * ) B-> buts;
+      buts = ( BUT_STR * ) B->buts;
       return buts [ butno ] .title;
   }
   int kgGetSlideValue ( void *tmp ) {
@@ -9375,12 +9342,12 @@
       S_STR *sptr;
       int df = 0;
       X = ( DIHB * ) tmp;
-      switch ( X-> code ) {
+      switch ( X->code ) {
           case 'P':
-          sptr = X-> sptr;
+          sptr = X->sptr;
           df = _ui_getdslidevalue ( sptr ) ;
-          * ( X-> df ) = df;
-          df = * ( X-> df ) ;
+          * ( X->df ) = df;
+          df = * ( X->df ) ;
 //    printf("df = %d\n",df);
           return df;
           default:
@@ -9393,12 +9360,12 @@
       DIA *D;DIHB *X;
       int df = 0;
       X = ( DIHB * ) tmp;
-      switch ( X-> code ) {
+      switch ( X->code ) {
           case 'P':
-          if ( val < X-> min ) val = X-> min;
-          if ( val > X-> max ) val = X-> max;
-          * ( X-> df ) = val;;
-          df = * ( X-> df ) ;
+          if ( val < X->min ) val = X->min;
+          if ( val > X->max ) val = X->max;
+          * ( X->df ) = val;;
+          df = * ( X->df ) ;
           kgUpdateWidget ( tmp ) ;
           return df;
           default:
@@ -9411,12 +9378,12 @@
       S_STR *sptr;
       int df = 0;
       X = ( DID* ) tmp;
-      switch ( X-> code ) {
+      switch ( X->code ) {
           case 'd':
-          sptr = X-> sptr;
+          sptr = X->sptr;
           df = _ui_getdslidevalue ( sptr ) ;
-          * ( X-> df ) = df;
-          df = * ( X-> df ) ;
+          * ( X->df ) = df;
+          df = * ( X->df ) ;
 //    printf("df = %d\n",df);
           return df;
           default:
@@ -9429,12 +9396,12 @@
       DIA *D;DID *X;
       int df = 0;
       X = ( DID * ) tmp;
-      switch ( X-> code ) {
+      switch ( X->code ) {
           case 'd':
-          if ( val < X-> min ) val = X-> min;
-          if ( val > X-> max ) val = X-> max;
-          * ( X-> df ) = val;;
-          df = * ( X-> df ) ;
+          if ( val < X->min ) val = X->min;
+          if ( val > X->max ) val = X->max;
+          * ( X->df ) = val;;
+          df = * ( X->df ) ;
           kgUpdateWidget ( tmp ) ;
           return df;
           default:
@@ -9447,9 +9414,9 @@
       S_STR *sptr;
       float df = 0;
       X = ( DIF* ) tmp;
-      switch ( X-> code ) {
+      switch ( X->code ) {
           case 'f':
-          sptr = X-> sptr;
+          sptr = X->sptr;
           df = _ui_getfslidevalue ( sptr ) ;
 //    *(X->df)= df;
 //    printf("df = %f\n",df);
@@ -9465,12 +9432,12 @@
       DIA *D;DIF *X;
       float df = 0;
       X = ( DIF * ) tmp;
-      switch ( X-> code ) {
+      switch ( X->code ) {
           case 'f':
-          if ( val < X-> min ) val = X-> min;
-          if ( val > X-> max ) val = X-> max;
-          * ( X-> df ) = val;;
-          df = * ( X-> df ) ;
+          if ( val < X->min ) val = X->min;
+          if ( val > X->max ) val = X->max;
+          * ( X->df ) = val;;
+          df = * ( X->df ) ;
           kgUpdateWidget ( tmp ) ;
           return df;
           default:
@@ -9481,20 +9448,20 @@
   void kgLockUi ( void *tmp ) {
       DIALOG *D;
       D = ( DIALOG * ) tmp;
-      pthread_mutex_lock ( & ( D-> Lock ) ) ;
+      pthread_mutex_lock ( & ( D->Lock ) ) ;
       return;
   }
   void kgUnlockUi ( void *tmp ) {
       DIALOG *D;
       D = ( DIALOG * ) tmp;
-      pthread_mutex_unlock ( & ( D-> Lock ) ) ;
+      pthread_mutex_unlock ( & ( D->Lock ) ) ;
       return;
   }
   void kgSetTextItemEcho ( void *Tmp , int item , int echo ) {
       DIT *T;
       T_ELMT *e;
       T = ( DIT * ) Tmp;
-      e = T-> elmt;
+      e = T->elmt;
       if ( echo == 1 ) e [ item ] .noecho = 0;
       else e [ item ] .noecho = 1;
       kgUpdateWidget ( T ) ;
@@ -9506,84 +9473,84 @@
       DIT *t;
       t = ( DIT * ) Widget;
       if ( t != NULL ) {
-          ch = ( t-> code ) ;
+          ch = ( t->code ) ;
 //     printf("ch == %c\n",ch);
           switch ( ( int ) ch ) {
               case 'v':
-              Bimg = ( ( ( DIV * ) ( t ) ) -> Bimg ) ;
+              Bimg = ( ( ( DIV * ) ( t ) )->Bimg ) ;
               break;
               case 'z':
-              Bimg = ( ( ( DIZ * ) ( t ) ) -> Bimg ) ;
+              Bimg = ( ( ( DIZ * ) ( t ) )->Bimg ) ;
               break;
               case 'o': /* progress bar */
-              Bimg = ( ( ( DIO * ) ( t ) ) -> Bimg ) ;
+              Bimg = ( ( ( DIO * ) ( t ) )->Bimg ) ;
               break;
               case 'p': /* new for xpm display */
-              Bimg = ( ( ( DIP * ) ( t ) ) -> Bimg ) ;
+              Bimg = ( ( ( DIP * ) ( t ) )->Bimg ) ;
               break;
               case 'i': /* info box */
-              Bimg = ( ( ( DII * ) ( t ) ) -> Bimg ) ;
+              Bimg = ( ( ( DII * ) ( t ) )->Bimg ) ;
               break;
               case 't':
-              Bimg = ( ( ( DIT * ) ( t ) ) -> Bimg ) ;
+              Bimg = ( ( ( DIT * ) ( t ) )->Bimg ) ;
               break;
               case 'T':
-              Bimg = ( ( ( DIT * ) ( t ) ) -> Bimg ) ;
+              Bimg = ( ( ( DIT * ) ( t ) )->Bimg ) ;
               break;
               case 'h':
-              Bimg = ( ( ( DIL * ) ( t ) ) -> Bimg ) ;
+              Bimg = ( ( ( DIL * ) ( t ) )->Bimg ) ;
               break;
               case 'H':
-              Bimg = ( ( ( DILN * ) ( t ) ) -> Bimg ) ;
+              Bimg = ( ( ( DILN * ) ( t ) )->Bimg ) ;
               break;
               case 'N':
-              Bimg = ( ( ( DIBN * ) ( t ) ) -> Bimg ) ;
+              Bimg = ( ( ( DIBN * ) ( t ) )->Bimg ) ;
               break;
               case 'n':
-              Bimg = ( ( ( DIN * ) ( t ) ) -> Bimg ) ;
+              Bimg = ( ( ( DIN * ) ( t ) )->Bimg ) ;
               break;
               case 'b':
-              Bimg = ( ( ( DIB * ) ( t ) ) -> Bimg ) ;
+              Bimg = ( ( ( DIB * ) ( t ) )->Bimg ) ;
               break;
               case 'f':
-              Bimg = ( ( ( DIF * ) ( t ) ) -> Bimg ) ;
+              Bimg = ( ( ( DIF * ) ( t ) )->Bimg ) ;
               break;
               case 'P':
-              Bimg = ( ( ( DIHB * ) ( t ) ) -> Bimg ) ;
+              Bimg = ( ( ( DIHB * ) ( t ) )->Bimg ) ;
               break;
               case 'd':
-              Bimg = ( ( ( DID * ) ( t ) ) -> Bimg ) ;
+              Bimg = ( ( ( DID * ) ( t ) )->Bimg ) ;
               break;
               case 'x':
-              Bimg = ( ( ( DIX * ) ( t ) ) -> Bimg ) ;
+              Bimg = ( ( ( DIX * ) ( t ) )->Bimg ) ;
               break;
               case 'y':
-              Bimg = ( ( ( DIY * ) ( t ) ) -> Bimg ) ;
+              Bimg = ( ( ( DIY * ) ( t ) )->Bimg ) ;
               break;
               case 'c':
-              Bimg = ( ( ( DICH * ) ( t ) ) -> Bimg ) ;
+              Bimg = ( ( ( DICH * ) ( t ) )->Bimg ) ;
               break;
               case 'r':
-              Bimg = ( ( ( DIRA * ) ( t ) ) -> Bimg ) ;
+              Bimg = ( ( ( DIRA * ) ( t ) )->Bimg ) ;
               break;
               case 'w':
-              Bimg = ( ( ( DIW * ) ( t ) ) -> Bimg ) ;
+              Bimg = ( ( ( DIW * ) ( t ) )->Bimg ) ;
               break;
               case 'e':
-              Bimg = ( ( ( DIE * ) ( t ) ) -> Bimg ) ;
+              Bimg = ( ( ( DIE * ) ( t ) )->Bimg ) ;
               break;
               case 's':
-              Bimg = ( ( ( DIS * ) ( t ) ) -> Bimg ) ;
+              Bimg = ( ( ( DIS * ) ( t ) )->Bimg ) ;
               break;
               case 'g':
-              Bimg = ( ( ( DIG * ) ( t ) ) -> Bimg ) ;
+              Bimg = ( ( ( DIG * ) ( t ) )->Bimg ) ;
               break;
               case 'M':
-              Bimg = ( ( ( DIM * ) ( t ) ) -> Bimg ) ;
+              Bimg = ( ( ( DIM * ) ( t ) )->Bimg ) ;
               break;
               case 'm':
               case 'B':
-              Bimg = ( ( ( DIM * ) ( t ) ) -> Bimg ) ;
+              Bimg = ( ( ( DIM * ) ( t ) )->Bimg ) ;
               break;
               default:
               break;
@@ -9597,7 +9564,7 @@
       kgWC *wc;
       wc = WC ( D ) ;
       if ( wc == NULL ) return 0;
-      wc-> cpCallback = cpCallback;
+      wc->cpCallback = cpCallback;
       return 1;
   }
   int kgSetClipMenu ( void *Tmp , char **menu ) {
@@ -9605,7 +9572,7 @@
       kgWC *wc;
       wc = WC ( D ) ;
       if ( wc == NULL ) return 0;
-      wc-> cpmenu = menu;
+      wc->cpmenu = menu;
       return 1;
   }
   int kgClearHighlight ( void *Dtmp ) {
@@ -9617,18 +9584,18 @@
       T_ELMT *elmt;
       TX_STR *tx;
       D = ( DIALOG * ) Dtmp;
-      kb = D-> kb;
-      d = D-> d;
+      kb = D->kb;
+      d = D->d;
       i = 0; while ( d [ i ] .t != NULL ) i++;
       n = i;
 // for(i=0;i<n;i++) {
       for ( i = n-1;i >= 0;i-- ) {
           T = ( DIT * ) kgGetWidget ( D , i ) ;
           if ( kgGetWidgetVisibility ( T ) == 0 ) continue;
-          if ( T-> code == 't' ) {
-              elmt = T-> elmt;
-              tx = T-> tstr;
-              k = tx-> row*tx-> nx+tx-> col;
+          if ( T->code == 't' ) {
+              elmt = T->elmt;
+              tx = T->tstr;
+              k = tx->row*tx->nx+tx->col;
               if ( elmt [ k ] .hlt ) {
                   elmt [ k ] .hlt = 0;
                   _ui_drawtextcursor ( tx ) ;
@@ -9643,7 +9610,7 @@
       kgWC *wc;
       wc = WC ( D ) ;
       if ( wc == NULL ) return 0;
-      if ( wc-> Rth == 0 ) return 0;
+      if ( wc->Rth == 0 ) return 0;
       else return 1;
   }
   void * _uiMakeMask ( int w , int h , float fac ) {
@@ -9656,7 +9623,7 @@
       kgCloseImage ( fid ) ;
       return img;
   }
-  void *kgGetProcessedImage ( void *timg , int Bsize , float rfac , int Btred , int Btgreen , int Btblue ) 
+  void *kgGetProcessedImage ( void *timg , int Bsize , float rfac , int Btred , int Btgreen , int Btblue )  \
       {
       GMIMG *img = NULL;
       void *rzimg , *fid , *tmp , *mask;
@@ -9708,8 +9675,7 @@
       if ( nsize > ( rsize-8 ) ) nsize = rsize-8;
       nsize = ( nsize/2 ) *2-1;
       if ( img != NULL ) {
-          if ( ( img-> image_width > ( nsize ) ) 
-              || ( img-> image_height > ( nsize ) ) ) {
+          if ( ( img->image_width > ( nsize ) ) || ( img->image_height > ( nsize ) ) ) {
               tmp = kgChangeSizeImage ( img , nsize , nsize ) ;
               kgFreeImage ( img ) ;
               img = tmp;
@@ -9731,7 +9697,7 @@
       kgChangeColor ( fid , 152 , ( int ) rf , ( int ) gf , ( int ) bf ) ;
       HSVtoRGB ( & rf , & gf , & bf , h , s , 0.8*v ) ;
       kgChangeColor ( fid , 153 , ( int ) rf , ( int ) gf , ( int ) bf ) ;
-      kgChangeColor ( fid , 151 , ( int ) Btred , 
+      kgChangeColor ( fid , 151 , ( int ) Btred ,  \
           ( int ) Btgreen , ( int ) Btblue ) ;
       if ( IconShape != 3 ) {
           kgRoundedRectangleFill ( fid , 0. , 0. , 2*l+1. , 2*l+1. , 0 , 152 , rfac ) ;
@@ -9753,5 +9719,5 @@
       return VER;
   }
   void *kgGetArgPointer ( void *Tmp ) {
-      return ( ( DIALOG * ) Tmp ) -> pt;
+      return ( ( DIALOG * ) Tmp )->pt;
   }

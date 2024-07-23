@@ -2035,7 +2035,7 @@ char ** _uiFileMenu(char *dir,char *filter) {
      stat(buf,&st);
      if(S_ISREG(st.st_mode)&&(!S_ISDIR(st.st_mode))) {
 #else
-     if(pt->d_type != DT_DIR) {
+//     if(pt->d_type != DT_DIR) {
 #endif
        sprintf(buf,"%-s",pt->d_name);
        if(_filter_string(buf,filter)){

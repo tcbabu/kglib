@@ -14,8 +14,7 @@
       else {
           i++;
           j = i;
-           while ( ( s [ i ] >= ' ' ) && ( s [ i ] != '"' ) ) { i++; }
-          
+          while ( ( s [ i ] >= ' ' ) && ( s [ i ] != '"' ) ) { i++; }
           if ( s [ i ] < ' ' ) {
               d [ 0 ] = '\0';
               return;
@@ -30,7 +29,7 @@
       }
   }
   static int NULLDATA ( char *buff ) {
-      if ( ( buff [ 0 ] == 'N' ) && ( buff [ 1 ] == 'U' ) && ( buff [ 2 ] == 'L' ) && 
+      if ( ( buff [ 0 ] == 'N' ) && ( buff [ 1 ] == 'U' ) && ( buff [ 2 ] == 'L' ) &&  \
           ( buff [ 3 ] == 'L' ) ) return 1;
       else return 0;
   }
@@ -54,9 +53,9 @@
       return strlen ( buff ) ;
   }
 #define GETDATALINE  if(Get_data_line(fp,buff) < 0 ) {\
-  printf ( "Error : In reading.... %s\n" , buff ) ;\
-      exit ( 0 ) ; \
-  }
+   printf ( "Error : In reading.... %s\n" , buff ) ;\
+       exit ( 0 ) ; \
+   }
   void Read_Gclr ( Gclr *gc , char *app ) {
       char buff [ 200 ] , code [ 30 ] ;
       FILE *fp;
@@ -515,7 +514,7 @@
       GETDATALINE;
       sscanf ( buff , "%d%d" , & ( t->x2 ) , & ( t->y2 ) ) ;
       GETDATALINE;
-      sscanf ( buff , "%d%d%d%d" , & ( t->bordr ) , & ( t->hide ) , & 
+      sscanf ( buff , "%d%d%d%d" , & ( t->bordr ) , & ( t->hide ) , &  \
           ( t->type ) , & ( t->sldclr ) ) ;
       if ( ( t->hide != 0 ) && ( t->hide != 1 ) ) t->hide = 0;
       t->y2 = t->y2;
@@ -535,7 +534,7 @@
       if ( f->prompt != NULL ) fprintf ( fp , "\"%-s\" //Prompt\n" , f->prompt ) ;
       else fprintf ( fp , "NULL //prompt \n" ) ;
       pt = f->menu;
-      fprintf ( fp , "\"%-s\" //item\n" , * ( pt++ ) ) ;
+      while ( *pt != NULL ) fprintf ( fp , "\"%-s\" //item\n" , * ( pt++ ) ) ;
       fprintf ( fp , "NULL  //  \n" ) ;
       fprintf ( fp , "%d //hide\n" , f->hide ) ;
       _uiPrintWid ( fp , f->Wid ) ;
@@ -599,7 +598,7 @@
       fprintf ( fp , "%d //Size \n" , f->size ) ;
       fprintf ( fp , "NULL //prompt \n" ) ;
       pt = f->menu;
-      fprintf ( fp , "\"%-s\" //item\n" , * ( pt++ ) ) ;
+      while ( *pt != NULL ) fprintf ( fp , "\"%-s\" //item\n" , * ( pt++ ) ) ;
       fprintf ( fp , "NULL  //  \n" ) ;
       fprintf ( fp , " %d %d %d %d %d %d %-d \n" , f->width , f->offset , f->w , f->itemhi , f->bordr , f->bkgr , f->hide ) ;
           
@@ -650,8 +649,8 @@
       t->arg = NULL;
       t->Update = NULL;
       GETDATALINE;
-      sscanf ( buff , "%d%d%d%d%d%d%d" , & ( t->width ) , & ( t->offset ) , & 
-          ( t->w ) , & ( t->itemhi ) , & ( t->bordr ) , & 
+      sscanf ( buff , "%d%d%d%d%d%d%d" , & ( t->width ) , & ( t->offset ) , &  \
+          ( t->w ) , & ( t->itemhi ) , & ( t->bordr ) , &  \
           ( t->bkgr ) , & ( t->hide ) ) ;
       _uiReadWid ( fp , t->Wid ) ;
       return t;
@@ -695,7 +694,7 @@
       GETDATALINE;
       sscanf ( buff , "%d%d" , & ( t->offset ) , & ( t->w ) ) ;
       GETDATALINE;
-      sscanf ( buff , "%d%d%d%d%d" , & ( t->type ) , & ( t->itemhi ) , & 
+      sscanf ( buff , "%d%d%d%d%d" , & ( t->type ) , & ( t->itemhi ) , &  \
           ( t->bordr ) , & ( t->bkgr ) , & ( t->hide ) ) ;
       t->nx = 1;
       t->ny = 1;
@@ -743,7 +742,7 @@
       GETDATALINE;
       sscanf ( buff , "%d%d" , & ( t->offset ) , & ( t->w ) ) ;
       GETDATALINE;
-      sscanf ( buff , "%d%d%d%d%d" , & ( t->type ) , & ( t->itemhi ) , & 
+      sscanf ( buff , "%d%d%d%d%d" , & ( t->type ) , & ( t->itemhi ) , &  \
           ( t->bordr ) , & ( t->bkgr ) , & ( t->hide ) ) ;
       t->df = ( int * ) tmpv;
       t->prompt = NULL;
@@ -802,7 +801,7 @@
       GETDATALINE;
       sscanf ( buff , "%d%d" , & ( t->offset ) , & ( t->w ) ) ;
       GETDATALINE;
-      sscanf ( buff , "%d%d%d%d%d" , & ( t->type ) , & ( t->itemhi ) , & 
+      sscanf ( buff , "%d%d%d%d%d" , & ( t->type ) , & ( t->itemhi ) , &  \
           ( t->bordr ) , & ( t->bkgr ) , & ( t->hide ) ) ;
       n = t->ny;
       L = Dopen ( ) ;
@@ -882,7 +881,7 @@
       GETDATALINE;
       sscanf ( buff , "%d%d" , & ( t->offset ) , & ( t->w ) ) ;
       GETDATALINE;
-      sscanf ( buff , "%d%d%d%d%d" , & ( t->type ) , & ( t->itemhi ) , & 
+      sscanf ( buff , "%d%d%d%d%d" , & ( t->type ) , & ( t->itemhi ) , &  \
           ( t->bordr ) , & ( t->bkgr ) , & ( t->hide ) ) ;
       n = t->ny;
       t->nx = 1;
@@ -921,7 +920,7 @@
       fprintf ( fp , "%d //Size \n" , f->size ) ;
       fprintf ( fp , "NULL //prompt \n" ) ;
       pt = f->menu;
-      fprintf ( fp , "\"%-s\" //item\n" , * ( pt++ ) ) ;
+      while ( *pt != NULL ) fprintf ( fp , "\"%-s\" //item\n" , * ( pt++ ) ) ;
       fprintf ( fp , "NULL  //  \n" ) ;
       fprintf ( fp , "%d %d //x2,y2\n" , f->x2 , f->y2 ) ;
       fprintf ( fp , "%d //hide\n" , f->hide ) ;
@@ -984,7 +983,7 @@
       if ( xpm == NULL ) fprintf ( fp , "NULL // XPM \n" ) ;
       else {
           tmp = ( char * ) ( xpm ) ;
-          if ( ( tmp [ 0 ] == '#' ) && ( tmp [ 1 ] == '#' ) ) fprintf 
+          if ( ( tmp [ 0 ] == '#' ) && ( tmp [ 1 ] == '#' ) ) fprintf  \
               ( fp , "%-s // XPM \n" , ( char * ) ( xpm+2 ) ) ;
           else fprintf ( fp , "NULL // XPM \n" ) ;
       }
@@ -1187,7 +1186,7 @@
       t->bordr = bordr%10;
       t->type = bordr/10;
       GETDATALINE;
-      sscanf ( buff , "%d%d%d" , & ( t->Font ) , & 
+      sscanf ( buff , "%d%d%d" , & ( t->Font ) , &  \
           ( t->FontSize ) , & ( t->hide ) ) ;
       if ( ( t->hide != 0 ) && ( t->hide != 1 ) ) t->hide = 0;
       t->arg = NULL;
@@ -1304,7 +1303,7 @@
       t->bordr = bordr%10;
       t->type = ( bordr/10 ) %10;
       GETDATALINE;
-      sscanf ( buff , "%d%d%d" , & ( t->Font ) , & 
+      sscanf ( buff , "%d%d%d" , & ( t->Font ) , &  \
           ( t->FontSize ) , & ( t->hide ) ) ;
       if ( ( t->hide != 0 ) && ( t->hide != 1 ) ) t->hide = 0;
       t->arg = NULL;
@@ -2157,9 +2156,9 @@
       if ( D->Resize != 1 ) {D->Resize = 0; D->MinWidth = D->MinHeight = 100;}
       fprintf ( fp1 , "D      //GUI dimensions xo,yo,xl,yl,lw,rw,tw,bw,df,bor_type,bkup\n" ) ;
           
-      fprintf ( fp1 , "%d %d %d %d\n%d %d %d %d\n%d %d %d %d %d %d %d %d %d %d %d %d %f %d %d %d %d\n" , D->xo , D->yo , D->xl , D->yl , D->lw , D->rw , D->tw , D->bw , D->df , D->bor_type , D->bkup , 
-          ( D->Sticky ) , ( D->Fixpos ) , ( D->Deco ) , ( D->fullscreen ) , ( D->kbattn ) , 
-          ( D->butattn ) , ( D->Newwin ) , ( D->DrawBkgr ) , ( D->NoTaskBar ) , 
+      fprintf ( fp1 , "%d %d %d %d\n%d %d %d %d\n%d %d %d %d %d %d %d %d %d %d %d %d %f %d %d %d %d\n" , D->xo , D->yo , D->xl , D->yl , D->lw , D->rw , D->tw , D->bw , D->df , D->bor_type , D->bkup ,  \
+          ( D->Sticky ) , ( D->Fixpos ) , ( D->Deco ) , ( D->fullscreen ) , ( D->kbattn ) ,  \
+          ( D->butattn ) , ( D->Newwin ) , ( D->DrawBkgr ) , ( D->NoTaskBar ) ,  \
           ( D->transparency ) , D->Resize , D->MinWidth , D->MinHeight , D->StackPos ) ;
       Resetlink ( L ) ;
       while ( ( t = Getrecord ( L ) ) != NULL ) {
@@ -2168,7 +2167,7 @@
       fclose ( fp1 ) ;
       Dfree ( L ) ;
   }
-  DILN * kgCreateHButtons ( int xo , int yo , int nx , int length , int height , char **titles , char *name ) 
+  DILN * kgCreateHButtons ( int xo , int yo , int nx , int length , int height , char **titles , char *name )  \
       { /* NEW TYPE */
       DILN *h;
       int i , n = 0;
@@ -2225,7 +2224,7 @@
       h->item = -1;
       return h;
   }
-  DIB * kgCreateButtonsb ( int xo , int yo , int nx , int ny , int length , int height , char **titles , char *name ) 
+  DIB * kgCreateButtonsb ( int xo , int yo , int nx , int ny , int length , int height , char **titles , char *name )  \
       { /* NEW TYPE */
       DIB *h;
       int i , n = 0;
@@ -2283,7 +2282,7 @@
       h->item = -1;
       return h;
   }
-  DIN * kgCreateButtons ( int xo , int yo , int nx , int ny , int length , int height , char **titles , char *name ) 
+  DIN * kgCreateButtons ( int xo , int yo , int nx , int ny , int length , int height , char **titles , char *name )  \
       { /* NEW TYPE */
       DIN *h;
       BUT_STR *butn;
@@ -2331,7 +2330,7 @@
       }
       return h;
   }
-  DIL * kgCreateSplButtons ( int xo , int yo , int nx , int ny , int length , int height , char **titles , char *name ) 
+  DIL * kgCreateSplButtons ( int xo , int yo , int nx , int ny , int length , int height , char **titles , char *name )  \
       { /* NEW TYPE */
       DIL *h;
       BUT_STR *butn;
@@ -2382,7 +2381,7 @@
       }
       return h;
   }
-  DII * kgCreateInfoBox ( int xo , int yo , int nchars , int nlines , char *name ) 
+  DII * kgCreateInfoBox ( int xo , int yo , int nchars , int nlines , char *name )  \
       {
       DII *g;
       int i , n;
@@ -2407,7 +2406,7 @@
       g->item = -1;
       return g;
   }
-  DIG * kgCreateDrawingBox ( int xo , int yo , int xsize , int ysize , char *name ) 
+  DIG * kgCreateDrawingBox ( int xo , int yo , int xsize , int ysize , char *name )  \
       {
       DIG *g;
       int i , n;
@@ -2427,7 +2426,7 @@
       g->item = -1;
       return g;
   }
-  DIP * kgCreateImageBox ( int xo , int yo , int length , int width , char *image , int bordrtype , char * name ) 
+  DIP * kgCreateImageBox ( int xo , int yo , int length , int width , char *image , int bordrtype , char * name )  \
       {
       DIP *p;
       int i , n , col = -1;
@@ -2456,7 +2455,7 @@
       p->item = -1;
       return p;
   }
-  DIM * kgCreateDisplayBox ( int xo , int yo , int length , int width , char *name ) 
+  DIM * kgCreateDisplayBox ( int xo , int yo , int length , int width , char *name )  \
       {
       DIM *m;
       int i , n;
@@ -2476,7 +2475,7 @@
       m->item = -1;
       return m;
   }
-  DIO * kgCreateProgressBar ( int xo , int yo , int length , int width , char *name ) 
+  DIO * kgCreateProgressBar ( int xo , int yo , int length , int width , char *name )  \
       {
       DIO *m;
       int i , n;
@@ -2497,7 +2496,7 @@
       m->item = -1;
       return m;
   }
-  DIV * kgCreateVertScroll ( int xo , int yo , int height , int width , char *name ) 
+  DIV * kgCreateVertScroll ( int xo , int yo , int height , int width , char *name )  \
       {
       DIV *m;
       int wd = 20 , hide = 0;
@@ -2520,7 +2519,7 @@
       m->item = -1;
       return m;
   }
-  DIZ * kgCreateHorizScroll ( int xo , int yo , int length , int width , char *name ) 
+  DIZ * kgCreateHorizScroll ( int xo , int yo , int length , int width , char *name )  \
       {
       DIZ *m;
       int wd = 20 , hide = 0;
@@ -2543,7 +2542,7 @@
       m->item = -1;
       return m;
   }
-  DIM * kgCreateMessageBox ( int xo , int yo , int length , int width , char *msg , int type , char *name ) 
+  DIM * kgCreateMessageBox ( int xo , int yo , int length , int width , char *msg , int type , char *name )  \
       {
       DIM *m;
       int i , n;

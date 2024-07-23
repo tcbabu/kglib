@@ -28,7 +28,7 @@
           free ( m ) ;
       }
   }
-  int _check_menu ( void *parent , int x0 , int y0 , char *qst , int df , void *xpm ) 
+  int _check_menu ( void *parent , int x0 , int y0 , char *qst , int df , void *xpm )  \
       {
       int ret = 1;
       int v0;
@@ -126,7 +126,7 @@
 #if 1
       msg = D->pt;
       if ( msg->message != NULL ) {
-          fid = kgInitImage ( ( int ) ( w_x2-w_x1 ) +1 , 
+          fid = kgInitImage ( ( int ) ( w_x2-w_x1 ) +1 ,  \
               ( int ) ( w_y2-w_y1 ) +1 , 2 ) ;
           kgUserFrame ( fid , w_x1 , w_y1 , w_x2 , w_y2 ) ;
           kgTextColor ( fid , msg->fontcolor ) ;
@@ -145,7 +145,7 @@
               while ( pt [ i ] != '\0' ) {
                   OK = 0;
                   if ( ( pt [ i ] == '\n' ) ) { pt [ i ] = '\0';break;}
-                  if ( ( ( pt [ i ] == '\\' ) && ( pt [ i+1 ] == 'n' ) ) ) 
+                  if ( ( ( pt [ i ] == '\\' ) && ( pt [ i+1 ] == 'n' ) ) )  \
                       { pt [ i ] = '\0';i++;break;}
                   i++;
                   OK = 1;
@@ -228,7 +228,7 @@
       }
       return ret;
   }
-  int kgSplashDia ( int xo , int yo , int xl , int yl , char *xpm , char *message , int font , int fontcolor , unsigned long bkcolor ) 
+  int kgSplashDia ( int xo , int yo , int xl , int yl , char *xpm , char *message , int font , int fontcolor , unsigned long bkcolor )  \
       {
       int ret = 1;
       DIALOG D;
@@ -375,11 +375,11 @@
           kgTextSize ( fid , 30. , 20. , 0. ) ;
           xo = ( w_x1+w_x2 ) *.5;
           yo = ( w_y1+w_y2 ) *.5;
-          kgRoundedRectangleFill ( fid , xo , yo , ( float ) l+2 , 
+          kgRoundedRectangleFill ( fid , xo , yo , ( float ) l+2 ,  \
               ( float ) w+2 , 0 , 153 , rfac ) ;
-          kgRoundedRectangleFill ( fid , xo , yo , ( float ) l+1 , 
+          kgRoundedRectangleFill ( fid , xo , yo , ( float ) l+1 ,  \
               ( float ) w+1 , 0 , 152 , rfac ) ;
-          kgRoundedRectangleFill ( fid , xo , yo , ( float ) l-4 , 
+          kgRoundedRectangleFill ( fid , xo , yo , ( float ) l-4 ,  \
               ( float ) w-4 , 0 , 151 , rfac ) ;
 //    kgRoundedRectangleFill(fid,(w_x1+w_x2)*.5+3,(w_y1+w_y2)*.5-2,w_x2-6,w_y2-6,0,0,0.1);
 //    kgRoundedRectangleFill(fid,(w_x1+w_x2)*.5,(w_y1+w_y2)*.5,w_x2-6,w_y2-6,0,color,0.1);
@@ -396,7 +396,7 @@
               while ( pt [ i ] != '\0' ) {
                   OK = 0;
                   if ( ( pt [ i ] == '\n' ) ) { pt [ i ] = '\0';break;}
-                  if ( ( ( pt [ i ] == '\\' ) && ( pt [ i+1 ] == 'n' ) ) ) 
+                  if ( ( ( pt [ i ] == '\\' ) && ( pt [ i+1 ] == 'n' ) ) )  \
                       { pt [ i ] = '\0';i++;break;}
                   i++;
                   OK = 1;
@@ -465,7 +465,7 @@
       }
       return ret;
   }
-  int kgSplashMessage ( void *Parent , int xo , int yo , int xl , int yl , char *message , int font , int fontcolor , int bkcolor ) 
+  int kgSplashMessage ( void *Parent , int xo , int yo , int xl , int yl , char *message , int font , int fontcolor , int bkcolor )  \
       {
       int ret = 1;
       DIALOG D;
@@ -592,7 +592,7 @@
       D->evgax = WC ( D )->EVGAX;
       return ;
   }
-  int kgMenu ( void *parent , int xx1 , int yy1 , int pos , int df , char **menu , int size ) 
+  int kgMenu ( void *parent , int xx1 , int yy1 , int pos , int df , char **menu , int size )  \
       {
       char **x;
       int NOK = 1 , item , ok , tempc;
@@ -782,21 +782,21 @@
       DIALOG D;
       DIA d [ 2 ] ;
       char *titles0 [ ] = {
-       ( char * ) "0" , ( char * ) "1" , ( char * ) "2" , ( char * ) "3" , ( char * ) "4" , 
-           ( char * ) "5" , ( char * ) "6" , ( char * ) "7" , ( char * ) "8" , ( char * ) "9" , 
-           ( char * ) "10" , ( char * ) "11" , ( char * ) "12" , ( char * ) "13" , 
-           ( char * ) "14" , ( char * ) "15" , ( char * ) "16" , ( char * ) "17" , 
-           ( char * ) "18" , ( char * ) "19" , ( char * ) "20" , ( char * ) "21" , 
-           ( char * ) "22" , ( char * ) "23" , ( char * ) "24" , ( char * ) "25" , 
-           ( char * ) "26" , ( char * ) "27" , ( char * ) "28" , ( char * ) "29" , 
-           ( char * ) "30" , ( char * ) "31" , ( char * ) "32" , ( char * ) "33" , 
-           ( char * ) "34" , ( char * ) "35" , ( char * ) "36" , ( char * ) "37" , 
-           ( char * ) "38" , ( char * ) "39" , ( char * ) "40" , ( char * ) "41" , 
-           ( char * ) "42" , ( char * ) "43" , ( char * ) "44" , ( char * ) "45" , 
-           ( char * ) "46" , ( char * ) "47" , ( char * ) "48" , ( char * ) "49" , 
-           ( char * ) "50" , ( char * ) "51" , ( char * ) "52" , ( char * ) "53" , 
-           ( char * ) "54" , ( char * ) "55" , ( char * ) "56" , ( char * ) "57" , 
-           ( char * ) "58" , ( char * ) "59" , ( char * ) "60" , ( char * ) "61" , 
+       ( char * ) "0" , ( char * ) "1" , ( char * ) "2" , ( char * ) "3" , ( char * ) "4" ,  \
+           ( char * ) "5" , ( char * ) "6" , ( char * ) "7" , ( char * ) "8" , ( char * ) "9" ,  \
+           ( char * ) "10" , ( char * ) "11" , ( char * ) "12" , ( char * ) "13" ,  \
+           ( char * ) "14" , ( char * ) "15" , ( char * ) "16" , ( char * ) "17" ,  \
+           ( char * ) "18" , ( char * ) "19" , ( char * ) "20" , ( char * ) "21" ,  \
+           ( char * ) "22" , ( char * ) "23" , ( char * ) "24" , ( char * ) "25" ,  \
+           ( char * ) "26" , ( char * ) "27" , ( char * ) "28" , ( char * ) "29" ,  \
+           ( char * ) "30" , ( char * ) "31" , ( char * ) "32" , ( char * ) "33" ,  \
+           ( char * ) "34" , ( char * ) "35" , ( char * ) "36" , ( char * ) "37" ,  \
+           ( char * ) "38" , ( char * ) "39" , ( char * ) "40" , ( char * ) "41" ,  \
+           ( char * ) "42" , ( char * ) "43" , ( char * ) "44" , ( char * ) "45" ,  \
+           ( char * ) "46" , ( char * ) "47" , ( char * ) "48" , ( char * ) "49" ,  \
+           ( char * ) "50" , ( char * ) "51" , ( char * ) "52" , ( char * ) "53" ,  \
+           ( char * ) "54" , ( char * ) "55" , ( char * ) "56" , ( char * ) "57" ,  \
+           ( char * ) "58" , ( char * ) "59" , ( char * ) "60" , ( char * ) "61" ,  \
            ( char * ) "62" , ( char * ) "63" , NULL };
       void *xpm0 [ ] = {
       NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL };
@@ -871,7 +871,7 @@
       ret = kgUi ( & D ) ;
       return ret;
   }
-  int kgGetColor_o ( void *parent , int xo , int yo , int *r , int *g , int *b ) 
+  int kgGetColor_o ( void *parent , int xo , int yo , int *r , int *g , int *b )  \
       {
 /*************************************************
 
@@ -896,7 +896,7 @@
       r = uiGetDslide ( Tmp , 1 ) ;
       g = uiGetDslide ( Tmp , 2 ) ;
       b = uiGetDslide ( Tmp , 3 ) ;
-      if ( ( abs ( r-ioldclr [ 3 ] ) +abs ( g-ioldclr [ 4 ] ) +abs 
+      if ( ( abs ( r-ioldclr [ 3 ] ) +abs ( g-ioldclr [ 4 ] ) +abs  \
           ( b-ioldclr [ 5 ] ) ) < 5 ) return;
       ioldclr [ 3 ] = r; ioldclr [ 4 ] = g; ioldclr [ 5 ] = b;
       tmpdir = kgMakeTmpDir ( ) ;
@@ -958,7 +958,7 @@
       r = uiGetDslide ( Tmp , 1 ) ;
       g = uiGetDslide ( Tmp , 2 ) ;
       b = uiGetDslide ( Tmp , 3 ) ;
-      if ( ( abs ( r-ioldclr [ 3 ] ) +abs ( g-ioldclr [ 4 ] ) +abs 
+      if ( ( abs ( r-ioldclr [ 3 ] ) +abs ( g-ioldclr [ 4 ] ) +abs  \
           ( b-ioldclr [ 5 ] ) ) < 5 ) return;
       ioldclr [ 3 ] = r; ioldclr [ 4 ] = g; ioldclr [ 5 ] = b;
       p5 = ( DIP * ) uiGetWidget ( Tmp , 5 ) ;
@@ -1108,7 +1108,7 @@
       }
       return ret;
   }
-  int _uiGetColor ( void *parent , int xo , int yo , void *v1 , void *v2 , void *v3 ) 
+  int _uiGetColor ( void *parent , int xo , int yo , void *v1 , void *v2 , void *v3 )  \
       {
       int ret = 1;
       int v0 = 1;
@@ -1116,18 +1116,18 @@
       DIALOG D;
       DIA d [ 13 ] ;
       char *titles0 [ ] = {
-       ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" , 
-           ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" , 
-           ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" , 
-           ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" , 
-           ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" , 
-           ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" , 
-           ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" , 
-           ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" , 
-           ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" , 
-           ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" , 
-           ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" , 
-           ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" , 
+       ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" ,  \
+           ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" ,  \
+           ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" ,  \
+           ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" ,  \
+           ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" ,  \
+           ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" ,  \
+           ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" ,  \
+           ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" ,  \
+           ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" ,  \
+           ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" ,  \
+           ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" ,  \
+           ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" ,  \
            ( char * ) "" , ( char * ) "" , ( char * ) "" , ( char * ) "" , NULL };
       void *xpm0 [ ] = {
       NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL };
@@ -1321,7 +1321,7 @@
       int k , ln;
       k = 0;
       if ( strlen ( m ) == size ) {
-          if ( ( m [ size-3 ] == '.' ) && ( m [ size-2 ] == '.' ) && 
+          if ( ( m [ size-3 ] == '.' ) && ( m [ size-2 ] == '.' ) &&  \
               ( m [ size-1 ] == '.' ) ) {
               m [ size ] = '.';
               ln = strlen ( m ) ;
@@ -1356,7 +1356,7 @@
       int k , ln;
       k = 0;
       if ( strlen ( m ) == size ) {
-          if ( ( m [ size-3 ] == '.' ) && ( m [ size-2 ] == '.' ) && 
+          if ( ( m [ size-3 ] == '.' ) && ( m [ size-2 ] == '.' ) &&  \
               ( m [ size-1 ] == '.' ) ) {
               m [ size ] = '.';
               ln = strlen ( m ) ;
@@ -1532,7 +1532,7 @@
       switch ( key ) {
           case 1:
           k = strlen ( dirs->CurDir ) ;
-          while ( ( dirs->CurDir [ k ] != '/' ) && ( k > 1 ) ) 
+          while ( ( dirs->CurDir [ k ] != '/' ) && ( k > 1 ) )  \
               {dirs->CurDir [ k ] = '\0';k--;}
           dirs->CurDir [ k ] = '\0';
           uiinfo_wprintf ( ( DIALOG * ) Tmp , ( ( DIALOG * ) Tmp )->d [ 1 ] .i->twin , dirs->CurDir ) ;
@@ -1633,7 +1633,7 @@
       }
       return 1;
   }
-  int kgFolderBrowser ( void *parent , int xo , int yo , char *flname , char *fltr ) 
+  int kgFolderBrowser ( void *parent , int xo , int yo , char *flname , char *fltr )  \
       {
       int v2 = 1 , v3 = 1;
       int v4 = 1 , v5 = 1;
@@ -1646,7 +1646,7 @@
       char filter [ 300 ] , w_file [ 300 ] = {" "};
       DIRS Dir;
       T_ELMT e0 [ 2 ] = {
-          {"File Name:%30s" , flname , 1 , 0 , NULL} , 
+          {"File Name:%30s" , flname , 1 , 0 , NULL} ,  \
               {"Filter   :%30s" , fltr , 1 , 0 , NULL}
       };
       DIT t0 = {
@@ -1994,7 +1994,7 @@
       ret = ret%2;
       return ret;
   }
-  int _ui_setattrib ( void *parent , int xo , int yo , void *v0 , void *v1 , void *v2 , void *v3 , void *v4 , void *v5 , void *v6 , void *v7 , void *v14 ) 
+  int _ui_setattrib ( void *parent , int xo , int yo , void *v0 , void *v1 , void *v2 , void *v3 , void *v4 , void *v5 , void *v6 , void *v7 , void *v14 )  \
       {
       int ret = 1;
       DIALOG D;
@@ -2007,10 +2007,10 @@
 //    {"Text pattern   %2d", v12, 1},
 //    {"Border width   %2d", v13, 1},
 //    {"Arrow size     %2d", v15, 1}
-      {"Line Style     %2d" , v0 , 1 , 0 , NULL} , {"Line color     %2d" , v1 , 1 , 0 , NULL} , 
-          {"Line Width     %2d" , v2 , 1 , 0 , NULL} , {"Marker Type    %2d" , v3 , 1 , 0 , NULL} , 
-          {"Wipe/Fill color%2d" , v4 , 1 , 0 , NULL} , {"Text color     %2d" , v5 , 1 , 0 , NULL} , 
-          {"Text font      %2d" , v6 , 1 , 0 , NULL} , {"Text angle     %3d" , v7 , 1 , 0 , NULL} , 
+      {"Line Style     %2d" , v0 , 1 , 0 , NULL} , {"Line color     %2d" , v1 , 1 , 0 , NULL} ,  \
+          {"Line Width     %2d" , v2 , 1 , 0 , NULL} , {"Marker Type    %2d" , v3 , 1 , 0 , NULL} ,  \
+          {"Wipe/Fill color%2d" , v4 , 1 , 0 , NULL} , {"Text color     %2d" , v5 , 1 , 0 , NULL} ,  \
+          {"Text font      %2d" , v6 , 1 , 0 , NULL} , {"Text angle     %3d" , v7 , 1 , 0 , NULL} ,  \
           {"Border color   %2d" , v14 , 1} , };
       DIT t0 = {
           't' , 11 , 8 , 235 , 301 , 20 , 1 , 9 , e0 , 1 , 1 , NULL , NULL /* args , Call back */
@@ -2317,7 +2317,7 @@
       }
       return ret;
   }
-  int kgAttibDia ( void *parent , void *v0 , void *v1 , void *v2 , void *v3 , void *v4 , void *v5 , void *v6 , void *v7 , void *v8 , void *v9 , void *v10 , void *v11 , void *v12 , void *v13 , void *ptrs ) 
+  int kgAttibDia ( void *parent , void *v0 , void *v1 , void *v2 , void *v3 , void *v4 , void *v5 , void *v6 , void *v7 , void *v8 , void *v9 , void *v10 , void *v11 , void *v12 , void *v13 , void *ptrs )  \
       {
       int ret = 1;
       DIALOG D;
@@ -2426,39 +2426,39 @@
           2 , 0.200000 /* button type and roundinfg factor ( 0-0.5 ) */
       };
       char *menu10 [ ] = {
-       ( char * ) "0" , ( char * ) "1" , ( char * ) "2" , ( char * ) "3" , 
+       ( char * ) "0" , ( char * ) "1" , ( char * ) "2" , ( char * ) "3" ,  \
            ( char * ) "4" , ( char * ) "5" , NULL };
       DIW w10 = {
           'w' , 317 , 31 , 475 , 60 , 4 , ( int * ) v10 , ( char * ) "Line Style" , menu10 , NULL , kgAttibDiabrowser1callback /* *args , callback */
       };
       char *menu11 [ ] = {
-       ( char * ) "1" , ( char * ) "2" , ( char * ) "3" , ( char * ) "4" , ( char * ) "5" , 
+       ( char * ) "1" , ( char * ) "2" , ( char * ) "3" , ( char * ) "4" , ( char * ) "5" ,  \
            ( char * ) "6" , ( char * ) "7" , ( char * ) "8" , NULL };
       DIW w11 = {
           'w' , 317 , 66 , 475 , 95 , 4 , ( int * ) v11 , ( char * ) "Line Width" , menu11 , NULL , kgAttibDiabrowser2callback /* *args , callback */
       };
       char *menu12 [ ] = {
-       ( char * ) "0" , ( char * ) "1" , ( char * ) "2" , ( char * ) "3" , ( char * ) "4" , 
-           ( char * ) "5" , ( char * ) "6" , ( char * ) "7" , ( char * ) "8" , ( char * ) "9" , 
-           ( char * ) "10" , ( char * ) "11" , ( char * ) "12" , ( char * ) "13" , 
-           ( char * ) "14" , ( char * ) "15" , ( char * ) "16" , ( char * ) "17" , 
-           ( char * ) "18" , ( char * ) "19" , ( char * ) "20" , ( char * ) "21" , 
-           ( char * ) "22" , ( char * ) "23" , ( char * ) "24" , ( char * ) "25" , 
-           ( char * ) "26" , ( char * ) "27" , ( char * ) "28" , 
+       ( char * ) "0" , ( char * ) "1" , ( char * ) "2" , ( char * ) "3" , ( char * ) "4" ,  \
+           ( char * ) "5" , ( char * ) "6" , ( char * ) "7" , ( char * ) "8" , ( char * ) "9" ,  \
+           ( char * ) "10" , ( char * ) "11" , ( char * ) "12" , ( char * ) "13" ,  \
+           ( char * ) "14" , ( char * ) "15" , ( char * ) "16" , ( char * ) "17" ,  \
+           ( char * ) "18" , ( char * ) "19" , ( char * ) "20" , ( char * ) "21" ,  \
+           ( char * ) "22" , ( char * ) "23" , ( char * ) "24" , ( char * ) "25" ,  \
+           ( char * ) "26" , ( char * ) "27" , ( char * ) "28" ,  \
            ( char * ) "29" , NULL };
       DIW w12 = {
           'w' , 308 , 101 , 475 , 130 , 4 , ( int * ) v12 , ( char * ) "Marker Type" , menu12 , NULL , kgAttibDiabrowser3callback /* *args , callback */
       };
       char *menu13 [ ] = {
-       ( char * ) "0" , ( char * ) "10" , ( char * ) "20" , ( char * ) "30" , 
-           ( char * ) "40" , ( char * ) "50" , ( char * ) "60" , ( char * ) "70" , 
-           ( char * ) "80" , ( char * ) "90" , ( char * ) "100" , ( char * ) "110" , 
-           ( char * ) "120" , ( char * ) "130" , ( char * ) "140" , ( char * ) "150" , 
-           ( char * ) "160" , ( char * ) "170" , ( char * ) "180" , ( char * ) "190" , 
-           ( char * ) "200" , ( char * ) "210" , ( char * ) "220" , ( char * ) "230" , 
-           ( char * ) "240" , ( char * ) "250" , ( char * ) "260" , ( char * ) "270" , 
-           ( char * ) "280" , ( char * ) "290" , ( char * ) "300" , ( char * ) "310" , 
-           ( char * ) "320" , ( char * ) "330" , ( char * ) "340" , 
+       ( char * ) "0" , ( char * ) "10" , ( char * ) "20" , ( char * ) "30" ,  \
+           ( char * ) "40" , ( char * ) "50" , ( char * ) "60" , ( char * ) "70" ,  \
+           ( char * ) "80" , ( char * ) "90" , ( char * ) "100" , ( char * ) "110" ,  \
+           ( char * ) "120" , ( char * ) "130" , ( char * ) "140" , ( char * ) "150" ,  \
+           ( char * ) "160" , ( char * ) "170" , ( char * ) "180" , ( char * ) "190" ,  \
+           ( char * ) "200" , ( char * ) "210" , ( char * ) "220" , ( char * ) "230" ,  \
+           ( char * ) "240" , ( char * ) "250" , ( char * ) "260" , ( char * ) "270" ,  \
+           ( char * ) "280" , ( char * ) "290" , ( char * ) "300" , ( char * ) "310" ,  \
+           ( char * ) "320" , ( char * ) "330" , ( char * ) "340" ,  \
            ( char * ) "350" , NULL };
       DIW w13 = {
           'w' , 309 , 136 , 475 , 164 , 4 , ( int * ) v13 , ( char * ) "Text Angle" , menu13 , NULL , kgAttibDiabrowser4callback /* *args , callback */
@@ -2603,7 +2603,7 @@
       v5 = dc->bod_color;
       pt [ 0 ] = G;
       pt [ 1 ] = & count;
-      kgAttibDia ( NULL , & v0 , & v1 , & v2 , & v3 , & v4 , & v5 , & v6 , & v7 , & v8 , & v9 , & v10 , & v11 , & v12 , & v13 , 
+      kgAttibDia ( NULL , & v0 , & v1 , & v2 , & v3 , & v4 , & v5 , & v6 , & v7 , & v8 , & v9 , & v10 , & v11 , & v12 , & v13 ,  \
           ( void * ) pt ) ;
       LnStyle = v10-1;
       LnWidth = v11;
@@ -2683,7 +2683,7 @@
       DIALOG D;
       DIA d [ 3 ] ;
       T_ELMT e0 [ 3 ] = {
-          {"Mul. fac for height%12F" , v0 , 1 , 0 , NULL} , {"Mul. fac for width %12F" , v1 , 1 , 0 , NULL} , 
+          {"Mul. fac for height%12F" , v0 , 1 , 0 , NULL} , {"Mul. fac for width %12F" , v1 , 1 , 0 , NULL} ,  \
               {"Mul. fac for gap   %12F" , v2 , 1 , 0 , NULL}
       };
       DIT t0 = {
@@ -2747,7 +2747,7 @@
       ret = kgUi ( & D ) ;
       return ret;
   }
-  void get_size_factors ( void *parent , float *hfac , float *wfac , float *gfac ) 
+  void get_size_factors ( void *parent , float *hfac , float *wfac , float *gfac )  \
       {
 /*************************************************
 
@@ -2796,7 +2796,7 @@
           exit ( 0 ) ;
       }
       parent = G->D;
-      if ( dc->A_size > 10 ) A_fac = ( float ) 
+      if ( dc->A_size > 10 ) A_fac = ( float )  \
           ( dc->A_size/10 ) / ( dc->A_size%10 ) ;
       tgg = 0;
       tww = ( dc->w_x2-dc->w_x1 ) /30.0;
@@ -2828,7 +2828,7 @@
       * ( loc++ ) = 60;count++;
       ytwtg = ( tw+tg ) / ( dc->w_x2-dc->w_x1 ) * ( dc->w_y2-dc->w_y1 ) /0.75;
 //      while((item=uiMenu(G->D,G->x1,G->y1,1,1,cmenu,17))!=17)
-      while ( ( item = kgMenu ( G->D , parent->xo+G->x2-100 , parent->yo+G->y1 , 1 , 1 , cmenu , 17 ) ) != 17 ) 
+      while ( ( item = kgMenu ( G->D , parent->xo+G->x2-100 , parent->yo+G->y1 , 1 , 1 , cmenu , 17 ) ) != 17 )  \
           {
           if ( G->Byte > ( B_min-100 ) ) {
               uiwrite_file ( G , & ( G->rbuf ) , dc->reviewfile ) ;
@@ -2904,12 +2904,12 @@
                       if ( count > 1 ) { loc--;count--;
                           uiupdate_intr ( G , count , dc->cmds ) ;
                   uiupdate_view ( G ) ;} }
-                  else { kgMove2f ( G , xx , yy ) ;kgDraw2f 
+                  else { kgMove2f ( G , xx , yy ) ;kgDraw2f  \
                       ( G , xx , y ) , kgDraw2f ( G , x , y ) ;
                       kgDraw2f ( G , x , yy ) , kgDraw2f ( G , xx , yy ) ;
                   * ( loc++ ) = 50;count++;}
               }
-              kgMove2f ( G , xx , yy ) ;kgDraw2f ( G , xx , y ) , kgDraw2f ( G , x , y ) , kgDraw2f 
+              kgMove2f ( G , xx , yy ) ;kgDraw2f ( G , xx , y ) , kgDraw2f ( G , x , y ) , kgDraw2f  \
                   ( G , x , yy ) , kgDraw2f ( G , xx , yy ) ;
               xo = xx-x;yo = yy-y;
               last = 'r';
@@ -2943,7 +2943,7 @@
 //               *(loc++)=72;count++;  
               * ( loc++ ) = uiset_atribs ( G ) ;
               count++;
-              if ( dc->A_size > 10 ) A_fac = ( float ) 
+              if ( dc->A_size > 10 ) A_fac = ( float )  \
                   ( dc->A_size/10 ) / ( dc->A_size%10 ) ;
               break;
               case 11:
@@ -3108,7 +3108,7 @@
       ret = kgUi ( & D ) ;
       return ret;
   }
-  int uiTextMenu ( void *parent , int x1 , int y1 , int items , char **promt , char ** field ) 
+  int uiTextMenu ( void *parent , int x1 , int y1 , int items , char **promt , char ** field )  \
       {
       int ret = 1 , i , l = 0i , maxl;
       DIALOG D;
@@ -4107,7 +4107,7 @@
                           
                       strcpy ( thImgs [ k ]->flname , name ) ;
 #else
-                      if ( ( thImgs [ k ]->image_width > size ) 
+                      if ( ( thImgs [ k ]->image_width > size )  \
                           || ( thImgs [ k ]->image_height > size ) ) {
                           printf ( "%s: %d:%d %d:%d\n" , flnames [ i ] , thImgs [ k ]->image_width , thImgs [ k ]->image_height , img->image_width , img->image_height ) ;
                               
@@ -4540,7 +4540,7 @@
   ThumbNail **kgStringToThumbNails ( char **menu ) {
       return uiStringToThumbNails ( menu ) ;
   }
-  void _uiWriteStrings ( DIG *fid , float xo , float yo , float xl , float yl , char *buf , float wd , float ht , int justf ) 
+  void _uiWriteStrings ( DIG *fid , float xo , float yo , float xl , float yl , char *buf , float wd , float ht , int justf )  \
       {
       char BUF [ 1000 ] , *str [ 200 ] , *pt;
       int i , j , k , OK = 0;
@@ -4558,7 +4558,7 @@
           while ( pt [ i ] != '\0' ) {
               OK = 0;
               if ( ( pt [ i ] == '\n' ) ) { pt [ i ] = '\0';break;}
-              if ( ( ( pt [ i ] == '\\' ) && ( pt [ i+1 ] == 'n' ) ) ) 
+              if ( ( ( pt [ i ] == '\\' ) && ( pt [ i+1 ] == 'n' ) ) )  \
                   { pt [ i ] = '\0';i++;break;}
               i++;
               OK = 1;
@@ -4645,7 +4645,7 @@
       return ret;
   }
 //int kgMenu1( void *parent,int xo,int yo,int df,char **menu,int size) {
-  int kgMenu1 ( void *parent , int xo , int yo , int df , char **menu , int size , int 
+  int kgMenu1 ( void *parent , int xo , int yo , int df , char **menu , int size , int  \
       ( *Fun ) ( int , void * ) , void *arg ) {
       int ret = 1 , n = 0 , xl = 0 , yl = 0 , lng = 0 , length = 0;
       DIALOG D;
@@ -4984,7 +4984,7 @@
       DIB n2 = {
           'b' , 10 , 15 , 100 , 61 , 2 , 0 , 36 , 36 , 2 , 1 , ( int * ) & v2 , sw2 , titles2 , butncode2 , NULL , PickImagebutnbox1callback , /* args , Callbak */
           xpm2 , bkgr2 , /* pointers to xpms and colors */
-          4 , 0.200000 , 0 , 0 /* button type and roundinfg factor 
+          4 , 0.200000 , 0 , 0 /* button type and roundinfg factor  \
               ( 0-0.5 ) , bordr , hide */
       };
       int butn1 = 1;
@@ -5115,7 +5115,7 @@
           'e' , 8 , 65 , 316 , 457 , 1 , ( int * ) & v0 , NULL , menu0 , NULL , PickImagebrowser1callback , /* *args , callback */
       20 , 8 , 22 , 1 , 1 , 1 , 0 };
       DIY y1 = {
-          'y' , 326 , 65 , 843 , 457 , 16 , 16 , ThSize , ThSize , 1 , 32767 , 0 , 4 , 
+          'y' , 326 , 65 , 843 , 457 , 16 , 16 , ThSize , ThSize , 1 , 32767 , 0 , 4 ,  \
               ( int * ) & v1 , NULL , NULL , NULL , PickImagebrowser2callback , /* *args , callback */
           12 , /* Border Offset */
           22 , /* Scroll width */
@@ -5138,7 +5138,7 @@
       DIB n2 = {
           'b' , 10 , 15 , 100 , 61 , 2 , 0 , 36 , 36 , 2 , 1 , ( int * ) & v2 , sw2 , titles2 , butncode2 , NULL , PickImagebutnbox1callback , /* args , Callbak */
           xpm2 , bkgr2 , /* pointers to xpms and colors */
-          4 , 0.200000 , 0 , 0 /* button type and roundinfg factor 
+          4 , 0.200000 , 0 , 0 /* button type and roundinfg factor  \
               ( 0-0.5 ) , bordr , hide */
       };
       int butn1 = 1;
@@ -5487,7 +5487,7 @@
  // fflush(stdout);
       return ret;
   }
-  DIT * kgCreateTable ( int xo , int yo , int nrows , char **colformats , char *name ) 
+  DIT * kgCreateTable ( int xo , int yo , int nrows , char **colformats , char *name )  \
       {
       void **pt;
       DIT *T = NULL;
@@ -5587,8 +5587,8 @@
       T->item = -1;
       return T;
   }
-  void *kgCreateUi ( int length , int width , int ( *Initfun ) ( void * ) , int 
-      ( *CallBack ) ( void *, void * ) , int ( *Cleanupfun ) 
+  void *kgCreateUi ( int length , int width , int ( *Initfun ) ( void * ) , int  \
+      ( *CallBack ) ( void *, void * ) , int ( *Cleanupfun )  \
       ( void * ) , char *name ) {
       DIALOG *D;
       D = ( DIALOG * ) Malloc ( sizeof ( DIALOG ) ) ;
@@ -5660,7 +5660,7 @@
       Dtmp = NULL;
       return ret;
   }
-  DIW * kgCreatePulldownBrowser ( int xo , int yo , char *prompt , char **menu , char *name ) 
+  DIW * kgCreatePulldownBrowser ( int xo , int yo , char *prompt , char **menu , char *name )  \
       {
       DIW *W;
       int i , n;
@@ -5751,7 +5751,7 @@
       W->item = -1;
       return W;
   }
-  DIS * kgCreateMessageScroll ( int xo , int yo , int nlines , int maxchar , char *name ) 
+  DIS * kgCreateMessageScroll ( int xo , int yo , int nlines , int maxchar , char *name )  \
       {
       DIS *W;
       int i , n;
@@ -5782,7 +5782,7 @@
       W->Update = NULL;
       return W;
   }
-  DIHB * kgCreateHorizSlide ( int xo , int yo , int length , int min , int max , int val , char *name ) 
+  DIHB * kgCreateHorizSlide ( int xo , int yo , int length , int min , int max , int val , char *name )  \
       {
       DIHB *W;
       int i , n;
@@ -5813,7 +5813,7 @@
       W->item = -1;
       return W;
   }
-  DID * kgCreateIntSlide ( int xo , int yo , int length , int min , int max , int val , char *name ) 
+  DID * kgCreateIntSlide ( int xo , int yo , int length , int min , int max , int val , char *name )  \
       {
       DID *W;
       int i , n;
@@ -5844,7 +5844,7 @@
       W->item = -1;
       return W;
   }
-  DIF * kgCreateDoubleSlide ( int xo , int yo , int length , double min , double max , double val , char *name ) 
+  DIF * kgCreateDoubleSlide ( int xo , int yo , int length , double min , double max , double val , char *name )  \
       {
       DIF *W;
       int i , n;
@@ -5876,7 +5876,7 @@
       W->item = -1;
       return W;
   }
-  DIX * kgCreateSelectMenu ( int xo , int yo , int length , int width , int itemlength , int type , char *name ) 
+  DIX * kgCreateSelectMenu ( int xo , int yo , int length , int width , int itemlength , int type , char *name )  \
       {
       DIX *W;
       int i , n;
@@ -5901,7 +5901,7 @@
       W->pt = NULL;
       return W;
   }
-  DIRA * kgCreateRadioButtons ( int xo , int yo , int length , int width , int itemlength , char **list , char *name ) 
+  DIRA * kgCreateRadioButtons ( int xo , int yo , int length , int width , int itemlength , char **list , char *name )  \
       {
       DIRA *W;
       int i , n;
@@ -5935,7 +5935,7 @@
       W->Update = NULL;
       return W;
   }
-  DICH * kgCreateCheckBox ( int xo , int yo , int length , int width , int itemlength , char **list , char *name ) 
+  DICH * kgCreateCheckBox ( int xo , int yo , int length , int width , int itemlength , char **list , char *name )  \
       {
       DICH *W;
       int i , n;
@@ -5969,7 +5969,7 @@
       W->Update = NULL;
       return W;
   }
-  DIY * kgCreateThumbnailBrowser ( int xo , int yo , int length , int width , int nailsize , int type , char *name ) 
+  DIY * kgCreateThumbnailBrowser ( int xo , int yo , int length , int width , int nailsize , int type , char *name )  \
       {
       DIY *W;
       int i , n;
