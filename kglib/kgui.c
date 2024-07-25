@@ -228,8 +228,8 @@
       if ( App ) {
 	  /* if an app folder is available only thar folder is checked */
           i = 0;
-          while ( Dirs [ i ] != NULL ) {if ( strstr ( Dirs [ i ] , "app" ) != NULL ) Dadd  \
-              ( L , Dirs [ i ] ) ;i++;}
+          while ( Dirs [ i ] != NULL ) {if ( strstr ( Dirs [ i ] , "app" ) != NULL ) Dadd \
+           ( L , Dirs [ i ] ) ;i++;}
       }
       else {
           i = 0;
@@ -441,10 +441,10 @@
   void opntwin ( DIALOG *D , int ix , int iy , int chrs , int lines ) {
       ui_txtwin ( D , ( int ) ix , ( int ) iy , ( int ) chrs , ( int ) lines ) ;
   }
-  void Opntwin ( DIALOG *D , int ix , int iy , int chrs , int lines , int xbdr , int ybdr )  \
-      {
-      ui_txtwinnew ( D , ( int ) ix , ( int ) iy , ( int ) chrs ,  \
-          ( int ) lines , xbdr , ybdr ) ;
+  void Opntwin ( DIALOG *D , int ix , int iy , int chrs , int lines , int xbdr , int ybdr ) \
+  {
+      ui_txtwinnew ( D , ( int ) ix , ( int ) iy , ( int ) chrs , \
+       ( int ) lines , xbdr , ybdr ) ;
   }
   void clstwin ( DIALOG *D ) {
       ui_clear_txtwin ( D ) ;
@@ -488,8 +488,8 @@
       if ( *pt != '\0' ) wprintf ( D , pt ) ;
       if ( No_w ) { getch ( ) ; clstwin ( D ) ; }
 #else
-      kgSplashMessage ( D , 10 , 10 , strlen ( s ) *8 , 22 ,  \
-          ( char * ) s , 12 , 0 , 15 ) ;
+      kgSplashMessage ( D , 10 , 10 , strlen ( s ) *8 , 22 , \
+       ( char * ) s , 12 , 0 , 15 ) ;
 #endif
   }
   void uiPrintf ( DIALOG *D , int xp , int yp , char *s ) {
@@ -556,8 +556,8 @@
                   cpt++;
               }
               fln [ item ] = size+1;
-              if ( ( *cpt != 'd' ) && ( *cpt != 'f' ) &&  \
-                  ( *cpt != 's' ) && ( *cpt != 'F' ) ) {
+              if ( ( *cpt != 'd' ) && ( *cpt != 'f' ) && \
+               ( *cpt != 's' ) && ( *cpt != 'F' ) ) {
                   normal ( ) ;
                   printf ( "Error in gscanf: /%s/\n" , ( char* ) pt ) ;
                   exit ( 0 ) ;
@@ -2364,8 +2364,8 @@
                   if ( h->butncode != NULL ) Free ( h->butncode ) ;
                   if ( h->titles != NULL ) {
                       n = h->nx*h->ny;
-                      for ( j = 0;j < n;j++ ) if ( h->titles [ j ] != NULL ) Free  \
-                          ( h->titles [ j ] ) ;
+                      for ( j = 0;j < n;j++ ) if ( h->titles [ j ] != NULL ) Free \
+                       ( h->titles [ j ] ) ;
                       Free ( h->titles ) ;
                   }
               }
@@ -2430,8 +2430,8 @@
                   if ( b->butncode != NULL ) Free ( b->butncode ) ;
                   if ( b->titles != NULL ) {
                       n = b->nx*b->ny;
-                      for ( j = 0;j < n;j++ ) if ( b->titles [ j ] != NULL ) Free  \
-                          ( b->titles [ j ] ) ;
+                      for ( j = 0;j < n;j++ ) if ( b->titles [ j ] != NULL ) Free \
+                       ( b->titles [ j ] ) ;
                       Free ( b->titles ) ;
                   }
               }
@@ -2691,8 +2691,8 @@
                   if ( h->butncode != NULL ) Free ( h->butncode ) ;
                   if ( h->titles != NULL ) {
                       n = h->nx*h->ny;
-                      for ( j = 0;j < n;j++ ) if ( h->titles [ j ] != NULL ) Free  \
-                          ( h->titles [ j ] ) ;
+                      for ( j = 0;j < n;j++ ) if ( h->titles [ j ] != NULL ) Free \
+                       ( h->titles [ j ] ) ;
                       Free ( h->titles ) ;
                       h->titles = NULL;
                   }
@@ -2762,8 +2762,8 @@
                   b->butncode = NULL;
                   if ( b->titles != NULL ) {
                       n = b->nx*b->ny;
-                      for ( j = 0;j < n;j++ ) if ( b->titles [ j ] != NULL ) Free  \
-                          ( b->titles [ j ] ) ;
+                      for ( j = 0;j < n;j++ ) if ( b->titles [ j ] != NULL ) Free \
+                       ( b->titles [ j ] ) ;
                       Free ( b->titles ) ;
                       b->titles = NULL;
                   }
@@ -3063,8 +3063,8 @@
       y1 = D->yo+yoff-w->width*.5;
       x2 = x1+w->width;
       y2 = y1+w->width;
-      if ( ( ( x1 > ( PON_X ) ) || ( x2 < ( PON_X ) ) || ( y1 >  \
-          ( PON_Y ) ) || ( y2 < ( PON_Y ) ) ) ) {return -1;}
+      if ( ( ( x1 > ( PON_X ) ) || ( x2 < ( PON_X ) ) || ( y1 > \
+       ( PON_Y ) ) || ( y2 < ( PON_Y ) ) ) ) {return -1;}
       y1 = D->evgay-y1;y2 = D->evgay-y2;
       df = _uiMenu ( w ) ;
 //    kg_scr_recover(wc);
@@ -3666,8 +3666,8 @@
       }
       return ret;
   }
-  int ProcessMousePress ( DIALOG *D , KBEVENT kbevent , int i , int hcontrols , int controls )  \
-      {
+  int ProcessMousePress ( DIALOG *D , KBEVENT kbevent , int i , int hcontrols , int controls ) \
+  {
       DIA *d;
       int ch , df , OK = 0 , uperr , ret;
       d = D->d;
@@ -3770,8 +3770,8 @@
               case 'f':
               df = MousePressInFslide ( ( S_STR * ) ( D->d [ i ] .f->sptr ) , kbevent ) ;
               if ( df >= 0 ) {
-                  Up_Fsld_Bar ( _ui_getfslidevalue ( ( S_STR * )  \
-                      ( D->d [ i ] .f->sptr ) ) , i , D ) ;
+                  Up_Fsld_Bar ( _ui_getfslidevalue ( ( S_STR * ) \
+                   ( D->d [ i ] .f->sptr ) ) , i , D ) ;
                   if ( ( controls == 1 ) ) {OK = 1; break;}
               }
               else if ( ( D->Callback != NULL ) ) OK = D->Callback ( D , & kbevent ) ; // Not tested yet
@@ -3779,8 +3779,8 @@
               case 'd':
               df = MousePressInDslide ( ( S_STR * ) ( D->d [ i ] .d->sptr ) , kbevent ) ;
               if ( df >= 0 ) {
-                  Up_Isld_Bar ( _ui_getdslidevalue ( ( S_STR * )  \
-                      ( D->d [ i ] .d->sptr ) ) , i , D ) ;
+                  Up_Isld_Bar ( _ui_getdslidevalue ( ( S_STR * ) \
+                   ( D->d [ i ] .d->sptr ) ) , i , D ) ;
                   if ( ( controls == 1 ) ) {OK = 1; break;}
               }
               else if ( ( D->Callback != NULL ) ) OK = D->Callback ( D , & kbevent ) ; // Not tested yet
@@ -3788,8 +3788,8 @@
               case 'P':
               df = MousePressInHslideBar ( ( D->d [ i ] .B ) , kbevent ) ;
               if ( df >= 0 ) {
-                  Up_Hsld_Bar ( _ui_getdslidevalue ( ( S_STR * )  \
-                      ( D->d [ i ] .B->sptr ) ) , i , D ) ;
+                  Up_Hsld_Bar ( _ui_getdslidevalue ( ( S_STR * ) \
+                   ( D->d [ i ] .B->sptr ) ) , i , D ) ;
 //       _ui_getdslidevalue((S_STR *)(D->d[i].B->sptr));
                   if ( ( controls == 1 ) ) {OK = 1; break;}
               }
@@ -3873,8 +3873,8 @@
       }
       return df;
   }
-  int ProcessMousePressDrag ( DIALOG *D , KBEVENT kbevent , int i , int hcontrols , int controls )  \
-      {
+  int ProcessMousePressDrag ( DIALOG *D , KBEVENT kbevent , int i , int hcontrols , int controls ) \
+  {
       DIA *d;
       int ch , df , OK = 0 , uperr;
       void *Wid;
@@ -3990,8 +3990,8 @@
       }
       return OK;
   }
-  int ProcessMouseMovement ( DIALOG *D , KBEVENT kbevent , int i , int controls )  \
-      {
+  int ProcessMouseMovement ( DIALOG *D , KBEVENT kbevent , int i , int controls ) \
+  {
       DIA *d;
       int ch , df , OK = 0 , uperr;
       if ( controls > 0 ) {
@@ -4278,8 +4278,8 @@
   int KeyReleaseInTableBox ( TX_STR *tptr , KBEVENT kbevent ) {
       return _ui_processTablekey ( tptr , kbevent , 'T' ) ;
   }
-  int ProcessKeyRelease ( DIALOG *D , KBEVENT kbevent , int i , int hcontrols , int controls )  \
-      {
+  int ProcessKeyRelease ( DIALOG *D , KBEVENT kbevent , int i , int hcontrols , int controls ) \
+  {
       DIA *d;
       int ch , df , OK = 0 , uperr , ret;
       if ( controls > 0 ) {
@@ -4388,24 +4388,24 @@
               case 'f':
               df = KeyReleaseInFslide ( ( S_STR * ) ( D->d [ i ] .f->sptr ) , kbevent ) ;
               if ( df >= 0 ) {
-                  Up_Fsld_Bar ( _ui_getfslidevalue ( ( S_STR * )  \
-                      ( D->d [ i ] .f->sptr ) ) , i , D ) ;
+                  Up_Fsld_Bar ( _ui_getfslidevalue ( ( S_STR * ) \
+                   ( D->d [ i ] .f->sptr ) ) , i , D ) ;
                   if ( ( controls == 1 ) ) {OK = 1; break;}
               }
               break;
               case 'd':
               df = KeyReleaseInDslide ( ( S_STR * ) ( D->d [ i ] .d->sptr ) , kbevent ) ;
               if ( df >= 0 ) {
-                  Up_Isld_Bar ( _ui_getdslidevalue ( ( S_STR * )  \
-                      ( D->d [ i ] .d->sptr ) ) , i , D ) ;
+                  Up_Isld_Bar ( _ui_getdslidevalue ( ( S_STR * ) \
+                   ( D->d [ i ] .d->sptr ) ) , i , D ) ;
                   if ( ( controls == 1 ) ) {OK = 1; break;}
               }
               break;
               case 'P':
               df = KeyReleaseInHslide ( ( D->d [ i ] .B ) , kbevent ) ;
               if ( df >= 0 ) {
-                  Up_Hsld_Bar ( _ui_getdslidevalue ( ( S_STR * )  \
-                      ( D->d [ i ] .B->sptr ) ) , i , D ) ;
+                  Up_Hsld_Bar ( _ui_getdslidevalue ( ( S_STR * ) \
+                   ( D->d [ i ] .B->sptr ) ) , i , D ) ;
                   if ( ( controls == 1 ) ) {OK = 1; break;}
               }
               break;
@@ -4569,16 +4569,16 @@
               case 'N':
               break;
               case 'f':
-              * ( d [ i ] .f->df ) = _ui_getfslidevalue  \
-                  ( ( S_STR * ) ( d [ i ] .f->sptr ) ) ;
+              * ( d [ i ] .f->df ) = _ui_getfslidevalue \
+               ( ( S_STR * ) ( d [ i ] .f->sptr ) ) ;
               break;
               case 'd':
-              * ( d [ i ] .d->df ) = _ui_getdslidevalue  \
-                  ( ( S_STR * ) ( d [ i ] .d->sptr ) ) ;
+              * ( d [ i ] .d->df ) = _ui_getdslidevalue \
+               ( ( S_STR * ) ( d [ i ] .d->sptr ) ) ;
               break;
               case 'P':
-              * ( d [ i ] .d->df ) = _ui_getdslidevalue  \
-                  ( ( S_STR * ) ( d [ i ] .B->sptr ) ) ;
+              * ( d [ i ] .d->df ) = _ui_getdslidevalue \
+               ( ( S_STR * ) ( d [ i ] .B->sptr ) ) ;
               break;
               case 'w':
               * ( d [ i ] .w->df ) = ( ( BRW_STR * ) d [ i ] .w->bwsr )->df;
@@ -4643,8 +4643,8 @@
       D->ThInfo = NULL;
 // D->VerId=VER;  //yymmvvss
 // strcpy(D->name,"Kulina Designer");
-      sprintf ( D->name , "Kulina Designer Ver. %d.%2.2d" ,  \
-          ( ( D->VerId%10000 ) /100 ) , ( ( D->VerId%100 ) ) ) ;
+      sprintf ( D->name , "Kulina Designer Ver. %d.%2.2d" , \
+       ( ( D->VerId%10000 ) /100 ) , ( ( D->VerId%100 ) ) ) ;
       D->Deco = D->DrawBkgr = D->Newwin = 1;
       D->Sticky = 0;
       D->Fixpos = D->NoTaskBar = 0;
@@ -5028,8 +5028,8 @@
           hcontrols = 0;
           j = 0;
           while ( d [ j ] .t != NULL ) {
-              if ( ( d [ j ] .t->code == 'H' ) || ( d [ j ] .t->code == 'h' ) )  \
-                  {hcontrols++;break;}
+              if ( ( d [ j ] .t->code == 'H' ) || ( d [ j ] .t->code == 'h' ) ) \
+              {hcontrols++;break;}
               else j++;
           }
       }
@@ -5131,8 +5131,8 @@
                           rmv_key_board_attn ( oldi , D ) ;
                           draw_key_board_attn ( i , D ) ;
                           ch = ( d [ oldi ] .t->code ) ;
-                          if ( ( ch == 't' ) || ( ch == 'T' ) ) {_ui_readtextbox  \
-                              ( ( TX_STR * ) ( d [ oldi ] .t->tstr ) ) ;}
+                          if ( ( ch == 't' ) || ( ch == 'T' ) ) {_ui_readtextbox \
+                           ( ( TX_STR * ) ( d [ oldi ] .t->tstr ) ) ;}
                           D->InputWid = oldi;
                           uiUpdateOn ( D ) ;
                           oldi = i;
@@ -5233,8 +5233,8 @@
   int _check_for_string ( char *s , char *chk ) {
       int ls , lchk , i , k , count , ret = 0 , j , ch;
       ls = strlen ( s ) ;
-      k = 0;while ( ( chk [ k ] != '\0' ) && ( chk [ k ] != '*' ) &&  \
-          ( chk [ k ] != '?' ) ) k++;
+      k = 0;while ( ( chk [ k ] != '\0' ) && ( chk [ k ] != '*' ) && \
+       ( chk [ k ] != '?' ) ) k++;
       ch = chk [ k ] ;chk [ k ] = '\0';
       lchk = strlen ( chk ) ;
       if ( lchk > ls ) return 0;
@@ -5253,8 +5253,8 @@
   int _check_for_start_string ( char *s , char *chk ) {
       int ls , lchk , i , count , ret = 0 , j , ch;
       ls = strlen ( s ) ;
-      i = 0;while ( ( chk [ i ] != '\0' ) && ( chk [ i ] != '*' ) &&  \
-          ( chk [ i ] != '?' ) ) i++;
+      i = 0;while ( ( chk [ i ] != '\0' ) && ( chk [ i ] != '*' ) && \
+       ( chk [ i ] != '?' ) ) i++;
       ch = chk [ i ] ;chk [ i ] = '\0';
       lchk = strlen ( chk ) ;
       if ( lchk <= ls ) {
@@ -5267,8 +5267,8 @@
   }
   int _skip_string ( char *chk ) {
       int i = 0;
-      while ( ( chk [ i ] != '\0' ) && ( chk [ i ] != '*' ) &&  \
-          ( chk [ i ] != '?' ) ) i++;
+      while ( ( chk [ i ] != '\0' ) && ( chk [ i ] != '*' ) && \
+       ( chk [ i ] != '?' ) ) i++;
       return i;
   }
 /* checking for character
@@ -7137,18 +7137,18 @@
       if ( ret ) D->CurWid = Wid;
       return ret;
   }
-int  kgSetAttnWidget(void *Tmp,void *Wid){
-	int id = kgGetWidgetId((DIALOG *)Tmp,Wid);
-	return  kgSetCurrentWidget (Tmp,id);
-}
-int  kgSetDefaultAttnWidget(void *Tmp,void *Wid){
+  int kgSetAttnWidget ( void *Tmp , void *Wid ) {
+      int id = kgGetWidgetId ( ( DIALOG * ) Tmp , Wid ) ;
+      return kgSetCurrentWidget ( Tmp , id ) ;
+  }
+  int kgSetDefaultAttnWidget ( void *Tmp , void *Wid ) {
 /*
    to be used only in Ui init function 
    to set the input attention
 */
-	int id = kgGetWidgetId((DIALOG *)Tmp,Wid);
-	return  kgSetDefaultWidget (Tmp,id);
-}
+      int id = kgGetWidgetId ( ( DIALOG * ) Tmp , Wid ) ;
+      return kgSetDefaultWidget ( Tmp , id ) ;
+  }
   int kgSetDefaultWidget ( void *Tmp , int Wid ) {
 /*
    to be used only in Ui init function 
@@ -7189,8 +7189,8 @@ int  kgSetDefaultAttnWidget(void *Tmp,void *Wid){
       n = i;
       for ( i = 0;i < n;i++ ) {
           if ( kgGetWidgetVisibility ( kgGetWidget ( D , i ) ) == 0 ) continue;
-          if ( uiCheckClickPosition ( d [ i ] .t->x1+xo , d [ i ] .t->y1+yo , d [ i ] .t->x2+xo , d [ i ] .t->y2+yo , x1 , y1 ) == 1 )  \
-              {wid = ( void * ) d [ i ] .t; break;}
+          if ( uiCheckClickPosition ( d [ i ] .t->x1+xo , d [ i ] .t->y1+yo , d [ i ] .t->x2+xo , d [ i ] .t->y2+yo , x1 , y1 ) == 1 ) \
+          {wid = ( void * ) d [ i ] .t; break;}
       }
       return wid;
   }
@@ -7240,8 +7240,8 @@ int  kgSetDefaultAttnWidget(void *Tmp,void *Wid){
 // for(i=0;i<n;i++) {
       for ( i = n-1;i >= 0;i-- ) {
           if ( kgGetWidgetVisibility ( kgGetWidget ( D , i ) ) == 0 ) continue;
-          if ( uiCheckClickPosition ( d [ i ] .t->x1+xo , d [ i ] .t->y1+yo , d [ i ] .t->x2+xo , d [ i ] .t->y2+yo , x1 , y1 ) == 1 )  \
-              {wid = ( void * ) d [ i ] .t; break;}
+          if ( uiCheckClickPosition ( d [ i ] .t->x1+xo , d [ i ] .t->y1+yo , d [ i ] .t->x2+xo , d [ i ] .t->y2+yo , x1 , y1 ) == 1 ) \
+          {wid = ( void * ) d [ i ] .t; break;}
       }
       return wid;
   }
@@ -9206,8 +9206,8 @@ int  kgSetDefaultAttnWidget(void *Tmp,void *Wid){
           kgUpdateOn ( D ) ;
       }
   }
-  int kgChangeButtonColor ( void *Widget , int butno , int red , int green , int blue )  \
-      {
+  int kgChangeButtonColor ( void *Widget , int butno , int red , int green , int blue ) \
+  {
 /* changes color of the specified button
    and returns old color
 */
@@ -9635,8 +9635,8 @@ int  kgSetDefaultAttnWidget(void *Tmp,void *Wid){
       kgCloseImage ( fid ) ;
       return img;
   }
-  void *kgGetProcessedImage ( void *timg , int Bsize , float rfac , int Btred , int Btgreen , int Btblue )  \
-      {
+  void *kgGetProcessedImage ( void *timg , int Bsize , float rfac , int Btred , int Btgreen , int Btblue ) \
+  {
       GMIMG *img = NULL;
       void *rzimg , *fid , *tmp , *mask;
       int Color = 68 , rsize , IconShape;
@@ -9709,8 +9709,8 @@ int  kgSetDefaultAttnWidget(void *Tmp,void *Wid){
       kgChangeColor ( fid , 152 , ( int ) rf , ( int ) gf , ( int ) bf ) ;
       HSVtoRGB ( & rf , & gf , & bf , h , s , 0.8*v ) ;
       kgChangeColor ( fid , 153 , ( int ) rf , ( int ) gf , ( int ) bf ) ;
-      kgChangeColor ( fid , 151 , ( int ) Btred ,  \
-          ( int ) Btgreen , ( int ) Btblue ) ;
+      kgChangeColor ( fid , 151 , ( int ) Btred , \
+       ( int ) Btgreen , ( int ) Btblue ) ;
       if ( IconShape != 3 ) {
           kgRoundedRectangleFill ( fid , 0. , 0. , 2*l+1. , 2*l+1. , 0 , 152 , rfac ) ;
           kgRoundedRectangleFill ( fid , 0. , 0. , 2*l-4. , 2*l-4. , 0 , 151 , rfac ) ;
@@ -9733,88 +9733,107 @@ int  kgSetDefaultAttnWidget(void *Tmp,void *Wid){
   void *kgGetArgPointer ( void *Tmp ) {
       return ( ( DIALOG * ) Tmp )->pt;
   }
-  int kgSetOnTableCell(void *Tmp,int col,int row) {
-	  DIT *T= (DIT *) Tmp;
-	  T_ELMT *E = T->elmt;
-	  if(T->code != 'T') {
-		  fprintf(stderr,"Not a table\n");
-		  return 0;
-	  }
-	  if( (col < 0) || (col>= T->nx)) {
-		  fprintf(stderr,"invalid cell\n");
-		  return 0;
-	  }
-	  if( (row < 0) || (row>= T->ny)) {
-		  fprintf(stderr,"invalid cell\n");
-		  return 0;
-	  }
-	  E[row*T->nx+col].sw = 1;
-	  return 1;
+  int kgSetOnTableCell ( void *Tmp , int cell) {
+  int col ; int row ;
+      DIT *T = ( DIT * ) Tmp;
+      T_ELMT *E = T->elmt;
+      if ( T->code != 'T' ) {
+          fprintf ( stderr , "Not a table\n" ) ;
+          return 0;
+      }
+      col = cell%T->nx;
+      row = cell/T->nx;
+      if ( ( col < 0 ) || ( col >= T->nx ) ) {
+          fprintf ( stderr , "invalid cell\n" ) ;
+          return 0;
+      }
+      if ( ( row < 0 ) || ( row >= T->ny ) ) {
+          fprintf ( stderr , "invalid cell\n" ) ;
+          return 0;
+      }
+      E [ cell ] .sw = 1;
+      return 1;
   }
-  int kgSetOffTableCell(void *Tmp,int col,int row) {
-	  DIT *T= (DIT *) Tmp;
-	  if(T->code != 'T') {
-		  fprintf(stderr,"Not a table\n");
-		  return 0;
-	  }
-	  if( (col < 0) || (col>= T->nx)) {
-		  fprintf(stderr,"invalid cell\n");
-		  return 0;
-	  }
-	  if( (row < 0) || (row>= T->ny)) {
-		  fprintf(stderr,"invalid cell\n");
-		  return 0;
-	  }
-	  T_ELMT *E = T->elmt;
-	  E[row*T->nx+col].sw = 0;
-	  return 1;
+  int kgSetOffTableCell ( void *Tmp , int cell) {
+  int col ; int row ;
+      DIT *T = ( DIT * ) Tmp;
+      if ( T->code != 'T' ) {
+          fprintf ( stderr , "Not a table\n" ) ;
+          return 0;
+      }
+      col = cell%T->nx;
+      row = cell/T->nx;
+      if ( ( col < 0 ) || ( col >= T->nx ) ) {
+          fprintf ( stderr , "invalid cell\n" ) ;
+          return 0;
+      }
+      if ( ( row < 0 ) || ( row >= T->ny ) ) {
+          fprintf ( stderr , "invalid cell\n" ) ;
+          return 0;
+      }
+      T_ELMT *E = T->elmt;
+      E [ cell ] .sw = 0;
+      return 1;
   }
-  int kgGetTableRow(void *Tmp) {
-	  DIT *T= (DIT *) Tmp;
-	  if(T->code != 'T') {
-		  fprintf(stderr,"Not a table\n");
-		  return -1;
-	  }
-	  TX_STR *Tx= (TX_STR *)T->tstr;
-	  T_ELMT *E = T->elmt;
+  int kgGetTableRow ( void *Tmp ) {
+      DIT *T = ( DIT * ) Tmp;
+      if ( T->code != 'T' ) {
+          fprintf ( stderr , "Not a table\n" ) ;
+          return -1;
+      }
+      TX_STR *Tx = ( TX_STR * ) T->tstr;
+      T_ELMT *E = T->elmt;
 //	  printf("Tx->row: %d\n",Tx->row);
-	  return Tx->row;
+      return Tx->row;
   }
-  int kgGetTableColumn(void *Tmp) {
-	  DIT *T= (DIT *) Tmp;
-	  if(T->code != 'T') {
-		  fprintf(stderr,"Not a table\n");
-		  return -1;
-	  }
-	  TX_STR *Tx= (TX_STR *)T->tstr;
-	  T_ELMT *E = T->elmt;
-	  return Tx->col;
+  int kgGetTableColumn ( void *Tmp ) {
+      DIT *T = ( DIT * ) Tmp;
+      if ( T->code != 'T' ) {
+          fprintf ( stderr , "Not a table\n" ) ;
+          return -1;
+      }
+      TX_STR *Tx = ( TX_STR * ) T->tstr;
+      T_ELMT *E = T->elmt;
+      return Tx->col;
   }
-  int kgSetTableCursor(void * Tmp,int col,int row) {
-	  DIT *T= (DIT *) Tmp;
-	  int box;
-          if(T->code != 'T') {
-                  fprintf(stderr,"Not a table\n");
-                  return 0;
-          }
-	  TX_STR *Tx= (TX_STR *)T->tstr;
-          if( (col < 0) || (col>= T->nx)) {
-                  fprintf(stderr,"invalid cell\n");
-                  return 0;
-          }
-          if( (row < 0) || (row>= T->ny)) {
-                  fprintf(stderr,"invalid cell\n");
-                  return 0;
-          }
-	  T_ELMT *E = T->elmt;
-	  box = row*Tx->nx+col;
-	  if(E[box].sw ==1) {
-          E[box].cursor =0;
-	  Tx->col = col;
-	  Tx->row = row;
-	  T->col = col;
-	  T->row = row;
-	  _ui_drawtablecursor ( Tx ) ;
-	  } 
-	  return 1;
+  int kgGetTableCell ( void *Tmp ) {
+      DIT *T = ( DIT * ) Tmp;
+      if ( T->code != 'T' ) {
+          fprintf ( stderr , "Not a table\n" ) ;
+          return -1;
+      }
+      TX_STR *Tx = ( TX_STR * ) T->tstr;
+      T_ELMT *E = T->elmt;
+      return Tx->row*Tx->nx+Tx->col;
+  }
+  int kgSetTableCursor ( void * Tmp , int cell) {
+      int col,row;
+      DIT *T = ( DIT * ) Tmp;
+      int box;
+      if ( T->code != 'T' ) {
+          fprintf ( stderr , "Not a table\n" ) ;
+          return 0;
+      }
+      TX_STR *Tx = ( TX_STR * ) T->tstr;
+      col = cell%T->nx;
+      row = cell/T->nx;
+      if ( ( col < 0 ) || ( col >= T->nx ) ) {
+          fprintf ( stderr , "invalid cell\n" ) ;
+          return 0;
+      }
+      if ( ( row < 0 ) || ( row >= T->ny ) ) {
+          fprintf ( stderr , "invalid cell\n" ) ;
+          return 0;
+      }
+      T_ELMT *E = T->elmt;
+      box = row*Tx->nx+col;
+      if ( E [ box ] .sw == 1 ) {
+          E [ box ] .cursor = 0;
+          Tx->col = col;
+          Tx->row = row;
+          T->col = col;
+          T->row = row;
+          _ui_drawtablecursor ( Tx ) ;
+      }
+      return 1;
   }
