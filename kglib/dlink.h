@@ -145,6 +145,10 @@ int CompareAction(void *rec, char *name) {
  
 #endif
 void *Dsearch(Dlink *L, char *val  ,int (*Compare)(void *,char *));
+/* You may Dfree link if link is no more needed */
+Dlink *Darraytolink(void **Array);
+/* you may free Array is its no more needed */
+void **Dlinktoarray(Dlink *L);
 
 
 #endif /* end of dlink.h */
