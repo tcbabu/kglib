@@ -6907,8 +6907,21 @@
   }
   DIN * Edit_Buttons ( void * Dtmp , DIN *h ) { /* NEW TYPE */
       DIN *htmp;
+      int n = h->nx*h->ny;
+      int k;
+      BUT_STR *b;
       if ( ! Runbuttondata ( Dtmp , h ) ) {
           return NULL;
+      }
+      h->buts = (void *)realloc(h->buts, sizeof ( BUT_STR ) *h->nx*h->ny ) ;
+
+      b = (BUT_STR *)h->buts;
+      for (k=n;k<h->nx*h->ny;k++) {
+        strcpy(b[k].title,"");
+	b[k].xpmn = NULL;
+	b[k].xpmp = NULL;
+	b[k].xpmh = NULL;
+	b[k].butncode='\0';
       }
       Runbutnopt ( Dtmp , h ) ;
       return h;
