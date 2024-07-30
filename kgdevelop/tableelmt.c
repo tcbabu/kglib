@@ -446,7 +446,7 @@ void *kgGetTableElements(void *arg,int nx,int ny) {
 		   elmt[k].noecho=0;
 		   elmt[k].img=NULL;
 		   elmt[k].sw = (e.sw[i]+1)%2;
-		   elmt[k].fmt = (char *)malloc(5);
+		   elmt[k].fmt = (char *)malloc(6);
 		   sprintf(elmt[k].fmt,"%%%d%c",e.Field[i],Code[e.Type[i]]);
 //		   printf(" %s ",elmt[k].fmt);
 		   k++;
@@ -492,7 +492,7 @@ void *kgEditTableElements(void *arg,void *Tmp) {
 		   elmt[k].noecho=0;
 		   elmt[k].img=NULL;
 		   elmt[k].sw = (e.sw[i]+1)%2;
-		   elmt[k].fmt = (char *)malloc(5);
+		   elmt[k].fmt = (char *)realloc(elmt[k].fmt,7);
 		   sprintf(elmt[k].fmt,"%%%d%c",e.Field[i],Code[e.Type[i]]);
 //		   printf(" %s ",elmt[k].fmt);
 		   k++;

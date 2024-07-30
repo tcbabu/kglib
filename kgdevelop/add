@@ -1,14 +1,9 @@
-      fprintf ( fp1 , "//  strcpy(D.name,\"Kulina Designer ver 2.0\");    /*  Dialog name you may change */\n" ) ;
-          
-      fprintf ( fp1 , "  if(D.fullscreen!=1) {    /*  if not fullscreen mode */\n" ) ;
-          
-      fprintf ( fp1 , "     int xres,yres; \n" ) ;
-      fprintf ( fp1 , "     kgDisplaySize(&xres,&yres); \n" ) ;
-      fprintf ( fp1 , "      // D.xo=D.yo=0; D.xl = xres-10; D.yl=yres-80;\n" ) ;
-      fprintf ( fp1 , "  }\n" ) ;
-      fprintf ( fp1 , "  else {    // for fullscreen\n" ) ;
-      fprintf ( fp1 , "     int xres,yres; \n" ) ;
-      fprintf ( fp1 , "     kgDisplaySize(&xres,&yres); \n" ) ;
-      fprintf ( fp1 , "     D.xo=D.yo=0; D.xl = xres; D.yl=yres;\n" ) ;
-      fprintf ( fp1 , "//     D.StackPos = 1; // you may need it\n" ) ;
-      fprintf ( fp1 , "  }    /*  end of fullscreen mode */\n" ) ;
+  if(parent != Parent) {
+	  D.xo=0;D.yo=200;
+  }
+  else {
+     int xres,yres; 
+     kgDisplaySize(&xres,&yres); 
+     D.xo = (xres - D.xl)*0.5;
+     D.yo = (yres - D.yl)*0.25;
+  }

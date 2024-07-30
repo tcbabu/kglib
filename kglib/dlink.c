@@ -1190,7 +1190,8 @@
       if ( L == NULL ) {
           fprintf ( stderr , "Empty Link in Dpush\n" ) ;
           exit ( -1 ) ;
-      } Resetlink ( L ) ;
+      };
+      Resetlink ( L ) ;
       Dinsert ( L , bf ) ;
       Resetlink ( L ) ;
       return 1;
@@ -1200,7 +1201,8 @@
       if ( L == NULL ) {
           fprintf ( stderr , "Empty Link in Dpop\n" ) ;
           exit ( -1 ) ;
-      } if ( Dcount ( L ) == 0 ) return NULL;
+      };
+      if ( Dcount ( L ) == 0 ) return NULL;
       Resetlink ( L ) ;
       bf = Dpick ( L ) ;
       Resetlink ( L ) ;
@@ -1211,7 +1213,8 @@
       if ( L == NULL ) {
           fprintf ( stderr , "Empty Link in Dfifoout\n" ) ;
           exit ( -1 ) ;
-      } Dend ( L ) ;
+      };
+      Dend ( L ) ;
       bf = Dpick ( L ) ;
       Dend ( L ) ;
       return bf;
@@ -1220,20 +1223,33 @@
       if ( L == NULL ) {
           fprintf ( stderr , "Empty Link in Dfifoin\n" ) ;
           exit ( -1 ) ;
-      } Resetlink ( L ) ;
+      };
+      Resetlink ( L ) ;
       Dinsert ( L , bf ) ;
       Resetlink ( L ) ;
       return 1;
   }
   int Dreplace ( Dlink *L , void *bf , int pos ) {
+	  /* pos (0,max) */
       if ( L == NULL ) {
           fprintf ( stderr , "Empty Link in Dreplace\n" ) ;
           exit ( -1 ) ;
-      } Dlocation ( L , pos ) ;
+      };
+      pos++;
+
+      Dposition ( L , pos ) ;
       Ddelete ( L ) ;
-      Dlocation ( L , pos-1 ) ;
+#if 1
+      if(pos == 1) {
+	      Dposition(L,pos);
+	      Dinsert(L,bf);
+      }
+      else {
+      Dposition ( L , pos-1 ) ;
       Dadd ( L , bf ) ;
-      Dlocation ( L , pos ) ;
+      Dposition( L , pos ) ;
+      }
+#endif
       return 1;
   }
 #if 0

@@ -7700,12 +7700,30 @@
       char *ctmp;
       char **pmts;
       T_ELMT *E = T->elmt;
-      if ( ! Runedittextboxes ( Dtmp , ttmp ) ) {
+      n = T->nx*T->ny;
+      nx = T->nx;
+      ny = T->ny;
+//      if ( ! Runedittextboxes ( Dtmp , ttmp ) ) {
+      if ( ! Runtableboxesdata ( Dtmp , T )) {
           return NULL;
       }
       else {
+#if 1
           nx = T->nx;
           ny = T->ny;
+	  T->elmt = (T_ELMT *) realloc((void *)(T->elmt),sizeof(T_ELMT)*T->nx*T->ny);
+	  for(k=n;k<(T->nx*T->ny);k++) {
+		   T->elmt[k].noecho=0;
+                   T->elmt[k].img=NULL;
+                   T->elmt[k].sw = 1;
+                   T->elmt[k].v = NULL;
+                   T->elmt[k].fmt = (char *)malloc(5);
+		   strcpy(T->elmt[k].fmt,"%10s");
+                   k++;
+
+	  }
+#endif
+	  E= T->elmt;
           kgEditTableElements ( Dtmp , ttmp ) ;
           width = ( ny ) *T->width+ ( ny-1 ) *10;
           ln = 0;
@@ -7723,19 +7741,19 @@
                       case 'F':
                       ftmp = ( double * ) malloc ( sizeof ( double ) ) ;
                       *ftmp = 0.;
-                      free ( E [ i ] .v ) ;
+                      if(E [ i ] .v!= NULL) free ( E [ i ] .v ) ;
                       E [ i ] .v = ( void * ) ftmp;
                       break;
                       case 'd':
                       itmp = ( int * ) malloc ( sizeof ( int ) ) ;
                       *itmp = 1;
-                      free ( E [ i ] .v ) ;
+                      if(E [ i ] .v!= NULL) free ( E [ i ] .v ) ;
                       E [ i ] .v = ( void * ) itmp;
                       break;
                       case 's':
                       ctmp = ( char * ) malloc ( 500 ) ;
                       ctmp [ 0 ] = '\0';
-                      free ( E [ i ] .v ) ;
+                      if(E [ i ] .v!= NULL) free ( E [ i ] .v ) ;
                       E [ i ] .v = ( void * ) ctmp;
                       break;
                   }

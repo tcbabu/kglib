@@ -12437,7 +12437,7 @@ void transch(int c) {
   int _ui_processTablekey ( TX_STR *t , KBEVENT kbe , int code ) {
       int key , col , row , curbox , ln;
       T_ELMT *elmt;
-      int Active = 0;
+      int Active = 0,box,nxbox;
       DIT *T = ( DIT * ) t->T;
       int k;
       key = kbe.key;
@@ -12445,11 +12445,14 @@ void transch(int c) {
       elmt = t->elmt;
       Active = 0;
       k = 0;
+      nxbox=0;
       for ( row = 0; row < t->ny; row++ ) {
+	  box =0;
           for ( col = 0; col < t->nx; col++ ) {
-              if ( t->elmt [ k ] .sw == 1 ) {Active = 1; break;}
+              if ( t->elmt [ k ] .sw == 1 ) {Active = 1; box++;break;}
               k++;
           }
+	  if(box > nxbox ) nxbox = box;
       }
       if ( Active == 0 ) return -1;
       if ( ui_Uparrow ( key ) ) {
@@ -12519,7 +12522,8 @@ void transch(int c) {
           }
       }
       if ( ui_Leftarrow ( key ) ) {
-          if ( t->nx == 1 ) {
+//          if ( t->nx == 1 ) {
+          if ( nxbox == 1 ) {
               col = t->col;
               row = t->row;
               curbox = row*t->nx+col;
@@ -12552,7 +12556,8 @@ void transch(int c) {
           }
       }
       if ( ui_Rightarrow ( key ) ) {
-          if ( t->nx == 1 ) {
+//          if ( t->nx == 1 ) {
+          if ( nxbox == 1 ) {
               col = t->col;
               row = t->row;
               curbox = row*t->nx+col;
@@ -14194,6 +14199,7 @@ void transch(int c) {
       char *str;
       int type = T->type;
       int curpos = 0;
+      int ch;
       kgWC *wc;
       kgDC *dc;
       D = T->D;
@@ -14242,7 +14248,10 @@ void transch(int c) {
               lng = 0;
               for ( j = 0; j < ny; j++ ) {
                   k = i+j*nx;
-#if 0
+#if 1  // as on 30th Aug 24
+                  size = get_t_item_size ( elmt [ k ] .fmt ) ;
+                  l = strlen ( elmt [ k ] .df ) ;
+		  l = size;
 #else
 // TCB as on 25/9/12 may need further checking
                   size = get_t_item_size ( elmt [ k ] .fmt ) ;
@@ -14286,6 +14295,7 @@ void transch(int c) {
                   x2 = x1 + ( ( tx->elmt [ k ] .ln ) *Fz ) +Fz+4;
                   tx1 = x1+1; ty1 = y1+1;
                   tx2 = x2-1; ty2 = y2-1;
+                  size = get_t_item_size ( elmt [ k ] .fmt ) ;
                    ( tx->elmt [ k ] .x1 ) = tx1;
                    ( tx->elmt [ k ] .y1 ) = ty1;
                    ( tx->elmt [ k ] .x2 ) = tx2;
@@ -14295,7 +14305,13 @@ void transch(int c) {
                   if ( type == 1 ) _uirect_fill ( wc , tx1 , D->evgay-ty1+2 , tx2 , D->evgay-ty2-2 , tx->gc.tabl_fill ) ;
                       
 //       uiSetGuiFixFontSize(D,D->gc.FontSize);
+#if 1 //as on 30th Aug 24
+		  str = elmt [ k ] .df;
+		  ch = str[size+1];
+		  str[size+1]= '\0';
+#else
                   str = elmt [ k ] .df+elmt [ k ] .startchar;
+#endif
 #if 0
                   if ( elmt [ k ] .sw == 0 ) _ui_putstring ( D , tx1+5 , ty2-4 , elmt [ k ] .df+elmt [ k ] .startchar , tx->gc.tabl_hchar ) ;
                       
@@ -14306,6 +14322,9 @@ void transch(int c) {
                       
                   else uiPutString ( D , str , tx1+T->FontSize/2 , ty2-T->FontSize/2 , tx->gc.tabl_char , T->Font , T->FontSize ) ;
                       
+#endif
+#if 1  //as on 30th Aug 24
+		  str[size+1]=ch;
 #endif
                   if ( type == 0 ) _ui_draw_bound ( ( D ) , x1 , D->evgay-y1 , x2 , D->evgay-y2 , tx->gc.tabl_line ) ;
                       

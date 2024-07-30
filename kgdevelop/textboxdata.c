@@ -1165,6 +1165,15 @@ int tableboxesdata( void *parent,void **v,void *pt) {
   D.yo = 141;
   D.xl = 472;    /*  Length of Dialog */
   D.yl = 219;    /*  Width  of Dialog */
+  if(parent != Parent) {
+	  D.xo=0;D.yo=200;
+  }
+  else {
+     int xres,yres; 
+     kgDisplaySize(&xres,&yres); 
+     D.xo = (xres - D.xl)*0.5;
+     D.yo = (yres - D.yl)*0.25;
+  }
   D.Initfun = tableboxesdatainit;    /*   init fuction for Dialog */
   D.Cleanupfun = tableboxesdatacleanup;    /*   init fuction for Dialog */
   D.kbattn = 0;    /*  1 for drawing keyborad attention */
@@ -1563,6 +1572,15 @@ int tableboxdata( void *parent,void **v,void *pt) {
   D.yo = 120;
   D.xl = 414;    /*  Length of Dialog */
   D.yl = 208;    /*  Width  of Dialog */
+  if(parent != Parent) {
+	  D.xo=0;D.yo=200;
+  }
+  else {
+     int xres,yres; 
+     kgDisplaySize(&xres,&yres); 
+     D.xo = (xres - D.xl)*0.5;
+     D.yo = (yres - D.yl)*0.25;
+  }
 //  D.Initfun = tableboxdatainit;    /*   init fuction for Dialog */
   D.Initfun = textboxdatainit;    /*   init fuction for Dialog */
   D.Cleanupfun = tableboxdatacleanup;    /*   init fuction for Dialog */

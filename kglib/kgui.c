@@ -6068,6 +6068,8 @@
       T = ( DIT * ) Tmp;
       e = T->elmt;
       strcpy ( ( ( char * ) ( e [ item ] .v ) ) , val ) ;
+      e[item].startchar =0;
+      e[item].cursor =0;
 //  kgUpdateWidget(T);  // application should do this
       return val;
   }
@@ -9829,6 +9831,7 @@
       box = row*Tx->nx+col;
       if ( E [ box ] .sw == 1 ) {
           E [ box ] .cursor = 0;
+          E [ box ] .startchar = 0;
           Tx->col = col;
           Tx->row = row;
           T->col = col;
