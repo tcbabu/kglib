@@ -68,6 +68,7 @@
 #include "font35.h"
 #include "font36.h"
 #define  RESIZE 5
+#define  TRESIZE 3
 /*
 #include "font37.h"
 #include "font38.h"
@@ -6564,7 +6565,7 @@ void transch(int c) {
           ysize = 1.80*FontSize;
           stmp [ 1 ] = '\0';
 //   fid = kgInitImage((int)(xsize),ysize,2);
-          fid = kgInitImage ( ( int ) ( xsize ) , ysize , RESIZE ) ;
+          fid = kgInitImage ( ( int ) ( xsize ) , ysize , TRESIZE ) ;
           kgUserFrame ( fid , 0. , 0. , ( float ) xsize , ( float ) ysize ) ;
           th = FontSize*1.75;
           tw = FontSize;
@@ -6581,8 +6582,9 @@ void transch(int c) {
               xx += FontSize;
               i++;
           }
-//   img = kgGetResizedImage(fid);
+//          img = kgGetResizedImage(fid);
           img = kgGetSharpImage ( fid ) ;
+//          img = kgGetSmoothImage ( fid ) ;
           kgCloseImage ( fid ) ;
           kgImage ( D , img , x1 , y1-th , xsize , ysize , 0.0 , 1.0 ) ;
           kgFreeImage ( img ) ;
@@ -12114,7 +12116,8 @@ void transch(int c) {
 //  tit = t->tit;
       elmt = t->elmt;
       D = t->D;
-      FontSize = D->gc.FontSize;
+//      FontSize = D->gc.FontSize;
+      FontSize = T->FontSize;
       x = kbe.x;
       y = kbe.y;
       box = 0;
@@ -12289,7 +12292,7 @@ void transch(int c) {
       }
       if ( ui_Linefeed ( key ) || ui_Return ( key ) ) {
           uiUpdateOn ( t->D ) ;
-          return t->row*t->ny+t->col;
+          return t->row*t->nx+t->col;
       }
       if ( ui_Pageup ( key ) ) {
           col = t->col;
@@ -12594,7 +12597,7 @@ void transch(int c) {
       if ( ui_Linefeed ( key ) || ui_Return ( key ) ) {
           uiUpdateOn ( t->D ) ;
 //      return 1;
-          return t->row*t->ny+t->col;
+          return t->row*t->nx+t->col;
       }
       if ( ui_Pageup ( key ) ) {
           col = t->col;

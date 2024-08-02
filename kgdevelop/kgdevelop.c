@@ -7719,8 +7719,6 @@
                    T->elmt[k].v = NULL;
                    T->elmt[k].fmt = (char *)malloc(5);
 		   strcpy(T->elmt[k].fmt,"%10s");
-                   k++;
-
 	  }
 #endif
 	  E= T->elmt;
