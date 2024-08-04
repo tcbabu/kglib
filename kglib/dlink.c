@@ -1176,7 +1176,10 @@
       FILE *fp;
       int i;
       fp = fopen ( flname , "w" ) ;
-      if ( fp == NULL ) return 0;
+      if ( fp == NULL ) {
+	      fprintf(stderr,"Failed to Open (%s) to write\n",flname);
+	      return 0;
+      }
       i = 0;
       while ( ( bf = ( char * ) Drecord ( L , i ) ) != NULL ) {
           fprintf ( fp , "%s" , bf ) ;

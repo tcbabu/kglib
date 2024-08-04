@@ -3438,6 +3438,92 @@
       }
       return ret;
   }
+  int EventInTableBox ( DIT *t , KBEVENT kbevent ) {
+      int ok = -1 , NOK = 1 , item , ret = -1 , k;
+      int ans , df = -1;
+      void *Wid;
+      char *str;
+      int xs , xe , xo , hlt = 0 , strl = 0;
+      TX_STR *tx;
+      T_ELMT *elmt;
+      KBEVENT en;
+      DIALOG *D;
+      D = t->D;
+      ans = kbevent.key;
+      D->PON_X = kbevent.x; D->PON_Y = kbevent.y;
+      elmt = t->elmt;
+      tx = t->tstr;
+      k = tx->row*tx->nx+tx->col;
+#if 0
+      if ( elmt [ k ] .hlt ) {
+          elmt [ k ] .hlt = 0;
+          _ui_drawtextcursor ( tx ) ;
+          kgUpdateOn ( D ) ;
+      }
+#else
+      kgClearHighlight ( D ) ;
+#endif
+//  printf("Drag in Table Box :Event= %d key=%d x:y=%d:%d\n",
+//         kbevent.event,kbevent.button,kbevent.x,kbevent.y);
+      switch ( kbevent.event ) {
+          case 0:
+//TCB  felt it is unpleasent the item highlights on mouse movement
+//     it can be switched on if needed
+//          _ui_scroll_item_hilight(br,kbevent);
+          break;
+          case 1:
+//          ok = _ui_process_v_click(y,kbevent);
+          ret = ok;
+          break;
+          case 2:
+          break;
+          case 3:
+//          ok=_ui_process_v_move(y,kbevent);
+          xo = kbevent.x;
+          strl = _ui_textboxstringlength ( tx ) ;
+          while ( 1 ) {
+              en = kgGetEvent ( D ) ;
+              if ( en.event != 3 ) break;
+              Wid = kgGetLocationWidget ( D , en.x , en.y ) ;
+              if ( Wid != t ) break;
+              if ( en.event == 3 ) {
+                  hlt = 1;
+                  xe = en.x;
+                  elmt [ k ] .hlt = hlt;
+                  if ( xo < xe ) {
+                      elmt [ k ] .hxs = xo-elmt [ k ] .x1;
+                      elmt [ k ] .hxe = xe-elmt [ k ] .x1;
+                  }
+                  else {
+                      elmt [ k ] .hxs = xe-elmt [ k ] .x1;
+                      elmt [ k ] .hxe = xo-elmt [ k ] .x1;
+                  }
+                  if ( elmt [ k ] .hxe > strl ) elmt [ k ] .hxe = strl;
+                  if ( elmt [ k ] .hxs > elmt [ k ] .hxe ) elmt [ k ] .hxs = elmt [ k ] .hxe;
+//              kgUpdateWidget(t);
+                  _ui_drawtablecursor ( tx ) ;
+                  kgUpdateOn ( D ) ;
+              }
+          }
+          str = _ui_gethighlightstring ( tx ) ;
+          if ( str != NULL ) {
+//            printf("hi: %s\n",str);
+              if ( WC ( D )->Pstr != NULL ) free ( WC ( D )->Pstr ) ;
+              kgSetPrimary ( D , str ) ;
+//            kgSetClipBoard(D,str);
+              WC ( D )->Pstr = str;
+          }
+//          _ui_cuthighlightstring(tx);
+          break;
+          case 4:
+          break;
+          case 5:
+ //         ok = _ui_process_v_key(y,kbevent);
+          ret = ok;
+          break;
+      }
+      return ret;
+  }
   int EventInV ( DIV *y , KBEVENT kbevent ) {
       int ok = -1 , NOK = 1 , item , ret = -1;
       int ans , df = -1;
@@ -3801,6 +3887,7 @@
               break;
               case 'T':
               df = MousePressInTableBox ( ( TX_STR * ) ( D->d [ i ] .t->tstr ) , kbevent ) ;
+              kgProcessClips ( ( void * ) D , ( void * ) & kbevent ) ;
               break;
               case 'e':
               ret = EventInE ( ( D->d [ i ] .e ) , kbevent ) ;
@@ -3901,6 +3988,9 @@
               break;
               case 't':
               df = EventInTextBox ( D->d [ i ] .t , kbevent ) ;
+              break;
+              case 'T':
+              df = EventInTableBox ( D->d [ i ] .t , kbevent ) ;
               break;
               case 'v':
               df = EventInV ( D->d [ i ] .v , kbevent ) ;

@@ -12677,6 +12677,11 @@ void transch(int c) {
           col = t->col;
           row = t->row;
           curbox = row*t->nx+col;
+	  // NEw
+          if ( elmt [ curbox ] .hlt ) {
+              if ( _ui_cuttablehighlightstring ( t ) ) return -1;
+          }
+	  //End New
           if ( t->elmt [ curbox ] .cursor > 0 ) {
               if ( t->elmt [ curbox ] .startchar > 0 ) {
                   t->elmt [ curbox ] .startchar -= 1;
@@ -13310,6 +13315,38 @@ void transch(int c) {
       kgUpdateOn ( tx->D ) ;
       return 1;
   }
+  int _ui_cuttablehighlightstring ( TX_STR *tx ) {
+      int ln , strl , ch , start , end , i;
+      char *pt , *df;
+      int xs , xe;
+      T_ELMT *elmt;
+      elmt = tx->elmt+tx->row*tx->nx+tx->col;
+      if ( elmt->hlt == 0 ) return 0;
+      ln = elmt->ln;
+      df = elmt->df+elmt->startchar;
+      xs = elmt->hxs;
+      xe = elmt->hxe;
+      if ( xs > xe ) return 0;
+      start = ( xs-4 ) / ( Wd+Gap ) -1;
+      end = ( xe-4 ) / ( Wd+Gap ) -1;
+      if ( start < 0 ) return 0;
+      if ( start > ln ) return 0;
+      if ( end < 0 ) return 0;
+      if ( end > ln ) end = ln;
+      strl = ( end-start+1 ) ;
+      pt = ( char * ) Malloc ( sizeof ( char ) * ( strl+1 ) ) ;
+      i = 0;
+      while ( 1 ) {
+          df [ start+i ] = df [ start+i+strl ] ;
+          if ( df [ start+i ] == '\0' ) break;
+          i++;
+      }
+      elmt->hlt = 0;
+      elmt->cursor = start+elmt->startchar;
+      _ui_drawtablecursor ( tx ) ;
+      kgUpdateOn ( tx->D ) ;
+      return 1;
+  }
   void _ui_drawtextcursor ( TX_STR *tx ) {
       int curbox , cx , cy , ch , ln;
       char *df;
@@ -13600,6 +13637,21 @@ void transch(int c) {
       df = elmt [ curbox ] .df+elmt [ curbox ] .startchar;
       _uirect_fill ( WC ( D ) , elmt [ curbox ] .x1 , D->evgay-elmt [ curbox ] .y1 , elmt [ curbox ] .x2-1 , D->evgay-elmt [ curbox ] .y2+1 , tx->gc.tabl_fill ) ;
           
+      // TCB Highlight
+      if ( elmt [ curbox ] .hlt ) {
+          int hxs , hxe;
+          hxs = elmt [ curbox ] .hxs+elmt [ curbox ] .x1;
+          hxe = elmt [ curbox ] .hxe+elmt [ curbox ] .x1;
+          if ( ( hxe-hxs ) > 2 ) {
+              cx = elmt [ curbox ] .x1+6;
+              if ( hxs < cx ) hxs = cx;
+              if ( hxe > ( elmt [ curbox ] .x2-3 ) ) hxe = elmt [ curbox ] .x2-3;
+              cy = ( elmt [ curbox ] .y2+elmt [ curbox ] .y1 ) /2+6;
+              cy = D->evgay-cy;
+              _uirect_fill ( WC ( D ) , hxs , cy-Bt , hxe , cy+Ht , tx->gc.high_clr ) ;
+          }
+      }
+      // End of new code
       cx = elmt [ curbox ] .x1+T->FontSize/2+ ( elmt [ curbox ] .cursor-elmt [ curbox ] .startchar ) * \
        ( T->FontSize ) ;
       cy = ( elmt [ curbox ] .y1+2 ) ;
