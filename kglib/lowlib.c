@@ -16812,6 +16812,7 @@ void transch(int c) {
   }
   int _ui_process_v_key ( DIV *y , KBEVENT kbe ) {
       int ret = -1 , ans , df , hitem , i;
+      DIALOG *D = (DIALOG *)y->D;
       ans = kbe.key;
       if ( ui_Linefeed ( ans ) || ui_Return ( ans ) ) {
           return 1;
@@ -16822,6 +16823,8 @@ void transch(int c) {
           if ( y->df < 0 ) y->df = 0;
           _uiMoveVVertPointer ( y ) ;
           uiUpdateOn ( y->D ) ;
+          if ( y->Update != NULL ) y->Update ( y->df , y->item , D ) ;
+          else if ( D->Callback != NULL ) ret = D->Callback ( D , & ( D->kb ) ) ;
       }
       if ( ui_Downarrow ( ans ) ) {
           if ( y->df >= ( 100.-y->ds ) ) return 1;
@@ -16829,6 +16832,8 @@ void transch(int c) {
           if ( y->df > 100 ) y->df = 100;
           _uiMoveVVertPointer ( y ) ;
           uiUpdateOn ( y->D ) ;
+          if ( y->Update != NULL ) y->Update ( y->df , y->item , D ) ;
+          else if ( D->Callback != NULL ) ret = D->Callback ( D , & ( D->kb ) ) ;
       }
       return ret;
   }
@@ -16965,6 +16970,7 @@ void transch(int c) {
   }
   int _ui_process_z_key ( DIZ *y , KBEVENT kbe ) {
       int ret = -1 , ans , df , hitem , i;
+      DIALOG *D=(DIALOG *)y->D;
       ans = kbe.key;
       if ( ui_Linefeed ( ans ) || ui_Return ( ans ) ) {
           return 1;
@@ -16975,6 +16981,8 @@ void transch(int c) {
           if ( y->df < 0 ) y->df = 0;
           _uiMoveZVertPointer ( y ) ;
           uiUpdateOn ( y->D ) ;
+          if ( y->Update != NULL ) y->Update ( y->df , y->item , D ) ;
+          else if ( D->Callback != NULL ) ret = D->Callback ( D , & ( D->kb ) ) ;
       }
       if ( ui_Rightarrow ( ans ) ) {
           if ( y->df >= ( 100.-y->ds ) ) return 1;
@@ -16982,6 +16990,8 @@ void transch(int c) {
           if ( y->df > 100 ) y->df = 100;
           _uiMoveZVertPointer ( y ) ;
           uiUpdateOn ( y->D ) ;
+          if ( y->Update != NULL ) y->Update ( y->df , y->item , D ) ;
+          else if ( D->Callback != NULL ) ret = D->Callback ( D , & ( D->kb ) ) ;
       }
       return ret;
   }
