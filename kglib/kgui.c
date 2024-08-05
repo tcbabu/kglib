@@ -3421,10 +3421,10 @@
           }
           str = _ui_gethighlightstring ( tx ) ;
           if ( str != NULL ) {
-//            printf("hi: %s\n",str);
+            printf("hi: %s\n",str);
               if ( WC ( D )->Pstr != NULL ) free ( WC ( D )->Pstr ) ;
               kgSetPrimary ( D , str ) ;
-//            kgSetClipBoard(D,str);
+            kgSetClipBoard(D,str);
               WC ( D )->Pstr = str;
           }
 //          _ui_cuthighlightstring(tx);
@@ -3507,12 +3507,13 @@
           }
           str = _ui_gethighlightstring ( tx ) ;
           if ( str != NULL ) {
-//            printf("hi: %s\n",str);
+            printf("hi: %s\n",str);
               if ( WC ( D )->Pstr != NULL ) free ( WC ( D )->Pstr ) ;
               kgSetPrimary ( D , str ) ;
-//            kgSetClipBoard(D,str);
+            kgSetClipBoard(D,str);
               WC ( D )->Pstr = str;
           }
+	  else printf("Highlight string is NULL\n");
 //          _ui_cuthighlightstring(tx);
           break;
           case 4:
@@ -3725,9 +3726,11 @@
               break;
               case 2: // primary
               str = kgGetPrimary ( Tmp ) ;
+	      printf("Case 2: %s\n",str);
               break;
               case 3: // clipboard
               str = kgGetClipBoard ( Tmp ) ;
+	      printf("Case 3: %s\n",str);
               break;
           }
       }
@@ -9703,6 +9706,16 @@
               if ( elmt [ k ] .hlt ) {
                   elmt [ k ] .hlt = 0;
                   _ui_drawtextcursor ( tx ) ;
+                  kgUpdateOn ( D ) ;
+              }
+          }
+          if ( T->code == 'T' ) {
+              elmt = T->elmt;
+              tx = T->tstr;
+              k = tx->row*tx->nx+tx->col;
+              if ( elmt [ k ] .hlt ) {
+                  elmt [ k ] .hlt = 0;
+                  _ui_drawtablecursor ( tx ) ;
                   kgUpdateOn ( D ) ;
               }
           }

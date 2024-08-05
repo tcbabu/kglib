@@ -1804,8 +1804,8 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
       }
       wcset_clr ( wc , 0 ) ;
       RefreshWindowThread ( wc ) ;
-//  kgEnableSelection(D);
       wc->Rth = 0;
+  kgEnableSelection(D);
       wc->Hlt = 0;
       wc->Pstr = NULL;
       wc->Cstr = NULL;
@@ -2345,8 +2345,8 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
       wcset_clr ( wc , 0 ) ;
       XSync ( Dsp , False ) ;
       RefreshWindowThread ( wc ) ;
-//  kgEnableSelection(D);
       wc->Rth = 0;
+  kgEnableSelection(D);
       wc->Hlt = 0;
       wc->Pstr = NULL;
       wc->Cstr = NULL;
@@ -8164,13 +8164,17 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
       D = ( DIALOG * ) Tmp;
       wc = WC ( D ) ;
       int ret = 1 , len;
+      printf("Inside kgSetPrimary\n");
+#if 1
       if ( wc->Rth == 0 ) return 0;
+#endif
       Atom sel = XA_PRIMARY;
       Atom target = XA_STRING;
       if ( ! prop ) prop = XInternAtom ( wc->Dsp , "XPRI_IN" , False ) ;
+      printf("Inside kgSetPrimary\n");
 #if 1
-      XSetSelectionOwner ( wc->Dsp , sel , wc->Win , CurrentTime ) ;
-//   XSetSelectionOwner(wc->Dsp,sel,None,CurrentTime);
+//      XSetSelectionOwner ( wc->Dsp , sel , wc->Win , CurrentTime ) ;
+      XSetSelectionOwner(wc->Dsp,sel,None,CurrentTime);
 //   w = XGetSelectionOwner(wc->Dsp,sel);
       w = wc->Win;
       pthread_mutex_lock ( & ( WC ( D )->Rlock ) ) ;
@@ -8180,10 +8184,12 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
        ( data ) +1 ) ;
       pthread_mutex_unlock ( & ( WC ( D )->Rlock ) ) ;
 #endif
-//   printf("Return:%s : %s\n",data,kgGetPrimary(Tmp));
-//   res = kgGetPrimary(Tmp);
-//   printf("Return:%s : %s\n",data,res);
-//   if(!res) free(res);
+#if 1
+   printf("Return:%s : %s\n",data,kgGetPrimary(Tmp));
+   res = kgGetPrimary(Tmp);
+   printf("Return:%s : %s\n",data,res);
+   if(!res) free(res);
+#endif
       return ret;
   }
   int kgSetClipBoard ( void * Tmp , unsigned char *data ) {
@@ -8195,12 +8201,15 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
       D = ( DIALOG * ) Tmp;
       wc = WC ( D ) ;
       int ret = 1 , len;
+#if 1
       if ( wc->Rth == 0 ) return 0;
+#endif
       Atom sel = XInternAtom ( wc->Dsp , "CLIPBOARD" , 0 ) ;
       Atom target = XA_STRING;
       if ( ! prop ) prop = XInternAtom ( wc->Dsp , "XCLIP_IN" , False ) ;
 #if 1
-      XSetSelectionOwner ( wc->Dsp , sel , wc->Win , CurrentTime ) ;
+//      XSetSelectionOwner ( wc->Dsp , sel , wc->Win , CurrentTime ) ;
+      XSetSelectionOwner(wc->Dsp,sel,None,CurrentTime);
       w = wc->Win;
       pthread_mutex_lock ( & ( WC ( D )->Rlock ) ) ;
       XChangeProperty ( wc->Dsp , w , sel , target , 8 , PropModeReplace , data , strlen \
