@@ -384,6 +384,7 @@ int _ui_cuthighlightstring(TX_STR *tx);
 int _ui_cuttablehighlightstring(TX_STR *tx);
 void _ui_cleartexthigh (TX_STR *tx);
 char *_ui_gethighlightstring(TX_STR *tx);
+char *_ui_gettablehighlightstring(TX_STR *tx);
 void _ui_cleantextcursor (TX_STR *tx);
 int _uiGetSItem(KBEVENT kbe,int x1,int y1,int x2,int y2);
 int _uiCheckBox(KBEVENT kbe,int x1,int y1,int x2,int y2);

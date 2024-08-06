@@ -3505,7 +3505,7 @@
                   kgUpdateOn ( D ) ;
               }
           }
-          str = _ui_gethighlightstring ( tx ) ;
+          str = _ui_gettablehighlightstring ( tx ) ;
           if ( str != NULL ) {
             printf("hi: %s\n",str);
               if ( WC ( D )->Pstr != NULL ) free ( WC ( D )->Pstr ) ;
@@ -5295,7 +5295,7 @@
       }
       uiFreeMemAlloc ( D ) ;
       if ( D->Newwin ) {
-          kgDisableSelection ( D ) ;
+//          kgDisableSelection ( D ) ;
           if ( ! WC ( D )->FullScreen ) {
               pthread_cancel ( WC ( D )->Pth ) ;
               pthread_join ( WC ( D )->Pth , NULL ) ;

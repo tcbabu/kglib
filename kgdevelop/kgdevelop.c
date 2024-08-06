@@ -79,6 +79,7 @@
   int Runtextboxesdata ( void *arg , void *t ) ;
   int Runedittextboxes ( void *arg , void *t ) ;
   int Runtableboxesdata ( void *arg , void *T ) ;
+  void * Runtablebox ( void *parent , void *arg ) ;
   void *Runtableboxdata ( void *arg , char *msg ) ;
   static char flname [ 100 ] , Sourcecode [ 100 ] , DiaName [ 200 ] , Callbackcode [ 100 ] , Includecode [ 100 ] , Maincode [ 100 ] , Mainc [ 100 ] , Gclrcode [ 200 ] ;
       
@@ -7614,7 +7615,8 @@
       sprintf ( T->Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
 //   gscanf(Parent,(char *)"No. of Columns%2dNo of Rows%2dName%20s",&nx,&ny,T->Wid);
       T->nx = nx; T->ny = ny;
-      if ( ! Runtableboxesdata ( Parent , T ) ) {
+//      if ( ! Runtableboxesdata ( Parent , T ) ) {
+      if ( ! Runtablebox ( Parent , T ) ) {
           free ( T ) ;
           return NULL;
       }
@@ -7704,7 +7706,8 @@
       nx = T->nx;
       ny = T->ny;
 //      if ( ! Runedittextboxes ( Dtmp , ttmp ) ) {
-      if ( ! Runtableboxesdata ( Dtmp , T )) {
+//      if ( ! Runtableboxesdata ( Dtmp , T )) {
+      if ( ! Runtablebox ( Dtmp , T )) {
           return NULL;
       }
       else {

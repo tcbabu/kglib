@@ -1805,7 +1805,7 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
       wcset_clr ( wc , 0 ) ;
       RefreshWindowThread ( wc ) ;
       wc->Rth = 0;
-  kgEnableSelection(D);
+  //kgEnableSelection(D);
       wc->Hlt = 0;
       wc->Pstr = NULL;
       wc->Cstr = NULL;
@@ -2346,7 +2346,7 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
       XSync ( Dsp , False ) ;
       RefreshWindowThread ( wc ) ;
       wc->Rth = 0;
-  kgEnableSelection(D);
+  //kgEnableSelection(D);
       wc->Hlt = 0;
       wc->Pstr = NULL;
       wc->Cstr = NULL;
@@ -8165,7 +8165,7 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
       wc = WC ( D ) ;
       int ret = 1 , len;
       printf("Inside kgSetPrimary\n");
-#if 1
+#if 0
       if ( wc->Rth == 0 ) return 0;
 #endif
       Atom sel = XA_PRIMARY;
@@ -8201,7 +8201,7 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
       D = ( DIALOG * ) Tmp;
       wc = WC ( D ) ;
       int ret = 1 , len;
-#if 1
+#if 0
       if ( wc->Rth == 0 ) return 0;
 #endif
       Atom sel = XInternAtom ( wc->Dsp , "CLIPBOARD" , 0 ) ;

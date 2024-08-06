@@ -1215,8 +1215,8 @@
       fprintf ( fp , "%d %d  //x2,y2\n" , t->x2 , t->y2 ) ;
 //  fprintf(fp,"%d %d %d //Cursor Position\n",t->row,t->col,t->bordr);
 //  bordr = t->bordr+t->type*10;
-      bordr = t->bordr+t->type*10;
-      fprintf ( fp , "%d %d %d //Cursor Position,bordr+10*type(%d:%d)\n" , t->row , t->col , bordr , t->type , t->bordr ) ;
+      bordr = t->bordr+t->type*10+1000*t->width;
+      fprintf ( fp , "%d %d %d //Cursor Position,bordr+10*type(%d:%d)+1000*t->width(%d)\n" , t->row , t->col , bordr , t->type , t->bordr ,t->width) ;
           
       fprintf ( fp , "%d %d %d //hide\n" , t->Font , t->FontSize , t->hide ) ;
       _uiPrintWid ( fp , t->Wid ) ;
@@ -1302,6 +1302,8 @@
       sscanf ( buff , "%d%d%d" , & ( t->row ) , & ( t->col ) , & ( bordr ) ) ;
       t->bordr = bordr%10;
       t->type = ( bordr/10 ) %10;
+      t->width = ( bordr/1000 ) %100;
+      if(t->width==0) t->width=24;
       GETDATALINE;
       sscanf ( buff , "%d%d%d" , & ( t->Font ) , &  \
           ( t->FontSize ) , & ( t->hide ) ) ;

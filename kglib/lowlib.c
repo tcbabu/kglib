@@ -6562,12 +6562,12 @@ void transch(int c) {
       ln = strlen ( str ) ;
       if ( ln > 0 ) {
           xsize = ln*FontSize;
-          ysize = 1.80*FontSize;
+          ysize = 2.2*FontSize;
           stmp [ 1 ] = '\0';
 //   fid = kgInitImage((int)(xsize),ysize,2);
           fid = kgInitImage ( ( int ) ( xsize ) , ysize , TRESIZE ) ;
           kgUserFrame ( fid , 0. , 0. , ( float ) xsize , ( float ) ysize ) ;
-          th = FontSize*1.75;
+          th = FontSize*1.6;
           tw = FontSize;
           kgTextFont ( fid , Font ) ;
           kgTextSize ( fid , th , tw , GAP*tw ) ;
@@ -12026,6 +12026,8 @@ void transch(int c) {
   int _ui_processtextboxpress ( TX_STR *t , KBEVENT kbe ) {
       int button , col , row , box , ln , x , y , OK = 0 , pos , curbox;
       T_ELMT *elmt;
+      DIT *T = ( DIT * ) t->T;
+      int FontSize=T->FontSize;
       button = kbe.button;
       elmt = t->elmt;
       x = kbe.x;
@@ -12054,46 +12056,6 @@ void transch(int c) {
                       elmt [ box ] .cursor = pos+elmt [ box ] .startchar;
                   }
                   _ui_drawtextcursor ( t ) ;
-                  uiUpdateOn ( t->D ) ;
-                  OK = 1;
-                  break;
-              }
-              box++;
-          }
-          if ( OK ) break;
-      }
-      return -1;
-  }
-  int _ui_processtableboxpress_org ( TX_STR *t , KBEVENT kbe ) {
-      int button , col , row , box , ln , x , y , OK = 0 , pos , curbox;
-      T_ELMT *elmt;
-      button = kbe.button;
-//  tit = t->tit;
-      elmt = t->elmt;
-      x = kbe.x;
-      y = kbe.y;
-      box = 0;
-      for ( row = 0; row < t->ny; row++ ) {
-          for ( col = 0; col < t->nx; col++ ) {
-              if ( _uiCheckBox ( kbe , elmt [ box ] .x1 , elmt [ box ] .y1 , elmt [ box ] .x2 , elmt [ box ] .y2 ) ) \
-              {
-                  pos = ( x - elmt [ box ] .x1 -5 ) / ( Gap+Wd ) ;
-                  if ( pos < 0 ) pos = 0;
-                  ln = strlen ( elmt [ box ] .df+elmt [ box ] .startchar ) ;
-                  _ui_cleantablecursor ( t ) ;
-                  curbox = row*t->nx+col;
-                  while ( t->elmt [ curbox ] .sw != 1 ) {
-                      col = ( col+1 ) %t->nx;
-                      curbox = row*t->nx+col;
-                  }
-                  t->col = col;
-                  t->row = row;
-                  if ( pos <= ln ) {
-//          if(pos >= t->ln[box])pos = t->ln[box]-1;
-                      if ( pos >= elmt [ box ] .ln ) pos = elmt [ box ] .ln-1;
-                      elmt [ box ] .cursor = pos+elmt [ box ] .startchar;
-                  }
-                  _ui_drawtablecursor ( t ) ;
                   uiUpdateOn ( t->D ) ;
                   OK = 1;
                   break;
@@ -13283,6 +13245,34 @@ void transch(int c) {
       pt [ strl ] = '\0';
       return pt;
   }
+  char *_ui_gettablehighlightstring ( TX_STR *tx ) {
+      int ln , strl , ch , start , end , i;
+      char *pt , *df;
+      int xs , xe;
+      T_ELMT *elmt;
+      DIT *T=tx->T;
+      int FontSize = T->FontSize;
+      elmt = tx->elmt+tx->row*tx->nx+tx->col;
+      if ( elmt->hlt == 0 ) return NULL;
+      ln = elmt->ln;
+      df = elmt->df+elmt->startchar;
+      xs = elmt->hxs;
+      xe = elmt->hxe;
+      if ( xs > xe ) return NULL;
+      start = ( xs-4 ) / ( Wd+Gap ) -1;
+      end = ( xe-4 ) / ( Wd+Gap ) -1;
+      start = (xs -FontSize/2)/FontSize;
+      end = (xe -FontSize/2)/FontSize;
+      if ( start < 0 ) return NULL;
+      if ( start > ln ) return NULL;
+      if ( end < 0 ) return NULL;
+      if ( end > ln ) end = ln;
+      strl = ( end-start+1 ) ;
+      pt = ( char * ) Malloc ( sizeof ( char ) * ( strl+1 ) ) ;
+      for ( i = 0; i < strl; i++ ) pt [ i ] = df [ start+i ] ;
+      pt [ strl ] = '\0';
+      return pt;
+  }
   int _ui_cuthighlightstring ( TX_STR *tx ) {
       int ln , strl , ch , start , end , i;
       char *pt , *df;
@@ -13320,6 +13310,8 @@ void transch(int c) {
       char *pt , *df;
       int xs , xe;
       T_ELMT *elmt;
+      DIT *T=tx->T;
+      int FontSize = T->FontSize;
       elmt = tx->elmt+tx->row*tx->nx+tx->col;
       if ( elmt->hlt == 0 ) return 0;
       ln = elmt->ln;
@@ -13329,6 +13321,8 @@ void transch(int c) {
       if ( xs > xe ) return 0;
       start = ( xs-4 ) / ( Wd+Gap ) -1;
       end = ( xe-4 ) / ( Wd+Gap ) -1;
+      start = (xs -FontSize/2)/FontSize;
+      end = (xe -FontSize/2)/FontSize;
       if ( start < 0 ) return 0;
       if ( start > ln ) return 0;
       if ( end < 0 ) return 0;
