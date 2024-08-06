@@ -3421,7 +3421,7 @@
           }
           str = _ui_gethighlightstring ( tx ) ;
           if ( str != NULL ) {
-            printf("hi: %s\n",str);
+//            printf("hi: %s\n",str);
               if ( WC ( D )->Pstr != NULL ) free ( WC ( D )->Pstr ) ;
               kgSetPrimary ( D , str ) ;
             kgSetClipBoard(D,str);
@@ -3507,7 +3507,7 @@
           }
           str = _ui_gettablehighlightstring ( tx ) ;
           if ( str != NULL ) {
-            printf("hi: %s\n",str);
+//            printf("hi: %s\n",str);
               if ( WC ( D )->Pstr != NULL ) free ( WC ( D )->Pstr ) ;
               kgSetPrimary ( D , str ) ;
             kgSetClipBoard(D,str);

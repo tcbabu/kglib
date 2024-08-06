@@ -8164,14 +8164,12 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
       D = ( DIALOG * ) Tmp;
       wc = WC ( D ) ;
       int ret = 1 , len;
-      printf("Inside kgSetPrimary\n");
 #if 0
       if ( wc->Rth == 0 ) return 0;
 #endif
       Atom sel = XA_PRIMARY;
       Atom target = XA_STRING;
       if ( ! prop ) prop = XInternAtom ( wc->Dsp , "XPRI_IN" , False ) ;
-      printf("Inside kgSetPrimary\n");
 #if 1
 //      XSetSelectionOwner ( wc->Dsp , sel , wc->Win , CurrentTime ) ;
       XSetSelectionOwner(wc->Dsp,sel,None,CurrentTime);
@@ -8184,7 +8182,7 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
        ( data ) +1 ) ;
       pthread_mutex_unlock ( & ( WC ( D )->Rlock ) ) ;
 #endif
-#if 1
+#if 0
    printf("Return:%s : %s\n",data,kgGetPrimary(Tmp));
    res = kgGetPrimary(Tmp);
    printf("Return:%s : %s\n",data,res);

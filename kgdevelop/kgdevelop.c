@@ -4311,11 +4311,12 @@
       fprintf ( fp , "}\n" ) ;
       fprintf ( Inc , "void  %-sbrowser%-dinit(DIX *X,void *pt) ;\n" , dianame , count ) ;
           
-      fprintf ( fp , "void  %-sbrowser%-dinit(DIX *X,void *pt) {\n" , dianame , count ) ;
+      fprintf ( fp , "void  %-sbrowser%-dinit(DIX *X,void *ptmp) {\n" , dianame , count ) ;
           
       fprintf ( fp , " // One may setup browser list here by setting X->list\n" , dianame , count ) ;
           
       fprintf ( fp , " // if it need to be freed set it as X->pt also\n" , dianame , count ) ;
+      fprintf ( fp , " void **pt=(void **)ptmp; //pt[0] is arg \n" ) ;
           
       fprintf ( fp , "}\n" ) ;
   }
@@ -4343,11 +4344,12 @@
       fprintf ( fp , "}\n" ) ;
       fprintf ( Inc , "void  %-sbrowser%-dinit(DIY *Y,void *pt) ;\n" , dianame , count ) ;
           
-      fprintf ( fp , "void  %-sbrowser%-dinit(DIY *Y,void *pt) {\n" , dianame , count ) ;
+      fprintf ( fp , "void  %-sbrowser%-dinit(DIY *Y,void *ptmp) {\n" , dianame , count ) ;
           
       fprintf ( fp , " // One may setup browser list here by setting Y->list\n" , dianame , count ) ;
           
       fprintf ( fp , " // if it need to be freed set it as Y->pt also\n" , dianame , count ) ;
+      fprintf ( fp , " void **pt=(void **)ptmp; //pt[0] is arg \n" ) ;
           
       fprintf ( fp , "}\n" ) ;
   }
@@ -4375,7 +4377,8 @@
       fprintf ( fp , "}\n" ) ;
       fprintf ( Inc , "void  %-sbrowser%-dinit(DIRA *R,void *pt) ;\n" , dianame , count ) ;
           
-      fprintf ( fp , "void  %-sbrowser%-dinit(DIRA *R,void *pt) {\n" , dianame , count ) ;
+      fprintf ( fp , "void  %-sbrowser%-dinit(DIRA *R,void *ptmp) {\n" , dianame , count ) ;
+      fprintf ( fp , " void **pt=(void **)ptmp; //pt[0] is arg \n" ) ;
           
       fprintf ( fp , "}\n" ) ;
   }
@@ -4403,7 +4406,8 @@
       fprintf ( fp , "}\n" ) ;
       fprintf ( Inc , "void  %-sbrowser%-dinit(DICH *C,void *pt) ;\n" , dianame , count ) ;
           
-      fprintf ( fp , "void  %-sbrowser%-dinit(DICH *C,void *pt) {\n" , dianame , count ) ;
+      fprintf ( fp , "void  %-sbrowser%-dinit(DICH *C,void *ptmp) {\n" , dianame , count ) ;
+      fprintf ( fp , " void **pt=(void **)ptmp; //pt[0] is arg \n" ) ;
           
       fprintf ( fp , "}\n" ) ;
   }
@@ -4430,7 +4434,8 @@
       fprintf ( fp , "}\n" ) ;
       fprintf ( Inc , "void  %-sbutton%-dinit(DIBN *B,void *pt) ;\n" , dianame , count ) ;
           
-      fprintf ( fp , "void  %-sbutton%-dinit(DIBN *B,void *pt) {\n" , dianame , count ) ;
+      fprintf ( fp , "void  %-sbutton%-dinit(DIBN *B,void *ptmp) {\n" , dianame , count ) ;
+      fprintf ( fp , " void **pt=(void **)ptmp; //pt[0] is arg \n" ) ;
           
       fprintf ( fp , "}\n" ) ;
   }
@@ -4461,7 +4466,8 @@
       fprintf ( fp , "}\n" ) ;
       fprintf ( Inc , "void  %-sbutton%-dinit(DIB *B,void *pt) ;\n" , dianame , count ) ;
           
-      fprintf ( fp , "void  %-sbutton%-dinit(DIB *B,void *pt) {\n" , dianame , count ) ;
+      fprintf ( fp , "void  %-sbutton%-dinit(DIB *B,void *ptmp) {\n" , dianame , count ) ;
+      fprintf ( fp , " void **pt=(void **)ptmp; //pt[0] is arg \n" ) ;
           
       fprintf ( fp , "}\n" ) ;
   }
@@ -4492,7 +4498,8 @@
       fprintf ( fp , "}\n" ) ;
       fprintf ( Inc , "void  %-sbutton%-dinit(DIN *B,void *pt) ;\n" , dianame , count ) ;
           
-      fprintf ( fp , "void  %-sbutton%-dinit(DIN *B,void *pt) {\n" , dianame , count ) ;
+      fprintf ( fp , "void  %-sbutton%-dinit(DIN *B,void *ptmp) {\n" , dianame , count ) ;
+      fprintf ( fp , " void **pt=(void **)ptmp; //pt[0] is arg \n" ) ;
           
       fprintf ( fp , "}\n" ) ;
   }
@@ -4523,7 +4530,8 @@
       fprintf ( fp , "}\n" ) ;
       fprintf ( Inc , "void  %-ssplbutton%-dinit(DIL *B,void *pt) ;\n" , dianame , count ) ;
           
-      fprintf ( fp , "void  %-ssplbutton%-dinit(DIL *B,void *pt) {\n" , dianame , count ) ;
+      fprintf ( fp , "void  %-ssplbutton%-dinit(DIL *B,void *ptmp) {\n" , dianame , count ) ;
+      fprintf ( fp , " void **pt=(void **)ptmp; //pt[0] is arg \n" ) ;
           
       fprintf ( fp , "}\n" ) ;
   }
@@ -4555,7 +4563,8 @@
       fprintf ( fp , "}\n" ) ;
       fprintf ( Inc , "void  %-shbutton%-dinit(DILN *H,void *pt) ;\n" , dianame , count ) ;
           
-      fprintf ( fp , "void  %-shbutton%-dinit(DILN *H,void *pt) {\n" , dianame , count ) ;
+      fprintf ( fp , "void  %-shbutton%-dinit(DILN *H,void *ptmp) {\n" , dianame , count ) ;
+      fprintf ( fp , " void **pt=(void **)ptmp; //pt[0] is arg \n" ) ;
           
       fprintf ( fp , "}\n" ) ;
   }
@@ -4606,7 +4615,8 @@
       fprintf ( fp , "}\n" ) ;
       fprintf ( Inc , "void  %-sbrowser%-dinit(DIE *E,void *pt) ;\n" , dianame , count ) ;
           
-      fprintf ( fp , "void  %-sbrowser%-dinit(DIE *E,void *pt) {\n" , dianame , count ) ;
+      fprintf ( fp , "void  %-sbrowser%-dinit(DIE *E,void *ptmp) {\n" , dianame , count ) ;
+      fprintf ( fp , " void **pt=(void **)ptmp; //pt[0] is arg \n" ) ;
           
       fprintf ( fp , "}\n" ) ;
   }
@@ -4614,7 +4624,8 @@
       int i;
       fprintf ( Inc , "void  %-sbrowser%-dinit(DIS *S,void *pt) ;\n" , dianame , count ) ;
           
-      fprintf ( fp , "void  %-sbrowser%-dinit(DIS *S,void *pt) {\n" , dianame , count ) ;
+      fprintf ( fp , "void  %-sbrowser%-dinit(DIS *S,void *ptmp) {\n" , dianame , count ) ;
+      fprintf ( fp , " void **pt=(void **)ptmp; //pt[0] is arg \n" ) ;
           
       fprintf ( fp , "}\n" ) ;
   }
