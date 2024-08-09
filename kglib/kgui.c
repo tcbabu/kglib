@@ -1547,7 +1547,16 @@
               if ( d [ i ] .t->hide != 1 ) break;
               item = d [ i ] .t->item;
               if ( d [ i ] .t->item == -1 ) _uiDrawTableBox ( D , i ) ;
-              else _uiMake_Ta ( kgGetWidget ( D , i ) ) ;
+              else {
+		      DIT *Ta= (DIT *)(d[i].t);
+		      if(Ta->tstr != NULL) {
+			      free(((TX_STR *)(Ta->tstr))->elmt);
+			      free(Ta->tstr);
+			      Ta->tstr=NULL;
+		      }
+//		      _uiMake_Ta ( kgGetWidget ( D , i ) ) ;
+		      _uiDrawTableBox ( D , i ) ;
+	      }
               D->df = i;
               break;
               case 'h':
@@ -3480,7 +3489,7 @@
           case 3:
 //          ok=_ui_process_v_move(y,kbevent);
           xo = kbevent.x;
-          strl = _ui_textboxstringlength ( tx ) ;
+          strl = _ui_tableboxstringlength ( tx ) ;
           while ( 1 ) {
               en = kgGetEvent ( D ) ;
               if ( en.event != 3 ) break;
@@ -3500,6 +3509,8 @@
                   }
                   if ( elmt [ k ] .hxe > strl ) elmt [ k ] .hxe = strl;
                   if ( elmt [ k ] .hxs > elmt [ k ] .hxe ) elmt [ k ] .hxs = elmt [ k ] .hxe;
+		  elmt [ k ] .hxs= elmt [ k ] .cursor*t->FontSize+t->FontSize/2;
+//		  elmt [ k ] .cursor = (elmt [ k ] .hxe -t->FontSize/2.)/t->FontSize+0.5;
 //              kgUpdateWidget(t);
                   _ui_drawtablecursor ( tx ) ;
                   kgUpdateOn ( D ) ;
@@ -3726,11 +3737,11 @@
               break;
               case 2: // primary
               str = kgGetPrimary ( Tmp ) ;
-	      printf("Case 2: %s\n",str);
+//	      printf("Case 2: %s\n",str);
               break;
               case 3: // clipboard
               str = kgGetClipBoard ( Tmp ) ;
-	      printf("Case 3: %s\n",str);
+//	      printf("Case 3: %s\n",str);
               break;
           }
       }
@@ -5058,8 +5069,8 @@
           D->bkup = 0;
           D->name [ 299 ] = '\0';
           if ( D->Resize ) {
-              if ( D->xl < D->MinWidth ) { D->MinWidth = D->xl/2; }
-              if ( D->yl < D->MinHeight ) { D->MinHeight = D->yl/2; }
+              if ( D->xl < D->MinWidth ) { D->MinWidth = D->xl; }
+              if ( D->yl < D->MinHeight ) { D->MinHeight = D->yl; }
           }
           uiDialogWindow ( D ) ;
           D->xo = 0 , D->yo = 0;

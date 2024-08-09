@@ -380,6 +380,7 @@ int _ui_processtextboxpress(TX_STR *t,KBEVENT kbe);
 void _uiGetResolution(void);
 void _ui_drawtextcursor (TX_STR *tx);
 int _ui_textboxstringlength(TX_STR *tx);
+int _ui_tableboxstringlength(TX_STR *tx);
 int _ui_cuthighlightstring(TX_STR *tx);
 int _ui_cuttablehighlightstring(TX_STR *tx);
 void _ui_cleartexthigh (TX_STR *tx);

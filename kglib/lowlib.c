@@ -1,4 +1,5 @@
 #define D_TH
+#define D_NEWTBL
 /*
   Version 2.1
   Dated 22nd Oct 1998 Time 12:15
@@ -6561,19 +6562,20 @@ void transch(int c) {
       float th , tw , tg , xx , yy; ;
       ln = strlen ( str ) ;
       if ( ln > 0 ) {
-          xsize = ln*FontSize;
+          xsize = ln*FontSize+FontSize/2;
           ysize = 2.2*FontSize;
           stmp [ 1 ] = '\0';
 //   fid = kgInitImage((int)(xsize),ysize,2);
           fid = kgInitImage ( ( int ) ( xsize ) , ysize , TRESIZE ) ;
           kgUserFrame ( fid , 0. , 0. , ( float ) xsize , ( float ) ysize ) ;
-          th = FontSize*1.6;
-          tw = FontSize;
+          th = FontSize*1.3;
+          tw = FontSize+1;
           kgTextFont ( fid , Font ) ;
           kgTextSize ( fid , th , tw , GAP*tw ) ;
           kgTextColor ( fid , char_clr ) ;
           xx = 0.0;
-          yy = 0.3*FontSize;
+          xx = FontSize/2;
+          yy = 0.8*FontSize;
           i = 0;
           while ( str [ i ] >= ' ' ) {
               kgMove2f ( fid , xx , yy ) ;
@@ -12027,7 +12029,7 @@ void transch(int c) {
       int button , col , row , box , ln , x , y , OK = 0 , pos , curbox;
       T_ELMT *elmt;
       DIT *T = ( DIT * ) t->T;
-      int FontSize=T->FontSize;
+      int FontSize = T->FontSize;
       button = kbe.button;
       elmt = t->elmt;
       x = kbe.x;
@@ -12402,7 +12404,7 @@ void transch(int c) {
   int _ui_processTablekey ( TX_STR *t , KBEVENT kbe , int code ) {
       int key , col , row , curbox , ln;
       T_ELMT *elmt;
-      int Active = 0,box,nxbox;
+      int Active = 0 , box , nxbox;
       DIT *T = ( DIT * ) t->T;
       int k;
       key = kbe.key;
@@ -12410,14 +12412,14 @@ void transch(int c) {
       elmt = t->elmt;
       Active = 0;
       k = 0;
-      nxbox=0;
+      nxbox = 0;
       for ( row = 0; row < t->ny; row++ ) {
-	  box =0;
+          box = 0;
           for ( col = 0; col < t->nx; col++ ) {
               if ( t->elmt [ k ] .sw == 1 ) {Active = 1; box++;break;}
               k++;
           }
-	  if(box > nxbox ) nxbox = box;
+          if ( box > nxbox ) nxbox = box;
       }
       if ( Active == 0 ) return -1;
       if ( ui_Uparrow ( key ) ) {
@@ -13221,6 +13223,22 @@ void transch(int c) {
       strl = ( strl* ( Wd+Gap ) +6 ) ;
       return strl;
   }
+  int _ui_tableboxstringlength ( TX_STR *tx ) {
+      int ln , strl , ch;
+      char *pt , *df;
+      T_ELMT *elmt;
+      DIT *T;
+      T = tx->T;
+      elmt = tx->elmt+tx->row*tx->nx+tx->col;
+      ln = elmt->ln;
+      df = elmt->df+elmt->startchar;
+      ch = df [ ln ] ;
+      df [ ln ] = '\0';
+      strl = strlen ( df ) ;
+      df [ ln ] = ch;
+      strl = ( strl* T->FontSize+T->FontSize/2 ) ;
+      return strl;
+  }
   char *_ui_gethighlightstring ( TX_STR *tx ) {
       int ln , strl , ch , start , end , i;
       char *pt , *df;
@@ -13250,7 +13268,7 @@ void transch(int c) {
       char *pt , *df;
       int xs , xe;
       T_ELMT *elmt;
-      DIT *T=tx->T;
+      DIT *T = tx->T;
       int FontSize = T->FontSize;
       elmt = tx->elmt+tx->row*tx->nx+tx->col;
       if ( elmt->hlt == 0 ) return NULL;
@@ -13261,8 +13279,8 @@ void transch(int c) {
       if ( xs > xe ) return NULL;
       start = ( xs-4 ) / ( Wd+Gap ) -1;
       end = ( xe-4 ) / ( Wd+Gap ) -1;
-      start = (xs -FontSize/2)/FontSize;
-      end = (xe -FontSize/2)/FontSize;
+      start = ( xs -FontSize/2 ) /FontSize;
+      end = ( xe -FontSize/2 ) /FontSize;
       if ( start < 0 ) return NULL;
       if ( start > ln ) return NULL;
       if ( end < 0 ) return NULL;
@@ -13310,7 +13328,7 @@ void transch(int c) {
       char *pt , *df;
       int xs , xe;
       T_ELMT *elmt;
-      DIT *T=tx->T;
+      DIT *T = tx->T;
       int FontSize = T->FontSize;
       elmt = tx->elmt+tx->row*tx->nx+tx->col;
       if ( elmt->hlt == 0 ) return 0;
@@ -13319,10 +13337,8 @@ void transch(int c) {
       xs = elmt->hxs;
       xe = elmt->hxe;
       if ( xs > xe ) return 0;
-      start = ( xs-4 ) / ( Wd+Gap ) -1;
-      end = ( xe-4 ) / ( Wd+Gap ) -1;
-      start = (xs -FontSize/2)/FontSize;
-      end = (xe -FontSize/2)/FontSize;
+      start = ( xs -FontSize/2 ) /FontSize;
+      end = ( xe -FontSize/2 ) /FontSize;
       if ( start < 0 ) return 0;
       if ( start > ln ) return 0;
       if ( end < 0 ) return 0;
@@ -13615,6 +13631,195 @@ void transch(int c) {
       uiDefaultGuiFontSize ( D ) ;
       return;
   }
+  int _uiPrintTableCell_bak ( DIT *T , int cell , int drcur ) {
+      T_ELMT *elmt;
+      DIALOG *D = T->D;
+      TX_STR *tx = T->tstr;
+      int x1 , y1 , x2 , y2;
+      int k = cell , i;
+      int type = T->type;
+      char *str;
+      int ch;
+      int curbox;
+      int size , xsize , ysize , FontSize , sw;
+      float th , tw , tg , xx , yy;
+      int tfill , tclr;
+      int ln;
+      char Buf [ 500 ] , stmp [ 2 ] ;
+      void *fid , *img;
+      float curpos;
+      int ylng;
+      kgWC *wc;
+      kgDC *dc;
+      wc = WC ( D ) ;
+      elmt = tx->elmt;
+      curbox = tx->row*tx->nx+tx->col;
+      strcpy ( stmp , ( char * ) " " ) ;
+      FontSize = T->FontSize;
+      sw = elmt [ k ] .sw;
+      x1 = elmt [ k ] .x1;
+      y1 = elmt [ k ] .y1;
+      x2 = elmt [ k ] .x2;
+      y2 = elmt [ k ] .y2;
+      tclr = tx->gc.tabl_char;
+      tfill = tx->gc.tabl_fill;
+      if ( sw == 0 ) tclr = tx->gc.tabl_hchar;
+#if 1
+      if ( type == 1 ) {
+          y1 -= 2;
+          y2 += 2;
+      }
+#endif
+      size = get_t_item_size ( elmt [ k ] .fmt ) ;
+      str = elmt [ k ] .df;
+      strcpy ( Buf , str+elmt [ k ] .startchar ) ;
+      Buf [ size+1 ] = '\0';
+      ylng = strlen ( Buf ) *FontSize+FontSize*2;
+      xsize = ( x2-x1 ) ;
+      ysize = ( y2-y1 ) ;
+      fid = kgInitImage ( xsize+1 , ysize+1 , 1 ) ;
+      kgUserFrame ( fid , 0. , 0. , ( float ) xsize , ( float ) ysize ) ;
+      kgBoxFill ( fid , 0.0 , 0.0 , ( float ) xsize ,  \
+          ( float ) ysize , tfill , 0 ) ;
+//        img = kgGetResizedImage(fid);
+      img = kgGetSharpImage ( fid ) ;
+      kgCloseImage ( fid ) ;
+      kgImage ( D , img , x1 , y1 , xsize , ysize , 0.0 , 1.0 ) ;
+      kgFreeImage ( img ) ;
+      if ( xsize > ylng ) xsize = ylng;
+      fid = kgInitImage ( xsize+1 , ysize+1 , TRESIZE ) ;
+      kgUserFrame ( fid , 0. , 0. , ( float ) xsize , ( float ) ysize ) ;
+      kgBoxFill ( fid , 0.0 , 0.0 , ( float ) xsize ,  \
+          ( float ) ysize , tfill , 0 ) ;
+      th = FontSize*1.3;
+      tw = FontSize+1;
+      yy = 0.6*FontSize;
+      if ( drcur ) {
+          if ( elmt [ k ] .hlt ) {
+              float hxs , hxe;
+              hxs = elmt [ k ] .hxs;
+              hxe = elmt [ k ] .hxe;
+              if ( ( hxe-hxs ) > 2 ) {
+                  kgBoxFill ( fid , hxs , yy-th*0.3 , hxe , th+yy , tx->gc.high_clr , 0 ) ;
+              }
+          }
+          curpos = ( elmt [ k ] .cursor-elmt [ k ] .startchar ) *FontSize+FontSize/2;
+          kgBoxFill ( fid , curpos , yy-th*0.3 , curpos+FontSize , th+yy , D->gc.cur_clr , 0 ) ;
+              
+      }
+      kgTextFont ( fid , T->Font ) ;
+      kgTextSize ( fid , th , tw , GAP*tw ) ;
+      kgTextColor ( fid , tclr ) ;
+      xx = FontSize/2;
+      yy = 0.6*FontSize;
+      i = 0;
+      while ( Buf [ i ] >= ' ' ) {
+          kgMove2f ( fid , xx , yy ) ;
+          stmp [ 0 ] = Buf [ i ] ;
+          kgWriteText ( fid , stmp ) ;
+          xx += FontSize;
+          i++;
+      }
+//          img = kgGetResizedImage(fid);
+      img = kgGetSharpImage ( fid ) ;
+      kgCloseImage ( fid ) ;
+      kgImage ( D , img , x1 , y1 , xsize , ysize , 0.0 , 1.0 ) ;
+      kgFreeImage ( img ) ;
+      return 1;
+  }
+  int _uiPrintTableCell ( DIT *T , int cell , int drcur ) {
+      T_ELMT *elmt;
+      DIALOG *D = T->D;
+      TX_STR *tx = T->tstr;
+      int x1 , y1 , x2 , y2;
+      int k = cell , i;
+      int type = T->type;
+      char *str;
+      int ch;
+      int curbox;
+      int size , xsize , ysize , FontSize , sw;
+      float th , tw , tg , xx , yy;
+      int tfill , tclr;
+      char Buf [ 500 ] , stmp [ 2 ] ;
+      void *fid , *img;
+      float curpos;
+      int ylng;
+      kgWC *wc;
+      kgDC *dc;
+      wc = WC ( D ) ;
+      elmt = tx->elmt;
+      curbox = tx->row*tx->nx+tx->col;
+      strcpy ( stmp , ( char * ) " " ) ;
+      FontSize = T->FontSize;
+      sw = elmt [ k ] .sw;
+      x1 = elmt [ k ] .x1;
+      y1 = elmt [ k ] .y1;
+      x2 = elmt [ k ] .x2;
+      y2 = elmt [ k ] .y2;
+      tclr = tx->gc.tabl_char;
+      tfill = tx->gc.tabl_fill;
+      if ( sw == 0 ) tclr = tx->gc.tabl_hchar;
+#if 1
+      if ( type == 1 ) {
+          y1 -= 2;
+          y2 += 2;
+      }
+#endif
+      size = get_t_item_size ( elmt [ k ] .fmt ) ;
+      str = elmt [ k ] .df;
+      strcpy ( Buf , str+elmt [ k ] .startchar ) ;
+      Buf [ size+1 ] = '\0';
+      ylng = strlen ( Buf ) *FontSize+FontSize*2;
+      xsize = ( x2-x1 ) ;
+      ysize = ( y2-y1 ) ;
+      fid = kgInitImage ( xsize+1 , ysize+1 , 1 ) ;
+      kgUserFrame ( fid , 0. , 0. , ( float ) xsize , ( float ) ysize ) ;
+      kgBoxFill ( fid , 0.0 , 0.0 , ( float ) xsize ,  \
+          ( float ) ysize , tfill , 0 ) ;
+      th = FontSize*1.3;
+      tw = FontSize+1;
+      yy = 0.6*FontSize;
+      if ( drcur ) {
+          if ( elmt [ k ] .hlt ) {
+              float hxs , hxe;
+              hxs = elmt [ k ] .hxs;
+              hxe = elmt [ k ] .hxe;
+              if ( ( hxe-hxs ) > 2 ) {
+                  kgBoxFill ( fid , hxs , yy-th*0.3 , hxe , th+yy , tx->gc.high_clr , 0 ) ;
+              }
+          }
+          curpos = ( elmt [ k ] .cursor-elmt [ k ] .startchar ) *FontSize+FontSize/2;
+          kgBoxFill ( fid , curpos , yy-th*0.3 , curpos+FontSize , th+yy , D->gc.cur_clr , 0 ) ;
+              
+      }
+//        img = kgGetResizedImage(fid);
+      img = kgGetSharpImage ( fid ) ;
+      kgCloseImage ( fid ) ;
+      kgImage ( D , img , x1 , y1 , xsize , ysize , 0.0 , 1.0 ) ;
+      kgFreeImage ( img ) ;
+      if ( xsize > ylng ) xsize = ylng;
+      fid = kgInitImage ( xsize+1 , ysize+1 , TRESIZE ) ;
+      kgUserFrame ( fid , 0. , 0. , ( float ) xsize , ( float ) ysize ) ;
+      kgTextFont ( fid , T->Font ) ;
+      kgTextSize ( fid , th , tw , GAP*tw ) ;
+      kgTextColor ( fid , tclr ) ;
+      xx = FontSize/2;
+      yy = 0.6*FontSize;
+      i = 0;
+      while ( Buf [ i ] >= ' ' ) {
+          kgMove2f ( fid , xx , yy ) ;
+          stmp [ 0 ] = Buf [ i ] ;
+          kgWriteText ( fid , stmp ) ;
+          xx += FontSize;
+          i++;
+      }
+//          img = kgGetResizedImage(fid);
+      img = kgGetSharpImage ( fid ) ;
+      kgCloseImage ( fid ) ;
+      kgImage ( D , img , x1 , y1 , xsize , ysize , 0.0 , 1.0 ) ;
+      kgFreeImage ( img ) ;
+      return 1;
+  }
   void _ui_drawtablecursor ( TX_STR *tx ) {
       int curbox , cx , cy , ch , ln;
       char *df;
@@ -13626,6 +13831,7 @@ void transch(int c) {
 //  tit= tx->tit;
       elmt = tx->elmt;
       curbox = tx->row*tx->nx+tx->col;
+#ifndef D_NEWTBL
 //  ln = tx->ln[curbox];
       ln = elmt [ curbox ] .ln;
       df = elmt [ curbox ] .df+elmt [ curbox ] .startchar;
@@ -13659,6 +13865,9 @@ void transch(int c) {
           
       df [ ln ] = ch;
 //  uiDefaultGuiFontSize(D);
+#else
+      _uiPrintTableCell ( T , curbox , 1 ) ;
+#endif
       return;
   }
   void _ui_cleantablecursor ( TX_STR *tx ) {
@@ -13674,6 +13883,8 @@ void transch(int c) {
 //  tit= tx->tit;
       elmt = tx->elmt;
       curbox = tx->row*tx->nx+tx->col;
+      elmt [ curbox ] .hlt = 0;
+#ifndef D_NEWTBL
       df = elmt [ curbox ] .df+elmt [ curbox ] .startchar;
 //  ln = tx->ln[curbox];
       ln = elmt [ curbox ] .ln;
@@ -13687,6 +13898,9 @@ void transch(int c) {
           
       df [ ln ] = ch;
 //  uiDefaultGuiFontSize(D);
+#else
+      _uiPrintTableCell ( T , curbox , 0 ) ;
+#endif
       return;
   }
   static int GetStrlen ( char *s ) {
@@ -14234,6 +14448,7 @@ void transch(int c) {
       uiRest_clip_limits ( wc ) ;
       return 1;
   }
+#ifndef D_NEWTBL
   int _uiMake_Ta ( DIT *T ) {
       DIALOG *D;
       TX_STR *tx;
@@ -14241,7 +14456,7 @@ void transch(int c) {
           
       int xx1 , yy1 , xx2 , yy2 , xlng = 0 , lng = 0 , gap , pointer , tx1 , ty1 , tx2 , ty2;
           
-      int X2 , Y2 , X1 , Y1 , nx , ny , width;
+      int X2 , Y2 , X1 , Y1 , nx , ny , width , totwidth;
       T_ELMT *elmt;
       int size , Fz;
       unsigned int tempc , tempf , tempt , tempff;
@@ -14253,8 +14468,14 @@ void transch(int c) {
       kgDC *dc;
       D = T->D;
       Fz = T->FontSize;
+      totwidth = T->y2 - T->y1;
+      size = ( totwidth-4 ) /T->ny;
+//      printf("Ny: %d w %d s %d:%d\n",T->ny,T->width,size,T->y2-T->y1);
+      T->width = size;
+      if ( 2*T->FontSize > T->width ) T->FontSize = T->width/2;
       wc = WC ( D ) ;
       tx = T->tstr;
+      tx->width = T->width;
       uiBkup_clip_limits ( wc ) ;
       uiSet_full_scrn ( wc ) ;
       if ( T->hide != 1 ) {
@@ -14297,10 +14518,10 @@ void transch(int c) {
               lng = 0;
               for ( j = 0; j < ny; j++ ) {
                   k = i+j*nx;
-#if 1  // as on 30th Aug 24
+#if 1  // as on 30th July 24
                   size = get_t_item_size ( elmt [ k ] .fmt ) ;
                   l = strlen ( elmt [ k ] .df ) ;
-		  l = size;
+                  l = size;
 #else
 // TCB as on 25/9/12 may need further checking
                   size = get_t_item_size ( elmt [ k ] .fmt ) ;
@@ -14353,27 +14574,19 @@ void transch(int c) {
                       
                   if ( type == 1 ) _uirect_fill ( wc , tx1 , D->evgay-ty1+2 , tx2 , D->evgay-ty2-2 , tx->gc.tabl_fill ) ;
                       
-//       uiSetGuiFixFontSize(D,D->gc.FontSize);
 #if 1 //as on 30th Aug 24
-		  str = elmt [ k ] .df;
-		  ch = str[size+1];
-		  str[size+1]= '\0';
+                  str = elmt [ k ] .df;
+                  ch = str [ size+1 ] ;
+                  str [ size+1 ] = '\0';
 #else
                   str = elmt [ k ] .df+elmt [ k ] .startchar;
 #endif
-#if 0
-                  if ( elmt [ k ] .sw == 0 ) _ui_putstring ( D , tx1+5 , ty2-4 , elmt [ k ] .df+elmt [ k ] .startchar , tx->gc.tabl_hchar ) ;
-                      
-                  else _ui_putstring ( D , tx1+5 , ty2-4 , elmt [ k ] .df+elmt [ k ] .startchar , tx->gc.tabl_char ) ;
-                      
-#else
                   if ( elmt [ k ] .sw == 0 ) uiPutString ( D , str , tx1+T->FontSize/2 , ty2-T->FontSize/2 , tx->gc.tabl_hchar , T->Font , T->FontSize ) ;
                       
                   else uiPutString ( D , str , tx1+T->FontSize/2 , ty2-T->FontSize/2 , tx->gc.tabl_char , T->Font , T->FontSize ) ;
                       
-#endif
 #if 1  //as on 30th Aug 24
-		  str[size+1]=ch;
+                  str [ size+1 ] = ch;
 #endif
                   if ( type == 0 ) _ui_draw_bound ( ( D ) , x1 , D->evgay-y1 , x2 , D->evgay-y2 , tx->gc.tabl_line ) ;
                       
@@ -14398,6 +14611,134 @@ void transch(int c) {
       uiRest_clip_limits ( wc ) ;
       return 1;
   }
+#else
+  int _uiMake_Ta ( DIT *T ) {
+	  /* good but slow ; need to investigate */
+      DIALOG *D;
+      TX_STR *tx;
+      int n , ygap = 0 , xgap = 0 , k = 0 , i , j , l , x1 , x2 , y1 , y2 , box_width = 20 , temp , prsize = 0 , x2max;
+          
+      int xx1 , yy1 , xx2 , yy2 , xlng = 0 , lng = 0 , gap , pointer , tx1 , ty1 , tx2 , ty2;
+          
+      int X2 , Y2 , X1 , Y1 , nx , ny , width , totwidth;
+      T_ELMT *elmt;
+      int size , Fz;
+      unsigned int tempc , tempf , tempt , tempff;
+      char *str;
+      int type = T->type;
+      int curpos = 0;
+      int ch;
+      kgWC *wc;
+      kgDC *dc;
+      D = T->D;
+      wc = WC ( D ) ;
+      tx = T->tstr;
+      totwidth = T->y2 - T->y1;
+      size = ( totwidth-4 ) /T->ny;
+//      printf("Ny: %d w %d s %d:%d\n",T->ny,T->width,size,T->y2-T->y1);
+      T->width = size;
+      tx->width = T->width;
+      if ( 2*T->FontSize > T->width ) T->FontSize = T->width/2;
+      Fz = T->FontSize;
+      uiBkup_clip_limits ( wc ) ;
+      uiSet_full_scrn ( wc ) ;
+      if ( T->hide != 1 ) {
+          CHECKLIMITS ( T ) ;
+          BACKUPWIDGETAREA ( T ) ;
+          tempc = D->gc.char_clr;
+          X1 = T->x1+D->xo+4;
+          Y1 = T->y1+D->yo+4;
+          tx->x2 = X1;
+          tx->y1 = Y1;
+          tx->x1 = X1;
+          tx->y2 = Y1;
+          X1 = tx->x1;
+          Y1 = tx->y1;
+          nx = tx->nx;
+          ny = tx->ny;
+          width = tx->width;
+          box_width = width;
+          elmt = tx->elmt;
+          k = 0;
+          gap = 0;
+          prsize = 0;
+          tx->col = 0;
+          tx->row = 0;
+          n = tx->nx*tx->ny;
+          for ( i = 0; i < n; i++ ) {
+              uimake_telmt ( elmt+i ) ;
+              elmt [ i ] .cursor = 0;
+              elmt [ i ] .startchar = 0;
+          }
+          curpos = -1;
+          for ( i = 0; i < n; i++ ) {
+              if ( T->elmt [ i ] .sw == 1 ) {curpos = i; break;}
+          }
+          if ( curpos >= 0 ) {
+              tx->col = curpos%tx->nx;
+              tx->row = curpos/tx->nx;
+          }
+          for ( i = 0; i < nx; i++ ) {
+              lng = 0;
+              for ( j = 0; j < ny; j++ ) {
+                  k = i+j*nx;
+                  size = get_t_item_size ( elmt [ k ] .fmt ) ;
+                  l = strlen ( elmt [ k ] .df ) ;
+                  l = size;
+                  tx->elmt [ k ] .ln = l+1;
+                  x2max = ( ( l+1 ) *Fz+Fz+4 ) ;
+                  if ( x2max > lng ) lng = x2max;
+                  elmt [ k ] .df [ MAXTITEMLN-1 ] = '\0';
+                  k++;
+              }
+              xlng += lng;
+          }
+          X2 = X1+xlng;
+          Y2 = Y1+ny*width;
+          tx->x2 = X2;
+          tx->y2 = Y2;
+          xx1 = X1;
+          xx2 = X2;
+          yy1 = Y1;
+          yy2 = Y2;
+          ygap = 0;
+          xgap = 0;
+          k = 0;
+          x1 = xx1+xgap/2;
+          prsize = 0;
+          gap = 0;
+          for ( j = 0; j < nx; j++ ) {
+              x2max = 0;
+              y1 = yy1 ;
+              for ( i = 0; i < tx->ny; i++ ) {
+                  k = j+i*nx;
+                  y2 = y1 + box_width;
+                  x2 = x1 + ( ( tx->elmt [ k ] .ln ) *Fz ) +Fz+4;
+                  tx1 = x1+1; ty1 = y1+1;
+                  tx2 = x2-1; ty2 = y2-1;
+                  size = get_t_item_size ( elmt [ k ] .fmt ) ;
+                   ( tx->elmt [ k ] .x1 ) = tx1;
+                   ( tx->elmt [ k ] .y1 ) = ty1;
+                   ( tx->elmt [ k ] .x2 ) = tx2;
+                   ( tx->elmt [ k ] .y2 ) = ty2;
+                  _uiPrintTableCell ( T , k , 0 ) ;
+                  if ( type == 0 ) _ui_draw_bound ( ( D ) , x1 , D->evgay-y1 , x2 , D->evgay-y2 , tx->gc.tabl_line ) ;
+                      
+                  y1 = y2;
+                  k++;
+              }
+              x1 = x2+xgap;
+          }
+          if ( type == 0 ) uidraw_proj ( D , X1-2 , D->evgay-Y1+2 , X2+2 , D->evgay-Y2-2 ) ;
+              
+      }
+      else {
+          RESTOREWIDGETAREA ( T ) ;
+      }
+      uiRest_clip_limits ( wc ) ;
+      return 1;
+  }
+#endif
   int get_t_item_size ( char *cp ) {
       int size = 0;
       char *cpt;
@@ -14981,11 +15322,13 @@ void transch(int c) {
       tx->x1 = X1;
       tx->y2 = Y1;
       tx->col = 0;
+#if 0   //As of 8thAug24
       if ( elmt [ tx->col ] .sw != 1 ) tx->col = tx->col+1;
       if ( tx->col >= nx ) {
           printf ( "Error In Text Box: No input box\n" ) ;
           exit ( 0 ) ;
       }
+#endif
       tx->row = 0;
       tx->gc = Dtmp->gc;
       tx->D = D;
@@ -16858,7 +17201,7 @@ void transch(int c) {
   }
   int _ui_process_v_key ( DIV *y , KBEVENT kbe ) {
       int ret = -1 , ans , df , hitem , i;
-      DIALOG *D = (DIALOG *)y->D;
+      DIALOG *D = ( DIALOG * ) y->D;
       ans = kbe.key;
       if ( ui_Linefeed ( ans ) || ui_Return ( ans ) ) {
           return 1;
@@ -17016,7 +17359,7 @@ void transch(int c) {
   }
   int _ui_process_z_key ( DIZ *y , KBEVENT kbe ) {
       int ret = -1 , ans , df , hitem , i;
-      DIALOG *D=(DIALOG *)y->D;
+      DIALOG *D = ( DIALOG * ) y->D;
       ans = kbe.key;
       if ( ui_Linefeed ( ans ) || ui_Return ( ans ) ) {
           return 1;

@@ -253,6 +253,7 @@ void *RunEditThumbnails(void *arg,int items,void *Th) {
     Selectmenu1  1 data value
 
 *************************************************/
+#if 0
    int   v0 = 1;
    void* v[1];
    int Nitems = items;
@@ -264,4 +265,24 @@ void *RunEditThumbnails(void *arg,int items,void *Th) {
 
    EditThumbnails(arg,v,pt );
    return pt[1];
+#else
+   int i,j,k;
+   int Nitems;
+   char **Istrs, **Ostrs;
+   ThumbNail **Ths=(ThumbNail **)Th;
+   k=0;
+   while(Ths[k] != NULL) k++;
+   Istrs= (char **)malloc(sizeof(char *)*(k+1));
+   k=0;
+   while(Ths[k] != NULL) {Istrs[k]=Ths[k]->name;k++;}
+   Istrs[k]=NULL;
+   Ostrs= (char **)RunkgGetStrings(arg,Istrs);
+   free(Istrs);
+   if(Ostrs!= NULL) {
+	   Ths =(ThumbNail **) kgStringToThumbNails(Ostrs);
+	   free(Ostrs);
+	   return Ths;
+   }
+   else return Th;
+#endif
 }

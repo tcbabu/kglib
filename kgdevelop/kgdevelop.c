@@ -7911,8 +7911,10 @@
           strcpy ( W->menu [ i ] , buf1 ) ;
       }
 #else
-      W->menu = RungetStrings ( D , max ) ;
+//      W->menu = RungetStrings ( D , max ) ;
+      W->menu = (char **)RunkgGetStrings(D,NULL);
       menu = W->menu;
+      if((menu==NULL)||(menu[0]==NULL)) return NULL;
       i = 0;
       msize = 5;
       while ( menu [ i ] != NULL ) {
@@ -7956,8 +7958,10 @@
       W->size = min;
       W->df = ( int * ) malloc ( sizeof ( int ) ) ;
       * ( ( int * ) ( W->df ) ) = 1;
-      W->menu = RungetStrings ( D , max ) ;
+//      W->menu = RungetStrings ( D , max ) ;
+      W->menu = (char **)RunkgGetStrings(D,NULL);
       menu = W->menu;
+      if((menu==NULL)||(menu[0]==NULL)) return NULL;
       i = 0;
       maxchar = 5;
       while ( menu [ i ] != NULL ) {
@@ -8278,7 +8282,9 @@
           strcpy ( menu [ i ] , buf1 ) ;
       }
 #else
-      menu = RungetStrings ( D , max ) ;
+//      menu = RungetStrings ( D , max ) ;
+      menu = (char **)RunkgGetStrings(D,NULL);
+      if((menu==NULL)||(menu[0]==NULL)) return NULL;
       i = 0;
       msize = 5;
       while ( menu [ i ] != NULL ) {
@@ -8346,7 +8352,9 @@
           strcpy ( menu [ i ] , buf1 ) ;
       }
 #else
-      menu = RungetStrings ( D , max ) ;
+//      menu = RungetStrings ( D , max ) ;
+      menu = (char **)RunkgGetStrings(D,NULL);
+      if((menu==NULL)||(menu[0]==NULL)) return NULL;
       i = 0;
       msize = 5;
       while ( menu [ i ] != NULL ) {

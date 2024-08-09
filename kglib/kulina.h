@@ -1512,6 +1512,7 @@ void *kgGetArgPointer(void *Tmp);
 void kgTruncateString(char *m,int size);
 void kgRestoreString(char *m,int size);
 void gphUserFrame(int fid,float x1,float y1, float x2, float y2);
+void *RunkgGetStrings(void *parent ,void *args); // Dialog to get Strings
 /*
    Version 3.0
    Dated 27/05/2024

@@ -1307,6 +1307,7 @@ Dlink *Darraytolink(void **Array) {
 	Dlink *L=Dopen();
 	k=0;
 	if(Array!= NULL) while(Array[k]!= NULL) Dadd(L,Array[k++]);
+	Resetlink(L);
 	return L;
 }
 void **Dlinktoarray(Dlink *L) {
@@ -1317,6 +1318,7 @@ void **Dlinktoarray(Dlink *L) {
 	k = Dcount(L);
 	Array = (void **)malloc(sizeof(void *)*(k+1));
 	k=0;
+	Resetlink(L);
 	while( (pt =Getrecord(L))!= NULL) Array[k++]=pt;
 	Array[k]=NULL;
 	return Array;

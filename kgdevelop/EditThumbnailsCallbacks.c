@@ -304,7 +304,7 @@ int EditThumbnailsinit(void *Tmp) {
   void **ptmp = (void **)pt;
   int *nitems= (int *)ptmp[0];
   M = (DIM *)kgGetNamedWidget(Tmp,(char *)"ItemsMsg");
-  sprintf(Buf,"Expectiong !w43%d!w34 items",*nitems);
+  sprintf(Buf,"Expecting !w43%d!w34 items",*nitems);
   kgWrite(M,Buf);
   Buf[0]='\0';
   return ret;
