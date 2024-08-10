@@ -9922,6 +9922,32 @@
       T_ELMT *E = T->elmt;
       return Tx->row*Tx->nx+Tx->col;
   }
+  int kgGetTableCurpos ( void *Tmp ) {
+      DIT *T = ( DIT * ) Tmp;
+      int cell;
+      if ( T->code != 'T' ) {
+          fprintf ( stderr , "Not a table\n" ) ;
+          return -1;
+      }
+      TX_STR *Tx = ( TX_STR * ) T->tstr;
+      T_ELMT *E = Tx->elmt;
+      cell= Tx->row*Tx->nx+Tx->col;
+      return E[cell].cursor;
+  }
+  
+  int kgGetTableStartChar ( void *Tmp ) {
+      DIT *T = ( DIT * ) Tmp;
+      int cell;
+      if ( T->code != 'T' ) {
+          fprintf ( stderr , "Not a table\n" ) ;
+          return -1;
+      }
+      TX_STR *Tx = ( TX_STR * ) T->tstr;
+      T_ELMT *E = Tx->elmt;
+      cell= Tx->row*Tx->nx+Tx->col;
+      return E[cell].startchar;
+  }
+  
   int kgSetTableCursor ( void * Tmp , int cell) {
       int col,row;
       DIT *T = ( DIT * ) Tmp;
@@ -9950,6 +9976,45 @@
           Tx->row = row;
           T->col = col;
           T->row = row;
+          _ui_drawtablecursor ( Tx ) ;
+      }
+      return 1;
+  }
+  int kgSetTableCursorPos ( void * Tmp , int cell,int pos) {
+      int col,row;
+      DIT *T = ( DIT * ) Tmp;
+      T_ELMT *e;
+      int box;
+      if ( T->code != 'T' ) {
+          fprintf ( stderr , "Not a table\n" ) ;
+          return 0;
+      }
+      TX_STR *Tx = ( TX_STR * ) T->tstr;
+      col = cell%T->nx;
+      row = cell/T->nx;
+      if ( ( col < 0 ) || ( col >= T->nx ) ) {
+          fprintf ( stderr , "invalid cell\n" ) ;
+          return 0;
+      }
+      if ( ( row < 0 ) || ( row >= T->ny ) ) {
+          fprintf ( stderr , "invalid cell\n" ) ;
+          return 0;
+      }
+      T_ELMT *E = Tx->elmt;
+      box = cell;
+      if ( E [ box ] .sw == 1 ) {
+	  int ln = (E[box].x2 -E[box].x1 -T->FontSize/2)/T->FontSize -2;
+	  _ui_cleantablecursor(Tx);
+
+	  if(pos >ln) {
+		  E[box].startchar= (pos/ln)*ln;
+	  }
+//	  printf("pos: %d ln %d st %d box:%d\n",pos,ln,E[box].startchar,box);
+          Tx->col = col;
+          Tx->row = row;
+          T->col = col;
+          T->row = row;
+          E [ box ] .cursor = pos ;
           _ui_drawtablecursor ( Tx ) ;
       }
       return 1;
