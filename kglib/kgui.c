@@ -1499,7 +1499,11 @@
               if ( d [ i ] .v->hide != 1 ) break;
               item = d [ i ] .v->item;
               if ( d [ i ] .v->item == -1 ) _uiDrawV ( D , i ) ;
-              else _uiMake_V ( kgGetWidget ( D , i ) ) ;
+              else{
+                FreeImg ( ( ( DIV * ) ( d [ i ] .t ) )->Bimg ) ;
+                _uiDrawV ( D , i ) ;
+              }
+//              else _uiMake_V ( kgGetWidget ( D , i ) ) ;
               D->df = i;
               break;
               case 'z': // Vert scroll bar
@@ -1549,6 +1553,7 @@
               if ( d [ i ] .t->item == -1 ) _uiDrawTableBox ( D , i ) ;
               else {
 		      DIT *Ta= (DIT *)(d[i].t);
+                      FreeImg ( ( ( DIT * ) ( d [ i ] .t ) )->Bimg ) ;
 		      if(Ta->tstr != NULL) {
 			      free(((TX_STR *)(Ta->tstr))->elmt);
 			      free(Ta->tstr);
@@ -1896,18 +1901,25 @@
               case 't':
               {
                   DIT *t;
+		  TX_STR *Tx;
                   t = d [ i ] .t;
 //         free(((TX_STR *)(t->tstr))->tit);
 //         free(((TX_STR *)(t->tstr))->ln);
+                  Tx = (TX_STR *)t->tstr;
+//                  if(Tx != NULL) Free( Tx->elmt);
                   Free ( t->tstr ) ;
+		  t->tstr=NULL;
               }
               FreeImg ( ( ( DIT * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
               case 'T':
               {
                   DIT *T;
+		  TX_STR *Tx;
                   T = d [ i ] .t;
 //          free(((TX_STR *)(T->tstr))->ln);
+                  Tx = (TX_STR *)T->tstr;
+//                  if(Tx != NULL) Free( Tx->elmt);
                   Free ( T->tstr ) ;
                   T->tstr = NULL;
               }
@@ -5037,6 +5049,7 @@
       int item;
       int bkup;
       KBEVENT kbevent;
+      int TabProcess=1;
       int KEY;
       int i = 0 , oldi = 0 , n = 0 , OK = 0 , q , JMP = 0 , j = 0 , no , err = 0 , uperr , ret = 1 , new , type;
           
@@ -5059,6 +5072,7 @@
       d = D->d;
       D->tmpdir = ui_mktmpdir ( ) ;
       D->df = 0;
+      if(D->NoTabProcess==1) TabProcess=0;
       pthread_mutex_init ( & ( D->Lock ) , NULL ) ;
 //   uiMakeFontlist();
       kgInitGm ( ) ;
@@ -5225,7 +5239,11 @@
                   case 4:
                   continue;
                   case 5: // key release
-                  if ( ui_Tab ( kbevent.key ) ) {
+		  /* Tab Process Supress to test Table */
+
+
+#if 1
+                  if ( TabProcess&&ui_Tab ( kbevent.key ) ) {
                       n = D->TotWid;
                       i = ( i+1 ) %n;
                       while ( ui_NotInputBox ( D , i ) ) i = ( i+1 ) %n;
@@ -5243,6 +5261,7 @@
                       }
                       continue;
                   }
+#endif
 // New code to support setting current widget for input
 #if 1
                   i = D->CurWid;
@@ -9860,11 +9879,11 @@
       col = cell%T->nx;
       row = cell/T->nx;
       if ( ( col < 0 ) || ( col >= T->nx ) ) {
-          fprintf ( stderr , "invalid cell\n" ) ;
+          fprintf ( stderr , "SetOn:invalid cell: %d\n",cell ) ;
           return 0;
       }
       if ( ( row < 0 ) || ( row >= T->ny ) ) {
-          fprintf ( stderr , "invalid cell\n" ) ;
+          fprintf ( stderr , "SetOn:invalid cell %d\n",cell ) ;
           return 0;
       }
       E [ cell ] .sw = 1;
@@ -9880,11 +9899,11 @@
       col = cell%T->nx;
       row = cell/T->nx;
       if ( ( col < 0 ) || ( col >= T->nx ) ) {
-          fprintf ( stderr , "invalid cell\n" ) ;
+          fprintf ( stderr , "SetOff: invalid cell %d\n",cell ) ;
           return 0;
       }
       if ( ( row < 0 ) || ( row >= T->ny ) ) {
-          fprintf ( stderr , "invalid cell\n" ) ;
+          fprintf ( stderr , "SetOff: invalid cell %d\n",cell ) ;
           return 0;
       }
       T_ELMT *E = T->elmt;
@@ -9960,11 +9979,11 @@
       col = cell%T->nx;
       row = cell/T->nx;
       if ( ( col < 0 ) || ( col >= T->nx ) ) {
-          fprintf ( stderr , "invalid cell\n" ) ;
+          fprintf ( stderr , "kgSetTableCursor:invalid cell %d\n",cell ) ;
           return 0;
       }
       if ( ( row < 0 ) || ( row >= T->ny ) ) {
-          fprintf ( stderr , "invalid cell\n" ) ;
+          fprintf ( stderr , "kgSetTableCursor:invalid cell %d\n",cell ) ;
           return 0;
       }
       T_ELMT *E = T->elmt;
@@ -9993,11 +10012,11 @@
       col = cell%T->nx;
       row = cell/T->nx;
       if ( ( col < 0 ) || ( col >= T->nx ) ) {
-          fprintf ( stderr , "invalid cell\n" ) ;
+          fprintf ( stderr , "kgSetTableCursor pos:invalid cell %d\n",cell ) ;
           return 0;
       }
       if ( ( row < 0 ) || ( row >= T->ny ) ) {
-          fprintf ( stderr , "invalid cell\n" ) ;
+          fprintf ( stderr , "kgSetTableCursor pos:invalid cell %d\n",cell ) ;
           return 0;
       }
       T_ELMT *E = Tx->elmt;

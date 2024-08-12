@@ -12669,11 +12669,12 @@ void transch(int c) {
           }
           return -1;
       }
-      if ( ( key >= ' ' ) && ( key < 128 ) ) {
+      if ( (( key >= ' ' ) && ( key < 128 ))||(ui_Tab ( key )) ) {
           int ret;
           col = t->col;
           row = t->row;
           curbox = row*t->nx+col;
+	  if(ui_Tab ( key )) key ='\t';
           if ( ( ret = _ui_insertchar ( t->elmt [ curbox ] .df , t->elmt [ curbox ] .cursor , MAXTITEMLN-2 , key ) ) ) \
           {
               t->elmt [ curbox ] .cursor += ret;
@@ -13740,7 +13741,7 @@ void transch(int c) {
       int size , xsize , ysize , FontSize , sw;
       float th , tw , tg , xx , yy;
       int tfill , tclr;
-      char Buf [ 500 ] , stmp [ 2 ] ;
+      char Buf [ 500 ] , stmp [ 10 ] ;
       void *fid , *img;
       float curpos;
       int ylng;
@@ -13806,10 +13807,17 @@ void transch(int c) {
       xx = FontSize/2;
       yy = 0.6*FontSize;
       i = 0;
-      while ( Buf [ i ] >= ' ' ) {
+      while ( (Buf [ i ] >= ' ' )||(Buf[i]=='\t')) {
           kgMove2f ( fid , xx , yy ) ;
           stmp [ 0 ] = Buf [ i ] ;
+	  if(Buf[i]=='!') {
+		  strcpy(stmp,(char *)"!!");
+	  }
+	  else if(Buf[i]=='\t') {
+		  strcpy(stmp,(char *)"!f35A");
+	  }
           kgWriteText ( fid , stmp ) ;
+	  stmp[1]='\0';
           xx += FontSize;
           i++;
       }
@@ -14707,6 +14715,7 @@ void transch(int c) {
           x1 = xx1+xgap/2;
           prsize = 0;
           gap = 0;
+          _uibox_fill ( wc , X1 , D->evgay-Y1 , X2 , D->evgay-Y2,tx->gc.tabl_fill ) ;
           for ( j = 0; j < nx; j++ ) {
               x2max = 0;
               y1 = yy1 ;
@@ -14715,14 +14724,18 @@ void transch(int c) {
                   y2 = y1 + box_width;
                   x2 = x1 + ( ( tx->elmt [ k ] .ln ) *Fz ) +Fz+4;
                   tx1 = x1+1; ty1 = y1+1;
+                  tx1 = x1; ty1 = y1;
                   tx2 = x2-1; ty2 = y2-1;
                   size = get_t_item_size ( elmt [ k ] .fmt ) ;
                    ( tx->elmt [ k ] .x1 ) = tx1;
                    ( tx->elmt [ k ] .y1 ) = ty1;
                    ( tx->elmt [ k ] .x2 ) = tx2;
                    ( tx->elmt [ k ] .y2 ) = ty2;
+                  if ( type == 0 ){
+//			  _ui_draw_bound ( ( D ) , x1 , D->evgay-y1 , x2 , D->evgay-y2 , tx->gc.tabl_line ) ;
+			  _uibox_fill ( wc , x1 , D->evgay-y1 , x2 , D->evgay-y2 , tx->gc.tabl_line ) ;
+		  }
                   _uiPrintTableCell ( T , k , 0 ) ;
-                  if ( type == 0 ) _ui_draw_bound ( ( D ) , x1 , D->evgay-y1 , x2 , D->evgay-y2 , tx->gc.tabl_line ) ;
                       
                   y1 = y2;
                   k++;
@@ -15178,7 +15191,7 @@ void transch(int c) {
 //TCB as on 25/09/12
 //      elmt->df[size-1]='\0';
                   i = 0;
-                  while ( elmt->df [ i ] >= ' ' ) {
+                  while ( (elmt->df [ i ] >= ' ' )||(elmt->df [ i ] == '\t' )) {
                       if ( i == ( MAXTITEMLN-1 ) ) {elmt->df [ i ] = '\0'; break; }
                       i++;
                   }

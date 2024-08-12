@@ -873,6 +873,7 @@ typedef struct Dia_str {
   void *ThInfo;  // internal
   void *Kbrd; //for keyboard 
   int InputWid;
+  int NoTabProcess;
 } DIALOG;
 
 typedef struct _WidgetGroup {
