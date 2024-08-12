@@ -18,7 +18,7 @@
   void *Tmp;
   static FILE *fp , *fp1 , *Inc;
   static int Vcount = 0 , Tbox = 0 , Listitem = 0 , Vertbox = 0 , Horizbox = 0 , Textbox = 0 , Tblbox = 0 , Gbox = 0 , Hbox = 0 , Butbox = 0 , Pixbox = 0 , Mbox = 0 , Brwbox = 0 , Ibox = 0 , Sfbox = 0 , Sibox = 0 , Filebox = 0 , Foldbox = 0 , WidCount = 0;
-      
+  
   static char buff [ 500 ] ;
   static int Vx1 , Vy1 , Vx2 , Vy2;
 /*static Dlink *Dialink=NULL;*/
@@ -1390,7 +1390,7 @@
 #else
   void ModifymakeguidiaGc ( Gclr *gc ) {
 /*
-//  You may change default settings here 
+//  You may change default settings here
 //  probably you can allow the user to create a config in $HOME
 //  and try to read that file (if exits); so dynamic configuration is possible
    gc->FontSize =8;
@@ -1409,49 +1409,49 @@
       butn0 [ 0 ] .xpmp = NULL;
       butn0 [ 0 ] .xpmh = NULL;
       butn0 [ 0 ] .bkgr = -1;
-      butn0 [ 0 ] .butncode = '';
+      butn0 [ 0 ] .butncode = 127;
       butn0 [ 1 ] .sw = 1;
       strcpy ( butn0 [ 1 ] .title , ( char * ) "Widget" ) ;
       butn0 [ 1 ] .xpmn = NULL;
       butn0 [ 1 ] .xpmp = NULL;
       butn0 [ 1 ] .xpmh = NULL;
       butn0 [ 1 ] .bkgr = -1;
-      butn0 [ 1 ] .butncode = '';
+      butn0 [ 1 ] .butncode = 127;
       butn0 [ 2 ] .sw = 1;
       strcpy ( butn0 [ 2 ] .title , ( char * ) "Border" ) ;
       butn0 [ 2 ] .xpmn = NULL;
       butn0 [ 2 ] .xpmp = NULL;
       butn0 [ 2 ] .xpmh = NULL;
       butn0 [ 2 ] .bkgr = -1;
-      butn0 [ 2 ] .butncode = '';
+      butn0 [ 2 ] .butncode = 127;
       butn0 [ 3 ] .sw = 1;
       strcpy ( butn0 [ 3 ] .title , ( char * ) "Resize" ) ;
       butn0 [ 3 ] .xpmn = NULL;
       butn0 [ 3 ] .xpmp = NULL;
       butn0 [ 3 ] .xpmh = NULL;
       butn0 [ 3 ] .bkgr = -1;
-      butn0 [ 3 ] .butncode = '';
+      butn0 [ 3 ] .butncode = 127;
       butn0 [ 4 ] .sw = 1;
       strcpy ( butn0 [ 4 ] .title , ( char * ) "Repos" ) ;
       butn0 [ 4 ] .xpmn = NULL;
       butn0 [ 4 ] .xpmp = NULL;
       butn0 [ 4 ] .xpmh = NULL;
       butn0 [ 4 ] .bkgr = -1;
-      butn0 [ 4 ] .butncode = '';
+      butn0 [ 4 ] .butncode = 127;
       butn0 [ 5 ] .sw = 1;
       strcpy ( butn0 [ 5 ] .title , ( char * ) "Options" ) ;
       butn0 [ 5 ] .xpmn = NULL;
       butn0 [ 5 ] .xpmp = NULL;
       butn0 [ 5 ] .xpmh = NULL;
       butn0 [ 5 ] .bkgr = -1;
-      butn0 [ 5 ] .butncode = '';
+      butn0 [ 5 ] .butncode = 127;
       butn0 [ 6 ] .sw = 1;
       strcpy ( butn0 [ 6 ] .title , ( char * ) "Test" ) ;
       butn0 [ 6 ] .xpmn = NULL;
       butn0 [ 6 ] .xpmp = NULL;
       butn0 [ 6 ] .xpmh = NULL;
       butn0 [ 6 ] .bkgr = -1;
-      butn0 [ 6 ] .butncode = '';
+      butn0 [ 6 ] .butncode = 127;
       DIN b0 = {
           'n' , 7 , 3 , 774 , 40 , 12 , 5 , 84 , 25 , 7 , 1 , 1 , 0.50000 , 0 , 0 , 0 , 0 , /* button type and roundinfg factor  \
               ( 0-0.5 ) , bordr , hide , nodrawbkgr*/
@@ -1544,15 +1544,15 @@
       D.Resize = 0; /* 1 for Resize option */
       D.MinWidth = 100; /* for Resize option */
       D.MinHeight = 100; /* for Resize option */
-#if 1 
+#if 1
       D.Callback = makeguidiaCallBack; /* default callback */
-#else 
+#else
       D.Callback = NULL;
 #endif
       D.ResizeCallback = makeguidiaResizeCallBack; /* Resize callback */
-#if 1 
+#if 1
       D.WaitCallback = NULL; /* Wait callback */
-#else 
+#else
       D.WaitCallback = makeguidiaWaitCallBack; /* Wait callback */
 #endif
       D.Fixpos = 1; /* 1 for Fixing Position */
@@ -3153,7 +3153,7 @@
       fprintf ( fp , "  char **titles%-d=NULL; \n" , Tbox ) ;
       if ( t->titles != NULL ) {
           fprintf ( fp , "  titles%-d= (char **)malloc(sizeof(char *)*%-d);\n" , Tbox , n ) ;
-              
+             
           for ( i = 0;i < n;i++ ) {
               if ( t->titles [ i ] == NULL ) {
                   fprintf ( fp , "  titles%-d[%-d]=NULL;\n" , Tbox , i ) ;
@@ -3162,7 +3162,7 @@
                   fprintf ( fp , "  titles%-d[%-d]= (char *)malloc(%-d);\n" , Tbox , i , strlen  \
                       ( t->titles [ i ] ) +1 ) ;
                   fprintf ( fp , "  strcpy(titles%-d[%-d],(char *)\"%-s\");\n" , Tbox , i , t->titles [ i ] ) ;
-                      
+                     
               }
           }
       }
@@ -3174,7 +3174,7 @@
       fprintf ( fp , "  char **xpms%-d  = NULL; \n" , Tbox ) ;
       if ( t->xpm != NULL ) {
           fprintf ( fp , "  xpms%-d  = (char **)malloc(sizeof(char *)*%d); \n" , Tbox , 3*n ) ;
-              
+            
           for ( i = 0;i < 3*n;i++ ) {
               PrintXpms ( fp , t->xpm [ i ] , Tbox , i ) ;
           }
@@ -3189,7 +3189,7 @@
           fprintf ( fp , "  butncode%-d  = (char *)malloc(%-d);\n" , Tbox , strlen  \
               ( t->butncode ) +1 ) ;
           fprintf ( fp , "  strcpy(butncode%-d  ,(char *)\"%-s\");\n" , Tbox , t->butncode ) ;
-              
+  
       }
       fprintf ( fp , "  DIB b%-d = { \n" , Tbox ) ;
       fprintf ( fp , "    \'%c\',\n" , t->code ) ;
@@ -3205,11 +3205,11 @@
       fprintf ( fp , "    titles%-d,\n" , Tbox ) ;
       fprintf ( fp , "    butncode%-d,\n" , Tbox ) ;
       fprintf ( fp , "    NULL,%-sbutton%-dcallback, /* args, Callbak */\n  " , dianame , control ) ;
-          
+   
       fprintf ( fp , "    (void **)xpms%d,bkgr%-d, /* pointers to xpms and colors */\n  " , Tbox , Tbox ) ;
-          
+   
       fprintf ( fp , "    %d,%f,%d,%d /* button type and roundinfg factor(0-0.5),bordr,hide */\n  };\n" , t->type , t->fac , t->bordr , t->hide ) ;
-          
+     
       fprintf ( fp , "  b%-d.bval = 1; \n" , Tbox ) ;
       t->Wid [ 49 ] = '\0';
       fprintf ( fp , "  strcpy(b%-d.Wid,(char *)\"%-s\");\n" , Tbox , t->Wid ) ;
@@ -3224,7 +3224,7 @@
       if ( t->width < ln ) ln = t->width;
       fprintf ( fp , "  BUT_STR  *butn%-d=NULL; \n" , Tbox ) ;
       fprintf ( fp , "  butn%-d= (BUT_STR *)malloc(sizeof(BUT_STR)*%-d);\n" , Tbox , n ) ;
-          
+         
       butn = ( BUT_STR * ) t->buts;
       for ( i = 0;i < n;i++ ) {
           fprintf ( fp , "  butn%-d[%-d].sw=%d;\n" , Tbox , i , butn [ i ] .sw ) ;
@@ -3262,15 +3262,15 @@
               fprintf ( fp , "#if 1\n" ) ;
               fprintf ( fp , "  butn%-d[%-d].xpmh= (char *)malloc(100); \n" , Tbox , i ) ;
               fprintf ( fp , "  strcpy(butn%-d[%-d].xpmh,(char *)\"%-s\");\n" , Tbox , i , butn [ i ] .xpmh ) ;
-                  
+                 
               fprintf ( fp , "#else\n" ) ;
               fprintf ( fp , "  butn%-d[%-d].xpmh= " "kgGetProcessedImage(\"%-s\",%-d,0.8,0,0,0);\n" , Tbox , i , butn [ i ] .xpmh , ln ) ;
-                  
+                 
               fprintf ( fp , "#endif\n" ) ;
           }
           fprintf ( fp , "  butn%-d[%-d].bkgr=%d;\n" , Tbox , i , butn [ i ] .bkgr ) ;
-          fprintf ( fp , "  butn%-d[%-d].butncode=\'%c\';\n" , Tbox , i , butn [ i ] .butncode ) ;
-              
+          fprintf ( fp , "  butn%-d[%-d].butncode=%d;\n" , Tbox , i , butn [ i ] .butncode ) ;
+           
       }
       fprintf ( fp , "  DIN b%-d = { \n" , Tbox ) ;
       fprintf ( fp , "    \'%c\',\n" , t->code ) ;
@@ -3281,11 +3281,11 @@
       fprintf ( fp , "    %d, \n" , t->width ) ;
       fprintf ( fp , "    %d,%d, \n" , t->nx , t->ny ) ;
       fprintf ( fp , "    %d,%f,%d,%d,%d,1, /* button type and roundinfg factor(0-0.5),bordr,hide ,nodrawbkgr*/\n \n" , t->type , t->fac , t->bordr , t->hide , t->nodrawbkgr ) ;
-          
+       
 //  fprintf(fp,"    NULL,\n");
       fprintf ( fp , "    butn%-d, \n" , Tbox ) ;
       fprintf ( fp , "    %-sbutton%-dcallback, /*  Callbak */\n  " , dianame , control ) ;
-          
+        
       fprintf ( fp , "    NULL  /* any args */\n" ) ;
       fprintf ( fp , "  };\n" ) ;
 //  fprintf(fp,"  b%-d.bval = 1; \n",Tbox);
@@ -3342,15 +3342,15 @@
               fprintf ( fp , "#if 1\n" ) ;
               fprintf ( fp , "  butn%-d[%-d].xpmh= (char *)malloc(100); \n" , Tbox , i ) ;
               fprintf ( fp , "  strcpy(butn%-d[%-d].xpmh,(char *)\"%-s\");\n" , Tbox , i , butn [ i ] .xpmh ) ;
-                  
+                 
               fprintf ( fp , "#else\n" ) ;
               fprintf ( fp , "  butn%-d[%-d].xpmh= " "kgGetProcessedImage(\"%-s\",%-d,0.8,0,0,0);\n" , Tbox , i , butn [ i ] .xpmh , ln ) ;
-                  
+                 
               fprintf ( fp , "#endif\n" ) ;
           }
           fprintf ( fp , "  butn%-d[%-d].bkgr=%d;\n" , Tbox , i , butn [ i ] .bkgr ) ;
-          fprintf ( fp , "  butn%-d[%-d].butncode=\'%c\';\n" , Tbox , i , butn [ i ] .butncode ) ;
-              
+          fprintf ( fp , "  butn%-d[%-d].butncode=%d;\n" , Tbox , i , butn [ i ] .butncode ) ;
+            
       }
       fprintf ( fp , "  DIL h%-d = { \n" , Tbox ) ;
       fprintf ( fp , "    \'%c\',\n" , t->code ) ;
@@ -3361,10 +3361,10 @@
       fprintf ( fp , "    %d, \n" , t->width ) ;
       fprintf ( fp , "    %d,%d, \n" , t->nx , t->ny ) ;
       fprintf ( fp , "    %d,%f,%d,%d,%d,1, /* button type and roundinfg factor(0-0.5),bordr,hide ,nodrawbkgr*/\n \n" , t->type , t->fac , t->bordr , t->hide , t->nodrawbkgr ) ;
-          
+        
       fprintf ( fp , "    butn%-d, \n" , Tbox ) ;
       fprintf ( fp , "    %-ssplbutton%-dcallback, /*  Callbak */\n  " , dianame , control ) ;
-          
+         
       fprintf ( fp , "    NULL  /* any args */\n" ) ;
       fprintf ( fp , "  };\n" ) ;
 //  fprintf(fp,"  h%-d.bval = 1; \n",Tbox);
@@ -3504,7 +3504,7 @@
       }
       else {
           fprintf ( fp , "  char *butncode%-d  = (char *)\"%-s\"; \n" , Tbox , t->butncode ) ;
-              
+        
       }
       fprintf ( fp , "  DIBN n%-d = { \n" , Tbox ) ;
       fprintf ( fp , "    \'%c\',\n" , t->code ) ;
@@ -3516,16 +3516,16 @@
       fprintf ( fp , "    %d,%d, \n" , t->nx , t->ny ) ;
       fprintf ( fp , "    (int *)v[%-d], \n" , Vcount++ ) ;
       if ( t->prompt != NULL ) fprintf ( fp , "    (char *)\"%-s\",\n" , t->prompt ) ;
-          
+      
       else fprintf ( fp , "    NULL,\n" ) ;
       fprintf ( fp , "    titles%-d,\n" , Tbox ) ;
       fprintf ( fp , "    butncode%-d,\n" , Tbox ) ;
       fprintf ( fp , "    NULL,%-sbutton%-dcallback, /* args, Callbak */\n" , dianame , control ) ;
-          
+     
       fprintf ( fp , "    xpm%d,bkgr%d, /* pointers to xpms and colors */\n  " , Tbox , Tbox ) ;
-          
+      
       fprintf ( fp , "    %d,%f,%d,%d /* button type and roundinfg factor(0-0.5),bordr,hide */\n  };\n" , t->type , t->fac , t->bordr , t->hide ) ;
-          
+       
       t->Wid [ 49 ] = '\0';
       fprintf ( fp , "  strcpy(n%-d.Wid,(char *)\"%-s\");\n" , Tbox , t->Wid ) ;
       fprintf ( fp , "  n%-d.item = -1;\n" , Tbox ) ;
@@ -3641,7 +3641,7 @@
       fprintf ( fp , "  char **xpms%-d  = NULL; \n" , Tbox ) ;
       if ( t->xpm != NULL ) {
           fprintf ( fp , "  xpms%-d  = (char **)malloc(sizeof(char *)*%d); \n" , Tbox , 3*n ) ;
-              
+            
           for ( i = 0;i < 3*n;i++ ) {
               PrintXpms ( fp , t->xpm [ i ] , Tbox , i ) ;
           }
@@ -3656,7 +3656,7 @@
           fprintf ( fp , "  butncode%-d  = (char *)malloc(%-d);\n" , Tbox , strlen  \
               ( t->butncode ) +1 ) ;
           fprintf ( fp , "  strcpy(butncode%-d  ,(char *)\"%-s\");\n" , Tbox , t->butncode ) ;
-              
+        
       }
       fprintf ( fp , "  DILN H%-d = { \n" , Tbox ) ;
       fprintf ( fp , "    \'%c\',\n" , t->code ) ;
@@ -3672,13 +3672,13 @@
       fprintf ( fp , "    titles%-d,\n" , Tbox ) ;
       fprintf ( fp , "    butncode%-d,\n" , Tbox ) ;
       fprintf ( fp , "    NULL,%-shoribar%-dcallback,/* arg, Callbak */\n" , dianame , control ) ;
-          
+        
       fprintf ( fp , "    (void **)xpms%d,bkgr%d, /* pointers to xpms and colors */\n " , Tbox , Tbox ) ;
-          
+        
       fprintf ( fp , "    %d,%f, /* button type and roundinfg factor(0-0.5) */\n " , t->type , t->fac ) ;
-          
+         
       fprintf ( fp , "    %d,%d /* button border,hide */\n  };\n" , t->bordr , t->hide ) ;
-          
+         
       fprintf ( fp , "  H%-d.bval = 1; \n" , Tbox ) ;
       t->Wid [ 49 ] = '\0';
       fprintf ( fp , "  strcpy(H%-d.Wid,(char *)\"%-s\");\n" , Tbox , t->Wid ) ;
@@ -4768,7 +4768,7 @@
       fprintf ( fp , "  D = (DIALOG *)Tmp;\n" ) ;
       fprintf ( fp , "  void **pt= (void **)kgGetArgPointer(Tmp); // Change as required\n" ) ;
       fprintf ( fp , " /* pt[0] is inputs given by caller */\n");
-          
+      
       fprintf ( fp , "  DIA *d;\n" ) ;
       fprintf ( fp , "  int i,n;\n" ) ;
       fprintf ( fp , "  d = D->d;\n" ) ;
@@ -4777,10 +4777,10 @@
       fprintf ( fp , "  };\n" ) ;
       fprintf ( fp , "  n=1;\n" ) ;
       fprintf ( fp , "//  strcpy(D->name,\"Kulina Designer ver 2.0\");    /*  Dialog name you may change */\n" ) ;
-          
+    
       fprintf ( fp , "#if 0\n");
       fprintf ( fp , "  if(D->fullscreen!=1) {    /*  if not fullscreen mode */\n" ) ;
-          
+   
       fprintf ( fp , "     int xres,yres; \n" ) ;
       fprintf ( fp , "     kgDisplaySize(&xres,&yres); \n" ) ;
       fprintf ( fp , "      // D->xo=D->yo=0; D->xl = xres-10; D->yl=yres-80;\n" ) ;
@@ -4804,7 +4804,7 @@
       fprintf ( fp , "  int ret = 0;\n" ) ;
       fprintf ( fp , "  DIALOG *D;\n" ) ;
       fprintf ( fp , "  void **pt= (void **)kgGetArgPointer(Tmp); // Change as required\n" ) ;
-          
+        
       fprintf ( fp , "  KBEVENT *kbe;\n" ) ;
       fprintf ( fp , "  D = (DIALOG *)Tmp;\n" ) ;
       fprintf ( fp , "  kbe = (KBEVENT *)tmp;\n" ) ;
@@ -5708,36 +5708,37 @@
       fprintf ( fp1 , "  D.xl = %d;    /*  Length of Dialog */\n" , D->xl ) ;
       fprintf ( fp1 , "  D.yl = %d;    /*  Width  of Dialog */\n" , D->yl ) ;
       fprintf ( fp1 , "  D.Initfun = %-sinit;    /*   init fuction for Dialog */\n" , dianame ) ;
-          
+      
       fprintf ( fp1 , "  D.Cleanupfun = %-scleanup;    /*   init fuction for Dialog */\n" , dianame ) ;
-          
+      
       fprintf ( fp1 , "  D.kbattn = %-d;    /*  1 for drawing keyborad attention */\n" , D->kbattn ) ;
-          
+      
       fprintf ( fp1 , "  D.butattn = %-d;    /*  1 for drawing button attention */\n" , D->butattn ) ;
-          
+      
       fprintf ( fp1 , "  D.fullscreen = %-d;    /*  1 for for fullscreen mode */\n" , D->fullscreen ) ;
-          
+      fprintf ( fp1 , "  D.NoTabProcess = 0;    /*  1 for disabling Tab use */\n") ;
+    
       fprintf ( fp1 , "  D.Deco = %-d;    /*  1 for Window Decorration */\n" , D->Deco ) ;
-          
+        
       fprintf ( fp1 , "  D.transparency = %-f;    /*  float 1.0 for full transparency */\n" , D->transparency ) ;
-          
+        
 //  fprintf(fp1,"  D.Newwin = %-d;    /*  1 for new window not yet implemented */\n",D->Newwin);
       fprintf ( fp1 , "  D.Newwin = %-d;    /*  1 for new window not yet implemented */\n" , 1 ) ;
-          
+        
       fprintf ( fp1 , "  D.DrawBkgr = %-d;    /*  1 for drawing background */\n" , D->DrawBkgr ) ;
-          
+        
       fprintf ( fp1 , "  D.Bkpixmap = NULL;    /*  background image */\n" ) ;
       fprintf ( fp1 , "  D.Sticky = %-d;    /*  1 for stickyness */\n" , D->Sticky ) ;
-          
+        
       fprintf ( fp1 , "  D.Resize = %-d;    /*  1 for Resize option */\n" , D->Resize ) ;
-          
+        
       fprintf ( fp1 , "  D.MinWidth = %-d;    /*   for Resize option */\n" , D->MinWidth ) ;
-          
+        
       fprintf ( fp1 , "  D.MinHeight = %-d;    /*   for Resize option */\n" , D->MinHeight ) ;
-          
+        
       fprintf ( fp1 , "#if 1 \n" ) ;
       fprintf ( fp1 , "  D.Callback = %-sCallBack;    /*  default callback */\n" , dianame ) ;
-          
+        
       fprintf ( fp1 , "#else \n" ) ;
       fprintf ( fp1 , "  D.Callback = NULL;    \n" ) ;
       fprintf ( fp1 , "#endif\n" ) ;
@@ -5747,25 +5748,25 @@
       fprintf ( fp1 , "  D.WaitCallback = NULL;  /*  Wait callback */\n" ) ;
       fprintf ( fp1 , "#else \n" ) ;
       fprintf ( fp1 , "  D.WaitCallback = %-sWaitCallBack;  /*  Wait callback */\n" , dianame ) ;
-          
+         
       fprintf ( fp1 , "#endif\n" ) ;
       fprintf ( fp1 , "  D.Fixpos = %-d;    /*  1 for Fixing Position */\n" , D->Fixpos ) ;
-          
+        
       fprintf ( fp1 , "  D.NoTaskBar = %-d;    /*  1 for not showing in task bar*/\n" , D->NoTaskBar ) ;
-          
+        
       fprintf ( fp1 , "  D.NoWinMngr = %-d;    /*  1 for no Window Manager*/\n" , D->NoWinMngr ) ;
-          
+       
       fprintf ( fp1 , "  D.StackPos = %-d;    /* -1,0,1 for for Stack Position -1:below 0:normal 1:above*/\n" , D->StackPos ) ;
-          
+       
       fprintf ( fp1 , "  D.Shapexpm = NULL;    /*  PNG/jpeg file for window shape;Black color will not be drawn */\n" ) ;
-          
+       
       fprintf ( fp1 , "  D.parent = parent;    /*  1 for not showing in task bar*/\n" ) ;
-          
+       
       fprintf ( fp1 , "  D.pt = pt;    /*  any data to be passed by user*/\n" ) ;
       fprintf ( fp1 , "//  strcpy(D.name,\"Kulina Designer ver 2.0\");    /*  Dialog name you may change */\n" ) ;
-          
+       
       fprintf ( fp1 , "  if(D.fullscreen!=1) {    /*  if not fullscreen mode */\n" ) ;
-          
+      
       fprintf ( fp1 , "     int xres,yres; \n" ) ;
       fprintf ( fp1 , "     kgDisplaySize(&xres,&yres); \n" ) ;
       fprintf ( fp1 , "      // D.xo=D.yo=0; D.xl = xres-10; D.yl=yres-80;\n" ) ;
@@ -5779,9 +5780,9 @@
 //  fprintf(fp1,"  D.SearchList=(void *)Dopen();    /*  list of directories picture search */\n");
 //  fprintf(fp1,"  kgDefaultGuiTheme(&(D.gc));    /*  set colors for gui*/\n");
       fprintf ( fp1 , "  Modify%-s(&D,GrpId);    /*  add extras to  gui*/\n" , dianame ) ;
-          
+       
       fprintf ( fp1 , "  Modify%-sGc(&D);    /*  set colors for gui if don't like default*/\n" , dianame ) ;
-          
+       
       fprintf ( fp1 , "  ret= kgUi(&D);\n" ) ;
       fprintf ( fp1 , "  kgCleanUi(&D);\n" ) ;
       fprintf ( fp1 , "  return ret;\n" ) ;
@@ -6930,10 +6931,10 @@
       b = (BUT_STR *)h->buts;
       for (k=n;k<h->nx*h->ny;k++) {
         strcpy(b[k].title,"");
-	b[k].xpmn = NULL;
-	b[k].xpmp = NULL;
-	b[k].xpmh = NULL;
-	b[k].butncode='\0';
+       	b[k].xpmn = NULL;
+       	b[k].xpmp = NULL;
+       	b[k].xpmh = NULL;
+       	b[k].butncode=127;
       }
       Runbutnopt ( Dtmp , h ) ;
       return h;

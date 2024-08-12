@@ -13814,7 +13814,7 @@ void transch(int c) {
 		  strcpy(stmp,(char *)"!!");
 	  }
 	  else if(Buf[i]=='\t') {
-		  strcpy(stmp,(char *)"!f35A");
+		  strcpy(stmp,(char *)"!f35B");
 	  }
           kgWriteText ( fid , stmp ) ;
 	  stmp[1]='\0';
