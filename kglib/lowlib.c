@@ -13814,8 +13814,10 @@ void transch(int c) {
 		  strcpy(stmp,(char *)"!!");
 	  }
 	  else if(Buf[i]=='\t') {
-		  strcpy(stmp,(char *)"!f35B");
+//		  strcpy(stmp,(char *)"!f35B");
+		  stmp[0]=' ';
 	  }
+	  else if(Buf[i]==127) stmp[0]=' ';
           kgWriteText ( fid , stmp ) ;
 	  stmp[1]='\0';
           xx += FontSize;
