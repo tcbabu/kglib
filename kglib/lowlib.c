@@ -12076,6 +12076,7 @@ void transch(int c) {
       DIALOG *D;
       T_ELMT *elmt;
       DIT *T = ( DIT * ) t->T;
+      char *df;
       button = kbe.button;
 //  tit = t->tit;
       elmt = t->elmt;
@@ -12118,8 +12119,10 @@ void transch(int c) {
                   T->row = t->row;
                   if ( pos <= ln ) {
 //          if(pos >= t->ln[box])pos = t->ln[box]-1;
+                      df = elmt [ box ] .df;
                       if ( pos >= elmt [ box ] .ln ) pos = elmt [ box ] .ln-1;
                       elmt [ box ] .cursor = pos+elmt [ box ] .startchar;
+                      while(df[ elmt [ box ] .cursor]==127)  elmt [ box ] .cursor +=1;
                   }
                   _ui_drawtablecursor ( t ) ;
                   uiUpdateOn ( t->D ) ;
@@ -12190,7 +12193,7 @@ void transch(int c) {
               if ( t->elmt [ curbox ] .cursor > 0 ) {
                   t->elmt [ curbox ] .cursor -= 1;
                   if ( ( t->elmt [ curbox ] .cursor < t->elmt [ curbox ] .startchar ) ) t->elmt [ curbox ] .startchar = t->elmt [ curbox ] .cursor;
-                      
+ 
                   if ( code == 't' ) _ui_drawtextcursor ( t ) ;
                   else _ui_drawtablecursor ( t ) ;
                   uiUpdateOn ( t->D ) ;
@@ -12227,7 +12230,7 @@ void transch(int c) {
                   if ( t->elmt [ curbox ] .df [ t->elmt [ curbox ] .cursor ] != '\0' ) {
                       t->elmt [ curbox ] .cursor += 1;
                       if ( ( t->elmt [ curbox ] .cursor - t->elmt [ curbox ] .startchar ) > ln ) t->elmt [ curbox ] .startchar+= 1;
-                          
+ 
                       if ( code == 't' ) _ui_drawtextcursor ( t ) ;
                       else _ui_drawtablecursor ( t ) ;
                       uiUpdateOn ( t->D ) ;
@@ -12267,7 +12270,7 @@ void transch(int c) {
               if ( t->elmt [ curbox ] .df [ t->elmt [ curbox ] .cursor ] != '\0' ) {
                   t->elmt [ curbox ] .cursor += 1;
                   if ( ( t->elmt [ curbox ] .cursor - t->elmt [ curbox ] .startchar ) > ln ) t->elmt [ curbox ] .startchar+= 1;
-                      
+ 
                   if ( code == 't' ) _ui_drawtextcursor ( t ) ;
                   else _ui_drawtablecursor ( t ) ;
                   uiUpdateOn ( t->D ) ;
@@ -12282,7 +12285,7 @@ void transch(int c) {
           if ( t->elmt [ curbox ] .cursor > 0 ) {
               t->elmt [ curbox ] .cursor -= 1;
               if ( ( t->elmt [ curbox ] .cursor < t->elmt [ curbox ] .startchar ) ) t->elmt [ curbox ] .startchar = t->elmt [ curbox ] .cursor;
-                  
+ 
               if ( code == 't' ) _ui_drawtextcursor ( t ) ;
               else _ui_drawtablecursor ( t ) ;
               uiUpdateOn ( t->D ) ;
@@ -12391,7 +12394,7 @@ void transch(int c) {
               t->elmt [ curbox ] .cursor += ret;
               ln = t->elmt [ curbox ] .ln;
               if ( ( t->elmt [ curbox ] .cursor - t->elmt [ curbox ] .startchar ) >= ln ) t->elmt [ curbox ] .startchar+= 1;
-                  
+ 
               if ( code == 't' ) _ui_drawtextcursor ( t ) ;
               else _ui_drawtablecursor ( t ) ;
               uiUpdateOn ( t->D ) ;
@@ -12406,6 +12409,7 @@ void transch(int c) {
       T_ELMT *elmt;
       int Active = 0 , box , nxbox;
       DIT *T = ( DIT * ) t->T;
+      char *df;
       int k;
       key = kbe.key;
 //  tit = t->tit;
@@ -12494,10 +12498,12 @@ void transch(int c) {
               col = t->col;
               row = t->row;
               curbox = row*t->nx+col;
+              df =  t->elmt [ curbox ] .df;
               if ( t->elmt [ curbox ] .cursor > 0 ) {
                   t->elmt [ curbox ] .cursor -= 1;
+                  while(df[ t->elmt [ curbox ] .cursor ]==127 ) t->elmt [ curbox ] .cursor -= 1;
                   if ( ( t->elmt [ curbox ] .cursor < t->elmt [ curbox ] .startchar ) ) t->elmt [ curbox ] .startchar = t->elmt [ curbox ] .cursor;
-                      
+ 
                   _ui_drawtablecursor ( t ) ;
                   uiUpdateOn ( t->D ) ;
               }
@@ -12529,11 +12535,13 @@ void transch(int c) {
               row = t->row;
               curbox = row*t->nx+col;
               ln = t->elmt [ curbox ] .ln-1;
+              df =  t->elmt [ curbox ] .df;
               if ( t->elmt [ curbox ] .cursor < ( MAXTITEMLN-2 ) ) {
                   if ( t->elmt [ curbox ] .df [ t->elmt [ curbox ] .cursor ] != '\0' ) {
                       t->elmt [ curbox ] .cursor += 1;
+                  while(df[ t->elmt [ curbox ] .cursor ]==127 ) t->elmt [ curbox ] .cursor += 1;
                       if ( ( t->elmt [ curbox ] .cursor - t->elmt [ curbox ] .startchar ) > ln ) t->elmt [ curbox ] .startchar+= 1;
-                          
+ 
                       _ui_drawtablecursor ( t ) ;
                       uiUpdateOn ( t->D ) ;
                   }
@@ -12567,12 +12575,14 @@ void transch(int c) {
           col = t->col;
           row = t->row;
           curbox = row*t->nx+col;
+              df =  t->elmt [ curbox ] .df;
           ln = t->elmt [ curbox ] .ln-1;
           if ( t->elmt [ curbox ] .cursor < ( MAXTITEMLN-2 ) ) {
               if ( t->elmt [ curbox ] .df [ t->elmt [ curbox ] .cursor ] != '\0' ) {
                   t->elmt [ curbox ] .cursor += 1;
+                  while(df[ t->elmt [ curbox ] .cursor ]==127 ) t->elmt [ curbox ] .cursor += 1;
                   if ( ( t->elmt [ curbox ] .cursor - t->elmt [ curbox ] .startchar ) > ln ) t->elmt [ curbox ] .startchar+= 1;
-                      
+ 
                   _ui_drawtablecursor ( t ) ;
                   uiUpdateOn ( t->D ) ;
               }
@@ -12583,10 +12593,12 @@ void transch(int c) {
           col = t->col;
           row = t->row;
           curbox = row*t->nx+col;
+              df =  t->elmt [ curbox ] .df;
           if ( t->elmt [ curbox ] .cursor > 0 ) {
               t->elmt [ curbox ] .cursor -= 1;
+                  while(df[ t->elmt [ curbox ] .cursor ]==127 ) t->elmt [ curbox ] .cursor -= 1;
               if ( ( t->elmt [ curbox ] .cursor < t->elmt [ curbox ] .startchar ) ) t->elmt [ curbox ] .startchar = t->elmt [ curbox ] .cursor;
-                  
+ 
               _ui_drawtablecursor ( t ) ;
               uiUpdateOn ( t->D ) ;
           }
@@ -12614,6 +12626,7 @@ void transch(int c) {
           uiUpdateOn ( t->D ) ;
           return -1;
       }
+#if 0
       if ( ui_Escape ( key ) || ui_Clear ( key ) ) {
           col = t->col;
           row = t->row;
@@ -12626,10 +12639,16 @@ void transch(int c) {
           uiUpdateOn ( t->D ) ;
           return -1;
       }
+#endif
       if ( ui_Delete ( key ) ) {
           col = t->col;
           row = t->row;
           curbox = row*t->nx+col;
+              df =  t->elmt [ curbox ] .df;
+               while(df[ t->elmt [ curbox ] .cursor +1 ]==127 ) {
+                _ui_deletechar ( t->elmt [ curbox ] .df , t->elmt [ curbox ] .cursor ) ;
+               }
+
           if ( _ui_deletechar ( t->elmt [ curbox ] .df , t->elmt [ curbox ] .cursor ) ) \
           {
               _ui_drawtablecursor ( t ) ;
@@ -12641,10 +12660,16 @@ void transch(int c) {
           col = t->col;
           row = t->row;
           curbox = row*t->nx+col;
-	  // NEw
+	  // NEW
           if ( elmt [ curbox ] .hlt ) {
               if ( _ui_cuttablehighlightstring ( t ) ) return -1;
           }
+           df =  t->elmt [ curbox ] .df;
+               while(df[ t->elmt [ curbox ] .cursor -1 ]==127 ) { // may need further checking
+                  t->elmt [ curbox ] .cursor -= 1;
+                  if ( ( t->elmt [ curbox ] .cursor < t->elmt [ curbox ] .startchar ) ) t->elmt [ curbox ] .startchar = t->elmt [ curbox ] .cursor;
+                _ui_deletechar ( t->elmt [ curbox ] .df , t->elmt [ curbox ] .cursor ) ;
+           }
 	  //End New
           if ( t->elmt [ curbox ] .cursor > 0 ) {
               if ( t->elmt [ curbox ] .startchar > 0 ) {
@@ -12659,7 +12684,7 @@ void transch(int c) {
               else {
                   t->elmt [ curbox ] .cursor -= 1;
                   if ( ( t->elmt [ curbox ] .cursor < t->elmt [ curbox ] .startchar ) ) t->elmt [ curbox ] .startchar = t->elmt [ curbox ] .cursor;
-                      
+ 
                   if ( _ui_deletechar ( t->elmt [ curbox ] .df , t->elmt [ curbox ] .cursor ) ) \
                   {
                       _ui_drawtablecursor ( t ) ;
@@ -13791,7 +13816,7 @@ void transch(int c) {
           }
           curpos = ( elmt [ k ] .cursor-elmt [ k ] .startchar ) *FontSize+FontSize/2;
           kgBoxFill ( fid , curpos , yy-th*0.3 , curpos+FontSize , th+yy , D->gc.cur_clr , 0 ) ;
-              
+ 
       }
 //        img = kgGetResizedImage(fid);
       img = kgGetSharpImage ( fid ) ;
@@ -13815,7 +13840,8 @@ void transch(int c) {
 	  }
 	  else if(Buf[i]=='\t') {
 //		  strcpy(stmp,(char *)"!f35B");
-		  stmp[0]=' ';
+		  strcpy(stmp,(char *)"!f34t");
+//		  stmp[0]=' ';
 	  }
 	  else if(Buf[i]==127) stmp[0]=' ';
           kgWriteText ( fid , stmp ) ;
