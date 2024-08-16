@@ -806,7 +806,7 @@ typedef struct _GboxInfo {
 typedef union dia_u { DIT *t;DIB *b;DIN *N;DIF *f;DID *d;DIBN *n;DIO *o;
                       DIV *v;DIZ *z; DIW *w;DIM *m;DIX *x;DIY *y;DIL *h;
                       DILN *H;DIP *p; DIG *g;DII *i;DIE *e;DIS *s;DIHB *B;
-                      DICH *c;DIRA *r; 
+                      DICH *c;DIRA *r;
 } DIA;
 typedef struct _kbevent {
  int event; /* 0:mouse movement,1:button press,2:button release,3:mouse move+button press,
@@ -1018,10 +1018,11 @@ int kgGetTableCurpos ( void *Tmp );
 void * kgSetWidgetImage(void *Widget,void *img);
 void * kgGetWidgetImage(void *Widget);
 void kgSetTextItemEcho(void *Tmp,int item, int echo);
-void kgSetScrollLength(void *widget,int percent);
-void kgSetScrollPos(void *widget,int percent);
-int  kgGetScrollPos(void *widget);
-int  kgGetScrollLength(void *widget);
+void kgSetScrollLength(void *widget,double percent);
+void kgSetScrollPos(void *widget,double percent);
+int kgSetScrollMovement ( void *Tmp , double mvnt) ;
+double  kgGetScrollPos(void *widget);
+double  kgGetScrollLength(void *widget);
 int    kgWrite(void *Widget, char *str) ;
 int    kgPrintf(void *Tmp, int infob,char *str) ;
 int    kgSplash(void *Tmp,int item,char *msg);
@@ -1573,6 +1574,9 @@ void Dadd(Dlink *F,void  *buf) ;
 Dlink *Dcopy(Dlink *LN) ;
 Dlink *Dsublist(Dlink *LN,void *s,int Dcondition(void *,void *)) ;
 Dlink *Dnewlist(Dlink *LN,void * Dnewrule(void *)) ;
+int Dcomplist ( Dlink *L1 , Dlink *L2 , int comprecord
+      ( void *tmp1 , void *tmp2 ) ) ;
+
 /*
   The comparison return 1 if the criteria satisfied
   and repositioning is done

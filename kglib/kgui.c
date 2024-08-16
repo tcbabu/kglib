@@ -1,6 +1,6 @@
 /*
   Version 2.1
-  DATE 8/07/97 
+  DATE 8/07/97
   With file browser and improved GUI
   Ver 8.0
   Dated 31/07/2012
@@ -7080,7 +7080,7 @@
           return 0;
       }
   }
-  void kgSetScrollLength ( void *wid , int percent ) {
+  void kgSetScrollLength ( void *wid , double percent ) {
       DIV *V;
       V = ( DIV * ) wid;
       switch ( V->code ) {
@@ -7092,7 +7092,7 @@
           break;
       }
   }
-  void kgSetScrollPos ( void *wid , int percent ) {
+  void kgSetScrollPos ( void *wid , double percent ) {
       DIV *V;
       V = ( DIV * ) wid;
       switch ( V->code ) {
@@ -7104,7 +7104,7 @@
           break;
       }
   }
-  int kgGetScrollPos ( void *wid ) {
+  double  kgGetScrollPos ( void *wid ) {
       DIV *V;
       V = ( DIV * ) wid;
       switch ( V->code ) {
@@ -7116,7 +7116,7 @@
           break;
       }
   }
-  int kgGetScrollLength ( void *wid ) {
+  double  kgGetScrollLength ( void *wid ) {
       DIV *V;
       V = ( DIV * ) wid;
       switch ( V->code ) {
@@ -9953,7 +9953,7 @@
       cell= Tx->row*Tx->nx+Tx->col;
       return E[cell].cursor;
   }
-  
+ 
   int kgGetTableStartChar ( void *Tmp ) {
       DIT *T = ( DIT * ) Tmp;
       int cell;
@@ -9966,7 +9966,7 @@
       cell= Tx->row*Tx->nx+Tx->col;
       return E[cell].startchar;
   }
-  
+ 
   int kgSetTableCursor ( void * Tmp , int cell) {
       int col,row;
       DIT *T = ( DIT * ) Tmp;
@@ -10036,5 +10036,15 @@
           E [ box ] .cursor = pos ;
           _ui_drawtablecursor ( Tx ) ;
       }
+      return 1;
+  }
+  int kgSetScrollMovement ( void *Tmp , double mvmt) {
+      DIV *V =( DIV * ) Tmp;
+      if ( (V->code != 'v')&&(V->code != 'z') ) {
+          fprintf ( stderr , "Not a Scroll\n" ) ;
+          return 0;
+      }
+      V->mvmt=mvmt;
+      kgUpdateWidget(V);
       return 1;
   }

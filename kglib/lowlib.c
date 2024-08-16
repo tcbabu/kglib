@@ -11,7 +11,7 @@
 #define D_RESTORE
 #define LINUX
 #define ZBUFFER
-#define MINV 6
+#define MINV 20
 #define GAP 0.05
 #define HFAC 1.30
 #include <stdio.h>
@@ -20133,7 +20133,7 @@ void transch(int c) {
   void _uiMoveVVertPointer ( void *tmp ) {
       DIV *y;
       int xx , yy , j , item , sh , sy , h , w , scr_ln , pos , nx , hitem , offset , himax;
-          
+ 
       float fac;
       DIALOG *D;
       y = ( DIV * ) tmp;
@@ -20154,7 +20154,7 @@ void transch(int c) {
   void _uiMoveZVertPointer ( void *tmp ) {
       DIZ *y;
       int xx , yy , j , item , sh , sy , h , w , scr_ln , pos , nx , hitem , offset , himax;
-          
+       
       float fac;
       DIALOG *D;
       y = ( DIZ * ) tmp;
@@ -20175,7 +20175,7 @@ void transch(int c) {
   void _uiMoveEVertPointer ( void *tmp ) {
       DIE *y;
       int xx , yy , j , item , sh , sy , h , w , scr_ln , pos , nx , hitem , offset , himax;
-          
+        
       float fac;
       DIALOG *D;
       BRW_STR *br;
@@ -20215,7 +20215,7 @@ void transch(int c) {
   void _uiMoveMVertPointer ( void *tmp ) {
       DIS *y;
       int xx , yy , j , item , sh , sy , h , w , scr_ln , pos , nx , hitem , offset , himax;
-          
+         
       float fac;
       DIALOG *D;
       BRW_STR *br;
@@ -20255,7 +20255,7 @@ void transch(int c) {
   void _uiMoveWVertPointer ( void *tmp ) {
       DIW *y;
       int xx , yy , j , item , sh , sy , h , w , scr_ln , pos , nx , hitem , offset , himax;
-          
+         
       float fac;
       DIALOG *D;
       BRW_STR *br;
