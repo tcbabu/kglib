@@ -15227,7 +15227,7 @@ void transch(int c) {
 // TCBTCB
 //As on 24thFeb 2016 stripblnki(to remove end blank) is stopped 
 //      stripblnk(elmt->df);
-#if 0      
+#if 1      
                   if ( strcmp ( chpt , elmt->df ) != 0 ) {
                       strcpy ( chpt , elmt->df ) ;
                       if ( ret == 0 ) ret = 1;

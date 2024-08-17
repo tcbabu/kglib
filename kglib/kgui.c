@@ -3536,7 +3536,7 @@
             kgSetClipBoard(D,str);
               WC ( D )->Pstr = str;
           }
-	  else printf("Highlight string is NULL\n");
+//	  else printf("Highlight string is NULL\n");
 //          _ui_cuthighlightstring(tx);
           break;
           case 4:
