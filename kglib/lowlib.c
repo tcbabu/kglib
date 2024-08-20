@@ -6565,7 +6565,6 @@ void transch(int c) {
           xsize = ln*FontSize+FontSize/2;
           ysize = 2.2*FontSize;
           stmp [ 1 ] = '\0';
-//   fid = kgInitImage((int)(xsize),ysize,2);
           fid = kgInitImage ( ( int ) ( xsize ) , ysize , TRESIZE ) ;
           kgUserFrame ( fid , 0. , 0. , ( float ) xsize , ( float ) ysize ) ;
           th = FontSize*1.3;
@@ -12124,7 +12123,8 @@ void transch(int c) {
                       elmt [ box ] .cursor = pos+elmt [ box ] .startchar;
                       while(df[ elmt [ box ] .cursor]==127)  elmt [ box ] .cursor +=1;
                   }
-                  _ui_drawtablecursor ( t ) ;
+//                  _ui_drawtablecursor ( t ) ;
+                  _ui_updatetablecursor ( t ) ;
                   uiUpdateOn ( t->D ) ;
                   OK = 1;
                   break;
@@ -13753,6 +13753,78 @@ void transch(int c) {
       kgFreeImage ( img ) ;
       return 1;
   }
+  int kgScrollUpTable(void *Tmp,int row) {
+	  /* Not Useful as of 19th Aug 24 */
+       DIT *T = (DIT *)Tmp;
+       if(T->code != 'T') return 0;
+       void *img=NULL;
+       int i,j,k,cell,cell1;
+      T_ELMT *elmt;
+      DIALOG *D = T->D;
+      TX_STR *tx = T->tstr;
+      elmt = tx->elmt;
+      int x1 , y1 , x2 , y2;
+       for(j=1;j>=row;j++) {
+	       k = row-j;
+          for (i=0;i<T->nx;i++) {
+            cell = (k)*T->nx+i;
+      x1 = elmt [ cell ] .x1;
+      y1 = elmt [ cell ] .y1;
+      x2 = elmt [ cell ] .x2;
+      y2 = elmt [ cell ] .y2;
+             img = kgGetBackground(D,x1,y1,x2,y2);            
+             cell1 = cell+T->nx;
+      x1 = elmt [ cell1 ] .x1;
+      y1 = elmt [ cell1 ] .y1;
+      x2 = elmt [ cell1 ] .x2;
+      y2 = elmt [ cell1 ] .y2;
+      strcpy(elmt[cell1].df,elmt[cell].df);
+//      kgImage ( D , img , x1 , y1 , x2-x1 , y2-y1 , 0.0 , 1.0 ) ;
+                      kgRestoreImage ( D , img , x1 , y2 , x2-x1 , y2-y1 ) ;
+      kgFreeImage(img);
+          }
+       }
+//       kgUpdateWidget(T);
+//     kgUpdateOn(D);
+       return 1;
+  }
+  int kgScrollDownTable(void *Tmp,int row) {
+	  /* Not Useful as of 19th Aug 24 */
+       DIT *T = (DIT *)Tmp;
+       if(T->code != 'T') return 0;
+       void *img=NULL;
+       int i,j,k,cell,cell1;
+      T_ELMT *elmt;
+      DIALOG *D = T->D;
+      TX_STR *tx = T->tstr;
+      elmt = tx->elmt;
+      int x1 , y1 , x2 , y2;
+       for(k=1;k<=row;k++) {
+          for (i=0;i<T->nx;i++) {
+            cell = (k)*T->nx+i;
+      x1 = elmt [ cell ] .x1;
+      y1 = elmt [ cell ] .y1;
+      x2 = elmt [ cell ] .x2;
+      y2 = elmt [ cell ] .y2;
+             img = kgGetBackground(D,x1,y1,x2,y2);            
+             cell1 = cell-T->nx;
+      x1 = elmt [ cell1 ] .x1;
+      y1 = elmt [ cell1 ] .y1;
+      x2 = elmt [ cell1] .x2;
+      y2 = elmt [ cell1] .y2;
+      strcpy(elmt[cell1].df,elmt[cell].df);
+      if(img != NULL) {
+//      kgImage ( D , img , x1 , y1 , x2-x1 , y2-y1 , 0.0 , 1.0 ) ;
+                      kgRestoreImage ( D , img , x1 , y2 , x2-x1 , y2-y1 ) ;
+      kgFreeImage(img);
+      }
+      else fprintf(stderr,"Failed to copy screen\n");
+          }
+       }
+ //      kgUpdateWidget(T);
+//       kgUpdateOn(D);
+       return 1;
+  }
   int _uiPrintTableCell ( DIT *T , int cell , int drcur ) {
       T_ELMT *elmt;
       DIALOG *D = T->D;
@@ -13853,7 +13925,120 @@ void transch(int c) {
       img = kgGetSharpImage ( fid ) ;
       kgCloseImage ( fid ) ;
       kgImage ( D , img , x1 , y1 , xsize , ysize , 0.0 , 1.0 ) ;
+      kgFreeImage(elmt[k].img);
+//      kgFreeImage ( img ) ;
+      elmt[k].img = img;
+      return 1;
+  }
+  int _uiUpdateTableCell ( DIT *T , int cell , int drcur ) {
+      T_ELMT *elmt;
+      DIALOG *D = T->D;
+      TX_STR *tx = T->tstr;
+      int x1 , y1 , x2 , y2;
+      int k = cell , i;
+      int type = T->type;
+      char *str;
+      int ch;
+      int curbox;
+      int size , xsize , ysize , FontSize , sw;
+      float th , tw , tg , xx , yy;
+      int tfill , tclr;
+      char Buf [ 500 ] , stmp [ 10 ] ;
+      void *fid , *img;
+      float curpos;
+      int ylng;
+      kgWC *wc;
+      kgDC *dc;
+      wc = WC ( D ) ;
+      elmt = tx->elmt;
+      curbox = tx->row*tx->nx+tx->col;
+      strcpy ( stmp , ( char * ) " " ) ;
+      FontSize = T->FontSize;
+      sw = elmt [ k ] .sw;
+      x1 = elmt [ k ] .x1;
+      y1 = elmt [ k ] .y1;
+      x2 = elmt [ k ] .x2;
+      y2 = elmt [ k ] .y2;
+      tclr = tx->gc.tabl_char;
+      tfill = tx->gc.tabl_fill;
+      if ( sw == 0 ) tclr = tx->gc.tabl_hchar;
+#if 1
+      if ( type == 1 ) {
+          y1 -= 2;
+          y2 += 2;
+      }
+#endif
+      size = get_t_item_size ( elmt [ k ] .fmt ) ;
+      str = elmt [ k ] .df;
+      strcpy ( Buf , str+elmt [ k ] .startchar ) ;
+      Buf [ size+1 ] = '\0';
+      ylng = strlen ( Buf ) *FontSize+FontSize*2;
+      xsize = ( x2-x1 ) ;
+      ysize = ( y2-y1 ) ;
+      fid = kgInitImage ( xsize+1 , ysize+1 , 1 ) ;
+      kgUserFrame ( fid , 0. , 0. , ( float ) xsize , ( float ) ysize ) ;
+      kgBoxFill ( fid , 0.0 , 0.0 , ( float ) xsize ,  \
+          ( float ) ysize , tfill , 0 ) ;
+      th = FontSize*1.3;
+      tw = FontSize+1;
+      yy = 0.6*FontSize;
+      if ( drcur ) {
+          if ( elmt [ k ] .hlt ) {
+              float hxs , hxe;
+              hxs = elmt [ k ] .hxs;
+              hxe = elmt [ k ] .hxe;
+              if ( ( hxe-hxs ) > 2 ) {
+                  kgBoxFill ( fid , hxs , yy-th*0.3 , hxe , th+yy , tx->gc.high_clr , 0 ) ;
+              }
+          }
+          curpos = ( elmt [ k ] .cursor-elmt [ k ] .startchar ) *FontSize+FontSize/2;
+          kgBoxFill ( fid , curpos , yy-th*0.3 , curpos+FontSize , th+yy , D->gc.cur_clr , 0 ) ;
+ 
+      }
+//        img = kgGetResizedImage(fid);
+      img = kgGetSharpImage ( fid ) ;
+      kgCloseImage ( fid ) ;
+      kgImage ( D , img , x1 , y1 , xsize , ysize , 0.0 , 1.0 ) ;
       kgFreeImage ( img ) ;
+      if ( xsize > ylng ) xsize = ylng;
+      img = elmt[k].img;
+      if(img== NULL) {
+      fid = kgInitImage ( xsize+1 , ysize+1 , TRESIZE ) ;
+      kgUserFrame ( fid , 0. , 0. , ( float ) xsize , ( float ) ysize ) ;
+      kgTextFont ( fid , T->Font ) ;
+      kgTextSize ( fid , th , tw , GAP*tw ) ;
+      kgTextColor ( fid , tclr ) ;
+      xx = FontSize/2;
+      yy = 0.6*FontSize;
+      i = 0;
+      while ( (Buf [ i ] >= ' ' )||(Buf[i]=='\t')) {
+          kgMove2f ( fid , xx , yy ) ;
+          stmp [ 0 ] = Buf [ i ] ;
+	  if(Buf[i]=='!') {
+		  strcpy(stmp,(char *)"!!");
+	  }
+	  else if(Buf[i]=='\t') {
+//		  strcpy(stmp,(char *)"!f35B");
+		  strcpy(stmp,(char *)"!f34t");
+//		  stmp[0]=' ';
+	  }
+	  else if(Buf[i]==127) stmp[0]=' ';
+          kgWriteText ( fid , stmp ) ;
+	  stmp[1]='\0';
+          xx += FontSize;
+          i++;
+      }
+//          img = kgGetResizedImage(fid);
+      img = kgGetSharpImage ( fid ) ;
+      kgCloseImage ( fid ) ;
+      kgImage ( D , img , x1 , y1 , xsize , ysize , 0.0 , 1.0 ) ;
+      kgFreeImage(elmt[k].img);
+//      kgFreeImage ( img ) ;
+      elmt[k].img = img;
+}
+else {
+kgImage ( D , img , x1 , y1 , xsize , ysize , 0.0 , 1.0 ) ;
+}
       return 1;
   }
   void _ui_drawtablecursor ( TX_STR *tx ) {
@@ -13864,7 +14049,6 @@ void transch(int c) {
       T_ELMT *elmt;
       D = ( DIALOG * ) ( tx->D ) ;
       T = tx->T;
-//  tit= tx->tit;
       elmt = tx->elmt;
       curbox = tx->row*tx->nx+tx->col;
 #ifndef D_NEWTBL
@@ -13906,6 +14090,13 @@ void transch(int c) {
 #endif
       return;
   }
+  void _ui_updatetablecursor ( TX_STR *tx ) {
+      int curbox ;
+      DIT *T;
+      T = tx->T;
+      curbox = tx->row*tx->nx+tx->col;
+      _uiUpdateTableCell ( T , curbox , 1 ) ;
+  }
   void _ui_cleantablecursor ( TX_STR *tx ) {
       char *df;
       int curbox , cx , cy , ln , ch;
@@ -13935,7 +14126,7 @@ void transch(int c) {
       df [ ln ] = ch;
 //  uiDefaultGuiFontSize(D);
 #else
-      _uiPrintTableCell ( T , curbox , 0 ) ;
+      _uiUpdateTableCell ( T , curbox , 0 ) ;
 #endif
       return;
   }
@@ -17372,6 +17563,7 @@ void transch(int c) {
           item = _uiGetSItem ( kbe , y->rsx1 , y->rsy1+sy , y->rsx2 , y->rsy1+sy2 ) ;
           if ( item ) {
               do {
+#if 1
                   iy = kbe.y - y->rsy1;
                   iy = 100*iy/ ( ln ) ;
                   if ( iy < 0 ) iy = 0;
@@ -17383,6 +17575,7 @@ void transch(int c) {
                       if ( y->Update != NULL ) y->Update ( y->df , y->item , y->D ) ;
                       else if ( D->Callback != NULL ) ret = D->Callback ( D , & ( D->kb ) ) ;
                   }
+#endif
                   ret = -1;
                   count = 0;
                   while ( ( ( evnt = kgCheckEvent ( y->D , & kb ) ) != 0 ) && \
@@ -17392,6 +17585,20 @@ void transch(int c) {
                       if ( count == 50 ) break;
                   }
                   if ( evnt ) kbe = kb;
+#if 0
+                  iy = kbe.y - y->rsy1;
+                  iy = 100*iy/ ( ln ) ;
+                  if ( iy < 0 ) iy = 0;
+                  if ( iy > ( 100-y->ds ) ) iy = 100-y->ds+0.00001;
+                  if ( iy != y->df ) {
+                      y->df = iy;
+                      _uiMoveVVertPointer ( y ) ;
+                      uiUpdateOn ( y->D ) ;
+                      if ( y->Update != NULL ) y->Update ( y->df , y->item , y->D ) ;
+                      else if ( D->Callback != NULL ) ret = D->Callback ( D , & ( D->kb ) ) ;
+                  }
+                  ret =-1;
+#endif
               } while ( ( kbe ) .event != 2 ) ;
           }
       }

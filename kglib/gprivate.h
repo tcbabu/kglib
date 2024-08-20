@@ -618,6 +618,7 @@ int  uiset_atribs(DIG *G);
  void uidrarrow(DIG *G,float x1,float y1, float x2,float y2,float fac);
 void uiborder(DIG *G,float x1,float y1,float x2,float y2,int wd,int clr);
 void _ui_drawtablecursor (TX_STR *tx);
+void _ui_updatetablecursor (TX_STR *tx);
 void _ui_cleantablecursor (TX_STR *tx);
 int _ui_processtableboxpress(TX_STR *t,KBEVENT kbe);
 int MousePressInTableBox(TX_STR *tptr,KBEVENT kbevent);
