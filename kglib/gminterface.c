@@ -1989,6 +1989,113 @@
   }
 #else
 #endif
+  void *uiAddTransparentgmImage ( GMIMG *png1 , GMIMG *png2 , int Xshft , int Yshft )  \
+      {
+/*
+  Second Picture is put on the first and the
+  pointer to the first picture is returned
+*/
+      int w , h , bkgrclr , xsize , ysize;
+      float rzfac;
+      int i , j , k = 0 , kk;
+      unsigned int opacity , alpha , alphas;
+      int xoff , yoff;
+      float f , f1;
+      GMIMG *dpng = NULL;
+      Image *image , *tmpimg , *dimage , *oimage;
+      PixelPacket *pixels , *spixels , *opixels;
+      unsigned char r , g , b , bg_r , bg_g , bg_b;
+      unsigned int red , green , blue;
+      if ( png1 == NULL ) return NULL;
+      if ( png2 == NULL ) return NULL;
+      image = ( Image * ) ( png1->image ) ;
+      dimage = ( Image * ) ( png2->image ) ;
+      uiInitGm ( ) ;
+      pixels = GetImagePixels ( dimage , 0 , 0 , dimage->columns , dimage->rows ) ;
+      spixels = GetImagePixels ( image , 0 , 0 , image->columns , image->rows ) ;
+      w = image->columns;
+      h = image->rows;
+      xsize = image->columns;
+      ysize = image->rows;
+      xoff = Xshft;
+      yoff = Yshft;
+      k = 0;
+      for ( j = yoff;j < ( yoff+dimage->rows ) ;j++ ) {
+          for ( i = xoff;i < ( xoff+dimage->columns ) ;i++ ) {
+              opacity = pixels [ k ] .opacity;
+              alpha = 255- opacity;
+              if ( ( alpha == 0 ) ) {k++;continue;}
+              kk = ( j*xsize+i ) ;
+              opacity = spixels [ kk ] .opacity;
+              alphas = 255 -opacity;
+              if ( alpha == 0xff ) {
+                  blue = pixels [ k ] .blue;
+                  green = pixels [ k ] .green;
+                  red = pixels [ k ] .red;
+              }
+              else {
+                  f1 = alphas/255.0;
+                  f = alpha/255.0;
+//          f1 =f+f1;
+//          f = f/f1;
+//          f1 = f1/(1.+f1);
+//TCTCB
+                  bg_b = spixels [ kk ] .blue ;
+                  bg_g = spixels [ kk ] .green ;
+                  bg_r = spixels [ kk ] .red ;
+                  b = pixels [ k ] .blue;
+                  g = pixels [ k ] .green;
+                  r = pixels [ k ] .red;
+#if 0
+                  if ( alphas == 0 ) f = 1.0;
+                  alpha += alphas;
+                  if ( alpha > 255 ) alpha = 255;
+                  spixels [ kk ] .opacity = 255 -alpha;
+#else
+                  f1 = 1-f;
+#endif
+                  red = bg_r*f1+r*f;
+                  green = bg_g*f1+g*f;
+                  blue = bg_b*f1+b*f;
+              }
+              if ( blue > 255 ) blue = 255;
+              if ( green > 255 ) green = 255;
+              if ( red > 255 ) red = 255;
+              spixels [ kk ] .blue = blue;
+              spixels [ kk ] .green = green;
+              spixels [ kk ] .red = red;
+              k++;
+          }
+      }
+      SyncImagePixels ( image ) ;
+      return png1;
+  }
+  void *kgAddTransparentImage ( void *png1 , void *png2 , int Xshft , int Yshft )  \
+      {
+      int w1 , h1 , w2 , h2 , h , w;
+      GMIMG *img1 , *img2 , *img3;
+      img1 = ( GMIMG * ) png1;
+      img2 = ( GMIMG * ) png2;
+      if ( img1 == NULL ) { printf ( "NULL\n" ) ;return NULL;}
+      if ( img2 == NULL ) { printf ( "NULL 2\n" ) ;return png1;}
+      w1 = img1->image_width;
+      h1 = img1->image_height;
+      w2 = img2->image_width;
+      h2 = img2->image_height;
+//   printf("%d %d %d %d\n",w1,h1,w2,h2);
+      if ( ( w2 > w1 ) || ( h2 > h1 ) ) {
+          float fac , fac1;
+          fac = ( float ) w1/ ( float ) w2;
+          fac1 = ( float ) h1/ ( float ) h2;
+          if ( fac1 < fac ) fac = fac1;
+          img3 = kgResizeImage ( img2 , fac*0.8 ) ;
+          img2 = uiAddTransparentgmImage ( img1 , img3 , Xshft , Yshft ) ;
+          kgFreeImage ( img3 ) ;
+          return img2;
+      }
+      else return uiAddTransparentgmImage ( ( GMIMG * ) png1 ,  \
+          ( GMIMG * ) png2 , Xshft , Yshft ) ;
+  }
   void *kgMergeTransparentImage ( void *png1 , void *png2 , int Xshft , int Yshft )  \
       {
       int w1 , h1 , w2 , h2 , h , w;
@@ -2347,6 +2454,63 @@
       SyncImagePixels ( img ) ;
       return Img;
   }
+int  kgSetImageColor ( void *Img , int r,int g,int b ) {
+  /* Adding Transparency to Image */
+      int w , h , i , j , k;
+      GMIMG *png;
+      Image *img;
+      int channels = 3 , opacity , red , green , blue;
+      float  hu , s , v;
+      float f;
+      PixelPacket *pixels , *dest;
+      if ( Img == NULL ) return 0;
+      png = ( GMIMG * ) Img;
+      channels = png->image_channels;
+      png->image_channels = 4;
+      img = png->image;
+      w = img->columns;
+      h = img->rows;
+      img->matte = 1;
+      img->background_color.opacity = 255;
+      pixels = ( PixelPacket * ) uiPixelsgmImage ( Img ) ;
+      for ( i = 0; i < h; ++i ) {
+          dest = pixels + i*w;
+          for ( j = 0;j < w; j++ ) {
+            if(dest->opacity != 255) {
+              dest->red = r;
+              dest->green = g;
+              dest->blue = b;
+            }
+              dest++;
+          }
+      }
+      SyncImagePixels ( img ) ;
+      return 1;
+  }
+  int kgSetPixelAlpha ( void *Img , int col,int row,int alpha ) {
+  /* Adding Transparency to Image */
+      int w , h , i , j , k;
+      GMIMG *png;
+      Image *img;
+      int channels = 3 , opacity , red , green , blue;
+      float r , g , b , hu , s , v;
+      float f;
+      PixelPacket *pixels , *dest;
+      if ( Img == NULL ) return 0;
+      png = ( GMIMG * ) Img;
+      channels = png->image_channels;
+      png->image_channels = 4;
+      img = png->image;
+      w = img->columns;
+      h = img->rows;
+      img->matte = 1;
+      img->background_color.opacity = 255;
+      pixels = ( PixelPacket * ) uiPixelsgmImage ( Img ) ;
+      dest = pixels + row*w+col;
+      dest->opacity = alpha;
+      SyncImagePixels ( img ) ;
+      return 1;
+  }
   void *kgModifyImageHSV ( void *Img , float hfac , float sfac , float vfac ) {
   /* Adding Transparency to Image */
       int w , h , i , j , k;
@@ -2564,6 +2728,178 @@
           return img2;
       }
       else return uiMergegmImages ( ( GMIMG * ) png1 ,  \
+          ( GMIMG * ) png2 , Xshft , Yshft ) ;
+  }
+  void *uiAddgmImages ( GMIMG *png1 , GMIMG *png2 , int Xshft , int Yshft ) {
+/*
+  Second Picture is put on the first and the
+  pointer to the first picture is returned
+*/
+      int w , h , bkgrclr , xsize , ysize;
+      float rzfac;
+      int i , j , k = 0 , kk;
+      unsigned int opacity , alpha , alphas;
+      int xoff , yoff;
+      float f , f1;
+      GMIMG *dpng = NULL;
+      Image *image , *tmpimg , *dimage , *oimage;
+      PixelPacket *pixels , *spixels , *opixels;
+      unsigned char r , g , b , bg_r , bg_g , bg_b;
+      unsigned int red , green , blue;
+      if ( png1 == NULL ) return NULL;
+      if ( png2 == NULL ) return NULL;
+      image = ( Image * ) ( png1->image ) ;
+      dimage = ( Image * ) ( png2->image ) ;
+      uiInitGm ( ) ;
+      pixels = GetImagePixels ( dimage , 0 , 0 , dimage->columns , dimage->rows ) ;
+      spixels = GetImagePixels ( image , 0 , 0 , image->columns , image->rows ) ;
+      w = image->columns;
+      h = image->rows;
+      xsize = image->columns;
+      ysize = image->rows;
+      xoff = Xshft;
+      yoff = Yshft;
+      k = 0;
+      for ( j = yoff;j < ( yoff+dimage->rows ) ;j++ ) {
+          for ( i = xoff;i < ( xoff+dimage->columns ) ;i++ ) {
+              opacity = pixels [ k ] .opacity;
+              alpha = 255- opacity;
+              if ( ( alpha == 0 ) ) {k++;continue;}
+              kk = ( j*xsize+i ) ;
+              opacity = spixels [ kk ] .opacity;
+              alphas = 255 -opacity;
+              if ( alpha == 0xff ) {
+                  blue = pixels [ k ] .blue;
+                  green = pixels [ k ] .green;
+                  red = pixels [ k ] .red;
+              }
+              else {
+                  f1 = alphas/255.0;
+                  f = alpha/255.0;
+//          f1 =f+f1;
+//          f = f/f1;
+//          f1 = f1/(1.+f1);
+                  if ( alphas == 0 ) f = 1.0;
+                  f1 = 1-f;
+                  bg_b = spixels [ kk ] .blue ;
+                  bg_g = spixels [ kk ] .green ;
+                  bg_r = spixels [ kk ] .red ;
+                  b = pixels [ k ] .blue;
+                  g = pixels [ k ] .green;
+                  r = pixels [ k ] .red;
+                  red = bg_r*f1+r*f;
+                  green = bg_g*f1+g*f;
+                  blue = bg_b*f1+b*f;
+              }
+              if ( blue > 255 ) blue = 255;
+              if ( green > 255 ) green = 255;
+              if ( red > 255 ) red = 255;
+              spixels [ kk ] .blue = blue;
+              spixels [ kk ] .green = green;
+              spixels [ kk ] .red = red;
+              alpha += alphas;
+              if ( alpha > 255 ) alpha = 255;
+              spixels [ kk ] .opacity = 255 -alpha;
+              k++;
+          }
+      }
+      SyncImagePixels ( image ) ;
+      return png1;
+  }
+  void *kgAddImages ( void *png1 , void *png2 , int Xshft , int Yshft ) {
+      int w1 , h1 , w2 , h2 , h , w;
+      GMIMG *img1 , *img2 , *img3;
+      img1 = ( GMIMG * ) png1;
+      img2 = ( GMIMG * ) png2;
+      if ( img1 == NULL ) { printf ( "NULL\n" ) ;return NULL;}
+      if ( img2 == NULL ) { printf ( "NULL 2\n" ) ;return png1;}
+      w1 = img1->image_width;
+      h1 = img1->image_height;
+      w2 = img2->image_width;
+      h2 = img2->image_height;
+//   printf("%d %d %d %d\n",w1,h1,w2,h2);
+      if ( ( w2 > w1 ) || ( h2 > h1 ) ) {
+          float fac , fac1;
+          fac = ( float ) w1/ ( float ) w2;
+          fac1 = ( float ) h1/ ( float ) h2;
+          if ( fac1 < fac ) fac = fac1;
+          img3 = kgResizeImage ( img2 , fac*0.8 ) ;
+          img2 = uiAddgmImages ( img1 , img3 , Xshft , Yshft ) ;
+          kgFreeImage ( img3 ) ;
+          return img2;
+      }
+      else return uiAddgmImages ( ( GMIMG * ) png1 ,  \
+          ( GMIMG * ) png2 , Xshft , Yshft ) ;
+  }
+  void *uiReplacegmImage ( GMIMG *png1 , GMIMG *png2 , int Xshft , int Yshft ) {
+/*
+  Second Picture is put on the first and the
+  pointer to the first picture is returned
+*/
+      int w , h , bkgrclr , xsize , ysize;
+      float rzfac;
+      int i , j , k = 0 , kk;
+      unsigned int opacity , alpha , alphas;
+      int xoff , yoff;
+      float f , f1;
+      GMIMG *dpng = NULL;
+      Image *image , *tmpimg , *dimage , *oimage;
+      PixelPacket *pixels , *spixels , *opixels;
+      unsigned char r , g , b , bg_r , bg_g , bg_b;
+      unsigned int red , green , blue;
+      if ( png1 == NULL ) return NULL;
+      if ( png2 == NULL ) return NULL;
+      image = ( Image * ) ( png1->image ) ;
+      dimage = ( Image * ) ( png2->image ) ;
+      uiInitGm ( ) ;
+      pixels = GetImagePixels ( dimage , 0 , 0 , dimage->columns , dimage->rows ) ;
+      spixels = GetImagePixels ( image , 0 , 0 , image->columns , image->rows ) ;
+      w = image->columns;
+      h = image->rows;
+      xsize = image->columns;
+      ysize = image->rows;
+      xoff = Xshft;
+      yoff = Yshft;
+      k = 0;
+      for ( j = yoff;j < ( yoff+dimage->rows ) ;j++ ) {
+          for ( i = xoff;i < ( xoff+dimage->columns ) ;i++ ) {
+              opacity = pixels [ k ] .opacity;
+              kk = ( j*xsize+i ) ;
+            if(opacity != 255) {
+              spixels [ kk ] .blue  = pixels[k].blue;
+              spixels [ kk ] .green = pixels[k].green;
+              spixels [ kk ] .red   = pixels[k].red;
+              spixels [ kk ] .opacity = opacity;
+            }
+              k++;
+          }
+      }
+      SyncImagePixels ( image ) ;
+      return png1;
+  }
+  void *kgReplaceImage ( void *png1 , void *png2 , int Xshft , int Yshft ) {
+      int w1 , h1 , w2 , h2 , h , w;
+      GMIMG *img1 , *img2 , *img3;
+      img1 = ( GMIMG * ) png1;
+      img2 = ( GMIMG * ) png2;
+      if ( img1 == NULL ) { printf ( "NULL\n" ) ;return NULL;}
+      if ( img2 == NULL ) { printf ( "NULL 2\n" ) ;return png1;}
+      w1 = img1->image_width;
+      h1 = img1->image_height;
+      w2 = img2->image_width;
+      h2 = img2->image_height;
+//   printf("%d %d %d %d\n",w1,h1,w2,h2);
+      if ( ( w2 > w1 ) || ( h2 > h1 ) ) {
+          float fac , fac1;
+          fac = ( float ) w1/ ( float ) w2;
+          fac1 = ( float ) h1/ ( float ) h2;
+          if ( fac1 < fac ) fac = fac1;
+          img3 = kgResizeImage ( img2 , fac*0.8 ) ;
+          img2 = uiReplacegmImage ( img1 , img3 , Xshft , Yshft ) ;
+          kgFreeImage ( img3 ) ;
+          return img2;
+      }
+      else return uiReplacegmImage ( ( GMIMG * ) png1 ,  \
           ( GMIMG * ) png2 , Xshft , Yshft ) ;
   }
   void *kgImagetoGray ( void *img ) {

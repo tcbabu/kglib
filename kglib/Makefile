@@ -2,15 +2,16 @@ include config.mak
 #MFLAGS	= -O -mcpu=pentium -march=pentium
 #OFLAGS	= -O  -mpentium 
 
-CC	= cc  -g  -msse3 -O3 -DUNIX -pthread $(X11_CFLAFS)  $(CFLAGS)
+CC	= cc  -g  -msse3 -O3 -DUNIX -pthread $(X11_CFLAFS)  $(CFLAGS) \
+-I/usr/include/freetype2 -lfreetype
 #CC	= cc    -msse3 -O3 -DUNIX -pthread $(X11_CFLAFS)  $(CFLAGS)
 #CC	= cc    -msse3 -g -DUNIX  $(CFLAGS)
 all	: libkulina.a libdlink.a
 libkulina.a  : kgl.o kgui.o kgui1.o kgui2.o kgui3.o lowlib.o gkernel.o file_pro.o dlink.o printerdia.o shade.o PngImage.o gminterface.o makeimg.o drawimg.o  ogl.o threadtool.o hlib.o keybrd.o keybrdCallbacks.o skeybrd.o skeybrdCallbacks.o keybrd0.o keybrd0Callbacks.o keybrd4.o keybrd4Callbacks.o keybrd5.o keybrd5Callbacks.o kgMakeGclr.o \
 	FileListBrowser.o FileListBrowserCallbacks.o\
-	GetFile.o GetFileCallbacks.o
+	GetFile.o GetFileCallbacks.o ftinterface.o
 	ar -rD libkulina.a kgl.o kgui.o kgui1.o kgui2.o kgui3.o lowlib.o gkernel.o file_pro.o  printerdia.o shade.o PngImage.o gminterface.o makeimg.o drawimg.o dlink.o ogl.o threadtool.o hlib.o keybrd.o keybrdCallbacks.o skeybrd.o skeybrdCallbacks.o keybrd0.o keybrd0Callbacks.o keybrd4.o keybrd4Callbacks.o keybrd5.o keybrd5Callbacks.o kgMakeGclr.o FileListBrowser.o FileListBrowserCallbacks.o \
-	GetFile.o GetFileCallbacks.o
+	GetFile.o GetFileCallbacks.o ftinterface.o
 	cp libkulina.a $(KULINA)/lib/libkulina.a
 	cp kulina.h $(KULINA)/include
 

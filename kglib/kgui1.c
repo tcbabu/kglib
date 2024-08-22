@@ -1633,6 +1633,23 @@
       }
       return 1;
   }
+char * kgGetFolderName ( char *flname ) {
+      int i , j;
+      char basename[500];
+      char *fpt=NULL;
+      i = 0;
+      i = strlen ( flname ) ;
+      i--;
+      while ( flname [ i ] != '/' ) { i--; if ( i < 0 ) break; }
+      i++;
+      if(i!=0) {          
+        strcpy(basename,flname);
+        basename[i]='\0';
+        fpt = (char *) malloc(strlen(basename)+1);
+        strcpy(fpt,basename);
+      }
+      return fpt;
+  }
   int kgFolderBrowser ( void *parent , int xo , int yo , char *flname , char *fltr )  \
       {
       int v2 = 1 , v3 = 1;
@@ -1688,6 +1705,7 @@
       -1 , -1 };
       char *butncode5 = NULL;
       int sw5 [ ] = {1 , 1};
+      char *fpt=NULL;
       DIB n5 = {
           'b' , 465 , 28 , 520 , 83 , 9 , 9 , 45 , 45 , 1 , 1 , & v4 , sw5 , titles5 , butncode5 , NULL , FileBrowserbutnbox1callback , /* args , Callbak */
           xpm5 , bkgr5 /* pointers to xpms and colors */
@@ -1704,7 +1722,12 @@
           'b' , 521 , 28 , 576 , 83 , 9 , 9 , 45 , 45 , 1 , 1 , & v5 , sw5 , titles6 , butncode6 , NULL , FileBrowserbutnbox2callback , /* args , Callbak */
           xpm6 , bkgr6 /* pointers to xpms and colors */
        , 2 , 0.5 };
-      if ( getcwd ( Dir.HomeDir , 499 ) == NULL ) return -1;
+      fpt = kgGetFolderName(flname);
+      if(fpt != NULL) {
+         strcpy(Dir.HomeDir ,fpt);
+         free(fpt);
+      }
+      else if ( getcwd ( Dir.HomeDir , 499 ) == NULL ) return -1;
 //  strcpy(CurDir,HomeDir);
       uiGetDirFile ( flname , Dir.CurDir ) ;
       strcpy ( filter , fltr ) ;

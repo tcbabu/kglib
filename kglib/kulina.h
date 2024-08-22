@@ -1234,11 +1234,16 @@ void *kgImageModifyColor(void *img,float rfac,float gfac,float bfac);
 void *kgModifyImageHSV(void *Img,float hfac,float sfac,float vfac);
 void *kgShadowImage(void* img,int xoffset,int yoffset,void *shimg);
 void *kgMergeImages(void  *img1,void  *img2,int Xshft,int Yshft); /* second on first */
+void *kgAddImages(void  *img1,void  *img2,int Xshft,int Yshft); /* second on first */
+void *kgReplaceImage(void  *img1,void  *img2,int Xshft,int Yshft); /* second on first */
 void *kgMergeTransparentImage(void  *img1,void  *img2,int Xshft,int Yshft); /* second on first */
+void *kgAddTransparentImage ( void *png1 , void *png2 , int Xshft , int Yshft );
 int  kgGetImageSize(void *img,int *xsize,int *ysize);
 void *kgMaskImage(void *png,void *mask);
 void *kgCopyImage(void *img);
 void *kgCreateImage(int xzise,int ysize);
+int kgSetImageColor(void *img,int r,int g,int b);
+int kgSetPixelAlpha(void *img,int col, int row,int alpha);
 void *kgCleanImage(void *img);
 void *kgFlipImage(void *img); // About X refledction overwrites img
 void *kgFlopImage(void *img); // About Y refledction overwrites img
@@ -1311,6 +1316,7 @@ void kgClearBuffer(DIG *G);
 void kgMove2f(DIG *G,float x,float y);
 void kgMarkerType(DIG *G,int mtype);
 void kgDraw2f(DIG *G,float x,float y);
+int  kgImagePixel(DIG *G,int col,int row,int r,int g,int b,int a);
 void kgMarker2f(DIG *G,float x,float y);
 void kgDefaultGuiTheme(Gclr *Gc);
 void kgGrayGuiTheme(Gclr *Gc);

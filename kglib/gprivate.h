@@ -1398,4 +1398,22 @@ int uiSearchClr(kgColor *kgcolors,XColor C) ;
 int SearchClr(XColor C);
 int RefreshWindowThread(void *junk);
 void uiwrite_buf(DIG *G,unsigned char *ch, int n );
+/* New Code for FT interface */
+  typedef struct _img_str {
+      int xln;
+      int yln;
+      void *img;
+  } IMG_STR;
+  typedef struct _font_str {
+      char code; //i internal , t char table f fontnane
+      int fontno; // for internal
+      char *name; // font name for f type
+      void *Imgs; // ( IMG_STR ** ) pointer for character table;
+      int Size;   // fot f and i
+  } FONT_STR;
+  void * kgMakeFixedFontImg ( char *filename , char *text , int Size );
+  void * kgMakeFontImg ( char *filename , char *text , int Size );
+  void **kgFontChars ( char *Font , int Size );
+  void *uiMakeString ( void *Fstr , char *str , int Ht , int Gap );
+  void *uiMakeFixedString ( void *Fstr , char *str , int Ht , int Gap );
 #endif

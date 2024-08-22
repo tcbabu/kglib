@@ -13013,6 +13013,7 @@ void transch(int c) {
                    ( pt [ 2 ] <= ' ' ) ) ) {
                       img1 = kgGetImageCopy ( D , p->xpm ) ;
                   }
+                  else if(pt!=NULL) img1 = (void *)pt;
                   if ( img1 != NULL ) {
                       kgAddTransparency ( img1 , p->transparency ) ;
                       img2 = kgGetImageCopy ( D , p->Bimg ) ;
@@ -13048,6 +13049,7 @@ void transch(int c) {
                       kgImage ( D , p->xpm , x1 , y1 , w , l , D->transparency , 1.0 ) ;
                   }
               }
+                  else if(pt!=NULL)kgImage ( D , p->xpm , x1 , y1 , w , l , D->transparency , 1.0 ) ; 
               switch ( p->bordr ) {
                   case 0:
                   break;
