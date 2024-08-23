@@ -215,6 +215,7 @@ typedef struct txt_str {
      DIALOG *D;
      Gclr gc;
      DIT *T;
+     void *IMGS;
    } TX_STR;
 typedef struct st_str {
      int x;
@@ -1414,6 +1415,9 @@ void uiwrite_buf(DIG *G,unsigned char *ch, int n );
   void * kgMakeFixedFontImg ( char *filename , char *text , int Size );
   void * kgMakeFontImg ( char *filename , char *text , int Size );
   void **kgFontChars ( char *Font , int Size );
+  void **kgFixedFontChars ( char *Font , int Size );
   void *uiMakeString ( void *Fstr , char *str , int Ht , int Gap );
   void *uiMakeFixedString ( void *Fstr , char *str , int Ht , int Gap );
+  void *uiFreeImgStr(void *);
+  void *uiFreeImgStrs(void *);
 #endif

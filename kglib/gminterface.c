@@ -2818,6 +2818,7 @@ int  kgSetImageColor ( void *Img , int r,int g,int b ) {
       w2 = img2->image_width;
       h2 = img2->image_height;
 //   printf("%d %d %d %d\n",w1,h1,w2,h2);
+#if 0
       if ( ( w2 > w1 ) || ( h2 > h1 ) ) {
           float fac , fac1;
           fac = ( float ) w1/ ( float ) w2;
@@ -2830,6 +2831,10 @@ int  kgSetImageColor ( void *Img , int r,int g,int b ) {
       }
       else return uiAddgmImages ( ( GMIMG * ) png1 ,  \
           ( GMIMG * ) png2 , Xshft , Yshft ) ;
+#else
+      return uiAddgmImages ( ( GMIMG * ) png1 ,  \
+          ( GMIMG * ) png2 , Xshft , Yshft ) ;
+#endif
   }
   void *uiReplacegmImage ( GMIMG *png1 , GMIMG *png2 , int Xshft , int Yshft ) {
 /*
@@ -2889,6 +2894,7 @@ int  kgSetImageColor ( void *Img , int r,int g,int b ) {
       w2 = img2->image_width;
       h2 = img2->image_height;
 //   printf("%d %d %d %d\n",w1,h1,w2,h2);
+#if 0
       if ( ( w2 > w1 ) || ( h2 > h1 ) ) {
           float fac , fac1;
           fac = ( float ) w1/ ( float ) w2;
@@ -2901,6 +2907,10 @@ int  kgSetImageColor ( void *Img , int r,int g,int b ) {
       }
       else return uiReplacegmImage ( ( GMIMG * ) png1 ,  \
           ( GMIMG * ) png2 , Xshft , Yshft ) ;
+#else
+      return uiReplacegmImage ( ( GMIMG * ) png1 ,  \
+          ( GMIMG * ) png2 , Xshft , Yshft ) ;
+#endif
   }
   void *kgImagetoGray ( void *img ) {
 /*

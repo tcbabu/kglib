@@ -1554,8 +1554,10 @@
               else {
 		      DIT *Ta= (DIT *)(d[i].t);
                       FreeImg ( ( ( DIT * ) ( d [ i ] .t ) )->Bimg ) ;
+               printf("Reached Here\n");
 		      if(Ta->tstr != NULL) {
-			      free(((TX_STR *)(Ta->tstr))->elmt);
+//No			      free(((TX_STR *)(Ta->tstr))->elmt);
+                uiFreeImgStrs(((TX_STR *)(Ta->tstr))->IMGS);
 			      free(Ta->tstr);
 			      Ta->tstr=NULL;
 		      }
@@ -1903,12 +1905,14 @@
                   DIT *t;
 		  TX_STR *Tx;
                   t = d [ i ] .t;
-//         free(((TX_STR *)(t->tstr))->tit);
-//         free(((TX_STR *)(t->tstr))->ln);
                   Tx = (TX_STR *)t->tstr;
-//                  if(Tx != NULL) Free( Tx->elmt);
-                  Free ( t->tstr ) ;
-		  t->tstr=NULL;
+#if 1
+                  if(Tx != NULL) {
+                      Tx->IMGS=uiFreeImgStrs(Tx->IMGS);
+                      Free ( t->tstr ) ;
+                  }
+#endif
+	       	  t->tstr=NULL;
               }
               FreeImg ( ( ( DIT * ) ( d [ i ] .t ) )->Bimg ) ;
               break;
@@ -1917,13 +1921,16 @@
                   DIT *T;
 		  TX_STR *Tx;
                   T = d [ i ] .t;
-//          free(((TX_STR *)(T->tstr))->ln);
                   Tx = (TX_STR *)T->tstr;
-//                  if(Tx != NULL) Free( Tx->elmt);
-                  Free ( T->tstr ) ;
+#if 1
+                  if(Tx != NULL){
+                       Tx->IMGS=uiFreeImgStrs(Tx->IMGS);
+                       Free ( T->tstr ) ;
+                  }
+#endif
                   T->tstr = NULL;
               }
-              FreeImg ( ( ( DIT * ) ( d [ i ] .t ) )->Bimg ) ;
+//              FreeImg ( ( ( DIT * ) ( d [ i ] .t ) )->Bimg ) ;
          // need addition once Table is implemented
               break;
               case 'h':
