@@ -88,28 +88,63 @@
 #include "font51.h"
 #include "font52.h"
 */
-static char *FontNames[]= {
-"/usr/share/fonts/Kulina/Anonymous.ttf",
-"/usr/share/fonts/Kulina/Anonymous_Pro.ttf",
-"/usr/share/fonts/Kulina/Anonymous_Pro_B.ttf",
-"/usr/share/fonts/Kulina/Anonymous_Pro_BI.ttf",
-"/usr/share/fonts/Kulina/Anonymous_Pro_I.ttf",
-"/usr/share/fonts/Kulina/Coral Colour.otf",
-"/usr/share/fonts/Kulina/Cousine-Bold.ttf",
-"/usr/share/fonts/Kulina/Cousine-BoldItalic.ttf",
-"/usr/share/fonts/Kulina/Cousine-Italic.ttf",
-"/usr/share/fonts/Kulina/Cousine-Regular.ttf",
-"/usr/share/fonts/Kulina/DroidSansMono.ttf",
-"/usr/share/fonts/Kulina/FreeMono.ttf",
-"/usr/share/fonts/Kulina/FreeMonoBold.ttf",
-"/usr/share/fonts/Kulina/FreeMonoBoldOblique.ttf",
-"/usr/share/fonts/Kulina/FreeMonoOblique.ttf",
-"/usr/share/fonts/Kulina/VeraMono-Bold-Italic.ttf",
-"/usr/share/fonts/Kulina/VeraMono-Bold.ttf",
-"/usr/share/fonts/Kulina/VeraMono-Italic.ttf",
-"/usr/share/fonts/Kulina/VeraMono.ttf",NULL
+static  Dlink *MonoList = NULL;
+static   Dlink *FontList = NULL;
+#define D_NOCLEANCC
+ static char *MonoFonts [ ] = {
+  "/usr/share/fonts/Kulina/Anonymous.ttf" ,
+  "/usr/share/fonts/Kulina/Anonymous_Pro.ttf" ,
+  "/usr/share/fonts/Kulina/Anonymous_Pro_I.ttf" ,
+  "/usr/share/fonts/Kulina/Anonymous_Pro_B.ttf" ,
+  "/usr/share/fonts/Kulina/Anonymous_Pro_BI.ttf" ,
+  "/usr/share/fonts/Kulina/Cousine-Regular.ttf" ,
+  "/usr/share/fonts/Kulina/Cousine-Italic.ttf" ,
+  "/usr/share/fonts/Kulina/Cousine-Bold.ttf" ,
+  "/usr/share/fonts/Kulina/Cousine-BoldItalic.ttf" ,
+  "/usr/share/fonts/Kulina/DroidSansMono.ttf" ,
+  "/usr/share/fonts/Kulina/FreeMono.ttf",
+  "/usr/share/fonts/Kulina/FreeMonoOblique.ttf",
+  "/usr/share/fonts/Kulina/FreeMonoBold.ttf",
+  "/usr/share/fonts/Kulina/FreeMonoBoldOblique.ttf",
+  "/usr/share/fonts/Kulina/UbuntuMono-R.ttf",
+  "/usr/share/fonts/Kulina/UbuntuMono-RI.ttf",
+  "/usr/share/fonts/Kulina/VeraMono.ttf",
+  "/usr/share/fonts/Kulina/VeraMono-Italic.ttf",
+  "/usr/share/fonts/Kulina/VeraMono-Bold.ttf",
+  "/usr/share/fonts/Kulina/VeraMono-Bold-Italic.ttf",
+   NULL
+}; 
+static char *OthFonts []= {
+"CharterRegular.ttf",
+"CharterItalic.ttf",
+"CharterBold.ttf",
+"CharterBoldItalic.ttf",
+"Cousine-Regular.ttf",
+"Cousine-Italic.ttf",
+"Cousine-Bold.ttf",
+"Cousine-BoldItalic.ttf",
+"NimbusRomNo9L-Reg.otf",
+"NimbusRomNo9L-RegIta.otf",
+"NimbusSanL-Reg.otf",
+"NimbusSanL-BolIta.otf",
+"Ubuntu-R.ttf",
+"Ubuntu-RI.ttf",
+"ZapfChanceryMediumItalic.otf",
+"Symbols.ttf",
+"geek.ttf",
+"Madina.ttf",
+"Wasichu.ttf",
+"stewartsans.ttf",
+"LindenHill-Regular.ttf",
+"LindenHill-Italic.ttf",
+"Ubuntu-L.ttf",
+"Ubuntu-C.ttf",
+"Ubuntu-M.tt",
+"FreeSerif.ttf",
+  NULL
 };
-static IMG_STR **Imgs=NULL;
+#define D_CLEANCC      
+  static IMG_STR **Imgs = NULL;
 /*#include "fontps.h"*/
 #define far 
 #define SSF 0.6
@@ -123,7 +158,6 @@ static IMG_STR **Imgs=NULL;
       int *icyv;
       float *m_f;
   } FONT;
-//Dlink *Fontlist=NULL;
   static int Sldwd = 20 , Sw = 8 , Sdpw = 7;
   int TextSize = 8 , Ht = 12 , Wd = 7 , Gap = 2 , Bt = 1;
 #define CHECKLIMITS(w) {\
@@ -247,11 +281,199 @@ static IMG_STR **Imgs=NULL;
       
   void *kgPressedRectangle ( int width , int height , int fillclr , float rfac ) ;
       
-  void *_uiMakeTextBoxImage ( void *Tmp ) ;
+  void *uiMakeTextBoxImage ( void *Tmp ) ;
 //void _uiMakeButnImages(DIN *B,int butno);
   void *_uiMakeButnImages ( void *butstr ) ;
   void _uiInitButs ( DIN *B ) ;
 #define EIGHT 8
+  char *kgWhichFont ( char *pgr ) {
+/* Caller must free result if it is not NULL */
+      int i = 0 , j , End = 0 , k;
+      char *pt , **m , *res = NULL , *cpt;
+      char path [ 5000 ] ;
+      char buf [ 200 ] ;
+      char FontBase [ ] = "/usr/share/fonts";
+      char **folders;
+      Dlink *L;
+      if ( pgr [ 0 ] == '/' ) { // full path is given
+          int l;
+          char **m , *pt1;
+          strcpy ( path , pgr ) ;
+          pt = path;
+          l = strlen ( pt ) ;
+          while ( pt [ l ] != '/' ) l--;
+          if ( l == 0 ) {
+              m = kgFileMenu ( "/" , pt+1 ) ;
+          }
+          else {
+              pt1 = pt+l+1;
+              pt [ l ] = '\0';
+              m = kgFileMenu ( pt , pt1 ) ;
+          }
+          if ( ( m == NULL ) ) {return NULL;}
+          if ( ( m [ 0 ] == NULL ) ) {kgFreeDouble ( ( void ** ) m ) ;return NULL;}
+          kgFreeDouble ( ( void ** ) m ) ;
+          res = ( char * ) Malloc ( strlen ( pgr ) +1 ) ;
+          strcpy ( res , pgr ) ;
+          return res;
+      }
+      pt = FontBase ;
+      strcpy ( path , "/usr/share/fonts" ) ;
+      folders = ( char ** ) kgFolderMenu ( ( char * ) "/usr/share/fonts" ) ;
+      if ( folders == NULL ) return NULL;
+      k = 0;
+      while ( ( pt = ( char * ) folders [ k++ ] ) != NULL ) {
+          strcpy ( buf , path ) ;
+          strcat ( buf , "/" ) ;
+          strcat ( buf , pt ) ;
+//          printf ( "%s: %s\n" , pt , buf ) ;
+          m = kgFileMenu ( buf , ( char * ) "*.ttf" ) ;
+          if ( m != NULL ) {
+              i = 0;
+              while ( m [ i ] != NULL ) {
+                  if ( strstr ( m [ i ] , pgr ) != NULL ) {
+                      End = 1;
+                      break;
+                  }
+                  i++;
+              }
+          }
+          if ( End == 0 ) {
+              j = 0;
+              while ( m [ j ] != NULL ) {free ( m [ j ] ) ;j++;}
+              free ( m ) ;
+              m = kgFileMenu ( buf , ( char * ) "*.otf" ) ;
+              if ( m != NULL ) {
+                  i = 0;
+                  while ( m [ i ] != NULL ) {
+                      if ( strstr ( m [ i ] , pgr ) != NULL ) {
+                          End = 1;
+                          break;
+                      }
+                      i++;
+                  }
+              }
+          }
+          if ( End == 0 ) {
+              j = 0;
+              while ( m [ j ] != NULL ) {free ( m [ j ] ) ;j++;}
+              free ( m ) ;
+              continue;
+          }
+          res = ( char * ) Malloc ( strlen ( path ) +1+strlen \
+           ( pt ) +1+strlen ( m [ i ] ) +1 ) ;
+          strcpy ( res , path ) ;
+          strcat ( res , "/" ) ;
+          strcat ( res , pt ) ;
+          strcat ( res , "/" ) ;
+          strcat ( res , m [ i ] ) ;
+          j = 0;
+          while ( m [ j ] != NULL ) {free ( m [ j ] ) ;j++;}
+          free ( m ) ;
+          break;
+      }
+      kgFreeDouble ( ( void ** ) folders ) ;
+//      printf ( "res: %s\n" , res ) ;
+      return res;
+  }
+  int kgAddFont ( char *Font ) {
+      int ret = -1;
+      char *Fn = NULL;
+      if ( FontList == NULL ) FontList = Dopen ( ) ;
+      if ( ( Fn = ( char * ) kgWhichFont ( Font ) ) != NULL ) {
+          Dappend ( FontList , Fn ) ;
+          ret = Dcount ( FontList ) -1;
+      }
+      return ret;
+  }
+  int uiAddFonts ( ) {
+      int i = 0;
+      char *Fn = NULL;
+      while ( MonoFonts [ i ] != NULL ) {
+          kgAddFont ( MonoFonts [ i ] ) ;
+          i++;
+      }
+      i = 0;
+      while ( OthFonts [ i ] != NULL ) {
+          kgAddFont ( OthFonts [ i ] ) ;
+          i++;
+      }
+      return 1;
+  }
+  int kgAddFixedFont ( char *Font ) {
+      int ret = -1;
+      char *Fn = NULL;
+      if ( MonoList == NULL ) MonoList = Dopen ( ) ;
+      if ( ( Fn = ( char * ) kgWhichFont ( Font ) ) != NULL ) {
+          Dappend ( MonoList , Fn ) ;
+          ret = Dcount ( MonoList ) -1;
+      }
+      return ret;
+  }
+  char *kgGetMonoFont ( int Font ) {
+      char *Ft = NULL , *pt;
+      int count;
+      if ( MonoList == NULL ) return NULL;
+      count = Dcount ( MonoList ) ;
+      if ( count == 0 ) return NULL;
+      printf("count : %d\n",count);
+      Resetlink(MonoList);
+      if ( count == 1 ) {
+          pt = ( char * ) Drecord ( MonoList , 0 ) ;
+      }
+      else {
+          Font = Font%count;
+          pt = ( char * ) Drecord ( MonoList , Font ) ;
+      }
+      Ft = ( char * ) malloc ( strlen ( pt ) +1 ) ;
+      strcpy ( Ft , pt ) ;
+      return Ft;
+  }
+  char *kgGetOthFont ( int Font ) {
+      char *Ft = NULL , *pt;
+      int count;
+      if ( FontList == NULL ) return NULL;
+      count = Dcount ( FontList ) ;
+      Resetlink(FontList);
+      if ( count == 0 ) return NULL;
+      if ( count == 1 ) {
+          pt = ( char * ) Drecord ( FontList , 0 ) ;
+      }
+      else {
+          Font = Font%count;
+          pt = ( char * ) Drecord ( FontList , Font ) ;
+      }
+      Ft = ( char * ) malloc ( strlen ( pt ) +1 ) ;
+      strcpy ( Ft , pt ) ;
+      return Ft;
+  }
+  int uiAddFixedFonts ( ) {
+      int i = 0;
+      char *Fn = NULL;
+      while ( MonoFonts [ i ] != NULL ) {
+          kgAddFixedFont ( MonoFonts [ i ] ) ;
+          i++;
+      }
+      return 1;
+  }
+  int uiInitFontLists ( ) {
+      if ( MonoList == NULL ) uiAddFixedFonts ( ) ;
+      if ( FontList == NULL ) uiAddFonts ( ) ;
+      return 1;
+  }
+  int uiFreeFontLists ( ) {
+    /* Should npot be called */
+    return 0;
+      if ( MonoList != NULL ) {
+          Dempty ( MonoList ) ;
+          MonoList = NULL;
+      }
+      if ( FontList != NULL ) {
+          Dempty ( FontList ) ;
+          FontList = NULL;
+      }
+      return 1;
+  }
   DIALOG *getParentDisplay ( void *D ) {
       DIALOG *Dtmp;
       Dtmp = ( DIALOG * ) D;
@@ -5645,6 +5867,78 @@ void transch(int c) {
       void **imgs;
       char *Str;
       int ln , i , maxchar , temp , item;
+      void *img = NULL , *imgbk = NULL;
+      char *tmpdir , flname [ 200 ] ;
+      float length;
+      float fac , th , tw , BxSize , width1 , yp , xp;
+      int x1 , ln1;
+      FONT_STR F;
+      IMG_STR *IMG;
+      int rd , gr , bl;
+      kgWC *wc;
+      wc = D->wc;
+      ln = width;
+      if ( Strs == NULL ) return NULL;
+      item = 0;
+      while ( Strs [ item ] != NULL ) item++;
+      if ( item == 0 ) return NULL;
+      imgs = ( void ** ) Malloc ( sizeof ( void * ) * ( item+1 ) ) ;
+      for ( i = 0; i <= item; i++ ) imgs [ i ] = NULL;
+      BxSize = FontSize*1.6;
+      if ( BxSize > ( height ) ) {
+          BxSize = height;
+          FontSize = ( int ) ( ( float ) BxSize/1.6+0.5 ) ;
+      }
+//TCB
+      yp = height*0.5-FontSize*0.5;
+      width1 = width-FontSize;
+      xp = FontSize*0.5;
+#if 0
+#else
+      for ( i = 0; i < item; i++ ) {
+          Str = Strs [ i ] ;
+          kgGetDefaultRGB ( color , & rd , & gr , & bl ) ;
+          F.code = 'f';
+          F.name = kgGetOthFont ( font ) ;
+          if ( FontSize <= 0 ) F.Size = ( height-1 ) /2;
+          else F.Size = FontSize;
+          IMG = uiMakeString ( & ( F ) , Str , ( int ) height , 0 ) ;
+          if(IMG->xln > width-F.Size) {
+            float fac= (float)(width-F.Size)/IMG->xln;
+            img = kgResizeImage(IMG->img,fac);
+            IMG->img = img;
+            IMG->xln = IMG->xln*fac;
+          }
+          kgSetImageColor ( IMG->img , rd , gr , bl ) ;
+#if 0
+          fid = kgInitImage ( width , height , 1 ) ;
+          imgbk = kgGetResizedImage ( fid ) ;
+          kgCloseImage ( fid ) ;
+#else
+         imgbk = kgCreateImage(width,height);
+#endif
+          x1 = F.Size/2;
+          if ( justification == 1 ) x1 = ( width-IMG->xln-2 ) ;
+          else if ( justification == 0 ) x1 = ( width-IMG->xln-2 ) /2;
+          ln1 = IMG->xln+1;
+          img = IMG->img;
+          if ( F.name != NULL ) free ( F.name ) ;
+          if ( img != NULL ) {
+              kgAddImages ( imgbk , img , x1 , 0 ) ;
+              uiFreeImage ( img ) ;
+              free ( IMG ) ;
+          }
+          imgs [ i ] = imgbk;
+      }
+#endif
+      return imgs;
+  }
+  void **orguiMenuStringImages ( DIALOG *D , char **Strs , int width , int height , int font , int color , int FontSize , int justification , int Mag ) \
+  {
+      void * fid;
+      void **imgs;
+      char *Str;
+      int ln , i , maxchar , temp , item;
       void *img = NULL;
       char *tmpdir , flname [ 200 ] ;
       float length;
@@ -5709,7 +6003,7 @@ void transch(int c) {
       }
       return imgs;
   }
-  void **uiMenuNailImages ( DIALOG *D , ThumbNail **Strs , int width , int height , int font , int color , int FontSize , int justification , int Mag ) \
+  void **uiMenuNailImagesOrg ( DIALOG *D , ThumbNail **Strs , int width , int height , int font , int color , int FontSize , int justification , int Mag ) \
   {
       void * fid;
       void **imgs;
@@ -5755,6 +6049,7 @@ void transch(int c) {
                   kgTextSize ( fid , th , tw*fac , GAP*tw ) ;
                   length = kgStringLength ( fid , Str ) ;
               }
+              kgBoxFill(fid,0.,0.,(float)width,(float)height,1,1);
               kgTextColor ( fid , color ) ;
               kgLineColor ( fid , color ) ;
               switch ( justification ) {
@@ -5778,6 +6073,73 @@ void transch(int c) {
           }
           kgCloseImage ( fid ) ;
       }
+      return imgs;
+  }
+  void **uiMenuNailImages ( DIALOG *D , ThumbNail **Strs , int width , int height , int font , int color , int FontSize , int justification , int Mag ) \
+  {
+      void * fid;
+      void **imgs;
+      char *Str;
+      int ln , i , maxchar , temp , item;
+      void *img = NULL,*imgbk=NULL;
+      char *tmpdir , flname [ 200 ] ;
+      float length;
+      float fac , th , tw , BxSize , width1 , yp , xp;
+      kgWC *wc;
+      wc = D->wc;
+      int ln1,x1,rd,gr,bl;
+      FONT_STR F;
+      IMG_STR *IMG=NULL;
+      ln = width;
+      if ( Strs == NULL ) return NULL;
+      item = 0;
+      while ( Strs [ item ] != NULL ) item++;
+      if ( item == 0 ) return NULL;
+      imgs = ( void ** ) Malloc ( sizeof ( void * ) * ( item+1 ) ) ;
+      for ( i = 0; i <= item; i++ ) imgs [ i ] = NULL;
+      BxSize = FontSize*2.0;
+      if ( BxSize > ( height ) ) {
+          BxSize = height;
+          FontSize = ( int ) ( ( float ) BxSize/2.0+0.5 ) ;
+      }
+          kgGetDefaultRGB ( color , & rd , & gr , & bl ) ;
+          F.code = 'f';
+          F.name = kgGetOthFont ( font ) ;
+//          printf("Font: %s\n",F.name);
+          if ( FontSize <= 0 ) F.Size = ( height-1 ) /2;
+          else F.Size = FontSize*0.9;
+      for ( i = 0; i < item; i++ ) {
+          Str = Strs [ i ]->name ;
+          IMG = uiMakeString ( & ( F ) , Str , ( int ) (height*3/2) , 0 ) ;
+          if(IMG->xln > width-F.Size) {
+            float fac= (float)(width-F.Size)/IMG->xln;
+            img = kgChangeSizeImage(IMG->img,width-F.Size,height*3/2);
+            IMG->img = img;
+            IMG->xln = IMG->xln*fac;
+          }
+          kgSetImageColor ( IMG->img ,rd , gr , bl ) ;
+#if 1
+          imgbk = kgCreateImage(width,height);
+#else
+          fid = kgInitImage(width,height,1);
+          kgBoxFill(fid,0.,0.,(float)width,(float)height,1,1);
+          imgbk = kgGetResizedImage(fid);
+          kgCloseImage(fid);
+#endif
+//          kgSetImageColor ( imgbk , 0 , 0 , bl ) ;
+          x1 = F.Size/2;
+          if ( justification == 1 ) x1 = ( width-IMG->xln-2 ) ;
+          else if ( justification == 0 ) x1 = ( width-IMG->xln-2 ) /2;
+          ln1 = IMG->xln+1;
+          img = IMG->img;
+          if ( img != NULL ) {
+              kgAddImages ( imgbk , img , x1 ,height -  FontSize*2 ) ;
+              uiFreeImage ( img ) ;
+              free ( IMG ) ;
+          }
+          imgs [ i ] = imgbk;
+      }
+      if ( F.name != NULL ) free ( F.name ) ;
       return imgs;
   }
   void *uiMakeXSymbol ( DIX *w , int color , int FontSize , int status ) {
@@ -6076,18 +6438,50 @@ void transch(int c) {
     bkcolor : background color ; < 0 background will not be painted
 */
       int ln , i , maxchar , temp;
+      int x1 , ln1;
       void *img = NULL;
       float length;
       kgWC *wc;
+      FONT_STR F;
+      IMG_STR *IMG;
+      void *imgbk , *fid;
+      int rd , gr , bl;
       wc = D->wc;
       ln = width;
       if ( str == NULL ) return;
       if ( str [ 0 ] == '\0' ) return;
-      img = kgStringToImage ( str , NULL , ln , height , font , color , justfic , FontSize , bkcolor ) ;
-          
+//      img = kgStringToImage ( str , NULL , ln , height , font , color , justfic , FontSize , bkcolor ) ;
+      kgGetDefaultRGB ( color , & rd , & gr , & bl ) ;
+      F.code = 'f';
+      F.name = kgGetOthFont ( font ) ;
+      if ( FontSize <= 0 ) F.Size = ( height-1 ) /2;
+      else F.Size = FontSize;
+      IMG = uiMakeString ( & ( F ) , str , ( int ) height , 0 ) ;
+      kgSetImageColor ( IMG->img , rd , gr , bl ) ;
+      if ( bkcolor >= 0 ) {
+          fid = kgInitImage ( ln , height , 1 ) ;
+          kgBoxFill ( fid , 0. , 0. , ( float ) ln , ( float ) height , bkcolor , 0 ) ;
+          imgbk = kgGetResizedImage ( fid ) ;
+          kgCloseImage ( fid ) ;
+      }
+      else imgbk = NULL;
+      x1 = 0;
+      if ( justfic == 1 ) x1 = ( ln-IMG->xln-2 ) ;
+      else if ( justfic == 0 ) x1 = ( ln-IMG->xln-2 ) /2;
+      ln1 = IMG->xln+1;
+      img = IMG->img;
+      if ( F.name != NULL ) free ( F.name ) ;
       if ( img != NULL ) {
-          kgImage ( D , img , x , y , ln , height , 0.0 , 1.0 ) ;
+          if ( imgbk != NULL ) {
+              kgAddImages ( imgbk , img , x1 , 0 ) ;
+              kgImage ( D , imgbk , x , y , ln , height , 0.0 , 1.0 ) ;
+              uiFreeImage ( imgbk ) ;
+          }
+          else {
+              kgImage ( D , img , x+x1 , y , ln1 , height , 0.0 , 1.0 ) ;
+          }
           uiFreeImage ( img ) ;
+          free ( IMG ) ;
       }
       else printf ( "img == NULL\n" ) ;
   }
@@ -10178,6 +10572,9 @@ void transch(int c) {
       int i , items;
       DIALOG *D;
       D = w->D;
+      FONT_STR F;
+      IMG_STR *IMG;
+      int rd , gr , bl;
       if ( w->imgs != NULL ) {
           i = 0;
           while ( w->imgs [ i ] != NULL ) kgFreeImage ( w->imgs [ i++ ] ) ;
@@ -10192,8 +10589,17 @@ void transch(int c) {
           w->imgs = ( void ** ) malloc ( sizeof ( void * ) * ( i+1 ) ) ;
           w->imgs [ i ] = NULL;
           for ( i = 0; i < items; i++ ) {
-              w->imgs [ i ] = ( void * ) kgStringToImage ( w->menu [ i ] , NULL , lng , w->width , D->gc.MenuFont , D->gc.menu_char , -1 , D->gc.FontSize , -1 ) ;
-                  
+//              w->imgs [ i ] = ( void * ) kgStringToImage ( w->menu [ i ] , NULL , lng , w->width , D->gc.MenuFont , D->gc.menu_char , -1 , D->gc.FontSize , -1 ) ;
+              kgGetDefaultRGB ( D->gc.menu_char , & rd , & gr , & bl ) ;
+              F.code = 'f';
+              F.name = kgGetOthFont ( D->gc.MenuFont ) ;
+              if ( D->gc.FontSize <= 0 ) F.Size = ( w->width -1 ) /2;
+              else F.Size = D->gc.FontSize;
+              IMG = uiMakeString ( & ( F ) , w->menu [ i ] , ( int ) w->width , 0 ) ;
+              kgSetImageColor ( IMG->img , rd , gr , bl ) ;
+              w->imgs [ i ] = IMG->img;
+              free ( F.name ) ;
+              free ( IMG ) ;
           }
       }
 #else
@@ -13686,102 +14092,6 @@ void transch(int c) {
       uiDefaultGuiFontSize ( D ) ;
       return;
   }
-  int _uiPrintTableCell_bak ( DIT *T , int cell , int drcur ) {
-      T_ELMT *elmt;
-      DIALOG *D = T->D;
-      TX_STR *tx = T->tstr;
-      int x1 , y1 , x2 , y2;
-      int k = cell , i;
-      int type = T->type;
-      char *str;
-      int ch;
-      int curbox;
-      int size , xsize , ysize , FontSize , sw;
-      float th , tw , tg , xx , yy;
-      int tfill , tclr;
-      int ln;
-      char Buf [ 500 ] , stmp [ 2 ] ;
-      void *fid , *img;
-      float curpos;
-      int ylng;
-      kgWC *wc;
-      kgDC *dc;
-      wc = WC ( D ) ;
-      elmt = tx->elmt;
-      curbox = tx->row*tx->nx+tx->col;
-      strcpy ( stmp , ( char * ) " " ) ;
-      FontSize = T->FontSize;
-      sw = elmt [ k ] .sw;
-      x1 = elmt [ k ] .x1;
-      y1 = elmt [ k ] .y1;
-      x2 = elmt [ k ] .x2;
-      y2 = elmt [ k ] .y2;
-      tclr = tx->gc.tabl_char;
-      tfill = tx->gc.tabl_fill;
-      if ( sw == 0 ) tclr = tx->gc.tabl_hchar;
-#if 1
-      if ( type == 1 ) {
-          y1 -= 2;
-          y2 += 2;
-      }
-#endif
-      size = get_t_item_size ( elmt [ k ] .fmt ) ;
-      str = elmt [ k ] .df;
-      strcpy ( Buf , str+elmt [ k ] .startchar ) ;
-      Buf [ size+1 ] = '\0';
-      ylng = strlen ( Buf ) *FontSize+FontSize*2;
-      xsize = ( x2-x1 ) ;
-      ysize = ( y2-y1 ) ;
-      fid = kgInitImage ( xsize+1 , ysize+1 , 1 ) ;
-      kgUserFrame ( fid , 0. , 0. , ( float ) xsize , ( float ) ysize ) ;
-      kgBoxFill ( fid , 0.0 , 0.0 , ( float ) xsize , \
-       ( float ) ysize , tfill , 0 ) ;
-//        img = kgGetResizedImage(fid);
-      img = kgGetSharpImage ( fid ) ;
-      kgCloseImage ( fid ) ;
-      kgImage ( D , img , x1 , y1 , xsize , ysize , 0.0 , 1.0 ) ;
-      kgFreeImage ( img ) ;
-      if ( xsize > ylng ) xsize = ylng;
-      fid = kgInitImage ( xsize+1 , ysize+1 , TRESIZE ) ;
-      kgUserFrame ( fid , 0. , 0. , ( float ) xsize , ( float ) ysize ) ;
-      kgBoxFill ( fid , 0.0 , 0.0 , ( float ) xsize , \
-       ( float ) ysize , tfill , 0 ) ;
-      th = FontSize*1.3;
-      tw = FontSize+1;
-      yy = 0.6*FontSize;
-      if ( drcur ) {
-          if ( elmt [ k ] .hlt ) {
-              float hxs , hxe;
-              hxs = elmt [ k ] .hxs;
-              hxe = elmt [ k ] .hxe;
-              if ( ( hxe-hxs ) > 2 ) {
-                  kgBoxFill ( fid , hxs , yy-th*0.3 , hxe , th+yy , tx->gc.high_clr , 0 ) ;
-              }
-          }
-          curpos = ( elmt [ k ] .cursor-elmt [ k ] .startchar ) *FontSize+FontSize/2;
-          kgBoxFill ( fid , curpos , yy-th*0.3 , curpos+FontSize , th+yy , D->gc.cur_clr , 0 ) ;
-              
-      }
-      kgTextFont ( fid , T->Font ) ;
-      kgTextSize ( fid , th , tw , GAP*tw ) ;
-      kgTextColor ( fid , tclr ) ;
-      xx = FontSize/2;
-      yy = 0.6*FontSize;
-      i = 0;
-      while ( Buf [ i ] >= ' ' ) {
-          kgMove2f ( fid , xx , yy ) ;
-          stmp [ 0 ] = Buf [ i ] ;
-          kgWriteText ( fid , stmp ) ;
-          xx += FontSize;
-          i++;
-      }
-//          img = kgGetResizedImage(fid);
-      img = kgGetSharpImage ( fid ) ;
-      kgCloseImage ( fid ) ;
-      kgImage ( D , img , x1 , y1 , xsize , ysize , 0.0 , 1.0 ) ;
-      kgFreeImage ( img ) ;
-      return 1;
-  }
   int kgScrollUpTable ( void *Tmp , int row ) {
 	  /* Not Useful as of 19th Aug 24 */
       DIT *T = ( DIT * ) Tmp;
@@ -13868,7 +14178,7 @@ void transch(int c) {
       int ch;
       int curbox;
       int size , xsize , ysize , FontSize , sw;
-      int rd,gr,bl;
+      int rd , gr , bl;
       float th , tw , tg , xx , yy;
       int tfill , tclr;
       char Buf [ 500 ] , stmp [ 10 ] ;
@@ -13882,8 +14192,7 @@ void transch(int c) {
       curbox = tx->row*tx->nx+tx->col;
       strcpy ( stmp , ( char * ) " " ) ;
       FontSize = T->FontSize;
-      Imgs = (IMG_STR **)tx->IMGS;
-//      if(tx->Imgs== NULL) tx->Imgs = (void *)kgFixedFontChars(FontFile, FontSize ); 
+      Imgs = ( IMG_STR ** ) tx->F.Imgs;
       sw = elmt [ k ] .sw;
       x1 = elmt [ k ] .x1;
       y1 = elmt [ k ] .y1;
@@ -13892,7 +14201,7 @@ void transch(int c) {
       tclr = tx->gc.tabl_char;
       tfill = tx->gc.tabl_fill;
       if ( sw == 0 ) tclr = tx->gc.tabl_hchar;
-      kgGetDefaultRGB(tclr,&rd,&gr,&bl);
+      kgGetDefaultRGB ( tclr , & rd , & gr , & bl ) ;
 #if 1
       if ( type == 1 ) {
           y1 -= 2;
@@ -13964,20 +14273,19 @@ void transch(int c) {
       kgImage ( D , img2 , x1 , y1 , xsize , ysize , 0.0 , 1.0 ) ;
 #else
 //      kgImage ( D , img , x1 , y1 , xsize , ysize , 0.0 , 1.0 ) ;
-      F.code = 't';
-      F.Size = FontSize;
-      F.fontno = 16;
-      F.name = FontNames[11];
-      F.Imgs =Imgs;
-      IMG  = uiMakeFixedString ( & F , Buf , ( int ) ysize , 0 ) ;
+      tx->F.code = 't';
+      if ( tx->F.Imgs == NULL ) {
+          tx->F.code = 'f';
+      }
+      IMG = uiMakeFixedString ( & ( tx->F ) , Buf , ( int ) ysize , 0 ) ;
       kgSetImageColor ( IMG->img , rd , gr , bl ) ;
-      kgAddImages ( img , IMG->img ,FontSize/2 , 0 ) ;
+      kgAddImages ( img , IMG->img , FontSize/2 , ysize-2*FontSize+1 ) ;
       kgImage ( D , img , x1 , y1 , xsize , ysize , 0.0 , 1.0 ) ;
       kgFreeImage ( img ) ;
 #endif
       kgFreeImage ( elmt [ k ] .img ) ;
       elmt [ k ] .img = IMG->img;
-      free(IMG);
+      free ( IMG ) ;
       return 1;
   }
   int _uiUpdateTableCell ( DIT *T , int cell , int drcur ) {
@@ -13993,9 +14301,9 @@ void transch(int c) {
       int size , xsize , ysize , FontSize , sw;
       float th , tw , tg , xx , yy;
       int tfill , tclr;
-      int rd,gr,bl;
+      int rd , gr , bl;
       char Buf [ 500 ] , stmp [ 10 ] ;
-      void *fid , *img,*img2;
+      void *fid , *img , *img2;
       float curpos;
       int ylng;
       kgWC *wc;
@@ -14013,7 +14321,7 @@ void transch(int c) {
       tclr = tx->gc.tabl_char;
       tfill = tx->gc.tabl_fill;
       if ( sw == 0 ) tclr = tx->gc.tabl_hchar;
-      kgGetDefaultRGB(tclr,&rd,&gr,&bl);
+      kgGetDefaultRGB ( tclr , & rd , & gr , & bl ) ;
 #if 1
       if ( type == 1 ) {
           y1 -= 2;
@@ -14095,7 +14403,8 @@ void transch(int c) {
 #else
       img2 = elmt [ k ] .img;
       kgSetImageColor ( img2 , rd , gr , bl ) ;
-      kgAddImages(img,img2,FontSize/2,0);
+//      kgAddImages(img,img2,FontSize/2,0);
+      kgAddImages ( img , img2 , FontSize/2 , ysize-2*FontSize+1 ) ;
       kgImage ( D , img , x1 , y1 , xsize , ysize , 0.0 , 1.0 ) ;
 #endif
       return 1;
@@ -14899,7 +15208,6 @@ void transch(int c) {
   }
 #else
   int _uiMake_Ta ( DIT *T ) {
-	  /* good but slow ; need to investigate */
       DIALOG *D;
       TX_STR *tx;
       int n , ygap = 0 , xgap = 0 , k = 0 , i , j , l , x1 , x2 , y1 , y2 , box_width = 20 , temp , prsize = 0 , x2max;
@@ -14911,10 +15219,11 @@ void transch(int c) {
       int size , Fz;
       unsigned int tempc , tempf , tempt , tempff;
       char *str;
-      char FontFile[500];
+      char FontFile [ 500 ] ;
       int type = T->type;
       int curpos = 0;
       int ch;
+      int Fcount;
       kgWC *wc;
       kgDC *dc;
       D = T->D;
@@ -14927,9 +15236,26 @@ void transch(int c) {
       tx->width = T->width;
       if ( 2*T->FontSize > T->width ) T->FontSize = T->width/2;
       Fz = T->FontSize;
-      strcpy ( FontFile , ( char * ) FontNames[T->Font]) ;
-      if(tx->IMGS== NULL) tx->IMGS = (void *)kgFixedFontChars(FontFile, T->FontSize ); 
-      
+      if ( MonoList == NULL ) {
+          uiAddFixedFonts ( ) ;
+      }
+      Fcount = Dcount ( MonoList ) ;
+      if ( Fcount > 0 ) {
+          if ( Fcount == 1 ) T->Font = 0;
+          else T->Font = T->Font%Fcount;
+          strcpy ( FontFile , ( char * ) Drecord ( MonoList , T->Font ) ) ;
+          if ( tx->F.Imgs == NULL ) tx->F.Imgs = ( void * ) kgFixedFontChars \
+           ( FontFile , T->FontSize ) ;
+          else if ( ( T->Font != tx->F.fontno ) || ( T->FontSize != tx->F.Size ) ) {
+              uiFreeImgStrs ( tx->F.Imgs ) ;
+              tx->F.Imgs = ( void * ) kgFixedFontChars ( FontFile , T->FontSize ) ;
+          }
+          tx->F.code = 't';
+          tx->F.name = ( char * ) Drecord ( MonoList , T->Font ) ;
+      }
+      else {tx->F.code = 'i';tx->F.name = NULL;}
+      tx->F.fontno = T->Font;
+      tx->F.Size = T->FontSize;
       uiBkup_clip_limits ( wc ) ;
       uiSet_full_scrn ( wc ) ;
       if ( T->hide != 1 ) {
@@ -15554,7 +15880,7 @@ void transch(int c) {
       }
       tx = ( TX_STR * ) Malloc ( sizeof ( TX_STR ) ) ;
       tx->elmt = elmt;
-      tx->IMGS=NULL;
+      tx->F.Imgs = NULL;
 //   tx->Nx=NULL;
       tx->nx = nx;
       tx->ny = ny;
@@ -15608,7 +15934,7 @@ void transch(int c) {
       }
       tx = ( TX_STR * ) Malloc ( sizeof ( TX_STR ) ) ;
       tx->elmt = elmt;
-      tx->IMGS = NULL;
+      tx->F.Imgs = NULL;
 //   tx->Nx=NULL;
       tx->x2 = X1;
       tx->y1 = Y1;

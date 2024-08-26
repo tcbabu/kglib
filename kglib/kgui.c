@@ -1557,7 +1557,7 @@
                printf("Reached Here\n");
 		      if(Ta->tstr != NULL) {
 //No			      free(((TX_STR *)(Ta->tstr))->elmt);
-                uiFreeImgStrs(((TX_STR *)(Ta->tstr))->IMGS);
+                uiFreeImgStrs(((TX_STR *)(Ta->tstr))->F.Imgs);
 			      free(Ta->tstr);
 			      Ta->tstr=NULL;
 		      }
@@ -1908,7 +1908,7 @@
                   Tx = (TX_STR *)t->tstr;
 #if 1
                   if(Tx != NULL) {
-                      Tx->IMGS=uiFreeImgStrs(Tx->IMGS);
+                      Tx->F.Imgs=uiFreeImgStrs(Tx->F.Imgs);
                       Free ( t->tstr ) ;
                   }
 #endif
@@ -1924,7 +1924,7 @@
                   Tx = (TX_STR *)T->tstr;
 #if 1
                   if(Tx != NULL){
-                       Tx->IMGS=uiFreeImgStrs(Tx->IMGS);
+                       Tx->F.Imgs=uiFreeImgStrs(Tx->F.Imgs);
                        Free ( T->tstr ) ;
                   }
 #endif
@@ -5082,6 +5082,7 @@
       if(D->NoTabProcess==1) TabProcess=0;
       pthread_mutex_init ( & ( D->Lock ) , NULL ) ;
 //   uiMakeFontlist();
+      uiInitFontLists();
       kgInitGm ( ) ;
       D->ThInfo = OpenThreads ( getCores ( ) ) ;
 //   D->ThInfo = OpenThreads(1);
@@ -5331,6 +5332,7 @@
           }
       }
       uiFreeMemAlloc ( D ) ;
+//      uiFreeFontLists();
       if ( D->Newwin ) {
 //          kgDisableSelection ( D ) ;
           if ( ! WC ( D )->FullScreen ) {

@@ -1458,16 +1458,16 @@
       B = D [ i ] .e;
       if ( strcmp ( dirs->CurDir , "/" ) != 0 ) strcat ( dirs->CurDir , "/" ) ;
       folder = Dgetmenustring ( Tmp , i ) ;
-      uiRestoreString ( folder , 50 ) ;
+      uiRestoreString ( folder , 35 ) ;
       strcat ( dirs->CurDir , folder ) ;
       uiinfo_wprintf ( ( DIALOG * ) Tmp , ( ( DIALOG * ) Tmp )->d [ 1 ] .i->twin , dirs->CurDir ) ;
           
       m = _uiFolderMenu ( dirs->CurDir ) ;
-      uiTruncateString ( m , 50 ) ;
+      uiTruncateString ( m , 35 ) ;
       dir = m;
       filter = Dgetstring ( Tmp , 0 , 1 ) ;
       m = _uiFileMenu ( dirs->CurDir , filter ) ;
-      uiTruncateString ( m , 50 ) ;
+      uiTruncateString ( m , 35 ) ;
       file = m;
       E = ( DIE * ) kgGetWidget ( Tmp , 3 ) ;
       kgFreeDouble ( ( void ** ) ( E->menu ) ) ;
@@ -1495,7 +1495,7 @@
       D = ( ( DIALOG * ) Tmp )->d;
       B = D [ i ] .w;
       m = Dgetmenustring ( Tmp , i ) ;
-      uiRestoreString ( m , 50 ) ;
+      uiRestoreString ( m , 35 ) ;
       kgSetstring ( Tmp , 0 , 0 , m ) ;
       kgUpdateWidget ( kgGetWidget ( Tmp , 0 ) ) ;
       switch ( key ) {
@@ -1538,13 +1538,13 @@
           uiinfo_wprintf ( ( DIALOG * ) Tmp , ( ( DIALOG * ) Tmp )->d [ 1 ] .i->twin , dirs->CurDir ) ;
               
           m = _uiFolderMenu ( dirs->CurDir ) ;
-          uiTruncateString ( m , 50 ) ;
+          uiTruncateString ( m , 35 ) ;
           dir = m;
           break;
       }
       filter = Dgetstring ( Tmp , 0 , 1 ) ;
       m = _uiFileMenu ( dirs->CurDir , filter ) ;
-      uiTruncateString ( m , 50 ) ;
+      uiTruncateString ( m , 35 ) ;
 //  ui_updatemenu(Tmp,3,m);
 //  ui_updatemenu(Tmp,2,dir);
       E = ( DIE * ) kgGetWidget ( Tmp , 3 ) ;
@@ -1578,13 +1578,13 @@
           uiinfo_wprintf ( ( DIALOG * ) Tmp , ( ( DIALOG * ) Tmp )->d [ 1 ] .i->twin , dirs->CurDir ) ;
               
           m = _uiFolderMenu ( dirs->CurDir ) ;
-          uiTruncateString ( m , 50 ) ;
+          uiTruncateString ( m , 35 ) ;
           dir = m;
           break;
       }
       filter = Dgetstring ( Tmp , 0 , 1 ) ;
       m = _uiFileMenu ( dirs->CurDir , filter ) ;
-      uiTruncateString ( m , 50 ) ;
+      uiTruncateString ( m , 35 ) ;
       E = ( DIE * ) kgGetWidget ( Tmp , 3 ) ;
       kgFreeDouble ( ( void ** ) ( E->menu ) ) ;
       uiCleanEbrowserImages ( E ) ;
@@ -1723,6 +1723,7 @@ char * kgGetFolderName ( char *flname ) {
           xpm6 , bkgr6 /* pointers to xpms and colors */
        , 2 , 0.5 };
       fpt = kgGetFolderName(flname);
+      if(fpt != NULL) if(fpt[0]< ' ') {free(fpt);fpt=NULL;} 
       if(fpt != NULL) {
          strcpy(Dir.HomeDir ,fpt);
          free(fpt);
@@ -1734,10 +1735,10 @@ char * kgGetFolderName ( char *flname ) {
       e0 [ 1 ] .v = ( void * ) filter;
       strncpy ( w_file , flname , 99 ) ;
       folder = _uiFolderMenu ( Dir.CurDir ) ;
-      uiTruncateString ( folder , 50 ) ;
+      uiTruncateString ( folder , 35 ) ;
       w2.menu = folder;
       file = _uiFileMenu ( Dir.CurDir , filter ) ;
-      uiTruncateString ( file , 50 ) ;
+      uiTruncateString ( file , 35 ) ;
       w3.menu = file;
       Dir.file = file;
       Dir.dir = folder;
@@ -1878,7 +1879,7 @@ char * kgGetFolderName ( char *flname ) {
       filter = Dgetstring ( Tmp , i , 1 ) ;
       m = _uiFileMenu ( d_name , filter ) ;
 //  scr_recover();
-      uiTruncateString ( m , 30 ) ;
+      uiTruncateString ( m , 35 ) ;
 //  _ui_updatemenu(Tmp,2,m);
       E = ( DIE * ) kgGetWidget ( Tmp , 2 ) ;
       uiCleanEbrowserImages ( E ) ;
@@ -1911,9 +1912,9 @@ char * kgGetFolderName ( char *flname ) {
       D = ( ( DIALOG * ) Tmp )->d;
       B = D [ i ] .e;
       m = Dgetmenustring ( Tmp , i ) ;
-      uiRestoreString ( m , 30 ) ;
+      uiRestoreString ( m , 35 ) ;
       Dsetstring ( Tmp , 0 , 0 , m ) ;
-      uiResetString ( m , 30 ) ;
+      uiResetString ( m , 35 ) ;
       switch ( key ) {
           case 1:
           break;
@@ -1965,7 +1966,7 @@ char * kgGetFolderName ( char *flname ) {
       e0 [ 1 ] .v = filter;
       strncpy ( w_file , v0 , 99 ) ;
       m = _uiFileMenu ( d_name , filter ) ;
-      uiTruncateString ( m , 30 ) ;
+      uiTruncateString ( m , 35 ) ;
       w2.menu = m;
       d [ 0 ] .t = & t0;
       d [ 1 ] .H = & H1;

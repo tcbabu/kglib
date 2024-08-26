@@ -200,6 +200,18 @@ typedef struct{
    char      *fields[MAXITEMS];
 }Tmenu;
 void set_menu_position(int xmenu,int ymenu);
+  typedef struct _img_str {
+      int xln;
+      int yln;
+      void *img;
+  } IMG_STR;
+  typedef struct _font_str {
+      char code; //i internal , t char table f fontnane
+      int fontno; // for internal
+      char *name; // font name for f type
+      void *Imgs; // ( IMG_STR ** ) pointer for character table;
+      int Size;   // fot f and i
+  } FONT_STR;
 typedef struct txt_str {
      int x1;
      int y1;
@@ -215,7 +227,7 @@ typedef struct txt_str {
      DIALOG *D;
      Gclr gc;
      DIT *T;
-     void *IMGS;
+     FONT_STR F;
    } TX_STR;
 typedef struct st_str {
      int x;
@@ -1400,18 +1412,6 @@ int SearchClr(XColor C);
 int RefreshWindowThread(void *junk);
 void uiwrite_buf(DIG *G,unsigned char *ch, int n );
 /* New Code for FT interface */
-  typedef struct _img_str {
-      int xln;
-      int yln;
-      void *img;
-  } IMG_STR;
-  typedef struct _font_str {
-      char code; //i internal , t char table f fontnane
-      int fontno; // for internal
-      char *name; // font name for f type
-      void *Imgs; // ( IMG_STR ** ) pointer for character table;
-      int Size;   // fot f and i
-  } FONT_STR;
   void * kgMakeFixedFontImg ( char *filename , char *text , int Size );
   void * kgMakeFontImg ( char *filename , char *text , int Size );
   void **kgFontChars ( char *Font , int Size );
@@ -1420,4 +1420,6 @@ void uiwrite_buf(DIG *G,unsigned char *ch, int n );
   void *uiMakeFixedString ( void *Fstr , char *str , int Ht , int Gap );
   void *uiFreeImgStr(void *);
   void *uiFreeImgStrs(void *);
+  int uiInitFontLists();
+  int uiFreeFontLists();
 #endif
