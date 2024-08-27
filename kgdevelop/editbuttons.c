@@ -113,7 +113,7 @@ int buttondatainit(void *Tmp) {
   th[2]->sw=(B->nodrawbkgr+1)%2;
   kgUpdateWidget(C);
   DIM *M=(DIM *)kgGetNamedWidget(Tmp,(char *)"buttondataWidget4");
-  sprintf(Buf,"!w32!f21Button Type : !f23!h32!c36%d",B->type);
+  sprintf(Buf,"!w32!f21Button Type : %d",B->type);
   kgWrite(M,Buf);
   kgUpdateOn(Tmp);
   return ret;
@@ -411,7 +411,7 @@ int  buttondatabutton1callback(int butno,int i,void *Tmp) {
   type = b->type;
   b->type = kgGetButnType(Tmp,&type);
   DIM *M=(DIM *)kgGetNamedWidget(Tmp,(char *)"buttondataWidget4");
-  sprintf(Buf,"!w32!f21Selected Button: !f23!h32!c36%d",b->type);
+  sprintf(Buf,"!w32!f21Selected Button: %d",b->type);
   kgWrite(M,Buf);
   kgUpdateOn(Tmp);
   switch(butno) {
@@ -514,7 +514,7 @@ int buttondataGroup( DIALOG *D,void **v,void *pt) {
     234,317,  
     1,0  
   };
-  strncpy(m1.msg,(char *)"!w32!f21Button type : 5",499);
+  strncpy(m1.msg,(char *)"!f21Button type : 5",499);
   strcpy(m1.Wid,(char *)"buttondataWidget4");
   m1.item = -1;
   char *menu2[]  = { 
@@ -557,14 +557,14 @@ int buttondataGroup( DIALOG *D,void **v,void *pt) {
   butn3[0].xpmp=NULL;
   butn3[0].xpmh=NULL;
   butn3[0].bkgr=-235255250;
-  butn3[0].butncode='';
+  butn3[0].butncode=127;
   butn3[1].sw=1;
   strcpy(butn3[1].title,(char *)"!w32!f21!c38Continue");
   butn3[1].xpmn=NULL;
   butn3[1].xpmp=NULL;
   butn3[1].xpmh=NULL;
   butn3[1].bkgr=-235255250;
-  butn3[1].butncode='';
+  butn3[1].butncode=127;
   DIL h3 = { 
     'h',
     141,358,  
@@ -574,7 +574,6 @@ int buttondataGroup( DIALOG *D,void **v,void *pt) {
     25, 
     2,1, 
     2,0.500000,0,0,0,1, /* button type and roundinfg factor(0-0.5),bordr,hide ,nodrawbkgr*/
- 
     butn3, 
     buttondatasplbutton1callback, /*  Callbak */
       NULL  /* any args */
@@ -589,7 +588,7 @@ int buttondataGroup( DIALOG *D,void **v,void *pt) {
   butn4[0].xpmp=NULL;
   butn4[0].xpmh=NULL;
   butn4[0].bkgr=-1;
-  butn4[0].butncode='';
+  butn4[0].butncode=127;
   DIN b4 = { 
     'n',
     235,283,  
@@ -599,7 +598,6 @@ int buttondataGroup( DIALOG *D,void **v,void *pt) {
     24, 
     1,1, 
     4,0.500000,0,0,0,1, /* button type and roundinfg factor(0-0.5),bordr,hide ,nodrawbkgr*/
- 
     butn4, 
     buttondatabutton1callback, /*  Callbak */
       NULL  /* any args */

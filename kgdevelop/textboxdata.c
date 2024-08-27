@@ -161,7 +161,7 @@ int textboxdataGroup( DIALOG *D,void **v,void *pt) {
   strcpy(r1.Wid,(char *)"textboxdataWidget3");
   DIM m2 = { 
     'm',
-    11,125,  
+    11,120,  
     84,149,  
     1,0  
   };

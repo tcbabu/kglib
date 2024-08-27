@@ -5861,11 +5861,70 @@ void transch(int c) {
       }
       return img;
   }
+  char *uiCleanOldString(char *Str,char *Buf,int *cval,int *fval,float *wfac,float *zfac) {
+      int i,k;
+      char *pt=Str;
+//      printf("Str: %s\n",Str);
+      while(Str[0]=='!') {
+              switch(Str[1]) {
+                case 'f':
+                  *fval = (Str[2]-'0')*10+(Str[3]-'0');
+                  break;
+                case 'c':
+                  *cval = (Str[2]-'0')*10+(Str[3]-'0');
+                  break;
+                case 'w':
+                  *wfac = (float)(Str[2]-'0')/(Str[3]-'0');
+                  break;
+                case 'z':
+                  *zfac = (float)(Str[2]-'0')/(Str[3]-'0');
+                  break;
+                case 'h':
+                  break;
+                case 'S':
+                case 's':
+                  Str +=2;
+                  continue;
+                default:
+                  break;
+             }
+             Str +=4;
+          }
+      i=0;
+      k=0;
+      while(Str[i]!='\0') {
+        if(Str[i]=='!') {
+              switch(Str[i+1]) {
+                case 'f':
+                case 'c':
+                case 'w':
+                case 'z':
+                case 'h':
+                  i = i+4;
+                  break;
+                case 'S':
+                case 's':
+                  i =+2;
+                  break;
+                default:
+                  Buf[k]='!';
+                  k++;
+                  i++;
+                  break;
+             }
+         }
+         else Buf[k++]=Str[i++];
+      }
+      Buf[k]='\0';
+//      printf("Buf: %s\n",Buf);
+      return Buf;
+  }
   void **uiMenuStringImages ( DIALOG *D , char **Strs , int width , int height , int font , int color , int FontSize , int justification , int Mag ) \
   {
       void * fid;
       void **imgs;
       char *Str;
+      char Buf[1000];
       int ln , i , maxchar , temp , item;
       void *img = NULL , *imgbk = NULL;
       char *tmpdir , flname [ 200 ] ;
@@ -5875,6 +5934,8 @@ void transch(int c) {
       FONT_STR F;
       IMG_STR *IMG;
       int rd , gr , bl;
+      int fval,cval;
+      float wfac,zfac;
       kgWC *wc;
       wc = D->wc;
       ln = width;
@@ -5897,15 +5958,20 @@ void transch(int c) {
 #else
       for ( i = 0; i < item; i++ ) {
           Str = Strs [ i ] ;
-          kgGetDefaultRGB ( color , & rd , & gr , & bl ) ;
+      wfac =1.0;
+      cval = color;
+      fval = font;
+          Str = uiCleanOldString(Str,Buf,&cval,&fval,&wfac,&zfac);
+          kgGetDefaultRGB ( cval, & rd , & gr , & bl ) ;
           F.code = 'f';
-          F.name = kgGetOthFont ( font ) ;
+          F.name = kgGetOthFont ( fval ) ;
           if ( FontSize <= 0 ) F.Size = ( height-1 ) /2;
           else F.Size = FontSize;
-          IMG = uiMakeString ( & ( F ) , Str , ( int ) height , 0 ) ;
+          IMG = uiMakeString ( & ( F ) , Buf , ( int ) height , 0 ) ;
           if(IMG->xln > width-F.Size) {
             float fac= (float)(width-F.Size)/IMG->xln;
-            img = kgResizeImage(IMG->img,fac);
+//            img = kgResizeImage(IMG->img,fac);
+            img = kgChangeSizeImage(IMG->img,(int)(IMG->xln *fac),height);
             IMG->img = img;
             IMG->xln = IMG->xln*fac;
           }
@@ -6083,11 +6149,14 @@ void transch(int c) {
       int ln , i , maxchar , temp , item;
       void *img = NULL,*imgbk=NULL;
       char *tmpdir , flname [ 200 ] ;
+      char Buf[1000];     
       float length;
       float fac , th , tw , BxSize , width1 , yp , xp;
       kgWC *wc;
       wc = D->wc;
       int ln1,x1,rd,gr,bl;
+      int fval,cval;
+      float wfac,zfac;
       FONT_STR F;
       IMG_STR *IMG=NULL;
       ln = width;
@@ -6104,13 +6173,24 @@ void transch(int c) {
       }
           kgGetDefaultRGB ( color , & rd , & gr , & bl ) ;
           F.code = 'f';
-          F.name = kgGetOthFont ( font ) ;
-//          printf("Font: %s\n",F.name);
+          F.name = NULL ;
           if ( FontSize <= 0 ) F.Size = ( height-1 ) /2;
           else F.Size = FontSize*0.9;
       for ( i = 0; i < item; i++ ) {
+          fval = font;
+          cval = color;
           Str = Strs [ i ]->name ;
-          IMG = uiMakeString ( & ( F ) , Str , ( int ) (height*3/2) , 0 ) ;
+          wfac =1.0;
+          Str = uiCleanOldString(Str,Buf,&cval,&fval,&wfac,&zfac);
+          if(F.name != NULL) free(F.name);
+          F.name =  kgGetOthFont ( fval ) ;
+          kgGetDefaultRGB ( cval, & rd , & gr , & bl ) ;
+          IMG = uiMakeString ( & ( F ) , Buf , ( int ) (height*3/2) , 0 ) ;
+          if(wfac != 1.0) {
+            IMG->xln = IMG->xln*wfac;
+            img = kgChangeSizeImage(IMG->img,IMG->xln,height*3/2);
+            IMG->img = img;
+          }
           if(IMG->xln > width-F.Size) {
             float fac= (float)(width-F.Size)/IMG->xln;
             img = kgChangeSizeImage(IMG->img,width-F.Size,height*3/2);
@@ -6133,7 +6213,7 @@ void transch(int c) {
           ln1 = IMG->xln+1;
           img = IMG->img;
           if ( img != NULL ) {
-              kgAddImages ( imgbk , img , x1 ,height -  FontSize*2 ) ;
+              kgAddImages ( imgbk , img , x1 ,height -  2*FontSize ) ;
               uiFreeImage ( img ) ;
               free ( IMG ) ;
           }
@@ -6437,6 +6517,8 @@ void transch(int c) {
     1 right justification
     bkcolor : background color ; < 0 background will not be painted
 */
+      char Buf[1000];
+      char *Str;
       int ln , i , maxchar , temp;
       int x1 , ln1;
       void *img = NULL;
@@ -6446,17 +6528,29 @@ void transch(int c) {
       IMG_STR *IMG;
       void *imgbk , *fid;
       int rd , gr , bl;
+      int fval,cval;
+      float wfac,zfac;
       wc = D->wc;
       ln = width;
       if ( str == NULL ) return;
       if ( str [ 0 ] == '\0' ) return;
-//      img = kgStringToImage ( str , NULL , ln , height , font , color , justfic , FontSize , bkcolor ) ;
-      kgGetDefaultRGB ( color , & rd , & gr , & bl ) ;
+      wfac =1.0;
+      cval = color;
+      fval = font;
+      Str = uiCleanOldString(str,Buf,&cval,&fval,&wfac,&zfac);
+      kgGetDefaultRGB ( cval , & rd , & gr , & bl ) ;
       F.code = 'f';
-      F.name = kgGetOthFont ( font ) ;
+      F.name = kgGetOthFont ( fval ) ;
       if ( FontSize <= 0 ) F.Size = ( height-1 ) /2;
       else F.Size = FontSize;
-      IMG = uiMakeString ( & ( F ) , str , ( int ) height , 0 ) ;
+      IMG = uiMakeString ( & ( F ) , Buf , ( int ) height , 0 ) ;
+#if 0
+          if(wfac != 1.0) {
+            IMG->xln = IMG->xln*wfac;
+            img = kgChangeSizeImage(IMG->img,IMG->xln,height*3/2);
+            IMG->img = img;
+          }
+#endif
       kgSetImageColor ( IMG->img , rd , gr , bl ) ;
       if ( bkcolor >= 0 ) {
           fid = kgInitImage ( ln , height , 1 ) ;
@@ -6473,7 +6567,7 @@ void transch(int c) {
       if ( F.name != NULL ) free ( F.name ) ;
       if ( img != NULL ) {
           if ( imgbk != NULL ) {
-              kgAddImages ( imgbk , img , x1 , 0 ) ;
+              kgAddImages ( imgbk , img , x1 , height/2-FontSize) ;
               kgImage ( D , imgbk , x , y , ln , height , 0.0 , 1.0 ) ;
               uiFreeImage ( imgbk ) ;
           }
@@ -10572,9 +10666,14 @@ void transch(int c) {
       int i , items;
       DIALOG *D;
       D = w->D;
+      char Buf[1000];
+      int fval,cval;
+      float wfac,zfac;
       FONT_STR F;
       IMG_STR *IMG;
       int rd , gr , bl;
+      int color;
+      char *Str;
       if ( w->imgs != NULL ) {
           i = 0;
           while ( w->imgs [ i ] != NULL ) kgFreeImage ( w->imgs [ i++ ] ) ;
@@ -10586,16 +10685,23 @@ void transch(int c) {
       if ( w->menu != NULL ) {
           while ( ( w->menu [ i ] ) != NULL ) i++;
           items = i;
+          color =  D->gc.menu_char;
+          font  = D->gc.MenuFont ;
           w->imgs = ( void ** ) malloc ( sizeof ( void * ) * ( i+1 ) ) ;
           w->imgs [ i ] = NULL;
           for ( i = 0; i < items; i++ ) {
+              fval =font;
+              cval = color;
+              wfac = 1.0;
+              Str = w->menu [ i ] ; 
+              Str = uiCleanOldString(Str,Buf,&cval,&fval,&wfac,&zfac);
 //              w->imgs [ i ] = ( void * ) kgStringToImage ( w->menu [ i ] , NULL , lng , w->width , D->gc.MenuFont , D->gc.menu_char , -1 , D->gc.FontSize , -1 ) ;
-              kgGetDefaultRGB ( D->gc.menu_char , & rd , & gr , & bl ) ;
+              kgGetDefaultRGB ( cval , & rd , & gr , & bl ) ;
               F.code = 'f';
-              F.name = kgGetOthFont ( D->gc.MenuFont ) ;
+              F.name = kgGetOthFont ( fval ) ;
               if ( D->gc.FontSize <= 0 ) F.Size = ( w->width -1 ) /2;
               else F.Size = D->gc.FontSize;
-              IMG = uiMakeString ( & ( F ) , w->menu [ i ] , ( int ) w->width , 0 ) ;
+              IMG = uiMakeString ( & ( F ) , Buf , ( int ) w->width , 0 ) ;
               kgSetImageColor ( IMG->img , rd , gr , bl ) ;
               w->imgs [ i ] = IMG->img;
               free ( F.name ) ;

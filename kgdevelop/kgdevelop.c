@@ -1145,7 +1145,7 @@
       n = B->nx*B->ny;
       xx = Dia->xo;
       yy = Dia->yo;
-      kgPrintf ( Parent , 2 , ( char * ) "!c02!s!f22!z53DESIGN MODE" ) ;
+      kgPrintf ( Parent , 2 , ( char * ) "!c02!f22DESIGN MODE" ) ;
       switch ( key ) {
           case 1:
           ret = 0;
@@ -1179,7 +1179,7 @@
           }
           break;
           case 2:
-          kgPrintf ( Parent , 2 , ( char * ) "!s!f22!z53WIDGET ACTIONS" ) ;
+          kgPrintf ( Parent , 2 , ( char * ) "!f22!z53WIDGET ACTIONS" ) ;
           RunItemoptdia ( Tmp ) ;
           ret = 0;
           break;
@@ -1210,9 +1210,9 @@
           ret = 0;
           break;
           case 7:
-          kgPrintf ( Parent , 2 , ( char * ) "!c01!s!f03!z53TESTING DESIGN" ) ;
+          kgPrintf ( Parent , 2 , ( char * ) "!c01!f03TESTING DESIGN" ) ;
           ShowDialog ( Dia ) ;
-          kgPrintf ( Parent , 2 , ( char * ) "!c02!s!f03!z53DESIGN MODE    " ) ;
+          kgPrintf ( Parent , 2 , ( char * ) "!c02!f03DESIGN MODE    " ) ;
           DRAW_DIALOG ( Dia ) ;
           ret = 0;
           break;
