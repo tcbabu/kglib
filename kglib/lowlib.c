@@ -6213,7 +6213,7 @@ void transch(int c) {
           ln1 = IMG->xln+1;
           img = IMG->img;
           if ( img != NULL ) {
-              kgAddImages ( imgbk , img , x1 ,height -  2*FontSize ) ;
+              kgAddImages ( imgbk , img , x1 ,height -  5*FontSize/2 ) ;
               uiFreeImage ( img ) ;
               free ( IMG ) ;
           }
@@ -6541,8 +6541,9 @@ void transch(int c) {
       kgGetDefaultRGB ( cval , & rd , & gr , & bl ) ;
       F.code = 'f';
       F.name = kgGetOthFont ( fval ) ;
-      if ( FontSize <= 0 ) F.Size = ( height-1 ) /2;
+      if ( FontSize <= 0 ) F.Size = ( height-4 ) /2;
       else F.Size = FontSize;
+      if(F.Size >(( height-4 ) /2 ) ) F.Size = ( height-4 ) /2 ;
       IMG = uiMakeString ( & ( F ) , Buf , ( int ) height , 0 ) ;
 #if 0
           if(wfac != 1.0) {
@@ -6559,9 +6560,16 @@ void transch(int c) {
           kgCloseImage ( fid ) ;
       }
       else imgbk = NULL;
+      if( IMG->xln > ln-FontSize) {
+         float fac;
+        fac =(float) (ln-FontSize)/IMG->xln ;
+        img = kgChangeSizeImage(IMG->img,ln-FontSize,(4*height)/5);
+        IMG->xln = IMG->xln *fac;
+        IMG->img = img;
+      }
       x1 = 0;
       if ( justfic == 1 ) x1 = ( ln-IMG->xln-2 ) ;
-      else if ( justfic == 0 ) x1 = ( ln-IMG->xln-2 ) /2;
+      else if ( justfic == 0 ) x1 = ( ln-IMG->xln ) /2;
       ln1 = IMG->xln+1;
       img = IMG->img;
       if ( F.name != NULL ) free ( F.name ) ;
@@ -6773,7 +6781,8 @@ void transch(int c) {
           return;
       }
   }
-  void uiShadedStringImage ( DIALOG *D , char *str , void *image , int x , int y , int width , int height , int font , int fillcolor , int highli , int color , int FontSize , int justfic , float rfac , int state , int type ) \
+  void uiShadedStringImage ( DIALOG *D , char *str , void *image , int x , int y , int width , int height , int font ,
+     int fillcolor , int highli , int color , int FontSize , int justfic , float rfac , int state , int type ) \
   {
 /*
    Write a string in Dialog Area;
