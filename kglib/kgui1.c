@@ -1674,10 +1674,10 @@ char * kgGetFolderName ( char *flname ) {
       'i' , 15 , 94 , 489 , 127 , 65 , 1 };
       DIE w2 = {
           'e' , 7 , 137 , 310 , 400 , 8 , & v2 , "" , NULL , NULL , FileBrowserbrowser1callback , /* *args , callback */
-      20 , 6 , 22 , 1 , 1 , 1 , 0 };
+      24 , 6 , 24 , 1 , 1 , 1 , 0 };
       DIE w3 = {
           'e' , 310 , 137 , 630 , 400 , 8 , & v3 , "" , NULL , NULL , FileBrowserbrowser2callback , /* *args , callback */
-      20 , 6 , 22 , 1 , 1 , 1 , 0 };
+      24 , 6 , 24 , 1 , 1 , 1 , 0 };
       int butn1 = 1;
       int sw4 [ 2 ] = {
       1 , 1 };

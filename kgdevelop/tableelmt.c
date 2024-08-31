@@ -72,13 +72,13 @@ int tableelmtGroup( DIALOG *D,void **v,void *pt) {
     525,47,  
     0,0  
   };
-  strncpy(m0.msg,(char *)"!w32For Column : 0",499);
+  strncpy(m0.msg,(char *)"For Column : 0",499);
   strcpy(m0.Wid,(char *)"tableelmtMsg");
   m0.item = -1;
   T_ELMT *e1  ; 
   e1 =(T_ELMT *)malloc(sizeof(T_ELMT)*1);
   e1[0].fmt = (char *)malloc(25);
-  strcpy(e1[0].fmt,(char *)"!w32Data Field Length%5d");
+  strcpy(e1[0].fmt,(char *)"Data Field Length%5d");
   e1[0].v=(void *)v[0];
   e1[0].sw=1;
   e1[0].noecho=0;
@@ -98,9 +98,9 @@ int tableelmtGroup( DIALOG *D,void **v,void *pt) {
   t1.type = 1;
   t1.item = -1;
   char *menu2[]  = { 
-    (char *)"!w32Integer",
-    (char *)"!w32Double",
-    (char *)"!w32String",
+    (char *)"Integer",
+    (char *)"Double",
+    (char *)"String",
     NULL 
   };
   ThumbNail **th0 ;
@@ -135,12 +135,12 @@ int tableelmtGroup( DIALOG *D,void **v,void *pt) {
     142,151,  
     1,0  
   };
-  strncpy(m3.msg,(char *)"!w32Data Type",499);
+  strncpy(m3.msg,(char *)"Data Type",499);
   strcpy(m3.Wid,(char *)"tableelmtWidget6");
   m3.item = -1;
   char *menu4[]  = { 
-    (char *)"!w32Input and Output",
-    (char *)"!w32Output only",
+    (char *)"Input and Output",
+    (char *)"Output only",
     NULL 
   };
   ThumbNail **th1 ;
@@ -175,18 +175,18 @@ int tableelmtGroup( DIALOG *D,void **v,void *pt) {
     145,200,  
     1,0  
   };
-  strncpy(m5.msg,(char *)"!w32Column Type",499);
+  strncpy(m5.msg,(char *)"Column Type",499);
   strcpy(m5.Wid,(char *)"tableelmtWidget9");
   m5.item = -1;
   BUT_STR  *butn6=NULL; 
   butn6= (BUT_STR *)malloc(sizeof(BUT_STR)*1);
   butn6[0].sw=1;
-  strcpy(butn6[0].title,(char *)"!w32Previous");
+  strcpy(butn6[0].title,(char *)"Previous");
   butn6[0].xpmn=NULL;
   butn6[0].xpmp=NULL;
   butn6[0].xpmh=NULL;
   butn6[0].bkgr=-240245255;
-  butn6[0].butncode='';
+  butn6[0].butncode=127;
   DIN b6 = { 
     'n',
     26,226,  
@@ -206,12 +206,12 @@ int tableelmtGroup( DIALOG *D,void **v,void *pt) {
   BUT_STR  *butn7=NULL; 
   butn7= (BUT_STR *)malloc(sizeof(BUT_STR)*1);
   butn7[0].sw=1;
-  strcpy(butn7[0].title,(char *)"!w32Next");
+  strcpy(butn7[0].title,(char *)"Next");
   butn7[0].xpmn=NULL;
   butn7[0].xpmp=NULL;
   butn7[0].xpmh=NULL;
   butn7[0].bkgr=-240245255;
-  butn7[0].butncode='';
+  butn7[0].butncode=127;
   DIN b7 = { 
     'n',
     426,226,  
@@ -231,12 +231,12 @@ int tableelmtGroup( DIALOG *D,void **v,void *pt) {
   BUT_STR  *butn8=NULL; 
   butn8= (BUT_STR *)malloc(sizeof(BUT_STR)*1);
   butn8[0].sw=1;
-  strcpy(butn8[0].title,(char *)"!w32Done");
+  strcpy(butn8[0].title,(char *)"Done");
   butn8[0].xpmn=NULL;
   butn8[0].xpmp=NULL;
   butn8[0].xpmh=NULL;
   butn8[0].bkgr=-235255250;
-  butn8[0].butncode='';
+  butn8[0].butncode=127;
   DIL h8 = { 
     'h',
     233,226,  

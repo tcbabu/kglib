@@ -2818,13 +2818,20 @@ int  kgSetImageColor ( void *Img , int r,int g,int b ) {
       w2 = img2->image_width;
       h2 = img2->image_height;
 //   printf("%d %d %d %d\n",w1,h1,w2,h2);
-#if 0
+#if 1
       if ( ( w2 > w1 ) || ( h2 > h1 ) ) {
           float fac , fac1;
+          int xl=0,yl=0,xu=w2-1,yu=h2-1;
+          if(w2>w1) xu = w1-1;
+          if(h2>h1) yu = h1-1;
+#if 0
           fac = ( float ) w1/ ( float ) w2;
           fac1 = ( float ) h1/ ( float ) h2;
           if ( fac1 < fac ) fac = fac1;
           img3 = kgResizeImage ( img2 , fac*0.8 ) ;
+#else
+          img3 = kgCropImage(img2,xl,yl,xu,yu);
+#endif
           img2 = uiAddgmImages ( img1 , img3 , Xshft , Yshft ) ;
           kgFreeImage ( img3 ) ;
           return img2;

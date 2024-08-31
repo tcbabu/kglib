@@ -102,7 +102,7 @@ int  textelementdatabutton1callback(int butno,int i,void *Tmp) {
   kgUpdateWidget(R);
   kgUpdateWidget(R2);
   kgUpdateWidget(T);
-  sprintf(Buf,"!w32!f21Text Box: (%d,%d)",(index%e->nx),(index/e->nx));
+  sprintf(Buf,"Text Box: (%d,%d)",(index%e->nx),(index/e->nx));
   kgWrite(Msg,Buf);
   kgUpdateOn(Tmp);
   switch(butno) {
@@ -141,7 +141,7 @@ int  textelementdatabutton2callback(int butno,int i,void *Tmp) {
   kgUpdateWidget(R);
   kgUpdateWidget(R2);
   kgUpdateWidget(T);
-  sprintf(Buf,"!w32!f21Text Box: (%d,%d)",(index%e->nx),(index/e->nx));
+  sprintf(Buf,"Text Box: (%d,%d)",(index%e->nx),(index/e->nx));
   kgWrite(Msg,Buf);
   kgUpdateOn(Tmp);
   switch(butno) {
@@ -190,7 +190,7 @@ int textelementdatainit(void *Tmp) {
   kgSetInt(T,1,e->Field[index]);
   kgSetString(T,0,e->Prompt[index]);
   kgSetWidgetVisibility(P,0);
-  sprintf(Buf,"!w32!f21Text Box: (%d,%d)",(index%e->nx),(index/e->nx));
+  sprintf(Buf,"Text Box: (%d,%d)",(index%e->nx),(index/e->nx));
   kgWrite(Msg,Buf);
   if(e->n == 1) {
     kgSetWidgetVisibility(N,0);

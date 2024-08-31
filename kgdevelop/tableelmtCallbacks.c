@@ -97,7 +97,7 @@ int  tableelmtbutton1callback(int butno,int i,void *Tmp) {
   kgUpdateWidget(R1);
   kgUpdateWidget(R2);
   kgUpdateWidget(T);
-  sprintf(Buf,"!w32!f21Table Column: %d",(index));
+  sprintf(Buf,"Table Column: %d",(index));
   kgWrite(Msg,Buf);
   kgUpdateOn(Tmp);
 
@@ -136,7 +136,7 @@ int  tableelmtbutton2callback(int butno,int i,void *Tmp) {
   kgUpdateWidget(R1);
   kgUpdateWidget(R2);
   kgUpdateWidget(T);
-  sprintf(Buf,"!w32!f21Table Column: %d",(index));
+  sprintf(Buf,"Table Column: %d",(index));
   kgWrite(Msg,Buf);
   kgUpdateOn(Tmp);
 
@@ -196,7 +196,7 @@ int tableelmtinit(void *Tmp) {
   kgSetSelection(R2,e->sw[index]+1);
   kgUpdateWidget(T);
   kgSetWidgetVisibility(P,0);
-  sprintf(Buf,"!w32!f21Table Column: %d",(index));
+  sprintf(Buf,"Table Column: %d",(index));
   kgWrite(Msg,Buf);
   if(e->n == 1) {
     kgSetWidgetVisibility(N,0);

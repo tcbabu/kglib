@@ -1420,6 +1420,6 @@ void uiwrite_buf(DIG *G,unsigned char *ch, int n );
   void *uiMakeFixedString ( void *Fstr , char *str , int Ht , int Gap );
   void *uiFreeImgStr(void *);
   void *uiFreeImgStrs(void *);
-  int uiInitFontLists();
+  int uiInitFontLists(void *);
   int uiFreeFontLists();
 #endif

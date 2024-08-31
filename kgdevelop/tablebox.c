@@ -64,7 +64,7 @@ int tableboxGroup( DIALOG *D,void **v,void *pt) {
     458,236,   
     8,0,  
     170, 
-    24, 
+    25, 
     1,4, 
     0,2, 
     (int *)v[5], 
@@ -121,7 +121,7 @@ int tableboxGroup( DIALOG *D,void **v,void *pt) {
     64,217,  
     1,0  
   };
-  strncpy(m3.msg,(char *)"!w32Font",499);
+  strncpy(m3.msg,(char *)"Font",499);
   strcpy(m3.Wid,(char *)"tableelemtWidget5");
   m3.item = -1;
   BUT_STR  *butn4=NULL; 
@@ -132,14 +132,14 @@ int tableboxGroup( DIALOG *D,void **v,void *pt) {
   butn4[0].xpmp=NULL;
   butn4[0].xpmh=NULL;
   butn4[0].bkgr=-235255250;
-  butn4[0].butncode='';
+  butn4[0].butncode=127;
   butn4[1].sw=1;
   strcpy(butn4[1].title,(char *)"!c38Okay");
   butn4[1].xpmn=NULL;
   butn4[1].xpmp=NULL;
   butn4[1].xpmh=NULL;
   butn4[1].bkgr=-235255250;
-  butn4[1].butncode='';
+  butn4[1].butncode=127;
   DIL h4 = { 
     'h',
     149,270,  

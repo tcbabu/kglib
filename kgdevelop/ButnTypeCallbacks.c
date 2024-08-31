@@ -14,7 +14,7 @@ int  ButnTypebutton1callback(int butno,int i,void *Tmp) {
   n = B->nx*B->ny;
   int *type=(int *)(D->pt);
   *type = 0;
-  sprintf(Buf,"!w32!f21Selected Type: %d",*type);
+  sprintf(Buf,"Selected Type: %d",*type);
   kgWrite(Bmsg,Buf);
   kgUpdateOn(Tmp);
   switch(butno) {
@@ -38,7 +38,7 @@ int  ButnTypebutton2callback(int butno,int i,void *Tmp) {
   n = B->nx*B->ny;
   int *type=(int *)(D->pt);
   *type = 1;
-  sprintf(Buf,"!w32!f21Selected Type: %d",*type);
+  sprintf(Buf,"Selected Type: %d",*type);
   kgWrite(Bmsg,Buf);
   kgUpdateOn(Tmp);
   switch(butno) {
@@ -62,7 +62,7 @@ int  ButnTypebutton3callback(int butno,int i,void *Tmp) {
   n = B->nx*B->ny;
   int *type=(int *)(D->pt);
   *type = 2;
-  sprintf(Buf,"!w32!f21Selected Type: %d",*type);
+  sprintf(Buf,"Selected Type: %d",*type);
   kgWrite(Bmsg,Buf);
   kgUpdateOn(Tmp);
   switch(butno) {
@@ -86,7 +86,7 @@ int  ButnTypebutton4callback(int butno,int i,void *Tmp) {
   n = B->nx*B->ny;
   int *type=(int *)(D->pt);
   *type = 3;
-  sprintf(Buf,"!w32!f21Selected Type: %d",*type);
+  sprintf(Buf,"Selected Type: %d",*type);
   kgWrite(Bmsg,Buf);
   kgUpdateOn(Tmp);
   switch(butno) {
@@ -110,7 +110,7 @@ int  ButnTypebutton5callback(int butno,int i,void *Tmp) {
   n = B->nx*B->ny;
   int *type=(int *)(D->pt);
   *type = 4;
-  sprintf(Buf,"!w32!f21Selected Type: %d",*type);
+  sprintf(Buf,"Selected Type: %d",*type);
   kgWrite(Bmsg,Buf);
   kgUpdateOn(Tmp);
   switch(butno) {
@@ -134,7 +134,7 @@ int  ButnTypebutton6callback(int butno,int i,void *Tmp) {
   n = B->nx*B->ny;
   int *type=(int *)(D->pt);
   *type = 5;
-  sprintf(Buf,"!w32!f21Selected Type: %d",*type);
+  sprintf(Buf,"Selected Type: %d",*type);
   kgWrite(Bmsg,Buf);
   kgUpdateOn(Tmp);
   switch(butno) {
@@ -158,7 +158,7 @@ int  ButnTypebutton7callback(int butno,int i,void *Tmp) {
   n = B->nx*B->ny;
   int *type=(int *)(D->pt);
   *type = 6;
-  sprintf(Buf,"!w32!f21Selected Type: %d",*type);
+  sprintf(Buf,"Selected Type: %d",*type);
   kgWrite(Bmsg,Buf);
   kgUpdateOn(Tmp);
   switch(butno) {
@@ -182,7 +182,7 @@ int  ButnTypebutton8callback(int butno,int i,void *Tmp) {
   n = B->nx*B->ny;
   int *type=(int *)(D->pt);
   *type = 7;
-  sprintf(Buf,"!w32!f21Selected Type: %d",*type);
+  sprintf(Buf,"Selected Type: %d",*type);
   kgWrite(Bmsg,Buf);
   kgUpdateOn(Tmp);
   switch(butno) {
@@ -206,7 +206,7 @@ int  ButnTypebutton9callback(int butno,int i,void *Tmp) {
   n = B->nx*B->ny;
   int *type=(int *)(D->pt);
   *type = 8;
-  sprintf(Buf,"!w32!f21Selected Type: %d",*type);
+  sprintf(Buf,"Selected Type: %d",*type);
   kgWrite(Bmsg,Buf);
   kgUpdateOn(Tmp);
   switch(butno) {
@@ -230,7 +230,7 @@ int  ButnTypebutton10callback(int butno,int i,void *Tmp) {
   n = B->nx*B->ny;
   int *type=(int *)(D->pt);
   *type = 9;
-  sprintf(Buf,"!w32!f21Selected Type: %d",*type);
+  sprintf(Buf,"Selected Type: %d",*type);
   kgWrite(Bmsg,Buf);
   kgUpdateOn(Tmp);
   switch(butno) {
@@ -254,7 +254,7 @@ int  ButnTypebutton11callback(int butno,int i,void *Tmp) {
   n = B->nx*B->ny;
   int *type=(int *)(D->pt);
   *type = 10;
-  sprintf(Buf,"!w32!f21Selected Type: %d",*type);
+  sprintf(Buf,"Selected Type: %d",*type);
   kgWrite(Bmsg,Buf);
   kgUpdateOn(Tmp);
   switch(butno) {
@@ -295,7 +295,7 @@ int ButnTypeinit(void *Tmp) {
   pt = D->pt;
   type = (int *)pt;
   Bmsg = (DII *)kgGetNamedWidget(Tmp,(char *)"ButnMsg");
-  sprintf(Buf, "!w32!f21!c38Default Type: %d",*type);
+  sprintf(Buf, "!c38Default Type: %d",*type);
   kgWrite(Bmsg,Buf);
   return ret;
 }

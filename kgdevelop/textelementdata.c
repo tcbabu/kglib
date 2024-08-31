@@ -86,19 +86,19 @@ int textelementdataGroup( DIALOG *D,void **v,void *pt) {
     485,38,  
     0,0  
   };
-  strncpy(m0.msg,(char *)"!w32!f21Text Box (1,1)",499);
+  strncpy(m0.msg,(char *)"Text Box (1,1)",499);
   strcpy(m0.Wid,(char *)"elementMsg");
   m0.item = -1;
   T_ELMT *e1  ; 
   e1 =(T_ELMT *)malloc(sizeof(T_ELMT)*2);
   e1[0].fmt = (char *)malloc(19);
-  strcpy(e1[0].fmt,(char *)"!w32!f21Prompt%30s");
+  strcpy(e1[0].fmt,(char *)"Prompt%30s");
   e1[0].v=(void *)v[0];
   e1[0].sw=1;
   e1[0].noecho=0;
   e1[0].img=NULL;
   e1[1].fmt = (char *)malloc(30);
-  strcpy(e1[1].fmt,(char *)"!w32!f21Data Field Length%10d");
+  strcpy(e1[1].fmt,(char *)"Data Field Length%10d");
   e1[1].v=(void *)v[1];
   e1[1].sw=1;
   e1[1].noecho=0;
@@ -118,9 +118,9 @@ int textelementdataGroup( DIALOG *D,void **v,void *pt) {
   t1.type = 1;
   t1.item = -1;
   char *menu2[]  = { 
-    (char *)"!w32!f21Integer",
-    (char *)"!w32!f21Double",
-    (char *)"!w32!f21String",
+    (char *)"Integer",
+    (char *)"Double",
+    (char *)"String",
     NULL 
   };
   ThumbNail **th0 ;
@@ -155,18 +155,18 @@ int textelementdataGroup( DIALOG *D,void **v,void *pt) {
     130,165,  
     1,0  
   };
-  strncpy(m3.msg,(char *)"!w32!f21Data type",499);
+  strncpy(m3.msg,(char *)"Data type",499);
   strcpy(m3.Wid,(char *)"textelementdataWidget5");
   m3.item = -1;
   BUT_STR  *butn4=NULL; 
   butn4= (BUT_STR *)malloc(sizeof(BUT_STR)*1);
   butn4[0].sw=1;
-  strcpy(butn4[0].title,(char *)"!w32!f21Finish");
+  strcpy(butn4[0].title,(char *)"Finish");
   butn4[0].xpmn=NULL;
   butn4[0].xpmp=NULL;
   butn4[0].xpmh=NULL;
   butn4[0].bkgr=-235255250;
-  butn4[0].butncode='';
+  butn4[0].butncode=127;
   DIL h4 = { 
     'h',
     196,259,  
@@ -186,12 +186,12 @@ int textelementdataGroup( DIALOG *D,void **v,void *pt) {
   BUT_STR  *butn5=NULL; 
   butn5= (BUT_STR *)malloc(sizeof(BUT_STR)*1);
   butn5[0].sw=1;
-  strcpy(butn5[0].title,(char *)"!w32!f21Previous");
+  strcpy(butn5[0].title,(char *)"Previous");
   butn5[0].xpmn=NULL;
   butn5[0].xpmp=NULL;
   butn5[0].xpmh=NULL;
   butn5[0].bkgr=-240245255;
-  butn5[0].butncode='';
+  butn5[0].butncode=127;
   DIN b5 = { 
     'n',
     11,259,  
@@ -211,12 +211,12 @@ int textelementdataGroup( DIALOG *D,void **v,void *pt) {
   BUT_STR  *butn6=NULL; 
   butn6= (BUT_STR *)malloc(sizeof(BUT_STR)*1);
   butn6[0].sw=1;
-  strcpy(butn6[0].title,(char *)"!w32!f21Next");
+  strcpy(butn6[0].title,(char *)"Next");
   butn6[0].xpmn=NULL;
   butn6[0].xpmp=NULL;
   butn6[0].xpmh=NULL;
   butn6[0].bkgr=-240245255;
-  butn6[0].butncode='';
+  butn6[0].butncode=127;
   DIN b6 = { 
     'n',
     386,258,  
@@ -234,8 +234,8 @@ int textelementdataGroup( DIALOG *D,void **v,void *pt) {
   strcpy(b6.Wid,(char *)"elementNext");
   b6.item = -1;
   char *menu7[]  = { 
-    (char *)"!w32Yes",
-    (char *)"!w32No",
+    (char *)"Yes",
+    (char *)"No",
     NULL 
   };
   ThumbNail **th1 ;
@@ -270,7 +270,7 @@ int textelementdataGroup( DIALOG *D,void **v,void *pt) {
     131,221,  
     1,0  
   };
-  strncpy(m8.msg,(char *)"!w32Echo",499);
+  strncpy(m8.msg,(char *)"Echo",499);
   strcpy(m8.Wid,(char *)"textelementdataWidget9");
   m8.item = -1;
   dtmp = D->d;

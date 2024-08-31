@@ -42,7 +42,7 @@ int ButnTypeGroup( DIALOG *D,void **v,void *pt) {
   butn1[0].xpmp=NULL;
   butn1[0].xpmh=NULL;
   butn1[0].bkgr=-1;
-  butn1[0].butncode='';
+  butn1[0].butncode=127;
   DIN b1 = { 
     'n',
     26,31,  
@@ -67,7 +67,7 @@ int ButnTypeGroup( DIALOG *D,void **v,void *pt) {
   butn2[0].xpmp=NULL;
   butn2[0].xpmh=NULL;
   butn2[0].bkgr=-1;
-  butn2[0].butncode='';
+  butn2[0].butncode=127;
   DIN b2 = { 
     'n',
     116,31,  
@@ -92,7 +92,7 @@ int ButnTypeGroup( DIALOG *D,void **v,void *pt) {
   butn3[0].xpmp=NULL;
   butn3[0].xpmh=NULL;
   butn3[0].bkgr=-1;
-  butn3[0].butncode='';
+  butn3[0].butncode=127;
   DIN b3 = { 
     'n',
     206,31,  
@@ -117,7 +117,7 @@ int ButnTypeGroup( DIALOG *D,void **v,void *pt) {
   butn4[0].xpmp=NULL;
   butn4[0].xpmh=NULL;
   butn4[0].bkgr=-1;
-  butn4[0].butncode='';
+  butn4[0].butncode=127;
   DIN b4 = { 
     'n',
     301,31,  
@@ -142,7 +142,7 @@ int ButnTypeGroup( DIALOG *D,void **v,void *pt) {
   butn5[0].xpmp=NULL;
   butn5[0].xpmh=NULL;
   butn5[0].bkgr=-1;
-  butn5[0].butncode='';
+  butn5[0].butncode=127;
   DIN b5 = { 
     'n',
     26,121,  
@@ -167,7 +167,7 @@ int ButnTypeGroup( DIALOG *D,void **v,void *pt) {
   butn6[0].xpmp=NULL;
   butn6[0].xpmh=NULL;
   butn6[0].bkgr=-1;
-  butn6[0].butncode='';
+  butn6[0].butncode=127;
   DIN b6 = { 
     'n',
     116,121,  
@@ -192,7 +192,7 @@ int ButnTypeGroup( DIALOG *D,void **v,void *pt) {
   butn7[0].xpmp=NULL;
   butn7[0].xpmh=NULL;
   butn7[0].bkgr=-1;
-  butn7[0].butncode='';
+  butn7[0].butncode=127;
   DIN b7 = { 
     'n',
     211,121,  
@@ -217,7 +217,7 @@ int ButnTypeGroup( DIALOG *D,void **v,void *pt) {
   butn8[0].xpmp=NULL;
   butn8[0].xpmh=NULL;
   butn8[0].bkgr=-1;
-  butn8[0].butncode='';
+  butn8[0].butncode=127;
   DIN b8 = { 
     'n',
     301,121,  
@@ -242,7 +242,7 @@ int ButnTypeGroup( DIALOG *D,void **v,void *pt) {
   butn9[0].xpmp=NULL;
   butn9[0].xpmh=NULL;
   butn9[0].bkgr=-1;
-  butn9[0].butncode='';
+  butn9[0].butncode=127;
   DIN b9 = { 
     'n',
     26,211,  
@@ -267,7 +267,7 @@ int ButnTypeGroup( DIALOG *D,void **v,void *pt) {
   butn10[0].xpmp=NULL;
   butn10[0].xpmh=NULL;
   butn10[0].bkgr=-1;
-  butn10[0].butncode='';
+  butn10[0].butncode=127;
   DIN b10 = { 
     'n',
     116,211,  
@@ -292,7 +292,7 @@ int ButnTypeGroup( DIALOG *D,void **v,void *pt) {
   butn11[0].xpmp=NULL;
   butn11[0].xpmh=NULL;
   butn11[0].bkgr=-1;
-  butn11[0].butncode='';
+  butn11[0].butncode=127;
   DIN b11 = { 
     'n',
     211,211,  
@@ -329,12 +329,12 @@ int ButnTypeGroup( DIALOG *D,void **v,void *pt) {
   BUT_STR  *butn14=NULL; 
   butn14= (BUT_STR *)malloc(sizeof(BUT_STR)*1);
   butn14[0].sw=1;
-  strcpy(butn14[0].title,(char *)"!w32!f23Select");
+  strcpy(butn14[0].title,(char *)"Select");
   butn14[0].xpmn=NULL;
   butn14[0].xpmp=NULL;
   butn14[0].xpmh=NULL;
   butn14[0].bkgr=-235255250;
-  butn14[0].butncode='';
+  butn14[0].butncode=127;
   DIL h14 = { 
     'h',
     155,374,  

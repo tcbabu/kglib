@@ -582,7 +582,7 @@ int butnoptGroup( DIALOG *D,void **v,void *pt) {
   T_ELMT *e1  ; 
   e1 =(T_ELMT *)malloc(sizeof(T_ELMT)*1);
   e1[0].fmt = (char *)malloc(18);
-  strcpy(e1[0].fmt,(char *)"!w32!f21Title%20s");
+  strcpy(e1[0].fmt,(char *)"Title%20s");
   e1[0].v=(void *)v[0];
   e1[0].sw=1;
   e1[0].noecho=0;
@@ -604,12 +604,12 @@ int butnoptGroup( DIALOG *D,void **v,void *pt) {
   BUT_STR  *butn2=NULL; 
   butn2= (BUT_STR *)malloc(sizeof(BUT_STR)*1);
   butn2[0].sw=1;
-  strcpy(butn2[0].title,(char *)"!c01!w32!f21C!c10o!c02l!c03o!c38r");
+  strcpy(butn2[0].title,(char *)"!c01C!c10o!c02l!c03o!c38r");
   butn2[0].xpmn=NULL;
   butn2[0].xpmp=NULL;
   butn2[0].xpmh=NULL;
   butn2[0].bkgr=-235255250;
-  butn2[0].butncode='';
+  butn2[0].butncode=127;
   DIN b2 = { 
     'n',
     295,61,  
@@ -627,7 +627,7 @@ int butnoptGroup( DIALOG *D,void **v,void *pt) {
   strcpy(b2.Wid,(char *)"butnoptColor");
   b2.item = -1;
   char *menu3[]  = { 
-    (char *)"!w32!f21Button Active",
+    (char *)"Button Active",
     NULL 
   };
   ThumbNail **th0 ;
@@ -659,19 +659,19 @@ int butnoptGroup( DIALOG *D,void **v,void *pt) {
   T_ELMT *e4  ; 
   e4 =(T_ELMT *)malloc(sizeof(T_ELMT)*3);
   e4[0].fmt = (char *)malloc(26);
-  strcpy(e4[0].fmt,(char *)"!w32!f21Primary Image%15s");
+  strcpy(e4[0].fmt,(char *)"Primary Image%15s");
   e4[0].v=(void *)v[2];
   e4[0].sw=1;
   e4[0].noecho=0;
   e4[0].img=NULL;
   e4[1].fmt = (char *)malloc(26);
-  strcpy(e4[1].fmt,(char *)"!w32!f21Pressed Image%15s");
+  strcpy(e4[1].fmt,(char *)"Pressed Image%15s");
   e4[1].v=(void *)v[3];
   e4[1].sw=1;
   e4[1].noecho=0;
   e4[1].img=NULL;
   e4[2].fmt = (char *)malloc(28);
-  strcpy(e4[2].fmt,(char *)"!w32!f21Highlight Image%15s");
+  strcpy(e4[2].fmt,(char *)"Highlight Image%15s");
   e4[2].v=(void *)v[4];
   e4[2].sw=1;
   e4[2].noecho=0;
@@ -693,21 +693,21 @@ int butnoptGroup( DIALOG *D,void **v,void *pt) {
   BUT_STR  *butn5=NULL; 
   butn5= (BUT_STR *)malloc(sizeof(BUT_STR)*3);
   butn5[0].sw=1;
-  strcpy(butn5[0].title,(char *)"!w32!f21Pick");
+  strcpy(butn5[0].title,(char *)"Pick");
   butn5[0].xpmn=NULL;
   butn5[0].xpmp=NULL;
   butn5[0].xpmh=NULL;
   butn5[0].bkgr=-1;
   butn5[0].butncode=' ';
   butn5[1].sw=1;
-  strcpy(butn5[1].title,(char *)"!w32!f21Pick");
+  strcpy(butn5[1].title,(char *)"Pick");
   butn5[1].xpmn=NULL;
   butn5[1].xpmp=NULL;
   butn5[1].xpmh=NULL;
   butn5[1].bkgr=-1;
   butn5[1].butncode=' ';
   butn5[2].sw=1;
-  strcpy(butn5[2].title,(char *)"!w32!f21Pick");
+  strcpy(butn5[2].title,(char *)"Pick");
   butn5[2].xpmn=NULL;
   butn5[2].xpmp=NULL;
   butn5[2].xpmh=NULL;
@@ -732,12 +732,12 @@ int butnoptGroup( DIALOG *D,void **v,void *pt) {
   BUT_STR  *butn6=NULL; 
   butn6= (BUT_STR *)malloc(sizeof(BUT_STR)*1);
   butn6[0].sw=1;
-  strcpy(butn6[0].title,(char *)"!w32!f21Done");
+  strcpy(butn6[0].title,(char *)"Done");
   butn6[0].xpmn=NULL;
   butn6[0].xpmp=NULL;
   butn6[0].xpmh=NULL;
   butn6[0].bkgr=-235255250;
-  butn6[0].butncode='';
+  butn6[0].butncode=127;
   DIL h6 = { 
     'h',
     180,366,  
@@ -802,18 +802,18 @@ int butnoptGroup( DIALOG *D,void **v,void *pt) {
     233,271,  
     0,0  
   };
-  strncpy(m8.msg,(char *)"!w32!f21Key Code (may ingore)",499);
+  strncpy(m8.msg,(char *)"Key Code (may ingore)",499);
   strcpy(m8.Wid,(char *)"butnoptWidget14");
   m8.item = -1;
   BUT_STR  *butn9=NULL; 
   butn9= (BUT_STR *)malloc(sizeof(BUT_STR)*1);
   butn9[0].sw=1;
-  strcpy(butn9[0].title,(char *)"!w32!f21Previous");
+  strcpy(butn9[0].title,(char *)"Previous");
   butn9[0].xpmn=NULL;
   butn9[0].xpmp=NULL;
   butn9[0].xpmh=NULL;
   butn9[0].bkgr=-240245255;
-  butn9[0].butncode='';
+  butn9[0].butncode=127;
   DIN b9 = { 
     'n',
     5,366,  
@@ -833,12 +833,12 @@ int butnoptGroup( DIALOG *D,void **v,void *pt) {
   BUT_STR  *butn10=NULL; 
   butn10= (BUT_STR *)malloc(sizeof(BUT_STR)*1);
   butn10[0].sw=1;
-  strcpy(butn10[0].title,(char *)"!w32!f21Next");
+  strcpy(butn10[0].title,(char *)"Next");
   butn10[0].xpmn=NULL;
   butn10[0].xpmp=NULL;
   butn10[0].xpmh=NULL;
   butn10[0].bkgr=-240245255;
-  butn10[0].butncode='';
+  butn10[0].butncode=127;
   DIN b10 = { 
     'n',
     335,366,  

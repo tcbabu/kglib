@@ -5082,7 +5082,7 @@
       if(D->NoTabProcess==1) TabProcess=0;
       pthread_mutex_init ( & ( D->Lock ) , NULL ) ;
 //   uiMakeFontlist();
-      uiInitFontLists();
+      uiInitFontLists(D);
       kgInitGm ( ) ;
       D->ThInfo = OpenThreads ( getCores ( ) ) ;
 //   D->ThInfo = OpenThreads(1);

@@ -113,7 +113,7 @@ int buttondatainit(void *Tmp) {
   th[2]->sw=(B->nodrawbkgr+1)%2;
   kgUpdateWidget(C);
   DIM *M=(DIM *)kgGetNamedWidget(Tmp,(char *)"buttondataWidget4");
-  sprintf(Buf,"!w32!f21Button Type : %d",B->type);
+  sprintf(Buf,"Button Type : %d",B->type);
   kgWrite(M,Buf);
   kgUpdateOn(Tmp);
   return ret;
@@ -411,7 +411,7 @@ int  buttondatabutton1callback(int butno,int i,void *Tmp) {
   type = b->type;
   b->type = kgGetButnType(Tmp,&type);
   DIM *M=(DIM *)kgGetNamedWidget(Tmp,(char *)"buttondataWidget4");
-  sprintf(Buf,"!w32!f21Selected Button: %d",b->type);
+  sprintf(Buf,"Selected Button: %d",b->type);
   kgWrite(M,Buf);
   kgUpdateOn(Tmp);
   switch(butno) {
@@ -447,49 +447,49 @@ int buttondataGroup( DIALOG *D,void **v,void *pt) {
   T_ELMT *e0  ; 
   e0 =(T_ELMT *)malloc(sizeof(T_ELMT)*8);
   e0[0].fmt = (char *)malloc(18);
-  strcpy(e0[0].fmt,(char *)"!w32!f21Length%3d");
+  strcpy(e0[0].fmt,(char *)"Length%3d");
   e0[0].v=(void *)v[0];
   e0[0].sw=1;
   e0[0].noecho=0;
   e0[0].img=NULL;
   e0[1].fmt = (char *)malloc(17);
-  strcpy(e0[1].fmt,(char *)"!w32!f21Width%3d");
+  strcpy(e0[1].fmt,(char *)"Width%3d");
   e0[1].v=(void *)v[1];
   e0[1].sw=1;
   e0[1].noecho=0;
   e0[1].img=NULL;
   e0[2].fmt = (char *)malloc(14);
-  strcpy(e0[2].fmt,(char *)"!w32!f21Nx%3d");
+  strcpy(e0[2].fmt,(char *)"Nx%3d");
   e0[2].v=(void *)v[2];
   e0[2].sw=1;
   e0[2].noecho=0;
   e0[2].img=NULL;
   e0[3].fmt = (char *)malloc(14);
-  strcpy(e0[3].fmt,(char *)"!w32!f21Ny%3d");
+  strcpy(e0[3].fmt,(char *)"Ny%3d");
   e0[3].v=(void *)v[3];
   e0[3].sw=1;
   e0[3].noecho=0;
   e0[3].img=NULL;
   e0[4].fmt = (char *)malloc(16);
-  strcpy(e0[4].fmt,(char *)"!w32!f21Xgap%3d");
+  strcpy(e0[4].fmt,(char *)"Xgap%3d");
   e0[4].v=(void *)v[4];
   e0[4].sw=1;
   e0[4].noecho=0;
   e0[4].img=NULL;
   e0[5].fmt = (char *)malloc(16);
-  strcpy(e0[5].fmt,(char *)"!w32!f21Ygap%3d");
+  strcpy(e0[5].fmt,(char *)"Ygap%3d");
   e0[5].v=(void *)v[5];
   e0[5].sw=1;
   e0[5].noecho=0;
   e0[5].img=NULL;
   e0[6].fmt = (char *)malloc(25);
-  strcpy(e0[6].fmt,(char *)"!w32!f21Rounding Fac.%5F");
+  strcpy(e0[6].fmt,(char *)"Rounding Fac.%5F");
   e0[6].v=(void *)v[6];
   e0[6].sw=1;
   e0[6].noecho=0;
   e0[6].img=NULL;
   e0[7].fmt = (char *)malloc(17);
-  strcpy(e0[7].fmt,(char *)"!w32!f21Name%20s");
+  strcpy(e0[7].fmt,(char *)"Name%20s");
   e0[7].v=(void *)v[7];
   e0[7].sw=1;
   e0[7].noecho=0;
@@ -518,9 +518,9 @@ int buttondataGroup( DIALOG *D,void **v,void *pt) {
   strcpy(m1.Wid,(char *)"buttondataWidget4");
   m1.item = -1;
   char *menu2[]  = { 
-    (char *)"!w32!f21Hide",
-    (char *)"!w32!f21Border",
-    (char *)"!w32!f21Clean Background",
+    (char *)"Hide",
+    (char *)"Border",
+    (char *)"Clean Background",
     NULL 
   };
   ThumbNail **th0 ;
@@ -552,14 +552,14 @@ int buttondataGroup( DIALOG *D,void **v,void *pt) {
   BUT_STR  *butn3=NULL; 
   butn3= (BUT_STR *)malloc(sizeof(BUT_STR)*2);
   butn3[0].sw=1;
-  strcpy(butn3[0].title,(char *)"!w32!f21!c03Cancel");
+  strcpy(butn3[0].title,(char *)"!c03Cancel");
   butn3[0].xpmn=NULL;
   butn3[0].xpmp=NULL;
   butn3[0].xpmh=NULL;
   butn3[0].bkgr=-235255250;
   butn3[0].butncode=127;
   butn3[1].sw=1;
-  strcpy(butn3[1].title,(char *)"!w32!f21!c38Continue");
+  strcpy(butn3[1].title,(char *)"!c38Continue");
   butn3[1].xpmn=NULL;
   butn3[1].xpmp=NULL;
   butn3[1].xpmh=NULL;
@@ -583,7 +583,7 @@ int buttondataGroup( DIALOG *D,void **v,void *pt) {
   BUT_STR  *butn4=NULL; 
   butn4= (BUT_STR *)malloc(sizeof(BUT_STR)*1);
   butn4[0].sw=1;
-  strcpy(butn4[0].title,(char *)"!w32!f21Browse");
+  strcpy(butn4[0].title,(char *)"Browse");
   butn4[0].xpmn=NULL;
   butn4[0].xpmp=NULL;
   butn4[0].xpmh=NULL;

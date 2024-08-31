@@ -38,14 +38,14 @@ int EditThumbnailsGroup( DIALOG *D,void **v,void *pt) {
   butn0[0].xpmp=NULL;
   butn0[0].xpmh=NULL;
   butn0[0].bkgr=-240245255;
-  butn0[0].butncode='';
+  butn0[0].butncode=127;
   butn0[1].sw=1;
   strcpy(butn0[1].title,(char *)"Add");
   butn0[1].xpmn=NULL;
   butn0[1].xpmp=NULL;
   butn0[1].xpmh=NULL;
   butn0[1].bkgr=-240245255;
-  butn0[1].butncode='';
+  butn0[1].butncode=127;
   DIN b0 = { 
     'n',
     129,30,  
@@ -65,12 +65,12 @@ int EditThumbnailsGroup( DIALOG *D,void **v,void *pt) {
   BUT_STR  *butn1=NULL; 
   butn1= (BUT_STR *)malloc(sizeof(BUT_STR)*1);
   butn1[0].sw=1;
-  strcpy(butn1[0].title,(char *)"!w32Okay");
+  strcpy(butn1[0].title,(char *)"Okay");
   butn1[0].xpmn=NULL;
   butn1[0].xpmp=NULL;
   butn1[0].xpmh=NULL;
   butn1[0].bkgr=-235255250;
-  butn1[0].butncode='';
+  butn1[0].butncode=127;
   DIL h1 = { 
     'h',
     130,330,  

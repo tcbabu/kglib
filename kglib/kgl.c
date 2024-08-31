@@ -156,17 +156,11 @@ void kgDefaultGuiTheme(Gclr *Gc) {
   Gc->menu_char=49;
   Gc->c_bound = 46;
   Gc->GuiFontSize =9;
-  Gc->GuiFontSize =10;
-  Gc->MenuFont = 21;
-  Gc->PromptFont = 21;
-  Gc->ButtonFont = 23;
-  Gc->MsgFont = 21;
-  Gc->MenuFont = 20;
-  Gc->PromptFont = 21;
+  Gc->MenuFont = 22;
+  Gc->PromptFont = 22;
   Gc->ButtonFont = 22;
-  Gc->FontSize =9;
-  Gc->FontSize =10;
-  Gc->Font=23;
+  Gc->MsgFont = 22;
+  Gc->Font=22;
   Gc->SplashFont=23;
   Gc->SplashFillColor=40;
   Gc->SplashBodrColor=46;
@@ -176,7 +170,6 @@ void kgDefaultGuiTheme(Gclr *Gc) {
   Gc->ProgColor=8;
   Gc->ItemHighColor=6;
   Gc->InputFontSize=9;
-  Gc->InputFontSize=10;
   Gc->scroll_fill= Gc->fill_clr;
   Gc->scroll_dim= Gc->dim;
   Gc->scroll_bright= Gc->bright;
@@ -268,14 +261,6 @@ void kgColorTheme2(DIALOG *D,unsigned char red,unsigned char green, unsigned cha
   Gc->menu_char=49;
   Gc->c_bound = 46;
   Gc->GuiFontSize =9;
-  Gc->MenuFont = 8;
-  Gc->PromptFont = 23;
-  Gc->ButtonFont = 23;
-  Gc->MsgFont = 24;
-  Gc->MenuFont = 8;
-  Gc->PromptFont = 32;
-  Gc->ButtonFont = 8;
-  Gc->MsgFont = 8;
   Gc->FontSize =9;
   Gc->Font=23;
   Gc->SplashFont=4;
@@ -288,6 +273,13 @@ void kgColorTheme2(DIALOG *D,unsigned char red,unsigned char green, unsigned cha
   Gc->scroll_dim= Gc->dim;
   Gc->scroll_bright= Gc->bright;
   Gc->scroll_vbright= Gc->vbright;
+  Gc->GuiFontSize =9;
+  Gc->MenuFont = 22;
+  Gc->PromptFont = 22;
+  Gc->ButtonFont = 22;
+  Gc->MsgFont = 22;
+  Gc->Font=22;
+  Gc->SplashFont=23;
   return ;
 }
 void kgColorTheme(DIALOG *D,unsigned char red,unsigned char green, unsigned char blue) {
@@ -390,13 +382,7 @@ void kgColorTheme(DIALOG *D,unsigned char red,unsigned char green, unsigned char
   Gc->menu_char=56;
   Gc->c_bound = 58;
   Gc->GuiFontSize =9;
-  Gc->MenuFont = 8;
-  Gc->PromptFont = 24;
-  Gc->ButtonFont = 16;
-  Gc->MsgFont = 1;
   Gc->FontSize =9;
-  Gc->Font=16;
-  Gc->SplashFont=24;
   Gc->SplashFillColor=55;
   Gc->SplashBodrColor=58;
   Gc->SplashCharColor=56;
@@ -408,6 +394,13 @@ void kgColorTheme(DIALOG *D,unsigned char red,unsigned char green, unsigned char
   Gc->scroll_dim= Gc->dim;
   Gc->scroll_bright= Gc->bright;
   Gc->scroll_vbright= Gc->vbright;
+  Gc->GuiFontSize =9;
+  Gc->MenuFont = 22;
+  Gc->PromptFont = 22;
+  Gc->ButtonFont = 22;
+  Gc->MsgFont = 22;
+  Gc->Font=22;
+  Gc->SplashFont=23;
   return ;
 }
 void kgColorTheme1(DIALOG *D,unsigned char red,unsigned char green, unsigned char blue) {
@@ -506,7 +499,6 @@ void kgColorTheme1(DIALOG *D,unsigned char red,unsigned char green, unsigned cha
   Gc->MenuFont = 8;
   Gc->PromptFont = 24;
   Gc->ButtonFont = 16;
-  Gc->MsgFont = 1;
   Gc->FontSize =9;
   Gc->Font=16;
   Gc->SplashFont=24;
@@ -521,6 +513,13 @@ void kgColorTheme1(DIALOG *D,unsigned char red,unsigned char green, unsigned cha
   Gc->scroll_dim= Gc->dim;
   Gc->scroll_bright= Gc->bright;
   Gc->scroll_vbright= Gc->vbright;
+  Gc->GuiFontSize =9;
+  Gc->MenuFont = 22;
+  Gc->PromptFont = 22;
+  Gc->ButtonFont = 22;
+  Gc->MsgFont = 22;
+  Gc->Font=22;
+  Gc->SplashFont=23;
   return ;
 }
 void kgGrayGuiTheme(Gclr *Gc) {
@@ -572,6 +571,13 @@ void kgGrayGuiTheme(Gclr *Gc) {
   Gc->scroll_dim= Gc->dim;
   Gc->scroll_bright= Gc->bright;
   Gc->scroll_vbright= Gc->vbright;
+  Gc->GuiFontSize =9;
+  Gc->MenuFont = 22;
+  Gc->PromptFont = 22;
+  Gc->ButtonFont = 22;
+  Gc->MsgFont = 22;
+  Gc->Font=22;
+  Gc->SplashFont=23;
   return ;
 }
 #if 0

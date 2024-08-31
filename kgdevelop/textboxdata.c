@@ -510,19 +510,19 @@ int textboxesdataGroup( DIALOG *D,void **v,void *pt) {
   T_ELMT *e0  ; 
   e0 =(T_ELMT *)malloc(sizeof(T_ELMT)*3);
   e0[0].fmt = (char *)malloc(32);
-  strcpy(e0[0].fmt,(char *)"!w32!f21Boxes in X direction%4d");
+  strcpy(e0[0].fmt,(char *)"Boxes in X direction%4d");
   e0[0].v=(void *)v[0];
   e0[0].sw=1;
   e0[0].noecho=0;
   e0[0].img=NULL;
   e0[1].fmt = (char *)malloc(32);
-  strcpy(e0[1].fmt,(char *)"!w32!f21Boxes in Y Direction%4d");
+  strcpy(e0[1].fmt,(char *)"Boxes in Y Direction%4d");
   e0[1].v=(void *)v[1];
   e0[1].sw=1;
   e0[1].noecho=0;
   e0[1].img=NULL;
   e0[2].fmt = (char *)malloc(24);
-  strcpy(e0[2].fmt,(char *)"!w32!f21Widget Name%20s");
+  strcpy(e0[2].fmt,(char *)"Widget Name%20s");
   e0[2].v=(void *)v[2];
   e0[2].sw=1;
   e0[2].noecho=0;
@@ -542,8 +542,8 @@ int textboxesdataGroup( DIALOG *D,void **v,void *pt) {
   t0.type = 0;
   t0.item = -1;
   char *menu1[]  = { 
-    (char *)"!w32!f21Draw Border",
-    (char *)"!w32!f21Hide Widget",
+    (char *)"Draw Border",
+    (char *)"Hide Widget",
     NULL 
   };
   ThumbNail **th0 ;
@@ -575,19 +575,19 @@ int textboxesdataGroup( DIALOG *D,void **v,void *pt) {
   BUT_STR  *butn2=NULL; 
   butn2= (BUT_STR *)malloc(sizeof(BUT_STR)*2);
   butn2[0].sw=1;
-  strcpy(butn2[0].title,(char *)"!c03!w32!f23Cancel");
+  strcpy(butn2[0].title,(char *)"!c03Cancel");
   butn2[0].xpmn=NULL;
   butn2[0].xpmp=NULL;
   butn2[0].xpmh=NULL;
   butn2[0].bkgr=-235255250;
-  butn2[0].butncode='';
+  butn2[0].butncode=127;
   butn2[1].sw=1;
-  strcpy(butn2[1].title,(char *)"!c37!w32!f23Continue");
+  strcpy(butn2[1].title,(char *)"!c37Continue");
   butn2[1].xpmn=NULL;
   butn2[1].xpmp=NULL;
   butn2[1].xpmh=NULL;
   butn2[1].bkgr=-235255250;
-  butn2[1].butncode='';
+  butn2[1].butncode=127;
   DIL h2 = { 
     'h',
     162,201,  
@@ -605,8 +605,8 @@ int textboxesdataGroup( DIALOG *D,void **v,void *pt) {
   strcpy(h2.Wid,(char *)"textboxesdataWidget4");
   h2.item = -1;
   char *menu3[]  = { 
-    (char *)"!w32!f21Default",
-    (char *)"!w32!f21Type1",
+    (char *)"Default",
+    (char *)"Type1",
     NULL 
   };
   ThumbNail **th1 ;
@@ -641,7 +641,7 @@ int textboxesdataGroup( DIALOG *D,void **v,void *pt) {
     182,143,  
     1,0  
   };
-  strncpy(m4.msg,(char *)"!w32!f21Text Box Type",499);
+  strncpy(m4.msg,(char *)"Text Box Type",499);
   strcpy(m4.Wid,(char *)"textboxesdataWidget6");
   m4.item = -1;
   dtmp = D->d;
