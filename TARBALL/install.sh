@@ -7,3 +7,4 @@
   install -m 644  libdlink.a     /usr/lib/
   install -m 644  kulina.h /usr/include/
   install -m 644  dlink.h /usr/include/
+  tar xzvf fonts.tar -C /usr/share/fonts

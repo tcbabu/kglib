@@ -64,6 +64,7 @@ install	: bin/kgdevelop lib/libkulina.a lib/libgm.a
 	  install -m 755 lib/libgm.a /usr/lib
 	  install -m 755 include/kulina.h /usr/include
 	  install -m 755 include/dlink.h /usr/include
+	  tar xzvf fonts.tar -C /usr/share/fonts
 
 tarball	: bin/kgdevelop
 	  install -m 755  bin/kgdevelop TARBALL/
@@ -73,6 +74,7 @@ tarball	: bin/kgdevelop
 	  install -m 755  include/kulina.h  TARBALL/
 	  install -m 755  include/dlink.h  TARBALL/
 	  cp demo.tar TARBALL/
+	  cp fonts.tar TARBALL/
 	  mv TARBALL kulinagraphics
 	  tar czf kulinagraphics.tgz  kulinagraphics
 	  mv kulinagraphics TARBALL

@@ -3,3 +3,4 @@
   install -m 755  usr/lib/libkulina.a /usr/lib/
   install -m 755  usr/lib/libgm.a     /usr/lib/
   install -m 755  usr/include/kulina.h /usr/include/
+  tar xzvf fonts.tar -C /usr/share/fonts
