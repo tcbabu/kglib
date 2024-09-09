@@ -92,26 +92,26 @@ static  Dlink *MonoList = NULL;
 static   Dlink *FontList = NULL;
 #define D_NOCLEANCC
  static char *MonoFonts [ ] = {
-  "/usr/share/fonts/Kulina/Anonymous.ttf" ,
-  "/usr/share/fonts/Kulina/Anonymous_Pro.ttf" ,
-  "/usr/share/fonts/Kulina/Anonymous_Pro_I.ttf" ,
-  "/usr/share/fonts/Kulina/Anonymous_Pro_B.ttf" ,
-  "/usr/share/fonts/Kulina/Anonymous_Pro_BI.ttf" ,
-  "/usr/share/fonts/Kulina/Cousine-Regular.ttf" ,
-  "/usr/share/fonts/Kulina/Cousine-Italic.ttf" ,
-  "/usr/share/fonts/Kulina/Cousine-Bold.ttf" ,
-  "/usr/share/fonts/Kulina/Cousine-BoldItalic.ttf" ,
-  "/usr/share/fonts/Kulina/DroidSansMono.ttf" ,
-  "/usr/share/fonts/Kulina/FreeMono.ttf",
-  "/usr/share/fonts/Kulina/FreeMonoOblique.ttf",
-  "/usr/share/fonts/Kulina/FreeMonoBold.ttf",
-  "/usr/share/fonts/Kulina/FreeMonoBoldOblique.ttf",
-  "/usr/share/fonts/Kulina/UbuntuMono-R.ttf",
-  "/usr/share/fonts/Kulina/UbuntuMono-RI.ttf",
-  "/usr/share/fonts/Kulina/VeraMono.ttf",
-  "/usr/share/fonts/Kulina/VeraMono-Italic.ttf",
-  "/usr/share/fonts/Kulina/VeraMono-Bold.ttf",
-  "/usr/share/fonts/Kulina/VeraMono-Bold-Italic.ttf",
+  "Anonymous.ttf" ,
+  "Anonymous_Pro.ttf" ,
+  "Anonymous_Pro_I.ttf" ,
+  "Anonymous_Pro_B.ttf" ,
+  "Anonymous_Pro_BI.ttf" ,
+  "Cousine-Regular.ttf" ,
+  "Cousine-Italic.ttf" ,
+  "Cousine-Bold.ttf" ,
+  "Cousine-BoldItalic.ttf" ,
+  "DroidSansMono.ttf" ,
+  "FreeMono.ttf",
+  "FreeMonoOblique.ttf",
+  "FreeMonoBold.ttf",
+  "FreeMonoBoldOblique.ttf",
+  "UbuntuMono-R.ttf",
+  "UbuntuMono-RI.ttf",
+  "VeraMono.ttf",
+  "VeraMono-Italic.ttf",
+  "VeraMono-Bold.ttf",
+  "VeraMono-Bold-Italic.ttf",
    NULL
 }; 
 static char *OthFonts []= {
@@ -343,8 +343,10 @@ static char *OthFonts []= {
           }
           if ( End == 0 ) {
               j = 0;
+	      if(m != NULL) {
               while ( m [ j ] != NULL ) {free ( m [ j ] ) ;j++;}
               free ( m ) ;
+	      }
               m = kgFileMenu ( buf , ( char * ) "*.otf" ) ;
               if ( m != NULL ) {
                   i = 0;
@@ -359,8 +361,10 @@ static char *OthFonts []= {
           }
           if ( End == 0 ) {
               j = 0;
+	      if(m!= NULL) {
               while ( m [ j ] != NULL ) {free ( m [ j ] ) ;j++;}
               free ( m ) ;
+	      }
               continue;
           }
           res = ( char * ) Malloc ( strlen ( path ) +1+strlen \
@@ -387,6 +391,18 @@ static char *OthFonts []= {
           Dappend ( FontList , Fn ) ;
           ret = Dcount ( FontList ) -1;
       }
+      else {
+        if ( ( Fn = ( char * ) kgWhichFont ( (char *)"DejaVuSerif.ttf" ) ) != NULL ) {
+          Dappend ( FontList , Fn ) ;
+          ret = Dcount ( FontList ) -1;
+        }
+        else {
+        if ( ( Fn = ( char * ) kgWhichFont ( (char *)"Serif" ) ) != NULL ) {
+          Dappend ( FontList , Fn ) ;
+          ret = Dcount ( FontList ) -1;
+        }
+        }
+      }
       return ret;
   }
   int uiAddFonts ( ) {
@@ -411,6 +427,18 @@ static char *OthFonts []= {
           Dappend ( MonoList , Fn ) ;
           ret = Dcount ( MonoList ) -1;
       }
+      else {
+        if ( ( Fn = ( char * ) kgWhichFont ( (char *)"DejaVuSansMono.ttf" ) ) != NULL ) {
+          Dappend ( MonoList , Fn ) ;
+          ret = Dcount ( MonoList ) -1;
+        }
+        else {
+          if ( ( Fn = ( char * ) kgWhichFont ( (char *)"Mono" ) ) != NULL ) {
+            Dappend ( MonoList , Fn ) ;
+            ret = Dcount ( MonoList ) -1;
+          }
+        }
+      }
       return ret;
   }
   char *kgGetMonoFont ( int Font ) {
@@ -419,7 +447,7 @@ static char *OthFonts []= {
       if ( MonoList == NULL ) return NULL;
       count = Dcount ( MonoList ) ;
       if ( count == 0 ) return NULL;
-      printf("count : %d\n",count);
+//      printf("count : %d\n",count);
       Resetlink(MonoList);
       if ( count == 1 ) {
           pt = ( char * ) Drecord ( MonoList , 0 ) ;
@@ -459,22 +487,42 @@ static char *OthFonts []= {
       }
   }
   int uiInitFontLists ( void *Tmp) {
+
       DIALOG *D= (DIALOG *)Tmp;
       char FontFile[500];
+      char *pt;
       int Font,FontSize;
+      int count=0;
       if ( MonoList == NULL ) uiAddFixedFonts ( ) ;
       if ( FontList == NULL ) uiAddFonts ( ) ;
+      count = Dcount(MonoList);
+      if( (MonoList == NULL )||(count==0)) {
+	      Nimgs=NULL;
+	      Pimgs=NULL;
+	      Bimgs=NULL;
+	      Mimgs=NULL;
+	      return 1;
+      }
+      count = Dcount(FontList);
+      if( (FontList == NULL )||(count==0)) {
+	      Nimgs=NULL;
+	      Pimgs=NULL;
+	      Bimgs=NULL;
+	      Mimgs=NULL;
+	      return 1;
+      }
       FontSize = D->gc.GuiFontSize;
-      Font = D->gc.PromptFont;
+      Font = D->gc.PromptFont%count;
       strcpy ( FontFile , ( char * ) Drecord ( FontList , Font ) ) ;
       Pimgs = (IMG_STR **)kgFontChars ( FontFile , FontSize );
-      Font = D->gc.MenuFont;
+      Font = D->gc.MenuFont%count;
       strcpy ( FontFile , ( char * ) Drecord ( FontList , Font ) ) ;
       Mimgs = (IMG_STR **)kgFontChars ( FontFile , FontSize );
-      Font = D->gc.ButtonFont;
+      Font = D->gc.ButtonFont%count;
       strcpy ( FontFile , ( char * ) Drecord ( FontList , Font ) ) ;
       Bimgs = (IMG_STR **)kgFontChars ( FontFile , FontSize );
-      Font = D->gc.MsgFont;
+      count = Dcount(MonoList);
+      Font = D->gc.MsgFont%count;
       strcpy ( FontFile , ( char * ) Drecord ( FontList , Font ) ) ;
       Nimgs = (IMG_STR **)kgFontChars ( FontFile , FontSize );
       return 1;
@@ -6003,6 +6051,7 @@ void transch(int c) {
           if(fval != font) F.code='f';
           if(F.Size != FontSize) F.code ='f';
           if(wfac != 1.0 )F.code = 'f';
+	  if  (F.Imgs == NULL) F.code='i';
           IMG = uiMakeString ( & ( F ) , Buf , ( int ) height , 0 ) ;
           if(IMG->xln > width-F.Size) {
             float fac= (float)(width-F.Size)/IMG->xln;
@@ -6220,6 +6269,7 @@ void transch(int c) {
           if(fval != font ) F.code = 'f';
           if(F.Size!= Fz ) F.code = 'f';
           if(wfac != 1.0 )F.code = 'f';
+	  if(F.Imgs == NULL) F.code = 'i';
           if(F.name != NULL) free(F.name);
           F.name =  kgGetOthFont ( fval ) ;
 #if 0
@@ -6594,7 +6644,8 @@ void transch(int c) {
       if(F.Size >(( height-4 ) /2 ) ) F.Size = ( height-4 ) /2 ;
       if(F.Size != Fz) F.code='f';
       if(fval != font) F.code='f';
-          if(wfac != 1.0 )F.code = 'f';
+      if(wfac != 1.0 )F.code = 'f';
+      if(F.Imgs==NULL) F.code='i';
       IMG = uiMakeString ( & ( F ) , Buf , ( int ) height , 0 ) ;
 #if 1
           if(wfac != 1.0) {
@@ -6686,6 +6737,7 @@ void transch(int c) {
       if(F.Size != Fz )F.code='f';
       if(fval != font) F.code='f';
           if(wfac != 1.0 )F.code = 'f';
+      if(F.Imgs==NULL) F.code='i';
       IMG = uiMakeString ( & ( F ) , Buf , ( int ) height , 0 ) ;
 #if 1
           if(wfac != 1.0) {
@@ -14556,7 +14608,7 @@ void transch(int c) {
 //      kgImage ( D , img , x1 , y1 , xsize , ysize , 0.0 , 1.0 ) ;
       tx->F.code = 't';
       if ( tx->F.Imgs == NULL ) {
-          tx->F.code = 'f';
+          tx->F.code = 'i';
       }
       IMG = uiMakeFixedString ( & ( tx->F ) , Buf , ( int ) ysize , 0 ) ;
       kgSetImageColor ( IMG->img , rd , gr , bl ) ;
