@@ -1553,8 +1553,7 @@
               if ( d [ i ] .t->item == -1 ) _uiDrawTableBox ( D , i ) ;
               else {
 		      DIT *Ta= (DIT *)(d[i].t);
-                      FreeImg ( ( ( DIT * ) ( d [ i ] .t ) )->Bimg ) ;
-               printf("Reached Here\n");
+               FreeImg ( ( ( DIT * ) ( d [ i ] .t ) )->Bimg ) ;
 		      if(Ta->tstr != NULL) {
 //No			      free(((TX_STR *)(Ta->tstr))->elmt);
                 uiFreeImgStrs(((TX_STR *)(Ta->tstr))->F.Imgs);
@@ -1754,7 +1753,20 @@
               if ( d [ i ] .t->hide == 1 ) break;
               item = d [ i ] .t->item;
               if ( d [ i ] .t->item == -1 ) _uiDrawTableBox ( D , i ) ;
-              else _uiMake_Ta ( kgGetWidget ( D , i ) ) ;
+              else {
+		      DIT *Ta= (DIT *)(d[i].t);
+               FreeImg ( ( ( DIT * ) ( d [ i ] .t ) )->Bimg ) ;
+		      if(Ta->tstr != NULL) {
+//No			      free(((TX_STR *)(Ta->tstr))->elmt);
+                uiFreeImgStrs(((TX_STR *)(Ta->tstr))->F.Imgs);
+			      free(Ta->tstr);
+			      Ta->tstr=NULL;
+		      }
+//		      _uiMake_Ta ( kgGetWidget ( D , i ) ) ;
+		      _uiDrawTableBox ( D , i ) ;
+	      }
+//              else _uiMake_Ta ( kgGetWidget ( D , i ) ) ;
+//              else _uiDrawTableBox ( D , i ) ;
               D->df = i;
               break;
               case 'h':
