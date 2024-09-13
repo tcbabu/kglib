@@ -1441,7 +1441,7 @@ int kgAddFixedFont(char *);
 int kgAddFont(char *);
 char **kgGetFixedFontList();
 char **kgGetFontList();
-char *kgGetFixedFont(int);
+char *kgGetMonoFont(int);
 char *kgGetOthFont(int);
 int kgSearchString(char *s1,char *s2);
 char *kgGetIcon(char *pgr,char *theme);
