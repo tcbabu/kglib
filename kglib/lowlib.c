@@ -6615,7 +6615,7 @@ void transch(int c) {
       char Buf[1000];
       char *Str;
       int ln , i , maxchar , temp;
-      int x1 , ln1;
+      int x1 , ln1,old=0;
       void *img = NULL;
       float length;
       kgWC *wc;
@@ -6633,6 +6633,9 @@ void transch(int c) {
       wfac =1.0;
       cval = color;
       fval = font;
+      old=0;
+#if 0
+      old =1;
       uiCleanOldString(str,Buf,&cval,&fval,&wfac,&zfac);
       kgGetDefaultRGB ( cval , & rd , & gr , & bl ) ;
       F.code = 'f';
@@ -6656,6 +6659,13 @@ void transch(int c) {
           }
 #endif
       kgSetImageColor ( IMG->img , rd , gr , bl ) ;
+#else
+      if(D->gc.MsgFont==font) F.Imgs = Mimgs;
+      else F.Imgs = Pimgs;
+      if ( FontSize <= 0 ) F.Size = ( height-4 ) /2;
+      else F.Size = FontSize;
+     IMG = (IMG_STR *)uiComplexString(str,F.Imgs,font,cval,F.Size,height);
+#endif
       if ( bkcolor >= 0 ) {
           fid = kgInitImage ( ln , height , 1 ) ;
           kgBoxFill ( fid , 0. , 0. , ( float ) ln , ( float ) height , bkcolor , 0 ) ;
@@ -6679,12 +6689,13 @@ void transch(int c) {
       if ( F.name != NULL ) free ( F.name ) ;
       if ( img != NULL ) {
           if ( imgbk != NULL ) {
-              kgAddImages ( imgbk , img , x1 , height/2-FontSize) ;
+              if(old)kgAddImages ( imgbk , img , x1 , height/2-FontSize*1.2) ;
+              else kgAddImages ( imgbk , img , x1 , 0) ; 
               kgImage ( D , imgbk , x , y , ln , height , 0.0 , 1.0 ) ;
               uiFreeImage ( imgbk ) ;
           }
           else {
-              kgImage ( D , img , x+x1 , y , ln1 , height , 0.0 , 1.0 ) ;
+              kgImage ( D , img , x+x1 , y , ln1 , (height) , 0.0 , 1.0 ) ;
           }
           uiFreeImage ( img ) ;
           free ( IMG ) ;
@@ -6722,9 +6733,10 @@ void transch(int c) {
       wfac =1.0;
       cval = color;
       fval = font;
-      if(Ht> 2*FontSize+6) Ht =2*FontSize+6 ;
+//      if(Ht> 2*FontSize+6) Ht =2*FontSize+6 ;
       if(bkcolor < 0) height =Ht;
 //      printf("uiStringToImage: %s\n",str);
+#if 0
       Str = uiCleanOldString(str,Buf,&cval,&fval,&wfac,&zfac);
       kgGetDefaultRGB ( cval , & rd , & gr , & bl ) ;
       F.code = 't';
@@ -6748,6 +6760,13 @@ void transch(int c) {
           }
 #endif
       kgSetImageColor ( IMG->img , rd , gr , bl ) ;
+#else
+      F.Imgs = Bimgs;
+      if ( FontSize <= 0 ) F.Size = ( height-6 ) /2;
+      else F.Size = FontSize;
+      if(F.Size >(( height-6 ) /2 ) ) F.Size = ( height-6 ) /2 ;
+     IMG = (IMG_STR *)uiComplexString(str,F.Imgs,font,cval,F.Size,height);
+#endif
       if ( bkcolor >= 0 ) {
           fid = kgInitImage ( ln , height , 1 ) ;
           kgBoxFill ( fid , 0. , 0. , ( float ) ln , ( float ) height , bkcolor , 0 ) ;
@@ -12039,7 +12058,7 @@ void transch(int c) {
       bwsr->y2 = y->y2+y1;
       if ( y->bkgr == 1 ) _dvrect_fill ( WC ( D ) , bwsr->x1+4 , bwsr->y1+4 , bwsr->x2-4 , bwsr->y2-4 , D->gc.twin_fill ) ;
           
-      else _dvrect_fill ( WC ( D ) , bwsr->x1+4 , bwsr->y1+4 , bwsr->x2-4 , bwsr->y2-4 , D->gc.fill_clr ) ;
+//      else _dvrect_fill ( WC ( D ) , bwsr->x1+4 , bwsr->y1+4 , bwsr->x2-4 , bwsr->y2-4 , D->gc.fill_clr ) ;
           
       if ( y->hide != 1 ) {
           CHECKLIMITS ( y ) ;
@@ -18963,8 +18982,6 @@ void *uiMakeTableCellImage(DIT *T,int cell,int drcur) {
                   }
               }
           }
-//      printf("TCB: uiRest\n");
-//      fflush(stdout);
           uiRest_clip_limits ( wc ) ;
       }
       return ( ret ) ;

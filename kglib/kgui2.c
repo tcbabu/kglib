@@ -1403,7 +1403,7 @@
           }
       }
       fprintf ( fp , "%d %d  //x2,y2\n" , b->x2 , b->y2 ) ;
-      if ( b->butncode != NULL ) fprintf ( fp , "\"%-s\"/Button codes\n" , b->butncode ) ;
+      if ( b->butncode != NULL ) fprintf ( fp , "\"%-s\" //Button codes\n" , b->butncode ) ;
           
       else fprintf ( fp , "NULL  //Button codes\n" ) ;
       if ( b->xpm == NULL ) {
@@ -1532,6 +1532,8 @@
           PrintXpm ( fp , butn [ i ] .xpmp ) ;
           PrintXpm ( fp , butn [ i ] .xpmh ) ;
           fprintf ( fp , "%d //back ground color\n" , butn [ i ] .bkgr ) ;
+          if( butn [ i ] .butncode >126 ) butn [ i ] .butncode =126;
+          if( butn [ i ] .butncode <31 ) butn [ i ] .butncode =31;
           fprintf ( fp , "%c //keyboard code\n" , butn [ i ] .butncode ) ;
       }
       fprintf ( fp , "%d %f %d  //type,fac\n" , b->type , b->fac , b->bordr ) ;

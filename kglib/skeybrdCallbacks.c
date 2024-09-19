@@ -17,7 +17,8 @@ int kgShowKey(int ch);
 static char *kgButtonTitle(char * str,void *pt) {
   KEYBRD *Kbrd;
   Kbrd = (KEYBRD *)pt;
-  sprintf(BUFF,"!h15!d!h51!z%-s!f%2.2d!c%2.2d%-s",Kbrd->Sfac,Kbrd->Bfont,Kbrd->Bclr,str);
+//  sprintf(BUFF,"!h15!d!h51!z%-s!f%2.2d!c%2.2d%-s",Kbrd->Sfac,Kbrd->Bfont,Kbrd->Bclr,str);
+  sprintf(BUFF,"!w%-s!f%2.2d!c%2.2d%-s",Kbrd->Sfac,Kbrd->Bfont,Kbrd->Bclr,str);
 //  printf("%s\n",BUFF);
   return BUFF;
 }

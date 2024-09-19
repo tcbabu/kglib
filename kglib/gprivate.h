@@ -1412,8 +1412,8 @@ int SearchClr(XColor C);
 int RefreshWindowThread(void *junk);
 void uiwrite_buf(DIG *G,unsigned char *ch, int n );
 /* New Code for FT interface */
-  void * kgMakeFixedFontImg ( char *filename , char *text , int Size );
-  void * kgMakeFontImg ( char *filename , char *text , int Size );
+  void * kgMakeFixedFontImg ( char *filename , char *text , int Size ,int Gap);
+  void * kgMakeFontImg ( char *filename , char *text , int Size ,int Gap);
   void **kgFontChars ( char *Font , int Size );
   void **kgFixedFontChars ( char *Font , int Size );
   void *uiMakeString ( void *Fstr , char *str , int Ht , int Gap );
@@ -1422,4 +1422,6 @@ void uiwrite_buf(DIG *G,unsigned char *ch, int n );
   void *uiFreeImgStrs(void *);
   int uiInitFontLists(void *);
   int uiFreeFontLists();
+  void *uiComplexString ( char *str ,void *Imgtmp, int font , int color , int FontSize ,int height ) ;
+  void *uiComplexFixedString ( char *str ,void *Imgtmp, int font , int color , int FontSize ,int height ) ;
 #endif

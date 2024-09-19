@@ -8515,67 +8515,67 @@
       but = kgMenu1 ( Parent , 120 , 45 , 0 , addmenu , 23 , NULL , NULL ) ;
       switch ( but ) {
           case 4:
-          kgPrintf ( Parent , 2 , ( char * ) "!s!f31!z53TEXT BOX....." ) ;
+          kgPrintf ( Parent , 2 , ( char * ) "!f22!z53TEXT BOX....." ) ;
           t = Making_t_box ( D ) ;
           if ( t != NULL ) Dappend ( L , t ) ;
           break;
           case 5:
-          kgPrintf ( Parent , 2 , ( char * ) "!s!f31!z53TABLE BOX....." ) ;
+          kgPrintf ( Parent , 2 , ( char * ) "!f22!z53TABLE BOX....." ) ;
           t = Making_T_box ( D ) ;
           if ( t != NULL ) Dappend ( L , t ) ;
           break;
           case 2:
-          kgPrintf ( Parent , 2 , ( char * ) "!s!f31!z53BUTTONS....." ) ;
+          kgPrintf ( Parent , 2 , ( char * ) "!f22!z53BUTTONS....." ) ;
           t = ( DIT * ) Making_Buttons ( D ) ;
           if ( t != NULL ) Dappend ( L , t ) ;
           break;
           case 3:
-          kgPrintf ( Parent , 2 , ( char * ) "!s!f31!z53BROWSER....." ) ;
+          kgPrintf ( Parent , 2 , ( char * ) "!f22!z53BROWSER....." ) ;
           t = ( DIT * ) Making_Browser ( D ) ;
           if ( t != NULL ) Dappend ( L , t ) ;
           break;
           case 14:
-          kgPrintf ( Parent , 2 , ( char * ) "!s!f31!z53Scroll Menu....." ) ;
+          kgPrintf ( Parent , 2 , ( char * ) "!f22!z53Scroll Menu....." ) ;
           t = ( DIT * ) Making_Menu ( D ) ;
           if ( t != NULL ) Dappend ( L , t ) ;
           break;
           case 15:
-          kgPrintf ( Parent , 2 , ( char * ) "!s!f31!z53Msg Scroll....." ) ;
+          kgPrintf ( Parent , 2 , ( char * ) "!f22!z53Msg Scroll....." ) ;
           t = ( DIT * ) Making_MsgScroll ( D ) ;
           if ( t != NULL ) Dappend ( L , t ) ;
           break;
           case 17:
-          kgPrintf ( Parent , 2 , ( char * ) "!s!f31!z53Selection Menu....." ) ;
+          kgPrintf ( Parent , 2 , ( char * ) "!f22!z53Selection Menu....." ) ;
           t = ( DIT * ) Making_Selectmenu ( D ) ;
           if ( t != NULL ) Dappend ( L , t ) ;
           break;
           case 18:
-          kgPrintf ( Parent , 2 , ( char * ) "!s!f31!z53Radio Buttons....." ) ;
+          kgPrintf ( Parent , 2 , ( char * ) "!f22!z53Radio Buttons....." ) ;
           t = ( DIT * ) Making_RadioButtons ( D ) ;
           if ( t != NULL ) Dappend ( L , t ) ;
           break;
           case 19:
-          kgPrintf ( Parent , 2 , ( char * ) "!s!f31!z53Check Box....." ) ;
+          kgPrintf ( Parent , 2 , ( char * ) "!f22!z53Check Box....." ) ;
           t = ( DIT * ) Making_CheckBox ( D ) ;
           if ( t != NULL ) Dappend ( L , t ) ;
           break;
           case 20:
-          kgPrintf ( Parent , 2 , ( char * ) "!s!f31!z53Thumbnail Browser....." ) ;
+          kgPrintf ( Parent , 2 , ( char * ) "!f22!z53Thumbnail Browser....." ) ;
           t = ( DIT * ) Making_ThumbnailBrowser ( D ) ;
           if ( t != NULL ) Dappend ( L , t ) ;
           break;
           case 21:
-          kgPrintf ( Parent , 2 , ( char * ) "!s!f31!z53Progrss Bar....." ) ;
+          kgPrintf ( Parent , 2 , ( char * ) "!f22!z53Progrss Bar....." ) ;
           t = ( DIT * ) Making_Progressbar ( D ) ;
           if ( t != NULL ) Dappend ( L , t ) ;
           break;
           case 22:
-          kgPrintf ( Parent , 2 , ( char * ) "!s!f31!z53Vert. Scroll....." ) ;
+          kgPrintf ( Parent , 2 , ( char * ) "!f22!z53Vert. Scroll....." ) ;
           t = ( DIT * ) Making_Vertscroll ( D ) ;
           if ( t != NULL ) Dappend ( L , t ) ;
           break;
           case 23:
-          kgPrintf ( Parent , 2 , ( char * ) "!s!f31!z53Horiz. Scroll....." ) ;
+          kgPrintf ( Parent , 2 , ( char * ) "!f22!z53Horiz. Scroll....." ) ;
           t = ( DIT * ) Making_Horizscroll ( D ) ;
           if ( t != NULL ) Dappend ( L , t ) ;
           break;
@@ -8588,54 +8588,54 @@
       }
       else gprintf(Parent,(char *)"HORI BAR IS DEFINED.. MORE THAN 1 NOT ALLOWED");
       */
-          kgPrintf ( Parent , 2 , ( char * ) "!s!f31!z53HORI. BAR....." ) ;
+          kgPrintf ( Parent , 2 , ( char * ) "!f22!z53HORI. BAR....." ) ;
 //      t = (DIT *)Making_hori_bar(D);
           t = ( DIT * ) Making_SplButtons ( D ) ;
           if ( t != NULL ) Dappend ( L , t ) ;
           break;
           case 16:
-          kgPrintf ( Parent , 2 , ( char * ) "!s!f31!z53Hori Slide Bar..." ) ;
+          kgPrintf ( Parent , 2 , ( char * ) "!f22!z53Hori Slide Bar..." ) ;
           t = ( DIT * ) Making_SlideH ( D ) ;
           if ( t != NULL ) Dappend ( L , t ) ;
           break;
           case 6:
-          kgPrintf ( Parent , 2 , ( char * ) "!s!f31!z53SLIDE(D) BAR..." ) ;
+          kgPrintf ( Parent , 2 , ( char * ) "!f22!z53SLIDE(D) BAR..." ) ;
           t = ( DIT * ) Making_SlideD ( D ) ;
           if ( t != NULL ) Dappend ( L , t ) ;
           break;
           case 7:
-          kgPrintf ( Parent , 2 , ( char * ) "!s!f31!z53SLIDE(F) BAR..." ) ;
+          kgPrintf ( Parent , 2 , ( char * ) "!f22!z53SLIDE(F) BAR..." ) ;
           t = ( DIT * ) Making_SlideF ( D ) ;
           if ( t != NULL ) Dappend ( L , t ) ;
           break;
           case 11:
-          kgPrintf ( Parent , 2 , ( char * ) "!s!f31!z53MESSAGE BOX..." ) ;
+          kgPrintf ( Parent , 2 , ( char * ) "!f22!z53MESSAGE BOX..." ) ;
           t = ( DIT * ) Making_Message ( D ) ;
           if ( t != NULL ) Dappend ( L , t ) ;
           break;
           case 12:
-          kgPrintf ( Parent , 2 , ( char * ) "!s!f31!z53DISPLAY BOX..." ) ;
+          kgPrintf ( Parent , 2 , ( char * ) "!f22!z53DISPLAY BOX..." ) ;
           t = ( DIT * ) Making_DisplayBox ( D ) ;
           if ( t != NULL ) Dappend ( L , t ) ;
           break;
           case 13:
-          kgPrintf ( Parent , 2 , ( char * ) "!s!f31!z53MESSAGE BOX..." ) ;
+          kgPrintf ( Parent , 2 , ( char * ) "!f22!z53MESSAGE BOX..." ) ;
           t = ( DIT * ) Making_Messageb ( D ) ;
           if ( t != NULL ) Dappend ( L , t ) ;
           break;
           case 8: /* pixmap */
-          kgPrintf ( Parent , 2 , ( char * ) "!s!f31!z53PIXMAP BOX..." ) ;
+          kgPrintf ( Parent , 2 , ( char * ) "!f22!z53PIXMAP BOX..." ) ;
           t = ( DIT * ) Making_Pixmap ( D ) ;
           if ( t != NULL ) Dappend ( L , t ) ;
-          kgPrintf ( Parent , 2 , ( char * ) "!s!f31!z53MADE PIXMAP BOX..." ) ;
+          kgPrintf ( Parent , 2 , ( char * ) "!f22!z53MADE PIXMAP BOX..." ) ;
           break;
           case 9: /* graph box */
-          kgPrintf ( Parent , 2 , ( char * ) "!s!f31!z53GRAPHICS BOX..." ) ;
+          kgPrintf ( Parent , 2 , ( char * ) "!f22!z53GRAPHICS BOX..." ) ;
           t = ( DIT * ) Making_Graphbox ( D ) ;
           if ( t != NULL ) Dappend ( L , t ) ;
           break;
           case 10: /* info box */
-          kgPrintf ( Parent , 2 , ( char * ) "!s!f31!z53INFO.  BOX..." ) ;
+          kgPrintf ( Parent , 2 , ( char * ) "!f22!z53INFO.  BOX..." ) ;
           t = ( DIT * ) Making_Infobox ( D ) ;
           if ( t != NULL ) Dappend ( L , t ) ;
           break;
