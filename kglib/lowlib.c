@@ -512,12 +512,12 @@ static char *OthFonts []= {
 	      return 1;
       }
       FontSize = D->gc.GuiFontSize;
-      Font = D->gc.PromptFont%count;
-      strcpy ( FontFile , ( char * ) Drecord ( FontList , Font ) ) ;
-      Pimgs = (IMG_STR **)kgFontChars ( FontFile , FontSize );
       Font = D->gc.MenuFont%count;
       strcpy ( FontFile , ( char * ) Drecord ( FontList , Font ) ) ;
       Mimgs = (IMG_STR **)kgFontChars ( FontFile , FontSize );
+      Font = D->gc.PromptFont%count;
+      strcpy ( FontFile , ( char * ) Drecord ( FontList , Font ) ) ;
+      Pimgs = (IMG_STR **)kgFontChars ( FontFile , FontSize );
       Font = D->gc.ButtonFont%count;
       strcpy ( FontFile , ( char * ) Drecord ( FontList , Font ) ) ;
       Bimgs = (IMG_STR **)kgFontChars ( FontFile , FontSize );
@@ -6255,7 +6255,7 @@ void transch(int c) {
           kgGetDefaultRGB ( color , & rd , & gr , & bl ) ;
           F.code = 't';
           F.name = NULL ;
-          F.Imgs = Nimgs;
+          F.Imgs = Mimgs;
           if ( FontSize <= 0 ) F.Size = ( height-2 ) /2;
           else F.Size = FontSize;
           
@@ -7079,6 +7079,120 @@ void transch(int c) {
           if ( ( str != NULL ) && ( str [ 0 ] != '\0' ) ) uiString ( D , str , x+off , y , ln , height , font , color , FontSize , justfic , -1 ) ;
               
           return;
+      }
+  }
+  void *uiMakeButtonImage ( DIALOG *D ,int width , int height , int fillcolor , int state,int highli ,  float rfac ,  int type ) \
+  {
+/*
+   Write a string in Dialog Area;
+   -1 left justification
+    0 center
+    1 right justification
+    Meaning of State
+    -1 pressed
+     0 normal
+     1 Highlight
+*/
+      int ln , i , maxchar , temp , off , poff = 0;
+      void *img = NULL , *cimg , *img1 = NULL;
+      int font=1,FontSize=10,color=1,justfic=0;
+      float length;
+      GMIMG *gimg;
+      kgWC *wc;
+      wc = D->wc;
+      ln = width*0.85+0.5;
+      off = ( width-ln ) *0.5;
+      if ( state == -1 ) poff = -1;
+//      printf("TCB: type : %d\n",type);
+      switch ( type ) {
+          case 0:
+           return NULL;
+          case 9:
+           return NULL;
+          case 1:
+              img = kgBoxedStringToImage ( NULL , NULL , width , height , font , fillcolor , highli , color , justfic , FontSize , rfac , state ) ;
+          return img;
+          case 2:
+          switch ( state ) {
+              case -1:
+              img = kgBorderedRectangle ( width , height , D->gc.dim , rfac ) ;
+              break;
+              case 1:
+              img = kgBorderedRectangle ( width , height , fillcolor , rfac ) ;
+              break;
+              default:
+              img = kgBorderedRectangle ( width , height , fillcolor , rfac ) ;
+              break;
+          }
+          return img;
+          case 3:
+              img = kgFilledStringToImage3 ( NULL , NULL , width , height , font , fillcolor , highli , color , D->gc.fill_clr , justfic , FontSize , rfac , state , 2.0 ) ;
+              img1 = kgFilledStringToImage3 ( NULL , NULL , width-2 , height-2 , font , fillcolor , highli , color , D->gc.fill_clr , justfic , FontSize , rfac , state , 3.0 ) ;
+              img = kgMergeImages ( img , img1 , 0 , 0 ) ;
+              kgFreeImage ( img1 ) ;
+          return img;
+          case 4:
+          case 5:
+          case 6:
+          case 7:
+          case 8:
+//              printf("TCB:rfac = %f\n",rfac);
+              img = kgShadedStringToImage ( NULL , NULL , width , height , font , fillcolor , highli , color , justfic , FontSize , rfac , state , type-4 ) ;
+          return img;
+          default:
+              img = kgFilledStringToImage1 ( NULL , NULL , width , height , font , fillcolor , highli , color , D->gc.fill_clr , justfic , FontSize , rfac , state , 3.0 ) ;
+          return img;
+      }
+  }
+  void *uiAddButtonString ( DIALOG *D , char *str , void *image , void *xpm,int width , int height , int font , int color , int FontSize,int type  ) \
+  {
+/*
+   Write a string in Dialog Area;
+   -1 left justification
+    0 center
+    1 right justification
+    Meaning of State
+    -1 pressed
+     0 normal
+     1 Highlight
+*/
+      int ln , i , maxchar , temp , off , poff = 0;
+      int justfic =0;
+      void *img = NULL , *cimg , *img1 = NULL,*simg=NULL;
+      float length;
+      int resize=0;
+      GMIMG *gimg;
+      kgWC *wc;
+      wc = D->wc;
+      ln = width*0.85+0.5;
+      off = ( width-ln ) *0.5;
+      if(type > 9) return NULL;
+      if(xpm != NULL){
+            gimg = ( GMIMG * ) xpm;
+            if ( ( gimg->image_width > width ) || ( gimg->image_height > height ) ) {
+              xpm  = kgChangeSizeImage ( xpm , width , height ) ;
+              resize =1;
+            }
+      }
+      cimg = kgGetImageCopy ( D , image ) ;
+      if ( cimg == NULL ) cimg=xpm;
+      else {
+          if(xpm != NULL){
+              cimg = kgMergeImages ( cimg ,xpm, off , 0 ) ;
+          }
+      }
+      switch ( type ) {
+          case 0:
+          return cimg;
+          case 9:
+          return cimg;
+          default:
+          if ( ( str != NULL ) && ( str [ 0 ] != '\0' ) ) {
+                simg = uiStringToImage(D,str,0,0,ln,height,font,color,FontSize, justfic ,-1);                     
+                cimg = kgMergeImages ( cimg , simg , 0 , 0 ) ;
+                kgFreeImage ( simg ) ;
+          }
+          return cimg;
       }
   }
   void *uiMakeStringImage ( DIALOG *D , char *str , void *image , int x , int y , int width , int height , int font , int fillcolor , int highli , int color , int FontSize , int justfic , float rfac , int state , int type ) \
@@ -8985,6 +9099,13 @@ void transch(int c) {
       int xoff , yoff;
       DIALOG *D;
       kgWC *wc;
+      void *cimgn=NULL,*cimgp=NULL,*cimgh=NULL,*simg=NULL,*xpm,*cimg;
+      void *xpmp,*timg,*xpmh;
+      GMIMG *gimg;
+      IMG_STR *IMG=NULL;
+      char *str;
+      int type,mf,mfp,bkgr,i,ln,wd,length,height;
+      int font,color,FontSize;
       b = ( DIN * ) tmp;
       D = b->D;
       x1 = b->x1+D->xo;
@@ -8995,20 +9116,165 @@ void transch(int c) {
       buts = ( BUT_STR * ) b->buts;
       backgr = 1;
       _uiInitButs ( b ) ;
-#if 0
-      if ( buts [ 0 ] .imgn == NULL ) {
-          n = b->nx*b->ny;
-          for ( k = 0; k < n; k++ ) {
-              if ( buts [ k ] .imgn != NULL ) {kgFreeImage ( buts [ k ] .imgn ) ;
-              buts [ k ] .imgn = NULL; }
-              if ( buts [ k ] .imgp != NULL ) {kgFreeImage ( buts [ k ] .imgp ) ;
-              buts [ k ] .imgp = NULL; }
-              if ( buts [ k ] .imgh != NULL ) {kgFreeImage ( buts [ k ] .imgh ) ;
-              buts [ k ] .imgh = NULL; }
-              _uiMakeButnImages ( b , k ) ;
-          }
-//     _uiMakeButs(b);
+      i=0;
+      type=b->type;
+      if ( b->type == 10 ) return ret;
+      if ( ( type == 0 ) || ( type == 9 ) ) {
+          mf = 0;
+          mfp = 2;
       }
+      else {
+          mf = 1;
+          mfp = 1;
+      }
+      if ( type == 1 ) mfp = 0;
+      i = 0;
+      x1 = buts [ i ] .x1;
+      y1 = buts [ i ] .y1;
+      x2 = buts [ i ] .x2;
+      y2 = buts [ i ] .y2;
+      wd = y2 -y1;
+      ln = x2 - x1;
+      length =ln+mfp; 
+      height = wd+mfp;
+      if((type>0) &&(type<9) ){
+        length =ln+mfp-10; 
+        height = wd+mfp-10;
+      }
+      bkgr = buts [ i ] .bkgr;
+      if ( bkgr < 0 ) {
+          if ( bkgr == -1 ) bkgr = D->gc.fill_clr;
+      }
+      font = D->gc.ButtonFont;
+      FontSize = D->gc.GuiFontSize;
+      color = D->gc.but_char;
+      cimgn=NULL;
+      cimgp=NULL;
+      if ( buts [ 0 ] .imgn == NULL ){  
+        cimgn = uiMakeButtonImage(D,ln+mfp , wd+mfp ,bkgr,0 , 0,b->fac ,  type);
+        cimgp = uiMakeButtonImage(D,ln+mfp , wd+mfp ,bkgr,-1 , 0,b->fac  ,type);
+      }
+      
+//      printf("TCB: ln: %d %d %f\n",ln,height,b->fac);
+#if 1
+          n = b->nx*b->ny;
+          if(Bimgs==NULL) {printf("Bimgs==NULL\n");fflush(stdout);}
+          for ( k = 0; k < n; k++ ) {
+           if ( buts [ k ] .imgn == NULL ) {
+             str = buts[k].title;
+             simg=NULL;
+             if((type>0)&&(str!= NULL)&&(str[0]>=' ')){
+                IMG=(IMG_STR *)uiComplexString(str,Bimgs,font,color,FontSize,wd); 
+                simg = IMG->img;
+                free(IMG);
+             }
+             backgr = buts [ k ] .bkgr;
+             if ( backgr < 0 ) {
+               if ( backgr == -1 ) backgr = D->gc.fill_clr;
+             }
+             cimg=NULL;
+             if(bkgr != backgr) {
+               cimg = uiMakeButtonImage(D,ln+mfp , wd+mfp ,backgr,0,0 , b->fac , b->type);
+             }
+             else if(cimgn != NULL)cimg = kgGetImageCopy(NULL,cimgn);
+             xpm =NULL;
+             if(buts[k].xpmn != NULL) xpm = kgGetImageCopy(NULL,buts[k].xpmn);
+             if(xpm != NULL) {
+               gimg = ( GMIMG * ) xpm;
+               if ( ( gimg->image_width > length ) || ( gimg->image_height > height ) ) {
+                 xpm  = kgChangeSizeImage ( xpm ,length ,height ) ;
+               }
+               if(cimg != NULL) cimg = kgMergeImages(cimg,xpm,0,0);
+               else cimg = kgGetImageCopy(NULL,xpm);
+             }
+             if(simg != NULL) {
+               gimg = ( GMIMG * ) simg;
+               if ( ( gimg->image_width >  ln-10 ) || ( gimg->image_height > wd-4  ) ) {
+                 int xl,yl;
+                 xl =gimg->image_width; 
+                 if(xl  >  ln-10 ) xl = ln -10;
+                 yl =gimg->image_height ;
+                 if(yl  > wd-4 ) yl = wd-4;
+                 simg  = kgChangeSizeImage ( simg ,xl,yl ) ;
+               }
+               if(cimg != NULL) cimg = kgMergeImages(cimg,simg,0,0);
+               else cimg = kgGetImageCopy(NULL,simg);
+             }
+             buts [ k ] .imgn =cimg; 
+             cimg = NULL;
+             if(bkgr != backgr) {
+               cimg = uiMakeButtonImage(D,ln+mfp , wd+mfp ,backgr,-1,0 , b->fac , b->type);
+             }
+             else if(cimgp != NULL)cimg = kgGetImageCopy(NULL,cimgp);
+             xpmp=NULL;
+             xpmh=NULL;
+#if 1
+             if ( buts [ k ] .xpmp != NULL ){
+                  xpmp = kgGetImageCopy(NULL,buts [ k ] .xpmp) ;
+                  gimg = ( GMIMG * ) xpmp;
+                  if ( ( gimg->image_width > length ) || ( gimg->image_height > height ) ) {
+                    xpmp  = kgChangeSizeImage ( xpmp ,length ,height ) ;
+                  }
+                  if(cimg != NULL) cimg = kgMergeImages(cimg,xpmp,0,0);
+                  else cimg = kgGetImageCopy(NULL,xpmp);
+                  kgFreeImage(xpmp);
+                  xpmp=NULL;
+             }
+             else {
+               timg = NULL;
+               if(xpm != NULL) {
+                 timg = kgGetImageCopy ( NULL , xpm ) ;
+                 xpmp = kgChangeBrightness ( timg , 0.5 ) ;
+                 if(cimg != NULL) cimg = kgMergeImages(cimg,xpmp,0,0);
+                 else cimg = kgGetImageCopy(NULL,xpmp);
+                 kgFreeImage(xpmp);
+                 xpmp=NULL;
+               }
+             }
+             if(simg != NULL) {
+               if(cimg != NULL) cimg = kgMergeImages(cimg,simg,0,0);
+               else cimg = kgGetImageCopy(NULL,simg);
+             }
+             buts [ k ] .imgp = cimg; 
+             xpmh=NULL;
+             cimg =NULL;
+             if(cimgn != NULL) cimg=kgGetImageCopy(NULL,cimgn);
+             if ( buts [ k ] .xpmh != NULL ){
+                  xpmh = kgGetImageCopy(NULL,buts [ k ] .xpmh) ;
+                  gimg = ( GMIMG * ) xpmh;
+                  if ( ( gimg->image_width > length ) || ( gimg->image_height > height ) ) {
+                    xpmh  = kgChangeSizeImage ( xpmh ,length ,height ) ;
+                  }
+                  if(cimg != NULL) cimg = kgMergeImages(cimg,xpmh,0,0);
+                  else cimg = kgGetImageCopy(NULL,xpmh);
+                  kgFreeImage(xpmh);
+                  xpmh=NULL;
+             }
+             else {
+               timg = NULL;
+               if(xpm != NULL) {
+                 if(cimg != NULL) cimg = kgMergeImages(cimg,xpm,0,0);
+                 else cimg = kgGetImageCopy(NULL,xpm);
+                 timg =  cimg  ;
+                 cimg = kgChangeBrightness ( timg , 1.2 ) ;
+               }
+             }
+             if(simg != NULL) {
+               if(cimg != NULL) cimg = kgMergeImages(cimg,simg,0,0);
+               else cimg = kgGetImageCopy(NULL,simg);
+             }
+             buts [ k ] .imgh = cimg; 
+#else
+             buts [ k ] .imgp = kgGetImageCopy(NULL,buts [ k ] .imgn);
+             buts [ k ] .imgh = kgGetImageCopy(NULL,buts [ k ] .imgn);
+#endif
+               if(xpm != NULL) kgFreeImage(xpm);
+               if(simg != NULL) kgFreeImage(simg);
+               xpm=NULL;xpmp=NULL;xpmh=NULL;simg=NULL;
+           }
+//             printf("TCB:k=%d\n",k);
+//             fflush(stdout);
+          }
 #else
       n = b->nx*b->ny;
       for ( k = 0; k < n; k++ ) {
@@ -10999,7 +11265,7 @@ void transch(int c) {
           }
       }
 #else
-      w->imgs = ( void ** ) uiMenuNailImages ( D , menu , lng , width , D->gc.MsgFont , D->gc.twin_char , D->gc.FontSize , 0 , 8 ) ;
+      w->imgs = ( void ** ) uiMenuNailImages ( D , menu , lng , width , D->gc.MenuFont , D->gc.twin_char , D->gc.FontSize , 0 , 8 ) ;
           
 #endif
       return;
@@ -16133,8 +16399,9 @@ void *uiMakeTableCellImage(DIT *T,int cell,int drcur) {
       float transparency;
       int n , i , j , k , ix , iy , nx , ny , type , mf = 1 , mfp = 0;
       int x1 , y1 , x2 , y2 , xgap , ygap , ln , wd , bkgr , highli = 1 , xo , yo , dx , dy;
-          
+      int rd,gr,bl;          
       void *xpm , *timg = NULL;
+      void *cimgn,*cimgp,*cimgh;
       DIALOG *D;
       kgWC *wc;
       D = ( DIALOG * ) ( B->D ) ;
@@ -16168,6 +16435,9 @@ void *uiMakeTableCellImage(DIT *T,int cell,int drcur) {
 //  dy =wd+ygap;
       dx = ln;
       dy = wd;
+      bkgr =0;
+//      cimgn = uiMakeButtonImage(D,ln+mfp , wd+mfp ,bkgr,0,0 , B->fac , B->type);
+//      cimgp = uiMakeButtonImage(D,ln+mfp , wd+mfp ,bkgr,-1,0 , B->fac ,  B->type);
       y1 = yo-dy-2-ygap+mf*ygap/2;
       for ( j = 0; j < ny; j++ ) {
           y1 = y1+dy+ygap;
@@ -16199,7 +16469,7 @@ void *uiMakeTableCellImage(DIT *T,int cell,int drcur) {
                   timg = kgGetImageCopy ( NULL , butns [ i ] .xpmn ) ;
                   xpm = kgChangeBrightness ( timg , 0.5 ) ;
               }
-              butns [ i ] .imgp = uiMakeStringImage ( D , butns [ i ] .title , xpm , x1 , y1 , ln+mfp , wd+mfp , D->gc.ButtonFont , bkgr , 0 , D->gc.but_char , D->gc.GuiFontSize , 0 , B->fac , -1 , B->type ) ;
+             butns [ i ] .imgp = uiMakeStringImage ( D , butns [ i ] .title , xpm , x1 , y1 , ln+mfp , wd+mfp , D->gc.ButtonFont , bkgr , 0 , D->gc.but_char , D->gc.GuiFontSize , 0 , B->fac , -1 , B->type ) ;
                   
               kgFreeImage ( timg ) ; timg = NULL;
               xpm = butns [ i ] .xpmn;

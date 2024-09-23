@@ -12,8 +12,8 @@ static float  Rfac=0.5 ;
 //#define Btype 5
 //#define Btype 4
 //#define Btype 2
-#define Sfac1 "11"
-#define Sfac2 "32"
+#define Sfac1 "45"
+#define Sfac2 "11"
 static char BUFF[100];
 static char Sfac[]="54";
 static int Bfont=16,Bclr=0;
