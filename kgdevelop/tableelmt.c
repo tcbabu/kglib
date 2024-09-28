@@ -91,7 +91,7 @@ int tableelmtGroup( DIALOG *D,void **v,void *pt) {
     1,1, 
     e1,
     1,1,
-    NULL,tableelmttextbox1callback,1,0,18,9 /* args,Call back */
+    NULL,tableelmttextbox1callback,1,0,9,9 /* args,Call back */
   };
   strcpy(t1.Wid,(char *)"tableelmtTbox");
   t1.pt=NULL;

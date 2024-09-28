@@ -799,7 +799,19 @@
            ( char * ) "58" , ( char * ) "59" , ( char * ) "60" , ( char * ) "61" ,  \
            ( char * ) "62" , ( char * ) "63" , NULL };
       void *xpm0 [ ] = {
-      NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL };
+      NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , 
+      NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL ,
+      NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , 
+     NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL ,
+     NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , 
+     NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , 
+     NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL
+   , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , 
+    NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL ,
+    NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL ,
+    NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL ,
+    NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL ,
+     NULL , NULL , NULL };
           
       int bkgr0 [ ] = {
       0 , 1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 , 10 , 11 , 12 , 13 , 14 , 15 , 16 , 17 , 18 , 19 , 20 , 21 , 22 , 23 , 24 , 25 , 26 , 27 , 28 , 29 , 30 , 31 , 32 , 33 , 34 , 35 , 36 , 37 , 38 , 39 , 40 , 41 , 42 , 43 , 44 , 45 , 46 , 47 , 48 , 49 , 50 , 51 , 52 , 53 , 54 , 55 , 56 , 57 , 58 , 59 , 60 , 61 , 62 , 63 , -1 };
@@ -6019,3 +6031,566 @@ char * kgGetFolderName ( char *flname ) {
       W->pt = NULL;
       return W;
   }
+/*kgGetFreeTypeFont code */
+static int CheckFontFile(char *font) {
+   FILE *fp;
+   int ret=0;
+   char Buff[300];
+   sprintf(Buff,"file %-s",font);
+   fp = popen(Buff,"r");
+   if(fp==NULL) return 0;
+   fgets(Buff,300,fp);
+   pclose(fp);
+   if(strstr(Buff,"Type 1 font") != NULL) return 1;
+   if(strstr(Buff,"Type font") != NULL) return 1;
+   if(strstr(Buff,"Type Font") != NULL) return 1;
+   return 0;
+}
+static int WriteMsg(DIALOG *D){
+   DIS *I;
+   DIW *W;
+   I  = (DIS *) kgGetNamedWidget(D,(char *)"Info");
+   W  = (DIW *) kgGetNamedWidget(D,(char *)"Select");
+   int Font;
+   char **List = (char **)kgGetList(W);
+   char Buff[100];
+   char *Msg[]={"\"Our lives begin to end ",
+                  " the day we become silent about",
+                  " things that matter\"",
+                  NULL
+                 };
+   Font = *(W->df)-1;
+   kgWrite(I,List[Font]);
+   kgWrite(I,(char *)" ");
+   sprintf(Buff,"!f%2.2d  %s",Font,Msg[0]);
+   kgWrite(I,Buff);
+   sprintf(Buff,"!f%2.2d  %s",Font,Msg[1]);
+   kgWrite(I,Buff);
+   sprintf(Buff,"!f%2.2d  %s",Font,Msg[2]);
+   kgWrite(I,Buff);
+   kgUpdateWidget(I);
+}
+static int  GetFontbrowser1callback(int item,int i,void *Tmp) {
+  /*********************************** 
+    item : selected item (1 to max_item) 
+    i :  Index of Widget  (0 to max_widgets-1) 
+    Tmp :  Pointer to DIALOG  
+   ***********************************/ 
+  DIALOG *D;DIW *W; 
+  DIM *M;
+  int ret=1; 
+  char Buff[500];
+  char *cpt;
+  int Font;
+  void **pt= (void **)kgGetArgPointer(Tmp); // Change as required
+  D = (DIALOG *)Tmp;
+  W = (DIW *) kgGetWidget(Tmp,i);
+  M = (DIM *) kgGetNamedWidget(D,(char *)"Msg");
+  Font = item-1;
+  sprintf(Buff,"!f%2.2d%s",Font,(char *)kgGetOthFont(Font));  
+  kgWrite(M,Buff);
+  kgUpdateWidget(M);
+  kgUpdateOn(D);
+  WriteMsg(D);
+  switch(item) {
+    case 1: 
+      break;
+  }
+  return ret;
+}
+static int  GetFontbutton1callback(int butno,int i,void *Tmp) {
+  /*********************************** 
+    butno : selected item (1 to max_item) 
+    i :  Index of Widget  (0 to max_widgets-1) 
+    Tmp :  Pointer to DIALOG  
+   ***********************************/ 
+  DIALOG *D;DIN *B; 
+  DIW *W;
+  DIM *M;
+  int n,ret =0,count; 
+  void **pt= (void **)kgGetArgPointer(Tmp); // Change as required
+  char Buff[500]="/usr/share/fonts/";
+  char **List;
+  int Font;
+  D = (DIALOG *)Tmp;
+  B = (DIN *)kgGetWidget(Tmp,i);
+  W = (DIW *) kgGetNamedWidget(D,(char *)"Select");
+  M = (DIM *) kgGetNamedWidget(D,(char *)"Msg");
+  Font = *(W->df)-1;
+  n = B->nx*B->ny;
+  if(kgFolderBrowser(NULL,100,200,Buff,(char *)"*") ){
+      if(!CheckFontFile(Buff)) return 0;
+      kgAddFont(Buff);
+      List = (char **)kgGetList(W);
+      kgFreeDouble((void **)List);
+      List = (char **)kgGetFontList();
+      count =0;
+      while(List[count]!=NULL)count++;
+      Font = count-1;
+      *(W->df)= count;
+      kgSetList(W,(void **)List);
+      kgWrite(M,List[Font]);
+      kgUpdateWidget(W);
+      kgUpdateWidget(M);
+      kgUpdateOn(D);
+      WriteMsg(D);
+  }  
+  switch(butno) {
+    case 1: 
+      break;
+  }
+  return ret;
+}
+static void  GetFontbutton1init(DIN *B,void *ptmp) {
+ void **pt=(void **)ptmp; //pt[0] is arg 
+}
+static int  GetFontsplbutton1callback(int butno,int i,void *Tmp) {
+  /*********************************** 
+    butno : selected item (1 to max_item) 
+    i :  Index of Widget  (0 to max_widgets-1) 
+    Tmp :  Pointer to DIALOG  
+   ***********************************/ 
+  DIALOG *D;DIL *B; 
+  DIW *W;
+  int n,ret=1; 
+  void **pt= (void **)kgGetArgPointer(Tmp); // Change as required
+  D = (DIALOG *)Tmp;
+  B = (DIL *) kgGetWidget(Tmp,i);
+  int *ipt = (int *)pt[0];
+  W = (DIW *) kgGetNamedWidget(D,(char *)"Select");
+  n = B->nx;
+  switch(butno) {
+    case 1: 
+      break;
+    case 2: 
+      *ipt= *(W->df);;
+      break;
+  }
+  return ret;
+}
+static void  GetFontsplbutton1init(DIL *B,void *ptmp) {
+ void **pt=(void **)ptmp; //pt[0] is arg 
+}
+static void  GetFontbrowser2init(DIS *S,void *ptmp) {
+ void **pt=(void **)ptmp; //pt[0] is arg 
+}
+static int GetFontinit(void *Tmp) {
+  /*********************************** 
+    Tmp :  Pointer to DIALOG  
+   ***********************************/ 
+  /* you add any initialisation here */
+  int ret = 1,k=0;
+  DIALOG *D;
+  D = (DIALOG *)Tmp;
+  DIW *W;
+  DIM *M;
+  void **pt= (void **)kgGetArgPointer(Tmp); // Change as required
+ /* pt[0] is inputs, given by caller */
+  char **List;
+  int Font;
+  int *ipt = (int *)pt[0];
+  W = (DIW *) kgGetNamedWidget(D,(char *)"Select");
+  M = (DIM *) kgGetNamedWidget(D,(char *)"Msg");
+  List = kgGetFontList();
+  while(List[k]!= NULL) {
+//   printf("%s \n",List[k]);
+   k++;
+  }
+  Font = *ipt;
+  if(Font < 0 )Font=0;
+  Font %=k;
+  kgSetList(W,(void **)List);
+  *(W->df) = Font+1;
+  kgUpdateWidget(W);
+  kgWrite(M,List[Font]);
+  kgUpdateWidget(M);
+  kgUpdateOn(D);
+  WriteMsg(D);
+  return ret;
+}
+static int GetFontcleanup(void *Tmp) {
+  /* you add any cleanup/mem free here */
+  /*********************************** 
+    Tmp :  Pointer to DIALOG  
+   ***********************************/ 
+  int ret = 1;
+  DIALOG *D;
+  D = (DIALOG *)Tmp;
+  void **pt= (void **)kgGetArgPointer(Tmp); // Change as required
+ /* pt[1] is outputs, if any  to be given to caller */
+ /* pt[0] is inputs, given by caller */
+  return ret;
+}
+static int ModifyGetFont(void *Tmp,int GrpId) {
+  DIALOG *D;
+  D = (DIALOG *)Tmp;
+  void **pt= (void **)kgGetArgPointer(Tmp); // Change as required
+ /* pt[0] is inputs given by caller */
+  DIA *d;
+  int i,n,k=0;
+  int *ipt = (int *) pt[0];
+  int Font = *ipt;
+  d = D->d;
+  i=0;while(d[i].t!= NULL) {;
+     i++;
+  };
+  n=1;
+//  strcpy(D->name,"Kulina Designer ver 2.0");    /*  Dialog name you may change */
+#if 0
+  if(D->fullscreen!=1) {    /*  if not fullscreen mode */
+     int xres,yres; 
+     kgDisplaySize(&xres,&yres); 
+      // D->xo=D->yo=0; D->xl = xres-10; D->yl=yres-80;
+  }
+  else {    // for fullscreen
+     int xres,yres; 
+     kgDisplaySize(&xres,&yres); 
+     D->xo=D->yo=0; D->xl = xres; D->yl=yres;
+//     D->StackPos = 1; // you may need it
+  }    /*  end of fullscreen mode */
+#endif
+#if 0
+  W = (DIW *) kgGetNamedWidget(D,(char *)"Select");
+  B = (DIN *) kgGetNamedWidget(D,(char *)"Add");
+  M = (DIM *) kgGetNamedWidget(D,(char *)"Msg");
+  I  = (DIS *) kgGetNamedWidget(D,(char *)"Info");
+#endif
+  return GrpId;
+}
+
+static int GetFontCallBack(void *Tmp,void *tmp) {
+  /*********************************** 
+    Tmp :  Pointer to DIALOG  
+    tmp :  Pointer to KBEVENT  
+   ***********************************/ 
+  int ret = 0;
+  DIALOG *D;
+  void **pt= (void **)kgGetArgPointer(Tmp); // Change as required
+  KBEVENT *kbe;
+  D = (DIALOG *)Tmp;
+  kbe = (KBEVENT *)tmp;
+  if(kbe->event ==1) {
+    if(kbe->button ==1) {
+    }
+  }
+  return ret;
+}
+static int GetFontResizeCallBack(void *Tmp) {
+  /*********************************** 
+    Tmp :  Pointer to DIALOG  
+   ***********************************/ 
+  int ret = 0;
+  int xres,yres,dx,dy;
+  DIALOG *D;
+  void **pt= (void **)kgGetArgPointer(Tmp); // Change as required
+  D = (DIALOG *)Tmp;
+  kgGetWindowSize(D,&xres,&yres);
+  dx = xres - D->xl;
+  dy = yres - D->yl;
+  /* extra code */
+  D->xl= xres;
+  D->yl= yres;
+  kgRedrawDialog(D);
+  return ret;
+}
+static int GetFontWaitCallBack(void *Tmp) {
+  /*********************************** 
+    Tmp :  Pointer to DIALOG  
+    Called while waiting for event  
+    return value 1 will close the the UI  
+   ***********************************/ 
+  int ret = 0;
+  void **pt= (void **)kgGetArgPointer(Tmp); // Change as required
+  return ret;
+}
+static void ModifyGetFontGc(void *Tmp) {
+   DIALOG *D;
+   Gclr *gc;
+   D = (DIALOG *)Tmp;
+   gc = &(D->gc);
+/*
+//  You may change default settings here 
+//  probably you can allow the user to create a config in $HOME
+//  and try to read that file (if exits); so dynamic configuration is possible
+   kgColorTheme(D,220,220,200);
+   kgColorTheme1(D,220,220,200);
+   kgColorTheme2(D,220,220,200);
+   kgDefaultGuiTheme(gc);
+   kgGrayGuiTheme(gc);
+   gc->FontSize =9;
+   gc->FontGuiSize =9;
+   gc->InputFontSize =8;
+   gc->MenuFont = 21;
+   gc->PromptFont = 21;
+   gc->ButtonFont = 21;
+   gc->MsgFont = 21;
+   gc->Font=23;
+   kgMkgclr((char *)"GetFont",Tmp);
+*/
+}
+static int GetFontGroup( DIALOG *D,void **v,void *pt) {
+  int GrpId=0,oitems=0,i,j;
+  DIA *d=NULL,*dtmp;
+  char **menu0 ; 
+  menu0= (char **)malloc(sizeof(char *)*8);
+  menu0[7]=NULL;
+  menu0[0]=(char *)malloc(4);
+  strcpy(menu0[0],(char *)"one");
+  menu0[1]=(char *)malloc(4);
+  strcpy(menu0[1],(char *)"two");
+  menu0[2]=(char *)malloc(4);
+  strcpy(menu0[2],(char *)"two");
+  menu0[3]=(char *)malloc(6);
+  strcpy(menu0[3],(char *)"three");
+  menu0[4]=(char *)malloc(5);
+  strcpy(menu0[4],(char *)"four");
+  menu0[5]=(char *)malloc(5);
+  strcpy(menu0[5],(char *)"five");
+  menu0[6]=(char *)malloc(4);
+  strcpy(menu0[6],(char *)"six");
+  char *prompt0 ; 
+  prompt0=(char *)malloc(13);
+  strcpy(prompt0,(char *)"Select Font ");
+  DIW w0 = { 
+    'w',
+    10,15,  
+    380,55,   
+    6,  
+    (int *)v[0],
+    prompt0 ,
+    menu0 ,
+    NULL,GetFontbrowser1callback, /* *args, callback */
+    0 
+  };
+  strcpy(w0.Wid,(char *)"Select");
+  w0.item = -1;
+  BUT_STR  *butn1=NULL; 
+  butn1= (BUT_STR *)malloc(sizeof(BUT_STR)*1);
+  butn1[0].sw=1;
+  strcpy(butn1[0].title,(char *)"Add New Font");
+  butn1[0].xpmn=NULL;
+  butn1[0].xpmp=NULL;
+  butn1[0].xpmh=NULL;
+  butn1[0].bkgr=-1;
+  butn1[0].butncode=31;
+  DIN b1 = { 
+    'n',
+    110,105,  
+    270,147,
+    2,2,  
+    150, 
+    32, 
+    1,1, 
+    4,0.500000,0,0,0,1, /* button type and roundinfg factor(0-0.5),bordr,hide ,nodrawbkgr*/
+ 
+    butn1, 
+    GetFontbutton1callback, /*  Callbak */
+      NULL  /* any args */
+  };
+  strcpy(b1.Wid,(char *)"Add");
+  b1.item = -1;
+  BUT_STR  *butn2=NULL; 
+  butn2= (BUT_STR *)malloc(sizeof(BUT_STR)*2);
+  butn2[0].sw=1;
+  strcpy(butn2[0].title,(char *)"!c03Cancel");
+  butn2[0].xpmn=NULL;
+  butn2[0].xpmp=NULL;
+  butn2[0].xpmh=NULL;
+  butn2[0].bkgr=-1;
+  butn2[0].butncode=31;
+  butn2[1].sw=1;
+  strcpy(butn2[1].title,(char *)"!c38Okay");
+  butn2[1].xpmn=NULL;
+  butn2[1].xpmp=NULL;
+  butn2[1].xpmh=NULL;
+  butn2[1].bkgr=-1;
+  butn2[1].butncode=31;
+  DIL h2 = { 
+    'h',
+    119,298,  
+    275,331,
+    2,0,  
+    72, 
+    25, 
+    2,1, 
+    8,0.500000,0,0,0,1, /* button type and roundinfg factor(0-0.5),bordr,hide ,nodrawbkgr*/
+ 
+    butn2, 
+    GetFontsplbutton1callback, /*  Callbak */
+      NULL  /* any args */
+  };
+  strcpy(h2.Wid,(char *)"Spl");
+  h2.item = -1;
+  DIM m3 = { 
+    'B',
+    15,72,  
+    375,96,  
+    0,0  
+  };
+  strncpy(m3.msg,(char *)"",499);
+  strcpy(m3.Wid,(char *)"Msg");
+  m3.item = -1;
+  DIS s4 = { 
+    's',
+    15,162,  
+    376,283,   
+    5,  
+    NULL,
+    NULL,
+    NULL ,
+    NULL,NULL, /* *args, callback */
+    20,6,22,1,1,1,0
+//     line width,offset (not used),scroll width,highlight item(not used)
+//     border on/off,bkgr on/off,hide on/off
+//     uses Gclr items: msg_fill,msg_char,msg_bodr,scroll_fill,scroll_dim,scroll_vbright)
+  };
+  strcpy(s4.Wid,(char *)"Info");
+  s4.item = -1;
+  dtmp = D->d;
+  i=0;
+  if(dtmp!= NULL) while(dtmp[i].t!=NULL)i++;
+  dtmp = (DIA *)realloc(dtmp,sizeof(DIA )*(i+6));
+  d =dtmp+i; 
+  d[5].t=NULL;
+  d[0].t = (DIT *)malloc(sizeof(DIW));
+  *d[0].w = w0;
+  d[0].w->item = -1;
+  d[1].t = (DIT *)malloc(sizeof(DIN));
+  *d[1].N = b1;
+  d[1].N->item = -1;
+  GetFontbutton1init(d[1].N,pt) ;
+  d[2].t = (DIT *)malloc(sizeof(DIL));
+  *d[2].h = h2;
+  d[2].h->item = -1;
+  GetFontsplbutton1init(d[2].h,pt) ;
+  d[3].t = (DIT *)malloc(sizeof(DIM));
+  *d[3].m = m3;
+  d[3].m->item = -1;
+  d[4].t = (DIT *)malloc(sizeof(DIS));
+  *d[4].s = s4;
+  d[4].s->item = -1;
+  GetFontbrowser2init(d[4].s,pt) ;
+  d[5].t = NULL;
+  GrpId=kgOpenGrp(D);
+  D->d = dtmp;
+  j=0;
+  while(d[j].t!=NULL){ kgAddtoGrp(D,GrpId,(void *)(d[j].t));j++;}
+  return GrpId;
+} 
+
+/* One can also use the following code to add Widgets to an existing Dialog */
+
+int MakeGetFontGroup(DIALOG *D,void *arg) {
+   int GrpId;
+   WIDGETGRP *Gpt;
+/*************************************************
+
+    Browser1  1 data value
+
+*************************************************/
+   int  *v0 ;
+   v0 = (int *)malloc(sizeof(int));
+   *v0 = 1;
+   void** v=(void **)malloc(sizeof(void*)*2);
+   v[1]=NULL;
+   v[0]=(void *)(v0);
+   void *pt=NULL; /* pointer to send any extra information */
+                  /* it will be aviilable in Callbacks */
+   GrpId = GetFontGroup(D,v,pt);
+   Gpt = kgGetWidgetGrp(D,GrpId);
+   Gpt->arg= v; // kulina will double free this; you may modify
+   return GrpId;
+}
+
+int GetFont( void *parent,void **v,void *pt) {
+  int ret=1,GrpId,k;
+  DIALOG D;
+  DIA *d=NULL;
+  D.VerId=2107030000;
+  kgInitUi(&D);
+  D.d=NULL;
+#if 1
+  GrpId = GetFontGroup(&D,v,pt);
+#else 
+  GrpId = MakeGetFontGroup(&D,pt); // can try this also
+#endif 
+  d = D.d;
+  D.d = d;
+  D.bkup = 1; /* set to 1 for backup */
+  D.bor_type = 4;
+  D.df = 4;
+  D.tw = 4;
+  D.bw = 4;
+  D.lw = 4;
+  D.rw = 4;
+  D.xo = 858;   /* Position of Dialog */ 
+  D.yo = 254;
+  D.xl = 392;    /*  Length of Dialog */
+  D.yl = 337;    /*  Width  of Dialog */
+  D.Initfun = GetFontinit;    /*   init fuction for Dialog */
+  D.Cleanupfun = GetFontcleanup;    /*   init fuction for Dialog */
+  D.kbattn = 0;    /*  1 for drawing keyborad attention */
+  D.butattn = 0;    /*  1 for drawing button attention */
+  D.fullscreen = 0;    /*  1 for for fullscreen mode */
+  D.NoTabProcess = 0;    /*  1 for disabling Tab use */
+  D.Deco = 1;    /*  1 for Window Decorration */
+  D.transparency = 0.000000;    /*  float 1.0 for full transparency */
+  D.Newwin = 1;    /*  1 for new window not yet implemented */
+  D.DrawBkgr = 1;    /*  1 for drawing background */
+  D.Bkpixmap = NULL;    /*  background image */
+  D.Sticky = 0;    /*  1 for stickyness */
+  D.Resize = 0;    /*  1 for Resize option */
+  D.MinWidth = 100;    /*   for Resize option */
+  D.MinHeight = 100;    /*   for Resize option */
+#if 1 
+  D.Callback = GetFontCallBack;    /*  default callback */
+#else 
+  D.Callback = NULL;    
+#endif
+  D.ResizeCallback = GetFontResizeCallBack;  /*  Resize callback */
+#if 0 
+  D.WaitCallback = NULL;  /*  Wait callback */
+#else 
+  D.WaitCallback = GetFontWaitCallBack;  /*  Wait callback */
+#endif
+  D.Fixpos = 1;    /*  1 for Fixing Position */
+  D.NoTaskBar = 0;    /*  1 for not showing in task bar*/
+  D.NoWinMngr = 0;    /*  1 for no Window Manager*/
+  D.StackPos = 0;    /* -1,0,1 for for Stack Position -1:below 0:normal 1:above*/
+  D.Shapexpm = NULL;    /*  PNG/jpeg file for window shape;Black color will not be drawn */
+  D.parent = parent;    /*  1 for not showing in task bar*/
+  D.pt = pt;    /*  any data to be passed by user*/
+//  strcpy(D.name,"Kulina Designer ver 2.0");    /*  Dialog name you may change */
+  if(D.fullscreen!=1) {    /*  if not fullscreen mode */
+     int xres,yres; 
+     kgDisplaySize(&xres,&yres); 
+      // D.xo=D.yo=0; D.xl = xres-10; D.yl=yres-80;
+  }
+  else {    // for fullscreen
+     int xres,yres; 
+     kgDisplaySize(&xres,&yres); 
+     D.xo=D.yo=0; D.xl = xres; D.yl=yres;
+//     D.StackPos = 1; // you may need it
+  }    /*  end of fullscreen mode */
+  ModifyGetFont(&D,GrpId);    /*  add extras to  gui*/
+  ModifyGetFontGc(&D);    /*  set colors for gui if do not like default*/
+  ret= kgUi(&D);
+  kgCleanUi(&D);
+  return ret;
+}
+void *kgGetFreeTypeFont(void *parent ,void *args) {
+/*************************************************
+
+    Browser1  1 data value
+
+*************************************************/
+   int   v0 = 1;
+   void* v[1];
+   v[0]=(void *)(&v0);
+   void *pt[2]={NULL,NULL}; /* pointer to send any extra information */
+                  /* it will be aviilable in Callbacks */
+   pt[0]=args;
+   GetFont(parent,v,(void *)pt );
+   return pt[1];
+}
+/* END OF kgGetFreeTypeFont */

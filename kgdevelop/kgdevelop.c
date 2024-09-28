@@ -1396,7 +1396,9 @@
    gc->FontSize =8;
    gc->Font=23;
 */
-      gc->FontSize = 9;
+      gc->GuiFontSize = 9;
+      gc->ButtonFont =40;
+      gc->MsgFont  =40;
   }
   int makeguidiaGroup ( DIALOG *D , void **v , void *pt ) {
       int GrpId = 0 , oitems = 0 , i , j;
@@ -1579,7 +1581,7 @@
 //     D.StackPos = 1; // you may need it
       } /* end of fullscreen mode */
 //  kgColorTheme(&D,210,210,210);    /*  set colors for gui*/
-//  ModifymakeguidiaGc(&(D.gc));    /*  set colors for gui*/
+      ModifymakeguidiaGc(&(D.gc));    /*  set colors for gui*/
       ret = kgUi ( & D ) ;
       kgCleanUi ( & D ) ;
       return ret;

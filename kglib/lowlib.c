@@ -487,6 +487,44 @@ static char *OthFonts []= {
           i++;
       }
   }
+  char **kgGetFontList(void) {
+     char **Fonts,*pt,*spt;
+     int count,i;
+     char Buff[500];
+     if(FontList == NULL) return NULL;
+     count = Dcount(FontList);
+     Fonts= (char **)malloc(sizeof(char *)*(count+1));
+     Fonts[count]=NULL;
+     i=0;
+     Resetlink(FontList);
+     while ((pt=(char *)Getrecord(FontList)) != NULL) {     
+       sprintf(Buff,"!f%-2.2d %4d %s",i,i,pt);
+       spt = (char *)malloc(strlen(Buff)+1);
+       strcpy(spt,Buff);
+       Fonts[i]= spt;
+       i++;
+     }
+     return Fonts;
+  }
+  char **kgGetMonoList(void) {
+     char **Fonts,*pt,*spt;
+     int count,i;
+     char Buff[500];
+     if(MonoList == NULL) return NULL;
+     count = Dcount(MonoList);
+     Fonts= (char **)malloc(sizeof(char *)*(count+1));
+     Fonts[count]=NULL;
+     i=0;
+     Resetlink(MonoList);
+     while ((pt=(char *)Getrecord(MonoList)) != NULL) {     
+       sprintf(Buff,"%4d !f%-2.2d%s",i,i,pt);
+       spt = (char *)malloc(strlen(Buff)+1);
+       strcpy(spt,Buff);
+       Fonts[i]= spt;
+       i++;
+     }
+     return Fonts;
+  }
   int uiInitFontLists ( void *Tmp) {
 
       DIALOG *D= (DIALOG *)Tmp;
@@ -6309,7 +6347,7 @@ void transch(int c) {
           ln1 = IMG->xln+1;
           img = IMG->img;
           if ( img != NULL ) {
-              kgAddImages ( imgbk , img , x1 ,height/2 -  FontSize-1 ) ;
+              kgAddImages ( imgbk , img , x1 ,(int)(height/2 - 0.9* FontSize+0.5) ) ;
               uiFreeImage ( img ) ;
               free ( IMG ) ;
           }
@@ -6680,7 +6718,7 @@ void transch(int c) {
          gimg =(GMIMG *)(IMG->img);
          w = gimg->image_width;
          h = gimg->image_height;
-      if( (w > ln-FontSize)|| (h>height-2)) {
+      if( (w > ln-FontSize)|| (h>height)) {
          float fac;
          if( h> height) h= height;
          if(w>(ln-FontSize))w = ln-FontSize;
@@ -6699,7 +6737,7 @@ void transch(int c) {
       if ( F.name != NULL ) free ( F.name ) ;
       if ( img != NULL ) {
           if ( imgbk != NULL ) {
-              if(old)kgAddImages ( imgbk , img , x1 , height/2-FontSize*1.2) ;
+              if(old)kgAddImages ( imgbk , img , x1 , height/2-FontSize*1.5) ;
               else kgAddImages ( imgbk , img , x1 , 0) ; 
               kgImage ( D , imgbk , x , y , ln , height , 0.0 , 1.0 ) ;
               uiFreeImage ( imgbk ) ;
@@ -11318,7 +11356,7 @@ void transch(int c) {
       y1+= yoff;
       y2-= yoff;
 #else 
-      yoff = w->width*0.5;
+      yoff = w->width*0.5-1;
       y1 = ( w->y1+w->y2 ) *0.5+D->yo-yoff;
       y2 = ( w->y1+w->y2 ) *0.5+D->yo+yoff;
 #endif
@@ -11331,7 +11369,7 @@ void transch(int c) {
       img = w->imgs [ * ( w->df ) -1 ] ;
 //  uiMenustr(D,x1+4,y2+5,br->menu[br->df-1],D->gc.menu_char);
 #if 1
-      uiString ( D , menu , x1+5 , y1 , ln , w->width , D->gc.MenuFont , D->gc.menu_char , D->gc.FontSize , -1 , -1 ) ;
+      uiString ( D , menu , x1+5 , y1-1 , ln , w->width-2 , D->gc.MenuFont , D->gc.menu_char , D->gc.FontSize , -1 , -1 ) ;
           
 //  kgImage(D,img,x1+5,y1,ln,w->width,0.0,1.0);
 #endif
@@ -15070,7 +15108,7 @@ void *uiMakeTableCellImage(DIT *T,int cell,int drcur) {
       int rd , gr , bl;
       float th , tw , tg , xx , yy;
       int tfill , tclr;
-      char Buf [ 500 ] , stmp [ 10 ] ;
+      char Buf [ 2000 ] , stmp [ 10 ] ;
       void *fid , *img , *img2;
       float curpos;
       int ylng;
@@ -15160,7 +15198,7 @@ void *uiMakeTableCellImage(DIT *T,int cell,int drcur) {
       float th , tw , tg , xx , yy;
       int tfill , tclr;
       int rd , gr , bl;
-      char Buf [ 500 ] , stmp [ 10 ] ;
+      char Buf [ 2000 ] , stmp [ 10 ] ;
       void *fid , *img , *img2;
       float curpos;
       int ylng;
@@ -18482,7 +18520,7 @@ void *uiMakeTableCellImage(DIT *T,int cell,int drcur) {
       int j , item , ret = 0 , xoffset , yoffset , hitem;
       int k , kk , knew , jj , ixmid;
       int n , iyp , ixp , ix;
-      int xx , yy , h , w , sy , sy2 , smax , ln;
+      int xx , yy , h , w , sy , sy2 , smax , ln,sh;
       float fac;
       double df , iy;
       kgWC *wc;
@@ -18495,10 +18533,21 @@ void *uiMakeTableCellImage(DIT *T,int cell,int drcur) {
       if ( y->ds > 100 ) y->ds = 100;
       if ( y->df > ( 100-y->ds ) ) y->df = ( 100-y->ds ) ;
       sy = y->df*ln/100.0+0.5;
+      fac = ln*y->ds/100.0;
+      sh = fac+0.5;
+      if ( (ln>MINV)&&(sh < MINV )) sh = MINV;
+      ln = ln -sh;
+      sy = y->df*ln/100.0+0.5;
+//      sy = scr_ln* ( ( y->df ) ) /100;
+//      if ( ( sy+sh ) > h ) sy = h-sh;
       sy2 = ( y->df+y->ds ) * ( ln ) /100.0+0.5;
+      sy2 = sy+sh;
+      if(sy2 > y->rsy2) sy2 = y->rsy2; 
+      sy = sy2 - sh;
       smax = ( 100-y->ds ) * ( ln ) /100.0+0.5;
       if ( smax < 0 ) smax = 0;
       item = _uiGetSItem ( kbe , y->rsx1 , y->rsy1+sy , y->rsx2 , y->rsy1+sy2 ) ;
+//      printf ("tcb: ITEM = %d\n",item);
       if ( item ) {
           _ui_process_v_move ( y , kbe ) ;
           return -1;
@@ -18539,9 +18588,11 @@ void *uiMakeTableCellImage(DIT *T,int cell,int drcur) {
               else {
                   item = _uiGetSItem ( kbe , y->bbx1 , y->bby1 , y->bbx2 , y->bby2 ) ;
                   if ( item ) {
-                      if ( y->df >= ( 100 -y->ds ) ) return -1;
+//                      if ( y->df >= ( 100 -y->ds ) ) return -1;
+                        if (y->df >= 100 ) {y->df=100.0; return -1;}
                       y->df += y->mvmt;
-                      if ( y->df > ( 100 -y->ds ) ) y->df = ( 100 -y->ds ) ;
+//                      if ( y->df > ( 100 -y->ds ) ) y->df = ( 100 -y->ds ) ;
+                      if( y->df > 100 ) y->df = 100.0; 
                       _uiMoveVVertPointer ( y ) ;
                       uiUpdateOn ( y->D ) ;
                       if ( y->Update != NULL ) y->Update ( y->df , y->item , D ) ;
@@ -18561,7 +18612,7 @@ void *uiMakeTableCellImage(DIT *T,int cell,int drcur) {
       int j , item , ret = 0 , df , hitem , count;
       int k , kk , knew , jj , ixmid;
       int n , yp , ixp;
-      int xx , yy , h , w , sy , sy2 , smax , ln;
+      int xx , yy , h , w , sy , sy2 , smax , ln,sh;
       float fac , iy;
       kgWC *wc;
       int evnt = 0;
@@ -18570,19 +18621,27 @@ void *uiMakeTableCellImage(DIT *T,int cell,int drcur) {
       wc = WC ( y->D ) ;
       uiBkup_clip_limits ( wc ) ;
       uiSet_full_scrn ( wc ) ;
-      ln = ( y->rsy2-y->rsy1 ) ;
       if ( y->ds > 100 ) y->ds = 100;
-      if ( y->df > ( 100-y->ds ) ) y->df = ( 100-y->ds ) ;
+      ln = ( y->rsy2-y->rsy1 ) ;
+      fac = ln*y->ds/100.0;
+      sh = fac+0.5;
+      if ( sh < MINV ) sh = MINV;
+      ln = ln -sh;
+//      if ( y->df > ( 100-y->ds ) ) y->df = ( 100-y->ds ) ;
+      if( y->df > 100) y->df =100;
+//      sy = y->df*ln/100.0+0.5;
+//      sy2 = ( y->df+y->ds ) * ( ln ) /100.0+0.5;
       sy = y->df*ln/100.0+0.5;
-      sy2 = ( y->df+y->ds ) * ( ln ) /100.0+0.5;
+      sy2 = sy+sh;
+      if(sy2 > y->rsy2) sy2 = y->rsy2; 
+      sy = sy2 - sh;
       smax = ( 100-y->ds ) * ( ln ) /100.0+0.5;
       if ( smax < 0 ) smax = 0;
       item = 1;
-      {
           item = _uiGetSItem ( kbe , y->rsx1 , y->rsy1+sy , y->rsx2 , y->rsy1+sy2 ) ;
           if ( item ) {
               do {
-#if 1
+#if 0
                   iy = kbe.y - y->rsy1;
                   iy = 100*iy/ ( ln ) ;
                   if ( iy < 0 ) iy = 0;
@@ -18600,15 +18659,18 @@ void *uiMakeTableCellImage(DIT *T,int cell,int drcur) {
                   while ( ( ( evnt = kgCheckEvent ( y->D , & kb ) ) != 0 ) && \
                    ( kb.event == 3 ) ) {
                       count++;
-                      kbe = kb;
+                      if(evnt != 0) kbe = kb;
                       if ( count == 50 ) break;
+//                      if(evnt != 0)printf("TCB:Got Event 3: %d\n",count);
                   }
                   if ( evnt ) kbe = kb;
-#if 0
+//                  printf("TCB: Event: %d\n",kb.event);
+#if 1
                   iy = kbe.y - y->rsy1;
-                  iy = 100*iy/ ( ln ) ;
+                  iy = ((100.0*iy)/ ( ln ) );
                   if ( iy < 0 ) iy = 0;
-                  if ( iy > ( 100-y->ds ) ) iy = 100-y->ds+0.00001;
+//                  if ( iy > ( 100-y->ds ) ) iy = 100-y->ds+0.00001;
+                  if(iy>100.0) iy =100.0;
                   if ( iy != y->df ) {
                       y->df = iy;
                       _uiMoveVVertPointer ( y ) ;
@@ -18620,7 +18682,6 @@ void *uiMakeTableCellImage(DIT *T,int cell,int drcur) {
 #endif
               } while ( ( kbe ) .event != 2 ) ;
           }
-      }
       uiRest_clip_limits ( wc ) ;
       return ( ret ) ;
   }
@@ -20752,8 +20813,8 @@ void *uiMakeTableCellImage(DIT *T,int cell,int drcur) {
           ixp = br->x1+xoffset+xi* ( y->width ) +br->width*0.5;
           iyp = br->y1+yoffset+yi*br->width+br->width*0.5;
           if ( ( list != NULL ) && ( list [ kk+pos ] != NULL ) ) {
-#if 0
-              uiString ( D , list [ kk+pos ] , ( int ) ixp+xoff*y->width , ( int ) iyp , bxln , y->width , D->gc.MsgFont , D->gc.info_char , D->gc.FontSize , -1 , -1 ) ;
+#if 1
+              uiString ( D , list [ kk+pos ] , ( int ) ixp+xoff*y->width , ( int ) iyp , bxln , y->width , D->gc.MsgFont , br->MS.char_clr , D->gc.FontSize , -1 , -1 ) ;
                   
 #else
 	    //TCB NEW
@@ -21280,7 +21341,7 @@ void *uiMakeTableCellImage(DIT *T,int cell,int drcur) {
       x1 = x+1; y1 = y; x2 = x1+w; y2 = y+h;
       _dvrect_fill ( WC ( D ) , x1 , y1 , x2 , y2 , D->gc.scroll_dim ) ;
       sy = y1+sy;
-      if ( sy > y2 ) sy = y2-sh;
+      if ( sy > y2-sh ) sy = y2-sh;
       if ( sy+sh > y2 ) sy = y2- sh;
       uiset_clr ( D , D->gc.scroll_vbright ) ;
       _dvrect_fill ( WC ( D ) , x1 , sy , x2 , sy+sh , D->gc.scroll_fill ) ;
@@ -21373,6 +21434,7 @@ void *uiMakeTableCellImage(DIT *T,int cell,int drcur) {
       fac = scr_ln*y->ds/100.0;
       sh = fac+0.5;
       if ( sh < MINV ) sh = MINV;
+      scr_ln = h - sh;
       sy = scr_ln* ( ( y->df ) ) /100;
       if ( ( sy+sh ) > h ) sy = h-sh;
       _dvmove_vert_pointer ( D , xx , yy , w , h , sy , sh ) ;

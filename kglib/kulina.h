@@ -1428,6 +1428,7 @@ int  kgQstMenu(void *parent,int x,int y,char *qry,int df);
 int kgFolderBrowser( void *parent,int x0,int y0,char *flname,char *fltr);
 int kgFileBrowser(void *parent,int x0,int y0,  char *v0, char *v1 );
 int kgGetFont(void *parent,int xo,int yo);
+void * kgGetFreeTypeFont(void *parent,void *Font);
 int kgGetColor(void *parent,int xo,int yo,int *r,int *g,int *b);
 /* 
   utilities 
@@ -1439,7 +1440,7 @@ char *kgWhich(char *pgr);
  char *kgWhichFont ( char *pgr );
 int kgAddFixedFont(char *);
 int kgAddFont(char *);
-char **kgGetFixedFontList();
+char **kgGetMonoList();
 char **kgGetFontList();
 char *kgGetMonoFont(int);
 char *kgGetOthFont(int);
