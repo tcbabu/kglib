@@ -1,3 +1,6 @@
+(kglib/kgdevelop need a better dodument, which is pending for a long time, not sure
+whether i will ever complete that. However there is a demo program attached, which may be of some help,
+pl try that.)
 This is a 64bit binary distribution of 'kgdevelop' and  Kulina
 Graphics library 'kglib' and its Open Source dependencies(libgm.a) like
 GraphicsMagick, libpng,libjpeg etc. So all the dependencies other than
