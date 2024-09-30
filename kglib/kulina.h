@@ -1439,6 +1439,7 @@ void kgCheckAndRemoveParent(char *dir);
 char *kgWhich(char *pgr);
  char *kgWhichFont ( char *pgr );
 int kgAddFixedFont(char *);
+int kgCheckFont(char *);
 int kgAddFont(char *);
 char **kgGetMonoList();
 char **kgGetFontList();

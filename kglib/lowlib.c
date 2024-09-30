@@ -384,6 +384,19 @@ static char *OthFonts []= {
 //      printf ( "res: %s\n" , res ) ;
       return res;
   }
+  int kgCheckFont ( char *Font ) {
+      int ret = -1,i=0;
+      char BaseName[300];
+      char *Fn = NULL;
+      kgExtractBaseName(Font,BaseName);
+      if ( FontList == NULL ) return -1; ;
+      Resetlink(FontList);
+      while ( (Fn= (char *)Getrecord(FontList))!= NULL) {
+         if(strstr(Fn,BaseName) != NULL) return i;
+         i++;
+      }
+      return -1;
+  }
   int kgAddFont ( char *Font ) {
       int ret = -1;
       char *Fn = NULL;
@@ -15882,14 +15895,19 @@ void *uiMakeTableCellImage(DIT *T,int cell,int drcur) {
       tx->width = T->width;
       if ( 2*T->FontSize > T->width ) T->FontSize = T->width/2;
       Fz = T->FontSize;
-      if ( MonoList == NULL ) {
+     if ( MonoList == NULL ) {
           uiAddFixedFonts ( ) ;
       }
-      Fcount = Dcount ( MonoList ) ;
+     if ( FontList == NULL ) {
+          uiAddFonts ( ) ;
+      }
+ //     Fcount = Dcount ( MonoList ) ;
+      Fcount = Dcount ( FontList ) ;
       if ( Fcount > 0 ) {
           if ( Fcount == 1 ) T->Font = 0;
           else T->Font = T->Font%Fcount;
-          strcpy ( FontFile , ( char * ) Drecord ( MonoList , T->Font ) ) ;
+ //         strcpy ( FontFile , ( char * ) Drecord ( MonoList , T->Font ) ) ;
+          strcpy ( FontFile , ( char * ) Drecord ( FontList , T->Font ) ) ;
           if ( tx->F.Imgs == NULL ) tx->F.Imgs = ( void * ) kgFixedFontChars \
            ( FontFile , T->FontSize ) ;
           else if ( ( T->Font != tx->F.fontno ) || ( T->FontSize != tx->F.Size ) ) {
@@ -15897,7 +15915,8 @@ void *uiMakeTableCellImage(DIT *T,int cell,int drcur) {
               tx->F.Imgs = ( void * ) kgFixedFontChars ( FontFile , T->FontSize ) ;
           }
           tx->F.code = 't';
-          tx->F.name = ( char * ) Drecord ( MonoList , T->Font ) ;
+//          tx->F.name = ( char * ) Drecord ( MonoList , T->Font ) ;
+            tx->F.name = ( char * ) Drecord ( FontList , T->Font ) ;
       }
       else {tx->F.code = 'i';tx->F.name = NULL;}
       tx->F.fontno = T->Font;
