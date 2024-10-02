@@ -1452,6 +1452,7 @@ char *kgMakeTmpDir(void);
 char **kgFontNames(void);
 char **kgFileMenu( char *dir,char *filter);
 char ** kgFolderMenu(char *d_name);
+char ** kgFolderTree(char *folder);
 void kgFreeFontNames(char **pt);
 int RGBtoHSV(float r,float g,float b,float *h,float *s,float *v);
 int HSVtoRGB(float *r,float *g,float *b,float h,float s,float v);
