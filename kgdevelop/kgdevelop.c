@@ -177,6 +177,7 @@
   }
   void * GetClickedWidget ( int x , int y ) {
       int ret = -1;
+      int count=0;
       DIT *t;
       Dlink *L;
       DIA *d;
@@ -187,7 +188,10 @@
       int yo ;
       yo = Evgay - D->yo;
       i = 0;
-      while ( ( t = d [ i ] .t ) != NULL ) {
+      while ( ( t = d [ i ] .t ) != NULL ) {i++;count++;}
+      i = count-1;
+      while ( i >= 0 ) {
+          t = d [ i ] .t;
           x1 = D->xo+t->x1;
           x2 = D->xo+t->x2;
           y1 = yo+ ( Evgay-t->y1 ) ;
@@ -197,7 +201,7 @@
 //      printf("(%d:%d %d:%d) \n",t->x1,t->y1,t->x2,t->y2);
 //      printf("(%d:%d %d:%d) %d %d\n",x1,y1,x2,y2,x,y);
           if ( ( xl > 0 ) && ( yl > 0 ) ) return t;
-          i++;
+          i--;
       }
       return NULL;
   }
