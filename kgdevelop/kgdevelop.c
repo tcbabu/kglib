@@ -4260,7 +4260,7 @@
       fprintf ( fp , "  DIALOG *D;DIT *T;T_ELMT *e; \n" ) ;
       fprintf ( fp , "  int ret=1;\n" ) ;
       fprintf ( fp , "  void **pt= (void **)kgGetArgPointer(Tmp); // Change as required\n" ) ;
-          
+      fprintf ( fp ,"// pt[0] is args passed as inputs; pt[1] is output pointer\n");    
       fprintf ( fp , "  D = (DIALOG *)Tmp;\n" ) ;
       fprintf ( fp , "  T = (DIT *)kgGetWidget(Tmp,i);\n" ) ;
       fprintf ( fp , "  e = T->elmt;\n" ) ;
@@ -4285,6 +4285,7 @@
       fprintf ( fp , "   *************************************************/ \n" ) ;
       fprintf ( fp , "  DIALOG *D;DIT *T;T_ELMT *e; \n" ) ;
       fprintf ( fp , "  void **pt= (void **)kgGetArgPointer(Tmp); // Change as required\n" ) ;
+      fprintf ( fp ,"// pt[0] is args passed as inputs; pt[1] is output pointer\n");    
           
       fprintf ( fp , "  int ret=1;\n" ) ;
       fprintf ( fp , "  D = (DIALOG *)Tmp;\n" ) ;
@@ -4307,6 +4308,7 @@
       fprintf ( fp , "  DIALOG *D;DIX *X; \n" ) ;
       fprintf ( fp , "  int ret=1; \n" ) ;
       fprintf ( fp , "  void **pt= (void **)kgGetArgPointer(Tmp); // Change as required\n" ) ;
+      fprintf ( fp ,"// pt[0] is args passed as inputs; pt[1] is output pointer\n");    
           
       fprintf ( fp , "  D = (DIALOG *)Tmp;\n" ) ;
       fprintf ( fp , "  X = (DIX *)kgGetWidget(Tmp,i);\n" ) ;
@@ -4340,6 +4342,7 @@
       fprintf ( fp , "   ***********************************/ \n" ) ;
       fprintf ( fp , "  int ret=1; \n" ) ;
       fprintf ( fp , "  void **pt= (void **)kgGetArgPointer(Tmp); // Change as required\n" ) ;
+      fprintf ( fp ,"// pt[0] is args passed as inputs; pt[1] is output pointer\n");    
           
       fprintf ( fp , "  D = (DIALOG *)Tmp;\n" ) ;
       fprintf ( fp , "  Y = (DIY *)kgGetWidget(Tmp,i);\n" ) ;
@@ -4373,6 +4376,7 @@
       fprintf ( fp , "   ***********************************/ \n" ) ;
       fprintf ( fp , "  DIRA *R;DIALOG *D; \n" ) ;
       fprintf ( fp , "  void **pt= (void **)kgGetArgPointer(Tmp); // Change as required\n" ) ;
+      fprintf ( fp ,"// pt[0] is args passed as inputs; pt[1] is output pointer\n");    
           
       fprintf ( fp , "  ThumbNail **th; \n" ) ;
       fprintf ( fp , "  int ret=1; \n" ) ;
@@ -4402,6 +4406,7 @@
       fprintf ( fp , "   ***********************************/ \n" ) ;
       fprintf ( fp , "  DICH *C;DIALOG *D; \n" ) ;
       fprintf ( fp , "  void **pt= (void **)kgGetArgPointer(Tmp); // Change as required\n" ) ;
+      fprintf ( fp ,"// pt[0] is args passed as inputs; pt[1] is output pointer\n");    
           
       fprintf ( fp , "  ThumbNail **th; \n" ) ;
       fprintf ( fp , "  int ret=1; \n" ) ;
@@ -4427,6 +4432,7 @@
       fprintf ( fp , "  DIALOG *D;DIBN *B; \n" ) ;
       fprintf ( fp , "  int n,ret =0; \n" ) ;
       fprintf ( fp , "  void **pt= (void **)kgGetArgPointer(Tmp); // Change as required\n" ) ;
+      fprintf ( fp ,"// pt[0] is args passed as inputs; pt[1] is output pointer\n");    
           
       fprintf ( fp , "  D = (DIALOG *)Tmp;\n" ) ;
       fprintf ( fp , "  B = (DIBN *)kgGetWidget(Tmp,i);\n" ) ;
@@ -4443,6 +4449,9 @@
       fprintf ( fp , "void  %-sbutton%-dinit(DIBN *B,void *ptmp) {\n" , dianame , count ) ;
           
       fprintf ( fp , " void **pt=(void **)ptmp; //pt[0] is arg \n" ) ;
+      fprintf (fp,"// may use kgChangeButtonNormalImage etc...\n");
+      fprintf ( fp," BUT_STR *buts;\n");
+      fprintf (fp ," buts = (BUT_STR *) (B->buts);\n");
       fprintf ( fp , "}\n" ) ;
   }
   void WriteButnBoxCallback ( int count , int nb , FILE *fp , char *dianame ) {
@@ -4459,6 +4468,7 @@
       fprintf ( fp , "  DIALOG *D;DIB *B; \n" ) ;
       fprintf ( fp , "  int n,ret =0; \n" ) ;
       fprintf ( fp , "  void **pt= (void **)kgGetArgPointer(Tmp); // Change as required\n" ) ;
+      fprintf ( fp ,"// pt[0] is args passed as inputs; pt[1] is output pointer\n");    
           
       fprintf ( fp , "  D = (DIALOG *)Tmp;\n" ) ;
       fprintf ( fp , "  B = (DIB *)kgGetWidget(Tmp,i);\n" ) ;
@@ -4475,6 +4485,9 @@
       fprintf ( fp , "void  %-sbutton%-dinit(DIB *B,void *ptmp) {\n" , dianame , count ) ;
           
       fprintf ( fp , " void **pt=(void **)ptmp; //pt[0] is arg \n" ) ;
+      fprintf (fp,"// may use kgChangeButtonNormalImage etc...\n");
+      fprintf ( fp," BUT_STR *buts;\n");
+      fprintf (fp ," buts = (BUT_STR *) (B->buts);\n");
       fprintf ( fp , "}\n" ) ;
   }
   void WriteButnBoxnCallback ( int count , int nb , FILE *fp , char *dianame ) {
@@ -4491,6 +4504,7 @@
       fprintf ( fp , "  DIALOG *D;DIN *B; \n" ) ;
       fprintf ( fp , "  int n,ret =0; \n" ) ;
       fprintf ( fp , "  void **pt= (void **)kgGetArgPointer(Tmp); // Change as required\n" ) ;
+      fprintf ( fp ,"// pt[0] is args passed as inputs; pt[1] is output pointer\n");    
           
       fprintf ( fp , "  D = (DIALOG *)Tmp;\n" ) ;
       fprintf ( fp , "  B = (DIN *)kgGetWidget(Tmp,i);\n" ) ;
@@ -4507,6 +4521,9 @@
       fprintf ( fp , "void  %-sbutton%-dinit(DIN *B,void *ptmp) {\n" , dianame , count ) ;
           
       fprintf ( fp , " void **pt=(void **)ptmp; //pt[0] is arg \n" ) ;
+      fprintf (fp,"// may use kgChangeButtonNormalImage etc...\n");
+      fprintf ( fp," BUT_STR *buts;\n");
+      fprintf (fp ," buts = (BUT_STR *) (B->buts);\n");
       fprintf ( fp , "}\n" ) ;
   }
   void WriteHoriBarCallback ( int count , int nb , FILE *fp , char *dianame ) {
@@ -4523,6 +4540,7 @@
       fprintf ( fp , "  DIALOG *D;DIL *B; \n" ) ;
       fprintf ( fp , "  int n,ret=1; \n" ) ;
       fprintf ( fp , "  void **pt= (void **)kgGetArgPointer(Tmp); // Change as required\n" ) ;
+      fprintf ( fp ,"// pt[0] is args passed as inputs; pt[1] is output pointer\n");    
           
       fprintf ( fp , "  D = (DIALOG *)Tmp;\n" ) ;
       fprintf ( fp , "  B = (DIL *) kgGetWidget(Tmp,i);\n" ) ;
@@ -4539,6 +4557,9 @@
       fprintf ( fp , "void  %-ssplbutton%-dinit(DIL *B,void *ptmp) {\n" , dianame , count ) ;
           
       fprintf ( fp , " void **pt=(void **)ptmp; //pt[0] is arg \n" ) ;
+      fprintf (fp,"// may use kgChangeButtonNormalImage etc...\n");
+      fprintf ( fp," BUT_STR *buts;\n");
+      fprintf (fp ," buts = (BUT_STR *) (B->buts);\n");
       fprintf ( fp , "}\n" ) ;
   }
   void WriteHoriBarNewCallback ( int count , int nb , FILE *fp , char *dianame ) \
@@ -4556,6 +4577,7 @@
       fprintf ( fp , "  DIALOG *D;DILN *B; \n" ) ;
       fprintf ( fp , "  int n,ret=1; \n" ) ;
       fprintf ( fp , "  void **pt= (void **)kgGetArgPointer(Tmp); // Change as required\n" ) ;
+      fprintf ( fp ,"// pt[0] is args passed as inputs; pt[1] is output pointer\n");    
           
       fprintf ( fp , "  D = (DIALOG *)Tmp;\n" ) ;
       fprintf ( fp , "  B = (DILN *) kgGetWidget(Tmp,i);\n" ) ;
@@ -4572,6 +4594,9 @@
       fprintf ( fp , "void  %-shbutton%-dinit(DILN *H,void *ptmp) {\n" , dianame , count ) ;
           
       fprintf ( fp , " void **pt=(void **)ptmp; //pt[0] is arg \n" ) ;
+      fprintf (fp,"// may use kgChangeButtonNormalImage etc...\n");
+      fprintf ( fp," BUT_STR *buts;\n");
+      fprintf (fp ," buts = (BUT_STR *) (B->buts);\n");
       fprintf ( fp , "}\n" ) ;
   }
   void WriteBrowserCallback ( int count , FILE *fp , char *dianame ) {
@@ -4588,6 +4613,7 @@
       fprintf ( fp , "  DIALOG *D;DIW *B; \n" ) ;
       fprintf ( fp , "  int ret=1; \n" ) ;
       fprintf ( fp , "  void **pt= (void **)kgGetArgPointer(Tmp); // Change as required\n" ) ;
+      fprintf ( fp ,"// pt[0] is args passed as inputs; pt[1] is output pointer\n");    
           
       fprintf ( fp , "  D = (DIALOG *)Tmp;\n" ) ;
       fprintf ( fp , "  B = (DIW *) kgGetWidget(Tmp,i);\n" ) ;
@@ -4611,6 +4637,7 @@
       fprintf ( fp , "  DIALOG *D;DIE *E; \n" ) ;
       fprintf ( fp , "  int ret=1; \n" ) ;
       fprintf ( fp , "  void **pt= (void **)kgGetArgPointer(Tmp); // Change as required\n" ) ;
+      fprintf ( fp ,"// pt[0] is args passed as inputs; pt[1] is output pointer\n");    
           
       fprintf ( fp , "  D = (DIALOG *)Tmp;\n" ) ;
       fprintf ( fp , "  E = (DIE *)kgGetWidget(Tmp,i);\n" ) ;
@@ -4649,6 +4676,7 @@
       fprintf ( fp , "  DIALOG *D;DID *SD; \n" ) ;
       fprintf ( fp , "  int ret=1; \n" ) ;
       fprintf ( fp , "  void **pt= (void **)kgGetArgPointer(Tmp); // Change as required\n" ) ;
+      fprintf ( fp ,"// pt[0] is args passed as inputs; pt[1] is output pointer\n");    
           
       fprintf ( fp , "  D = (DIALOG *)Tmp;\n" ) ;
       fprintf ( fp , "  SD = (DID *) kgGetWidget(Tmp,i);\n" ) ;
@@ -4669,6 +4697,7 @@
       fprintf ( fp , "  DIALOG *D;DIHB *SD; \n" ) ;
       fprintf ( fp , "  int ret=1; \n" ) ;
       fprintf ( fp , "  void **pt= (void **)kgGetArgPointer(Tmp); // Change as required\n" ) ;
+      fprintf ( fp ,"// pt[0] is args passed as inputs; pt[1] is output pointer\n");    
           
       fprintf ( fp , "  D = (DIALOG *)Tmp;\n" ) ;
       fprintf ( fp , "  SD = (DIHB *) kgGetWidget(Tmp,i);\n" ) ;
@@ -4689,6 +4718,7 @@
       fprintf ( fp , "  DIALOG *D;DIF *F; \n" ) ;
       fprintf ( fp , "  int ret=1; \n" ) ;
       fprintf ( fp , "  void **pt= (void **)kgGetArgPointer(Tmp); // Change as required\n" ) ;
+      fprintf ( fp ,"// pt[0] is args passed as inputs; pt[1] is output pointer\n");    
           
       fprintf ( fp , "  D = (DIALOG *)Tmp;\n" ) ;
       fprintf ( fp , "  F = (DIF *) kgGetWidget(Tmp,i);\n" ) ;
@@ -4709,6 +4739,7 @@
       fprintf ( fp , "  DIALOG *D;DIV *V; \n" ) ;
       fprintf ( fp , "  int ret=1; \n" ) ;
       fprintf ( fp , "  void **pt= (void **)kgGetArgPointer(Tmp); // Change as required\n" ) ;
+      fprintf ( fp ,"// pt[0] is args passed as inputs; pt[1] is output pointer\n");    
           
       fprintf ( fp , "  D = (DIALOG *)Tmp;\n" ) ;
       fprintf ( fp , "  V = (DIV *) kgGetWidget(Tmp,i);\n" ) ;
@@ -4729,6 +4760,7 @@
       fprintf ( fp , "  DIALOG *D;DIZ *Z; \n" ) ;
       fprintf ( fp , "  int ret=1; \n" ) ;
       fprintf ( fp , "  void **pt= (void **)kgGetArgPointer(Tmp); // Change as required\n" ) ;
+      fprintf ( fp ,"// pt[0] is args passed as inputs; pt[1] is output pointer\n");    
           
       fprintf ( fp , "  D = (DIALOG *)Tmp;\n" ) ;
       fprintf ( fp , "  Z = (DIZ *) kgGetWidget(Tmp,i);\n" ) ;
@@ -4747,6 +4779,7 @@
       fprintf ( fp , "  DIALOG *D;\n" ) ;
       fprintf ( fp , "  D = (DIALOG *)Tmp;\n" ) ;
       fprintf ( fp , "  void **pt= (void **)kgGetArgPointer(Tmp); // Change as required\n" ) ;
+      fprintf ( fp ,"// pt[0] is args passed as inputs; pt[1] is output pointer\n");    
           
       fprintf ( fp , " /* pt[0] is inputs, given by caller */\n" ) ;
       fprintf ( fp , "  return ret;\n" ) ;
@@ -4760,6 +4793,7 @@
       fprintf ( fp , "  DIALOG *D;\n" ) ;
       fprintf ( fp , "  D = (DIALOG *)Tmp;\n" ) ;
       fprintf ( fp , "  void **pt= (void **)kgGetArgPointer(Tmp); // Change as required\n" ) ;
+      fprintf ( fp ,"// pt[0] is args passed as inputs; pt[1] is output pointer\n");    
           
       fprintf ( fp , " /* pt[1] is outputs, if any  to be given to caller */\n" ) ;
       fprintf ( fp , " /* pt[0] is inputs, given by caller */\n" ) ;
@@ -4773,6 +4807,7 @@
       fprintf ( fp , "  DIALOG *D;\n" ) ;
       fprintf ( fp , "  D = (DIALOG *)Tmp;\n" ) ;
       fprintf ( fp , "  void **pt= (void **)kgGetArgPointer(Tmp); // Change as required\n" ) ;
+      fprintf ( fp ,"// pt[0] is args passed as inputs; pt[1] is output pointer\n");    
           
       fprintf ( fp , " /* pt[0] is inputs given by caller */\n" ) ;
       fprintf ( fp , "  DIA *d;\n" ) ;
@@ -4810,6 +4845,7 @@
       fprintf ( fp , "  int ret = 0;\n" ) ;
       fprintf ( fp , "  DIALOG *D;\n" ) ;
       fprintf ( fp , "  void **pt= (void **)kgGetArgPointer(Tmp); // Change as required\n" ) ;
+      fprintf ( fp ,"// pt[0] is args passed as inputs; pt[1] is output pointer\n");    
           
       fprintf ( fp , "  KBEVENT *kbe;\n" ) ;
       fprintf ( fp , "  D = (DIALOG *)Tmp;\n" ) ;
@@ -4830,6 +4866,7 @@
       fprintf ( fp , "  int xres,yres,dx,dy;\n" ) ;
       fprintf ( fp , "  DIALOG *D;\n" ) ;
       fprintf ( fp , "  void **pt= (void **)kgGetArgPointer(Tmp); // Change as required\n" ) ;
+      fprintf ( fp ,"// pt[0] is args passed as inputs; pt[1] is output pointer\n");    
           
       fprintf ( fp , "  D = (DIALOG *)Tmp;\n" ) ;
       fprintf ( fp , "  kgGetWindowSize(D,&xres,&yres);\n" ) ;
@@ -4849,6 +4886,7 @@
       fprintf ( fp , "   ***********************************/ \n" ) ;
       fprintf ( fp , "  int ret = 0;\n" ) ;
       fprintf ( fp , "  void **pt= (void **)kgGetArgPointer(Tmp); // Change as required\n" ) ;
+      fprintf ( fp ,"// pt[0] is args passed as inputs; pt[1] is output pointer\n");    
           
       fprintf ( fp , "  return ret;\n" ) ;
       fprintf ( fp , "}\n" ) ;
@@ -4866,6 +4904,7 @@
       fprintf ( fp , "  DIG *G;\n" ) ;
       fprintf ( fp , "  D = (DIALOG *)Tmp;\n" ) ;
       fprintf ( fp , "  void **pt= (void **)kgGetArgPointer(Tmp); // Change as required\n" ) ;
+      fprintf ( fp ,"// pt[0] is args passed as inputs; pt[1] is output pointer\n");    
           
       fprintf ( fp , "  G = D->d[i].g;\n" ) ;
       fprintf ( fp , "  G->D = (void *)(Tmp);\n" ) ;
@@ -5633,7 +5672,7 @@
       fprintf ( fpg , "   kgDefaultGuiTheme(gc);\n" ) ;
       fprintf ( fpg , "   kgGrayGuiTheme(gc);\n" ) ;
       fprintf ( fpg , "   gc->FontSize =9;\n" ) ;
-      fprintf ( fpg , "   gc->FontGuiSize =9;\n" ) ;
+      fprintf ( fpg , "   gc->GuiFontSize =9;\n" ) ;
       fprintf ( fpg , "   gc->InputFontSize =8;\n" ) ;
       fprintf ( fpg , "   gc->MenuFont = 21;\n" ) ;
       fprintf ( fpg , "   gc->PromptFont = 21;\n" ) ;

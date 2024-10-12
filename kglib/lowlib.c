@@ -15078,7 +15078,7 @@ void transch(int c) {
           }
 //         _dvrect_fill_transparent(WC(D),x1-2,y1,x2+2,y2,D->gc.fill_clr,D->transparency);
 //         kgImage(D,img,x1-1,y1,x2-x1+5,y2-y1,0.0,1.0);
-          kgRestoreImage ( D , img , x1-1 , y1 , x2-x1+5 , y2-y1 ) ;
+          kgRestoreImage ( D , img , x1-1 , y1 , x2-x1+5, y2-y1 ) ;
           break;
           default:
           _uirect_fill ( WC ( D ) , x1 , D->evgay-y1 , x2-1 , \
@@ -15274,8 +15274,8 @@ void transch(int c) {
               kgFreeImage ( img ) ;
               img = Bimg;
           }
-          _dvrect_fill_transparent ( WC ( D ) , x1-2 , y1 , x2+2 , \
-               y2 , D->gc.fill_clr , D->transparency ) ;
+//          _dvrect_fill_transparent ( WC ( D ) , x1-2 , y1 , x2+2 , \
+//               y2 , D->gc.fill_clr , D->transparency ) ;
 //         kgImage(D,img,x1-1,y1,x2-x1+5,y2-y1,0.0,1.0);
           kgRestoreImage ( D , img , x1-1 , y1 , x2-x1+5 , y2-y1 ) ;
           break;
