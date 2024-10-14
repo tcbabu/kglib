@@ -3757,11 +3757,11 @@
               default:
               return 1;
               break;
-              case 2: // primary
+              case 3: // primary
               str = kgGetPrimary ( Tmp ) ;
 //	      printf("Case 2: %s\n",str);
               break;
-              case 3: // clipboard
+              case 2: // clipboard
               str = kgGetClipBoard ( Tmp ) ;
 //	      printf("Case 3: %s\n",str);
               break;
