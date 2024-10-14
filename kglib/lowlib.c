@@ -13720,6 +13720,10 @@ void transch(int c) {
       DIT *T = ( DIT * ) t->T;
       char *df;
       button = kbe.button;
+      if (button != 1 ) {
+//         printf("Pressed Button %d in Table box\n",button);
+         return button;
+      }
 //  tit = t->tit;
       elmt = t->elmt;
       D = t->D;

@@ -26,6 +26,10 @@ extern "C"
 #define FALSE 0
 #define SCROLL_DOWN -101
 #define SCROLL_UP -201
+#define BUTTON3_PRESS -202
+#define LINE_CHANGE -203
+#define MULTILINE_CLIP -204
+#define TAB_PRESS -205
 #define LN_WIDTH 20
 
 typedef struct _thumbnails {
@@ -1734,7 +1738,7 @@ unsigned char *kgGetPrimary(void * Tmp);
 unsigned char *kgGetClipBoard(void * Tmp);
 int kgSetPrimary(void * Tmp,unsigned char *data);
 int kgSetClipBoard(void * Tmp,unsigned char *data);
-void * kgProcessClips(void *Tmp,void *kbtmp);
+int  kgProcessClips(void *Tmp,void *kbtmp);
 int kgEnableSelection(void *Tmp);
 int kgDisableSelection(void *Tmp);
 int kgClearHighlight(void *Tmp);
