@@ -4546,12 +4546,14 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
   }
   void * kgProcessSelectionRequest ( void *Tmp ) {
       int code , ch , *scan , ret = 0;
+      int s;
       int x , y , w , h , bw , dpth;
       DIALOG *D;
       XEvent e , eo;
       kgWC *wc;
       D = ( DIALOG * ) Tmp;
       wc = WC ( D ) ;
+      s = pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
       while ( 1 ) {
 /* Need Checking */
 //    XNextEvent(wc->Dsp,&e);
@@ -8373,6 +8375,7 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
       if ( wc == NULL ) return 0;
       if ( wc->Rth != 0 ) return 0;
       pthread_create ( & ( wc->Rth ) , NULL , kgProcessSelectionRequest , Tmp ) ;
+      
       return 1;
   }
   int kgDisableSelection ( void *junk ) {
@@ -8392,6 +8395,8 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
           XSetSelectionOwner ( wc->Dsp , sel , None , CurrentTime ) ;
        }
        pthread_mutex_unlock ( & ( WC ( D )->Rlock ) ) ;
+
+          pthread_kill ( WC ( D )->Rth ,SIGKILL) ;
           pthread_cancel ( WC ( D )->Rth ) ;
           pthread_join ( WC ( D )->Rth , NULL ) ;
       }
