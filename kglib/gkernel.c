@@ -8395,6 +8395,7 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
           pthread_cancel ( WC ( D )->Rth ) ;
           pthread_join ( WC ( D )->Rth , NULL ) ;
       }
+      pthread_mutex_destroy( & ( WC ( D )->Rlock ) ) ;
       wc->Rth = 0;
       return 1;
   }

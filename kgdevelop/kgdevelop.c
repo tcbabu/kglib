@@ -4279,6 +4279,10 @@
       fprintf ( fp , "           However cellno got 2 special values\n" ) ;
       fprintf ( fp , "             1. SCROLL_DOWN a scrolldown action\n" ) ;
       fprintf ( fp , "             2. SCROLL_UP a scrolldown action\n" ) ;
+      fprintf ( fp , "             3. LINE_CHANGE for line change  action\n" ) ;
+      fprintf ( fp , "             4. TAB_PRESS for tab action\n" ) ;
+      fprintf ( fp , "             5. BUTTON2_PRESS for button2 action\n" ) ;
+      fprintf ( fp , "             6. BUTTON3_PRESS for button3 action\n" ) ;
       fprintf ( fp , "             which may be ignored or peocessed\n" ) ;
       fprintf ( fp , "   i     : widget id starting from 0 \n" ) ;
       fprintf ( fp , "   Tmp   : Pointer to DIALOG \n" ) ;
@@ -4286,11 +4290,37 @@
       fprintf ( fp , "  DIALOG *D;DIT *T;T_ELMT *e; \n" ) ;
       fprintf ( fp , "  void **pt= (void **)kgGetArgPointer(Tmp); // Change as required\n" ) ;
       fprintf ( fp ,"// pt[0] is args passed as inputs; pt[1] is output pointer\n");    
-          
       fprintf ( fp , "  int ret=1;\n" ) ;
       fprintf ( fp , "  D = (DIALOG *)Tmp;\n" ) ;
       fprintf ( fp , "  T = (DIT *)kgGetWidget(Tmp,i);\n" ) ;
       fprintf ( fp , "  e = T->elmt;\n" ) ;
+      fprintf ( fp , "  if(cellno == SCROLL_DOWN) {\n" ) ;
+      fprintf ( fp , "    /* add actions if needed */\n" ) ;
+      fprintf ( fp , "    return ret;\n" ) ;
+      fprintf ( fp , "  }\n" ) ;
+      fprintf ( fp , "  if(cellno == SCROLL_UP) {\n" ) ;
+      fprintf ( fp , "    /* add actions if needed */\n" ) ;
+      fprintf ( fp , "    return ret;\n" ) ;
+      fprintf ( fp , "  }\n" ) ;
+      fprintf ( fp , "  if(cellno == LINE_CHANGE) {\n" ) ;
+      fprintf ( fp , "    /* add actions if needed */\n" ) ;
+      fprintf ( fp , "    return ret;\n" ) ;
+      fprintf ( fp , "  }\n" ) ;
+      fprintf ( fp , "  if(cellno == TAB_PRESS) {\n" ) ;
+      fprintf ( fp , "    /* add actions if needed */\n" ) ;
+      fprintf ( fp , "    return ret;\n" ) ;
+      fprintf ( fp , "  }\n" ) ;
+      fprintf ( fp , "  if(cellno == BUTTON2_PRESS) {\n" ) ;
+      fprintf ( fp , "    /* add actions if needed */\n" ) ;
+      fprintf ( fp , "    /* may use kgProcessClip(..) for copy/paste*/\n" ) ;
+      fprintf ( fp , "    /* kgProcessClip(..) may return MULTILINE_CLIP for copy/paste*/\n" ) ;
+      fprintf ( fp , "    return ret;\n" ) ;
+      fprintf ( fp , "  }\n" ) ;
+      fprintf ( fp , "  if(cellno == BUTTON3_PRESS) {\n" ) ;
+      fprintf ( fp , "    /* add actions if needed */\n" ) ;
+      fprintf ( fp , "    return ret;\n" ) ;
+      fprintf ( fp , "  }\n" ) ;
+
       fprintf ( fp , "  return ret;\n" ) ;
       fprintf ( fp , "}\n" ) ;
   }
