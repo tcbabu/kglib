@@ -8382,6 +8382,7 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
       wc = WC ( D ) ;
       if ( wc == NULL ) return 0;
       if ( wc->Rth != 0 ) {
+       pthread_mutex_lock ( & ( WC ( D )->Rlock ) ) ;
        Atom sel = XInternAtom ( wc->Dsp , "CLIPBOARD" , 0 ) ;
        if ( XGetSelectionOwner ( wc->Dsp , sel  ) == wc->Win ) {
           XSetSelectionOwner ( wc->Dsp , sel , None , CurrentTime ) ;
@@ -8390,6 +8391,7 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
        if ( XGetSelectionOwner ( wc->Dsp , sel  ) == wc->Win ) {
           XSetSelectionOwner ( wc->Dsp , sel , None , CurrentTime ) ;
        }
+       pthread_mutex_unlock ( & ( WC ( D )->Rlock ) ) ;
           pthread_cancel ( WC ( D )->Rth ) ;
           pthread_join ( WC ( D )->Rth , NULL ) ;
       }
