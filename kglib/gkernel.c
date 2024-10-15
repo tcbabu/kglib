@@ -1876,7 +1876,7 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
       wcset_clr ( wc , 0 ) ;
       RefreshWindowThread ( wc ) ;
       wc->Rth = 0;
-  //kgEnableSelection(D);
+      kgEnableSelection(D);
       wc->Hlt = 0;
       wc->Pstr = NULL;
       wc->Cstr = NULL;
@@ -2421,7 +2421,7 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
       XSync ( Dsp , False ) ;
       RefreshWindowThread ( wc ) ;
       wc->Rth = 0;
-  //kgEnableSelection(D);
+      kgEnableSelection(D);
       wc->Hlt = 0;
       wc->Pstr = NULL;
       wc->Cstr = NULL;
@@ -4564,7 +4564,7 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
           }
           switch ( e.type ) {
               case SelectionRequest:
-//            printf("Got Selection Request\n");
+//              printf("Got Selection Request\n");
               pthread_mutex_lock ( & ( WC ( D )->Rlock ) ) ;
               kgRespondSelection ( Tmp , e ) ;
               pthread_mutex_unlock ( & ( WC ( D )->Rlock ) ) ;
@@ -8309,8 +8309,9 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
       Atom target = XA_STRING;
       if ( ! prop ) prop = XInternAtom ( wc->Dsp , "XPRI_IN" , False ) ;
 #if 1
-//      XSetSelectionOwner ( wc->Dsp , sel , wc->Win , CurrentTime ) ;
-      XSetSelectionOwner ( wc->Dsp , sel , None , CurrentTime ) ;
+      XSetSelectionOwner ( wc->Dsp , sel , wc->Win , CurrentTime ) ;
+//      XSetSelectionOwner ( wc->Dsp , sel , None , CurrentTime ) ;
+//      XSetSelectionOwner ( wc->Dsp , sel ,DefaultRootWindow ( wc->Dsp )  , CurrentTime ) ;
 //   w = XGetSelectionOwner(wc->Dsp,sel);
       w = wc->Win;
       pthread_mutex_lock ( & ( WC ( D )->Rlock ) ) ;
@@ -8346,8 +8347,8 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
       Atom target = XA_STRING;
       if ( ! prop ) prop = XInternAtom ( wc->Dsp , "XCLIP_IN" , False ) ;
 #if 1
-//      XSetSelectionOwner ( wc->Dsp , sel , wc->Win , CurrentTime ) ;
-      XSetSelectionOwner ( wc->Dsp , sel , None , CurrentTime ) ;
+      XSetSelectionOwner ( wc->Dsp , sel , wc->Win , CurrentTime ) ;
+//      XSetSelectionOwner ( wc->Dsp , sel , None , CurrentTime ) ;
       w = wc->Win;
       pthread_mutex_lock ( & ( WC ( D )->Rlock ) ) ;
       XChangeProperty ( wc->Dsp , w , sel , target , \
@@ -8381,6 +8382,16 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
       wc = WC ( D ) ;
       if ( wc == NULL ) return 0;
       if ( wc->Rth != 0 ) {
+       pthread_mutex_lock ( & ( WC ( D )->Rlock ) ) ;
+       Atom sel = XInternAtom ( wc->Dsp , "CLIPBOARD" , 0 ) ;
+       if ( XGetSelectionOwner ( wc->Dsp , sel  ) == wc->Win ) {
+          XSetSelectionOwner ( wc->Dsp , sel , None , CurrentTime ) ;
+       }
+       sel = XA_PRIMARY;
+       if ( XGetSelectionOwner ( wc->Dsp , sel  ) == wc->Win ) {
+          XSetSelectionOwner ( wc->Dsp , sel , None , CurrentTime ) ;
+       }
+       pthread_mutex_unlock ( & ( WC ( D )->Rlock ) ) ;
           pthread_cancel ( WC ( D )->Rth ) ;
           pthread_join ( WC ( D )->Rth , NULL ) ;
       }

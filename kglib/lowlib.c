@@ -13719,7 +13719,13 @@ void transch(int c) {
       T_ELMT *elmt;
       DIT *T = ( DIT * ) t->T;
       char *df;
+      int Id;
+      Id = kgGetWidgetId(t->D,T);
       button = kbe.button;
+      if (button != 1 ) {
+//         printf("Pressed Button %d in Table box\n",button);
+         return button;
+      }
 //  tit = t->tit;
       elmt = t->elmt;
       D = t->D;
@@ -13745,6 +13751,7 @@ void transch(int c) {
                   pos = ( x - elmt [ box ] .x1 -FontSize/2 ) / ( FontSize ) ;
                   if ( pos < 0 ) pos = 0;
                   ln = strlen ( elmt [ box ] .df+elmt [ box ] .startchar ) ;
+                  if(T->Update != NULL) T->Update(LINE_CHANGE,Id,t->D);
                   _ui_cleantablecursor ( t ) ;
                   curbox = row*t->nx+col;
                   while ( t->elmt [ curbox ] .sw != 1 ) {
@@ -14059,6 +14066,8 @@ void transch(int c) {
       DIT *T = ( DIT * ) t->T;
       char *df;
       int k;
+      int Id;
+      Id = kgGetWidgetId(t->D,T);
       key = kbe.key;
 //  tit = t->tit;
       elmt = t->elmt;
@@ -14093,6 +14102,7 @@ void transch(int c) {
                   }
 #endif
               }
+              if(T->Update != NULL ) T->Update(LINE_CHANGE,Id,t->D);
               _ui_cleantablecursor ( t ) ;
               t->col = curbox%t->nx;
               t->row = curbox/t->nx;
@@ -14126,6 +14136,7 @@ void transch(int c) {
                   }
 #endif
               }
+              if(T->Update != NULL ) T->Update(LINE_CHANGE,Id,t->D);
               _ui_cleantablecursor ( t ) ;
               t->col = curbox%t->nx;
               t->row = curbox/t->nx;
@@ -14350,18 +14361,28 @@ void transch(int c) {
           return -1;
       }
       if ( ( ( key >= ' ' ) && ( key < 128 ) ) || ( ui_Tab ( key ) ) ) {
-          int ret;
+          int ret,cursor;
           col = t->col;
           row = t->row;
           curbox = row*t->nx+col;
+          cursor = t->elmt [ curbox ] .cursor ;
           if ( ui_Tab ( key ) ) key = '\t';
           if ( ( ret = _ui_insertchar ( t->elmt [ curbox ] .df , t->elmt [ curbox ] .cursor , \
                MAXTITEMLN-2 , key ) ) ) \
           {
+              if( key =='\t') {
+                if(T->Update != NULL) T->Update(TAB_PRESS,Id,t->D);
+                t->col=col;
+                t->row = row;
+                t->elmt [ curbox ] .cursor = cursor;
+              }    
               t->elmt [ curbox ] .cursor += ret;
+/* for tab */
+              df = t->elmt [ curbox ] .df;
+              while ( df [ t->elmt [ curbox ] .cursor ] == 127 ) t->elmt [ curbox ] .cursor += 1;
+/* end */
               ln = t->elmt [ curbox ] .ln;
               if ( ( t->elmt [ curbox ] .cursor - t->elmt [ curbox ] .startchar ) >= ln ) t->elmt [ curbox ] .startchar+= 1;
-                  
               _ui_drawtablecursor ( t ) ;
               uiUpdateOn ( t->D ) ;
           }
@@ -15078,7 +15099,7 @@ void transch(int c) {
           }
 //         _dvrect_fill_transparent(WC(D),x1-2,y1,x2+2,y2,D->gc.fill_clr,D->transparency);
 //         kgImage(D,img,x1-1,y1,x2-x1+5,y2-y1,0.0,1.0);
-          kgRestoreImage ( D , img , x1-1 , y1 , x2-x1+5 , y2-y1 ) ;
+          kgRestoreImage ( D , img , x1-1 , y1 , x2-x1+5, y2-y1 ) ;
           break;
           default:
           _uirect_fill ( WC ( D ) , x1 , D->evgay-y1 , x2-1 , \
@@ -15274,8 +15295,8 @@ void transch(int c) {
               kgFreeImage ( img ) ;
               img = Bimg;
           }
-          _dvrect_fill_transparent ( WC ( D ) , x1-2 , y1 , x2+2 , \
-               y2 , D->gc.fill_clr , D->transparency ) ;
+//          _dvrect_fill_transparent ( WC ( D ) , x1-2 , y1 , x2+2 , \
+//               y2 , D->gc.fill_clr , D->transparency ) ;
 //         kgImage(D,img,x1-1,y1,x2-x1+5,y2-y1,0.0,1.0);
           kgRestoreImage ( D , img , x1-1 , y1 , x2-x1+5 , y2-y1 ) ;
           break;

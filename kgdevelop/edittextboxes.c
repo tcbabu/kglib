@@ -17,7 +17,7 @@ void ModifyedittextboxesGc(void *Tmp) {
    kgDefaultGuiTheme(gc);
    kgGrayGuiTheme(gc);
    gc->FontSize =9;
-   gc->FontGuiSize =9;
+   gc->GuiGuiSize =9;
    gc->InputFontSize =8;
    gc->MenuFont = 21;
    gc->PromptFont = 21;
