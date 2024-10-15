@@ -3744,7 +3744,7 @@
       }
       return 0;
   }
-  int  kgProcessClips ( void *Tmp , void *kbtmp ) {
+  int  kgProcessClip_old ( void *Tmp , void *kbtmp ) {
 /* return value is made (void *) for further development */
       int  ret = 2;
       DIALOG *D;
@@ -3772,6 +3772,51 @@
           int i = 0;
           while ( ( ch = str [ i ] ) != '\0' ) {
             if(ch =='\n') { free(str);return 3;}
+            i++;
+          }          
+          i=0;
+          while ( ( ch = str [ i ] ) != '\0' ) {
+              i++;
+              if ( ch == '\n' ) {
+                  kgSendClearKeyEvent ( Tmp ) ;
+                  kgSendLinefeedKeyEvent ( Tmp ) ;
+                  break;
+              }
+              else if ( ch == '\r' ) {
+                  kgSendClearKeyEvent ( Tmp ) ;
+                  kgSendEnterKeyEvent ( Tmp ) ;
+                  break;
+              }
+              else kgSendKeyEvent ( Tmp , ch ) ;
+          }
+          free ( str ) ;
+      }
+      return ret;
+  }
+  int  kgProcessClips ( void *Tmp , int butn ) {
+/* return value is made (void *) for further development */
+      int  ret = 2;
+      DIALOG *D;
+      char *str = NULL;
+      D = ( DIALOG * ) Tmp;
+          switch ( butn ) {
+              default:
+              return 1;
+              break;
+              case 3: // primary
+              str = kgGetPrimary ( Tmp ) ;
+//	      printf("Case 2: %s\n",str);
+              break;
+              case 2: // clipboard
+              str = kgGetClipBoard ( Tmp ) ;
+//	      printf("Case 3: %s\n",str);
+              break;
+          }
+      if ( str != NULL ) {
+          int ch;
+          int i = 0;
+          while ( ( ch = str [ i ] ) != '\0' ) {
+            if(ch =='\n') { free(str);return MULTILINE_CLIP;}
             i++;
           }          
           i=0;
@@ -3924,14 +3969,21 @@
               break;
               case 't':
               df = MousePressInTextBox ( ( TX_STR * ) ( D->d [ i ] .t->tstr ) , kbevent ) ;
-              kgProcessClips ( ( void * ) D , ( void * ) & kbevent ) ;
+              kgProcessClips ( ( void * ) D ,  kbevent.button ) ;
               break;
               case 'T':
               df = MousePressInTableBox ( ( TX_STR * ) ( D->d [ i ] .t->tstr ) , kbevent ) ;
-              butn =kgProcessClips ( ( void * ) D , ( void * ) & kbevent ) ;
+#if 0
+              butn =kgProcessClips ( ( void * ) D , kbevent.button ) ;
               if(butn==3) {// multi line clipboard
                    if ( d [ i ] .t->Update != NULL ) ret = d [ i ] .t->Update ( MULTILINE_CLIP , i , D ) ;
               }
+#else
+
+              butn = kbevent.button ;
+              if(butn ==2) ret = d [ i ] .t->Update ( BUTTON2_PRESS, i , D ) ;
+              else if(butn ==3) ret = d [ i ] .t->Update ( BUTTON3_PRESS, i , D ) ;
+#endif
               break;
               case 'e':
               ret = EventInE ( ( D->d [ i ] .e ) , kbevent ) ;

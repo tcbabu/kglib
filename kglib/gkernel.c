@@ -8382,6 +8382,14 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
       wc = WC ( D ) ;
       if ( wc == NULL ) return 0;
       if ( wc->Rth != 0 ) {
+       Atom sel = XInternAtom ( wc->Dsp , "CLIPBOARD" , 0 ) ;
+       if ( XGetSelectionOwner ( wc->Dsp , sel  ) == wc->Win ) {
+          XSetSelectionOwner ( wc->Dsp , sel , None , CurrentTime ) ;
+       }
+       sel = XA_PRIMARY;
+       if ( XGetSelectionOwner ( wc->Dsp , sel  ) == wc->Win ) {
+          XSetSelectionOwner ( wc->Dsp , sel , None , CurrentTime ) ;
+       }
           pthread_cancel ( WC ( D )->Rth ) ;
           pthread_join ( WC ( D )->Rth , NULL ) ;
       }
