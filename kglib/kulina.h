@@ -1223,6 +1223,7 @@ void *kgChangeSizeImage(void *img,long width,long height);
 void *kgFilterImage(void *img,long width,long height,int Fltr);
 void *kgHalfSizeImage(void * img);
 void kgFreeImage(void *img);
+int   kgFreeGmImage(void *img);
 void *kgCropImage(void *img,int xl,int yl,int xu,int yu);
 void *kgRotateImage(void *img,float angle) ;
 void *kgRotateAboutImage(void *img,float angle,int xo,int yo); // Creates new rotated image
@@ -1734,6 +1735,7 @@ void *OpenThreads(int thds);
 void DoInAnyThread(void *,void *(*threadFunc)(void *),void *arg);
 void WaitThreads(void *);
 void CloseThreads(void *);
+void KillThreads(void *);
 // Clipboard routines
 unsigned char *kgGetPrimary(void * Tmp);
 unsigned char *kgGetClipBoard(void * Tmp);
