@@ -1445,6 +1445,19 @@
       }
       return ret;
   }
+  int kgFreeElementImages(void *wid) {
+    DIT *T = (DIT *)wid;
+    T_ELMT *e=T->elmt;
+    int k,nx,ny,i,j;
+    nx = T->nx;
+    ny = T->ny;
+    for(j=0;j<ny;j++) {
+      for(i=0;i<nx;i++) {
+         if( e[j*nx+i].img != NULL) kgFreeImage(e[j*nx+i].img);
+         e[j*nx+i].img = NULL;
+      }
+    }
+  }
   int kgRedrawDialog ( DIALOG *D ) {
       int n , i , controls = 0 , item , ch , oldi = -1;
       DIA *d;
@@ -1543,9 +1556,11 @@
               if ( d [ i ] .t->item == -1 ) _uiDrawTableBox ( D , i ) ;
               else {
 		      DIT *Ta= (DIT *)(d[i].t);
+                      T_ELMT *elmt;
                FreeImg ( ( ( DIT * ) ( d [ i ] .t ) )->Bimg ) ;
+                      kgFreeElementImages(Ta);
 		      if(Ta->tstr != NULL) {
-//No			      free(((TX_STR *)(Ta->tstr))->elmt);
+                              elmt =((TX_STR *)(Ta->tstr))->elmt; 
                 uiFreeImgStrs(((TX_STR *)(Ta->tstr))->F.Imgs);
 			      free(Ta->tstr);
 			      Ta->tstr=NULL;
@@ -1742,21 +1757,22 @@
               controls++;
               if ( d [ i ] .t->hide == 1 ) break;
               item = d [ i ] .t->item;
-              if ( d [ i ] .t->item == -1 ) _uiDrawTableBox ( D , i ) ;
+              if ( d [ i ] .t->item == -1 ) {
+                     printf("item = -1 for _uiDrawTableBox\n");
+                     _uiDrawTableBox ( D , i ) ;
+              }
               else {
 		      DIT *Ta= (DIT *)(d[i].t);
-               FreeImg ( ( ( DIT * ) ( d [ i ] .t ) )->Bimg ) ;
+                      kgFreeElementImages(Ta);
+                      FreeImg ( ( ( DIT * ) ( d [ i ] .t ) )->Bimg ) ;
 		      if(Ta->tstr != NULL) {
-//No			      free(((TX_STR *)(Ta->tstr))->elmt);
-                uiFreeImgStrs(((TX_STR *)(Ta->tstr))->F.Imgs);
+                              uiFreeImgStrs(((TX_STR *)(Ta->tstr))->F.Imgs);
 			      free(Ta->tstr);
 			      Ta->tstr=NULL;
 		      }
 //		      _uiMake_Ta ( kgGetWidget ( D , i ) ) ;
 		      _uiDrawTableBox ( D , i ) ;
 	      }
-//              else _uiMake_Ta ( kgGetWidget ( D , i ) ) ;
-//              else _uiDrawTableBox ( D , i ) ;
               D->df = i;
               break;
               case 'h':
@@ -5397,11 +5413,13 @@
       uiFreeMemAlloc ( D ) ;
 //      uiFreeFontLists();
       if ( D->Newwin ) {
-          kgDisableSelection ( D ) ;
           if ( ! WC ( D )->FullScreen ) {
-              pthread_cancel ( WC ( D )->Pth ) ;
+              int s;
+              s = pthread_cancel ( WC ( D )->Pth ) ;
+              if(s!= 0) pthread_kill( WC ( D )->Pth ,SIGKILL);
               pthread_join ( WC ( D )->Pth , NULL ) ;
           }
+//          kgDisableSelection ( D ) ;
           Dempty ( WC ( D )->Clip ) ;
           kg_clear_scrn_buffer ( WC ( D ) ) ;
 //     Dempty(WC(D)->SBlist);
@@ -5416,10 +5434,12 @@
       ui_cleandir ( D->tmpdir ) ;
       kgCheckAndRemoveParent ( D->tmpdir ) ;
       Free ( D->tmpdir ) ;
-//   fprintf(stderr,"Closing threads\n");
+#if 1
       CloseThreads ( D->ThInfo ) ;
+#else
+      KillThreads ( D->ThInfo ) ;
+#endif
       D->ThInfo = NULL;
-//   fprintf(stderr,"Closed Ui\n");
       return ( ret ) ;
   }
 /* checking for string
@@ -6252,7 +6272,8 @@
       DIA *D;DIT *T;T_ELMT *e;
       T = ( DIT * ) Tmp;
       Tstr = ( TX_STR * ) ( T->tstr ) ;
-      _ui_readtextbox ( Tstr ) ;
+ //     _ui_readtextbox ( Tstr ) ;
+      _ui_readtextboxcell ( Tstr,item ) ;
       e = T->elmt;
       f = ( ( char * ) ( e [ item ] .v ) ) ;
       return f;

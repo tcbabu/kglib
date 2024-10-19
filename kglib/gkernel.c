@@ -1876,7 +1876,7 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
       wcset_clr ( wc , 0 ) ;
       RefreshWindowThread ( wc ) ;
       wc->Rth = 0;
-      kgEnableSelection(D);
+ //     kgEnableSelection(D);
       wc->Hlt = 0;
       wc->Pstr = NULL;
       wc->Cstr = NULL;
@@ -2421,7 +2421,7 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
       XSync ( Dsp , False ) ;
       RefreshWindowThread ( wc ) ;
       wc->Rth = 0;
-      kgEnableSelection(D);
+//      kgEnableSelection(D);
       wc->Hlt = 0;
       wc->Pstr = NULL;
       wc->Cstr = NULL;
@@ -3464,7 +3464,9 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
 //   UpdateScreen();
   }
   void kgCloseUi ( DIALOG *D ) {
-      pthread_mutex_unlock ( & ( WC ( D )->Dsplock ) ) ;
+      int s;
+      pthread_mutex_trylock ( & ( WC ( D )->Dsplock ) ) ;
+      s = pthread_mutex_unlock ( & ( WC ( D )->Dsplock ) ) ;
       pthread_mutex_destroy ( & ( WC ( D )->Dsplock ) ) ;
       if ( WC ( D )->IMAGE != NULL ) {
           XDestroyImage ( ( XImage * ) ( WC ( D )->IMAGE ) ) ;
@@ -3480,12 +3482,8 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
       XDestroyWindow ( ( Display * ) ( WC ( D )->Dsp ) , \
        ( Window ) ( WC ( D )->Win ) ) ;
 #if 1
-//  printf("Calling XCloseDisplay\n");
-//  fflush(stdout);
       XCloseDisplay ( ( Display * ) ( WC ( D )->Dsp ) ) ;
       WC ( D )->Dsp = NULL;
-//  printf("Okay\n");
-//  fflush(stdout);
 #endif
   }
 /*
@@ -4545,12 +4543,13 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
       }
   }
   void * kgProcessSelectionRequest ( void *Tmp ) {
-      int code , ch , *scan , ret = 0;
+      int code , ch , *scan ;
       int s;
       int x , y , w , h , bw , dpth;
       DIALOG *D;
       XEvent e , eo;
       kgWC *wc;
+      int ret=1;
       D = ( DIALOG * ) Tmp;
       wc = WC ( D ) ;
       s = pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
@@ -4567,7 +4566,7 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
           switch ( e.type ) {
               case SelectionRequest:
 //              printf("Got Selection Request\n");
-              pthread_mutex_lock ( & ( WC ( D )->Rlock ) ) ;
+              s = pthread_mutex_lock ( & ( WC ( D )->Rlock ) ) ;
               kgRespondSelection ( Tmp , e ) ;
               pthread_mutex_unlock ( & ( WC ( D )->Rlock ) ) ;
               break;
@@ -5926,6 +5925,7 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
               if ( strcmp ( img->Sign , "IMG" ) == 0 ) {
                   GMIMG *png;
                   png = ( GMIMG * ) tmp;
+//                  printf("png->incode == %d\n",png->incode );
                   if ( png->incode == 1 ) return;
                   uiFreeGmImage ( tmp ) ;
                   free ( tmp ) ;
@@ -8381,6 +8381,7 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
   int kgDisableSelection ( void *junk ) {
 //    pthread_t Pth;
       DIALOG *D = ( DIALOG * ) junk;
+      int s;
       kgWC *wc;
       wc = WC ( D ) ;
       if ( wc == NULL ) return 0;
@@ -8395,12 +8396,14 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
           XSetSelectionOwner ( wc->Dsp , sel , None , CurrentTime ) ;
        }
        pthread_mutex_unlock ( & ( WC ( D )->Rlock ) ) ;
-
-          pthread_kill ( WC ( D )->Rth ,SIGKILL) ;
-          pthread_cancel ( WC ( D )->Rth ) ;
+          s = pthread_cancel ( WC ( D )->Rth ) ;
+          if(s!=0) {
+            pthread_kill ( WC ( D )->Rth ,SIGKILL) ;
+          }
           pthread_join ( WC ( D )->Rth , NULL ) ;
+       pthread_mutex_destroy( & ( WC ( D )->Rlock ) ) ;
       }
-      pthread_mutex_destroy( & ( WC ( D )->Rlock ) ) ;
+      else printf("Disable: wc->Rth==0 \n");
       wc->Rth = 0;
       return 1;
   }
