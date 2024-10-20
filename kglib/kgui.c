@@ -3821,11 +3821,11 @@
               break;
               case 3: // primary
               str = kgGetPrimary ( Tmp ) ;
-//	      printf("Case 2: %s\n",str);
+//	      printf("Case 3: %s\n",str);
               break;
               case 2: // clipboard
               str = kgGetClipBoard ( Tmp ) ;
-//	      printf("Case 3: %s\n",str);
+//  	      printf("Case 2: %s\n",str);
               break;
           }
       if ( str != NULL ) {

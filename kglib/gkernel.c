@@ -71,6 +71,7 @@
   static int PIX_CLR = 255; /* colour allocation for pixmaps */
   static int FontSize = 15;
   int syncfs ( int fd ) ;
+  static char *PriBuf=NULL;
 #define IMAGE_BLUE_VAL  (((blue)*(wc->IMAGE->blue_mask)+(1<<(wc->BLUEMASKPOS-1)))/255)
 #define IMAGE_GREEN_VAL ((((green) * (wc->IMAGE->green_mask) \
    + ( 1 << ( wc->GREENMASKPOS -1 ) ) ) /255 ) & ( wc->IMAGE->green_mask ) )
@@ -1415,7 +1416,7 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
               }
           }
       }
-      if ( imgFile ) uiFreeImage ( png ) ;
+      if ( imgFile ) kgFreeImage ( png ) ;
       return 1;
   }
   Window kgGetUiWindow ( void *D ) {
@@ -3387,7 +3388,7 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
            wc->c_color , justfic , D->gc.FontSize , -1 ) ;
       if ( img != NULL ) {
           kgImage ( D , img , x , y-16 , ln , 20 , 0.0 , 1.0 ) ;
-          uiFreeImage ( img ) ;
+          kgFreeImage ( img ) ;
       }
 #else
       XTextItem *item;
@@ -3433,7 +3434,7 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
            20 , wc->GuiFont , wc->c_color , -1 , ln ) ;
       if ( img != NULL ) {
           kgImage ( D , img , x , y-16 , ln*10 , 20 , 0.0 , 1.0 ) ;
-          uiFreeImage ( img ) ;
+          kgFreeImage ( img ) ;
       }
 #else
       XTextItem *item;
@@ -3680,10 +3681,15 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
           else {
               pthread_mutex_lock ( & ( wc->Dsplock ) ) ;
               XLockDisplay ( wc->Dsp ) ;
+#if 1
               XCopyArea ( wc->Dsp , wc->Pix , wc->Piximg , wc->Gc , \
                    0 , 0 , EVGAX , EVGAY , 0 , 0 ) ;
               XCopyArea ( wc->Dsp , wc->Piximg , wc->Win , wc->Gc , \
                    0 , 0 , EVGAX , EVGAY , 0 , 0 ) ;
+#else
+              XCopyArea ( wc->Dsp , wc->Pix , wc->Win , wc->Gc , \
+                   0 , 0 , EVGAX , EVGAY , 0 , 0 ) ;
+#endif
               XSync ( wc->Dsp , False ) ;
               XUnlockDisplay ( wc->Dsp ) ;
               pthread_mutex_unlock ( & ( wc->Dsplock ) ) ;
@@ -4554,25 +4560,21 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
       wc = WC ( D ) ;
       s = pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
       while ( 1 ) {
-/* Need Checking */
-//    XNextEvent(wc->Dsp,&e);
-//    if(!XCheckIfEvent(wc->Dsp,&e,_uiselection,NULL)) return -1;
-          if ( ! XCheckTypedWindowEvent ( wc->Dsp , \
+          s = pthread_mutex_lock ( & ( WC ( D )->Rlock ) ) ;
+          if (XCheckTypedWindowEvent ( wc->Dsp , \
                wc->Win , SelectionRequest , & e ) ) \
           {
-              usleep ( 400 ) ;
-              continue;
-          }
-          switch ( e.type ) {
-              case SelectionRequest:
+             switch ( e.type ) {
+                case SelectionRequest:
 //              printf("Got Selection Request\n");
-              s = pthread_mutex_lock ( & ( WC ( D )->Rlock ) ) ;
-              kgRespondSelection ( Tmp , e ) ;
-              pthread_mutex_unlock ( & ( WC ( D )->Rlock ) ) ;
-              break;
-              default:
-              break;
+                kgRespondSelection ( Tmp , e ) ;
+                break;
+                default:
+                break;
+             }
           }
+          pthread_mutex_unlock ( & ( WC ( D )->Rlock ) ) ;
+          usleep ( 200000 ) ;
       }
   }
   int kgCheckMousePressEvent ( DIALOG *D , KBEVENT *kbe ) {
@@ -6410,7 +6412,7 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
       rzfac = png->rzfac;
       if ( rzfac != 1.0 ) {
           pngrz = uiResizegmImage ( png , rzfac ) ;
-          if ( imgFile ) uiFreeImage ( png ) ;
+          if ( imgFile ) kgFreeImage ( png ) ;
           if ( pngrz == NULL ) {
               return 0;
           }
@@ -6431,8 +6433,8 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
       xl = xm -width/2; xu = xm+width-width/2;
       yl = ym -height/2; yu = ym+height -height/2;
       if ( ( xu < 0 ) || ( xl > w ) || ( yu < 0 ) || ( yl > h ) ) {
-          if ( pngrz != NULL ) uiFreeImage ( pngrz ) ;
-          else if ( imgFile ) uiFreeImage ( png ) ;
+          if ( pngrz != NULL ) kgFreeImage ( pngrz ) ;
+          else if ( imgFile ) kgFreeImage ( png ) ;
           return 0;
       }
 // There is something to display
@@ -6529,8 +6531,8 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
 //   kgPutImage(D,uiImage,0,0,xdl,ydl,xdu,ydu);
       kgPutImage ( D , uiImage , 0 , 0 , xdl , ydl , xdu-xdl+1 , ydu-ydl+1 ) ;
       XDestroyImage ( uiImage ) ;
-      if ( pngrz != NULL ) uiFreeImage ( pngrz ) ;
-      else if ( imgFile ) uiFreeImage ( png ) ;
+      if ( pngrz != NULL ) kgFreeImage ( pngrz ) ;
+      else if ( imgFile ) kgFreeImage ( png ) ;
       return 1;
   }
   void *kgGetImageCopy_o ( void *D , void *img ) {
@@ -6831,7 +6833,7 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
               gmimg = ( GMIMG * ) uiGetgmImage ( fullname ) ;
               kg_gm_image ( D , gmimg , x0 , y0 , width , \
                    height , transparency , highfac ) ;
-              uiFreeImage ( gmimg ) ;
+              kgFreeImage ( gmimg ) ;
               free ( fullname ) ;
 #endif
               return;
@@ -8151,14 +8153,24 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
 //   ret = ( unsigned char *) XFetchBuffer(wc->Dsp, (int *) &len, 0);
 //   kgGetEvent(D);
       Owner = XGetSelectionOwner ( wc->Dsp , sel ) ;
-//   printf("Owner : %d %d %d\n",Owner,wc->Win,wc->Root);
+//       ret = ( unsigned char *) XFetchBuffer(wc->Dsp, (int *) &len, sel);
+// Added now
+#if 1
+      if(Owner == wc->Win) {
+        if(PriBuf==NULL) return NULL;
+        ret = (unsigned char *)malloc(strlen(PriBuf)+1);        
+        strcpy((char *)ret,PriBuf);
+        return ret;
+      }
+#endif
+//
       if ( XConvertSelection ( wc->Dsp , sel , target , \
            prop , wc->Win , CurrentTime ) == 0 ) \
       {
 //     XDeleteProperty(wc->Dsp, wc->Win, prop);
           return NULL;
       }
-//   if(Owner== wc->Win)  kgWaitSelectionNotify(Tmp);
+//      if(Owner== wc->Win)  kgWaitSelectionNotify(Tmp);
       wret = kgWaitSelection ( Tmp ) ;
       if ( wret == -1 ) return 0;
       while ( wret == 2 ) {
@@ -8208,8 +8220,8 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
   }
   unsigned char *kgGetPrimary ( void * Tmp ) {
       unsigned char *ptr = NULL;
-      ptr = _uiGetPrimary ( Tmp ) ;
-      if ( ptr != NULL ) free ( ptr ) ;
+  //    ptr = _uiGetPrimary ( Tmp ) ;
+  //      if ( ptr != NULL ) free ( ptr ) ;
       return _uiGetPrimary ( Tmp ) ;
   }
   unsigned char *_uiGetClipBoard ( void * Tmp ) {
@@ -8236,6 +8248,13 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
       Atom target = XA_STRING;
       if ( ! prop ) prop = XInternAtom ( wc->Dsp , "XCLIP_OUT" , False ) ;
       Owner = XGetSelectionOwner ( wc->Dsp , sel ) ;
+      if(Owner == wc->Win) {
+//        ret = ( unsigned char *) XFetchBuffer(wc->Dsp, (int *) &len, sel);
+        if(PriBuf==NULL) return NULL;
+        ret = (unsigned char *)malloc(strlen(PriBuf)+1);        
+        strcpy((char *)ret,PriBuf);
+        return ret;
+      }
 //   printf("Owner : %d %d %d\n",Owner,wc->Win,wc->Root);
       if ( XConvertSelection ( wc->Dsp , sel , target , \
            prop , wc->Win , CurrentTime ) == 0 ) \
@@ -8317,6 +8336,9 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
 //   w = XGetSelectionOwner(wc->Dsp,sel);
       w = wc->Win;
       pthread_mutex_lock ( & ( WC ( D )->Rlock ) ) ;
+      if(PriBuf != NULL) free(PriBuf);
+      PriBuf= (char *)malloc(strlen((char *)data)+1);
+      strcpy(PriBuf,(char *)data);
       XChangeProperty ( wc->Dsp , w , sel , target , \
            8 , PropModeReplace , data , strlen \
        ( data ) +1 ) ;
@@ -8353,6 +8375,9 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
 //      XSetSelectionOwner ( wc->Dsp , sel , None , CurrentTime ) ;
       w = wc->Win;
       pthread_mutex_lock ( & ( WC ( D )->Rlock ) ) ;
+      if(PriBuf != NULL) free(PriBuf);
+      PriBuf= (char *)malloc(strlen((char *)data)+1);
+      strcpy(PriBuf,(char *)data);
       XChangeProperty ( wc->Dsp , w , sel , target , \
            8 , PropModeReplace , data , strlen \
        ( data ) +1 ) ;
