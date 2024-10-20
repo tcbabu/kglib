@@ -3944,10 +3944,9 @@ void kgCloseImage(void *Gtmp) {
 #if 1
 //  printf("G->MAG = %d\n",G->MAG);
   if((MAG > 1)&&(G->img != NULL)) {
-       uiFreeGmImage(G->img);
+       kgFreeGmImage(G->img);
   }
-  else if(G->rzimg != NULL) uiFreeGmImage(G->rzimg);  
-//  if(G->rzimg != NULL) uiFreeImage(G->rzimg); //user should take care of this after use
+  else if(G->rzimg != NULL) kgFreeGmImage(G->rzimg);  
   Dempty((Dlink *)(wc->Clip));
   Dempty((Dlink *)(wc->SBlist));
 // the change is for thread safety
