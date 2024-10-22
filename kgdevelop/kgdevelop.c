@@ -1141,6 +1141,7 @@
   }
   int makeguidiabutton1callback ( int key , int i , void *Tmp ) {
       DIA *D;DIN *B;
+      char Bkup[300];
       int n , ret = 0 , but;
       float xx , yy;
       D = ( ( DIALOG * ) Tmp )->d;
@@ -1160,6 +1161,9 @@
               Convert_gui_data ( ) ;
               Make_gui_code ( Dia , Sourcecode , DiaName ) ;
               Print_gui_data ( Dia , flname ) ; /* rewriting */
+              strcpy(Bkup,flname);
+              strcat(Bkup,".bak");
+              Print_gui_data ( Dia , Bkup ) ;              
               Convert_gui_data ( ) ;
               break;
               case 2:
@@ -1167,6 +1171,9 @@
               Convert_gui_data ( ) ;
               Make_gui_code ( Dia , Sourcecode , DiaName ) ;
               Print_gui_data ( Dia , flname ) ; /* rewriting */
+              strcpy(Bkup,flname);
+              strcat(Bkup,".bak");
+              Print_gui_data ( Dia , Bkup ) ;              
               Convert_gui_data ( ) ;
               ret = 1;
               break;

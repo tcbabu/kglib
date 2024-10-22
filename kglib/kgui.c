@@ -1453,7 +1453,7 @@
     ny = T->ny;
     for(j=0;j<ny;j++) {
       for(i=0;i<nx;i++) {
-         if( e[j*nx+i].img != NULL) kgFreeImage(e[j*nx+i].img);
+         if( e[j*nx+i].img != NULL) kgFreeGmImage(e[j*nx+i].img);
          e[j*nx+i].img = NULL;
       }
     }
@@ -1557,11 +1557,11 @@
               else {
 		      DIT *Ta= (DIT *)(d[i].t);
                       T_ELMT *elmt;
-               FreeImg ( ( ( DIT * ) ( d [ i ] .t ) )->Bimg ) ;
+                      FreeImg ( Ta->Bimg ) ;
                       kgFreeElementImages(Ta);
 		      if(Ta->tstr != NULL) {
                               elmt =((TX_STR *)(Ta->tstr))->elmt; 
-                uiFreeImgStrs(((TX_STR *)(Ta->tstr))->F.Imgs);
+                              uiFreeImgStrs(((TX_STR *)(Ta->tstr))->F.Imgs);
 			      free(Ta->tstr);
 			      Ta->tstr=NULL;
 		      }
@@ -1938,17 +1938,19 @@
               {
                   DIT *T;
 		  TX_STR *Tx;
+                  T_ELMT *elmt;
                   T = d [ i ] .t;
                   Tx = (TX_STR *)T->tstr;
+                  kgFreeElementImages(T);
 #if 1
                   if(Tx != NULL){
                        Tx->F.Imgs=uiFreeImgStrs(Tx->F.Imgs);
                        Free ( T->tstr ) ;
+	               T->tstr=NULL;
                   }
 #endif
-                  T->tstr = NULL;
+                  FreeImg ( T->Bimg ) ;
               }
-//              FreeImg ( ( ( DIT * ) ( d [ i ] .t ) )->Bimg ) ;
          // need addition once Table is implemented
               break;
               case 'h':
@@ -3470,7 +3472,7 @@
 //            printf("hi: %s\n",str);
               if ( WC ( D )->Pstr != NULL ) free ( WC ( D )->Pstr ) ;
               kgSetPrimary ( D , str ) ;
-            kgSetClipBoard(D,str);
+              kgSetClipBoard(D,str);
               WC ( D )->Pstr = str;
           }
 //          _ui_cuthighlightstring(tx);
@@ -3558,7 +3560,7 @@
 //            printf("hi: %s\n",str);
               if ( WC ( D )->Pstr != NULL ) free ( WC ( D )->Pstr ) ;
               kgSetPrimary ( D , str ) ;
-            kgSetClipBoard(D,str);
+              kgSetClipBoard(D,str);
               WC ( D )->Pstr = str;
           }
 //	  else printf("Highlight string is NULL\n");
@@ -3809,15 +3811,15 @@
       }
       return ret;
   }
-  int  kgProcessClips ( void *Tmp , int butn ) {
+  void *  kgProcessClips ( void *Tmp , int butn ) {
 /* return value is made (void *) for further development */
-      int  ret = 2;
+      char *  ret = NULL;
       DIALOG *D;
       char *str = NULL;
       D = ( DIALOG * ) Tmp;
           switch ( butn ) {
               default:
-              return 1;
+              return NULL;
               break;
               case 3: // primary
               str = kgGetPrimary ( Tmp ) ;
@@ -3832,7 +3834,8 @@
           int ch;
           int i = 0;
           while ( ( ch = str [ i ] ) != '\0' ) {
-            if(ch =='\n') { free(str);return MULTILINE_CLIP;}
+//            if(ch =='\n') { free(str);return MULTILINE_CLIP;}
+            if(ch =='\n') { return str;}
             i++;
           }          
           i=0;
@@ -3852,7 +3855,7 @@
           }
           free ( str ) ;
       }
-      return ret;
+      return NULL;
   }
   int ProcessMousePress ( DIALOG *D , KBEVENT kbevent , int i , int hcontrols , int controls ) \
   {
@@ -5419,7 +5422,6 @@
               if(s!= 0) pthread_kill( WC ( D )->Pth ,SIGKILL);
               pthread_join ( WC ( D )->Pth , NULL ) ;
           }
-//          kgDisableSelection ( D ) ;
           Dempty ( WC ( D )->Clip ) ;
           kg_clear_scrn_buffer ( WC ( D ) ) ;
 //     Dempty(WC(D)->SBlist);
