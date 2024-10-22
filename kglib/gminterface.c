@@ -697,8 +697,10 @@ static ExceptionInfo exception;
       png->image_rowbytes = png->image_width*png->image_channels;
       return png;
   }
-  void *kgResizeImage ( void * img , float fac ) {return uiResizegmImage  \
-      ( ( GMIMG * ) img , fac ) ;}
+  void *kgResizeImage ( void * img , float fac ) {
+      /* returns a resize Image, original not modified */
+      return uiResizegmImage ( ( GMIMG * ) img , fac ) ;
+  }
   void *uiThumbnailgmImage ( GMIMG *png , unsigned long w , unsigned long h ) {
       int xoffset , yoffset , bkgrclr;
       float rzfac , fac = 1 , wfac , hfac;
@@ -896,9 +898,11 @@ static ExceptionInfo exception;
       return png;
   }
   void *kgChangeSizeImage ( void *img , long w , long h ) {
+      /* returns a resize Image, original not modified */
       return uiChangeSizegmImage ( ( GMIMG * ) img , w , h , 1 ) ;
   }
   void *kgFilterImage ( void *img , long w , long h , int Fltr ) {
+      /* returns a resize Image, original not modified */
       return uiChangeSizegmImage ( ( GMIMG * ) img , w , h , Fltr ) ;
   }
   void *uiHalfSizegmImage ( GMIMG *png ) {

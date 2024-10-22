@@ -6966,12 +6966,12 @@ void transch(int c) {
               if ( old ) kgAddImages ( imgbk , img , x1 , height/2-FontSize*1.5 ) ;
               else kgAddImages ( imgbk , img , x1 , 0 ) ;
               kgImage ( D , imgbk , x , y , ln , height , 0.0 , 1.0 ) ;
-              uiFreeImage ( imgbk ) ;
+              kgFreeGmImage ( imgbk ) ;
           }
           else {
               kgImage ( D , img , x+x1 , y , ln1 , ( height ) , 0.0 , 1.0 ) ;
           }
-          uiFreeImage ( img ) ;
+          kgFreeGmImage ( img ) ;
           free ( IMG ) ;
       }
       else printf ( "img == NULL\n" ) ;
@@ -9765,7 +9765,9 @@ void transch(int c) {
                   if ( ( gimg->image_width > length ) || ( gimg->image_height > height ) ) {
                       xpm = kgChangeSizeImage ( xpm , length , height ) ;
                   }
-                  if ( cimg != NULL ) cimg = kgMergeImages ( cimg , xpm , 0 , 0 ) ;
+                  if ( cimg != NULL ){
+                       cimg = kgMergeImages ( cimg , xpm , 0 , 0 ) ;
+                  }
                   else cimg = kgGetImageCopy ( NULL , xpm ) ;
               }
               if ( simg != NULL ) {
@@ -9848,7 +9850,9 @@ void transch(int c) {
               buts [ k ] .imgh = cimg;
 #else
               buts [ k ] .imgp = kgGetImageCopy ( NULL , buts [ k ] .imgn ) ;
+              buts [ k ] .imgp = kgChangeBrightness (buts [ k ] .imgp ,0.5); 
               buts [ k ] .imgh = kgGetImageCopy ( NULL , buts [ k ] .imgn ) ;
+              buts [ k ] .imgh = kgChangeBrightness (buts [ k ] .imgh ,1.2); 
 #endif
               if ( xpm != NULL ) kgFreeImage ( xpm ) ;
               if ( simg != NULL ) kgFreeImage ( simg ) ;
@@ -9857,6 +9861,10 @@ void transch(int c) {
 //             printf("TCB:k=%d\n",k);
 //             fflush(stdout);
       }
+      kgFreeGmImage(cimgn);
+      kgFreeGmImage(cimgp);
+      cimgn=NULL;
+      cimgp=NULL;
 #else
       n = b->nx*b->ny;
       for ( k = 0; k < n; k++ ) {
@@ -16262,13 +16270,10 @@ void transch(int c) {
           if ( tx->F.Imgs == NULL ) {
              tx->F.Imgs = ( void * ) kgFixedFontChars \
                 ( FontFile , T->FontSize ) ;
-             Taimgs =  tx->F.Imgs; 
           }
           else if ( ( T->Font != tx->F.fontno ) || ( T->FontSize != tx->F.Size ) ) {
-              printf("uiFreeImgStrs\n");
               uiFreeImgStrs ( tx->F.Imgs ) ;
               tx->F.Imgs = ( void * ) kgFixedFontChars ( FontFile , T->FontSize ) ;
-              Taimgs =  tx->F.Imgs; 
           }
           tx->F.code = 't';
 //          tx->F.name = ( char * ) Drecord ( MonoList , T->Font ) ;
@@ -16384,7 +16389,7 @@ void transch(int c) {
           img = kgGetResizedImage ( fid ) ;
           kgCloseImage ( fid ) ;
           kgImage ( D , img , X1 , Y1 , xsize , ysize , 0.0 , 1.0 ) ;
-          kgFreeImage ( img ) ;
+          kgFreeGmImage ( img ) ;
           for ( i = 0; i < tx->ny; i++ ) {
               for ( j = 0; j < nx; j++ ) {
                   k = j+i*nx;

@@ -1741,7 +1741,7 @@ unsigned char *kgGetPrimary(void * Tmp);
 unsigned char *kgGetClipBoard(void * Tmp);
 int kgSetPrimary(void * Tmp,unsigned char *data);
 int kgSetClipBoard(void * Tmp,unsigned char *data);
-int  kgProcessClips(void *Tmp,int butn);
+void *  kgProcessClips(void *Tmp,int butn);
 int kgEnableSelection(void *Tmp);
 int kgDisableSelection(void *Tmp);
 int kgClearHighlight(void *Tmp);
