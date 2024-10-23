@@ -15515,7 +15515,7 @@ void transch(int c) {
       tfill = tx->gc.tabl_fill;
       if ( sw == 0 ) tclr = tx->gc.tabl_hchar;
       kgGetDefaultRGB ( tclr , & rd , & gr , & bl ) ;
-#if 0
+#if 1
       if ( type == 1 ) {
           y1 -= 2;
           y2 += 2;
@@ -16393,7 +16393,7 @@ void transch(int c) {
           for ( i = 0; i < tx->ny; i++ ) {
               for ( j = 0; j < nx; j++ ) {
                   k = j+i*nx;
-                 _uiPrintTableCell ( T , k , 0 ) ;
+                  _uiPrintTableCell ( T , k , 0 ) ;
               }
           }
           if ( type == 0 ) uidraw_proj ( D , X1-2 , D->evgay-Y1+2 , \
