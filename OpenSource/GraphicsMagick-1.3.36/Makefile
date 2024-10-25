@@ -2385,7 +2385,7 @@ distuninstallcheck_listfiles = find . -type f -print
 am__distuninstallcheck_listfiles = $(distuninstallcheck_listfiles) \
   | sed 's|^\./|$(prefix)/|' | grep -v '$(infodir)/dir$$'
 distcleancheck_listfiles = find . -type f -print
-ACLOCAL = aclocal -I /usr/share/aclocal
+ACLOCAL = ${SHELL} '/home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36/config/missing' aclocal-1.16
 AMTAR = $${TAR-tar}
 AM_DEFAULT_VERBOSITY = 1
 AR = ar
@@ -2393,7 +2393,7 @@ AS = as
 AUTOCONF = ${SHELL} '/home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36/config/missing' autoconf
 AUTOHEADER = ${SHELL} '/home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36/config/missing' autoheader
 AUTOMAKE = ${SHELL} '/home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36/config/missing' automake-1.16
-AWK = gawk
+AWK = mawk
 BIN_DIR = /home/kulina/BUILD/kglib/bin
 BrowseDelegate = xdg-open
 CC = gcc
@@ -2426,16 +2426,16 @@ DcrawExtraOptions = -T
 ECHO_C = 
 ECHO_N = -n
 ECHO_T = 
-EGREP = /bin/grep -E
+EGREP = /usr/bin/grep -E
 EXEC_PREFIX_DIR = /home/kulina/BUILD/kglib
 EXEEXT = 
 EditorDelegate = xterm
-FGREP = /bin/grep -F
+FGREP = /usr/bin/grep -F
 FIGDecodeDelegate = fig2dev
-FT_CFLAGS = -I/home/kulina/BUILD/kglib/include/freetype2 -I/home/kulina/BUILD/kglib/include
-FT_LIBS = -L/home/kulina/BUILD/kglib/lib -lfreetype
+FT_CFLAGS = -I/home/kulina/BUILD/kglib/include/freetype2 -I/home/kulina/BUILD/kglib/include 
+FT_LIBS = -L/home/kulina/BUILD/kglib/lib -lfreetype 
 GMDelegate = gm
-GREP = /bin/grep
+GREP = /usr/bin/grep
 GSCMYKDevice = pamcmyk32
 GSColorAlphaDevice = pngalpha
 GSColorDevice = pnmraw
@@ -2445,7 +2445,7 @@ GSMonoDevice = pbmraw
 GSPDFDevice = pdfwrite
 GSPSDevice = ps2write
 GSPaletteDevice = pcx256
-GSVersion = 10.01.0
+GSVersion = 9.55.0
 HG_BRANCH_TAG = GraphicsMagick-1_3
 HPGLDecodeDelegate = hp2xx
 HTMLDecodeDelegate = html2ps
@@ -2454,7 +2454,7 @@ ILBMDecodeDelegate = ilbmtoppm
 ILBMEncodeDelegate = ppmtoilbm
 INCLUDE_DIR = /home/kulina/BUILD/kglib/include
 INFO_DIR = /home/kulina/BUILD/kglib/share/info
-INSTALL = /bin/install -c
+INSTALL = /usr/bin/install -c
 INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_PROGRAM = ${INSTALL}
 INSTALL_SCRIPT = ${INSTALL}
@@ -2465,7 +2465,7 @@ INT32_T = signed int
 INT64_F = "l"
 INT64_T = signed long
 INT8_T = signed char
-LD = /bin/ld -m elf_x86_64
+LD = /usr/bin/ld -m elf_x86_64
 LDFLAGS = -L/home/kulina/BUILD/kglib/lib -L/home/kulina/BUILD/kglib/lib
 LFS_CPPFLAGS =  -D_LARGE_FILES=1
 LIBEXEC_DIR = /home/kulina/BUILD/kglib/libexec
@@ -2506,12 +2506,12 @@ LIB_XEXT =
 LIB_XML = 
 LIB_XML_DEPS = 
 LIB_ZLIB = -lz
-LIB_ZSTD = -lzstd
+LIB_ZSTD = 
 LIPO = 
 LN_S = ln -s
 LOCALSTATE_DIR = /home/kulina/BUILD/kglib/var
 LPDelegate = lp
-LPRDelegate = /bin/lpr
+LPRDelegate = /usr/bin/lpr
 LTLIBOBJS = 
 LT_SYS_LIBRARY_PATH = 
 LaunchDelegate = gimp
@@ -2520,12 +2520,12 @@ MAGICKLIBDIR = /home/kulina/BUILD/kglib/lib
 MAGICK_API_CFLAGS = -I/home/kulina/BUILD/kglib/include -Wall
 MAGICK_API_CPPFLAGS = -I/home/kulina/BUILD/kglib/include/GraphicsMagick
 MAGICK_API_LDFLAGS = -L/home/kulina/BUILD/kglib/lib -L/home/kulina/BUILD/kglib/lib -L/home/kulina/BUILD/kglib/lib
-MAGICK_API_LIBS = -lGraphicsMagick -ltiff -lfreetype -ljasper -ljpeg -lpng16 -llzma -lbz2 -lz -lzstd -lm -lpthread
+MAGICK_API_LIBS = -lGraphicsMagick -ltiff -lfreetype -ljasper -ljpeg -lpng16 -llzma -lbz2 -lz -lm -lpthread
 MAGICK_API_PC_CPPFLAGS = 
 MAGICK_CODER_MODULE_PATH = /home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36/coders
 MAGICK_CONFIGURE_BUILD_PATH = /home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36/config
 MAGICK_CONFIGURE_SRC_PATH = /home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36/config
-MAGICK_DEP_LIBS = -ltiff -lfreetype -ljasper -ljpeg -lpng16 -llzma -lbz2 -lz -lzstd -lm -lpthread
+MAGICK_DEP_LIBS = -ltiff -lfreetype -ljasper -ljpeg -lpng16 -llzma -lbz2 -lz -lm -lpthread
 MAGICK_EXTRA_DEP_LIBS = 
 MAGICK_FEATURES = BZLIB JNG JP2 JPEG LZMA PNG PS TIFF TTF ZLIB
 MAGICK_FILTER_MODULE_PATH = /home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36/filters
@@ -2555,11 +2555,11 @@ MAINT = #
 MAKEINFO = ${SHELL} '/home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36/config/missing' makeinfo
 MANIFEST_TOOL = :
 MAN_DIR = /home/kulina/BUILD/kglib/share/man
-MKDIR_P = /bin/mkdir -p
+MKDIR_P = /usr/bin/mkdir -p
 MODULE_EXTRA_CPPFLAGS = 
 MPEGDecodeDelegate = mpeg2decode
 MPEGEncodeDelegate = mpeg2encode
-MVDelegate = /bin/mv
+MVDelegate = /usr/bin/mv
 MagickBinPath = /home/kulina/BUILD/kglib/bin
 MagickCoderModulesPath = /home/kulina/BUILD/kglib/lib/GraphicsMagick-1.3.36/modules-Q8/coders
 MagickFilterModulesPath = /home/kulina/BUILD/kglib/lib/GraphicsMagick-1.3.36/modules-Q8/filters
@@ -2568,7 +2568,7 @@ MagickLibPath = /home/kulina/BUILD/kglib/lib/GraphicsMagick-1.3.36
 MagickShareConfigPath = /home/kulina/BUILD/kglib/share/GraphicsMagick-1.3.36/config
 MagickSharePath = /home/kulina/BUILD/kglib/share/GraphicsMagick-1.3.36
 MogrifyDelegate = 
-NM = /bin/nm -B
+NM = /usr/bin/nm -B
 NMEDIT = 
 OBJDUMP = objdump
 OBJEXT = o
@@ -2592,7 +2592,7 @@ PERL =
 PERLMAINCC = 
 PERL_MAKE_OPTIONS = 
 PERL_SUPPORTS_DESTDIR = no
-PKG_CONFIG = /bin/pkg-config
+PKG_CONFIG = /usr/bin/pkg-config
 PKG_CONFIG_LIBDIR = 
 PKG_CONFIG_PATH = /home/kulina/BUILD/kglib/lib/pkgconfig:/usr/X11R76/lib/pkgconfig
 PREFIX_DIR = /home/kulina/BUILD/kglib
@@ -2601,13 +2601,13 @@ PTHREAD_CC = gcc
 PTHREAD_CFLAGS = 
 PTHREAD_CXX = 
 PTHREAD_LIBS = -lpthread
-PrintDelegate = /bin/lpr
+PrintDelegate = /usr/bin/lpr
 QuantumDepth = 8
 RANLIB = ranlib
-RPM = rpmbuild
-RST2HTML = 
+RPM = 
+RST2HTML = rst2html
 SBIN_DIR = /home/kulina/BUILD/kglib/sbin
-SED = /bin/sed
+SED = /usr/bin/sed
 SET_MAKE = 
 SHAREDSTATE_DIR = /home/kulina/BUILD/kglib/com
 SHELL = /bin/sh
@@ -2635,7 +2635,7 @@ X_CFLAGS =
 X_EXTRA_LIBS = 
 X_LIBS = 
 X_PRE_LIBS = 
-ZIP = 
+ZIP = zip
 abs_builddir = /home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36
 abs_srcdir = /home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36
 abs_top_builddir = /home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36
@@ -2662,7 +2662,7 @@ datarootdir = ${prefix}/share
 docdir = ${datarootdir}/doc/${PACKAGE}
 dvidir = ${docdir}
 exec_prefix = ${prefix}
-freetype_config = /bin/freetype-config
+freetype_config = 
 ghostscript_font_dir = /usr/share/ghostscript/fonts/
 host = x86_64-pc-linux-gnu
 host_alias = 
@@ -4685,10 +4685,10 @@ WWWAPI_EXTRA_DIST = \
 	$(WWWWAPI_FILES)
 
 WWWAPI_MAINTAINER_TARGETS = $(WWWAPI_HTML_TARGETS)
-##APIWHATIS = $(top_srcdir)/scripts/whatis.txt
-##FORMATCAPI = $(top_srcdir)/scripts/format_c_api_doc.py
-##APIRST2HTML_COMMAND = $(RST2HTMLDECO) \
-##  --link-stylesheet=../docutils-articles.css`
+#APIWHATIS = $(top_srcdir)/scripts/whatis.txt
+#FORMATCAPI = $(top_srcdir)/scripts/format_c_api_doc.py
+#APIRST2HTML_COMMAND = $(RST2HTMLDECO) \
+#  --link-stylesheet=../docutils-articles.css`
 
 wwwwandapidir = $(htmldir)/wand
 WWWWANDAPIDIR = $(top_srcdir)/www/wand
@@ -4809,28 +4809,28 @@ doc_DATA = \
 
 # Non-Automake subdirectories to distribute
 DISTDIRS = locale scripts www PerlMagick TclMagick
-DIST_WINDOWS_SRC_ZIP = 
+#DIST_WINDOWS_SRC_ZIP = 
 
 #
 # Build Windows source Zip and 7Zip balls
 #
-#DIST_WINDOWS_SRC_ZIP = $(PACKAGE_NAME)-$(PACKAGE_VERSION)$(PACKAGE_VERSION_ADDENDUM)-windows.zip
+DIST_WINDOWS_SRC_ZIP = $(PACKAGE_NAME)-$(PACKAGE_VERSION)$(PACKAGE_VERSION_ADDENDUM)-windows.zip
 DIST_WINDOWS_SRC_7ZIP = 
 #DIST_WINDOWS_SRC_7ZIP = $(PACKAGE_NAME)-$(PACKAGE_VERSION)$(PACKAGE_VERSION_ADDENDUM)-windows.7z
 
 #
 # RPM build support
 #
-DIST_ARCHIVE_SRPM = $(distdir)-1.src.rpm
-RPMDIR = rpmbuild
-RPMARCH = $(MAGICK_TARGET_CPU)
-#DIST_ARCHIVE_RPM = 
-DIST_ARCHIVE_RPM = \
-	$(RPMDIR)/$(RPMARCH)/$(PACKAGE_NAME)-$(PACKAGE_VERSION)$(PACKAGE_VERSION_ADDENDUM)-1.$(RPMARCH).rpm \
-	$(RPMDIR)/$(RPMARCH)/$(PACKAGE_NAME)-c++-$(PACKAGE_VERSION)$(PACKAGE_VERSION_ADDENDUM)-1.$(RPMARCH).rpm \
-	$(RPMDIR)/$(RPMARCH)/$(PACKAGE_NAME)-c++-devel-$(PACKAGE_VERSION)$(PACKAGE_VERSION_ADDENDUM)-1.$(RPMARCH).rpm \
-	$(RPMDIR)/$(RPMARCH)/$(PACKAGE_NAME)-devel-$(PACKAGE_VERSION)$(PACKAGE_VERSION_ADDENDUM)-1.$(RPMARCH).rpm \
-	$(RPMDIR)/$(RPMARCH)/$(PACKAGE_NAME)-perl-$(PACKAGE_VERSION)$(PACKAGE_VERSION_ADDENDUM)-1.$(RPMARCH).rpm
+#DIST_ARCHIVE_SRPM = $(distdir)-1.src.rpm
+#RPMDIR = rpmbuild
+#RPMARCH = $(MAGICK_TARGET_CPU)
+DIST_ARCHIVE_RPM = 
+#DIST_ARCHIVE_RPM = \
+#	$(RPMDIR)/$(RPMARCH)/$(PACKAGE_NAME)-$(PACKAGE_VERSION)$(PACKAGE_VERSION_ADDENDUM)-1.$(RPMARCH).rpm \
+#	$(RPMDIR)/$(RPMARCH)/$(PACKAGE_NAME)-c++-$(PACKAGE_VERSION)$(PACKAGE_VERSION_ADDENDUM)-1.$(RPMARCH).rpm \
+#	$(RPMDIR)/$(RPMARCH)/$(PACKAGE_NAME)-c++-devel-$(PACKAGE_VERSION)$(PACKAGE_VERSION_ADDENDUM)-1.$(RPMARCH).rpm \
+#	$(RPMDIR)/$(RPMARCH)/$(PACKAGE_NAME)-devel-$(PACKAGE_VERSION)$(PACKAGE_VERSION_ADDENDUM)-1.$(RPMARCH).rpm \
+#	$(RPMDIR)/$(RPMARCH)/$(PACKAGE_NAME)-perl-$(PACKAGE_VERSION)$(PACKAGE_VERSION_ADDENDUM)-1.$(RPMARCH).rpm
 
 
 # Add zstd compression to output files
@@ -11017,14 +11017,14 @@ uninstall-data-html:
 #$(WWWDIR)/color.html : $(NAMED_COLORS)
 #	$(NAMED_COLORS) > $@
 
-##$(WWWAPI_HTML_TARGETS) : $(FORMATCAPI) $(RST2HTMLDECO) $(APIWHATIS) $(top_srcdir)/scripts/html_fragments.py $(top_srcdir)/www/api/Makefile.am $(top_srcdir)/www/api/api_hyperlinks.rst
+#$(WWWAPI_HTML_TARGETS) : $(FORMATCAPI) $(RST2HTMLDECO) $(APIWHATIS) $(top_srcdir)/scripts/html_fragments.py $(top_srcdir)/www/api/Makefile.am $(top_srcdir)/www/api/api_hyperlinks.rst
 
-##$(WWWAPIDIR)/%.apirst : $(top_srcdir)/magick/%.c
-##	$(FORMATCAPI) --whatis-file $(APIWHATIS) $< $@
+#$(WWWAPIDIR)/%.apirst : $(top_srcdir)/magick/%.c
+#	$(FORMATCAPI) --whatis-file $(APIWHATIS) $< $@
 
-##$(WWWAPIDIR)/%.html : $(WWWAPIDIR)/%.apirst
-##	$(RST2HTMLDECO) --link-stylesheet=`$(RELPATH) $(top_srcdir)/www $@`docutils-api.css \
-##	--url-prefix=`$(RELPATH) $(top_srcdir)/www $@` $< $@
+#$(WWWAPIDIR)/%.html : $(WWWAPIDIR)/%.apirst
+#	$(RST2HTMLDECO) --link-stylesheet=`$(RELPATH) $(top_srcdir)/www $@`docutils-api.css \
+#	--url-prefix=`$(RELPATH) $(top_srcdir)/www $@` $< $@
 
 #APIWHATIS = $(top_srcdir)/scripts/whatis.txt
 #FORMATCAPI = $(top_srcdir)/scripts/format_c_api_doc.py
@@ -11032,20 +11032,20 @@ uninstall-data-html:
 #APIRST2HTML_COMMAND = $(RST2HTMLDECO) \
 #  --link-stylesheet=../docutils-articles.css`
 
-##$(WWWWANDAPI_HTML_TARGETS) : $(FORMATCAPI) \
-##	$(RST2HTMLDECO) \
-##	$(APIWHATIS) \
-##	$(top_srcdir)/scripts/html_fragments.py \
-##	$(top_srcdir)/www/wand/Makefile.am \
-##	$(top_srcdir)/www/api/api_hyperlinks.rst
+#$(WWWWANDAPI_HTML_TARGETS) : $(FORMATCAPI) \
+#	$(RST2HTMLDECO) \
+#	$(APIWHATIS) \
+#	$(top_srcdir)/scripts/html_fragments.py \
+#	$(top_srcdir)/www/wand/Makefile.am \
+#	$(top_srcdir)/www/api/api_hyperlinks.rst
 
-##$(WWWWANDAPIDIR)/%.apirst : $(top_srcdir)/wand/%.c
-##	$(FORMATCAPI) --whatis-file $(APIWHATIS) \
-##	--include-rst ../api/api_hyperlinks.rst $< $@
+#$(WWWWANDAPIDIR)/%.apirst : $(top_srcdir)/wand/%.c
+#	$(FORMATCAPI) --whatis-file $(APIWHATIS) \
+#	--include-rst ../api/api_hyperlinks.rst $< $@
 
-##$(WWWWANDAPIDIR)/%.html : $(WWWWANDAPIDIR)/%.apirst
-##	$(RST2HTMLDECO) --link-stylesheet=`$(RELPATH) $(top_srcdir)/www $@`docutils-api.css \
-##	--url-prefix=`$(RELPATH) $(top_srcdir)/www $@` $< $@
+#$(WWWWANDAPIDIR)/%.html : $(WWWWANDAPIDIR)/%.apirst
+#	$(RST2HTMLDECO) --link-stylesheet=`$(RELPATH) $(top_srcdir)/www $@`docutils-api.css \
+#	--url-prefix=`$(RELPATH) $(top_srcdir)/www $@` $< $@
 
 utilities/tests/montage.log : \
 	utilities/tests/effects.log
@@ -11251,27 +11251,27 @@ $(DIST_WINDOWS_SRC_7ZIP) windows-dist:
 #	$(P7ZIP) a -t7z -mx=9 $(DIST_WINDOWS_SRC_7ZIP) $(PACKAGE_NAME)-$(PACKAGE_VERSION)$(PACKAGE_VERSION_ADDENDUM)
 #	chmod 644 $(DIST_WINDOWS_SRC_7ZIP)
 	rm -rf $(PACKAGE_NAME)-$(PACKAGE_VERSION)$(PACKAGE_VERSION_ADDENDUM)
-.PHONY: srpm
-$(DIST_ARCHIVE_SRPM) srpm: $(distdir).tar.bz2
-	rm -f $(DIST_ARCHIVE_SRPM)
-	$(RPM) --define="_sourcedir `pwd`" --define="_srcrpmdir `pwd`" --nodeps -bs GraphicsMagick.spec
-	@echo ==============================================================
-	@echo $(DIST_ARCHIVE_SRPM) is ready for distribution.
-	@echo ==============================================================
+#.PHONY: srpm
+#$(DIST_ARCHIVE_SRPM) srpm: $(distdir).tar.bz2
+#	rm -f $(DIST_ARCHIVE_SRPM)
+#	$(RPM) --define="_sourcedir `pwd`" --define="_srcrpmdir `pwd`" --nodeps -bs GraphicsMagick.spec
+#	@echo ==============================================================
+#	@echo $(DIST_ARCHIVE_SRPM) is ready for distribution.
+#	@echo ==============================================================
 
-.PHONY: rpm
-rpm:
-	rm -rf $(RPMDIR)
-	$(MKDIR_P) $(RPMDIR)
-	$(MKDIR_P) $(RPMDIR)/BUILD
-	$(MKDIR_P) $(RPMDIR)/RPMS
-	$(RPM) --define="_sourcedir `pwd`" --define="_rpmdir `pwd`/$(RPMDIR)/RPMS" \
-	  --define="_builddir `pwd`/$(RPMDIR)/BUILD" --define='quant $(QuantumDepth)' \
-	  --nodeps -bb GraphicsMagick.spec
-	rm -rf rpmbuild
-	@echo ==============================================================
-	@echo $(DIST_ARCHIVE_RPM) is ready for distribution.
-	@echo ==============================================================
+#.PHONY: rpm
+#rpm:
+#	rm -rf $(RPMDIR)
+#	$(MKDIR_P) $(RPMDIR)
+#	$(MKDIR_P) $(RPMDIR)/BUILD
+#	$(MKDIR_P) $(RPMDIR)/RPMS
+#	$(RPM) --define="_sourcedir `pwd`" --define="_rpmdir `pwd`/$(RPMDIR)/RPMS" \
+#	  --define="_builddir `pwd`/$(RPMDIR)/BUILD" --define='quant $(QuantumDepth)' \
+#	  --nodeps -bb GraphicsMagick.spec
+#	rm -rf rpmbuild
+#	@echo ==============================================================
+#	@echo $(DIST_ARCHIVE_RPM) is ready for distribution.
+#	@echo ==============================================================
 
 # Rules to build a .tar.zst tarball
 dist-zstd: distdir
