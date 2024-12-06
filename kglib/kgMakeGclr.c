@@ -1,4 +1,4 @@
-#include <kulina.h>
+#include "kulina.h"
 #include <string.h>
 #define NT 38
 typedef struct _gcentry {

@@ -3,7 +3,7 @@ include config.mak
 #OFLAGS	= -O  -mpentium 
 
 CC	= cc  -g  -msse3 -O3 -DUNIX -pthread $(X11_CFLAFS)  $(CFLAGS) \
--I/usr/include/freetype2 -lfreetype
+-I$(KULINA)/kglib/kglib -I/usr/include/freetype2 -lfreetype
 #CC	= cc    -msse3 -O3 -DUNIX -pthread $(X11_CFLAFS)  $(CFLAGS)
 #CC	= cc    -msse3 -g -DUNIX  $(CFLAGS)
 all	: libkulina.a libdlink.a

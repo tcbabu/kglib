@@ -41,7 +41,7 @@
 #define GM_BUILD_LDFLAGS "-L/home/kulina/BUILD/kglib/lib -L/home/kulina/BUILD/kglib/lib"
 
 /* LIBS used for linking */
-#define GM_BUILD_LIBS "-ltiff -lfreetype -ljasper -ljpeg -lpng16 -llzma -lbz2 -lz -lm -lpthread"
+#define GM_BUILD_LIBS "-ltiff -lfreetype -ljasper -ljpeg -lpng16 -llzma -lbz2 -lz -lzstd -lm -lpthread"
 
 /* Define if C++ compiler supports __func__ */
 /* #undef HAS_CPP__func__ */
@@ -479,7 +479,7 @@
 #define HasZLIB 1
 
 /* Define if you have zstd compression library */
-/* #undef HasZSTD */
+#define HasZSTD 1
 
 /* Define to the sub-directory where libtool stores uninstalled libraries. */
 #define LT_OBJDIR ".libs/"
