@@ -21,7 +21,7 @@ my $magick_CC='gcc';
 my $magick_CPPFLAGS='-I../ -I.. -I/home/kulina/BUILD/kglib/include -I/home/kulina/BUILD/kglib/include/freetype2';
 my $magick_LDFLAGS='-L/home/kulina/BUILD/kglib/lib -L/home/kulina/BUILD/kglib/lib';
 my $magick_BIN_DIR="$ENV{'DESTDIR'}/home/kulina/BUILD/kglib/bin";
-my $magick_API_LIBS='-lGraphicsMagick -ltiff -lfreetype -ljasper -ljpeg -lpng16 -llzma -lbz2 -lz -lm -lpthread';
+my $magick_API_LIBS='-lGraphicsMagick -ltiff -lfreetype -ljasper -ljpeg -lpng16 -llzma -lbz2 -lz -lzstd -lm -lpthread';
 my $magick_PERLMAINCC='';
 my $magick_LIB_DIR="$ENV{'DESTDIR'}/home/kulina/BUILD/kglib/lib";
 

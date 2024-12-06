@@ -1,7 +1,7 @@
 PREFIX=/home/kulina/BUILD/kglib
 KULINA=/home/kulina/BUILD/kglib
 export X11_CFLAGS="-I/home/kulina/BUILD/kglib/include "
-export X11_LIBS="-lX11 "
+export X11_LIBS="-lX11"
 export PKG_CONFIG_PATH=/home/kulina/BUILD/kglib/lib/pkgconfig:/usr/X11R76/lib/pkgconfig
 #export PKG_CONFIG_PATH=$KULINA/lib/pkgconfig
 export LD_CONFIG_PATH=$LD_CONFIG_PATH:$KULINA/lib
@@ -15,14 +15,14 @@ echo $CFLAGS
 echo $PKG_CONFIG_PATH
 echo "$X11_LIBS"
 echo "$X11_CFLAGS"
-tar xf xz-5.0.3.tar.gz
-cd xz-5.0.3
+tar xf xz-5.6.3.tar.gz
+cd xz-5.6.3
 mkdir -p $KULINA/include
 ./configure --prefix=$KULINA --enable-static --disable-shared >out
 make -j2 >out
 make -j2 install >out
 cd ..
-rm -r -f xz-5.0.3
+rm -r -f xz-5.6.3
 echo "xz"
 tar xf bzip2-1.0.6.tar.gz
 cd bzip2-1.0.6
@@ -40,13 +40,13 @@ make -j2 install >out
 cd ..
 rm -r -f zlib-1.2.13
 echo "zlib"
-tar xf gzip-1.12.tar.xz >out
-cd gzip-1.12
+tar xf gzip-1.13.tar.xz >out
+cd gzip-1.13
 ./configure --prefix=$KULINA  >out
 make -j2 >out
 make -j2 install  >out
 cd ..
-rm -rf gzip-1.12 >out
+rm -rf gzip-1.13 >out
 echo "gzip"
 tar xf libpng-1.6.9.tar.xz
 cd libpng-1.6.9

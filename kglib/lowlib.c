@@ -15397,28 +15397,35 @@ void transch(int c) {
       TX_STR *tx = T->tstr;
       elmt = tx->elmt;
       int x1 , y1 , x2 , y2;
-      for ( j = 1;j >= row;j++ ) {
+      _ui_cleantablecursor ( tx ) ;
+      k =row;
+      for ( i = 0;i < T->nx;i++ ) {
+              cell = ( k ) *T->nx+i;
+              kgFreeImage(elmt[cell].img);
+      }
+      for ( j = 1;j <= row;j++ ) {
           k = row-j;
           for ( i = 0;i < T->nx;i++ ) {
               cell = ( k ) *T->nx+i;
               x1 = elmt [ cell ] .x1;
               y1 = elmt [ cell ] .y1;
               x2 = elmt [ cell ] .x2;
-              y2 = elmt [ cell ] .y2;
+              y2 = elmt [ cell ] .y2+1;
               img = kgGetBackground ( D , x1 , y1 , x2 , y2 ) ;
               cell1 = cell+T->nx;
               x1 = elmt [ cell1 ] .x1;
               y1 = elmt [ cell1 ] .y1;
               x2 = elmt [ cell1 ] .x2;
-              y2 = elmt [ cell1 ] .y2;
+              y2 = elmt [ cell1 ] .y2+1;
               strcpy ( elmt [ cell1 ] .df , elmt [ cell ] .df ) ;
-//      kgImage ( D , img , x1 , y1 , x2-x1 , y2-y1 , 0.0 , 1.0 ) ;
-              kgRestoreImage ( D , img , x1 , y2 , x2-x1 , y2-y1 ) ;
+              elmt [ cell1 ] .startchar = elmt [ cell ] . startchar;
+              elmt [ cell1 ] . img =  elmt [ cell ] .img;
+              kgRestoreImage ( D , img , x1 , y1 , x2-x1+1 , y2-y1+1 ) ;
               kgFreeImage ( img ) ;
           }
       }
 //       kgUpdateWidget(T);
-//     kgUpdateOn(D);
+      kgUpdateOn(D);
       return 1;
   }
   int kgScrollDownTable ( void *Tmp , int row ) {
@@ -15432,30 +15439,31 @@ void transch(int c) {
       TX_STR *tx = T->tstr;
       elmt = tx->elmt;
       int x1 , y1 , x2 , y2;
+       _ui_cleantablecursor ( tx ) ;
+      for ( i = 0;i < T->nx;i++ ) kgFreeImage(elmt[i].img);
       for ( k = 1;k <= row;k++ ) {
           for ( i = 0;i < T->nx;i++ ) {
               cell = ( k ) *T->nx+i;
               x1 = elmt [ cell ] .x1;
               y1 = elmt [ cell ] .y1;
               x2 = elmt [ cell ] .x2;
-              y2 = elmt [ cell ] .y2;
+              y2 = elmt [ cell ] .y2+1;
               img = kgGetBackground ( D , x1 , y1 , x2 , y2 ) ;
               cell1 = cell-T->nx;
               x1 = elmt [ cell1 ] .x1;
               y1 = elmt [ cell1 ] .y1;
               x2 = elmt [ cell1 ] .x2;
-              y2 = elmt [ cell1 ] .y2;
+              y2 = elmt [ cell1 ] .y2+1;
               strcpy ( elmt [ cell1 ] .df , elmt [ cell ] .df ) ;
+              elmt [ cell1 ] . img =  elmt [ cell ] .img;
               if ( img != NULL ) {
-//      kgImage ( D , img , x1 , y1 , x2-x1 , y2-y1 , 0.0 , 1.0 ) ;
-                  kgRestoreImage ( D , img , x1 , y2 , x2-x1 , y2-y1 ) ;
+                  kgRestoreImage ( D , img , x1 , y1 , x2-x1+1 , y2-y1+1 ) ;
                   kgFreeImage ( img ) ;
               }
               else fprintf ( stderr , "Failed to copy screen\n" ) ;
           }
       }
- //      kgUpdateWidget(T);
-//       kgUpdateOn(D);
+      kgUpdateOn(D);
       return 1;
   }
   void *uiMakeTableCellImage ( DIT *T , int cell , int drcur ) {
@@ -15591,6 +15599,82 @@ void transch(int c) {
 #else 
       if ( img != NULL ) kgFreeImage ( img ) ;
 #endif
+      return 1;
+  }
+  int kgPrintTableCell ( void  *Tmp , int cell ) {
+     DIT *T=(DIT *)Tmp;
+     T_ELMT *elmt;
+      TX_STR *tx = T->tstr;
+
+      elmt = tx->elmt;
+      elmt[cell].img = NULL;
+      elmt[cell].startchar = 0;
+      uimake_telmt ( elmt+cell ) ;
+     return _uiPrintTableCell((DIT *)T,cell,0);
+  }
+  int kgScrollUpTable_testing ( DIT *T ) {
+      T_ELMT *elmt;
+      DIALOG *D = T->D;
+      TX_STR *tx = T->tstr;
+      int x1 , y1 , x2 , y2;
+      int k , i,nx,ny,j;
+      int type = T->type;
+      char *str;
+      int ch;
+      int curbox,cell;
+      int size , xsize , ysize , FontSize , sw;
+      float th , tw , tg , xx , yy;
+      int tfill , tclr;
+      int rd , gr , bl;
+      char Buf [ 2000 ] , stmp [ 10 ] ;
+      void *fid , *img , *img2,**Cimgs;
+      float curpos;
+      int ylng;
+      kgWC *wc;
+      kgDC *dc;
+      wc = WC ( D ) ;
+      elmt = tx->elmt;
+      nx = T->nx;
+      ny = T->ny;
+      Cimgs = (void **)malloc(sizeof(void *)*nx);
+      curbox = tx->row*tx->nx+tx->col;
+      strcpy ( stmp , ( char * ) " " ) ;
+      for(k=0;k<nx;k++){ 
+        kgFreeGmImage(elmt[k].img);      
+        Cimgs[k]= uiMakeTableCellImage ( T , k , 0 ) ;
+      }
+      for(i=1;i<ny;i++) {
+         for(j=0;j<nx;j++){ 
+           cell = i*nx+j;
+           elmt[cell-nx].img = elmt[cell].img;
+           k = cell;
+           sw = elmt [ k ] .sw;
+           x1 = elmt [ k ] .x1;
+           y1 = elmt [ k ] .y1;
+           x2 = elmt [ k ] .x2;
+           y2 = elmt [ k ] .y2;
+           tclr = tx->gc.tabl_char;
+           tfill = tx->gc.tabl_fill;
+
+           if ( sw == 0 ) tclr = tx->gc.tabl_hchar;
+           kgGetDefaultRGB ( tclr , & rd , & gr , & bl ) ;
+           if ( type == 1 ) {
+            y1 -= 2;
+            y2 += 2;
+           }
+           xsize = ( x2-x1 ) ;
+           ysize = ( y2-y1 ) ;
+           img2 = elmt [ k ] .img;
+           if(img2== NULL) continue;
+           img = kgCopyImage(Cimgs[j]);
+           kgSetImageColor ( img2 , rd , gr , bl ) ;
+           kgAddImages ( img , img2 , FontSize/2 , ysize-2*FontSize+1 ) ;
+           kgImage ( D , img , x1 , y1+2 , xsize , ysize , 0.0 , 1.0 ) ;
+           kgFreeGmImage ( img ) ;
+         }
+      }
+      for(k=0;k<nx;k++) kgFreeGmImage(Cimgs[k]);
+      free(Cimgs);
       return 1;
   }
   int _uiUpdateTableCell ( DIT *T , int cell , int drcur ) {
