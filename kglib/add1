@@ -1,0 +1,71 @@
+  char *uiCleanOldString(char *Str,char *Buf,int *cval,int *fval,float *wfac,float *zfac) {
+      int i,k;
+      char *pt=Str;
+//      printf("Str: %s\n",Str);
+//      fflush(stdout);
+      while(Str[0]=='!') {
+              switch(Str[1]) {
+                case 'f':
+                  *fval = (Str[2]-'0')*10+(Str[3]-'0');
+                  break;
+                case 'c':
+                  *cval = (Str[2]-'0')*10+(Str[3]-'0');
+                  break;
+                case 'w':
+                  *wfac = (float)(Str[2]-'0')/(Str[3]-'0');
+                  break;
+                case 'z':
+                  *zfac = (float)(Str[2]-'0')/(Str[3]-'0');
+                  break;
+                case 'h':
+                  break;
+                case 'S':
+                case 's':
+                  Str +=2;
+                  continue;
+                default:
+                  Str +=2;
+                  continue;
+             }
+             Str +=4;
+          }
+      i=0;
+      k=0;
+      Str=pt;
+      while(Str[i]!='\0') {
+        if(Str[i]=='!') {
+              switch(Str[i+1]) {
+                case 'f':
+                case 'c':
+                case 'w':
+                case 'z':
+                case 'h':
+                  i = i+4;
+                  break;
+                case 'S':
+                  i =i+2;
+                  break;
+                case 's':
+                  i =i+2;
+                  break;
+                 case '!':
+                 Buf[k]='!';
+                 k++;i+=2;
+                 break;
+                default:
+                  i+=2;
+                  break;
+             }
+         }
+         else {
+           Buf[k++]=Str[i++];
+           Buf[k]='\0';
+//      printf("Buf: %s\n",Buf);
+//      fflush(stdout);
+         }
+      }
+      Buf[k]='\0';
+//      printf("Buf: %s\n",Buf);
+//      fflush(stdout);
+      return Buf;
+  }

@@ -1,0 +1,7 @@
+      for ( k = 0; k < n; k++ ) {
+          buts [ k ] .imgn = NULL;
+          buts [ k ] .imgp = NULL;
+          buts [ k ] .imgh = NULL;
+          buts [ k ] .Bimg = NULL;
+          buts [ k ] .Bimg0 = NULL;
+      }
