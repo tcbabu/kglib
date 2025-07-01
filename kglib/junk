@@ -1,0 +1,1 @@
+  int kgSetScrollMovement ( void *Tmp , double mvnt) {
