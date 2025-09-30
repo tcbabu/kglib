@@ -2385,7 +2385,7 @@ distuninstallcheck_listfiles = find . -type f -print
 am__distuninstallcheck_listfiles = $(distuninstallcheck_listfiles) \
   | sed 's|^\./|$(prefix)/|' | grep -v '$(infodir)/dir$$'
 distcleancheck_listfiles = find . -type f -print
-ACLOCAL = aclocal -I /usr/share/aclocal
+ACLOCAL = ${SHELL} '/home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36/config/missing' aclocal-1.16
 AMTAR = $${TAR-tar}
 AM_DEFAULT_VERBOSITY = 1
 AR = ar
@@ -2398,7 +2398,7 @@ BIN_DIR = /home/kulina/BUILD/kglib/bin
 BrowseDelegate = xdg-open
 CC = gcc
 CCDEPMODE = depmode=gcc3
-CFLAGS = -I/home/kulina/BUILD/kglib/include -Wall
+CFLAGS = -I/home/kulina/BUILD/kglib/include -I/home/kulina/BUILD/kglib/include/freetype2 -Wno-incompatible-pointer-types -Wno-implicit-function-declaration -Wall
 CGMDecodeDelegate = ralcgm
 CONFIG_STATUS_DEPENDENCIES = $(top_srcdir)/ChangeLog $(top_srcdir)/version.sh
 CPP = gcc -E
@@ -2412,10 +2412,10 @@ ConvertDelegate =
 DATA_DIR = /home/kulina/BUILD/kglib/share
 DCRAWDecodeDelegate = dcraw
 DEFS = -DHAVE_CONFIG_H
-DELEGATES = bzlib jng jp2 jpeg lzma png ps tiff ttf zlib
+DELEGATES = bzlib jng jp2 jpeg lzma png ps tiff zlib
 DEPDIR = .deps
 DIRSEP = :
-DISTCHECK_CONFIG_FLAGS = 'CFLAGS=-I/home/kulina/BUILD/kglib/include' 'CPPFLAGS=-I/home/kulina/BUILD/kglib/include' 'LDFLAGS=-L/home/kulina/BUILD/kglib/lib'  --with-fpx=no  --with-webp=no  --with-lcms2=no  --with-trio=no  --with-wmf=no  --with-fontpath=  --with-xml=no  --with-perl=no 
+DISTCHECK_CONFIG_FLAGS = 'CFLAGS=-I/home/kulina/BUILD/kglib/include -I/home/kulina/BUILD/kglib/include/freetype2 -Wno-incompatible-pointer-types -Wno-implicit-function-declaration ' 'CPPFLAGS=-I/home/kulina/BUILD/kglib/include' 'LDFLAGS=-L/home/kulina/BUILD/kglib/lib'  --with-fpx=no  --with-webp=no  --with-lcms2=no  --with-trio=no  --with-wmf=no  --with-fontpath=  --with-xml=no  --with-perl=no 
 DLLTOOL = false
 DOC_DIR = /home/kulina/BUILD/kglib/share/doc/GraphicsMagick
 DOTDecodeDelegate = dot
@@ -2426,16 +2426,16 @@ DcrawExtraOptions = -T
 ECHO_C = 
 ECHO_N = -n
 ECHO_T = 
-EGREP = /bin/grep -E
+EGREP = /usr/bin/grep -E
 EXEC_PREFIX_DIR = /home/kulina/BUILD/kglib
 EXEEXT = 
 EditorDelegate = xterm
-FGREP = /bin/grep -F
+FGREP = /usr/bin/grep -F
 FIGDecodeDelegate = fig2dev
-FT_CFLAGS = -I/home/kulina/BUILD/kglib/include/freetype2 -I/home/kulina/BUILD/kglib/include
-FT_LIBS = -L/home/kulina/BUILD/kglib/lib -lfreetype
+FT_CFLAGS = -I/home/kulina/BUILD/kglib/include/freetype2 -I/home/kulina/BUILD/kglib/include -I/home/kulina/BUILD/kglib/include/libpng16 -I/home/kulina/BUILD/kglib/include/harfbuzz 
+FT_LIBS = -L/home/kulina/BUILD/kglib/lib -lfreetype 
 GMDelegate = gm
-GREP = /bin/grep
+GREP = /usr/bin/grep
 GSCMYKDevice = pamcmyk32
 GSColorAlphaDevice = pngalpha
 GSColorDevice = pnmraw
@@ -2445,7 +2445,7 @@ GSMonoDevice = pbmraw
 GSPDFDevice = pdfwrite
 GSPSDevice = ps2write
 GSPaletteDevice = pcx256
-GSVersion = 10.01.0
+GSVersion = 10.05.1
 HG_BRANCH_TAG = GraphicsMagick-1_3
 HPGLDecodeDelegate = hp2xx
 HTMLDecodeDelegate = html2ps
@@ -2454,7 +2454,7 @@ ILBMDecodeDelegate = ilbmtoppm
 ILBMEncodeDelegate = ppmtoilbm
 INCLUDE_DIR = /home/kulina/BUILD/kglib/include
 INFO_DIR = /home/kulina/BUILD/kglib/share/info
-INSTALL = /bin/install -c
+INSTALL = /usr/bin/install -c
 INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_PROGRAM = ${INSTALL}
 INSTALL_SCRIPT = ${INSTALL}
@@ -2465,8 +2465,8 @@ INT32_T = signed int
 INT64_F = "l"
 INT64_T = signed long
 INT8_T = signed char
-LD = /bin/ld -m elf_x86_64
-LDFLAGS = -L/home/kulina/BUILD/kglib/lib -L/home/kulina/BUILD/kglib/lib
+LD = /usr/bin/ld -m elf_x86_64
+LDFLAGS = -L/home/kulina/BUILD/kglib/lib
 LFS_CPPFLAGS =  -D_LARGE_FILES=1
 LIBEXEC_DIR = /home/kulina/BUILD/kglib/libexec
 LIBOBJS = 
@@ -2496,7 +2496,7 @@ LIB_TCMALLOC =
 LIB_THREAD = -lpthread
 LIB_TIFF = -ltiff
 LIB_TRIO = 
-LIB_TTF = -lfreetype
+LIB_TTF = 
 LIB_UMEM = 
 LIB_WEBP = 
 LIB_WMF = 
@@ -2511,23 +2511,23 @@ LIPO =
 LN_S = ln -s
 LOCALSTATE_DIR = /home/kulina/BUILD/kglib/var
 LPDelegate = lp
-LPRDelegate = /bin/lpr
+LPRDelegate = /usr/bin/lpr
 LTLIBOBJS = 
 LT_SYS_LIBRARY_PATH = 
 LaunchDelegate = gimp
 MAGICKLIB = -L/home/kulina/BUILD/kglib/lib -lGraphicsMagick
 MAGICKLIBDIR = /home/kulina/BUILD/kglib/lib
-MAGICK_API_CFLAGS = -I/home/kulina/BUILD/kglib/include -Wall
+MAGICK_API_CFLAGS = -I/home/kulina/BUILD/kglib/include -I/home/kulina/BUILD/kglib/include/freetype2 -Wno-incompatible-pointer-types -Wno-implicit-function-declaration -Wall
 MAGICK_API_CPPFLAGS = -I/home/kulina/BUILD/kglib/include/GraphicsMagick
-MAGICK_API_LDFLAGS = -L/home/kulina/BUILD/kglib/lib -L/home/kulina/BUILD/kglib/lib -L/home/kulina/BUILD/kglib/lib
-MAGICK_API_LIBS = -lGraphicsMagick -ltiff -lfreetype -ljasper -ljpeg -lpng16 -llzma -lbz2 -lz -lzstd -lm -lpthread
+MAGICK_API_LDFLAGS = -L/home/kulina/BUILD/kglib/lib -L/home/kulina/BUILD/kglib/lib
+MAGICK_API_LIBS = -lGraphicsMagick -ltiff -ljasper -ljpeg -lpng16 -llzma -lbz2 -lz -lzstd -lm -lpthread
 MAGICK_API_PC_CPPFLAGS = 
 MAGICK_CODER_MODULE_PATH = /home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36/coders
 MAGICK_CONFIGURE_BUILD_PATH = /home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36/config
 MAGICK_CONFIGURE_SRC_PATH = /home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36/config
-MAGICK_DEP_LIBS = -ltiff -lfreetype -ljasper -ljpeg -lpng16 -llzma -lbz2 -lz -lzstd -lm -lpthread
+MAGICK_DEP_LIBS = -ltiff -ljasper -ljpeg -lpng16 -llzma -lbz2 -lz -lzstd -lm -lpthread
 MAGICK_EXTRA_DEP_LIBS = 
-MAGICK_FEATURES = BZLIB JNG JP2 JPEG LZMA PNG PS TIFF TTF ZLIB
+MAGICK_FEATURES = BZLIB JNG JP2 JPEG LZMA PNG PS TIFF ZLIB
 MAGICK_FILTER_MODULE_PATH = /home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36/filters
 MAGICK_LIBRARY_AGE = 22
 MAGICK_LIBRARY_CURRENT = 25
@@ -2555,11 +2555,11 @@ MAINT = #
 MAKEINFO = ${SHELL} '/home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36/config/missing' makeinfo
 MANIFEST_TOOL = :
 MAN_DIR = /home/kulina/BUILD/kglib/share/man
-MKDIR_P = /bin/mkdir -p
+MKDIR_P = /usr/bin/mkdir -p
 MODULE_EXTRA_CPPFLAGS = 
 MPEGDecodeDelegate = mpeg2decode
 MPEGEncodeDelegate = mpeg2encode
-MVDelegate = /bin/mv
+MVDelegate = /usr/bin/mv
 MagickBinPath = /home/kulina/BUILD/kglib/bin
 MagickCoderModulesPath = /home/kulina/BUILD/kglib/lib/GraphicsMagick-1.3.36/modules-Q8/coders
 MagickFilterModulesPath = /home/kulina/BUILD/kglib/lib/GraphicsMagick-1.3.36/modules-Q8/filters
@@ -2568,7 +2568,7 @@ MagickLibPath = /home/kulina/BUILD/kglib/lib/GraphicsMagick-1.3.36
 MagickShareConfigPath = /home/kulina/BUILD/kglib/share/GraphicsMagick-1.3.36/config
 MagickSharePath = /home/kulina/BUILD/kglib/share/GraphicsMagick-1.3.36
 MogrifyDelegate = 
-NM = /bin/nm -B
+NM = /usr/bin/nm -B
 NMEDIT = 
 OBJDUMP = objdump
 OBJEXT = o
@@ -2576,7 +2576,7 @@ OLDINCLUDE_DIR = /usr/include
 OPENMP_CFLAGS = 
 OTOOL = 
 OTOOL64 = 
-P7ZIP = 
+P7ZIP = 7za
 PACKAGE = GraphicsMagick
 PACKAGE_BUGREPORT = graphicsmagick-bugs@lists.sourceforge.net
 PACKAGE_CHANGE_DATE = 20201226
@@ -2592,7 +2592,7 @@ PERL =
 PERLMAINCC = 
 PERL_MAKE_OPTIONS = 
 PERL_SUPPORTS_DESTDIR = no
-PKG_CONFIG = /bin/pkg-config
+PKG_CONFIG = /usr/bin/pkg-config
 PKG_CONFIG_LIBDIR = 
 PKG_CONFIG_PATH = /home/kulina/BUILD/kglib/lib/pkgconfig:/usr/X11R76/lib/pkgconfig
 PREFIX_DIR = /home/kulina/BUILD/kglib
@@ -2601,13 +2601,13 @@ PTHREAD_CC = gcc
 PTHREAD_CFLAGS = 
 PTHREAD_CXX = 
 PTHREAD_LIBS = -lpthread
-PrintDelegate = /bin/lpr
+PrintDelegate = /usr/bin/lpr
 QuantumDepth = 8
 RANLIB = ranlib
 RPM = rpmbuild
 RST2HTML = 
 SBIN_DIR = /home/kulina/BUILD/kglib/sbin
-SED = /bin/sed
+SED = /usr/bin/sed
 SET_MAKE = 
 SHAREDSTATE_DIR = /home/kulina/BUILD/kglib/com
 SHELL = /bin/sh
@@ -2635,7 +2635,7 @@ X_CFLAGS =
 X_EXTRA_LIBS = 
 X_LIBS = 
 X_PRE_LIBS = 
-ZIP = 
+ZIP = zip
 abs_builddir = /home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36
 abs_srcdir = /home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36
 abs_top_builddir = /home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36
@@ -2662,7 +2662,7 @@ datarootdir = ${prefix}/share
 docdir = ${datarootdir}/doc/${PACKAGE}
 dvidir = ${docdir}
 exec_prefix = ${prefix}
-freetype_config = /bin/freetype-config
+freetype_config = /usr/bin/freetype-config
 ghostscript_font_dir = /usr/share/ghostscript/fonts/
 host = x86_64-pc-linux-gnu
 host_alias = 
@@ -4809,14 +4809,14 @@ doc_DATA = \
 
 # Non-Automake subdirectories to distribute
 DISTDIRS = locale scripts www PerlMagick TclMagick
-DIST_WINDOWS_SRC_ZIP = 
+#DIST_WINDOWS_SRC_ZIP = 
 
 #
 # Build Windows source Zip and 7Zip balls
 #
-#DIST_WINDOWS_SRC_ZIP = $(PACKAGE_NAME)-$(PACKAGE_VERSION)$(PACKAGE_VERSION_ADDENDUM)-windows.zip
-DIST_WINDOWS_SRC_7ZIP = 
-#DIST_WINDOWS_SRC_7ZIP = $(PACKAGE_NAME)-$(PACKAGE_VERSION)$(PACKAGE_VERSION_ADDENDUM)-windows.7z
+DIST_WINDOWS_SRC_ZIP = $(PACKAGE_NAME)-$(PACKAGE_VERSION)$(PACKAGE_VERSION_ADDENDUM)-windows.zip
+#DIST_WINDOWS_SRC_7ZIP = 
+DIST_WINDOWS_SRC_7ZIP = $(PACKAGE_NAME)-$(PACKAGE_VERSION)$(PACKAGE_VERSION_ADDENDUM)-windows.7z
 
 #
 # RPM build support
@@ -11247,9 +11247,9 @@ $(DIST_WINDOWS_SRC_7ZIP) windows-dist:
 	  rm -rf $(PACKAGE_NAME)-$(PACKAGE_VERSION)$(PACKAGE_VERSION_ADDENDUM) ; \
 	fi
 	hg --repository $(top_srcdir) archive --rev $(HG_BRANCH_TAG) $(PACKAGE_NAME)-$(PACKAGE_VERSION)$(PACKAGE_VERSION_ADDENDUM)
-#	rm -f $(DIST_WINDOWS_SRC_7ZIP)
-#	$(P7ZIP) a -t7z -mx=9 $(DIST_WINDOWS_SRC_7ZIP) $(PACKAGE_NAME)-$(PACKAGE_VERSION)$(PACKAGE_VERSION_ADDENDUM)
-#	chmod 644 $(DIST_WINDOWS_SRC_7ZIP)
+	rm -f $(DIST_WINDOWS_SRC_7ZIP)
+	$(P7ZIP) a -t7z -mx=9 $(DIST_WINDOWS_SRC_7ZIP) $(PACKAGE_NAME)-$(PACKAGE_VERSION)$(PACKAGE_VERSION_ADDENDUM)
+	chmod 644 $(DIST_WINDOWS_SRC_7ZIP)
 	rm -rf $(PACKAGE_NAME)-$(PACKAGE_VERSION)$(PACKAGE_VERSION_ADDENDUM)
 .PHONY: srpm
 $(DIST_ARCHIVE_SRPM) srpm: $(distdir).tar.bz2

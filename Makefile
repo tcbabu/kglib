@@ -10,10 +10,10 @@
 # local fallbacks for missing operating system features
 SHELL	:= /bin/bash
 PREFIX=/usr
-export CFLAGS=-I$(PWD)/include
+export CFLAGS=-I$(PWD)/include -I$(PWD)/include/freetype2 -Wno-incompatible-pointer-types -Wno-implicit-function-declaration 
 export LDFLAGS=-L$(PWD)/lib
-X11_CFLAGS	="-I$(PWD)/include $(shell pkg-config --cflags x11)"
-X11_LIBS 	="$(shell pkg-config --libs x11)"
+X11_CFLAGS	=-I$(PWD)/include -I$(PWD)/include/freetype2 $(shell pkg-config --cflags x11)
+X11_LIBS 	=$(shell pkg-config --libs x11)
 PKG_CONFIG_PATH_OLD	:=$(PKG_CONFIG_PATH)
 PKG_CONFIG_PATH	:=$(PWD)/lib/pkgconfig:/usr/X11R76/lib/pkgconfig
 PATH_OLD	:=$(PATH)
@@ -33,8 +33,8 @@ all	: kgdevelop/kgdevelop lib/libkulina.a lib/libgm.a
 lib/libkulina.a	: lib/libgm.a $(KGLIBFILES) 
 	echo "PREFIX=$(PWD)">kglib/config.mak
 	echo "KULINA=$(PWD)">>kglib/config.mak
-	echo "export X11_CFLAGS=\"$(X11_CFLAGS)\"">>kglib/config.mak
-	echo "export X11_LIBS=\"$(X11_LIBS)\"">>kglib/config.mak
+	echo "export X11_CFLAGS=$(X11_CFLAGS)">>kglib/config.mak
+	echo "export X11_LIBS=$(X11_LIBS)">>kglib/config.mak
 	$(MAKE) -C kglib 
 	$(MAKE) -C kglib  install
 

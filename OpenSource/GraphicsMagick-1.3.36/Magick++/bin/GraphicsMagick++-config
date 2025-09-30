@@ -36,10 +36,10 @@ while test $# -gt 0; do
       echo ''
       ;;
     --ldflags)
-      echo '-L/home/kulina/BUILD/kglib/lib -L/home/kulina/BUILD/kglib/lib -L/home/kulina/BUILD/kglib/lib'
+      echo '-L/home/kulina/BUILD/kglib/lib -L/home/kulina/BUILD/kglib/lib'
       ;;
     --libs)
-      echo '-lGraphicsMagick++ -lGraphicsMagick -ltiff -lfreetype -ljasper -ljpeg -lpng16 -llzma -lbz2 -lz -lzstd -lm -lpthread'
+      echo '-lGraphicsMagick++ -lGraphicsMagick -ltiff -ljasper -ljpeg -lpng16 -llzma -lbz2 -lz -lzstd -lm -lpthread'
       ;;
     *)
       echo "${usage}" 1>&2

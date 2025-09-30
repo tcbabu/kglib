@@ -2,7 +2,7 @@
 export LD_CONFIG_PATH=$LD_CONFIG_PATH:$KULINA/lib
 export LDFLAGS=-L$KULINA/lib
 echo $LDFLAGS
-export CFLAGS=-I$KULINA/include
+#export CFLAGS=-I$KULINA/include
 export CPPFLAGS=-I$KULINA/include
 export ZLIBLIB=$KULINA/lib
 export ZLIBINC=$KULINA/include
@@ -10,6 +10,23 @@ echo $CFLAGS
 echo $PKG_CONFIG_PATH
 echo "$X11_LIBS"
 echo "$X11_CFLAGS"
+tar xf zlib-1.2.13.tar.xz
+cd zlib-1.2.13
+./configure --prefix=$KULINA --static  >out
+make -j2  >out
+make -j2 install >out
+cd ..
+rm -r -f zlib-1.2.13
+echo "zlib"
+tar xf gzip-1.13.tar.xz >out
+cd gzip-1.13
+./configure --prefix=$KULINA 
+make -j2 >out
+make -j2 install 
+cd ..
+rm -rf gzip-1.13 >out
+echo "gzip"
+waitforenter gzip
 tar xf xz-5.6.3.tar.gz
 cd xz-5.6.3
 mkdir -p $KULINA/include
@@ -27,22 +44,6 @@ make -j2 install PREFIX=$KULINA >out
 cd ..
 rm -rf bzip2-1.0.6
 echo "bzip2"
-tar xf zlib-1.2.13.tar.xz
-cd zlib-1.2.13
-./configure --prefix=$KULINA --static  >out
-make -j2  >out
-make -j2 install >out
-cd ..
-rm -r -f zlib-1.2.13
-echo "zlib"
-tar xf gzip-1.13.tar.xz >out
-cd gzip-1.13
-./configure --prefix=$KULINA  >out
-make -j2 >out
-make -j2 install  >out
-cd ..
-rm -rf gzip-1.13 >out
-echo "gzip"
 tar xf libpng-1.6.9.tar.xz
 cd libpng-1.6.9
 ./configure --prefix=$KULINA --enable-static --disable-shared --with-zlib-prefix=$KULINA CFLAGS=-I$KULINA/include LDFLAGS=-L$KULINA/lib >out
@@ -51,28 +52,28 @@ make  install >out
 cd ..
 rm -r -f libpng-1.6.9
 echo "libpng"
-tar xf freetype-2.4.8.tar.gz
-cd freetype-2.4.8
-./configure --prefix=$KULINA --enable-static --disable-shared >out
+tar xf freetype-2.11.0.tar.xz
+cd freetype-2.11.0
+./configure --prefix=$KULINA --enable-static --disable-shared --with-harfbuzz=no --with-brotli=no >out
 make -j2 >out
 make -j2 install >out
 cd ..
-rm -r -f freetype-2.4.8
+rm -r -f freetype-2.11.0
 echo "freetype"
-tar xf harfbuzz-0.9.38.tar.gz
-cd harfbuzz-0.9.38
+tar xf harfbuzz-2.9.0.tar.xz
+cd harfbuzz-2.9.0
 ./configure --prefix=$KULINA --enable-static --disable-shared --without-glib  > out;
 make -j1 > out;
 make install > out;
 cd ..
-rm -rf harfbuzz-0.9.38
-tar xf freetype-2.4.8.tar.gz > out;
-cd freetype-2.4.8
-./configure --prefix=$KULINA --enable-static --disable-shared > out;
+rm -rf harfbuzz-2.9.0
+tar xf freetype-2.11.0.tar.xz > out;
+cd freetype-2.11.0
+./configure --prefix=$KULINA --enable-static --disable-shared --with-brotli=no > out;
 make -j2 > out;
 make -j2 install > out;
 cd ..
-rm -r -f freetype-2.4.8
+rm -r -f freetype-2.11.0
 echo "freetype again"
 tar xf jpegsrc.v8c.tar.gz
 cd jpeg-8c
