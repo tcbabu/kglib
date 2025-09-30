@@ -593,8 +593,8 @@ coders_jp2_la_OBJECTS = $(am_coders_jp2_la_OBJECTS)
 coders_jp2_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(coders_jp2_la_LDFLAGS) $(LDFLAGS) -o $@
-##am_coders_jp2_la_rpath = -rpath \
-##	$(codersdir)
+#am_coders_jp2_la_rpath = -rpath \
+#	$(codersdir)
 coders_jpeg_la_DEPENDENCIES = $(LIBMAGICK) $(am__DEPENDENCIES_1)
 am_coders_jpeg_la_OBJECTS = coders/jpeg_la-jpeg.lo
 coders_jpeg_la_OBJECTS = $(am_coders_jpeg_la_OBJECTS)
@@ -1316,8 +1316,8 @@ am__objects_4 =  \
 am__objects_10 =  \
 	coders/magick_libGraphicsMagick_la-jnx.lo \
 	coders/magick_libGraphicsMagick_la-jpeg.lo
-#am__objects_11 =  \
-#	coders/magick_libGraphicsMagick_la-jp2.lo
+am__objects_11 =  \
+	coders/magick_libGraphicsMagick_la-jp2.lo
 am__objects_12 =  \
 	coders/magick_libGraphicsMagick_la-ept.lo \
 	coders/magick_libGraphicsMagick_la-tiff.lo
@@ -2398,7 +2398,7 @@ BIN_DIR = /home/kulina/BUILD/kglib/bin
 BrowseDelegate = xdg-open
 CC = gcc
 CCDEPMODE = depmode=gcc3
-CFLAGS = -I/home/kulina/BUILD/kglib/include -Wall
+CFLAGS = -I/home/kulina/BUILD/kglib/include -I/home/kulina/BUILD/kglib/include/freetype2 -Wno-incompatible-pointer-types -Wno-implicit-function-declaration -Wall
 CGMDecodeDelegate = ralcgm
 CONFIG_STATUS_DEPENDENCIES = $(top_srcdir)/ChangeLog $(top_srcdir)/version.sh
 CPP = gcc -E
@@ -2412,10 +2412,10 @@ ConvertDelegate =
 DATA_DIR = /home/kulina/BUILD/kglib/share
 DCRAWDecodeDelegate = dcraw
 DEFS = -DHAVE_CONFIG_H
-DELEGATES = bzlib jng jpeg lzma png ps tiff ttf zlib
+DELEGATES = bzlib jng jp2 jpeg lzma png ps tiff zlib
 DEPDIR = .deps
 DIRSEP = :
-DISTCHECK_CONFIG_FLAGS = 'CFLAGS=-I/home/kulina/BUILD/kglib/include' 'CPPFLAGS=-I/home/kulina/BUILD/kglib/include' 'LDFLAGS=-L/home/kulina/BUILD/kglib/lib'  --with-fpx=no  --with-webp=no  --with-lcms2=no  --with-trio=no  --with-wmf=no  --with-fontpath=  --with-xml=no  --with-perl=no 
+DISTCHECK_CONFIG_FLAGS = 'CFLAGS=-I/home/kulina/BUILD/kglib/include -I/home/kulina/BUILD/kglib/include/freetype2 -Wno-incompatible-pointer-types -Wno-implicit-function-declaration ' 'CPPFLAGS=-I/home/kulina/BUILD/kglib/include' 'LDFLAGS=-L/home/kulina/BUILD/kglib/lib'  --with-fpx=no  --with-webp=no  --with-lcms2=no  --with-trio=no  --with-wmf=no  --with-fontpath=  --with-xml=no  --with-perl=no 
 DLLTOOL = false
 DOC_DIR = /home/kulina/BUILD/kglib/share/doc/GraphicsMagick
 DOTDecodeDelegate = dot
@@ -2432,7 +2432,7 @@ EXEEXT =
 EditorDelegate = xterm
 FGREP = /usr/bin/grep -F
 FIGDecodeDelegate = fig2dev
-FT_CFLAGS = -I/home/kulina/BUILD/kglib/include/freetype2 -I/home/kulina/BUILD/kglib/include 
+FT_CFLAGS = -I/home/kulina/BUILD/kglib/include/freetype2 -I/home/kulina/BUILD/kglib/include -I/home/kulina/BUILD/kglib/include/libpng16 -I/home/kulina/BUILD/kglib/include/harfbuzz 
 FT_LIBS = -L/home/kulina/BUILD/kglib/lib -lfreetype 
 GMDelegate = gm
 GREP = /usr/bin/grep
@@ -2466,7 +2466,7 @@ INT64_F = "l"
 INT64_T = signed long
 INT8_T = signed char
 LD = /usr/bin/ld -m elf_x86_64
-LDFLAGS = -L/home/kulina/BUILD/kglib/lib -L/home/kulina/BUILD/kglib/lib
+LDFLAGS = -L/home/kulina/BUILD/kglib/lib
 LFS_CPPFLAGS =  -D_LARGE_FILES=1
 LIBEXEC_DIR = /home/kulina/BUILD/kglib/libexec
 LIBOBJS = 
@@ -2484,7 +2484,7 @@ LIB_DPS =
 LIB_FPX = 
 LIB_GDI32 = 
 LIB_JBIG = 
-LIB_JP2 = 
+LIB_JP2 = -ljasper
 LIB_JPEG = -ljpeg
 LIB_LCMS = 
 LIB_LZMA = -llzma
@@ -2496,7 +2496,7 @@ LIB_TCMALLOC =
 LIB_THREAD = -lpthread
 LIB_TIFF = -ltiff
 LIB_TRIO = 
-LIB_TTF = -lfreetype
+LIB_TTF = 
 LIB_UMEM = 
 LIB_WEBP = 
 LIB_WMF = 
@@ -2517,17 +2517,17 @@ LT_SYS_LIBRARY_PATH =
 LaunchDelegate = gimp
 MAGICKLIB = -L/home/kulina/BUILD/kglib/lib -lGraphicsMagick
 MAGICKLIBDIR = /home/kulina/BUILD/kglib/lib
-MAGICK_API_CFLAGS = -I/home/kulina/BUILD/kglib/include -Wall
+MAGICK_API_CFLAGS = -I/home/kulina/BUILD/kglib/include -I/home/kulina/BUILD/kglib/include/freetype2 -Wno-incompatible-pointer-types -Wno-implicit-function-declaration -Wall
 MAGICK_API_CPPFLAGS = -I/home/kulina/BUILD/kglib/include/GraphicsMagick
-MAGICK_API_LDFLAGS = -L/home/kulina/BUILD/kglib/lib -L/home/kulina/BUILD/kglib/lib -L/home/kulina/BUILD/kglib/lib
-MAGICK_API_LIBS = -lGraphicsMagick -ltiff -lfreetype -ljpeg -lpng16 -llzma -lbz2 -lz -lzstd -lm -lpthread
+MAGICK_API_LDFLAGS = -L/home/kulina/BUILD/kglib/lib -L/home/kulina/BUILD/kglib/lib
+MAGICK_API_LIBS = -lGraphicsMagick -ltiff -ljasper -ljpeg -lpng16 -llzma -lbz2 -lz -lzstd -lm -lpthread
 MAGICK_API_PC_CPPFLAGS = 
 MAGICK_CODER_MODULE_PATH = /home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36/coders
 MAGICK_CONFIGURE_BUILD_PATH = /home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36/config
 MAGICK_CONFIGURE_SRC_PATH = /home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36/config
-MAGICK_DEP_LIBS = -ltiff -lfreetype -ljpeg -lpng16 -llzma -lbz2 -lz -lzstd -lm -lpthread
+MAGICK_DEP_LIBS = -ltiff -ljasper -ljpeg -lpng16 -llzma -lbz2 -lz -lzstd -lm -lpthread
 MAGICK_EXTRA_DEP_LIBS = 
-MAGICK_FEATURES = BZLIB JNG JPEG LZMA PNG PS TIFF TTF ZLIB
+MAGICK_FEATURES = BZLIB JNG JP2 JPEG LZMA PNG PS TIFF ZLIB
 MAGICK_FILTER_MODULE_PATH = /home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36/filters
 MAGICK_LIBRARY_AGE = 22
 MAGICK_LIBRARY_CURRENT = 25
@@ -2662,7 +2662,7 @@ datarootdir = ${prefix}/share
 docdir = ${datarootdir}/doc/${PACKAGE}
 dvidir = ${docdir}
 exec_prefix = ${prefix}
-freetype_config = 
+freetype_config = /usr/bin/freetype-config
 ghostscript_font_dir = /usr/share/ghostscript/fonts/
 host = x86_64-pc-linux-gnu
 host_alias = 
@@ -2855,8 +2855,8 @@ codersdir = $(MagickCoderModulesPath)
 #MAGICK_JBIG_SRCS = coders/jbig.c
 MAGICK_JPEG_MODULES = coders/jnx.la coders/jpeg.la
 MAGICK_JPEG_SRCS = coders/jnx.c coders/jpeg.c
-#MAGICK_JP2_MODULES = coders/jp2.la
-#MAGICK_JP2_SRCS = coders/jp2.c
+MAGICK_JP2_MODULES = coders/jp2.la
+MAGICK_JP2_SRCS = coders/jp2.c
 MAGICK_PNG_MODULES = coders/png.la
 MAGICK_PNG_SRCS = coders/png.c
 MAGICK_TIFF_MODULES = coders/ept.la coders/tiff.la

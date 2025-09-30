@@ -161,20 +161,7 @@ coders/magick_libGraphicsMagick_la-ttf.lo: coders/ttf.c \
  magick/pixel_cache.h magick/pixel_cache-private.h magick/draw.h \
  magick/render.h magick/type.h magick/type-private.h \
  magick/render-private.h magick/magick.h magick/magick-private.h \
- magick/utility.h magick/utility-private.h \
- /home/kulina/BUILD/kglib/include/ft2build.h \
- /home/kulina/BUILD/kglib/include/freetype2/freetype/config/ftheader.h \
- /home/kulina/BUILD/kglib/include/freetype2/freetype/freetype.h \
- /home/kulina/BUILD/kglib/include/freetype2/freetype/config/ftconfig.h \
- /home/kulina/BUILD/kglib/include/freetype2/freetype/config/ftoption.h \
- /home/kulina/BUILD/kglib/include/freetype2/freetype/config/ftstdlib.h \
- /usr/include/setjmp.h \
- /home/kulina/BUILD/kglib/include/freetype2/freetype/fterrors.h \
- /home/kulina/BUILD/kglib/include/freetype2/freetype/ftmoderr.h \
- /home/kulina/BUILD/kglib/include/freetype2/freetype/fterrdef.h \
- /home/kulina/BUILD/kglib/include/freetype2/freetype/fttypes.h \
- /home/kulina/BUILD/kglib/include/freetype2/freetype/ftsystem.h \
- /home/kulina/BUILD/kglib/include/freetype2/freetype/ftimage.h
+ magick/utility.h magick/utility-private.h
 /usr/include/stdc-predef.h:
 magick/studio.h:
 magick/magick_config.h:
@@ -388,16 +375,3 @@ magick/magick.h:
 magick/magick-private.h:
 magick/utility.h:
 magick/utility-private.h:
-/home/kulina/BUILD/kglib/include/ft2build.h:
-/home/kulina/BUILD/kglib/include/freetype2/freetype/config/ftheader.h:
-/home/kulina/BUILD/kglib/include/freetype2/freetype/freetype.h:
-/home/kulina/BUILD/kglib/include/freetype2/freetype/config/ftconfig.h:
-/home/kulina/BUILD/kglib/include/freetype2/freetype/config/ftoption.h:
-/home/kulina/BUILD/kglib/include/freetype2/freetype/config/ftstdlib.h:
-/usr/include/setjmp.h:
-/home/kulina/BUILD/kglib/include/freetype2/freetype/fterrors.h:
-/home/kulina/BUILD/kglib/include/freetype2/freetype/ftmoderr.h:
-/home/kulina/BUILD/kglib/include/freetype2/freetype/fterrdef.h:
-/home/kulina/BUILD/kglib/include/freetype2/freetype/fttypes.h:
-/home/kulina/BUILD/kglib/include/freetype2/freetype/ftsystem.h:
-/home/kulina/BUILD/kglib/include/freetype2/freetype/ftimage.h:

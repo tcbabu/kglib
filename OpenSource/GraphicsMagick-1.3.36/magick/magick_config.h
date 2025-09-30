@@ -20,10 +20,10 @@
 #define GM_BUILD_CC "gcc"
 
 /* CFLAGS used for C compilation */
-#define GM_BUILD_CFLAGS "-I/home/kulina/BUILD/kglib/include -Wall"
+#define GM_BUILD_CFLAGS "-I/home/kulina/BUILD/kglib/include -I/home/kulina/BUILD/kglib/include/freetype2 -Wno-incompatible-pointer-types -Wno-implicit-function-declaration -Wall"
 
 /* arguments passed to configure */
-#define GM_BUILD_CONFIGURE_ARGS "./configure  '--prefix=/home/kulina/BUILD/kglib' '--enable-static' '--without-magick-plus-plus' '--without-perl' '--without-lcms' '--without-lcms2' '--without-trio' '--without-wmf' '--without-xml' '--disable-openmp' '--with-threads' '--without-x' '--without-webp' 'CFLAGS=-I/home/kulina/BUILD/kglib/include' 'LDFLAGS=-L/home/kulina/BUILD/kglib/lib' 'CPPFLAGS=-I/home/kulina/BUILD/kglib/include' 'PKG_CONFIG_PATH=/home/kulina/BUILD/kglib/lib/pkgconfig:/usr/X11R76/lib/pkgconfig'"
+#define GM_BUILD_CONFIGURE_ARGS "./configure  '--prefix=/home/kulina/BUILD/kglib' '--enable-static' '--without-magick-plus-plus' '--without-perl' '--without-lcms' '--without-lcms2' '--without-trio' '--without-wmf' '--without-xml' '--disable-openmp' '--with-threads' '--without-x' '--without-webp' 'CFLAGS=-I/home/kulina/BUILD/kglib/include -I/home/kulina/BUILD/kglib/include/freetype2 -Wno-incompatible-pointer-types -Wno-implicit-function-declaration ' 'LDFLAGS=-L/home/kulina/BUILD/kglib/lib' 'CPPFLAGS=-I/home/kulina/BUILD/kglib/include' 'PKG_CONFIG_PATH=/home/kulina/BUILD/kglib/lib/pkgconfig:/usr/X11R76/lib/pkgconfig'"
 
 /* CPPFLAGS used for preprocessing */
 #define GM_BUILD_CPPFLAGS "-I/home/kulina/BUILD/kglib/include -I/home/kulina/BUILD/kglib/include/freetype2"
@@ -38,10 +38,10 @@
 #define GM_BUILD_HOST "x86_64-pc-linux-gnu"
 
 /* LDFLAGS used for linking */
-#define GM_BUILD_LDFLAGS "-L/home/kulina/BUILD/kglib/lib -L/home/kulina/BUILD/kglib/lib"
+#define GM_BUILD_LDFLAGS "-L/home/kulina/BUILD/kglib/lib"
 
 /* LIBS used for linking */
-#define GM_BUILD_LIBS "-ltiff -lfreetype -ljpeg -lpng16 -llzma -lbz2 -lz -lzstd -lm -lpthread"
+#define GM_BUILD_LIBS "-ltiff -ljasper -ljpeg -lpng16 -llzma -lbz2 -lz -lzstd -lm -lpthread"
 
 /* Define if C++ compiler supports __func__ */
 /* #undef HAS_CPP__func__ */
@@ -121,7 +121,7 @@
 #define HAVE_FSTATVFS 1
 
 /* Define to 1 if you have the <ft2build.h> header file. */
-#define HAVE_FT2BUILD_H 1
+/* #undef HAVE_FT2BUILD_H */
 
 /* Define to 1 if you have the `ftime' function. */
 #define HAVE_FTIME 1
@@ -419,7 +419,7 @@
 /* #undef HasJBIG */
 
 /* Define if you have JPEG version 2 "Jasper" library */
-/* #undef HasJP2 */
+#define HasJP2 1
 
 /* Define if you have JPEG library */
 #define HasJPEG 1
@@ -455,7 +455,7 @@
 /* #undef HasTRIO */
 
 /* Define if you have FreeType (TrueType font) library */
-#define HasTTF 1
+/* #undef HasTTF */
 
 /* Define if you have umem memory allocation library */
 /* #undef HasUMEM */

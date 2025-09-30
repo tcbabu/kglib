@@ -2,7 +2,7 @@
 # Copyright (C) 2012-2020 GraphicsMagick Group
 # Definitions of optional features and configuration values for this build.
 # Intended for use by test scripts.
-MAGICK_FEATURES='BZLIB JNG JPEG LZMA PNG PS TIFF TTF ZLIB'
+MAGICK_FEATURES='BZLIB JNG JP2 JPEG LZMA PNG PS TIFF ZLIB'
 top_srcdir='/home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36'
 top_builddir='/home/kulina/BUILD/kglib/OpenSource/GraphicsMagick-1.3.36'
 

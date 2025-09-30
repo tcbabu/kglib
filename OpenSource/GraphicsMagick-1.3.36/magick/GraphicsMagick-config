@@ -30,16 +30,16 @@ while test $# -gt 0; do
       echo 1.3.36
       ;;
     --cflags)
-      echo '-I/home/kulina/BUILD/kglib/include -Wall'
+      echo '-I/home/kulina/BUILD/kglib/include -I/home/kulina/BUILD/kglib/include/freetype2 -Wno-incompatible-pointer-types -Wno-implicit-function-declaration -Wall'
       ;;
     --cppflags)
       echo '-I/home/kulina/BUILD/kglib/include/GraphicsMagick'
       ;;
     --ldflags)
-      echo '-L/home/kulina/BUILD/kglib/lib -L/home/kulina/BUILD/kglib/lib -L/home/kulina/BUILD/kglib/lib'
+      echo '-L/home/kulina/BUILD/kglib/lib -L/home/kulina/BUILD/kglib/lib'
       ;;
     --libs)
-      echo '-lGraphicsMagick -ltiff -lfreetype -ljpeg -lpng16 -llzma -lbz2 -lz -lzstd -lm -lpthread'
+      echo '-lGraphicsMagick -ltiff -ljasper -ljpeg -lpng16 -llzma -lbz2 -lz -lzstd -lm -lpthread'
       ;;
     *)
       echo "${usage}" 1>&2
