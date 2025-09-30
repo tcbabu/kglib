@@ -105,7 +105,7 @@ cd GraphicsMagick-1.3.36 >out
 make -j2  >out
 make -j2 install >out
 cd ..
-rm -r -f GraphicsMagick-1.3.21  >out
+rm -r -f GraphicsMagick-1.3.36  >out
 echo "Graphic Magic"
 rm libgm.a
 mkdir tmp
