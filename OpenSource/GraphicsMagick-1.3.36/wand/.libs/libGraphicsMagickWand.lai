@@ -17,7 +17,7 @@ old_library='libGraphicsMagickWand.a'
 inherited_linker_flags=' -pthread'
 
 # Libraries that this one depends upon.
-dependency_libs=' -L/home/kulina/BUILD/kglib/lib /home/kulina/BUILD/kglib/lib/libGraphicsMagick.la /home/kulina/BUILD/kglib/lib/libtiff.la -lc /home/kulina/BUILD/kglib/lib/libfreetype.la /home/kulina/BUILD/kglib/lib/libjasper.la /home/kulina/BUILD/kglib/lib/libjpeg.la /home/kulina/BUILD/kglib/lib/libpng16.la /home/kulina/BUILD/kglib/lib/liblzma.la -lbz2 -lz -lzstd -lpthread -lm'
+dependency_libs=' -L/home/kulina/BUILD/kglib/lib /home/kulina/BUILD/kglib/lib/libGraphicsMagick.la /home/kulina/BUILD/kglib/lib/libtiff.la -lc /home/kulina/BUILD/kglib/lib/libfreetype.la /home/kulina/BUILD/kglib/lib/libjpeg.la /home/kulina/BUILD/kglib/lib/libpng16.la /home/kulina/BUILD/kglib/lib/liblzma.la -lbz2 -lz -lzstd -lpthread -lm'
 
 # Names of additional weak libraries provided by this library
 weak_library_names=''

@@ -41,7 +41,7 @@
 #define GM_BUILD_LDFLAGS "-L/home/kulina/BUILD/kglib/lib -L/home/kulina/BUILD/kglib/lib"
 
 /* LIBS used for linking */
-#define GM_BUILD_LIBS "-ltiff -lfreetype -ljasper -ljpeg -lpng16 -llzma -lbz2 -lz -lzstd -lm -lpthread"
+#define GM_BUILD_LIBS "-ltiff -lfreetype -ljpeg -lpng16 -llzma -lbz2 -lz -lzstd -lm -lpthread"
 
 /* Define if C++ compiler supports __func__ */
 /* #undef HAS_CPP__func__ */
@@ -309,10 +309,10 @@
 #define HAVE_STRING_H 1
 
 /* Define to 1 if you have the `strlcat' function. */
-/* #undef HAVE_STRLCAT */
+#define HAVE_STRLCAT 1
 
 /* Define to 1 if you have the `strlcpy' function. */
-/* #undef HAVE_STRLCPY */
+#define HAVE_STRLCPY 1
 
 /* Define to 1 if you have the `strtoll' function. */
 #define HAVE_STRTOLL 1
@@ -419,7 +419,7 @@
 /* #undef HasJBIG */
 
 /* Define if you have JPEG version 2 "Jasper" library */
-#define HasJP2 1
+/* #undef HasJP2 */
 
 /* Define if you have JPEG library */
 #define HasJPEG 1
