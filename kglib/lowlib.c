@@ -15390,14 +15390,22 @@ void transch(int c) {
 	  /* Not Useful as of 19th Aug 24 */
       DIT *T = ( DIT * ) Tmp;
       if ( T->code != 'T' ) return 0;
-      void *img = NULL;
+      void *img = NULL,*bkgr=NULL;;
       int i , j , k , cell , cell1;
       T_ELMT *elmt;
       DIALOG *D = T->D;
       TX_STR *tx = T->tstr;
       elmt = tx->elmt;
       int x1 , y1 , x2 , y2;
-      _ui_cleantablecursor ( tx ) ;
+      int xmin,xmax,ymin,ymax;
+       _ui_cleantablecursor ( tx ) ;
+      cell = (row -1)*T->nx;
+      xmin= elmt [ cell ] .x1;
+      ymax = elmt [ cell ] .y2+1;
+      cell = T->nx-1;
+      xmax= elmt [ cell ] .x2;
+      ymin = elmt [ cell ] .y1;
+      bkgr = kgGetBackground ( D , xmin , ymin , xmax , ymax ) ;
       k =row;
       for ( i = 0;i < T->nx;i++ ) {
               cell = ( k ) *T->nx+i;
@@ -15420,11 +15428,21 @@ void transch(int c) {
               strcpy ( elmt [ cell1 ] .df , elmt [ cell ] .df ) ;
               elmt [ cell1 ] .startchar = elmt [ cell ] . startchar;
               elmt [ cell1 ] . img =  elmt [ cell ] .img;
+#if 0
               kgRestoreImage ( D , img , x1 , y1 , x2-x1+1 , y2-y1+1 ) ;
               kgFreeImage ( img ) ;
+#endif
           }
       }
 //       kgUpdateWidget(T);
+      cell =row* T->nx;
+      xmin= elmt [ cell ] .x1;
+      ymax = elmt [ cell ] .y2+1;
+      cell = 2*T->nx-1;
+      xmax= elmt [ cell ] .x2;
+      ymin = elmt [ cell ] .y1;
+      kgRestoreImage ( D , bkgr, xmin , ymin , xmax-xmin+1 , ymax-ymin+1 ) ;
+      kgFreeImage(bkgr);
       kgUpdateOn(D);
       return 1;
   }
@@ -15432,14 +15450,22 @@ void transch(int c) {
 	  /* Not Useful as of 19th Aug 24 */
       DIT *T = ( DIT * ) Tmp;
       if ( T->code != 'T' ) return 0;
-      void *img = NULL;
+      void *img = NULL,*bkgr=NULL;
       int i , j , k , cell , cell1;
       T_ELMT *elmt;
       DIALOG *D = T->D;
       TX_STR *tx = T->tstr;
       elmt = tx->elmt;
       int x1 , y1 , x2 , y2;
+      int xmin,xmax,ymin,ymax;
        _ui_cleantablecursor ( tx ) ;
+      cell = T->nx;
+      xmin= elmt [ cell ] .x1;
+      ymin = elmt [ cell ] .y1;
+      cell = row*T->nx+T->nx-1;
+      xmax= elmt [ cell ] .x2;
+      ymax = elmt [ cell ] .y2+1;
+      bkgr = kgGetBackground ( D , xmin , ymin , xmax , ymax ) ;
       for ( i = 0;i < T->nx;i++ ) kgFreeImage(elmt[i].img);
       for ( k = 1;k <= row;k++ ) {
           for ( i = 0;i < T->nx;i++ ) {
@@ -15456,13 +15482,24 @@ void transch(int c) {
               y2 = elmt [ cell1 ] .y2+1;
               strcpy ( elmt [ cell1 ] .df , elmt [ cell ] .df ) ;
               elmt [ cell1 ] . img =  elmt [ cell ] .img;
+#if 0
               if ( img != NULL ) {
+//TCB
                   kgRestoreImage ( D , img , x1 , y1 , x2-x1+1 , y2-y1+1 ) ;
                   kgFreeImage ( img ) ;
               }
               else fprintf ( stderr , "Failed to copy screen\n" ) ;
+#endif
           }
       }
+      cell = 0;
+      xmin= elmt [ cell ] .x1;
+      ymin = elmt [ cell ] .y1;
+      cell = row*T->nx-1;
+      xmax= elmt [ cell ] .x2;
+      ymax = elmt [ cell ] .y2+1;
+      kgRestoreImage ( D , bkgr, xmin , ymin , xmax-xmin+1 , ymax-ymin+1 ) ;
+      kgFreeImage(bkgr);
       kgUpdateOn(D);
       return 1;
   }
