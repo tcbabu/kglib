@@ -1,7 +1,7 @@
 PREFIX=/home/kulina/BUILD/kglib
 KULINA=/home/kulina/BUILD/kglib
 export X11_CFLAGS="-I/home/kulina/BUILD/kglib/include -I/home/kulina/BUILD/kglib/include/freetype2 "
-export X11_LIBS="-lX11 "
+export X11_LIBS="-lX11"
 export PKG_CONFIG_PATH=/home/kulina/BUILD/kglib/lib/pkgconfig:/usr/X11R76/lib/pkgconfig
 #export PKG_CONFIG_PATH=$KULINA/lib/pkgconfig
 export LD_CONFIG_PATH=$LD_CONFIG_PATH:$KULINA/lib
@@ -110,7 +110,7 @@ cd GraphicsMagick-1.3.36 >out
 make -j2  >out
 make -j2 install >out
 cd ..
-rm -r -f GraphicsMagick-1.3.21  >out
+rm -r -f GraphicsMagick-1.3.36  >out
 echo "Graphic Magic"
 rm libgm.a
 mkdir tmp
