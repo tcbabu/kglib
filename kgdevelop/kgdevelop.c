@@ -37,6 +37,7 @@
   int RunItemoptdia ( void *Tmp ) ;
   int RunFileoptdia ( void * ) ;
   int actcntl = 0 , totcntl = 0 , horicntl = 0 , vertscroll = 0 , horizscroll = 0;
+  char **Titles=NULL;
       
   int SetControlCounters ( DIALOG *D ) ;
   void *Runbutnopt ( void *parent , void *arg ) ;
@@ -4476,7 +4477,7 @@
       fprintf ( fp , "  n = B->nx*B->ny;\n" ) ;
       fprintf ( fp , "  switch(key) {\n" ) ;
       for ( i = 0;i < nb;i++ ) {
-          fprintf ( fp , "    case %-d: \n      break;\n" , i+1 ) ;
+          fprintf ( fp , "    case %-d: //%-s \n      break;\n" , i+1 ,Titles[i]) ;
       }
       fprintf ( fp , "  }\n" ) ;
       fprintf ( fp , "  return ret;\n" ) ;
@@ -4548,7 +4549,7 @@
       fprintf ( fp , "  n = B->nx*B->ny;\n" ) ;
       fprintf ( fp , "  switch(butno) {\n" ) ;
       for ( i = 0;i < nb;i++ ) {
-          fprintf ( fp , "    case %-d: \n      break;\n" , i+1 ) ;
+          fprintf ( fp , "    case %-d: //%-s \n      break;\n" , i+1 ,Titles[i]) ;
       }
       fprintf ( fp , "  }\n" ) ;
       fprintf ( fp , "  return ret;\n" ) ;
@@ -4584,7 +4585,7 @@
       fprintf ( fp , "  n = B->nx;\n" ) ;
       fprintf ( fp , "  switch(butno) {\n" ) ;
       for ( i = 0;i < nb;i++ ) {
-          fprintf ( fp , "    case %-d: \n      break;\n" , i+1 ) ;
+          fprintf ( fp , "    case %-d: //%-s \n      break;\n" , i+1 ,Titles[i]) ;
       }
       fprintf ( fp , "  }\n" ) ;
       fprintf ( fp , "  return ret;\n" ) ;
@@ -4621,7 +4622,7 @@
       fprintf ( fp , "  n = B->nx;\n" ) ;
       fprintf ( fp , "  switch(butno) {\n" ) ;
       for ( i = 0;i < nb;i++ ) {
-          fprintf ( fp , "    case %-d: \n      break;\n" , i+1 ) ;
+          fprintf ( fp , "    case %-d: //%-s\n      break;\n" , i+1 ,Titles[i]) ;
       }
       fprintf ( fp , "  }\n" ) ;
       fprintf ( fp , "  return ret;\n" ) ;
@@ -4950,13 +4951,14 @@
       return 1;
   }
   void WriteCallBacks ( Dlink *Dialink , FILE *fp , char *dianame ) {
-      int nvar = 0 , control = 0;
+      int nvar = 0 , control = 0,i=0;
       DIT *t;
       DIL *h;
       DILN *H;
       DIBN *n;
       DIB *b;
       DIN *N;
+      BUT_STR *butns;
       InitCounters ( ) ;
       Resetlink ( Dialink ) ;
       while ( ( t = ( DIT * ) Getrecord ( Dialink ) ) != NULL ) {
@@ -5001,22 +5003,32 @@
               break;
               case 'n':
               N = ( DIN * ) t;
+              butns = (BUT_STR *)(N->buts);
+              Titles = (char **)malloc(sizeof(char *)*(N->nx*N->ny+1));
+              for(i=0;i<(N->nx*N->ny);i++) Titles[i]= butns[i].title;
               Butbox++;
               WriteButnBoxnCallback ( Butbox , N->nx*N->ny , fp , dianame ) ;
+              free(Titles);
               break;
               case 'N':
               n = ( DIBN * ) t;
+              Titles = n->titles;
               Butbox++;
               WriteButnBoxNewCallback ( Butbox , n->nx*n->ny , fp , dianame ) ;
               break;
               case 'h':
               Hbox++;
               h = ( DIL * ) t;
+              butns = (BUT_STR *)(h->buts);
+              Titles = (char **)malloc(sizeof(char *)*(h->nx+1));
+              for(i=0;i<(h->nx);i++) Titles[i]= butns[i].title;
               WriteHoriBarCallback ( Hbox , h->nx , fp , dianame ) ;
+              free(Titles);
               break;
               case 'H':
               Hbox++;
               H = ( DILN * ) t;
+              Titles = H->titles;
               WriteHoriBarNewCallback ( Hbox , H->nx , fp , dianame ) ;
               break;
               case 'T':
