@@ -149,6 +149,7 @@ static void GetButton(DIALOG *D,DIN *B,int index) {
    strcat(xpm,buff+i);
    buts[index].xpmn=(void *)xpm;
   }
+  else buts[index].xpmn= NULL;
   strcpy(buff,kgGetstring(D,4,1));
   i = 0;
   while(buff[i]==' ')i++;
@@ -158,6 +159,7 @@ static void GetButton(DIALOG *D,DIN *B,int index) {
    strcat(xpm,buff+i);
    buts[index].xpmp=(void *)xpm;
   }
+  else buts[index].xpmp= NULL;
   strcpy(buff,kgGetstring(D,4,2));
   i = 0;
   while(buff[i]==' ')i++;
@@ -167,9 +169,9 @@ static void GetButton(DIALOG *D,DIN *B,int index) {
     strcat(xpm,buff+i);
     buts[index].xpmh=(void *)xpm;
   }
+  else buts[index].xpmh=NULL;
   buts[index].butncode= (*(R->df))+31-1;
-}
-int  butnopttextbox1callback(int cellno,int i,void *Tmp) {
+}int  butnopttextbox1callback(int cellno,int i,void *Tmp) {
   /************************************************* 
    cellno: current cell counted along column strting with 0 
            ie 0 to (nx*ny-1) 
