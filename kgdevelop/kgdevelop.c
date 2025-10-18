@@ -4477,7 +4477,7 @@
       fprintf ( fp , "  n = B->nx*B->ny;\n" ) ;
       fprintf ( fp , "  switch(key) {\n" ) ;
       for ( i = 0;i < nb;i++ ) {
-          fprintf ( fp , "    case %-d: //%-s \n      break;\n" , i+1 ,Titles[i]) ;
+          fprintf ( fp , "    case %-d: //  %-s \n      break;\n" , i+1 ,Titles[i]) ;
       }
       fprintf ( fp , "  }\n" ) ;
       fprintf ( fp , "  return ret;\n" ) ;
@@ -4549,7 +4549,7 @@
       fprintf ( fp , "  n = B->nx*B->ny;\n" ) ;
       fprintf ( fp , "  switch(butno) {\n" ) ;
       for ( i = 0;i < nb;i++ ) {
-          fprintf ( fp , "    case %-d: //%-s \n      break;\n" , i+1 ,Titles[i]) ;
+          fprintf ( fp , "    case %-d: //  %-s \n      break;\n" , i+1 ,Titles[i]) ;
       }
       fprintf ( fp , "  }\n" ) ;
       fprintf ( fp , "  return ret;\n" ) ;
@@ -4585,7 +4585,7 @@
       fprintf ( fp , "  n = B->nx;\n" ) ;
       fprintf ( fp , "  switch(butno) {\n" ) ;
       for ( i = 0;i < nb;i++ ) {
-          fprintf ( fp , "    case %-d: //%-s \n      break;\n" , i+1 ,Titles[i]) ;
+          fprintf ( fp , "    case %-d: //  %-s \n      break;\n" , i+1 ,Titles[i]) ;
       }
       fprintf ( fp , "  }\n" ) ;
       fprintf ( fp , "  return ret;\n" ) ;
@@ -4622,7 +4622,7 @@
       fprintf ( fp , "  n = B->nx;\n" ) ;
       fprintf ( fp , "  switch(butno) {\n" ) ;
       for ( i = 0;i < nb;i++ ) {
-          fprintf ( fp , "    case %-d: //%-s\n      break;\n" , i+1 ,Titles[i]) ;
+          fprintf ( fp , "    case %-d: //  %-s\n      break;\n" , i+1 ,Titles[i]) ;
       }
       fprintf ( fp , "  }\n" ) ;
       fprintf ( fp , "  return ret;\n" ) ;
