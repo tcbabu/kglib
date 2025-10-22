@@ -12,16 +12,20 @@
 #define VER 2107030000
   char kulinahome [ 500 ] ;
   char CWD [ 500 ] ;
+  char WidName[200];
+  char CallBackName[500];
+  char DelName[500];
   int FullScreen = 0;
   void *T;
   int gindex;
   void *Tmp;
   static FILE *fp , *fp1 , *Inc;
-  static int Vcount = 0 , Tbox = 0 , Listitem = 0 , Vertbox = 0 , Horizbox = 0 , Textbox = 0 , Tblbox = 0 , Gbox = 0 , Hbox = 0 , Butbox = 0 , Pixbox = 0 , Mbox = 0 , Brwbox = 0 , Ibox = 0 , Sfbox = 0 , Sibox = 0 , Filebox = 0 , Foldbox = 0 , WidCount = 0;
+  static int Vcount = 0 , Tbox = 0 , Listitem = 0 , Vertbox = 0 , Horizbox = 0 , Textbox = 0 , Tblbox = 0 , Gbox = 0 , Hbox = 0 , Butbox = 0 , Pixbox = 0 , Mbox = 0 , Brwbox = 0 , Ibox = 0 , Sfbox = 0 , Sibox = 0 , Filebox = 0 , Foldbox = 0 ,  WidCount = 0;
       
   static char buff [ 500 ] ;
   static int Vx1 , Vy1 , Vx2 , Vy2;
 /*static Dlink *Dialink=NULL;*/
+  Dlink *CallList=NULL,*SrcList=NULL,*DelList=NULL;
   DIALOG *Parent = NULL;
   DIG *GBOX;
   DIALOG *Dia = NULL;
@@ -36,6 +40,7 @@
   int RunBorderoptdia ( void *Tmp ) ;
   int RunItemoptdia ( void *Tmp ) ;
   int RunFileoptdia ( void * ) ;
+  int CheckCallBack(char *call);
   int actcntl = 0 , totcntl = 0 , horicntl = 0 , vertscroll = 0 , horizscroll = 0;
   char **Titles=NULL;
       
@@ -1316,7 +1321,7 @@
       char *butncode0 = NULL;
       int sw [ 7 ] = {1 , 1 , 1 , 1 , 1 , 1 , 1};
       DIB n0 = {
-          'b' , 7 , 3 , 774 , 40 , 9 , 0 , 88 , 30 , 7 , 1 , ( int * ) v0 , sw , titles0 , butncode0 , NULL , makeguidiabutnbox1callback , /* args , Callbak */
+          'b' , 7 , 3 , 774 , 40 , 9 , 0 , 88 , 30 , 7 , 1 , ( int * ) v0 , sw , titles0 , butncode0 , NULL , makeguidiabutnbox1callback , /* args , Callback */
       NULL , NULL , 1 , 0.5 , 0 , 0 };
       DIG g1 = {
           'g' , 6 , 45 , 888 , 664 , NULL , /* pixmap info */
@@ -1469,7 +1474,7 @@
       DIN b0 = {
           'n' , 7 , 3 , 774 , 40 , 12 , 5 , 84 , 25 , 7 , 1 , 1 , 0.50000 , 0 , 0 , 0 , 0 , /* button type and roundinfg factor \
            ( 0-0.5 ) , bordr , hide , nodrawbkgr*/
-          butn0 , makeguidiabutton1callback , /* Callbak */
+          butn0 , makeguidiabutton1callback , /* Callback */
           NULL /* any args */
       };
       b0.item = 1;
@@ -1657,7 +1662,16 @@
       fprintf ( fp , "    %d,%d,  \n" , t->x2 , t->y2 ) ;
       fprintf ( fp , "    %d,  \n" , t->hide ) ;
       fprintf ( fp , "    %lf,%lf,%lf,  \n" , t->ds , t->df , t->mvmt ) ;
-      fprintf ( fp , "    NULL,%-svertscroll%-dcallback /* *args, callback */\n" , dianame , control ) ;
+      int count;
+      count = control;
+      sprintf(CallBackName,"%-svertscroll%-dcallback",dianame, count);
+      while(CheckCallBack(CallBackName)) {
+         count++;
+         sprintf(CallBackName,"%-svertscroll%-dcallback",dianame, count); 
+      }
+      fprintf ( Inc ,"int %s(int key,int i,void *Tmp) ;\n" ,CallBackName);
+      fprintf ( fp ,"int %s(int key,int i,void *Tmp) {\n" ,CallBackName);
+      fprintf ( fp , "    NULL,%-svertscroll%-dcallback /* *args, Callback %s */\n" , dianame , count,t->Wid ) ;
           
       fprintf ( fp , "  };\n" ) ;
       t->Wid [ 49 ] = '\0';
@@ -1672,7 +1686,14 @@
       fprintf ( fp , "    %d,%d,  \n" , t->x2 , t->y2 ) ;
       fprintf ( fp , "    %d,  \n" , t->hide ) ;
       fprintf ( fp , "    %lf,%lf,%lf,  \n" , t->ds , t->df , t->mvmt ) ;
-      fprintf ( fp , "    NULL,%-shorizscroll%-dcallback /* *args, callback */\n" , dianame , control ) ;
+      int count;
+      count = control;
+      sprintf(CallBackName,"%-shorizscroll%-dcallback",dianame, count);
+      while(CheckCallBack(CallBackName)) {
+         count++;
+         sprintf(CallBackName,"%-shorizscroll%-dcallback",dianame, count); 
+      }
+      fprintf ( fp , "    NULL,%-shorizscroll%-dcallback /* *args, Callback %s */\n" , dianame , count,t->Wid ) ;
           
       fprintf ( fp , "  };\n" ) ;
       t->Wid [ 49 ] = '\0';
@@ -1787,7 +1808,14 @@
       fprintf ( fp , "    %d,  \n" , t->lngth ) ;
       fprintf ( fp , "    (double *)v[%-d],\n" , Vcount++ ) ;
       fprintf ( fp , "    NULL,\n" ) ;
-      fprintf ( fp , "    NULL,%-sfslide%-dcallback /* *args, callback */\n" , dianame , control ) ;
+      int count;
+      count = control;
+      sprintf(CallBackName,"%-sfslide%-dcallback",dianame, count);
+      while(CheckCallBack(CallBackName)) {
+         count++;
+         sprintf(CallBackName,"%-sfslide%-dcallback",dianame, count); 
+      }
+      fprintf ( fp , "    NULL,%-sfslide%-dcallback /* *args, Callback %s */\n" , dianame , count ,t->Wid) ;
           
       fprintf ( fp , "  };\n" ) ;
       t->Wid [ 49 ] = '\0';
@@ -1804,7 +1832,14 @@
       fprintf ( fp , "    %d,  \n" , t->lngth ) ;
       fprintf ( fp , "    (int *)v[%-d],\n" , Vcount++ ) ;
       fprintf ( fp , "    NULL,\n" ) ;
-      fprintf ( fp , "    NULL,%-sdslide%-dcallback /* *args, callback */\n" , dianame , control ) ;
+      int count;
+      count = control;
+      sprintf(CallBackName,"%-sdslide%-dcallback",dianame, count);
+      while(CheckCallBack(CallBackName)) {
+         count++;
+         sprintf(CallBackName,"%-sdslide%-dcallback",dianame, count); 
+      }
+      fprintf ( fp , "    NULL,%-sdslide%-dcallback /* *args, Callback %s */\n" , dianame , count,t->Wid ) ;
           
       fprintf ( fp , "  };\n" ) ;
       t->Wid [ 49 ] = '\0';
@@ -1821,7 +1856,14 @@
       fprintf ( fp , "    %d,  \n" , t->lngth ) ;
       fprintf ( fp , "    (int *)v[%-d],\n" , Vcount++ ) ;
       fprintf ( fp , "    NULL,\n" ) ;
-      fprintf ( fp , "    NULL,%-sdslide%-dcallback, /* *args, callback */\n" , dianame , control ) ;
+      int count;
+      count = control;
+      sprintf(CallBackName,"%-sdslide%-dcallback",dianame, count);
+      while(CheckCallBack(CallBackName)) {
+         count++;
+         sprintf(CallBackName,"%-sdslide%-dcallback",dianame, count); 
+      }
+      fprintf ( fp , "    NULL,%-sdslide%-dcallback, /* *args, Callback %s */\n" , dianame , count,t->Wid ) ;
           
       fprintf ( fp , "    %d,%d,%d,%d, /* bordr,hide,type,color */\n" , t->bordr , t->hide , t->type , t->sldclr ) ;
           
@@ -1873,7 +1915,14 @@
       else fprintf ( fp , "    NULL,\n" ) ;
       if ( pt != NULL ) fprintf ( fp , "    menu%-d ,\n" , Tbox ) ;
       else fprintf ( fp , "     NULL,\n" ) ;
-      fprintf ( fp , "    NULL,%-sbrowser%-dcallback, /* *args, callback */\n" , dianame , control ) ;
+      int count;
+      count = control;
+      sprintf(CallBackName,"%-sbrowser%-dcallback",dianame, count);
+      while(CheckCallBack(CallBackName)) {
+         count++;
+         sprintf(CallBackName,"%-sbrowser%-dcallback",dianame, count); 
+      }
+      fprintf ( fp , "    NULL,%-sbrowser%-dcallback, /* *args, Callback %s */\n" , dianame , count,t->Wid ) ;
           
       fprintf ( fp , "    %-d \n" , t->hide ) ;
       fprintf ( fp , "  };\n" ) ;
@@ -1914,7 +1963,14 @@
       fprintf ( fp , "    (int *)v[%-d],\n" , Vcount++ ) ;
       fprintf ( fp , "    NULL,\n" ) ;
       fprintf ( fp , "    menu%-d ,\n" , Tbox ) ;
-      fprintf ( fp , "    NULL,%-sbrowser%-dcallback, /* *args, callback */\n" , dianame , control ) ;
+      int count;
+      count = control;
+      sprintf(CallBackName,"%-sbrowser%-dcallback",dianame, count);
+      while(CheckCallBack(CallBackName)) {
+         count++;
+         sprintf(CallBackName,"%-sbrowser%-dcallback",dianame, count); 
+      }
+      fprintf ( fp , "    NULL,%-sbrowser%-dcallback, /* *args, Callback %s */\n" , dianame , count,t->Wid ) ;
           
       fprintf ( fp , "    %d,%d,%d,%d,%d,%d,%-d \n" , t->width , t->offset , t->w , t->itemhi , t->bordr , t->bkgr , t->hide ) ;
           
@@ -1941,7 +1997,7 @@
       fprintf ( fp , "    NULL,\n" ) ;
 //  fprintf(fp,"    menu%-d ,\n",Tbox);
       fprintf ( fp , "    NULL ,\n" ) ;
-      fprintf ( fp , "    NULL,NULL, /* *args, callback */\n" ) ;
+      fprintf ( fp , "    NULL,NULL, /* *args, Callback %s */\n" ,t->Wid) ;
       fprintf ( fp , "    %d,%d,%d,%d,%d,%d,%d\n" , t->width , t->offset , t->w , t->itemhi , t->bordr , t->bkgr , t->hide ) ;
           
       fprintf ( fp , "//     line width,offset (not used),scroll width,highlight item(not used)\n" ) ;
@@ -2314,7 +2370,14 @@
       fprintf ( fp , "    (void *)xpm%-d,\n" , Tbox ) ;
 //  PrintImage(fp,t->xpm);
       fprintf ( fp , "    %d, /* bkgr colour */ \n" , t->bkgr_clr ) ;
-      fprintf ( fp , "    %-sgbox%-dinit,/* void *initgraph(int,void *)  */ \n" , dianame , control ) ;
+      int count;
+      count = control;
+      sprintf(CallBackName,"%-sgbox%-dinit",dianame, count);
+      while(CheckCallBack(CallBackName)) {
+         count++;
+         sprintf(CallBackName,"%-sgbox%-dinit",dianame, count); 
+      }
+      fprintf ( fp , "    %-sgbox%-dinit,/* void *initgraph(int,void *)  */ \n" , dianame , count ) ;
           
       fprintf ( fp , "    NULL,%d,%d /* *data border hide*/\n  };\n" , t->bordr , t->hide ) ;
           
@@ -2446,7 +2509,14 @@
       fprintf ( fp , "    (int *)v[%-d], \n" , Vcount++ ) ;
       fprintf ( fp , "    NULL, \n" ) ;
       fprintf ( fp , "    NULL, \n" ) ;
-      fprintf ( fp , "    NULL,%-sbrowser%-dcallback, /* *args, callback */\n" , dianame , control ) ;
+      int count;
+      count = control;
+      sprintf(CallBackName,"%-sbrowser%-dcallback",dianame, count);
+      while(CheckCallBack(CallBackName)) {
+         count++;
+         sprintf(CallBackName,"%-sbrowser%-dcallback",dianame, count); 
+      }
+      fprintf ( fp , "    NULL,%-sbrowser%-dcallback, /* *args, Callback %s */\n" , dianame , count,t->Wid ) ;
           
       fprintf ( fp , "    %d,  /* Border Offset  */\n " , t->offset ) ;
       fprintf ( fp , "    %d,  /* Scroll width  */\n " , t->w ) ;
@@ -2504,7 +2574,14 @@
       fprintf ( fp , "    (int *)v[%-d], \n" , Vcount++ ) ;
       fprintf ( fp , "    NULL, \n" ) ;
       fprintf ( fp , "    NULL ,\n" , Tbox ) ;
-      fprintf ( fp , "    NULL,%-sbrowser%-dcallback, /* *args, callback */\n" , dianame , control ) ;
+      int count;
+      count = control;
+      sprintf(CallBackName,"%-sbrowser%-dcallback",dianame, count);
+      while(CheckCallBack(CallBackName)) {
+         count++;
+         sprintf(CallBackName,"%-sbrowser%-dcallback",dianame, count); 
+      }
+      fprintf ( fp , "    NULL,%-sbrowser%-dcallback, /* *args, Callback %s */\n" , dianame , count ,t->Wid) ;
           
       fprintf ( fp , "    %d,  /* Border Offset  */\n " , t->offset ) ;
       fprintf ( fp , "    %d,  /* Scroll width  */\n " , t->w ) ;
@@ -2566,7 +2643,14 @@
       fprintf ( fp , "    (int *)v[%-d], \n" , Vcount++ ) ;
       fprintf ( fp , "    NULL, \n" ) ;
       fprintf ( fp , "    NULL, \n" ) ;
-      fprintf ( fp , "    NULL,%-sbrowser%-dcallback, /* *args, callback */\n" , dianame , control ) ;
+      int count;
+      count = control;
+      sprintf(CallBackName,"%-sbrowser%-dcallback",dianame, count);
+      while(CheckCallBack(CallBackName)) {
+         count++;
+         sprintf(CallBackName,"%-sbrowser%-dcallback",dianame, count); 
+      }
+      fprintf ( fp , "    NULL,%-sbrowser%-dcallback, /* *args, Callback %s*/\n" , dianame , count,t->Wid ) ;
           
       fprintf ( fp , "    %d,  /* Border Offset  */\n " , t->offset ) ;
       fprintf ( fp , "    %d,  /* Scroll width  */\n " , t->w ) ;
@@ -2627,7 +2711,14 @@
       fprintf ( fp , "    (int *)v[%-d], \n" , Vcount++ ) ;
       fprintf ( fp , "    NULL, \n" ) ;
       fprintf ( fp , "    NULL, \n" ) ;
-      fprintf ( fp , "    NULL,%-sbrowser%-dcallback, /* *args, callback */\n" , dianame , control ) ;
+      int count;
+      count = control;
+      sprintf(CallBackName,"%-sbrowser%-dcallback",dianame, count);
+      while(CheckCallBack(CallBackName)) {
+         count++;
+         sprintf(CallBackName,"%-sbrowser%-dcallback",dianame, count); 
+      }
+      fprintf ( fp , "    NULL,%-sbrowser%-dcallback, /* *args, Callback %s */\n" , dianame , count ,t->Wid) ;
           
       fprintf ( fp , "    %d,  /* Border Offset  */\n " , t->offset ) ;
       fprintf ( fp , "    %d,  /* Scroll width  */\n " , t->w ) ;
@@ -2897,7 +2988,14 @@
       fprintf ( fp , "    %d,%d, \n" , t->nx , t->ny ) ;
       fprintf ( fp , "    e%-d,\n" , Tbox ) ;
       fprintf ( fp , "    %d,%d,\n" , t->row , t->col ) ;
-      fprintf ( fp , "    NULL,%-stextbox%-dcallback,%d,%d,%d,%d /* args,Call back */\n  };\n" , dianame , control , t->bordr , t->hide , t->Font , t->FontSize ) ;
+      int count;
+      count = control;
+      sprintf(CallBackName,"%-stextbox%-dcallback",dianame, count);
+      while(CheckCallBack(CallBackName)) {
+         count++;
+         sprintf(CallBackName,"%-stextbox%-dcallback",dianame, count); 
+      }
+      fprintf ( fp , "    NULL,%-stextbox%-dcallback,%d,%d,%d,%d /* args,Call back */\n  };\n" , dianame , count , t->bordr , t->hide , t->Font , t->FontSize ) ;
           
       t->Wid [ 49 ] = '\0';
       fprintf ( fp , "  strcpy(t%-d.Wid,(char *)\"%-s\");\n" , Tbox , t->Wid ) ;
@@ -3059,7 +3157,14 @@
       fprintf ( fp , "    %d,%d, \n" , t->nx , t->ny ) ;
       fprintf ( fp , "    e%-d,\n" , Tbox ) ;
       fprintf ( fp , "    %d,%d,\n" , t->row , t->col ) ;
-      fprintf ( fp , "    NULL,%-stablebox%-dcallback,%d,%d,%d,%d /* args,Call back */\n  };\n" , dianame , control , t->bordr , t->hide , t->Font , t->FontSize ) ;
+      int count;
+      count = control;
+      sprintf(CallBackName,"%-stablebox%-dcallback",dianame, count);
+      while(CheckCallBack(CallBackName)) {
+         count++;
+         sprintf(CallBackName,"%-stablebox%-dcallback",dianame, count); 
+      }
+      fprintf ( fp , "    NULL,%-stablebox%-dcallback,%d,%d,%d,%d /* args,Call back */\n  };\n" , dianame , count , t->bordr , t->hide , t->Font , t->FontSize ) ;
           
       t->Wid [ 49 ] = '\0';
       fprintf ( fp , "  strcpy(T%-d.Wid,(char *)\"%-s\");\n" , Tbox , t->Wid ) ;
@@ -3218,7 +3323,14 @@
       fprintf ( fp , "    sw%-d,\n" , Tbox ) ;
       fprintf ( fp , "    titles%-d,\n" , Tbox ) ;
       fprintf ( fp , "    butncode%-d,\n" , Tbox ) ;
-      fprintf ( fp , "    NULL,%-sbutton%-dcallback, /* args, Callbak */\n  " , dianame , control ) ;
+      int count;
+      count = control;
+      sprintf(CallBackName,"%-sbutton%-dcallback",dianame, count);
+      while(CheckCallBack(CallBackName)) {
+         count++;
+         sprintf(CallBackName,"%-sbutton%-dcallback",dianame, count); 
+      }
+      fprintf ( fp , "    NULL,%-sbutton%-dcallback, /* args, Callback %s */\n  " , dianame , count ,t->Wid) ;
           
       fprintf ( fp , "    (void **)xpms%d,bkgr%-d, /* pointers to xpms and colors */\n  " , Tbox , Tbox ) ;
           
@@ -3298,7 +3410,7 @@
           
 //  fprintf(fp,"    NULL,\n");
       fprintf ( fp , "    butn%-d, \n" , Tbox ) ;
-      fprintf ( fp , "    %-sbutton%-dcallback, /*  Callbak */\n  " , dianame , control ) ;
+      fprintf ( fp , "    %-sbutton%-dcallback, /*  Callback %s */\n  " , dianame , control ,t->Wid) ;
           
       fprintf ( fp , "    NULL  /* any args */\n" ) ;
       fprintf ( fp , "  };\n" ) ;
@@ -3377,7 +3489,14 @@
       fprintf ( fp , "    %d,%f,%d,%d,%d,1, /* button type and roundinfg factor(0-0.5),bordr,hide ,nodrawbkgr*/\n \n" , t->type , t->fac , t->bordr , t->hide , t->nodrawbkgr ) ;
           
       fprintf ( fp , "    butn%-d, \n" , Tbox ) ;
-      fprintf ( fp , "    %-ssplbutton%-dcallback, /*  Callbak */\n  " , dianame , control ) ;
+      int count;
+      count = control;
+      sprintf(CallBackName,"%-ssplbutton%-dcallback",dianame, count);
+      while(CheckCallBack(CallBackName)) {
+         count++;
+         sprintf(CallBackName,"%-ssplbutton%-dcallback",dianame, count); 
+      }
+      fprintf ( fp , "    %-ssplbutton%-dcallback, /*  Callback %s */\n  " , dianame , count ,t->Wid) ;
           
       fprintf ( fp , "    NULL  /* any args */\n" ) ;
       fprintf ( fp , "  };\n" ) ;
@@ -3534,7 +3653,14 @@
       else fprintf ( fp , "    NULL,\n" ) ;
       fprintf ( fp , "    titles%-d,\n" , Tbox ) ;
       fprintf ( fp , "    butncode%-d,\n" , Tbox ) ;
-      fprintf ( fp , "    NULL,%-sbutton%-dcallback, /* args, Callbak */\n" , dianame , control ) ;
+      int count;
+      count = control;
+      sprintf(CallBackName,"%-sbutton%-dcallback",dianame, count);
+      while(CheckCallBack(CallBackName)) {
+         count++;
+         sprintf(CallBackName,"%-sbutton%-dcallback",dianame, count); 
+      }
+      fprintf ( fp , "    NULL,%-sbutton%-dcallback, /* args, Callback %s*/\n" , dianame , count ,t->Wid) ;
           
       fprintf ( fp , "    xpm%d,bkgr%d, /* pointers to xpms and colors */\n  " , Tbox , Tbox ) ;
           
@@ -3685,7 +3811,14 @@
       fprintf ( fp , "    sw%-d,\n" , Tbox ) ;
       fprintf ( fp , "    titles%-d,\n" , Tbox ) ;
       fprintf ( fp , "    butncode%-d,\n" , Tbox ) ;
-      fprintf ( fp , "    NULL,%-shoribar%-dcallback,/* arg, Callbak */\n" , dianame , control ) ;
+      int count;
+      count = control;
+      sprintf(CallBackName,"%-shoribar%-dcallback",dianame, count);
+      while(CheckCallBack(CallBackName)) {
+         count++;
+         sprintf(CallBackName,"%-shoribar%-dcallback",dianame, count); 
+      }
+      fprintf ( fp , "    NULL,%-shoribar%-dcallback,/* arg, Callback %s */\n" , dianame , count,t->Wid ) ;
           
       fprintf ( fp , "    (void **)xpms%d,bkgr%d, /* pointers to xpms and colors */\n " , Tbox , Tbox ) ;
           
@@ -4254,9 +4387,17 @@
       }
   }
   void WriteTextBoxCallback ( int count , FILE *fp , char *dianame ) {
-      fprintf ( Inc , "int  %-stextbox%-dcallback(int cellno,int i,void *Tmp);\n" , dianame , count ) ;
+      sprintf(CallBackName,"%-stextbox%-dcallback",dianame, count);
+      while(CheckCallBack(CallBackName)) {
+         count++;
+         sprintf(CallBackName,"%-stextbox%-dcallback",dianame, count); 
+      }
+      
+      fprintf ( Inc ,"int %s(int cellno,int i,void *Tmp) ;\n" ,CallBackName);
+      fprintf ( fp ,"int %s(int cellno,int i,void *Tmp) {\n" ,CallBackName);
+//      fprintf ( Inc , "int  %-stextbox%-dcallback(int cellno,int i,void *Tmp);\n" , dianame , count ) ;
           
-      fprintf ( fp , "int  %-stextbox%-dcallback(int cellno,int i,void *Tmp) {\n" , dianame , count ) ;
+//      fprintf ( fp , "int  %-stextbox%-dcallback(int cellno,int i,void *Tmp) {\n" , dianame , count ) ;
           
       fprintf ( fp , "  /************************************************* \n" ) ;
       fprintf ( fp , "   cellno: current cell counted along column strting with 0 \n" ) ;
@@ -4276,9 +4417,17 @@
       fprintf ( fp , "}\n" ) ;
   }
   void WriteTableBoxCallback ( int count , FILE *fp , char *dianame ) {
-      fprintf ( Inc , "int  %-stablebox%-dcallback(int cellno,int i,void *Tmp);\n" , dianame , count ) ;
+      sprintf(CallBackName,"%-stablebox%-dcallback",dianame, count);
+      while(CheckCallBack(CallBackName)) {
+         count++;
+         sprintf(CallBackName,"%-stablebox%-dcallback",dianame, count); 
+      }
+      
+      fprintf ( Inc ,"int %s(int cellno,int i,void *Tmp) ;\n" ,CallBackName);
+      fprintf ( fp ,"int %s(int cellno,int i,void *Tmp) {\n" ,CallBackName);
+//      fprintf ( Inc , "int  %-stablebox%-dcallback(int cellno,int i,void *Tmp);\n" , dianame , count ) ;
           
-      fprintf ( fp , "int  %-stablebox%-dcallback(int cellno,int i,void *Tmp) {\n" , dianame , count ) ;
+//      fprintf ( fp , "int  %-stablebox%-dcallback(int cellno,int i,void *Tmp) {\n" , dianame , count ) ;
           
       fprintf ( fp , "  /************************************************* \n" ) ;
       fprintf ( fp , "   cellno: current cell counted along column strting with 0 \n" ) ;
@@ -4334,9 +4483,17 @@
   }
   void WriteSelectmenuCallback ( int count , FILE *fp , char *dianame ) {
       int i;
-      fprintf ( Inc , "int  %-sbrowser%-dcallback(int item,int i,void *Tmp) ;\n" , dianame , count ) ;
+      sprintf(CallBackName,"%-sbrowser%-dcallback",dianame, count);
+      while(CheckCallBack(CallBackName)) {
+         count++;
+         sprintf(CallBackName,"%-sbrowser%-dcallback",dianame, count); 
+      }
+      
+      fprintf ( Inc ,"int %s(int item,int i,void *Tmp) ;\n" ,CallBackName);
+      fprintf ( fp ,"int %s(int item,int i,void *Tmp) {\n" ,CallBackName);
+//      fprintf ( Inc , "int  %-sbrowser%-dcallback(int item,int i,void *Tmp) ;\n" , dianame , count ) ;
           
-      fprintf ( fp , "int  %-sbrowser%-dcallback(int item,int i,void *Tmp) {\n" , dianame , count ) ;
+//      fprintf ( fp , "int  %-sbrowser%-dcallback(int item,int i,void *Tmp) {\n" , dianame , count ) ;
           
       fprintf ( fp , "  /*********************************** \n" ) ;
       fprintf ( fp , "    item : selected item (1 to max_item) \n" ) ;
@@ -4368,9 +4525,17 @@
   }
   void WriteThumbnailBrowserCallback ( int count , FILE *fp , char *dianame ) {
       int i;
-      fprintf ( Inc , "int  %-sbrowser%-dcallback(int item,int i,void *Tmp) ;\n" , dianame , count ) ;
+      sprintf(CallBackName,"%-sbrowser%-dcallback",dianame, count);
+      while(CheckCallBack(CallBackName)) {
+         count++;
+         sprintf(CallBackName,"%-sbrowser%-dcallback",dianame, count); 
+      }
+      
+      fprintf ( Inc ,"int %s(int item,int i,void *Tmp) ;\n" ,CallBackName);
+      fprintf ( fp ,"int %s(int item,int i,void *Tmp) {\n" ,CallBackName);
+//      fprintf ( Inc , "int  %-sbrowser%-dcallback(int item,int i,void *Tmp) ;\n" , dianame , count ) ;
           
-      fprintf ( fp , "int  %-sbrowser%-dcallback(int item,int i,void *Tmp) {\n" , dianame , count ) ;
+//      fprintf ( fp , "int  %-sbrowser%-dcallback(int item,int i,void *Tmp) {\n" , dianame , count ) ;
           
       fprintf ( fp , "  DIALOG *D;DIY *Y; \n" ) ;
       fprintf ( fp , "  /*********************************** \n" ) ;
@@ -4402,9 +4567,17 @@
   }
   void WriteRadioButtonsCallback ( int count , FILE *fp , char *dianame ) {
       int i;
-      fprintf ( Inc , "int  %-sbrowser%-dcallback(int item,int i,void *Tmp) ;\n" , dianame , count ) ;
+      sprintf(CallBackName,"%-sbrowser%-dcallback",dianame, count);
+      while(CheckCallBack(CallBackName)) {
+         count++;
+         sprintf(CallBackName,"%-sbrowser%-dcallback",dianame, count); 
+      }
+      
+      fprintf ( Inc ,"int %s(int item,int i,void *Tmp) ;\n" ,CallBackName);
+      fprintf ( fp ,"int %s(int item,int i,void *Tmp) {\n" ,CallBackName);
+//      fprintf ( Inc , "int  %-sbrowser%-dcallback(int item,int i,void *Tmp) ;\n" , dianame , count ) ;
           
-      fprintf ( fp , "int  %-sbrowser%-dcallback(int item,int i,void *Tmp) {\n" , dianame , count ) ;
+//      fprintf ( fp , "int  %-sbrowser%-dcallback(int item,int i,void *Tmp) {\n" , dianame , count ) ;
           
       fprintf ( fp , "  /*********************************** \n" ) ;
       fprintf ( fp , "    item : selected item (1 to max_item)  not any specific relevence\n" ) ;
@@ -4432,9 +4605,17 @@
   }
   void WriteCheckBoxCallback ( int count , FILE *fp , char *dianame ) {
       int i;
-      fprintf ( Inc , "int  %-sbrowser%-dcallback(int item,int i,void *Tmp) ;\n" , dianame , count ) ;
+      sprintf(CallBackName,"%-sbrowser%-dcallback",dianame, count);
+      while(CheckCallBack(CallBackName)) {
+         count++;
+         sprintf(CallBackName,"%-sbrowser%-dcallback",dianame, count); 
+      }
+      
+      fprintf ( Inc ,"int %s(int item,int i,void *Tmp) ;\n" ,CallBackName);
+      fprintf ( fp ,"int %s(int item,int i,void *Tmp) {\n" ,CallBackName);
+//      fprintf ( Inc , "int  %-sbrowser%-dcallback(int item,int i,void *Tmp) ;\n" , dianame , count ) ;
           
-      fprintf ( fp , "int  %-sbrowser%-dcallback(int item,int i,void *Tmp) {\n" , dianame , count ) ;
+//      fprintf ( fp , "int  %-sbrowser%-dcallback(int item,int i,void *Tmp) {\n" , dianame , count ) ;
           
       fprintf ( fp , "  /*********************************** \n" ) ;
       fprintf ( fp , "    item : selected item (1 to max_item)  not any specific relevence\n" ) ;
@@ -4463,9 +4644,17 @@
   void WriteButnBoxNewCallback ( int count , int nb , FILE *fp , char *dianame ) \
   {
       int i;
-      fprintf ( Inc , "int  %-sbutton%-dcallback(int key,int i,void *Tmp) ;\n" , dianame , count ) ;
+      sprintf(CallBackName,"%-sbutton%-dcallback",dianame, count);
+      while(CheckCallBack(CallBackName)) {
+         count++;
+         sprintf(CallBackName,"%-sbutton%-dcallback",dianame, count); 
+      }
+      
+      fprintf ( Inc ,"int %s(int key,int i,void *Tmp) ;\n" ,CallBackName);
+      fprintf ( fp ,"int %s(int key,int i,void *Tmp) {\n" ,CallBackName);
+//      fprintf ( Inc , "int  %-sbutton%-dcallback(int key,int i,void *Tmp) ;\n" , dianame , count ) ;
           
-      fprintf ( fp , "int  %-sbutton%-dcallback(int key,int i,void *Tmp) {\n" , dianame , count ) ;
+//      fprintf ( fp , "int  %-sbutton%-dcallback(int key,int i,void *Tmp) {\n" , dianame , count ) ;
           
       fprintf ( fp , "  DIALOG *D;DIBN *B; \n" ) ;
       fprintf ( fp , "  int n,ret =0; \n" ) ;
@@ -4494,9 +4683,17 @@
   }
   void WriteButnBoxCallback ( int count , int nb , FILE *fp , char *dianame ) {
       int i;
-      fprintf ( Inc , "int  %-sbutton%-dcallback(int butno,int i,void *Tmp) ;\n" , dianame , count ) ;
+      sprintf(CallBackName,"%-sbutton%-dcallback",dianame, count);
+      while(CheckCallBack(CallBackName)) {
+         count++;
+         sprintf(CallBackName,"%-sbutton%-dcallback",dianame, count); 
+      }
+      
+      fprintf ( Inc ,"int %s(int butno,int i,void *Tmp) ;\n" ,CallBackName);
+      fprintf ( fp ,"int %s(int butno,int i,void *Tmp) {\n" ,CallBackName);
+//      fprintf ( Inc , "int  %-sbutton%-dcallback(int butno,int i,void *Tmp) ;\n" , dianame , count ) ;
           
-      fprintf ( fp , "int  %-sbutton%-dcallback(int butno,int i,void *Tmp) {\n" , dianame , count ) ;
+//      fprintf ( fp , "int  %-sbutton%-dcallback(int butno,int i,void *Tmp) {\n" , dianame , count ) ;
           
       fprintf ( fp , "  /*********************************** \n" ) ;
       fprintf ( fp , "    butno : selected item (1 to max_item) \n" ) ;
@@ -4528,11 +4725,19 @@
       fprintf (fp ," buts = (BUT_STR *) (B->buts);\n");
       fprintf ( fp , "}\n" ) ;
   }
-  void WriteButnBoxnCallback ( int count , int nb , FILE *fp , char *dianame ) {
+  int  WriteButnBoxnCallback ( int count , int nb , FILE *fp , char *dianame ) {
       int i;
-      fprintf ( Inc , "int  %-sbutton%-dcallback(int butno,int i,void *Tmp) ;\n" , dianame , count ) ;
+      sprintf(CallBackName,"%-sbutton%-dcallback",dianame, count);
+      while(CheckCallBack(CallBackName)) {
+         count++;
+         sprintf(CallBackName,"%-sbutton%-dcallback",dianame, count); 
+      }
+      
+      fprintf ( Inc ,"int %s(int butno,int i,void *Tmp) ;\n" ,CallBackName);
+      fprintf ( fp ,"int %s(int butno,int i,void *Tmp) {\n" ,CallBackName);
+//      fprintf ( Inc , "int  %-sbutton%-dcallback(int butno,int i,void *Tmp) ;\n" , dianame , count ) ;
           
-      fprintf ( fp , "int  %-sbutton%-dcallback(int butno,int i,void *Tmp) {\n" , dianame , count ) ;
+//      fprintf ( fp , "int  %-sbutton%-dcallback(int butno,int i,void *Tmp) {\n" , dianame , count ) ;
           
       fprintf ( fp , "  /*********************************** \n" ) ;
       fprintf ( fp , "    butno : selected item (1 to max_item) \n" ) ;
@@ -4563,12 +4768,21 @@
       fprintf ( fp," BUT_STR *buts;\n");
       fprintf (fp ," buts = (BUT_STR *) (B->buts);\n");
       fprintf ( fp , "}\n" ) ;
+      return count;
   }
-  void WriteHoriBarCallback ( int count , int nb , FILE *fp , char *dianame ) {
+  int  WriteHoriBarCallback ( int count , int nb , FILE *fp , char *dianame ) {
       int i;
-      fprintf ( Inc , "int  %-ssplbutton%-dcallback(int butno,int i,void *Tmp) ;\n" , dianame , count ) ;
+      sprintf(CallBackName,"%-ssplbutton%-dcallback",dianame, count);
+      while(CheckCallBack(CallBackName)) {
+         count++;
+         sprintf(CallBackName,"%-ssplbutton%-dcallback",dianame, count); 
+      }
+      
+      fprintf ( Inc ,"int %s(int butno,int i,void *Tmp) ;\n" ,CallBackName);
+      fprintf ( fp ,"int %s( int butno,int i,void *Tmp) {\n" ,CallBackName);
+//      fprintf ( Inc , "int  %-ssplbutton%-dcallback(int butno,int i,void *Tmp) ;\n" , dianame , count ) ;
           
-      fprintf ( fp , "int  %-ssplbutton%-dcallback(int butno,int i,void *Tmp) {\n" , dianame , count ) ;
+//      fprintf ( fp , "int  %-ssplbutton%-dcallback(int butno,int i,void *Tmp) {\n" , dianame , count ) ;
           
       fprintf ( fp , "  /*********************************** \n" ) ;
       fprintf ( fp , "    butno : selected item (1 to max_item) \n" ) ;
@@ -4599,13 +4813,22 @@
       fprintf ( fp," BUT_STR *buts;\n");
       fprintf (fp ," buts = (BUT_STR *) (B->buts);\n");
       fprintf ( fp , "}\n" ) ;
+      return count;
   }
-  void WriteHoriBarNewCallback ( int count , int nb , FILE *fp , char *dianame ) \
+  int  WriteHoriBarNewCallback ( int count , int nb , FILE *fp , char *dianame ) \
   {
       int i;
-      fprintf ( Inc , "int  %-shoribar%-dcallback(int butno,int i,void *Tmp) ;\n" , dianame , count ) ;
+      sprintf(CallBackName,"%-shoribar%-dcallback",dianame, count);
+      while(CheckCallBack(CallBackName)) {
+         count++;
+         sprintf(CallBackName,"%-shoribar%-dcallback",dianame, count); 
+      }
+      
+      fprintf ( Inc ,"int %s(int butno,int i,void *Tmp) ;\n" ,CallBackName);
+      fprintf ( fp ,"int %s(int butno,int i,void *Tmp) {\n" ,CallBackName);
+//      fprintf ( Inc , "int  %-shoribar%-dcallback(int butno,int i,void *Tmp) ;\n" , dianame , count ) ;
           
-      fprintf ( fp , "int  %-shoribar%-dcallback(int butno,int i,void *Tmp) {\n" , dianame , count ) ;
+//      fprintf ( fp , "int  %-shoribar%-dcallback(int butno,int i,void *Tmp) {\n" , dianame , count ) ;
           
       fprintf ( fp , "  /*********************************** \n" ) ;
       fprintf ( fp , "    butno : selected item (1 to max_item) \n" ) ;
@@ -4636,12 +4859,21 @@
       fprintf ( fp," BUT_STR *buts;\n");
       fprintf (fp ," buts = (BUT_STR *) (B->buts);\n");
       fprintf ( fp , "}\n" ) ;
+      return count;
   }
-  void WriteBrowserCallback ( int count , FILE *fp , char *dianame ) {
+  int  WriteBrowserCallback ( int count , FILE *fp , char *dianame ) {
       int i;
-      fprintf ( Inc , "int  %-sbrowser%-dcallback(int item,int i,void *Tmp) ;\n" , dianame , count ) ;
+      sprintf(CallBackName,"%-sbrowser%-dcallback",dianame, count);
+      while(CheckCallBack(CallBackName)) {
+         count++;
+         sprintf(CallBackName,"%-sbrowser%-dcallback",dianame, count); 
+      }
+      
+      fprintf ( Inc ,"int %s(int item,int i,void *Tmp) ;\n" ,CallBackName);
+      fprintf ( fp ,"int %s(int item ,int i,void *Tmp) {\n" ,CallBackName);
+//      fprintf ( Inc , "int  %-sbrowser%-dcallback(int item,int i,void *Tmp) ;\n" , dianame , count ) ;
           
-      fprintf ( fp , "int  %-sbrowser%-dcallback(int item,int i,void *Tmp) {\n" , dianame , count ) ;
+//      fprintf ( fp , "int  %-sbrowser%-dcallback(int item,int i,void *Tmp) {\n" , dianame , count ) ;
           
       fprintf ( fp , "  /*********************************** \n" ) ;
       fprintf ( fp , "    item : selected item (1 to max_item) \n" ) ;
@@ -4660,12 +4892,21 @@
       fprintf ( fp , "  }\n" ) ;
       fprintf ( fp , "  return ret;\n" ) ;
       fprintf ( fp , "}\n" ) ;
+      return count;
   }
   void WriteScrollmenuCallback ( int count , FILE *fp , char *dianame ) {
       int i;
-      fprintf ( Inc , "int  %-sbrowser%-dcallback(int item,int i,void *Tmp) ;\n" , dianame , count ) ;
+      sprintf(CallBackName,"%-sbrowser%-dcallback",dianame, count);
+      while(CheckCallBack(CallBackName)) {
+         count++;
+         sprintf(CallBackName,"%-sbrowser%-dcallback",dianame, count); 
+      }
+      
+      fprintf ( Inc ,"int %s(int item,int i,void *Tmp) ;\n" ,CallBackName);
+      fprintf ( fp ,"int %s(int item,int i,void *Tmp) {\n" ,CallBackName);
+//      fprintf ( Inc , "int  %-sbrowser%-dcallback(int item,int i,void *Tmp) ;\n" , dianame , count ) ;
           
-      fprintf ( fp , "int  %-sbrowser%-dcallback(int item,int i,void *Tmp) {\n" , dianame , count ) ;
+//      fprintf ( fp , "int  %-sbrowser%-dcallback(int item,int i,void *Tmp) {\n" , dianame , count ) ;
           
       fprintf ( fp , "  /*********************************** \n" ) ;
       fprintf ( fp , "    item : selected item (1 to max_item) \n" ) ;
@@ -4693,18 +4934,34 @@
   }
   void WriteMsgScrollinit ( int count , FILE *fp , char *dianame ) {
       int i;
-      fprintf ( Inc , "void  %-sbrowser%-dinit(DIS *S,void *pt) ;\n" , dianame , count ) ;
+      sprintf(CallBackName,"%-sbrowser%-dinit",dianame, count);
+      while(CheckCallBack(CallBackName)) {
+         count++;
+         sprintf(CallBackName,"%-sbrowser%-dinit",dianame, count); 
+      }
+      
+      fprintf ( Inc ,"void * %s(DIS *S,void *pt)) ;\n" ,CallBackName);
+      fprintf ( fp ,"void * %s(DIS *S,void *ptmp)) {\n" ,CallBackName);
+//      fprintf ( Inc , "void  %-sbrowser%-dinit(DIS *S,void *pt) ;\n" , dianame , count ) ;
           
-      fprintf ( fp , "void  %-sbrowser%-dinit(DIS *S,void *ptmp) {\n" , dianame , count ) ;
+//      fprintf ( fp , "void  %-sbrowser%-dinit(DIS *S,void *ptmp) {\n" , dianame , count ) ;
           
       fprintf ( fp , " void **pt=(void **)ptmp; //pt[0] is arg \n" ) ;
       fprintf ( fp , "}\n" ) ;
   }
-  void WriteSlideDCallback ( int count , FILE *fp , char *dianame ) {
+  int  WriteSlideDCallback ( int count , FILE *fp , char *dianame ) {
       int i;
-      fprintf ( Inc , "int  %-sdslide%-dcallback(int val,int i,void *Tmp) ;\n" , dianame , count ) ;
+      sprintf(CallBackName,"%-sdslide%-dcallback",dianame, count);
+      while(CheckCallBack(CallBackName)) {
+         count++;
+         sprintf(CallBackName,"%-sdslide%-dcallback",dianame, count); 
+      }
+      
+      fprintf ( Inc ,"int %s(int  val,int i,void *Tmp) ;\n" ,CallBackName);
+      fprintf ( fp ,"int %s(int  val,int i,void *Tmp) {\n" ,CallBackName);
+//      fprintf ( Inc , "int  %-sdslide%-dcallback(int val,int i,void *Tmp) ;\n" , dianame , count ) ;
           
-      fprintf ( fp , "int  %-sdslide%-dcallback(int val,int i,void *Tmp) {\n" , dianame , count ) ;
+//      fprintf ( fp , "int  %-sdslide%-dcallback(int val,int i,void *Tmp) {\n" , dianame , count ) ;
           
       fprintf ( fp , "  /*********************************** \n" ) ;
       fprintf ( fp , "    val : current value \n" ) ;
@@ -4720,12 +4977,21 @@
       fprintf ( fp , "  SD = (DID *) kgGetWidget(Tmp,i);\n" ) ;
       fprintf ( fp , "  return ret;\n" ) ;
       fprintf ( fp , "}\n" ) ;
+      return count;
   }
-  void WriteSlideHCallback ( int count , FILE *fp , char *dianame ) {
+  int  WriteSlideHCallback ( int count , FILE *fp , char *dianame ) {
       int i;
-      fprintf ( Inc , "int  %-sdslide%-dcallback(int val,int i,void *Tmp) ;\n" , dianame , count ) ;
+      sprintf(CallBackName,"%-sdslide%-dcallback",dianame, count);
+      while(CheckCallBack(CallBackName)) {
+         count++;
+         sprintf(CallBackName,"%-sdslide%-dcallback",dianame, count); 
+      }
+      
+      fprintf ( Inc ,"int %s(int val,int i,void *Tmp) ;\n" ,CallBackName);
+      fprintf ( fp ,"int %s(int  val,int i,void *Tmp) {\n" ,CallBackName);
+//      fprintf ( Inc , "int  %-sdslide%-dcallback(int val,int i,void *Tmp) ;\n" , dianame , count ) ;
           
-      fprintf ( fp , "int  %-sdslide%-dcallback(int val,int i,void *Tmp) {\n" , dianame , count ) ;
+//      fprintf ( fp , "int  %-sdslide%-dcallback(int val,int i,void *Tmp) {\n" , dianame , count ) ;
           
       fprintf ( fp , "  /*********************************** \n" ) ;
       fprintf ( fp , "    val : current value \n" ) ;
@@ -4741,12 +5007,22 @@
       fprintf ( fp , "  SD = (DIHB *) kgGetWidget(Tmp,i);\n" ) ;
       fprintf ( fp , "  return ret;\n" ) ;
       fprintf ( fp , "}\n" ) ;
+      return count;
   }
-  void WriteSlideFCallback ( int count , FILE *fp , char *dianame ) {
+  int  WriteSlideFCallback ( int count , FILE *fp , char *dianame ) {
       int i;
-      fprintf ( Inc , "int  %-sfslide%-dcallback(double val,int i,void *Tmp) ;\n" , dianame , count ) ;
+      
+      sprintf(CallBackName,"%-sfslide%-dcallback",dianame, count);
+      while(CheckCallBack(CallBackName)) {
+         count++;
+         sprintf(CallBackName,"%-sfslide%-dcallback",dianame, count); 
+      }
+      
+      fprintf ( Inc ,"int %s(double val,int i,void *Tmp) ;\n" ,CallBackName);
+      fprintf ( fp ,"int %s(double val,int i,void *Tmp) {\n" ,CallBackName);
+//      fprintf ( Inc , "int  %-sfslide%-dcallback(double val,int i,void *Tmp) ;\n" , dianame , count ) ;
           
-      fprintf ( fp , "int  %-sfslide%-dcallback(double val,int i,void *Tmp) {\n" , dianame , count ) ;
+//      fprintf ( fp , "int  %-sfslide%-dcallback(double val,int i,void *Tmp) {\n" , dianame , count ) ;
           
       fprintf ( fp , "  /*********************************** \n" ) ;
       fprintf ( fp , "    val : current value \n" ) ;
@@ -4762,12 +5038,21 @@
       fprintf ( fp , "  F = (DIF *) kgGetWidget(Tmp,i);\n" ) ;
       fprintf ( fp , "  return ret;\n" ) ;
       fprintf ( fp , "}\n" ) ;
+      return count;
   }
-  void WriteVertScrollCallback ( int count , FILE *fp , char *dianame ) {
+  int  WriteVertScrollCallback ( int count , FILE *fp , char *dianame ) {
       int i;
-      fprintf ( Inc , "int  %-svertscroll%-dcallback(double val,int i,void *Tmp) ;\n" , dianame , count ) ;
+      sprintf(CallBackName,"%-svertscroll%-dcallback",dianame, count);
+      while(CheckCallBack(CallBackName)) {
+         count++;
+         sprintf(CallBackName,"%-svertscroll%-dcallback",dianame, count); 
+      }
+      
+      fprintf ( Inc ,"int %s(double val,int i,void *Tmp) ;\n" ,CallBackName);
+      fprintf ( fp ,"int %s(double val,int i,void *Tmp) {\n" ,CallBackName);
+//      fprintf ( Inc , "int  %-svertscroll%-dcallback(double val,int i,void *Tmp) ;\n" , dianame , count ) ;
           
-      fprintf ( fp , "int  %-svertscroll%-dcallback(double val,int i,void *Tmp) {\n" , dianame , count ) ;
+//      fprintf ( fp , "int  %-svertscroll%-dcallback(double val,int i,void *Tmp) {\n" , dianame , count ) ;
           
       fprintf ( fp , "  /*********************************** \n" ) ;
       fprintf ( fp , "    val : current value \n" ) ;
@@ -4783,12 +5068,21 @@
       fprintf ( fp , "  V = (DIV *) kgGetWidget(Tmp,i);\n" ) ;
       fprintf ( fp , "  return ret;\n" ) ;
       fprintf ( fp , "}\n" ) ;
+      return count;
   }
-  void WriteHorizScrollCallback ( int count , FILE *fp , char *dianame ) {
+  int  WriteHorizScrollCallback ( int count , FILE *fp , char *dianame ) {
       int i;
-      fprintf ( Inc , "int  %-shorizscroll%-dcallback(double val,int i,void *Tmp) ;\n" , dianame , count ) ;
+      sprintf(CallBackName,"%-shorizscroll%-dcallback",dianame, count);
+      while(CheckCallBack(CallBackName)) {
+         count++;
+         sprintf(CallBackName,"%-shorizscroll%-dcallback",dianame, count); 
+      }
+      
+      fprintf ( Inc ,"int %s(double val,int i,void *Tmp) ;\n" ,CallBackName);
+      fprintf ( fp ,"int %s(double val,int i,void *Tmp) {\n" ,CallBackName);
+//      fprintf ( Inc , "int  %-shorizscroll%-dcallback(double val,int i,void *Tmp) ;\n" , dianame , count ) ;
           
-      fprintf ( fp , "int  %-shorizscroll%-dcallback(double val,int i,void *Tmp) {\n" , dianame , count ) ;
+//      fprintf ( fp , "int  %-shorizscroll%-dcallback(double val,int i,void *Tmp) {\n" , dianame , count ) ;
           
       fprintf ( fp , "  /*********************************** \n" ) ;
       fprintf ( fp , "    val : current value \n" ) ;
@@ -4804,6 +5098,7 @@
       fprintf ( fp , "  Z = (DIZ *) kgGetWidget(Tmp,i);\n" ) ;
       fprintf ( fp , "  return ret;\n" ) ;
       fprintf ( fp , "}\n" ) ;
+      return count;
   }
   int Writeinitroutine ( FILE *fp , char *dianame ) {
       fprintf ( Inc , "int %-sinit(void *Tmp) ;\n" , dianame ) ;
@@ -5832,7 +6127,7 @@
       fprintf ( fp1 , "  D.MinHeight = %-d;    /*   for Resize option */\n" , D->MinHeight ) ;
           
       fprintf ( fp1 , "#if 1 \n" ) ;
-      fprintf ( fp1 , "  D.Callback = %-sCallBack;    /*  default callback */\n" , dianame ) ;
+      fprintf ( fp1 , "  D.Callback = %-sCallBack;    /*  default Callback  */\n" , dianame ) ;
           
       fprintf ( fp1 , "#else \n" ) ;
       fprintf ( fp1 , "  D.Callback = NULL;    \n" ) ;
@@ -6690,64 +6985,82 @@
               case 't':
               case 'T':
               CheckPos ( ( DIT * ) t ) ;
+              if(OK) strcpy(DelName,(( DIT * ) t)->Wid);
               break;
               case 'x':
               CheckPos ( ( DIX * ) t ) ;
+              if(OK) strcpy(DelName,(( DIX * ) t)->Wid);
               break;
               case 'y':
               case 'r':
               case 'c':
               CheckPos ( ( DIY * ) t ) ;
+              if(OK) strcpy(DelName,(( DIY * ) t)->Wid);
               break;
               case 'w':
               case 'e':
               case 's':
               CheckPos ( ( DIW * ) t ) ;
+              if(OK) strcpy(DelName,(( DIW * ) t)->Wid);
               break;
               case 'b':
               CheckPos ( ( DIB * ) t ) ;
+              if(OK) strcpy(DelName,(( DIB * ) t)->Wid);
               break;
               case 'n':
               CheckPos ( ( DIN * ) t ) ;
+              if(OK) strcpy(DelName,(( DIN * ) t)->Wid);
               break;
               case 'N':
               CheckPos ( ( DIBN * ) t ) ;
+              if(OK) strcpy(DelName,(( DIBN * ) t)->Wid);
               break;
               case 'h':
               CheckPos ( ( DIL * ) t ) ;
+              if(OK) strcpy(DelName,(( DIL * ) t)->Wid);
               break;
               case 'H':
               CheckPos ( ( DILN * ) t ) ;
+              if(OK) strcpy(DelName,(( DILN * ) t)->Wid);
               break;
               case 'p':
               CheckPos ( ( DIP * ) t ) ;
+              if(OK) strcpy(DelName,(( DIP * ) t)->Wid);
               break;
               case 'i':
               CheckPos ( ( DII * ) t ) ;
+              if(OK) strcpy(DelName,(( DII * ) t)->Wid);
               break;
               case 'g':
               CheckPos ( ( DIG * ) t ) ;
+              if(OK) strcpy(DelName,(( DIG * ) t)->Wid);
               break;
               case 'm':
               case 'B':
               case 'M':
               case 'o':
               CheckPos ( ( DIM * ) t ) ;
+              if(OK) strcpy(DelName,(( DIM * ) t)->Wid);
               break;
               case 'v':
               CheckPos ( ( DIV * ) t ) ;
+              if(OK) strcpy(DelName,(( DIV * ) t)->Wid);
               break;
               case 'z':
               CheckPos ( ( DIZ * ) t ) ;
+              if(OK) strcpy(DelName,(( DIZ * ) t)->Wid);
               break;
               case 'f':
               CheckPos ( ( DIF * ) t ) ;
+              if(OK) strcpy(DelName,(( DIF * ) t)->Wid);
               break;
               case 'd':
               CheckPos ( ( DID * ) t ) ;
+              if(OK) strcpy(DelName,(( DID * ) t)->Wid);
               break;
               case 'P':
               CheckPos ( ( DIHB * ) t ) ;
+              if(OK) strcpy(DelName,(( DIHB * ) t)->Wid);
               break;
               default:
               break;
@@ -6755,6 +7068,12 @@
       }
       if ( OK ) {
           i = Dcount ( L ) -i+1;
+          char *dpt = (char *)malloc(strlen(DelName)+1);
+          printf("%s Deleted\n",DelName);
+          if(DelList==NULL) DelList = Dopen();
+          strcpy(dpt,DelName);
+          printf("Appending %s \n",dpt);
+          Dappend(DelList,dpt);        
           Dposition ( L , i ) ; Ddelete ( L ) ;
           Make_dialog_structure ( D , L ) ;
           SetControlCounters ( D ) ;
@@ -6830,6 +7149,117 @@
       }
       else{ return -1; }
   }
+//TCB
+  int CheckCallBack(char *call) {
+  /* returns 1 if there is an unsed routine in Callbacks file 
+     and the name should not be used 
+     and returns 0 if it can be used
+  */ 
+     char *pt=NULL,*spt=NULL,*dpt=NULL;
+     if(CallList==NULL) return 0;
+     Resetlink(CallList);
+     Resetlink(SrcList);
+     while( (pt=(char *)Getrecord(CallList)) != NULL) {
+        if( strstr(pt,call) != NULL) {
+           printf("pt: %s %s\n",pt,call);
+           Resetlink(SrcList);
+           while( (spt=(char *)Getrecord(SrcList)) != NULL) {
+               if( strstr(spt,call) != NULL) {
+                  if(DelList== NULL) return 0;
+                  Resetlink(DelList);
+                  while( (dpt=(char *)Getrecord(DelList)) != NULL) {
+                     printf("DEL: %s %s : \n",spt,dpt);
+                     if(strstr(spt,dpt) != NULL) return 1;
+                  }
+                  return 0;
+               }
+           }
+           return 1;
+        }
+     }
+     return 0;
+  }
+  int  CheckWidgetName ( void *Tmp , char *id ) {
+      DIALOG *D;
+      DIA *d;
+      DIX *x;
+      int i = 0;
+      D = ( DIALOG * ) Tmp;
+      d = D->d;
+      while ( d [ i ] .x != NULL ) {
+          x = ( DIX * ) d [ i ] .x;
+          i++;
+          switch ( x->code ) {
+              case 'x':
+              case 'r':
+              case 'c':
+              case 'y':
+              if ( strcmp ( x->Wid , id ) == 0 ) return 1;
+              break;
+              case 'v':
+              if ( strcmp ( ( ( DIV * ) x )->Wid , id ) == 0 ) return 1;
+              break;
+              case 'z':
+              if ( strcmp ( ( ( DIZ * ) x )->Wid , id ) == 0 ) return 1;
+              break;
+              case 'o':
+              if ( strcmp ( ( ( DIO * ) x )->Wid , id ) == 0 ) return 1;
+              break;
+              case 'p': /* new for xpm display */
+              if ( strcmp ( ( ( DIP * ) x )->Wid , id ) == 0 ) return 1;
+              break;
+              case 'i': /* info box */
+              if ( strcmp ( ( ( DII * ) x )->Wid , id ) == 0 ) return 1;
+              break;
+              case 't':
+              case 'T':
+              if ( strcmp ( ( ( DIT * ) x )->Wid , id ) == 0 ) return 1;
+              break;
+              case 'h':
+              if ( strcmp ( ( ( DIL * ) x )->Wid , id ) == 0 ) return 1;
+              break;
+              case 'H':
+              if ( strcmp ( ( ( DILN * ) x )->Wid , id ) == 0 ) return 1;
+              break;
+              case 'n':
+              if ( strcmp ( ( ( DIN * ) x )->Wid , id ) == 0 ) return 1;
+              break;
+              case 'b':
+              case 'N':
+              if ( strcmp ( ( ( DIB * ) x )->Wid , id ) == 0 ) return 1;
+              break;
+              case 'f':
+              if ( strcmp ( ( ( DIF * ) x )->Wid , id ) == 0 ) return 1;
+              break;
+              case 'P':
+              if ( strcmp ( ( ( DIHB * ) x )->Wid , id ) == 0 ) return 1;
+              break;
+              case 'd':
+              if ( strcmp ( ( ( DID * ) x )->Wid , id ) == 0 ) return 1;
+              break;
+              case 'w':
+              if ( strcmp ( ( ( DIW * ) x )->Wid , id ) == 0 ) return 1;
+              break;
+              case 'e':
+              if ( strcmp ( ( ( DIE * ) x )->Wid , id ) == 0 ) return 1;
+              break;
+              case 's':
+              if ( strcmp ( ( ( DIS * ) x )->Wid , id ) == 0 ) return 1;
+              break;
+              case 'g':
+              if ( strcmp ( ( ( DIG * ) x )->Wid , id ) == 0 ) return 1;
+              break;
+              case 'm':
+              case 'M':
+              case 'B':
+              if ( strcmp ( ( ( DIM * ) x )->Wid , id ) == 0 ) return 1;
+              break;
+              default:
+              break;
+          }
+      }
+      return 0;
+  }
   DILN * Making_hori_bar_o ( DIALOG *D ) { /* NEW TYPE */
       DILN *h;
       int i , n = 0 , sw , offset = 4;
@@ -6858,7 +7288,12 @@
       htmp.fac = fac;
       Entry = 1;
       nyb = 1;
-      sprintf ( htmp.Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+//TCB
+      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      while(CheckWidgetName(Dia,WidName)) {
+        sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;  
+      }
+      strcpy(htmp.Wid,WidName);
       gscanf ( Parent , ( char * ) "xgap%4dlngth%4dwidth%4dnxb%4dType%4dRound Fac%10FName%20s" , & \
        ( htmp.xgap ) , & ( htmp.lngth ) , & ( htmp.width ) , & \
        ( htmp.nx ) , & ( htmp.type ) , & ( fac ) , htmp.Wid ) ;
@@ -6916,7 +7351,12 @@
       htmp.type = type;
       htmp.fac = fac;
       nyb = 1;
-      sprintf ( htmp.Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      while(CheckWidgetName(Dia,WidName)) {
+        sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;  
+      }
+      strcpy(htmp.Wid,WidName);
+//      sprintf ( htmp.Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
       htmp.type = type;
       htmp.fac = fac;
       if ( ! Runhbuttondata ( & htmp ) ) {
@@ -6973,7 +7413,12 @@
           
       htmp.Wid [ 0 ] = '\0';
       nyb = 1;
-      sprintf ( htmp.Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+//      sprintf ( htmp.Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      while(CheckWidgetName(Dia,WidName)) {
+        sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;  
+      }
+      strcpy(htmp.Wid,WidName);
       htmp.type = type;
       htmp.fac = fac;
       htmp.nodrawbkgr = 0;
@@ -7050,7 +7495,12 @@
           
       htmp.Wid [ 0 ] = '\0';
       nyb = 1;
-      sprintf ( htmp.Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+//      sprintf ( htmp.Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      while(CheckWidgetName(Dia,WidName) ){
+        sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;  
+      }
+      strcpy(htmp.Wid,WidName);
       htmp.type = type;
       htmp.fac = fac;
       htmp.nodrawbkgr = 0;
@@ -7106,7 +7556,12 @@
           
       htmp.Wid [ 0 ] = '\0';
       nyb = 1;
-      sprintf ( htmp.Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+//      sprintf ( htmp.Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      while(CheckWidgetName(Dia,WidName)) {
+        sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;  
+      }
+      strcpy(htmp.Wid,WidName);
       htmp.type = type;
       htmp.fac = fac;
       if ( ! Runbuttondata ( Parent , & htmp ) ) {
@@ -7152,7 +7607,12 @@
       float x1 , y1 , x2 , y2;
       DII gtmp = {'i' , 10 , 10 , 20 , 20 , 22 , 0 , 0 , 0 , 0 , 0};
       gtmp.Wid [ 0 ] = '\0';
-      sprintf ( gtmp.Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+//      sprintf ( gtmp.Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      while(CheckWidgetName(Dia,WidName) ){
+        sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;  
+      }
+      strcpy(gtmp.Wid,WidName);
       gscanf ( Parent , ( char * ) "No of chars :%3dNo of Lines :%3dName%20s" , & nchrs , & nlines , gtmp.Wid ) ;
           
       g = kgCreateInfoBox ( gtmp.x1 , gtmp.y1 , nchrs , nlines , gtmp.Wid ) ;
@@ -7179,7 +7639,12 @@
       float x1 , y1 , x2 , y2;
       DIG gtmp = {'g' , 10 , 10 , 20 , 20 , NULL , 0 , NULL , NULL , 0 , 0};
       gtmp.Wid [ 0 ] = '\0';
-      sprintf ( gtmp.Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+//      sprintf ( gtmp.Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      while(CheckWidgetName(Dia,WidName)) {
+        sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;  
+      }
+      strcpy(gtmp.Wid,WidName);
       gscanf ( Parent , ( char * ) "X dir size (in pixels):%4dY dir size (in pixels):%4dHide:%2dName%20s" , & lng , & wdth , & \
        ( gtmp.hide ) , gtmp.Wid ) ;
       g = kgCreateDrawingBox ( gtmp.x1 , gtmp.y1 , lng , wdth , gtmp.Wid ) ;
@@ -7208,7 +7673,12 @@
       float x1 , y1 , x2 , y2;
       DIP ptmp = {'p' , 10 , 10 , 20 , 20 , NULL , -1};
       ptmp.Wid [ 0 ] = '\0';
-      sprintf ( ptmp.Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+//      sprintf ( ptmp.Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      while(CheckWidgetName(Dia,WidName)) {
+        sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;  
+      }
+      strcpy(ptmp.Wid,WidName);
       ptmp.bordr = 3;
       ptmp.hide = 0;
       gscanf ( Parent , ( char * ) "Xpm file : %20sBackground Color: %3d border type: %2dhide: %2dName%20s" , buf1 , & col , & \
@@ -7243,8 +7713,13 @@
       DIM mtmp = {'M' , 10L , 10L , 0 , 0 , 1 , 0};
       m = ( DIM * ) malloc ( sizeof ( DIM ) ) ;
       mtmp.Wid [ 0 ] = '\0';
+      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      while(CheckWidgetName(Dia,WidName)) {
+        sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;  
+      }
+      strcpy(mtmp.Wid,WidName);
       *m = mtmp;
-      sprintf ( m->Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+//      sprintf ( m->Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
       m->msg [ 0 ] = '\0';
       m->x2 = m->x1+ln;
       m->y2 = m->x1+wd;
@@ -7280,8 +7755,13 @@
       DIO mtmp = {'o' , 10L , 10L , 0 , 0 , 0 , 50 , 0 , 2 , -1 , 0};
       m = ( DIO * ) malloc ( sizeof ( DIO ) ) ;
       mtmp.Wid [ 0 ] = '\0';
+      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      while(CheckWidgetName(Dia,WidName)) {
+        sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;  
+      }
+      strcpy(mtmp.Wid,WidName);
       *m = mtmp;
-      sprintf ( m->Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+//      sprintf ( m->Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
       gscanf ( Parent , ( char * ) "Length:%4dWidth:%4dHide:%2dName%20s" , & ln , & wd , & hide , m->Wid ) ;
           
       x1 = 10+D->xo;y1 = 10+D->yo;
@@ -7310,8 +7790,13 @@
       DIV mtmp = {'v' , 10L , 10L , 30 , 210 , 0 , 100. , 0. , 5. , NULL , NULL};
       m = ( DIV * ) malloc ( sizeof ( DIV ) ) ;
       mtmp.Wid [ 0 ] = '\0';
+      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      while(CheckWidgetName(Dia,WidName) ){
+        sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;  
+      }
+      strcpy(mtmp.Wid,WidName);
       *m = mtmp;
-      sprintf ( m->Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+//      sprintf ( m->Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
       gscanf ( Parent , ( char * ) "Length:%4dWidth:%4dHide:%2dName%20s" , & ln , & wd , & hide , m->Wid ) ;
           
       x1 = 10+D->xo;y1 = 10+D->yo;
@@ -7340,8 +7825,13 @@
       DIZ mtmp = {'z' , 10L , 10L , 30 , 210 , 0 , 100. , 0. , 5. , NULL , NULL};
       m = ( DIZ * ) malloc ( sizeof ( DIZ ) ) ;
       mtmp.Wid [ 0 ] = '\0';
+      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      while(CheckWidgetName(Dia,WidName)) {
+        sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;  
+      }
+      strcpy(mtmp.Wid,WidName);
       *m = mtmp;
-      sprintf ( m->Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+//      sprintf ( m->Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
       gscanf ( Parent , ( char * ) "Length:%4dWidth:%4dHide:%2dName%20s" , & ln , & wd , & hide , m->Wid ) ;
           
       x1 = 10+D->xo;y1 = 10+D->yo;
@@ -7369,8 +7859,13 @@
       DIM mtmp = {'m' , 10L , 10L , 0 , 0 , 1 , 0};
       m = ( DIM * ) malloc ( sizeof ( DIM ) ) ;
       mtmp.Wid [ 0 ] = '\0';
+      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      while(CheckWidgetName(Dia,WidName)) {
+        sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;  
+      }
+      strcpy(mtmp.Wid,WidName);
       *m = mtmp;
-      sprintf ( m->Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+//      sprintf ( m->Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
       m->msg [ 0 ] = '\0';
       m->x2 = m->x1+ln;
       m->y2 = m->x1+wd;
@@ -7411,8 +7906,13 @@
       DIM mtmp = {'B' , 10L , 10L , 0 , 0 , 0 , 0};
       m = ( DIM * ) malloc ( sizeof ( DIM ) ) ;
       mtmp.Wid [ 0 ] = '\0';
+      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      while(CheckWidgetName(Dia,WidName)) {
+        sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;  
+      }
+      strcpy(mtmp.Wid,WidName);
       *m = mtmp;
-      sprintf ( m->Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+//      sprintf ( m->Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
       m->msg [ 0 ] = '\0';
       m->x2 = m->x1+ln;
       m->y2 = m->x1+wd;
@@ -7452,8 +7952,13 @@
           
       T = ( DIT * ) malloc ( sizeof ( DIT ) ) ;
       Tmp.Wid [ 0 ] = '\0';
+      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      while(CheckWidgetName(Dia,WidName)) {
+        sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;  
+      }
+      strcpy(Tmp.Wid,WidName);
       *T = Tmp;
-      sprintf ( T->Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+//      sprintf ( T->Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
       T->bordr = 1;
       T->hide = 0;
       gscanf ( Parent , ( char * ) "No. of boxes in X dir%2dNo of boxes in Y dir%2dName%20s" , & nx , & ny , T->Wid ) ;
@@ -7550,15 +8055,20 @@
           
       T = ( DIT * ) malloc ( sizeof ( DIT ) ) ;
       Tmp.Wid [ 0 ] = '\0';
+      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      while(CheckWidgetName(Dia,WidName)) {
+        sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;  
+      }
+      strcpy(Tmp.Wid,WidName);
       *T = Tmp;
-      sprintf ( T->Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+//      sprintf ( T->Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
       T->bordr = 1;
       T->hide = 0;
       T->nx = nx; T->ny = ny;
       T->Font = 18;
       T->FontSize = 9;
       T->type = 0;
-      sprintf ( T->Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+//      sprintf ( T->Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
       if ( ! Runtextboxesdata ( Parent , T ) ) {
           free ( T ) ;
           return NULL;
@@ -7712,13 +8222,18 @@
           
       T = ( DIT * ) malloc ( sizeof ( DIT ) ) ;
       Tmp.Wid [ 0 ] = '\0';
+      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      while(CheckWidgetName(Dia,WidName)) {
+        sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;  
+      }
+      strcpy(Tmp.Wid,WidName);
       *T = Tmp;
       T->bordr = 1;
       T->hide = 0;
       T->Font = 18;
       T->FontSize = 9;
       T->type = 0;
-      sprintf ( T->Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+//      sprintf ( T->Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
 //   gscanf(Parent,(char *)"No. of Columns%2dNo of Rows%2dName%20s",&nx,&ny,T->Wid);
       T->nx = nx; T->ny = ny;
 //      if ( ! Runtableboxesdata ( Parent , T ) ) {
@@ -7892,8 +8407,13 @@
       Ntmp.type = type;
       Ntmp.fac = fac;
       Ntmp.Wid [ 0 ] = '\0';
+      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      while(CheckWidgetName(Dia,WidName) ){
+        sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;  
+      }
+      strcpy(Ntmp.Wid,WidName);
       *N = Ntmp;
-      sprintf ( N->Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+//      sprintf ( N->Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
       gscanf ( Parent , ( char * ) "prompt%20sxgap%3dygap%3dlength%3dwidth%3dnxb%3dnyb%3dType%3dRounding Fac%FName%20s" , buf1 , & xgap , & ygap , & lngth , & width , & nxb , & nyb , & type , & fac , N->Wid ) ;
           
       i = 0;while ( buf1 [ i ] == ' ' ) i++;
@@ -7982,8 +8502,13 @@
           
       W = ( DIW * ) malloc ( sizeof ( DIW ) ) ;
       Wtmp.Wid [ 0 ] = '\0';
+      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      while(CheckWidgetName(Dia,WidName)) {
+        sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;  
+      }
+      strcpy(Wtmp.Wid,WidName);
       *W = Wtmp;
-      sprintf ( W->Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+//      sprintf ( W->Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
       gscanf ( Parent , ( char * ) "prompt%20sportion size%4dNo. of menu items%4dName%20s" , buf1 , & min , & max , W->Wid ) ;
           
       i = 0;while ( buf1 [ i ] == ' ' ) i++;
@@ -8045,8 +8570,13 @@
           
       W = ( DIE * ) malloc ( sizeof ( DIE ) ) ;
       Wtmp.Wid [ 0 ] = '\0';
+      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      while(CheckWidgetName(Dia,WidName) ){
+        sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;  
+      }
+      strcpy(Wtmp.Wid,WidName);
       *W = Wtmp;
-      sprintf ( W->Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+ //     sprintf ( W->Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
       gscanf ( Parent , ( char * ) "portion size%4dNo. of menu items%4dName%20s" , & min , & max , W->Wid ) ;
           
       h = ( min ) *20+16;
@@ -8102,8 +8632,13 @@
           
       W = ( DIS * ) malloc ( sizeof ( DIS ) ) ;
       Wtmp.Wid [ 0 ] = '\0';
+      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      while(CheckWidgetName(Dia,WidName)) {
+        sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;  
+      }
+      strcpy(Wtmp.Wid,WidName);
       *W = Wtmp;
-      sprintf ( W->Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+//      sprintf ( W->Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
       gscanf ( Parent , ( char * ) "Visible portion size%3dNo. of lines%3dMax. line length%3dName%20s" , & min , & max , & maxchar , W->Wid ) ;
           
       h = ( min+1 ) *20+20;
@@ -8179,8 +8714,13 @@
           
       W = ( DIHB * ) malloc ( sizeof ( DIHB ) ) ;
       Wtmp.Wid [ 0 ] = '\0';
+      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      while(CheckWidgetName(Dia,WidName)) {
+        sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;  
+      }
+      strcpy(Wtmp.Wid,WidName);
       *W = Wtmp;
-      sprintf ( W->Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+//      sprintf ( W->Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
 //   slided(buf,&(W->lngth),&(W->min),&(W->max),&df);
 //   gscanf(Parent,(char *)"Length:%4dMin Val:%4dMax Val:%4dDef Val:%4dName%20s",&(W->lngth),&(W->min),&(W->max),&df,W->Wid);
       if ( ! Runslidebaropt ( ( void * ) W ) ) {
@@ -8219,8 +8759,13 @@
           
       W = ( DID * ) malloc ( sizeof ( DID ) ) ;
       Wtmp.Wid [ 0 ] = '\0';
+      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      while(CheckWidgetName(Dia,WidName)) {
+        sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;  
+      }
+      strcpy(Wtmp.Wid,WidName);
       *W = Wtmp;
-      sprintf ( W->Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+//      sprintf ( W->Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
 //   slided(buf,&(W->lngth),&(W->min),&(W->max),&df);
       gscanf ( Parent , ( char * ) "Length:%4dMin Val:%4dMax Val:%4dDef Val:%4dName%20s" , & \
        ( W->lngth ) , & ( W->min ) , & ( W->max ) , & df , W->Wid ) ;
@@ -8261,10 +8806,15 @@
           
       W = ( DIF * ) malloc ( sizeof ( DIF ) ) ;
       Wtmp.Wid [ 0 ] = '\0';
+      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      while(CheckWidgetName(Dia,WidName)) {
+        sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;  
+      }
+      strcpy(Wtmp.Wid,WidName);
       *W = Wtmp;
       min = W->min;
       max = W->max;
-      sprintf ( W->Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+//      sprintf ( W->Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
 //   slidef(buf,&(W->lngth),&(min),&(max),&df);
       gscanf ( Parent , ( char * ) "Length:%4dMin Val:%12FMax Val:%12FDef Val:%12FName%20s" , & \
        ( W->lngth ) , & ( min ) , & ( max ) , & df , W->Wid ) ;
@@ -8311,8 +8861,13 @@
       static int Entry = 0;
       W = ( DIX * ) malloc ( sizeof ( DIX ) ) ;
       Wtmp.Wid [ 0 ] = '\0';
+      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      while(CheckWidgetName(Dia,WidName) ){
+        sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;  
+      }
+      strcpy(Wtmp.Wid,WidName);
       *W = Wtmp;
-      sprintf ( W->Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+//      sprintf ( W->Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
 //   gscanf(Parent,(char *)"Length %4dHeight %4dNo of Items%4dItem Height%4dItem Gap%4d",&lngth,&width,&max,&w,&ygap);
       Runselectmenu ( Parent , W ) ;
       W->df = ( int * ) malloc ( sizeof ( int ) ) ;
@@ -8353,10 +8908,15 @@
       static int Entry = 0;
       W = ( DIRA * ) malloc ( sizeof ( DIRA ) ) ;
       Wtmp.Wid [ 0 ] = '\0';
+      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      while(CheckWidgetName(Dia,WidName)) {
+        sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;  
+      }
+      strcpy(Wtmp.Wid,WidName);
       *W = Wtmp;
       W->xgap = 8;
       W->ygap = 0;
-      sprintf ( W->Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+//      sprintf ( W->Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
       Runcheckbox ( Parent , W ) ;
       W->prompt = ( char * ) " ";
       W->size = 2;
@@ -8423,8 +8983,13 @@
       static int Entry = 0;
       W = ( DICH * ) malloc ( sizeof ( DICH ) ) ;
       Wtmp.Wid [ 0 ] = '\0';
+      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      while(CheckWidgetName(Dia,WidName) ){
+        sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;  
+      }
+      strcpy(Wtmp.Wid,WidName);
       *W = Wtmp;
-      sprintf ( W->Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+//      sprintf ( W->Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
       W->xgap = 8;
       W->ygap = 0;
       Runcheckbox ( Parent , W ) ;
@@ -8492,8 +9057,13 @@
       static int Entry = 0;
       W = ( DIY * ) malloc ( sizeof ( DIY ) ) ;
       Wtmp.Wid [ 0 ] = '\0';
+//      sprintf ( W->Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      while(CheckWidgetName(Dia,WidName)) {
+        sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;  
+      }
+      strcpy(Wtmp.Wid,WidName);
       *W = Wtmp;
-      sprintf ( W->Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
       Runthumbnail ( Parent , W ) ;
       W->prompt = ( char * ) " ";
       W->size = 2;
@@ -8775,6 +9345,10 @@
       sprintf ( Maincode , "%-smain.src" , args [ 1 ] ) ;
       sprintf ( Mainc , "%-smain.c" , args [ 1 ] ) ;
       sprintf ( Gclrcode , "Gclr%-s.c" , args [ 1 ] ) ;
+      sprintf ( buff , "%-sCallbacks.c",DiaName);
+      CallList = Dreadfile(buff);
+      sprintf ( buff , "%-s.src",DiaName);
+      SrcList = Dreadfile(buff);
 #if 0
       Dia = Make_dialog_structure_from_file ( flname ) ;
       SetControlCounters ( Dia ) ;
