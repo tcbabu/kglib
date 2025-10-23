@@ -3095,7 +3095,7 @@
       fprintf ( fp , "    %d,%d,\n" , t->row , t->col ) ;
       t->Wid [ 49 ] = '\0';
       GetCallBack ( t->Wid ) ;
-      fprintf ( fp , "    NULL,%-s ,%d,%d,%d,%d /* *args, Callback %s */\n };\n" , \
+      fprintf ( fp , "    NULL,%-s , /* *args, Callback  */ \n    %d,%d,%d,%d\n  };\n" , \
            CallBackName , t->bordr , t->hide , t->Font , t->FontSize ) ;
       t->Wid [ 49 ] = '\0';
       fprintf ( fp , "  strcpy(T%-d.Wid,(char *)\"%-s\");\n" , Tbox , t->Wid ) ;
