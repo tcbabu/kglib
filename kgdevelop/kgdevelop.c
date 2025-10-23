@@ -5171,49 +5171,58 @@
           switch ( t->code ) {
               case 't':
               Textbox++;
-              Textbox = WriteTextBoxCallback ( Textbox , fp , dianame ) ;
               strcpy ( WidName , ( ( DIT * ) t )->Wid ) ;
+              fprintf (fp,"\n /* Callback for  %s   */ \n\n",WidName);
+              Textbox = WriteTextBoxCallback ( Textbox , fp , dianame ) ;
               break;
               case 'x':
               Brwbox++;
-              Brwbox = WriteSelectmenuCallback ( Brwbox , fp , dianame ) ;
               strcpy ( WidName , ( ( DIX * ) t )->Wid ) ;
+              fprintf (fp,"\n /* Callback for  %s   */ \n\n",WidName);
+              Brwbox = WriteSelectmenuCallback ( Brwbox , fp , dianame ) ;
               break;
               case 'y':
               Brwbox++;
-              Brwbox = WriteThumbnailBrowserCallback ( Brwbox , fp , dianame ) ;
               strcpy ( WidName , ( ( DIY * ) t )->Wid ) ;
+              fprintf (fp,"\n /* Callback for  %s   */ \n\n",WidName);
+              Brwbox = WriteThumbnailBrowserCallback ( Brwbox , fp , dianame ) ;
               break;
               case 'r':
               Brwbox++;
-              Brwbox = WriteRadioButtonsCallback ( Brwbox , fp , dianame ) ;
               strcpy ( WidName , ( ( DIRA * ) t )->Wid ) ;
+              fprintf (fp,"\n /* Callback for  %s   */ \n\n",WidName);
+              Brwbox = WriteRadioButtonsCallback ( Brwbox , fp , dianame ) ;
               break;
               case 'c':
               Brwbox++;
-              Brwbox = WriteCheckBoxCallback ( Brwbox , fp , dianame ) ;
               strcpy ( WidName , ( ( DICH * ) t )->Wid ) ;
+              fprintf (fp,"\n /* Callback for  %s   */ \n\n",WidName);
+              Brwbox = WriteCheckBoxCallback ( Brwbox , fp , dianame ) ;
               break;
               case 'w':
               Brwbox++;
-              Brwbox = WriteBrowserCallback ( Brwbox , fp , dianame ) ;
               strcpy ( WidName , ( ( DIW * ) t )->Wid ) ;
+              fprintf (fp,"\n /* Callback for  %s   */ \n\n",WidName);
+              Brwbox = WriteBrowserCallback ( Brwbox , fp , dianame ) ;
               break;
               case 's':
               Brwbox++;
-              Brwbox = WriteMsgScrollinit ( Brwbox , fp , dianame ) ;
               strcpy ( WidName , ( ( DIS * ) t )->Wid ) ;
+              fprintf (fp,"\n /* Callback for  %s   */ \n\n",WidName);
+              Brwbox = WriteMsgScrollinit ( Brwbox , fp , dianame ) ;
               break;
               case 'e':
               Brwbox++;
-              Brwbox = WriteScrollmenuCallback ( Brwbox , fp , dianame ) ;
               strcpy ( WidName , ( ( DIE * ) t )->Wid ) ;
+              fprintf (fp,"\n /* Callback for  %s   */ \n\n",WidName);
+              Brwbox = WriteScrollmenuCallback ( Brwbox , fp , dianame ) ;
               break;
               case 'b':
               b = ( DIB * ) t;
               Butbox++;
-              Butbox = WriteButnBoxCallback ( Butbox , b->nx*b->ny , fp , dianame ) ;
               strcpy ( WidName , ( ( DIB * ) t )->Wid ) ;
+              fprintf (fp,"\n /* Callback for  %s   */ \n\n",WidName);
+              Butbox = WriteButnBoxCallback ( Butbox , b->nx*b->ny , fp , dianame ) ;
               break;
               case 'n':
               N = ( DIN * ) t;
@@ -5221,16 +5230,18 @@
               Titles = ( char ** ) malloc ( sizeof ( char * ) * ( N->nx*N->ny+1 ) ) ;
               for ( i = 0;i < ( N->nx*N->ny ) ;i++ ) Titles [ i ] = butns [ i ] .title;
               Butbox++;
-              Butbox = WriteButnBoxnCallback ( Butbox , N->nx*N->ny , fp , dianame ) ;
               strcpy ( WidName , ( ( DIN * ) t )->Wid ) ;
+              fprintf (fp,"\n /* Callback for  %s   */ \n\n",WidName);
+              Butbox = WriteButnBoxnCallback ( Butbox , N->nx*N->ny , fp , dianame ) ;
               free ( Titles ) ;
               break;
               case 'N':
               n = ( DIBN * ) t;
               Titles = n->titles;
               Butbox++;
-              Butbox = WriteButnBoxNewCallback ( Butbox , n->nx*n->ny , fp , dianame ) ;
               strcpy ( WidName , ( ( DIBN * ) t )->Wid ) ;
+              fprintf (fp,"\n /* Callback for  %s   */ \n\n",WidName);
+              Butbox = WriteButnBoxNewCallback ( Butbox , n->nx*n->ny , fp , dianame ) ;
               break;
               case 'h':
               Hbox++;
@@ -5238,52 +5249,60 @@
               butns = ( BUT_STR * ) ( h->buts ) ;
               Titles = ( char ** ) malloc ( sizeof ( char * ) * ( h->nx+1 ) ) ;
               for ( i = 0;i < ( h->nx ) ;i++ ) Titles [ i ] = butns [ i ] .title;
-              Hbox = WriteHoriBarCallback ( Hbox , h->nx , fp , dianame ) ;
               strcpy ( WidName , ( ( DIL * ) t )->Wid ) ;
-              printf ( "splbutton : %s %s\n" , WidName , CallBackName ) ;
+              fprintf (fp,"\n /* Callback for  %s   */ \n\n",WidName);
+              Hbox = WriteHoriBarCallback ( Hbox , h->nx , fp , dianame ) ;
               free ( Titles ) ;
               break;
               case 'H':
               Hbox++;
               H = ( DILN * ) t;
               Titles = H->titles;
-              Hbox = WriteHoriBarNewCallback ( Hbox , H->nx , fp , dianame ) ;
               strcpy ( WidName , ( ( DILN * ) t )->Wid ) ;
+              fprintf (fp,"\n /* Callback for  %s   */ \n\n",WidName);
+              Hbox = WriteHoriBarNewCallback ( Hbox , H->nx , fp , dianame ) ;
               break;
               case 'T':
               Tblbox++;
-              Tblbox = WriteTableBoxCallback ( Tblbox , fp , dianame ) ;
               strcpy ( WidName , ( ( DIT * ) t )->Wid ) ;
+              fprintf (fp,"\n /* Callback for  %s   */ \n\n",WidName);
+              Tblbox = WriteTableBoxCallback ( Tblbox , fp , dianame ) ;
               break;
               case 'f':
               Sfbox++;
-              Sfbox = WriteSlideFCallback ( Sfbox , fp , dianame ) ;
               strcpy ( WidName , ( ( DIF * ) t )->Wid ) ;
+              fprintf (fp,"\n /* Callback for  %s   */ \n\n",WidName);
+              Sfbox = WriteSlideFCallback ( Sfbox , fp , dianame ) ;
               break;
               case 'd':
               Sibox++;
-              Sibox = WriteSlideDCallback ( Sibox , fp , dianame ) ;
               strcpy ( WidName , ( ( DID * ) t )->Wid ) ;
+              fprintf (fp,"\n /* Callback for  %s   */ \n\n",WidName);
+              Sibox = WriteSlideDCallback ( Sibox , fp , dianame ) ;
               break;
               case 'v':
               Vertbox++;
-              Vertbox = WriteVertScrollCallback ( Vertbox , fp , dianame ) ;
               strcpy ( WidName , ( ( DIV * ) t )->Wid ) ;
+              fprintf (fp,"\n /* Callback for  %s   */ \n\n",WidName);
+              Vertbox = WriteVertScrollCallback ( Vertbox , fp , dianame ) ;
               break;
               case 'z':
               Horizbox++;
-              Horizbox = WriteHorizScrollCallback ( Horizbox , fp , dianame ) ;
               strcpy ( WidName , ( ( DIZ * ) t )->Wid ) ;
+              fprintf (fp,"\n /* Callback for  %s   */ \n\n",WidName);
+              Horizbox = WriteHorizScrollCallback ( Horizbox , fp , dianame ) ;
               break;
               case 'P':
               Sibox++;
-              Sibox = WriteSlideHCallback ( Sibox , fp , dianame ) ;
               strcpy ( WidName , ( ( DIHB * ) t )->Wid ) ;
+              fprintf (fp,"\n /* Callback for  %s   */ \n\n",WidName);
+              Sibox = WriteSlideHCallback ( Sibox , fp , dianame ) ;
               break;
               case 'g':
               Gbox++;
-              Gbox = WriteGboxinit ( Gbox , fp , dianame ) ;
               strcpy ( WidName , ( ( DIG * ) t )->Wid ) ;
+              fprintf (fp,"\n /* InitFunction for  %s   */ \n\n",WidName);
+              Gbox = WriteGboxinit ( Gbox , fp , dianame ) ;
               break;
               default:
               break;
@@ -7101,14 +7120,12 @@
       Resetlink ( SrcList ) ;
       while ( ( pt = ( char * ) Getrecord ( CallList ) ) != NULL ) {
           if ( strstr ( pt , call ) != NULL ) {
-              printf ( "pt: %s %s\n" , pt , call ) ;
               Resetlink ( SrcList ) ;
               while ( ( spt = ( char * ) Getrecord ( SrcList ) ) != NULL ) {
                   if ( strstr ( spt , call ) != NULL ) {
                       if ( DelList == NULL ) return 0;
                       Resetlink ( DelList ) ;
                       while ( ( dpt = ( char * ) Getrecord ( DelList ) ) != NULL ) {
-                          printf ( "DEL: %s %s : \n" , spt , dpt ) ;
                           if ( strstr ( spt , dpt ) != NULL ) return 1;
                       }
                       return 0;
@@ -7128,9 +7145,7 @@
       }
       Resetlink ( WidList ) ;
       while ( ( pt = ( char * ) Getrecord ( WidList ) ) != NULL ) {
-          printf ( "Inside GetCallback: %s : %s\n" , pt , wid ) ;
           if ( strstr ( pt , wid ) != NULL ) {
-              printf ( "GetCallBack: %s %s\n" , pt , wid ) ;
               sscanf ( pt , "%s%s" , dummy , CallBackName ) ;
               return 1;
           }
@@ -7144,7 +7159,6 @@
       Resetlink ( WidList ) ;
       while ( ( pt = ( char * ) Getrecord ( WidList ) ) != NULL ) {
           if ( strstr ( pt , wid ) != NULL ) {
-              printf ( "pt: %s %s\n" , pt , wid ) ;
               sscanf ( pt , "%s%s" , dummy , InitName ) ;
               pt = strstr ( InitName , "callback" ) ;
               pt [ 0 ] = '\0';
