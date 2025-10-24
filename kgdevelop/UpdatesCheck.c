@@ -5,8 +5,8 @@ int UpdatesCheckGroup( DIALOG *D,void **v,void *pt) {
   int GrpId=0,oitems=0,i,j;
   DIA *d=NULL,*dtmp;
   char *menu0[]  = { 
-    (char *)"Update CallBacks file",
-    (char *)"Copy Dialog file",
+    (char *)"Update CallBacks (.c) file",
+    (char *)"Copy Dialog file (to .c)",
     NULL 
   };
   ThumbNail **th0 ;

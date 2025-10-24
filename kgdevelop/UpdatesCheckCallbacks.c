@@ -71,17 +71,18 @@ int UpdatesCheckinit(void *Tmp) {
   Info = (DIS *)kgGetNamedWidget(Tmp,(char *)"InfoBox");
 // pt[0] is args passed as inputs; pt[1] is output pointer
  /* pt[0] is inputs, given by caller */
-  kgWrite(Info,(char *)"!c02Please read this message");
+  kgWrite(Info,(char *)"!c03!z43Please read this message");
   kgWrite(Info,(char *)" ");
   kgWrite(Info,(char *)"You are asked whether  to update the changes in the Callbacks or not.");
   kgWrite(Info,(char *)"Nothing from the Callbacks file is removed. Only new additions are included.");
   kgWrite(Info,(char *)"any unwanted lines need to be removed manually, though it won't create any problems.");
   kgWrite(Info,(char *)" ");
   kgWrite(Info,(char *)"The second option is whether to copy the new Dialog .src file to the .c file or not");
-  kgWrite(Info, (char *)"This is important since codes can be changed by the developer, as there is an ");
+  kgWrite(Info, (char *)"This is important since codes can be changed by the developer, as there is");
   kgWrite(Info,(char *)" a way to send information and get back information through argument and ");
   kgWrite(Info,(char *)" through return pointer, however it is better to avoid that.");
   kgWrite(Info,(char *)" !c01 Original files will be backed up as .org files");
+  kgWrite(Info,(char *)" !c02!z54 .src files will be  made anyway!!!");
   return ret;
 }
 int UpdatesCheckcleanup(void *Tmp) {
