@@ -10,6 +10,7 @@
 #include "image.c"
 //#include "Wimages.c"
 #define VER 2107030000
+  int SrcUpdates[0];
   char kulinahome [ 500 ] ;
   char CWD [ 500 ] ;
   char WidName [ 200 ] ;
@@ -35,6 +36,7 @@
   int Get_data_line ( ) ;
   int Pid = -1;
   static int Xoff = 7 , Yoff = 46 , Evgay;
+  int ProcCallbacks(char *);
   int ModifyWidget ( void *Tpt ) ;
   void * GetClickedWidget ( int x , int y ) ;
   void *RunEditWidgets ( void *arg ) ;
@@ -51,6 +53,7 @@
   char **Titles = NULL;
   int SetControlCounters ( DIALOG *D ) ;
   void *Runbutnopt ( void *parent , void *arg ) ;
+  void *RunUpdatesCheck ( void *parent , void *arg ) ;
   char **RungetStrings ( void *parent , int n ) ;
   char **RuneditStrings ( void *parent , char **v ) ;
   ThumbNail **RuneditThumbNails ( void *parent , ThumbNail **th ) ;
@@ -1186,6 +1189,7 @@
               strcat ( Bkup , ".bak" ) ;
               Print_gui_data ( Dia , Bkup ) ;
               Convert_gui_data ( ) ;
+              RunUpdatesCheck(Tmp,SrcUpdates);
               ret = 1;
               break;
               case 3:
@@ -6151,6 +6155,7 @@
       fprintf ( fpc , "int main(void) {\n// kgStartX(NULL) //can be used;\n  Run%-s(NULL,NULL);\n//  kgCloseX(); //canbe used\n  return 1;\n}\n" , \
            dianame ) ;
       fclose ( fpc ) ;
+//      ProcCallbacks(dianame);
       Dfree ( L ) ;
   }
   DIALOG * Make_dialog_structure ( DIALOG *D , Dlink *L ) {
@@ -9326,6 +9331,8 @@
   int main ( int narg , char **args ) {
       FILE *fp , *tp;
       char buff [ 500 ] ;
+      SrcUpdates[0]=1;
+      SrcUpdates[1]=1;
       if ( getenv ( "KULINA" ) == NULL ) {
           fprintf ( stderr , "KULINA is not set, setting as /usr\n" ) ;
 //    exit(0);
@@ -9407,10 +9414,15 @@
       }
       else fclose ( fp ) ;
       sprintf ( buff , "%-s.c" , args [ 1 ] ) ;
-      if ( ( fp = fopen ( buff , "r" ) ) == NULL ) {
-          sprintf ( buff , "cp %-s.src %-s.c" , args [ 1 ] , args [ 1 ] ) ;
+      if ( (( fp = fopen ( buff , "r" ) ) == NULL )||(SrcUpdates[1]==1) ) {
+         if(fp != NULL) {
+          sprintf ( buff , "cp %-s.c %-s.c.org" , args [ 1 ] , args [ 1 ] ) ;
           system ( buff ) ;
+         }
+         sprintf ( buff , "cp %-s.src %-s.c" , args [ 1 ] , args [ 1 ] ) ;
+         system ( buff ) ;
       }
       else fclose ( fp ) ;
+      if(SrcUpdates[0]==1) ProcCallbacks(args[1]);
       return 1;
   }

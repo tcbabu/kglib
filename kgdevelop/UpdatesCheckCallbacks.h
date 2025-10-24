@@ -1,0 +1,11 @@
+int UpdatesCheckbrowser1callback(int item,int i,void *Tmp) ;
+void  UpdatesCheckbrowser1init(DICH *C,void *pt) ;
+int UpdatesChecksplbutton1callback(int butno,int i,void *Tmp) ;
+void  UpdatesChecksplbutton1init(DIL *B,void *pt) ;
+void * UpdatesCheckbrowser2init(DIS *S,void *pt) ;
+int UpdatesCheckinit(void *Tmp) ;
+int UpdatesCheckcleanup(void *Tmp) ;
+int ModifyUpdatesCheck(void *Tmp,int GrpId) ;
+int UpdatesCheckCallBack(void *Tmp,void *tmp) ;
+int UpdatesCheckResizeCallBack(void *Tmp) ;
+int UpdatesCheckWaitCallBack(void *Tmp) ;
