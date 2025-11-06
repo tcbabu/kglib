@@ -1678,7 +1678,7 @@
       fprintf ( fp , "    %lf,%lf,%lf,  \n" , t->ds , t->df , t->mvmt ) ;
       t->Wid [ 49 ] = '\0';
       GetCallBack ( t->Wid ) ;
-      fprintf ( fp , "    NULL,%-s /* *args, Callback %s */\n" , CallBackName ) ;
+      fprintf ( fp , "    NULL,%-s /* *args, Callback  */\n" , CallBackName ) ;
       fprintf ( fp , "  };\n" ) ;
       t->Wid [ 49 ] = '\0';
       fprintf ( fp , "  strcpy(v%-d.Wid,(char *)\"%-s\");\n" , Tbox , t->Wid ) ;
@@ -1694,7 +1694,7 @@
       fprintf ( fp , "    %lf,%lf,%lf,  \n" , t->ds , t->df , t->mvmt ) ;
       t->Wid [ 49 ] = '\0';
       GetCallBack ( t->Wid ) ;
-      fprintf ( fp , "    NULL,%-s /* *args, Callback %s */\n" , CallBackName ) ;
+      fprintf ( fp , "    NULL,%-s /* *args, Callback  */\n" , CallBackName ) ;
       fprintf ( fp , "  };\n" ) ;
       t->Wid [ 49 ] = '\0';
       fprintf ( fp , "  strcpy(z%-d.Wid,(char *)\"%-s\");\n" , Tbox , t->Wid ) ;
@@ -1810,7 +1810,7 @@
       fprintf ( fp , "    NULL,\n" ) ;
       t->Wid [ 49 ] = '\0';
       GetCallBack ( t->Wid ) ;
-      fprintf ( fp , "    NULL,%-s /* *args, Callback %s */\n" , CallBackName ) ;
+      fprintf ( fp , "    NULL,%-s /* *args, Callback  */\n" , CallBackName ) ;
       fprintf ( fp , "  };\n" ) ;
       t->Wid [ 49 ] = '\0';
       fprintf ( fp , "  strcpy(f%-d.Wid,(char *)\"%-s\");\n" , Tbox , t->Wid ) ;
@@ -1828,7 +1828,7 @@
       fprintf ( fp , "    NULL,\n" ) ;
       t->Wid [ 49 ] = '\0';
       GetCallBack ( t->Wid ) ;
-      fprintf ( fp , "    NULL,%-s /* *args, Callback %s */\n" , CallBackName ) ;
+      fprintf ( fp , "    NULL,%-s /* *args, Callback  */\n" , CallBackName ) ;
       fprintf ( fp , "  };\n" ) ;
       t->Wid [ 49 ] = '\0';
       fprintf ( fp , "  strcpy(d%-d.Wid,(char *)\"%-s\");\n" , Tbox , t->Wid ) ;
@@ -1846,7 +1846,7 @@
       fprintf ( fp , "    NULL,\n" ) ;
       t->Wid [ 49 ] = '\0';
       GetCallBack ( t->Wid ) ;
-      fprintf ( fp , "    NULL,%-s , /* *args, Callback %s */\n" , CallBackName ) ;
+      fprintf ( fp , "    NULL,%-s , /* *args, Callback  */\n" , CallBackName ) ;
       fprintf ( fp , "    %d,%d,%d,%d, /* bordr,hide,type,color */\n" , \
            t->bordr , t->hide , t->type , t->sldclr ) ;
       fprintf ( fp , "  };\n" ) ;
@@ -1900,7 +1900,7 @@
       else fprintf ( fp , "     NULL,\n" ) ;
       t->Wid [ 49 ] = '\0';
       GetCallBack ( t->Wid ) ;
-      fprintf ( fp , "    NULL,%-s , /* *args, Callback %s */\n" , CallBackName ) ;
+      fprintf ( fp , "    NULL,%-s , /* *args, Callback  */\n" , CallBackName ) ;
       fprintf ( fp , "    %-d \n" , t->hide ) ;
       fprintf ( fp , "  };\n" ) ;
       t->Wid [ 49 ] = '\0';
@@ -1943,7 +1943,7 @@
       fprintf ( fp , "    menu%-d ,\n" , Tbox ) ;
       t->Wid [ 49 ] = '\0';
       GetCallBack ( t->Wid ) ;
-      fprintf ( fp , "    NULL,%-s , /* *args, Callback %s */\n" , CallBackName ) ;
+      fprintf ( fp , "    NULL,%-s , /* *args, Callback  */\n" , CallBackName ) ;
       fprintf ( fp , "    %d,%d,%d,%d,%d,%d,%-d \n" , t->width , t->offset , \
            t->w , t->itemhi , t->bordr , t->bkgr , t->hide ) ;
       fprintf ( fp , "  };\n" ) ;
@@ -1969,7 +1969,7 @@
       fprintf ( fp , "    NULL,\n" ) ;
 //  fprintf(fp,"    menu%-d ,\n",Tbox);
       fprintf ( fp , "    NULL ,\n" ) ;
-      fprintf ( fp , "    NULL,NULL, /* *args, Callback %s */\n" , t->Wid ) ;
+      fprintf ( fp , "    NULL,NULL, /* *args, Callback*/\n" , t->Wid ) ;
       fprintf ( fp , "    %d,%d,%d,%d,%d,%d,%d\n" , t->width , t->offset , \
            t->w , t->itemhi , t->bordr , t->bkgr , t->hide ) ;
       fprintf ( fp , "//     line width,offset (not used),scroll width,highlight item(not used)\n" ) ;
@@ -2480,7 +2480,7 @@
       fprintf ( fp , "    NULL, \n" ) ;
       t->Wid [ 49 ] = '\0';
       GetCallBack ( t->Wid ) ;
-      fprintf ( fp , "    NULL,%-s ,  /* *args, Callback %s */\n" , CallBackName ) ;
+      fprintf ( fp , "    NULL,%-s ,  /* *args, Callback  */\n" , CallBackName ) ;
       fprintf ( fp , "    %d,  /* Border Offset  */\n " , t->offset ) ;
       fprintf ( fp , "    %d,  /* Scroll width  */\n " , t->w ) ;
       fprintf ( fp , "    %d,  /* Type  */\n " , t->type ) ;
@@ -2539,7 +2539,7 @@
       fprintf ( fp , "    NULL ,\n" , Tbox ) ;
       t->Wid [ 49 ] = '\0';
       GetCallBack ( t->Wid ) ;
-      fprintf ( fp , "    NULL,%-s , /* *args, Callback %s */\n" , CallBackName ) ;
+      fprintf ( fp , "    NULL,%-s , /* *args, Callback  */\n" , CallBackName ) ;
       fprintf ( fp , "    %d,  /* Border Offset  */\n " , t->offset ) ;
       fprintf ( fp , "    %d,  /* Scroll width  */\n " , t->w ) ;
       fprintf ( fp , "    %d,  /* Type  */\n " , t->type ) ;
@@ -2602,7 +2602,7 @@
       fprintf ( fp , "    NULL, \n" ) ;
       t->Wid [ 49 ] = '\0';
       GetCallBack ( t->Wid ) ;
-      fprintf ( fp , "    NULL,%-s , /* *args, Callback %s */\n" , CallBackName ) ;
+      fprintf ( fp , "    NULL,%-s , /* *args, Callback  */\n" , CallBackName ) ;
       fprintf ( fp , "    %d,  /* Border Offset  */\n " , t->offset ) ;
       fprintf ( fp , "    %d,  /* Scroll width  */\n " , t->w ) ;
       fprintf ( fp , "    %d,  /* Type  */\n " , t->type ) ;
@@ -2664,7 +2664,7 @@
       fprintf ( fp , "    NULL, \n" ) ;
       t->Wid [ 49 ] = '\0';
       GetCallBack ( t->Wid ) ;
-      fprintf ( fp , "    NULL,%-s , /* *args, Callback %s */\n" , CallBackName ) ;
+      fprintf ( fp , "    NULL,%-s , /* *args, Callback  */\n" , CallBackName ) ;
       fprintf ( fp , "    %d,  /* Border Offset  */\n " , t->offset ) ;
       fprintf ( fp , "    %d,  /* Scroll width  */\n " , t->w ) ;
       fprintf ( fp , "    %d,  /* Type  */\n " , t->type ) ;
@@ -3265,7 +3265,7 @@
       fprintf ( fp , "    butncode%-d,\n" , Tbox ) ;
       t->Wid [ 49 ] = '\0';
       GetCallBack ( t->Wid ) ;
-      fprintf ( fp , "    NULL,%-s , /* *args, Callback %s */\n" , CallBackName ) ;
+      fprintf ( fp , "    NULL,%-s , /* *args, Callback */\n" , CallBackName ) ;
       fprintf ( fp , "    (void **)xpms%d,bkgr%-d, /* pointers to xpms and colors */\n  " , \
            Tbox , Tbox ) ;
       fprintf ( fp , "    %d,%f,%d,%d /* button type and roundinfg factor(0-0.5),bordr,hide */\n  };\n" , \
@@ -3346,7 +3346,7 @@
       fprintf ( fp , "    butn%-d, \n" , Tbox ) ;
       t->Wid [ 49 ] = '\0';
       GetCallBack ( t->Wid ) ;
-      fprintf ( fp , "    %-s , /* *args, Callback %s */\n" , CallBackName ) ;
+      fprintf ( fp , "    %-s , /* *args, Callback */\n" , CallBackName ) ;
       fprintf ( fp , "    NULL  /* any args */\n" ) ;
       fprintf ( fp , "  };\n" ) ;
 //  fprintf(fp,"  b%-d.bval = 1; \n",Tbox);
@@ -3428,7 +3428,7 @@
       t->Wid [ 49 ] = '\0';
       GetCallBack ( t->Wid ) ;
       printf ( "Got CallBack as: %s %s\n" , t->Wid , CallBackName ) ;
-      fprintf ( fp , "    %-s ,  /* *args, Callback %s */\n" , CallBackName ) ;
+      fprintf ( fp , "    %-s ,  /* *args, Callback */\n" , CallBackName ) ;
       fprintf ( fp , "    NULL  /* any args */\n" ) ;
       fprintf ( fp , "  };\n" ) ;
 //  fprintf(fp,"  h%-d.bval = 1; \n",Tbox);
@@ -3586,7 +3586,7 @@
       fprintf ( fp , "    butncode%-d,\n" , Tbox ) ;
       t->Wid [ 49 ] = '\0';
       GetCallBack ( t->Wid ) ;
-      fprintf ( fp , "    NULL,%-s , /* *args, Callback %s */\n" , CallBackName ) ;
+      fprintf ( fp , "    NULL,%-s , /* *args, Callback  */\n" , CallBackName ) ;
       fprintf ( fp , "    xpm%d,bkgr%d, /* pointers to xpms and colors */\n  " , \
            Tbox , Tbox ) ;
       fprintf ( fp , "    %d,%f,%d,%d /* button type and roundinfg factor(0-0.5),bordr,hide */\n  };\n" , \
@@ -3739,7 +3739,7 @@
       fprintf ( fp , "    butncode%-d,\n" , Tbox ) ;
       t->Wid [ 49 ] = '\0';
       GetCallBack ( t->Wid ) ;
-      fprintf ( fp , "    NULL,%-s , /* *args, Callback %s */\n" , CallBackName ) ;
+      fprintf ( fp , "    NULL,%-s , /* *args, Callback */\n" , CallBackName ) ;
       fprintf ( fp , "    (void **)xpms%d,bkgr%d, /* pointers to xpms and colors */\n " , \
            Tbox , Tbox ) ;
       fprintf ( fp , "    %d,%f, /* button type and roundinfg factor(0-0.5) */\n " , \
