@@ -5,6 +5,10 @@ This is a 64bit binary distribution of 'kgdevelop' and  Kulina
 Graphics library 'kglib' and its Open Source dependencies(libgm.a) like
 GraphicsMagick, libpng,libjpeg etc. So all the dependencies other than
 Xlib is included. It contains five files.
+Note: as on 6th Nov 2025
+there was an horible bug in kgdevelop due to an editing mistake.
+Unfortunately it came up only in some distributions.
+Now it is fixed.
 
 If you need OpenGL support enable it in ogl.c
 
