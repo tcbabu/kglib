@@ -2935,8 +2935,10 @@
       fprintf ( fp , "    %d,%d,\n" , t->row , t->col ) ;
       t->Wid [ 49 ] = '\0';
       GetCallBack ( t->Wid ) ;
-      fprintf ( fp , "    NULL,%-s ,%d ,%d,%d,%d /* *args, Callback %s */\n };\n" , \
+      fprintf ( fp , "    NULL,%-s ,%d ,%d,%d,%d \n" , \
            CallBackName , t->bordr , t->hide , t->Font , t->FontSize ) ;
+      fprintf ( fp , "  };\n");
+      fprintf ( fp , "    /* *args,Callback,border,hide,font,fontsize */\n");
       t->Wid [ 49 ] = '\0';
       fprintf ( fp , "  strcpy(t%-d.Wid,(char *)\"%-s\");\n" , Tbox , t->Wid ) ;
       fprintf ( fp , "  t%-d.pt=NULL;\n" , Tbox ) ;
@@ -3099,8 +3101,9 @@
       fprintf ( fp , "    %d,%d,\n" , t->row , t->col ) ;
       t->Wid [ 49 ] = '\0';
       GetCallBack ( t->Wid ) ;
-      fprintf ( fp , "    NULL,%-s , /* *args, Callback  */ \n    %d,%d,%d,%d\n  };\n" , \
+      fprintf ( fp , "    NULL,%-s , /* *args, Callback  */ \n    %d,%d,%d,%d\n " , \
            CallBackName , t->bordr , t->hide , t->Font , t->FontSize ) ;
+      fprintf ( fp , "  };\n");
       t->Wid [ 49 ] = '\0';
       fprintf ( fp , "  strcpy(T%-d.Wid,(char *)\"%-s\");\n" , Tbox , t->Wid ) ;
       fprintf ( fp , "  T%-d.pt=NULL;\n" , Tbox ) ;
@@ -3337,7 +3340,7 @@
       fprintf ( fp , "    %d, \n" , t->lngth ) ;
       fprintf ( fp , "    %d, \n" , t->width ) ;
       fprintf ( fp , "    %d,%d, \n" , t->nx , t->ny ) ;
-      fprintf ( fp , "    %d,%f,%d,%d,%d,1, /* button type and roundinfg factor(0-0.5),bordr,hide ,nodrawbkgr*/\n \n" , \
+      fprintf ( fp , "    %d,%f,%d,%d,%d,1,/* button type and roundinfg factor(0-0.5),bordr,hide ,nodrawbkgr*/ \n" , \
            t->type , t->fac , t->bordr , t->hide , t->nodrawbkgr ) ;
 //  fprintf(fp,"    NULL,\n");
       fprintf ( fp , "    butn%-d, \n" , Tbox ) ;
@@ -3418,7 +3421,8 @@
       fprintf ( fp , "    %d, \n" , t->lngth ) ;
       fprintf ( fp , "    %d, \n" , t->width ) ;
       fprintf ( fp , "    %d,%d, \n" , t->nx , t->ny ) ;
-      fprintf ( fp , "    %d,%f,%d,%d,%d,1, /* button type and roundinfg factor(0-0.5),bordr,hide ,nodrawbkgr*/\n \n" , \
+      fprintf ( fp , "    %d,%f,%d,%d,%d,1," 
+           "/* button type and roundinfg factor(0-0.5),bordr,hide ,nodrawbkgr*/ \n" , \
            t->type , t->fac , t->bordr , t->hide , t->nodrawbkgr ) ;
       fprintf ( fp , "    butn%-d, \n" , Tbox ) ;
       t->Wid [ 49 ] = '\0';
