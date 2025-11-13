@@ -1731,7 +1731,7 @@ static ExceptionInfo exception;
          sprintf(tempfile,"/tmp/%-d.png",getpid());
          kgSaveAsPng(img,tempfile);
          png = kgGetImage(tempfile);          
-         uiWritegmImage ( ( GMIMG * ) png , flname ) ;
+         uiWritegmImage ( ( GMIMG * ) png , (char *)flname ) ;
          kgFreeImage(png);
        }
        else uiWritegmImage ( ( GMIMG * ) img , flname ) ;
