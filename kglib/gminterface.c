@@ -1722,8 +1722,20 @@ static ExceptionInfo exception;
       WriteImage ( Image_info , ( Image * ) ( png->image ) ) ;
       return ;
   }
-  void kgWriteImage ( void *img , char *flname ) { uiWritegmImage  \
-      ( ( GMIMG * ) img , flname ) ;}
+  void kgWriteImage ( void *img , char *flname ) {
+       DIG *G= (DIG *)img;
+       if(G->code=='g') {  // New code as on 13th Nov 2025
+         int pid;
+         void *png=NULL;
+         char  tempfile[300];
+         sprintf(tempfile,"/tmp/%-d.png",getpid());
+         kgSaveAsPng(img,tempfile);
+         png = kgGetImage(tempfile);          
+         uiWritegmImage ( ( GMIMG * ) png , flname ) ;
+         kgFreeImage(png);
+       }
+       else uiWritegmImage ( ( GMIMG * ) img , flname ) ;
+  }
   void uiFreeGmImage ( void *png ) {
       GMIMG *img;
       img = ( GMIMG * ) png;
