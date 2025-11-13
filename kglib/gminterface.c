@@ -1733,6 +1733,7 @@ static ExceptionInfo exception;
          png = kgGetImage(tempfile);          
          uiWritegmImage ( ( GMIMG * ) png , (char *)flname ) ;
          kgFreeImage(png);
+         remove(tempfile);
        }
        else uiWritegmImage ( ( GMIMG * ) img , flname ) ;
   }
