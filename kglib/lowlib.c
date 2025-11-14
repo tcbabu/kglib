@@ -4812,6 +4812,42 @@ void transch(int c) {
  /* XWarpPointer(Dsp,Win,Win,0,0,EVGAX+1,EVGAY+1,gcur_x,gcur_y);
 */
   }
+  void write_po_cursor ( DIG *G ,int xo,int yo) {
+      unsigned int tempc;
+      int i , l;
+      char nbuf [ 50 ] ;
+      float x , y,dist;
+      DIALOG *D;
+      int EVGAY;
+      int vx1 , vy1 , vx2 , vy2;
+      kgWC *wc;
+      kgDC *dc;
+      D = G->D;
+      wc = G->wc;
+      dc = G->dc;
+      EVGAY = D->evgay;
+      vx1 = dc->v_x1+dc->D_x; vy1 = EVGAY- ( dc->v_y2+dc->D_y ) ;
+      vx2 = ( dc->v_x2+dc->D_x ) ; vy2 = EVGAY- ( dc->v_y1+dc->D_y ) ;
+      if ( dc->gcur_x >= vx2 ) {dc->gcur_x = vx2-1; }
+      if ( dc->gcur_y > vy2-1 ) {dc->gcur_y = vy2-1; }
+      if ( dc->gcur_x < vx1 ) {dc->gcur_x = vx1; }
+      if ( dc->gcur_y < vy1 ) {dc->gcur_y = vy1; }
+      x = uiusr_x ( dc->gcur_x )-xo  ;
+      y = uiusr_y ( EVGAY-dc->gcur_y )-yo ;
+      y = fabsf(y);
+      x = fabsf(x);
+      dist = sqrtf(x*x+y*y);
+      sprintf ( nbuf ,"xl=%.3f yl=%.3f:dist= %.3f"  , x , y,dist ) ;
+
+      l = strlen ( nbuf ) ;
+      for ( i = l; i < 49; i++ ) nbuf [ i ] = ' ';
+      nbuf [ 34 ] = '\0';
+//  printf("%s %d %d\n",nbuf,dc->msg_x,dc->msg_y);
+      uimsg_menu ( G , dc->msg_x , dc->msg_y , 34 , nbuf ) ;
+      uiUpdateOn ( D ) ;
+ /* XWarpPointer(Dsp,Win,Win,0,0,EVGAX+1,EVGAY+1,gcur_x,gcur_y);
+*/
+  }
   int kgCheckEscapeOld ( DIALOG *D ) {
       KBEVENT kb , kbo;
       if ( kgCheckEvent ( D , & kbo ) == 0 ) return 0;
@@ -5706,14 +5742,16 @@ void transch(int c) {
               if ( ( xpo != dc->gcur_x ) || ( ypo != dc->gcur_y ) ) {
                   dc->gcur_x = xpo , dc->gcur_y = ypo;
                   draw_rbr_cursor ( G , xorg , yorg , dc->gcur_x , dc->gcur_y ) ;
-                  draw_po_cursor ( G ) ;
+//                  draw_po_cursor ( G ) ;
+                  write_po_cursor (G,*xbgn,*ybgn);
               }
               break;
               case 1: // button press
               if ( ( xpo != dc->gcur_x ) || ( ypo != dc->gcur_y ) ) {
                   dc->gcur_x = xpo , dc->gcur_y = ypo;
                   draw_rbr_cursor ( G , xorg , yorg , dc->gcur_x , dc->gcur_y ) ;
-                  draw_po_cursor ( G ) ;
+//                  draw_po_cursor ( G ) ;
+                  write_po_cursor (G,*xbgn,*ybgn);
               }
               if ( button == 1 ) key = '\r';
               if ( button == 3 ) key = '.';
