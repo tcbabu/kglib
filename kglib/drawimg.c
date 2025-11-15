@@ -174,6 +174,7 @@
       PixelPacket *pixels , *spixels;
       int w , h , iw , ih , i , j , ii , jj , sloc , dloc , cx0 , cx1 , cy0 , cy1;
       int channels;
+      float fs,fd;
       dc = G->dc;
       wc = G->wc;
       Simg = ( GMIMG * ) img;
@@ -191,6 +192,7 @@
       spixels = GetImagePixels ( ( Image * ) ( Simg->image ) , 0 , 0 , ( ( Image * )  \
           ( Simg->image ) )->columns , ( ( Image * ) ( Simg->image ) )->rows ) ;
       pixels = G->pixels;
+//      printf("Channels = %d\n",channels);
       for ( j = 0;j < ( h ) ;j++ ) {
           jj = j+y0;
           if ( jj < cy0 ) continue;
@@ -203,12 +205,36 @@
               if ( ii >= iw ) continue;
               sloc = j*w+i;
               dloc = jj*iw+ii;
-              if ( ( channels != 4 ) || ( spixels [ sloc ] .opacity != 255 ) ) {
+              if ( ( channels != 4 )  ) {
+                  pixels [ dloc ] = spixels [ sloc ] ;
+                  pixels [ dloc ] .blue = spixels [ sloc ] .blue;
+                  pixels [ dloc ] .green = spixels [ sloc ] .green;
+                  pixels [ dloc ] .red = spixels [ sloc ] .red;
+                  pixels [ dloc ] .opacity = 255;
+              }
+              else {
+                if( spixels [ sloc ] .opacity == 255 ) continue;
+                if( spixels [ sloc ] .opacity == 0 ) {
                   pixels [ dloc ] = spixels [ sloc ] ;
                   pixels [ dloc ] .blue = spixels [ sloc ] .blue;
                   pixels [ dloc ] .green = spixels [ sloc ] .green;
                   pixels [ dloc ] .red = spixels [ sloc ] .red;
                   pixels [ dloc ] .opacity = spixels [ sloc ] .opacity;
+                }
+                else {
+                  fd = 1;
+                  fs = 1. - spixels [ sloc ] .opacity/255.0;
+                  fd = 1 - fs;
+                  pixels [ dloc ] = spixels [ sloc ] ;
+                  pixels [ dloc ] .blue = fd*pixels [ dloc ] .blue+fs* spixels [ sloc ] .blue;
+                  if ( pixels [ dloc ] .blue >255 ) pixels [ dloc ] .blue =255;
+                  pixels [ dloc ] .green = fd*pixels [ dloc ] .green+fs* spixels [ sloc ] .green;
+                  if ( pixels [ dloc ] .green>255 ) pixels [ dloc ] .green=255;
+                  pixels [ dloc ] .red = fd*pixels [ dloc ] .red+fs* spixels [ sloc ] .red;
+                  if ( pixels [ dloc ] .red>255 ) pixels [ dloc ] .red=255;
+                  pixels [ dloc ] .opacity += spixels [ sloc ] .opacity;
+                  if(pixels [ dloc ] .opacity > 255 ) pixels [ dloc ] .opacity =255;
+                }
               }
 //TCB
 //      printf("%x %x %x %x\n",pixels[dloc].blue,pixels[dloc].green,pixels[dloc].red,pixels[dloc].opacity);
@@ -218,7 +244,7 @@
       return;
   }
 //function plot(x, y, c) is
-//     plot the pixel at (x, y) with brightness c (where 0 ≤ c ≤ 1)
+//     plot the pixel at (x, y) with brightness c (where 0 
 #define Ipart(x) ((int)(x))
 #define Round(x) ((int)(x+0.5))
 #define Fpart(x) ((x)-Ipart(x))

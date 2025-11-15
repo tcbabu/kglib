@@ -761,7 +761,9 @@ static void gphCopyImage(int x0,int y0,GMIMG *img) {
   GMIMG *Dimg,*Simg;
   PixelPacket *spixels;
   int w,h,iw,ih,i,j,ii,jj,sloc,dloc,cx0,cx1,cy0,cy1;
+  int fs,fd;
   Simg = (GMIMG *)img;
+  int channels;
   iw = EVGAX;
   ih = EVGAY;
   w  = Simg->image_width;
@@ -772,6 +774,7 @@ static void gphCopyImage(int x0,int y0,GMIMG *img) {
   cy1=EVGAY-c_v_y1;
 //  printf("%d %d %d %d\n",cx0,cy0,cx1,cy1);
   spixels = GetImagePixels((Image *)(Simg->image),0,0,((Image *)(Simg->image))->columns,((Image *)(Simg->image))->rows);
+  channels = Simg->image_channels;
   for(j=0;j<(h);j++) {
     jj = j+y0;
     if(jj<cy0)continue;
@@ -785,7 +788,39 @@ static void gphCopyImage(int x0,int y0,GMIMG *img) {
       if(ii >= iw) continue;
       sloc = j*w+i;
       dloc= jj*iw+ii;
-      pixels[dloc]=spixels[sloc];
+              if ( ( channels != 4 )  ) {
+                  pixels [ dloc ] = spixels [ sloc ] ;
+                  pixels [ dloc ] .blue = spixels [ sloc ] .blue;
+                  pixels [ dloc ] .green = spixels [ sloc ] .green;
+
+                  pixels [ dloc ] .red = spixels [ sloc ] .red;
+              }
+              else {
+                if( spixels [ sloc ] .opacity == 255 ) continue;
+                if( spixels [ sloc ] .opacity < 0  ) {
+                  pixels [ dloc ] = spixels [ sloc ] ;
+                  pixels [ dloc ] .blue = spixels [ sloc ] .blue;
+                  pixels [ dloc ] .green = spixels [ sloc ] .green;
+                  pixels [ dloc ] .red = spixels [ sloc ] .red;
+                  pixels [ dloc ] .opacity = spixels [ sloc ] .opacity;
+                }
+                else {
+#if 1
+                  fd = 1;
+                  fs = 1. - spixels [ sloc ] .opacity/255.0;
+                  fd = 1 - fs;
+                  pixels [ dloc ] = spixels [ sloc ] ;
+                  pixels [ dloc ] .blue = fd*pixels [ dloc ] .blue+fs* spixels [ sloc ] .blue;
+                  if ( pixels [ dloc ] .blue >255 ) pixels [ dloc ] .blue =255;
+                  pixels [ dloc ] .green = fd*pixels [ dloc ] .green+fs* spixels [ sloc ] .green;
+                  if ( pixels [ dloc ] .green>255 ) pixels [ dloc ] .green=255;
+                  pixels [ dloc ] .red = fd*pixels [ dloc ] .red+fs* spixels [ sloc ] .red;
+                  if ( pixels [ dloc ] .red>255 ) pixels [ dloc ] .red=255;
+                  pixels [ dloc ] .opacity += spixels [ sloc ] .opacity;
+                  if(pixels [ dloc ] .opacity > 255 ) pixels [ dloc ] .opacity =255;
+#endif
+                }
+       }
     }
   }
   return;
@@ -795,7 +830,7 @@ static void gphCopyImage(int x0,int y0,GMIMG *img) {
 static  void gph_drawimage(void *imgfile,float x1,float y1,float x2,float y2)
   {
   float fac;
-  GMIMG *img,*rzimg;
+  GMIMG *img,*rzimg,*timg=NULL;;
   char *pt;
   int IMG =1,iw,ih,w,h,temp;
   int X1,Y1,X2,Y2;
@@ -815,6 +850,7 @@ static  void gph_drawimage(void *imgfile,float x1,float y1,float x2,float y2)
   iw = img->image_width;
   ih = img->image_height;
   rzimg= (GMIMG *)kgChangeSizeImage(img,w,h);
+//  rzimg= (GMIMG *)kgFilterImage(img,w,h,7);
   gphCopyImage(X1,Y1,rzimg);
   uiFreeImage(rzimg);
   if(!IMG) uiFreeImage(img);

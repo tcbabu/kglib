@@ -1231,7 +1231,7 @@ void *kgRotateAboutImage(void *img,float angle,int xo,int yo); // Creates new ro
 void *kgThumbNailImage(void *img,unsigned long w,unsigned long h);
 void *kgShadeImage(void *img);
 void *kgReduceNoiseImage(void *img);
-void *kgBlurgmImage(void *img);
+void *kgBlurImage(void *img);
 void *kgEmbossImage(void *img);
 void *kgSharpenImage(void *img);
 void *kgSpreadImage(void *img);

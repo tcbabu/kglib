@@ -1412,6 +1412,7 @@ int uiSearchClr(kgColor *kgcolors,XColor C) ;
 int SearchClr(XColor C);
 int RefreshWindowThread(void *junk);
 void uiwrite_buf(DIG *G,unsigned char *ch, int n );
+void ui_Image ( void *Dtmp , void *tmp , int x0 , int y0 , int width , int height  );
 /* New Code for FT interface */
   void * kgMakeFixedFontImg ( char *filename , char *text , int Size ,int Gap);
   void * kgMakeFontImg ( char *filename , char *text , int Size ,int Gap);

@@ -2971,7 +2971,7 @@ static char *OthFonts []= {
       uiset_clr ( G->D , dc->ln_color ) ;
       _uidraw ( G , x1 , y1 ) ;
   }
-  void ui_drawimage_org ( DIG *G , void *imgfile , \
+  void ui_drawimage_old ( DIG *G , void *imgfile , \
   float x1 , float y1 , float x2 , float y2 ) \
   {
       float fac;
@@ -3105,8 +3105,10 @@ static char *OthFonts []= {
       X2 = xu;
       w = X2-X1+1;
       h = Y2 -Y1+1;
-      kgImage ( D , img , X1 , Y1 , img->image_width , \
-      img->image_height , 0.0 , 1.0 ) ;
+//      printf("Channels= %d\n",img->image_channels);
+//      kgImage ( D , img , X1 , Y1 , img->image_width , \
+//      img->image_height , 0.0 , 1.0 ) ;
+      ui_Image ( D , img , X1 , Y1 , img->image_width ,img->image_height ); 
       if ( ! IMG ) uiFreeImage ( img ) ;
   }
   void ui_ln_style ( DIG *G , int istl ) {
