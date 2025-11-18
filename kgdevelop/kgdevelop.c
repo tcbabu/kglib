@@ -30,6 +30,7 @@
   static int Vx1 , Vy1 , Vx2 , Vy2;
 /*static Dlink *Dialink=NULL;*/
   Dlink *CallList = NULL , *SrcList = NULL , *DelList = NULL , *WidList = NULL;
+  Dlink *InclList = NULL;
   DIALOG *Parent = NULL;
   DIG *GBOX;
   DIALOG *Dia = NULL;
@@ -7124,11 +7125,18 @@
      and returns 0 if it can be used
   */ 
       char *pt = NULL , *spt = NULL , *dpt = NULL;
+      int ret = 0;
       if ( CallList == NULL ) return 0;
       Resetlink ( CallList ) ;
       Resetlink ( SrcList ) ;
       while ( ( pt = ( char * ) Getrecord ( CallList ) ) != NULL ) {
           if ( strstr ( pt , call ) != NULL ) {
+              if ( InclList != NULL ) {
+                      Resetlink ( InclList ) ;
+                      while ( ( dpt = ( char * ) Getrecord ( InclList ) ) != NULL ) {
+                          if ( strstr ( spt , dpt ) != NULL ) return 0;
+                      }
+              }
               Resetlink ( SrcList ) ;
               while ( ( spt = ( char * ) Getrecord ( SrcList ) ) != NULL ) {
                   if ( strstr ( spt , call ) != NULL ) {
@@ -9360,6 +9368,8 @@
       sprintf ( Gclrcode , "Gclr%-s.c" , args [ 1 ] ) ;
       sprintf ( buff , "%-sCallbacks.c" , DiaName ) ;
       CallList = Dreadfile ( buff ) ;
+      sprintf ( buff , "%-sCallbacks.h" , DiaName ) ;
+      InclList = Dreadfile ( buff ) ;
       sprintf ( buff , "%-s.src" , DiaName ) ;
       SrcList = Dreadfile ( buff ) ;
 #if 0
