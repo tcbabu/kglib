@@ -7131,12 +7131,6 @@
       Resetlink ( SrcList ) ;
       while ( ( pt = ( char * ) Getrecord ( CallList ) ) != NULL ) {
           if ( strstr ( pt , call ) != NULL ) {
-              if ( InclList != NULL ) {
-                      Resetlink ( InclList ) ;
-                      while ( ( dpt = ( char * ) Getrecord ( InclList ) ) != NULL ) {
-                          if ( strstr ( spt , dpt ) != NULL ) return 0;
-                      }
-              }
               Resetlink ( SrcList ) ;
               while ( ( spt = ( char * ) Getrecord ( SrcList ) ) != NULL ) {
                   if ( strstr ( spt , call ) != NULL ) {
@@ -7144,6 +7138,13 @@
                       Resetlink ( DelList ) ;
                       while ( ( dpt = ( char * ) Getrecord ( DelList ) ) != NULL ) {
                           if ( strstr ( spt , dpt ) != NULL ) return 1;
+                      }
+                      if ( InclList != NULL ) {
+                        Resetlink ( InclList ) ;
+                        while ( ( dpt = ( char * ) Getrecord ( InclList ) ) != NULL ) {
+                            if ( strstr ( spt , dpt ) != NULL ) return 0;
+                        }
+                        return 1;
                       }
                       return 0;
                   }
