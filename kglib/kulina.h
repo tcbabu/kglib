@@ -1822,6 +1822,27 @@ static void *Malloc(int size) {
    }
    return pt;
 }
+#ifndef D_DiaIntr
+#define D_DiaIntr
+// NEW code for new interface
+typedef struct diaintr__ {
+  int GrpId;
+  int xsh;
+  int ysh;
+  void * (*RunDia)(void *D,void *arg);// used for independent existance
+  int (*MakeGroup)(DIALOG *D,void *arg);// for as a group in existing
+  int (*Settings )(void * D, void *arg);// to setup when using as a group
+  char *disc; // menu title
+  char *help; // help message
+  int (*Action)(void *G,void *arg);
+  void *args;  // setting parameters
+  void *rets;  // return values, may be used as Action arg
+} DIAINTR;
+typedef struct diaret_ {
+  int selection;
+  void *retvals;
+} DIARET;
+#endif
 #endif
 #ifdef __cplusplus
 }
