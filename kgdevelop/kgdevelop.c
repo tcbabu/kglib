@@ -1377,7 +1377,7 @@
       g1.y2 = g1.y1+yl-52;
       D.Initfun = makeguidiainit;
       D.Cleanupfun = NULL;
-      strcpy ( D.name , "Kulina Designer Ver 1.0" ) ;
+      strcpy ( D.name , "Kulina Designer Ver 3.0" ) ;
       if ( D.fullscreen != 1 ) { /* if not fullscreen mode */
           int xres , yres;
           kgDisplaySize ( & xres , & yres ) ;
@@ -1596,7 +1596,7 @@
       Black color will not be drawn */
       D.parent = parent; /* 1 for not showing in task bar*/
       D.pt = pt; /* any data to be passed by user*/
-//  strcpy(D.name,"Kulina Designer ver 1.0");    /*  Dialog name you may change */
+      strcpy(D.name,"Kulina Designer ver 3.0");    /*  Dialog name you may change */
       if ( D.fullscreen != 1 ) { /* if not fullscreen mode */
           int xres , yres;
           kgDisplaySize ( & xres , & yres ) ;
@@ -5231,7 +5231,7 @@
       fprintf ( fp , "     i++;\n" ) ;
       fprintf ( fp , "  };\n" ) ;
       fprintf ( fp , "  n=1;\n" ) ;
-      fprintf ( fp , "//  strcpy(D->name,\"Kulina Designer ver 2.0\");    /*  Dialog name you may change */\n" ) ;
+      fprintf ( fp , "//  strcpy(D->name,\"Kulina Designer ver 3.0\");    /*  Dialog name you may change */\n" ) ;
           
       fprintf ( fp , "#if 0\n" ) ;
       fprintf ( fp , "  if(D->fullscreen!=1) {    /*  if not fullscreen mode */\n" ) ;
@@ -6304,7 +6304,7 @@
       fprintf ( fp1 , "  D.parent = parent;    /*  1 for not showing in task bar*/\n" ) ;
           
       fprintf ( fp1 , "  D.pt = pt;    /*  any data to be passed by user*/\n" ) ;
-      fprintf ( fp1 , "//  strcpy(D.name,\"Kulina Designer ver 2.0\");    /*  Dialog name you may change */\n" ) ;
+      fprintf ( fp1 , "//  strcpy(D.name,\"Kulina Designer ver 3.0\");    /*  Dialog name you may change */\n" ) ;
           
       fprintf ( fp1 , "  if(D.fullscreen!=1) {    /*  if not fullscreen mode */\n" ) ;
           

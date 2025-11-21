@@ -10143,3 +10143,25 @@
       kgUpdateWidget(V);
       return 1;
   }
+  void *kgGetArgs(void *Tmp) {
+     DIAINTR *T=(DIAINTR *)Tmp;
+     if(Tmp == NULL ) return NULL;
+     return T->args;;
+  }
+  void *kgGetRets(void *Tmp) {
+     DIAINTR *T=(DIAINTR *)Tmp;
+     if(Tmp == NULL ) return NULL;
+     return T->rets;
+  }
+  void *kgTakeAction(void *Tmp,void *arg) {
+     DIAINTR *T=(DIAINTR *)Tmp;
+     if(Tmp == NULL ) return NULL;
+     return T->Action(arg,T->rets);
+  }
+  int kgCheckTitle(void *Tmp,char *str) {
+      DIAINTR *T = (DIAINTR *)Tmp;
+      if(Tmp == NULL) return 0;
+      if(str == NULL) return 0;
+      if (strcmp(T->disc,str)== 0) return 1;
+      return 0;      
+  }      

@@ -1834,7 +1834,7 @@ typedef struct diaintr__ {
   int (*Settings )(void * D, void *arg);// to setup when using as a group
   char *disc; // menu title
   char *help; // help message
-  int (*Action)(void *G,void *arg);
+  void * (*Action)(void *G,void *arg);
   void *args;  // setting parameters
   void *rets;  // return values, may be used as Action arg
 } DIAINTR;
@@ -1842,6 +1842,10 @@ typedef struct diaret_ {
   int selection;
   void *retvals;
 } DIARET;
+void *kgGetArgs(void  *); // returns args of DIAINTR after searching title
+void *kgGetRets(void  *); // returns rets of DIAINTR after searching title
+void *kgTakeAction(void *T ,void *Uargs); // executes the action of the DIAINTR
+int kgCheckTitle (void *,char *str); // compares title
 #endif
 #endif
 #ifdef __cplusplus
