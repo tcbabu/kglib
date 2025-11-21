@@ -5136,7 +5136,7 @@
       fprintf ( Inc , "int %-scleanup(void *Tmp) ;\n" , dianame ) ;
       fprintf ( Inc , "void *Run%-s(void *,void *) ;\n",dianame);
       fprintf ( Inc , "int Make%-sGroup(DIALOG *,void *) ;\n",dianame);
-      fprintf ( Inc , "int %-sAction(void *,void *) ;\n",dianame);
+      fprintf ( Inc , "void * %-sAction(void *,void *) ;\n",dianame);
       fprintf ( fp , "int %-sSetup(void *Tmp,void *args) {\n" , dianame ) ;
       fprintf ( fp , "  /*********************************** \n" ) ;
       fprintf ( fp , "    args :  Pointer to args  \n" ) ;
@@ -5147,7 +5147,7 @@
       fprintf ( fp , "}\n" ) ;
       fprintf ( fp, " \n" );
       fprintf ( fp, " \n" );
-      fprintf ( fp , "int  %-sAction(void *,void *) {\n" , dianame ) ;
+      fprintf ( fp , "void *  %-sAction(void *,void *) {\n" , dianame ) ;
       fprintf ( fp , "  return 1;\n");
       fprintf ( fp , "} \n" );
       fprintf ( fp, " \n" );
