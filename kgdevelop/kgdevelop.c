@@ -5148,7 +5148,7 @@
       fprintf ( fp, " \n" );
       fprintf ( fp, " \n" );
       fprintf ( fp , "void *  %-sAction(void *,void *) {\n" , dianame ) ;
-      fprintf ( fp , "  return 1;\n");
+      fprintf ( fp , "  return NULL;\n");
       fprintf ( fp , "} \n" );
       fprintf ( fp, " \n" );
       fprintf ( fp, " \n" );
