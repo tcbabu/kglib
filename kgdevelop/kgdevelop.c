@@ -5146,8 +5146,16 @@
       fprintf ( fp , "  return 1;\n");
       fprintf ( fp , "}\n" ) ;
       fprintf ( fp, " \n" );
+      fprintf ( fp , "void * %-sCleanDia(void *args) {\n" , dianame ) ;
+      fprintf ( fp , "  /*********************************** \n" ) ;
+      fprintf ( fp , "    args :  Pointer to args  \n" ) ;
+      fprintf ( fp , "   ***********************************/ \n" ) ;
+      fprintf ( fp , "  \n/* you add any cleaning  here */\n\n" ) ;
+      fprintf ( fp , "  return NULL;\n");
+      fprintf ( fp , "}\n" ) ;
       fprintf ( fp, " \n" );
-      fprintf ( fp , "void *  %-sAction(void *,void *) {\n" , dianame ) ;
+      fprintf ( fp, " \n" );
+      fprintf ( fp , "void *  %-sAction(void *Tmp,void *Args) {\n" , dianame ) ;
       fprintf ( fp , "  return NULL;\n");
       fprintf ( fp , "} \n" );
       fprintf ( fp, " \n" );
@@ -5160,7 +5168,7 @@
       fprintf ( fp , "} \n" );
       fprintf ( fp, " \n" );
       fprintf ( fp, " \n" );
-      fprintf ( fp , "void * %-sInterface() {\n" , dianame ) ;
+      fprintf ( fp , "void * %-sInterface(void *args,void *rets) {\n" , dianame ) ;
       fprintf ( fp , "  /*********************************** \n" ) ;
       fprintf ( fp , "   ***********************************/ \n" ) ;
       fprintf ( fp , "  DIAINTR *it= (DIAINTR *)malloc(sizeof(DIAINTR));\n" );
@@ -5169,15 +5177,16 @@
       fprintf ( fp , "  it->ysh=0;\n");   
       fprintf ( fp , "  it->RunDia = Run%-s;\n",dianame);
       fprintf ( fp , "  it->MakeGroup = Make%-sGroup;\n",dianame);
-      fprintf ( fp , "  it->disc = GetPointer((char *)\"Some Title\");\n");
-      fprintf ( fp , "  it->help = GetPointer( (char *)\"Help\");\n");
+      fprintf ( fp , "  it->Title = GetPointer((char *)\"Some Title\");\n");
+      fprintf ( fp , "  it->Help = GetPointer( (char *)\"Help\");\n");
       fprintf ( fp , "  it->Action = %-sAction;\n",dianame);
       fprintf ( fp , "  it->Settings = %-sSetup;\n",dianame);
-      fprintf ( fp , "  it->args = NULL;\n");
-      fprintf ( fp , "  it->rets = NULL;\n");
-      fprintf ( fp , " // it->args = Args;\n");
-      fprintf ( fp , " // it->rets = Rets;\n");
-      fprintf ( fp , "  return NULL;\n");
+      fprintf ( fp,  "  it->Cleanup  = %-sCleanDia;\n",dianame);
+      fprintf ( fp , "  if(args != NULL) Args=args;\n");
+      fprintf ( fp , "  if(rets != NULL) Rets=rets;;\n");
+      fprintf ( fp , "  it->args = Args;\n");
+      fprintf ( fp , "  it->rets = Rets;\n");
+      fprintf ( fp , "  return it;\n");
       fprintf ( fp , "}\n" ) ;
       fprintf ( fp, " \n" );
       fprintf ( fp, " \n" );
@@ -5226,7 +5235,18 @@
       fprintf ( fp , " /* pt[0] is inputs given by caller */\n" ) ;
       fprintf ( fp , "  DIA *d;\n" ) ;
       fprintf ( fp , "  int i,n;\n" ) ;
-      fprintf ( fp , "  d = D->d;\n" ) ;
+      fprintf ( fp , "  d = D->d;\n\n" ) ;
+      fprintf ( fp , "  if( ModuleList == NULL) ModuleList = kgGetModuleList((void **)ModFuns);\n");
+      fprintf ( fp , "  i=0;\n");
+      fprintf ( fp , "  void *args=NULL;\n");
+      fprintf ( fp , "  DIAINTR *Dt;\n");
+      fprintf ( fp , "  Resetlink(ModuleList);\n");
+      fprintf ( fp , "  while ( (Dt=(DIAINTR *)Getrecord(ModuleList)) != NULL) {\n");
+      fprintf ( fp , "    Dt->GrpId = Dt->MakeGroup(Tmp,NULL);\n");
+      fprintf ( fp , "    kgShiftGrp(Tmp,Dt->GrpId,Dt->xsh,Dt->ysh);\n");
+      fprintf ( fp , "    Dt->Settings(Tmp,args);\n");
+      fprintf ( fp , "    i++;\n");
+      fprintf ( fp , "  };\n\n");
       fprintf ( fp , "  i=0;while(d[i].t!= NULL) {;\n" ) ;
       fprintf ( fp , "     i++;\n" ) ;
       fprintf ( fp , "  };\n" ) ;
@@ -6146,6 +6166,11 @@
       fprintf ( fp1 , "#include \"%-s\"\n" , Gclrcode ) ;
       fprintf ( fpc , "#include <kulina.h>\n" ) ;
       fprintf ( fpc , "#include \"%-sCallbacks.h\"\n",dianame);
+      fprintf ( fpc , "\nstatic void *Args=NULL,*Rets=NULL;\n\n");
+      fprintf ( fpc , "\n\nstatic MODINTERFACE ModFuns[] = { \n");
+      fprintf ( fpc , "    (MODINTERFACE) NULL \n");
+      fprintf ( fpc , "};\n");
+      fprintf ( fpc , "static Dlink *ModuleList=NULL;\n");
       WriteCallBacks ( L , fpc , dianame ) ;
       fclose ( fpc ) ;
       fclose ( Inc ) ;
@@ -6249,7 +6274,7 @@
       fprintf ( fp1 , "  D.yl = %d;    /*  Width  of Dialog */\n" , D->yl ) ;
       fprintf ( fp1 , "  D.Initfun = %-sinit;    /*   init fuction for Dialog */\n" , \
            dianame ) ;
-      fprintf ( fp1 , "  D.Cleanupfun = %-scleanup;    /*   init fuction for Dialog */\n" , \
+      fprintf ( fp1 , "  D.Cleanupfun = %-scleanup;    /*   cleanup fuction for Dialog */\n" , \
            dianame ) ;
       fprintf ( fp1 , "  D.kbattn = %-d;    /*  1 for drawing keyborad attention */\n" , \
            D->kbattn ) ;

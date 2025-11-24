@@ -60,6 +60,7 @@ install	: bin/kgdevelop lib/libkulina.a lib/libgm.a
 	  install -m 755 bin/kgdevelop   /usr/bin
 	  install -m 755 lib/libkulina.a /usr/lib
 	  install -m 755 lib/libkulina.a /usr/lib
+	  install -m 755 lib/libkulina.so /usr/lib
 	  install -m 755 lib/libdlink.a /usr/lib
 	  install -m 755 lib/libgm.a /usr/lib
 	  install -m 755 include/kulina.h /usr/include

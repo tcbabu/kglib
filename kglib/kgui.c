@@ -10162,6 +10162,25 @@
       DIAINTR *T = (DIAINTR *)Tmp;
       if(Tmp == NULL) return 0;
       if(str == NULL) return 0;
-      if (strcmp(T->disc,str)== 0) return 1;
+      if (strcmp(T->Title,str)== 0) return 1;
       return 0;      
   }      
+
+ void *kgGetModuleList(void *Mtmp) {
+   int count,i=0;
+   Dlink *ToolList=Dopen();
+   DIAINTR *DI=NULL;
+   MODINTERFACE *ModFuns=(MODINTERFACE *)Mtmp;
+   i=0;
+   while(ModFuns[i] != NULL )i++;
+
+   count = i;
+   for(i=0;i<count;i++) {
+       MODINTERFACE fun = (MODINTERFACE )(ModFuns[i]); 
+       DI = (DIAINTR *)fun(NULL,NULL);
+       if(DI==NULL) printf("DI is NULL!!!\n");
+//       printf("Title: %s\n",DI->Title);
+       Dadd(ToolList,DI);
+   }
+   return ToolList;
+}

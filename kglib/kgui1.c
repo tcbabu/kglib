@@ -3044,7 +3044,8 @@
       * ( loc++ ) = 60;count++;
       ytwtg = ( tw+tg ) / ( dc->w_x2-dc->w_x1 ) * ( dc->w_y2-dc->w_y1 ) /0.75;
 //      while((item=uiMenu(G->D,G->x1,G->y1,1,1,cmenu,17))!=17)
-      while ( ( item = kgMenu ( G->D , parent->xo+G->x2-100 , \
+//      while ( ( item = kgMenu ( G->D , parent->xo+G->x2-100 , 
+     while ( ( item = kgMenu ( G->D , parent->xo+G->x1+5 , \
       parent->yo+G->y1 , 1 , 1 , cmenu , 17 ) ) != 17 ) \
       {
           if ( G->Byte > ( B_min-100 ) ) {

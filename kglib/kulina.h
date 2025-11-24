@@ -1122,9 +1122,9 @@ char **kgGetAudioFiles(void *arg); // multiple Video files
 char **kgGetVideoFiles(void *arg); // multiple Image files
 char **kgGetFiles(void *arg); // multiple files
 char *kgGetMediaFile(void *arg); // single media files
-char *kgGetImageFile(void *arg); // single Audio files
+char *kgGetImageFile(void *arg); // single Image files
 char *kgGetAudioFile(void *arg); // single Video files
-char *kgGetVideoFile(void *arg); // single Image files
+char *kgGetVideoFile(void *arg); // single Audio files
 char *kgGetFile(void *arg); // single files
 //Over
 void kgFreeThumbNails(ThumbNail **tb);
@@ -1832,20 +1832,23 @@ typedef struct diaintr__ {
   void * (*RunDia)(void *D,void *arg);// used for independent existance
   int (*MakeGroup)(DIALOG *D,void *arg);// for as a group in existing
   int (*Settings )(void * D, void *arg);// to setup when using as a group
-  char *disc; // menu title
-  char *help; // help message
+  char *Title; // menu title
+  char *Help; // help message
   void * (*Action)(void *G,void *arg);
   void *args;  // setting parameters
   void *rets;  // return values, may be used as Action arg
+  void *(*Cleanup)(void *);
 } DIAINTR;
 typedef struct diaret_ {
   int selection;
   void *retvals;
 } DIARET;
+typedef void *(*MODINTERFACE)();
 void *kgGetArgs(void  *); // returns args of DIAINTR after searching title
 void *kgGetRets(void  *); // returns rets of DIAINTR after searching title
 void *kgTakeAction(void *T ,void *Uargs); // executes the action of the DIAINTR
 int kgCheckTitle (void *,char *str); // compares title
+void *kgGetModuleList(void *ModFuns) ;
 #endif
 #endif
 #ifdef __cplusplus
