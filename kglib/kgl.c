@@ -1453,9 +1453,16 @@ int uiProcess_arc (DIG *G,float *xo,float *yo)
  {
     float ang1,ang2,r;
     float x1,y1,x2,y2;
+#if 0
     gscanf(G->D,"Give Arc Radius=%10f",&m_radius);
     y1=*yo;
     x1= *xo+m_radius;
+#endif
+    y1=*yo;
+    x1= *xo;;
+    kgRbrCursor(G,&x1,&y1,xo,yo);
+    m_radius = sqrtf( (x1-*xo)*(x1-*xo) + (y1 -*yo)*(y1-*yo));
+    
 //    put_message(100,50,(char *)"Fix First Point on Arc:");  
 //    gbell(); 
     kgArcCursor(G,&x1,&y1,xo,yo);

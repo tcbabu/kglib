@@ -12,12 +12,14 @@ libkulina.a  : kgl.o kgui.o kgui1.o kgui2.o kgui3.o lowlib.o gkernel.o file_pro.
 	hlib.o keybrd.o keybrdCallbacks.o skeybrd.o skeybrdCallbacks.o keybrd0.o \
 	keybrd0Callbacks.o keybrd4.o keybrd4Callbacks.o keybrd5.o keybrd5Callbacks.o kgMakeGclr.o \
 	FileListBrowser.o FileListBrowserCallbacks.o\
+	 kgDrawingBox.o kgDrawingBoxCallbacks.o \
 	GetFile.o GetFileCallbacks.o ftinterface.o
 	ar -rD libkulina.a kgl.o kgui.o kgui1.o kgui2.o kgui3.o lowlib.o gkernel.o file_pro.o  printerdia.o \
 	 shade.o PngImage.o gminterface.o makeimg.o drawimg.o dlink.o ogl.o threadtool.o hlib.o keybrd.o \
 	keybrdCallbacks.o skeybrd.o skeybrdCallbacks.o keybrd0.o keybrd0Callbacks.o keybrd4.o keybrd4Callbacks.o \
 	 keybrd5.o keybrd5Callbacks.o kgMakeGclr.o FileListBrowser.o \
 	 FileListBrowserCallbacks.o \
+	 kgDrawingBox.o kgDrawingBoxCallbacks.o \
 	GetFile.o GetFileCallbacks.o ftinterface.o
 	cp libkulina.a $(KULINA)/lib/libkulina.a
 	cp kulina.h $(KULINA)/include
@@ -27,12 +29,14 @@ libkulina.so  : kgl.o kgui.o kgui1.o kgui2.o kgui3.o lowlib.o gkernel.o file_pro
 	hlib.o keybrd.o keybrdCallbacks.o skeybrd.o skeybrdCallbacks.o keybrd0.o \
 	keybrd0Callbacks.o keybrd4.o keybrd4Callbacks.o keybrd5.o keybrd5Callbacks.o kgMakeGclr.o \
 	FileListBrowser.o FileListBrowserCallbacks.o\
+	 kgDrawingBox.o kgDrawingBoxCallbacks.o \
 	GetFile.o GetFileCallbacks.o ftinterface.o
 	gcc -shared -o libkulina.so kgl.o kgui.o kgui1.o kgui2.o kgui3.o lowlib.o gkernel.o file_pro.o  printerdia.o \
 	 shade.o PngImage.o gminterface.o makeimg.o drawimg.o dlink.o ogl.o threadtool.o hlib.o keybrd.o \
 	keybrdCallbacks.o skeybrd.o skeybrdCallbacks.o keybrd0.o keybrd0Callbacks.o keybrd4.o keybrd4Callbacks.o \
 	 keybrd5.o keybrd5Callbacks.o kgMakeGclr.o FileListBrowser.o \
 	 FileListBrowserCallbacks.o \
+	 kgDrawingBox.o kgDrawingBoxCallbacks.o \
 	GetFile.o GetFileCallbacks.o ftinterface.o
 	cp libkulina.so $(KULINA)/lib/libkulina.so
 	cp kulina.h $(KULINA)/include

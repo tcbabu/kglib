@@ -5160,6 +5160,28 @@
       fprintf ( fp , "} \n" );
       fprintf ( fp, " \n" );
       fprintf ( fp, " \n" );
+      fprintf ( fp , "int   %-sOn(void *itmp) {\n" , dianame ) ;
+      fprintf ( fp,  "  DIAINTR * Dt = (DIAINTR *) itmp;\n");
+      fprintf ( fp,  "  if(Dt == NULL ) Dt = (DIAINTR *)It;\n");
+      fprintf ( fp , "  if(Dt != NULL) {\n");
+      fprintf ( fp , "    if(Dt->Dtmp != NULL)kgSetGrpVisibility(Dt->Dtmp,Dt->GrpId,1);\n");
+      fprintf ( fp , "    else return 0;\n");
+      fprintf ( fp , "    return 1;\n");
+      fprintf ( fp , "  } \n" );
+      fprintf ( fp , "  return 0;\n");
+      fprintf ( fp , "} \n" );
+      fprintf ( fp, " \n" );
+      fprintf ( fp , "int   %-sOff(void *itmp) {\n" , dianame ) ;
+      fprintf ( fp,  "  DIAINTR * Dt = (DIAINTR *) itmp;\n");
+      fprintf ( fp,  "  if(Dt == NULL ) Dt = (DIAINTR *)It;\n");
+      fprintf ( fp , "  if(Dt != NULL) {\n");
+      fprintf ( fp , "    if(Dt->Dtmp != NULL)kgSetGrpVisibility(Dt->Dtmp,Dt->GrpId,0);\n");
+      fprintf ( fp , "    else return 0;\n");
+      fprintf ( fp , "    return 1;\n");
+      fprintf ( fp , "  } \n" );
+      fprintf ( fp , "  return 0;\n");
+      fprintf ( fp , "} \n" );
+      fprintf ( fp, " \n" );
       fprintf ( fp , "static char *GetPointer(char *str) { \n" );
       fprintf ( fp , "  char *pt; \n" );
       fprintf ( fp , "  pt = (char *)malloc(strlen(str)+1); \n" );
@@ -5172,20 +5194,24 @@
       fprintf ( fp , "  /*********************************** \n" ) ;
       fprintf ( fp , "   ***********************************/ \n" ) ;
       fprintf ( fp , "  DIAINTR *it= (DIAINTR *)malloc(sizeof(DIAINTR));\n" );
-      fprintf ( fp , "  it->GrpId=0;\n");
+      fprintf ( fp , "  it->GrpId=0;\n  // filled by MakeGroup");
       fprintf ( fp , "  it->xsh=0;\n");
       fprintf ( fp , "  it->ysh=0;\n");   
       fprintf ( fp , "  it->RunDia = Run%-s;\n",dianame);
       fprintf ( fp , "  it->MakeGroup = Make%-sGroup;\n",dianame);
-      fprintf ( fp , "  it->Title = GetPointer((char *)\"Some Title\");\n");
-      fprintf ( fp , "  it->Help = GetPointer( (char *)\"Help\");\n");
+      fprintf ( fp , "  it->Title = GetPointer((char *)\"%-s\");\n",dianame);
+      fprintf ( fp , "  it->Help = GetPointer( (char *)\"No help yet, request\");\n");
       fprintf ( fp , "  it->Action = %-sAction;\n",dianame);
       fprintf ( fp , "  it->Settings = %-sSetup;\n",dianame);
       fprintf ( fp,  "  it->Cleanup  = %-sCleanDia;\n",dianame);
       fprintf ( fp , "  if(args != NULL) Args=args;\n");
-      fprintf ( fp , "  if(rets != NULL) Rets=rets;;\n");
+      fprintf ( fp , "  if(rets != NULL) Rets=rets;\n");
       fprintf ( fp , "  it->args = Args;\n");
       fprintf ( fp , "  it->rets = Rets;\n");
+      fprintf ( fp,  "  it->SwitchOn = %-sOn;\n",dianame);
+      fprintf ( fp,  "  it->SwitchOff = %-sOff;\n",dianame);
+      fprintf ( fp,  "  it->Dtmp = NULL; // fiiled by MakeGroup \n");
+      fprintf ( fp,  "  It = it;\n");
       fprintf ( fp , "  return it;\n");
       fprintf ( fp , "}\n" ) ;
       fprintf ( fp, " \n" );
@@ -6167,6 +6193,7 @@
       fprintf ( fpc , "#include <kulina.h>\n" ) ;
       fprintf ( fpc , "#include \"%-sCallbacks.h\"\n",dianame);
       fprintf ( fpc , "\nstatic void *Args=NULL,*Rets=NULL;\n\n");
+      fprintf ( fpc , "static DIAINTR *It = NULL;\n");
       fprintf ( fpc , "\n\nstatic MODINTERFACE ModFuns[] = { \n");
       fprintf ( fpc , "    (MODINTERFACE) NULL \n");
       fprintf ( fpc , "};\n");
@@ -9602,11 +9629,14 @@
           fp = fopen ( "Makefile" , "w" ) ;
           fprintf ( fp , "KULINA=/usr\n" ) ;
           fprintf ( fp , "#CC\t=g++ -pthread\n" ) ;
-          fprintf ( fp , "CC\t=cc -pthread\n" ) ;
+          fprintf ( fp , "CC\t=cc -fPIC -pthread\n" ) ;
           fprintf ( fp , "%-s\t: %-s.o %-sCallbacks.o %-smain.o\n" , \
                args [ 1 ] , args [ 1 ] , args [ 1 ] , args [ 1 ] ) ;
-    /* fprintf(fp,"\t cc -o %-s %-s.o %-sCallbacks.o main.o $(PARAS)/lib/glib.a -lX11 -lm\n",args[1],args[1],args[1]);*/
           fprintf ( fp , "\t $(CC) -o %-s %-s.o %-sCallbacks.o %-smain.o -I$(KULINA)/include $(KULINA)/lib/libkulina.a $(KULINA)/lib/libgm.a -L/usr/X11R6/lib -lX11 -lXext -lm -lpthread -lz -lbz2 -lGL\n" , \
+               args [ 1 ] , args [ 1 ] , args [ 1 ] , args [ 1 ] ) ;
+          fprintf ( fp , "\t ar -rD  lib%-s.a  %-s.o %-sCallbacks.o \n",  \
+               args [ 1 ] , args [ 1 ] , args [ 1 ] , args [ 1 ] ) ;
+          fprintf ( fp , "\t $(CC) -shared -o  lib%-s.so  %-s.o %-sCallbacks.o \n", \
                args [ 1 ] , args [ 1 ] , args [ 1 ] , args [ 1 ] ) ;
           fprintf ( fp , "%-s.o\t: %-s.c Gclr%-s.c \n" , \
                args [ 1 ] , args [ 1 ] , args [ 1 ] ) ;

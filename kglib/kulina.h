@@ -1826,7 +1826,7 @@ static void *Malloc(int size) {
 #define D_DiaIntr
 // NEW code for new interface
 typedef struct diaintr__ {
-  int GrpId;
+  int GrpId; // set int MakeGroup 
   int xsh;
   int ysh;
   void * (*RunDia)(void *D,void *arg);// used for independent existance
@@ -1837,18 +1837,30 @@ typedef struct diaintr__ {
   void * (*Action)(void *G,void *arg);
   void *args;  // setting parameters
   void *rets;  // return values, may be used as Action arg
-  void *(*Cleanup)(void *);
+  void *(*Cleanup) (void *);
+  int  (*SwitchOn) (void *);
+  int  (*SwitchOff)(void *);
+  void *Dtmp; // pointer parent Dialog, Set in Make group
 } DIAINTR;
 typedef struct diaret_ {
   int selection;
   void *retvals;
 } DIARET;
 typedef void *(*MODINTERFACE)();
+typedef int (*MAKEGROUP)(void *,void *);
 void *kgGetArgs(void  *); // returns args of DIAINTR after searching title
 void *kgGetRets(void  *); // returns rets of DIAINTR after searching title
 void *kgTakeAction(void *T ,void *Uargs); // executes the action of the DIAINTR
 int kgCheckTitle (void *,char *str); // compares title
-void *kgGetModuleList(void *ModFuns) ;
+void *kgGetModuleList(void *ModFuns) ;// returns Dlink * of Dts
+void *kgLoadModule(char *);
+void *kgDrawingBoxInterface(void *,void *);
+void *kgGetModule(void *Dia,void *ModFun, void *args, int xsh,int ysh);//returns Dt
+void *kgGetDrawingBox(void *Dia, void *args, int xsh,int ysh);//returns Dt
+int  kgModuleOn(void *Dt);
+int  kgModuleOff(void *Dt);
+int kgDrawingBoxOff(void *Dt);
+int kgDrawingBoxOn(void *Dt);
 #endif
 #endif
 #ifdef __cplusplus
