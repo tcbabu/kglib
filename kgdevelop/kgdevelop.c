@@ -5261,6 +5261,7 @@
       fprintf ( fp , " /* pt[0] is inputs given by caller */\n" ) ;
       fprintf ( fp , "  DIA *d;\n" ) ;
       fprintf ( fp , "  int i,n;\n" ) ;
+      fprintf ( fp , "  kgCheckParentPosition(Tmp);\n" ) ;
       fprintf ( fp , "  d = D->d;\n\n" ) ;
       fprintf ( fp , "  if( ModuleList == NULL) ModuleList = kgGetModuleList((void **)ModFuns);\n");
       fprintf ( fp , "  i=0;\n");
