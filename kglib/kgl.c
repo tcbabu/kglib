@@ -1449,7 +1449,7 @@ void gphLineWidth( int fid,int dw)
     kgDraw2f(G,x,y);
     return((n+1)*10);
   }
-int uiProcess_arc (DIG *G,float *xo,float *yo)
+int ui_process_arc (DIG *G,float *xo,float *yo)
  {
     float ang1,ang2,r;
     float x1,y1,x2,y2;
@@ -1457,11 +1457,85 @@ int uiProcess_arc (DIG *G,float *xo,float *yo)
     gscanf(G->D,"Give Arc Radius=%10f",&m_radius);
     y1=*yo;
     x1= *xo+m_radius;
-#endif
+#else
     y1=*yo;
     x1= *xo;;
     kgRbrCursor(G,&x1,&y1,xo,yo);
     m_radius = sqrtf( (x1-*xo)*(x1-*xo) + (y1 -*yo)*(y1-*yo));
+#endif
+    
+//    put_message(100,50,(char *)"Fix First Point on Arc:");  
+//    gbell(); 
+    kgArcCursor(G,&x1,&y1,xo,yo);
+//    clear_message();  
+//    put_message(100,50,(char *)"Fix Second Point on Arc:");  
+//    gbell(); 
+    y2=*yo;
+    x2= *xo+m_radius;
+    kgArcCursor(G,&x2,&y2,xo,yo);
+//    clear_message();  
+/*
+    ang2= (float)Get_intv("Give Arc angle : "); 
+    ang1= atan2( (double)(y1-*yo),(double)(x1-*xo))/3.14159265*180.0; 
+    ang2 +=ang1; 
+    r = sqrt((*xo-x1)*(*xo-x1)+(*yo-y1)*(*yo-y1)); 
+*/
+    r= m_radius;
+    ang1= atan2( (double)(y1-*yo),(double)(x1-*xo))/3.14159265*180.0; 
+    ang2= atan2( (double)(y2-*yo),(double)(x2-*xo))/3.14159265*180.0; 
+    if(ang1<0.) ang1+=360.;
+    if(ang2<0.) ang2+=360.;
+    if(ang1==ang2) ang2=ang1+360;
+    if( ang2<ang1) ang2+=360;
+    return(uiDraw_arc( G,*xo,*yo,r,ang1,ang2)); 
+ }
+int ui_process_arc_fill (DIG *G,float *xo,float *yo,int fil_col)
+ {
+    float ang1,ang2,r;
+    float x1,y1,x2,y2;
+#if 0
+    gscanf(G->D,"Give Arc Radius=%10f",&m_radius);
+    y1=*yo;
+    x1= *xo+m_radius;
+#else
+    y1=*yo;
+    x1= *xo;;
+    kgRbrCursor(G,&x1,&y1,xo,yo);
+    m_radius = sqrtf( (x1-*xo)*(x1-*xo) + (y1 -*yo)*(y1-*yo));
+#endif
+//    put_message(150,50,(char *)"Fix First Point on Arc:");  
+//    gbell(); 
+    kgArcCursor(G,&x1,&y1,xo,yo);
+//    clear_message();  
+//    put_message(150,50,(char *)"Fix Second Point on Arc:");  
+//    gbell(); 
+    y2=*yo;
+    x2= *xo+m_radius;
+    kgArcCursor(G,&x2,&y2,xo,yo);
+//    clear_message();  
+    r= m_radius;
+    ang1= atan2( (double)(y1-*yo),(double)(x1-*xo))/3.14159265*180.0; 
+    ang2= atan2( (double)(y2-*yo),(double)(x2-*xo))/3.14159265*180.0; 
+    if(ang1<0.) ang1+=360.;
+    if(ang2<0.) ang2+=360.;
+    if(ang1==ang2) ang2=ang1+360;
+    if( ang2<ang1) ang2+=360;
+    return(uiArc_fill(G, *xo,*yo,r,ang1,ang2,1L,fil_col)); 
+ }
+int uiProcess_arc (DIG *G,float *xo,float *yo)
+ {
+    float ang1,ang2,r;
+    float x1,y1,x2,y2;
+#if 1
+    gscanf(G->D,"Give Arc Radius=%10f",&m_radius);
+    y1=*yo;
+    x1= *xo+m_radius;
+#else
+    y1=*yo;
+    x1= *xo;;
+    kgRbrCursor(G,&x1,&y1,xo,yo);
+    m_radius = sqrtf( (x1-*xo)*(x1-*xo) + (y1 -*yo)*(y1-*yo));
+#endif
     
 //    put_message(100,50,(char *)"Fix First Point on Arc:");  
 //    gbell(); 

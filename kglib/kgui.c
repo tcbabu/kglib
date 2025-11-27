@@ -10239,3 +10239,30 @@ int kgModuleOff(void *Mtmp) {
     kgUpdateOn(Dt->Dtmp);
     return 1;
 }
+int kgCheckParentPosition(void *Dtmp) {
+    DIALOG *D=(DIALOG *)Dtmp;
+    DIALOG *P=NULL;
+    int xo,yo,xl,yl;
+    if(Dtmp == NULL) return 0;
+    P = (DIALOG *)(D->parent);
+    if(P == NULL ) return 0;
+    if((P->xl < D->xl ) || (P->yl < D->yl)) {
+        xo = P->xl/2+P->xo;
+        yo = P->yl/2+P->yo;
+        xo = xo-D->xl/2;
+        yo = yo - D->yl/2;
+        if(xo< 0) xo=0;
+        if(yo< 0) yo =0;
+        D->xo = xo;
+        D->yo = yo;                       
+        D->parent = NULL;
+        return 0;
+    }
+    if( ((D->xo+D->xl) > P->xl)|| ((D->yo+D->yl) > P->yl)){
+        xo = P->xl/2-D->xl/2;
+        yo = P->yl/2-D->yl/2;;
+        D->xo = xo;
+        D->yo = yo;
+    }
+    return 1;
+}

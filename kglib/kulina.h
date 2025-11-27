@@ -1848,6 +1848,7 @@ typedef struct diaret_ {
 } DIARET;
 typedef void *(*MODINTERFACE)();
 typedef int (*MAKEGROUP)(void *,void *);
+#endif
 void *kgGetArgs(void  *); // returns args of DIAINTR after searching title
 void *kgGetRets(void  *); // returns rets of DIAINTR after searching title
 void *kgTakeAction(void *T ,void *Uargs); // executes the action of the DIAINTR
@@ -1862,7 +1863,7 @@ int  kgModuleOff(void *Dt);
 int kgDrawingBoxOff(void *Dt);
 int kgDrawingBoxOn(void *Dt);
 #endif
-#endif
+int kgCheckParentPosition(void *Dtmp);
 #ifdef __cplusplus
 }
 #endif
