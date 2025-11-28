@@ -2284,7 +2284,7 @@
       n = B->nx*B->ny;
       LnColor = kgGetint ( Tmp , 0 , 0 ) ;
       kgGetRGB ( Gbox , LnColor , & r , & g , & b ) ;
-      if ( kgGetColor ( NULL , 100 , 200 , & r , & g , & b ) ) {
+      if ( kgGetColor ( Tmp , 100 , 200 , & r , & g , & b ) ) {
           LnColor = 901;
           kgChangeColor ( Gbox , LnColor , r , g , b ) ;
           *count = *count+18;
@@ -2321,7 +2321,7 @@
       n = B->nx*B->ny;
       FillColor = kgGetint ( Tmp , 2 , 0 ) ;
       kgGetRGB ( Gbox , FillColor , & r , & g , & b ) ;
-      if ( kgGetColor ( NULL , 100 , 200 , & r , & g , & b ) ) {
+      if ( kgGetColor ( Tmp , 100 , 200 , & r , & g , & b ) ) {
           FillColor = 902;
           kgChangeColor ( Gbox , FillColor , r , g , b ) ;
           *count = *count+18;
@@ -2366,7 +2366,7 @@
       n = B->nx*B->ny;
       TextColor = kgGetint ( Tmp , 4 , 0 ) ;
       kgGetRGB ( Gbox , TextColor , & r , & g , & b ) ;
-      if ( kgGetColor ( NULL , 100 , 200 , & r , & g , & b ) ) {
+      if ( kgGetColor ( Tmp , 100 , 200 , & r , & g , & b ) ) {
           TextColor = 903;
           kgChangeColor ( Gbox , TextColor , r , g , b ) ;
           *count = *count+18;
@@ -2395,7 +2395,7 @@
       n = B->nx*B->ny;
       BorColor = kgGetint ( Tmp , 5 , 0 ) ;
       kgGetRGB ( Gbox , BorColor , & r , & g , & b ) ;
-      if ( kgGetColor ( NULL , 100 , 200 , & r , & g , & b ) ) {
+      if ( kgGetColor ( Tmp , 100 , 200 , & r , & g , & b ) ) {
           BorColor = 904;
           kgChangeColor ( Gbox , BorColor , r , g , b ) ;
           *count = *count+18;
@@ -2820,7 +2820,7 @@
       v5 = dc->bod_color;
       pt [ 0 ] = G;
       pt [ 1 ] = & count;
-      kgAttibDia ( NULL , & v0 , & v1 , & v2 , & v3 , & v4 , & v5 , & v6 , \
+      kgAttibDia ( G->D , & v0 , & v1 , & v2 , & v3 , & v4 , & v5 , & v6 , \
        & v7 , & v8 , & v9 , & v10 , & v11 , & v12 , & v13 , \
        ( void * ) pt ) ;
       LnStyle = v10-1;
@@ -2882,8 +2882,8 @@
       D.NoTaskBar = 0;
       D.Initfun = NULL; /* Width of Dialog */
       D.Newwin = 0;
-//  D.parent=parent;
-      D.parent = NULL;
+      D.parent=parent;
+//      D.parent = NULL;
       D.StackPos = 1;
       D.Shapexpm = NULL;
       if ( parent == NULL ) D.Newwin = 1;

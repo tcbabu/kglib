@@ -832,7 +832,10 @@ void  GetFilebrowser1init(DIX *X,void *pt) {
  // One may setup browser list here by setting X->list
  // if it need to be freed set it as X->pt also
      void **th;
-     strcpy ( Home , getenv ( "HOME" ) ) ;
+     getcwd(Home,250);
+     if(Home[0]=='\0') {
+        strcpy ( Home , getenv ( "HOME" ) ) ;
+     }
      th = ( void ** ) GetFolderThumbNails ( Home , 20 ) ;
      kgSetList ( X , th ) ;
 
