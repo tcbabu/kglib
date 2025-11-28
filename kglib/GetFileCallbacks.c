@@ -4,7 +4,7 @@
 #define RED 120
 #define GREEN 140
 #define BLUE 120
-static char Folder [ 300 ] , Home [ 300 ] = "",SelectFile[300]="";
+static char Folder [ 300 ] , Home [ 300 ] = "\0",SelectFile[300]="";
 static void *folderimg = NULL;
 static int folder1stat = 0 ;
 
@@ -871,7 +871,11 @@ void  GetFilebrowser2init(DIY *Y,void *pt) {
  // One may setup browser list here by setting Y->list
  // if it need to be freed set it as Y->pt also
       void **th;
-      strcpy ( Home , getenv ( "HOME" ) ) ;
+//      strcpy ( Home , getenv ( "HOME" ) ) ;
+     getcwd(Home,250);
+     if(Home[0]=='\0') {
+        strcpy ( Home , getenv ( "HOME" ) ) ;
+     }
       switch(FileType) {
 	      case 1:
               th = ( void ** ) GetMediaFileThumbNails ( Home , 48 ) ;
@@ -931,7 +935,12 @@ int GetFileinit(void *Tmp) {
   M1 = ( DIM * ) kgGetNamedWidget ( Tmp , ( char * ) "MsgBox" ) ;
       X1 = ( DIX * ) kgGetNamedWidget ( Tmp , ( char * ) "Folders" ) ;
       Y1 = ( DIY * ) kgGetNamedWidget ( Tmp , ( char * ) "FileList" ) ;
-      if ( Home [ 0 ] == '\0' ) strcpy ( Home , getenv ( "HOME" ) ) ;
+      if ( Home [ 0 ] == '\0' ){
+        getcwd(Home,250);
+        if(Home[0]=='\0') {
+          strcpy ( Home , getenv ( "HOME" ) ) ;
+        }
+      }
       strcpy ( Folder , Home ) ;
       kgWrite ( T1 , Home ) ;
       kgWrite ( M1 , "(null)") ;

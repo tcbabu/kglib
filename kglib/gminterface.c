@@ -1728,10 +1728,10 @@ static ExceptionInfo exception;
          int pid;
          void *png=NULL;
          char  tempfile[300];
-         sprintf(tempfile,"/tmp/%-d.png",getpid());
-         kgSaveAsPng(img,tempfile);
-         png = kgGetImage(tempfile);          
-         uiWritegmImage ( ( GMIMG * ) png , (char *)flname ) ;
+         sprintf(tempfile,"/tmp/%-d.gph",getpid());
+         kgBackupGph(G,tempfile);
+         png = kgGphtoAntialiasedImage(tempfile,1024,1024,0,2);
+         uiWriteImage ( ( GMIMG * ) png , (char *)flname ) ;
          kgFreeImage(png);
          remove(tempfile);
        }
