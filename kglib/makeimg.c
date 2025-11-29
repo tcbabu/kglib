@@ -36,6 +36,8 @@ static float illm_fac = 1.0;
 static int No_of_lights=0,St_sh_clr,No_sh_clrs=0;
 static float Hue =0.,Satu=0.;
 
+  void * uiGraphicsString (  char *str , int width , \
+  int height , int font , int color ,int angle, int FontSize  );
 #define DSCALE 1
 #define C1 0.25
 #define C2 0.25
@@ -4505,6 +4507,8 @@ static void  win_txtwrt(void)
   char ch,cntl;
   int nchr,j;
   unsigned char *txt;
+  GMIMG *img=NULL;
+  int tsize,strln;
   font_o=t_font;
   read_buf(&nchr,4);
   txt= (unsigned char *) malloc((nchr+1)*sizeof(unsigned char));
@@ -4527,6 +4531,20 @@ static void  win_txtwrt(void)
   hfact =1.0;
   ishft =0;
   greek=0;
+#if 0
+      if(!trot) {
+        tsize =       txt_hty /(w_y2 - w_y1)*(v_y2 - v_y1);;
+
+        if(tsize <= 0) tsize=16;
+//        fprintf(stderr,"Text Size  :%d\n",tsize);
+        gphStringLength(txt,&strln,t_font,txt_hty,txt_spx)/(w_x2 - w_x1)*(v_x2 - v_x1);
+        img = (GMIMG *)uiGraphicsString(txt,strln,tsize,t_font,t_color,0,tsize);
+//        kgImage(G->D,img,dc->cx,EVGAY - >cy-img->image_height*4/5,img->image_width,img->image_height,0.0,1.0);
+        gphCopyImage(cx,cy-img->image_height*4/5,img);
+        FreeImage(img);
+        return;
+      }
+#endif
   while (txt[i]!='\0')
   {
         {

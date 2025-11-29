@@ -104,6 +104,8 @@
 #define FREE(a) if(a!=NULL){free(a);a=NULL;}
   extern short kgIcode [ 1024 ] [ 3 ] ;
 //static kgIcodeLoc[1024][3];
+  void * uiGraphicsString (  char *str , int width , \
+  int height , int font , int color ,int angle, int FontSize  ) ;
 #if 0
   static unsigned long _uiPlotPixel ( DIG *G , int x , int y , float v ) {
       unsigned long color = 1 , no , loc;
@@ -2732,6 +2734,9 @@
       float Slnt [ 2 ] = {0.0 , 0.25} , Slant_o;;
       kgDC *dc;
       kgWC *wc;
+      GMIMG *img=NULL;
+      int tsize =16,strln =16;
+   
       dc = G->dc;
       wc = G->wc;
       tx = ( unsigned char * ) txt;
@@ -2752,6 +2757,20 @@
       dc->greek = 0;
       lnwidth_o = dc->ln_width;
       dc->ln_width = 1;
+#if 0
+      if(!dc->trot) {
+        tsize =       dc->txt_hty /(dc->w_y2 - dc->w_y1)*(dc->v_y2 -dc->v_y1);;
+
+        if(tsize <= 0) tsize=16;
+        fprintf(stderr,"Text Size  :%d\n",tsize);
+        strln = kgStringLength(G,txt)/(dc->w_x2 - dc->w_x1)*(dc->v_x2 -dc->v_x1);
+        img = (GMIMG *)uiGraphicsString(txt,strln,tsize,dc->t_font,dc->t_color,0,tsize);
+//        kgDrawImage(G,img,dc->cx,D->evgay-dc->cy-img->image_height*4/5,img->image_width,img->image_height,0.0,1.0);
+          imgCopyImage ( G ,dc->cx,dc->v_y2-dc->cy-img->image_height*4/5,img ) ;
+          kgFreeImage(img);
+        return;
+      }
+#endif
       while ( txt [ i ] != '\0' ) {
           {
               if ( txt [ i ] != '!' ) { if ( dc->trot ) uidrawgch ( G , txt [ i ] ) ;
