@@ -3300,13 +3300,13 @@ static char *OthFonts []= {
         float x1,y1,x2,y2,lng,h,w;
         tsize =  dc->txt_hty /(dc->w_y2 - dc->w_y1)*(dc->v_y2 -dc->v_y1);
         if(tsize <= 0) tsize=6;
-//        x1 = uiusr_x (dc->cur_x);
-//        y1 = uiusr_y(dc->cur_y)-dc->txt_ht*0.2;
         w = (dc->txt_wt)/(dc->v_x2 -dc->v_x1)*(dc->w_x2 - dc->w_x1);
-        x1 = (dc->cur_x)/(dc->v_x2 -dc->v_x1)*(dc->w_x2 - dc->w_x1)-w*1.5;
+//        x1 = (dc->cur_x)/(dc->v_x2 -dc->v_x1)*(dc->w_x2 - dc->w_x1)-w*1.5;
         h = (dc->txt_ht)/(dc->v_y2 -dc->v_y1)*(dc->w_y2 - dc->w_y1);
-        y1 = (dc->cur_y)/(dc->v_y2 -dc->v_y1)*(dc->w_y2 - dc->w_y1)-h*0.57;
+//        y1 = (dc->cur_y)/(dc->v_y2 -dc->v_y1)*(dc->w_y2 - dc->w_y1)-h*0.57;
         lng = uiStringLength(txt,1)*w;
+        x1 = uiusr_x (dc->cur_x);
+        y1 = uiusr_y(dc->cur_y)-h*0.17;
         x2 = x1 +lng;
         y2 = y1+h;        
 //        fprintf(stderr,"Text lng  :%f %f %f\n",lng,w,h);

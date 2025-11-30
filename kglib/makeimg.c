@@ -4531,17 +4531,24 @@ static void  win_txtwrt(void)
   hfact =1.0;
   ishft =0;
   greek=0;
-#if 0
+#if 1
       if(!trot) {
-        tsize =       txt_hty /(w_y2 - w_y1)*(v_y2 - v_y1);;
-
-        if(tsize <= 0) tsize=16;
-//        fprintf(stderr,"Text Size  :%d\n",tsize);
-        gphStringLength(txt,&strln,t_font,txt_hty,txt_spx)/(w_x2 - w_x1)*(v_x2 - v_x1);
-        img = (GMIMG *)uiGraphicsString(txt,strln,tsize,t_font,t_color,0,tsize);
-//        kgImage(G->D,img,dc->cx,EVGAY - >cy-img->image_height*4/5,img->image_width,img->image_height,0.0,1.0);
-        gphCopyImage(cx,cy-img->image_height*4/5,img);
-        FreeGmImage(img);
+        float x1,y1,x2,y2,lng,h,w;
+        tsize =  txt_hty /(w_y2 - w_y1)*(v_y2 -v_y1);
+        if(tsize <= 0) tsize=6;
+       
+        x1 = usr_x (cur_x);
+        y1 = usr_y(cur_y);
+        w = (txt_wt)/(v_x2 -v_x1)*(w_x2 - w_x1);
+        h = (txt_ht)/(v_y2 -v_y1)*(w_y2 - w_y1);
+        y1 = y1 - h*0.17;
+        lng = uiStringLength(txt,1)*w;
+        x2 = x1 +lng;
+        y2 = y1+h;        
+        strln = lng/(w_x2 - w_x1)*(v_x2 -v_x1);
+        img = (GMIMG *)uiGraphicsString(txt,strln,tsize+2,t_font,t_color,0,tsize);
+        gph_drawimage(img,x1,y1,x2,y2);
+        kgFreeGmImage(img);
         return;
       }
 #endif
