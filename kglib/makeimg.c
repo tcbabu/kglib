@@ -4541,7 +4541,7 @@ static void  win_txtwrt(void)
         img = (GMIMG *)uiGraphicsString(txt,strln,tsize,t_font,t_color,0,tsize);
 //        kgImage(G->D,img,dc->cx,EVGAY - >cy-img->image_height*4/5,img->image_width,img->image_height,0.0,1.0);
         gphCopyImage(cx,cy-img->image_height*4/5,img);
-        FreeImage(img);
+        FreeGmImage(img);
         return;
       }
 #endif

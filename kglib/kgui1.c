@@ -7133,7 +7133,7 @@
         tww = ( dc->w_x2-dc->w_x1 ) /30.0;
         thh = ( dc->w_y2-dc->w_y1 ) /25.0;
         tw = tww , tg = tgg , th = thh;
-        kgTextSize ( G , dc->txt_hty ,dc->txt_htx , tg ) ;
+//        kgTextSize ( G , dc->txt_htx ,dc->txt_hty , tg ) ;
         dc->cmds = ( unsigned int * ) Malloc ( sizeof ( int ) *10000L ) ;
         if ( dc->cmds == NULL ) {
           printf ( "Error: In mem alloc. in m_int..\n" ) ;

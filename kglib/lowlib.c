@@ -794,7 +794,7 @@ static char *OthFonts []= {
       if ( FontSize <= 0 ) F.Size = ( height-4 ) /2;
       else F.Size = FontSize;
       IMG = ( IMG_STR * ) uiComplexString ( str , F.Imgs , \
-      font , cval , F.Size , height ) ;
+      font , cval , F.Size , height-1 ) ;
       imgbk = NULL;
       gimg = ( GMIMG * ) ( IMG->img ) ;
       w = gimg->image_width;
@@ -3297,14 +3297,24 @@ static char *OthFonts []= {
       dc->ln_width = 1;
 #if 1
       if(!dc->trot) {
-        tsize =       dc->txt_hty /(dc->w_y2 - dc->w_y1)*(dc->v_y2 -dc->v_y1);;
-
-        if(tsize <= 0) tsize=16;
-//        fprintf(stderr,"Text Size  :%d\n",tsize);
-        strln = kgStringLength(G,txt)/(dc->w_x2 - dc->w_x1)*(dc->v_x2 -dc->v_x1);
-        img = (GMIMG *)uiGraphicsString(txt,strln,tsize,dc->t_font,dc->t_color,0,tsize);
-        kgImage(G->D,img,dc->cx,D->evgay-dc->cy-img->image_height*4/5,img->image_width,img->image_height,0.0,1.0);
-        FreeImage(img);
+        float x1,y1,x2,y2,lng,h,w;
+        tsize =  dc->txt_hty /(dc->w_y2 - dc->w_y1)*(dc->v_y2 -dc->v_y1);
+        if(tsize <= 0) tsize=6;
+//        x1 = uiusr_x (dc->cur_x);
+//        y1 = uiusr_y(dc->cur_y)-dc->txt_ht*0.2;
+        w = (dc->txt_wt)/(dc->v_x2 -dc->v_x1)*(dc->w_x2 - dc->w_x1);
+        x1 = (dc->cur_x)/(dc->v_x2 -dc->v_x1)*(dc->w_x2 - dc->w_x1)-w*1.5;
+        h = (dc->txt_ht)/(dc->v_y2 -dc->v_y1)*(dc->w_y2 - dc->w_y1);
+        y1 = (dc->cur_y)/(dc->v_y2 -dc->v_y1)*(dc->w_y2 - dc->w_y1)-h*0.57;
+        lng = uiStringLength(txt,1)*w;
+        x2 = x1 +lng;
+        y2 = y1+h;        
+//        fprintf(stderr,"Text lng  :%f %f %f\n",lng,w,h);
+        strln = lng/(dc->w_x2 - dc->w_x1)*(dc->v_x2 -dc->v_x1);
+//        fprintf(stderr,"Text strln  :%d\n",strln);
+        img = (GMIMG *)uiGraphicsString(txt,strln,tsize+2,dc->t_font,dc->t_color,0,tsize);
+        ui_drawimage(G,img,x1,y1,x2,y2);
+        kgFreeGmImage(img);
         return;
       }
 #endif

@@ -2767,7 +2767,7 @@
         img = (GMIMG *)uiGraphicsString(txt,strln,tsize,dc->t_font,dc->t_color,0,tsize);
 //        kgDrawImage(G,img,dc->cx,D->evgay-dc->cy-img->image_height*4/5,img->image_width,img->image_height,0.0,1.0);
           imgCopyImage ( G ,dc->cx,dc->v_y2-dc->cy-img->image_height*4/5,img ) ;
-          kgFreeImage(img);
+//          kgFreeImage(img);
         return;
       }
 #endif
