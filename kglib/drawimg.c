@@ -415,6 +415,8 @@
 #define scr_x(x) (int)((x-dc->w_x1)*dc->u_x+0.5)
 #define fscr_y(y) (float)((y-dc->w_y1)*dc->u_y)
 #define fscr_x(x) (float)((x-dc->w_x1)*dc->u_x)
+#define uiusr_x(x) ((float)x/dc->u_x+dc->w_x1);
+#define uiusr_y(y) ((float)y/dc->u_y+dc->w_y1);
 #define scr_y(y) (int)((y-dc->w_y1)*dc->u_y+0.5)
 #define scr_z(z) (int)((z-dc->clip_min)*dc->CPCONS+0.5);
 #define fscr_z(z) (float)((z-dc->clip_min)*dc->CPCONS);
@@ -2757,17 +2759,24 @@
       dc->greek = 0;
       lnwidth_o = dc->ln_width;
       dc->ln_width = 1;
-#if 0
+#if 1
       if(!dc->trot) {
-        tsize =       dc->txt_hty /(dc->w_y2 - dc->w_y1)*(dc->v_y2 -dc->v_y1);;
-
-        if(tsize <= 0) tsize=16;
-        fprintf(stderr,"Text Size  :%d\n",tsize);
-        strln = kgStringLength(G,txt)/(dc->w_x2 - dc->w_x1)*(dc->v_x2 -dc->v_x1);
-        img = (GMIMG *)uiGraphicsString(txt,strln,tsize,dc->t_font,dc->t_color,0,tsize);
-//        kgDrawImage(G,img,dc->cx,D->evgay-dc->cy-img->image_height*4/5,img->image_width,img->image_height,0.0,1.0);
-          imgCopyImage ( G ,dc->cx,dc->v_y2-dc->cy-img->image_height*4/5,img ) ;
-//          kgFreeImage(img);
+        float x1,y1,x2,y2,lng,h,w;
+        tsize =  dc->txt_hty /(dc->w_y2 - dc->w_y1)*(dc->v_y2 -dc->v_y1);
+        if(tsize <= 0) tsize=6;
+        w = (dc->txt_wt)/(dc->v_x2 -dc->v_x1)*(dc->w_x2 - dc->w_x1);
+        h = (dc->txt_ht)/(dc->v_y2 -dc->v_y1)*(dc->w_y2 - dc->w_y1);
+        lng = uiStringLength(txt,1)*w;
+        x1 = uiusr_x (dc->cur_x);
+        y1 = uiusr_y(dc->cur_y)-h*0.17;
+        x2 = x1 +lng;
+        y2 = y1+h;        
+//        fprintf(stderr,"Text lng  :%f %f %f\n",lng,w,h);
+        strln = lng/(dc->w_x2 - dc->w_x1)*(dc->v_x2 -dc->v_x1);
+//        fprintf(stderr,"Text strln  :%d\n",strln);
+        img = (GMIMG *)uiGraphicsString(txt,strln,tsize+2,dc->t_font,dc->t_color,0,tsize);
+        img_drawimage(G,img,x1,y1,x2,y2);
+        kgFreeGmImage(img);
         return;
       }
 #endif
