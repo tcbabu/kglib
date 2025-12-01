@@ -796,3 +796,18 @@
       IMG = IMGP;
       return IMG;
   }
+  int ffStringLength(char *str,void *tmp) {
+      IMG_STR **IMG = (IMG_STR **)tmp;
+      int ln =0;
+      int i=0;
+      if(str== NULL) return 0;
+      if(tmp == NULL) {
+         fprintf(stderr,"IMG_STR not loaded\n");
+         return 0;
+      }
+      while(str[i] !='\0'){
+          ln = IMG[str[i]]->xln;
+          i++;
+      }
+      return ln;
+  }

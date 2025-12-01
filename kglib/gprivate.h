@@ -1429,4 +1429,6 @@ void ui_Image ( void *Dtmp , void *tmp , int x0 , int y0 , int width , int heigh
   int uiFreeFontLists();
   void *uiComplexString ( char *str ,void *Imgtmp, int font , int color , int FontSize ,int height ) ;
   void *uiComplexFixedString ( char *str ,void *Imgtmp, int font , int color , int FontSize ,int height ) ;
+  int ffStringLength(char *str,void *tmp);
+  float  ffuistrlngth ( int font , char *title );
 #endif

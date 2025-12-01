@@ -37,6 +37,10 @@
   int ret; ret=fread(c,1,n,pf); \
   if(ret != n) {fprintf(stderr,"fread failed \n"); exit(0);} \
 }
+#define uiscr_x(x) (int)((x-dc->w_x1)*dc->u_x+dc->D_x+dc->v_x1+0.5)
+#define uiscr_y(y) (int)(((y-dc->w_y1)*dc->u_y+dc->D_y+dc->v_y1)+0.5)
+#define uiusr_x(x) (float)((x-dc->D_x-dc->v_x1)/dc->u_x+dc->w_x1)
+#define uiusr_y(y) (float)((y-dc->D_y-dc->v_y1)/dc->u_y+dc->w_y1)
 #ifdef UNIX
 #include <unistd.h>
 #include <dirent.h>
@@ -8555,9 +8559,27 @@ void  gphStringToImagefile(char *Imgfile,char *Str,int xsize,int ysize,int font,
    free(tmpdir);
    return ;
 }
-float  kgStringLength(void *G,char *title) {
-       float length=0;
-       uistrlngth(G,title,&length);
+float  kgStringLength(void *Gtmp,char *title) {
+       float length=0,wd,gp,w;
+      int font;
+      DIG *G;
+      kgDC *dc;
+      G = ( DIG * ) Gtmp;
+      float vx1,vy1,vx2,vy2,wx1,wy1,wx2,wy2;
+      kgGetViewport(G,&vx1,&vy1,&vx2,&vy2);
+      kgGetWindow (G,&wx1,&wy1,&wx2,&wy2);
+      int Vx,Vy;
+      dc = G->dc;
+      dc->O_L = NULL;
+      dc->greek = 0;
+      font= dc->t_font;
+      wd = dc->txt_wtx;
+      gp = dc->txt_spx;
+       w = (wd+gp)/((dc->v_x2 - dc->v_x1))*(wx2 - wx1);
+      
+//       w = uiusr_x(wd+gp);
+       length=ffuistrlngth(font,title)*w;
+       fprintf(stderr,"Length = %f Vx1:Vx2 : %d %d\n",length,dc->v_x1,dc->v_x2);
        return length;
 }
 float  uiStringLength(char *title,int width) {
@@ -12302,12 +12324,14 @@ void * kgStringToImage(char *Str,void *image,int xsize,int ysize,int font,int tx
    float length=0.0,fac,th,tw;
 #if 1
    {
-      fid = kgInitImage((int)(xsize),ysize,RESIZE);
+//      fid = kgInitImage((int)(xsize),ysize,RESIZE);
+      fid = kgInitImage((int)(xsize),ysize,3);
       kgUserFrame(fid,0.,0.,(float)xsize,(float)ysize);
       th = (float)ysize*.5;
+      th = (float)ysize;
       tw = (float)width;
       th = HFAC*tw;
-      if(th> 0.6*ysize) th = 0.6*ysize;
+      if(th> ysize) th = ysize;
       kgTextFont(fid,font);
       kgTextSize(fid,th,tw,GAP*tw);
       if(bkgr>=0) kgBoxFill(fid,0.,0.,(float)xsize,(float)ysize,bkgr,0);

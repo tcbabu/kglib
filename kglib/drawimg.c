@@ -2774,7 +2774,7 @@
 //        fprintf(stderr,"Text lng  :%f %f %f\n",lng,w,h);
         strln = lng/(dc->w_x2 - dc->w_x1)*(dc->v_x2 -dc->v_x1);
 //        fprintf(stderr,"Text strln  :%d\n",strln);
-        img = (GMIMG *)uiGraphicsString(txt,strln,tsize+2,dc->t_font,dc->t_color,0,tsize);
+        img = (GMIMG *)uiGraphicsString(txt,strln,tsize*3,dc->t_font,dc->t_color,0,tsize);
         img_drawimage(G,img,x1,y1,x2,y2);
         kgFreeGmImage(img);
         return;

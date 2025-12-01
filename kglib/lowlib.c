@@ -744,7 +744,7 @@ static char *OthFonts []= {
 
   void * uiInitGraphicFontLists ( int font ) {
       char FontFile [ 500 ] ;
-      int size=64;
+      int size=32;
       char *pt;
       int Font , FontSize;
       int count = 0,i=0;
@@ -760,7 +760,10 @@ static char *OthFonts []= {
       FontSize = size;
       Font = font%count;
       strcpy ( FontFile , ( char * ) Drecord ( FontList , Font ) ) ;
-      if(Grimgs[font]==NULL) Grimgs[font] = ( IMG_STR ** ) kgFontChars ( FontFile , FontSize ) ;
+      if(Grimgs[font]==NULL){
+         printf("New GRfont list\n");
+         Grimgs[font] = ( IMG_STR ** ) kgFontChars ( FontFile , FontSize ) ;
+      }
       return Grimgs[font];
   }
   void * uiGraphicsString (  char *str , int width , \
@@ -3298,21 +3301,26 @@ static char *OthFonts []= {
 #if 1
       if(!dc->trot) {
         float x1,y1,x2,y2,lng,h,w;
-        tsize =  dc->txt_hty /(dc->w_y2 - dc->w_y1)*(dc->v_y2 -dc->v_y1);
+        float vx1,vy1,vx2,vy2,wx1,wy1,wx2,wy2;
+        int Vx=(G->x2 -G->x1),Vy=(G->y2 -G->y1);
+        kgGetViewport(G,&vx1,&vy1,&vx2,&vy2);
+        kgGetWindow (G,&wx1,&wy1,&wx2,&wy2);
+        wx1 = dc->w_x1, wx2 = dc->w_x2;
+        wy1 = dc->w_y1, wy2 = dc->w_y2;
+        Vx = 1,Vy=1;
+        printf("Vx: %d %d %d %d\n",dc->v_x1,dc->v_y1,dc->v_x2,dc->v_y2);
+        tsize =  (float)dc->txt_hty /(wy2 - wy1)*((dc->v_y2 -dc->v_y1));
         if(tsize <= 0) tsize=6;
-        w = (dc->txt_wt)/(dc->v_x2 -dc->v_x1)*(dc->w_x2 - dc->w_x1);
-//        x1 = (dc->cur_x)/(dc->v_x2 -dc->v_x1)*(dc->w_x2 - dc->w_x1)-w*1.5;
-        h = (dc->txt_ht)/(dc->v_y2 -dc->v_y1)*(dc->w_y2 - dc->w_y1);
-//        y1 = (dc->cur_y)/(dc->v_y2 -dc->v_y1)*(dc->w_y2 - dc->w_y1)-h*0.57;
-        lng = uiStringLength(txt,1)*w;
+        w = (float)(dc->txt_wt)/((dc->v_x2 -dc->v_x1))*(wx2 - wx1);
+        h = (float)(dc->txt_ht)/((dc->v_y2 -dc->v_y1))*(wy2 - wy1);
+        lng = ffuistrlngth(dc->t_font,txt)*w;
+//        fprintf(stderr,"lng = %f\n",lng);
         x1 = uiusr_x (dc->cur_x);
         y1 = uiusr_y(dc->cur_y)-h*0.17;
         x2 = x1 +lng;
         y2 = y1+h;        
-//        fprintf(stderr,"Text lng  :%f %f %f\n",lng,w,h);
-        strln = lng/(dc->w_x2 - dc->w_x1)*(dc->v_x2 -dc->v_x1);
-//        fprintf(stderr,"Text strln  :%d\n",strln);
-        img = (GMIMG *)uiGraphicsString(txt,strln,tsize+2,dc->t_font,dc->t_color,0,tsize);
+        strln = lng/(wx2 - wx1)*(dc->v_x2 -dc->v_x1);
+        img = (GMIMG *)uiGraphicsString(txt,strln,tsize*3,dc->t_font,dc->t_color,0,tsize);
         ui_drawimage(G,img,x1,y1,x2,y2);
         kgFreeGmImage(img);
         return;
@@ -3979,6 +3987,113 @@ void transch(int c) {
       rd -= xa;
       _uicircle ( wc , xa , ya , rd ) ;
   }
+  static int _uiGetSubString(char *str,char *sub){
+      int i=0;
+      sub[0]='\0';
+      if(str[0]=='\0') return -1;
+      while(str[i]!= '!') {
+        if(str[i]=='\0') {sub[i]='\0'; return i;}
+        sub[i]=str[i];
+        i++;
+      }
+      sub[i]='\0';
+      return i;
+  }
+  
+  float  ffuistrlngth ( int font , char *title ) {
+      float wd , gp , fj , fjl , gj , val , fact , fact1 = 1.0 , hfact = 1.0;
+      short ngp , n , i , j , k , greek = 0;
+      int font_o , Nu , De;
+      char Sub[500];
+      float lng=0;
+      IMG_STR **IMG= (IMG_STR **)uiInitGraphicFontLists (font); 
+      B_K *FB_P = NULL;
+      font_o = font;
+      ngp = 1;
+      i = 0;
+      while ( 1 ) {
+          if ( title [ i ] != '!' ) {
+              fact = 1.0;
+              j = _uiGetSubString(title+i,Sub);
+              if(j<0) break;
+              i +=j;
+              lng +=ffStringLength(Sub,IMG)*fact;              
+          }
+          else {
+              i = i+1;
+              switch ( title [ i ] ) {
+                  case 's':
+                  case 'S':
+                  fact = fact*0.6;
+                  i=i+1;
+                  break;
+                  case 'e':
+                  fact = fact/0.6;
+                  i=i+1;
+                  break;
+                  case 'b':
+                  fj = fj-fact1; fjl-= 1.; gj = gj-1;
+                  i=i+1;
+                  break;
+                  case 'g':
+                  i=i+1;
+                  break;
+                  case 'r':
+                  i=i+1;
+                  break;
+                  case 'k':
+                  i=i+1;
+                  break;
+                  case '!':
+                  lng += ffStringLength((char *)"!",IMG)*fact;
+                  i=i+1;
+                  break;
+                  case '%':
+                  i=i+1;
+                  break;
+                  case 'f':
+                  i=i+1;
+                  font=(title[i+1]-'0')*10+title[i+2]-'0';
+                  i+= 2;
+                  break;
+                  case 'c':
+                  i+= 3;
+                  break;
+                  case 'z':
+                  Nu = ( title [ i+1 ] -'0' ) ;
+                  De = ( title [ i+2 ] -'0' ) ;
+                  if ( De == 0 ) De = 1;
+                  val = ( float ) Nu/ ( float ) De;
+                  if ( val == 0.0 ) val = 1.0;
+                  fact = fact*val;
+                  i = i+3;
+                  break;
+                  case 'h':
+                  Nu = ( title [ i+1 ] -'0' ) ;
+                  De = ( title [ i+2 ] -'0' ) ;
+                  if ( De == 0 ) De = 1;
+                  val = ( float ) Nu/ ( float ) De;
+                  if ( val == 0.0 ) val = 1.0;
+                  fact = fact*val;
+                  i = i+3;
+                  break;
+                  case 'w':
+                  Nu = ( title [ i+1 ] -'0' ) ;
+                  De = ( title [ i+2 ] -'0' ) ;
+                  if ( De == 0 ) De = 1;
+                  val = ( float ) Nu/ ( float ) De;
+                  if ( val == 0.0 ) val = 1.0;
+                  fact = fact*val;
+                  i = i+3;
+                  break;
+                  default :
+                  i=i+1;
+                  break;
+              }
+          }
+      }
+      return ( lng/16.0 ) ;
+  }
   int uistrlngth ( void *Gtmp , char *title , float *xdsp ) {
       float wd , gp , fj , fjl , gj , val , fact , fact1 = 1.0 , hfact = 1.0;
       short ngp , n , i , j , k , greek = 0;
@@ -3993,6 +4108,9 @@ void transch(int c) {
       font_o = dc->t_font;
       wd = dc->txt_wtx;
       gp = dc->txt_spx;
+#if 1      
+      return (int) ffuistrlngth(font_o,title);;
+#endif
       ngp = 1;
       *xdsp = 0;
       j = 0; while ( title [ j ] != '\0' ) j++;
@@ -4925,7 +5043,7 @@ void transch(int c) {
   void write_po_cursor ( DIG *G ,int xo,int yo) {
       unsigned int tempc;
       int i , l;
-      char nbuf [ 50 ] ;
+      char nbuf [ 100 ] ;
       float x , y,dist;
       DIALOG *D;
       int EVGAY;
@@ -4950,10 +5068,10 @@ void transch(int c) {
       sprintf ( nbuf ,"xl=%.3f yl=%.3f:dist= %.3f"  , x , y,dist ) ;
 
       l = strlen ( nbuf ) ;
-      for ( i = l; i < 49; i++ ) nbuf [ i ] = ' ';
-      nbuf [ 34 ] = '\0';
+      for ( i = l; i < 99; i++ ) nbuf [ i ] = '\0';
+//      nbuf [ 34 ] = '\0';
 //  printf("%s %d %d\n",nbuf,dc->msg_x,dc->msg_y);
-      uimsg_menu ( G , dc->msg_x , dc->msg_y , 34 , nbuf ) ;
+      uimsg_menu ( G , dc->msg_x , dc->msg_y , 40 , nbuf ) ;
       uiUpdateOn ( D ) ;
  /* XWarpPointer(Dsp,Win,Win,0,0,EVGAX+1,EVGAY+1,gcur_x,gcur_y);
 */
@@ -5825,7 +5943,7 @@ void transch(int c) {
       dc->gcur_y = ( D->evgay ) -uiscr_y ( *yy ) ;
       xorg = uiscr_x ( *xbgn ) ;
       yorg = ( D->evgay ) -uiscr_y ( *ybgn ) ;
-      uiScrn_back ( wc , dc->msg_x , dc->msg_y , 34 ) ;
+      uiScrn_back ( wc , dc->msg_x , dc->msg_y , 45 ) ;
       kg_scr_back ( wc , 0 , yorg , ( D->evgax+1 ) , yorg ) ;
       kg_scr_back ( wc , xorg , 0 , xorg , ( D->evgay ) ) ;
       _uiLINE ( wc , 0 , yorg , ( D->evgax+1 ) , yorg ) ;
@@ -5853,7 +5971,7 @@ void transch(int c) {
                   dc->gcur_x = xpo , dc->gcur_y = ypo;
                   draw_rbr_cursor ( G , xorg , yorg , dc->gcur_x , dc->gcur_y ) ;
 //                  draw_po_cursor ( G ) ;
-                  write_po_cursor (G,*xbgn,*ybgn);
+//                  write_po_cursor (G,*xbgn,*ybgn);
               }
               break;
               case 1: // button press
@@ -5861,7 +5979,7 @@ void transch(int c) {
                   dc->gcur_x = xpo , dc->gcur_y = ypo;
                   draw_rbr_cursor ( G , xorg , yorg , dc->gcur_x , dc->gcur_y ) ;
 //                  draw_po_cursor ( G ) ;
-                  write_po_cursor (G,*xbgn,*ybgn);
+//                  write_po_cursor (G,*xbgn,*ybgn);
               }
               if ( button == 1 ) key = '\r';
               if ( button == 3 ) key = '.';
@@ -5888,6 +6006,7 @@ void transch(int c) {
               default:
               break;
           }
+          write_po_cursor (G,*xbgn,*ybgn);
       }
       jump:
       c_color = temp;
