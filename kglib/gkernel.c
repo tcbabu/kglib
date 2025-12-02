@@ -3379,8 +3379,10 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
 //   XDrawString(Dsp,ActWin,Gc,x,y,str,strlen(str)-1);
       wc = D->wc;
 //   ln = strlen(str);
-      ln = (int)(ftStringLength ( D->gc.Font,str , D->gc.FontSize ) +1.0);
+//      ln = (int)(ftStringLength ( D->gc.Font,str , D->gc.FontSize ) +1.0);
+      ln = uiStringLength(str, D->gc.FontSize ) +1.0;
       maxchar = ( ln+wc->GuiFontSize ) /D->gc.FontSize;
+      printf("Maxchar = %d %s \n",maxchar,str);
 #if 0
       if ( ln <= 0 ) return;
       while ( str [ ln-1 ] <= ' ' ) ln--;

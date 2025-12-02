@@ -823,6 +823,9 @@
          return 0;
       }
       for(i=0;i<128;i++) wd[i]=0;
-      for(i=31;i<128;i++) if(IMG[i]!=NULL)wd[i]=IMG[i]->xln/32;      
+      for(i=31;i<128;i++) {
+        if(IMG[i]!=NULL)wd[i]=IMG[i]->xln/48.0;      
+//        printf("I = %d wd = %f %c\n",i,wd[i],i);
+      }
       return 1;
   }

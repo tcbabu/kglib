@@ -5113,6 +5113,7 @@
           }
           str [ k++ ] = pt;
           ln = kgStringLength ( fid , pt ) ;
+//          ftStringLength(
           if ( length < ln ) length = ln;
           if ( OK ) break;
           pt = pt+i+1;
@@ -5120,6 +5121,7 @@
       if ( k > 0 ) {
           dyl = yl/k;
           fac = 0.85*xl/length;
+          fac = 1;
           xoff = 0.07*xl;
           if ( fac > 1.0 ) fac = 1.0;
           if ( ht > 0.7*dyl ) ht = 0.7*dyl;

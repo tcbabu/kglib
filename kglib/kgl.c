@@ -8587,7 +8587,105 @@ float  kgStringLength(void *Gtmp,char *title) {
 #endif
        return length;
 }
+
 float  uiStringLength(char *title,int width) {
+      float length=0,*xdsp;
+      float wd,gp,fj,fjl,gj,val,fact,fact1=1.0,hfact=1.0;
+      short ngp,n,i,j,k,greek=0;
+      int font_o,Nu,De;
+      wd= width;
+      xdsp = &length;
+      gp = 0.0;
+      ngp =1;
+      j =0; while( title[j] != '\0')j++;
+      if(j==0){ *xdsp=0.;return(0.0);}
+      fj =0.0; gj = -1; fact = 1.0;
+      fjl=0.;
+      i=0;
+      while(i<j) 
+      {
+       if( title[i] != '!') {
+            fact1=1.0*fact;
+            gj +=1.;
+            fjl +=1.0;
+            fj +=(fact1);greek=0;
+       }
+       else { 
+             i=i+1; 
+             if(i>=j)break;
+             switch( title[i])
+              {
+               case 's':
+               case 'S':
+                         fact = fact*0.6;
+                         break;
+                           
+               case 'e':
+                         fact =fact/0.6;
+                         break;
+               case 'b':
+                         fj = fj-fact1;fjl-=1.; gj=gj-1;
+                         break;
+               case 'g':
+                         greek=128;
+                         break;
+               case 'r':
+                        break;
+               case 'k':
+                        break;
+               case '!':
+                         fj = fj+fact1;fjl+=1.; gj = gj+1;
+                         break;
+               case '%':
+                         fj = fjl;
+                         break;
+               case 'f':
+                         i+=2;
+                         break;
+               case 'c':
+                         i+=2;
+                         break;
+               case 'z':
+                         if(i+2 >= j) break;
+                         Nu= (title[i+1] -'0');
+                         De= (title[i+2] -'0');
+                         if( De == 0) De=1;
+                         val = (float)Nu/(float) De;
+                         if(val == 0.0) val=1.0;
+                         fact = fact*val;
+                         i = i+2;
+                         break;
+               case 'h':
+                         if(i+2 >= j) break;
+                         Nu= (title[i+1] -'0');
+                         De= (title[i+2] -'0');
+                         if( De == 0) De=1;
+                         val = (float)Nu/(float) De;
+                         if(val == 0.0) val=1.0;
+                         hfact = hfact*val;
+                         i = i+2;
+                         break;
+               case 'w':
+                         if(i+2 >= j) break;
+                         Nu= (title[i+1] -'0');
+                         De= (title[i+2] -'0');
+                         if( De == 0) De=1;
+                         val = (float)Nu/(float) De;
+                         if(val == 0.0) val=1.0;
+                         fact = fact*val;
+                         i = i+2;
+                         break;
+               default :
+                         break;
+              }
+            }
+       i = i+1;
+      }
+      *xdsp =(fj*wd);
+      ngp = gj+0.1;
+      return length;
+  }
+float  uiStringLength_new(char *title,int width) {
       float length=0,*xdsp;
       float wd,gp,fj,fjl,gj,val,fact,fact1=1.0,hfact=1.0;
       short ngp,n,i,j,k,greek=0;

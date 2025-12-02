@@ -4388,7 +4388,7 @@ void transch(int c) {
       ftGetWarray(font_o,m_f );
       while ( i < j ) {
           if ( title [ i ] != '!' ) {
-              fact1 = m_f [ title [ i ] -32 ] *fact;
+              fact1 = m_f [ title [ i ]  ] *fact;
 //              else fact1 = 1.0;
               gj += 1.;
               fjl += 1.0;
@@ -5297,10 +5297,10 @@ void transch(int c) {
       Position_Pointer ( gcur_x , gcur_y ) ;
 #endif
   }
-  void draw_po_cursor ( DIG *G ) {
+  void draw_po_cursor_o ( DIG *G ) {
       unsigned int tempc;
       int i , l;
-      char nbuf [ 50 ] ;
+      char nbuf [ 200 ] ;
       float x , y;
       DIALOG *D;
       int EVGAY;
@@ -5319,17 +5319,44 @@ void transch(int c) {
       if ( dc->gcur_y < vy1 ) {dc->gcur_y = vy1; }
       x = uiusr_x ( dc->gcur_x ) ;
       y = uiusr_y ( EVGAY-dc->gcur_y ) ;
-      sprintf ( nbuf , dc->Posfmt , x , y ) ;
+//      sprintf ( nbuf , dc->Posfmt , x , y ) ;
+      sprintf ( nbuf ,"x=%.3f y=%.3f "  , x , y ) ;
       l = strlen ( nbuf ) ;
-      for ( i = l; i < 49; i++ ) nbuf [ i ] = ' ';
-      nbuf [ 34 ] = '\0';
-//  printf("%s %d %d\n",nbuf,dc->msg_x,dc->msg_y);
-      uimsg_menu ( G , dc->msg_x , dc->msg_y , 34 , nbuf ) ;
+      for ( i = l; i < 99; i++ ) nbuf [ i ] = ' ';
+      uimsg_menu ( G , dc->msg_x , dc->msg_y , 40 , nbuf ) ;
       uiUpdateOn ( D ) ;
- /* XWarpPointer(Dsp,Win,Win,0,0,EVGAX+1,EVGAY+1,gcur_x,gcur_y);
-*/
+  }
+  void draw_po_cursor ( DIG *G ) {
+
+      unsigned int tempc;
+      int i , l;
+      char nbuf [ 100 ] ;
+      float x , y,dist;
+      DIALOG *D;
+      int EVGAY;
+      int vx1 , vy1 , vx2 , vy2;
+      kgWC *wc;
+      kgDC *dc;
+      D = G->D;
+      wc = G->wc;
+      dc = G->dc;
+      EVGAY = D->evgay;
+      vx1 = dc->v_x1+dc->D_x; vy1 = EVGAY- ( dc->v_y2+dc->D_y ) ;
+      vx2 = ( dc->v_x2+dc->D_x ) ; vy2 = EVGAY- ( dc->v_y1+dc->D_y ) ;
+      if ( dc->gcur_x >= vx2 ) {dc->gcur_x = vx2-1; }
+      if ( dc->gcur_y > vy2-1 ) {dc->gcur_y = vy2-1; }
+      if ( dc->gcur_x < vx1 ) {dc->gcur_x = vx1; }
+      if ( dc->gcur_y < vy1 ) {dc->gcur_y = vy1; }
+      x = uiusr_x ( dc->gcur_x )  ;
+      y = uiusr_y ( EVGAY-dc->gcur_y ) ;
+      sprintf ( nbuf ,"xl=%.3f yl=%.3f"  , x , y ) ;
+      l = strlen ( nbuf ) ;
+      for ( i = l; i < 99; i++ ) nbuf [ i ] = '\0';
+      uimsg_menu ( G , dc->msg_x , dc->msg_y , 40 , nbuf ) ;
+      uiUpdateOn ( D ) ;
   }
   void write_po_cursor ( DIG *G ,int xo,int yo) {
+
       unsigned int tempc;
       int i , l;
       char nbuf [ 100 ] ;
@@ -5355,15 +5382,10 @@ void transch(int c) {
       x = fabsf(x);
       dist = sqrtf(x*x+y*y);
       sprintf ( nbuf ,"xl=%.3f yl=%.3f:dist= %.3f"  , x , y,dist ) ;
-
       l = strlen ( nbuf ) ;
       for ( i = l; i < 99; i++ ) nbuf [ i ] = '\0';
-//      nbuf [ 34 ] = '\0';
-//  printf("%s %d %d\n",nbuf,dc->msg_x,dc->msg_y);
       uimsg_menu ( G , dc->msg_x , dc->msg_y , 40 , nbuf ) ;
       uiUpdateOn ( D ) ;
- /* XWarpPointer(Dsp,Win,Win,0,0,EVGAX+1,EVGAY+1,gcur_x,gcur_y);
-*/
   }
   int kgCheckEscapeOld ( DIALOG *D ) {
       KBEVENT kb , kbo;
@@ -5689,7 +5711,7 @@ void transch(int c) {
       dc->gcur_y = yorg1;
       xorg -= xorg1;
       yorg = yorg1-yorg;
-      uiScrn_back ( wc , dc->msg_x , dc->msg_y , 34 ) ;
+      uiScrn_back ( wc , dc->msg_x , dc->msg_y , 40 ) ;
       xpo = dc->gcur_x , ypo = dc->gcur_y;
 //  gbell();
 //  ChangeCursor(35);
@@ -5788,7 +5810,7 @@ void transch(int c) {
       dc->gcur_y = D->evgay-uiscr_y ( *yy ) ;
       xorg = uiscr_x ( *xbgn ) ;
       yorg = D->evgay-uiscr_y ( *ybgn ) ;
-      uiScrn_back ( wc , dc->msg_x , dc->msg_y , 34 ) ;
+      uiScrn_back ( wc , dc->msg_x , dc->msg_y , 40 ) ;
       xpo = xorg , ypo = yorg;
 //  gbell();
 //  ChangeCursor(35);
@@ -5915,10 +5937,8 @@ void transch(int c) {
       dc->entry = 0;
       dc->gcur_x = uiscr_x ( *xx ) ;
       dc->gcur_y = D->evgay-uiscr_y ( *yy ) ;
-      uiScrn_back ( wc , dc->msg_x , dc->msg_y , 34 ) ;
+      uiScrn_back ( wc , dc->msg_x , dc->msg_y , 40 ) ;
       xpo = xorg , ypo = yorg;
-//  gbell();
-//  ChangeCursor(35);
       draw_cursor ( G ) ;
       draw_cross_cursor ( G , dc->gcur_x , dc->gcur_y ) ;
       while ( ! OK ) {
@@ -5929,23 +5949,19 @@ void transch(int c) {
           kb = kbevent.key;
           xpo = kbevent.x;
           ypo = kbevent.y;
-//    printf("event=%d\n",event);
           switch ( event ) {
               case 0: // pointer movement
 //     case 2:  // button release
               case 3: // button press and movement
-//       printf("Mouse Move %d\n",event);
               if ( ( xpo != dc->gcur_x ) || ( ypo != dc->gcur_y ) ) {
                   dc->gcur_x = xpo , dc->gcur_y = ypo;
                   draw_cross_cursor ( G , dc->gcur_x , dc->gcur_y ) ;
-                  draw_po_cursor ( G ) ;
               }
               break;
               case 1: // button press
               if ( ( xpo != dc->gcur_x ) || ( ypo != dc->gcur_y ) ) {
                   dc->gcur_x = xpo , dc->gcur_y = ypo;
                   draw_cross_cursor ( G , dc->gcur_x , dc->gcur_y ) ;
-                  draw_po_cursor ( G ) ;
               }
               if ( button == 1 ) key = '\r';
               if ( button == 3 ) key = '.';
@@ -5955,7 +5971,6 @@ void transch(int c) {
               key = kb;
               if ( ui_Linefeed ( kb ) ) { key = '\r'; OK = 1; continue; }
               if ( ui_Return ( kb ) ) {key = '\r'; OK = 1; continue; }
-//       if(isdigit(kb)) {jmp = kb-'0';continue;}
               if ( ( kb >= '0' ) && ( kb <= '9' ) ) {dc->jmp = kb-'0'; continue; }
               if ( ( kb == '.' ) || ( kb == 'u' ) || ( kb == 'U' ) ) {
                   OK = 1; continue;
@@ -5972,6 +5987,8 @@ void transch(int c) {
               default:
               break;
           }
+          draw_po_cursor ( G ) ;
+//          write_po_cursor(G,0.,0.);
       }
       jump:
       if ( dc->entry ) {
@@ -5979,7 +5996,6 @@ void transch(int c) {
           kg_scr_recover ( wc ) ;
       };
       uiScrn_recover ( wc ) ;
-//  ChangeCursor(59);
       *xx = uiusr_x ( dc->gcur_x ) ;
       *yy = uiusr_y ( ( D->evgay-dc->gcur_y ) ) ;
       uiset_clr ( D , temp ) ;
@@ -6240,8 +6256,6 @@ void transch(int c) {
       c_color = 14;
       uiset_clr ( D , c_color ) ;
       xpo = xorg , ypo = yorg;
-//  gbell();
-//  ChangeCursor(35);
       draw_cursor ( G ) ;
       draw_rbr_cursor ( G , xorg , yorg , dc->gcur_x , dc->gcur_y ) ;
       while ( ! OK ) {
@@ -6349,7 +6363,7 @@ void transch(int c) {
       yorg = ( D->evgay ) -uiscr_y ( *ybgn ) ;
       dc->gcur_r = sqrt ( ( double ) ( ( dc->gcur_x-xorg ) * ( dc->gcur_x-xorg ) + \
        ( dc->gcur_y-yorg ) * ( dc->gcur_y-yorg ) ) ) ;
-      uiScrn_back ( wc , dc->msg_x , dc->msg_y , 34 ) ;
+      uiScrn_back ( wc , dc->msg_x , dc->msg_y , 40 ) ;
       kg_scr_back ( wc , 0 , yorg , ( D->evgax+1 ) , yorg ) ;
       kg_scr_back ( wc , xorg , 0 , xorg , ( D->evgay ) ) ;
       _uiLINE ( wc , 0 , yorg , ( D->evgax+1 ) , yorg ) ;
