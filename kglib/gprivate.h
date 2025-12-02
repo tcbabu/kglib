@@ -1431,4 +1431,6 @@ void ui_Image ( void *Dtmp , void *tmp , int x0 , int y0 , int width , int heigh
   void *uiComplexFixedString ( char *str ,void *Imgtmp, int font , int color , int FontSize ,int height ) ;
   int ffStringLength(char *str,void *tmp);
   float  ffuistrlngth ( int font , char *title );
+  int ftGetWarray(int font,float *wd);
+  int ftuistrlngth ( void *Gtmp , char *title , float *xdsp ) {
 #endif

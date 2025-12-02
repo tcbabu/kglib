@@ -811,3 +811,17 @@
       }
       return ln;
   }
+  int ftGetWarray(int font,float *wd) {
+      IMG_STR **IMG = (IMG_STR **)uiInitGraphicFontLists(font);
+      int ln =0;
+      int i=0;
+      if(str== NULL) return 0;
+      
+      if(IMG == NULL) {
+         fprintf(stderr,"IMG_STR not loaded\n");
+         return 0;
+      }
+      for(i=0;i<128;i++) wd[i]=0;
+      for(i=31;i<128;i++) if(IMG[i]!=NULL)wd[i]=IMG[i]->xln;      
+      return 1;
+  }
