@@ -823,6 +823,6 @@
          return 0;
       }
       for(i=0;i<128;i++) wd[i]=0;
-      for(i=31;i<128;i++) if(IMG[i]!=NULL)wd[i]=IMG[i]->xln/32.0;      
+      for(i=31;i<128;i++) if(IMG[i]!=NULL)wd[i]=IMG[i]->xln/32;      
       return 1;
   }

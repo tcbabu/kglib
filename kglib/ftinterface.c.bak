@@ -1,8 +1,7 @@
-#include <kulina.h>
+#include "kulina.h"
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
-#include <kulina.h>
 #include "gprivate.h"
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -90,7 +89,7 @@
       WIDTH = Size;
       target_height = HEIGHT;
       void *img;
-      unsigned char *pixls;
+      unsigned char *pixls=NULL;
       error = FT_Init_FreeType ( & library ) ; /* initialize library */
   /* error handling omitted */
       error = FT_New_Face ( library , filename , 0 , & face ) ;
@@ -135,6 +134,7 @@
       FT_Done_Face ( face ) ;
       FT_Done_FreeType ( library ) ;
       free ( pixls ) ;
+      pixls=NULL;
       Img = ( IMG_STR * ) malloc ( sizeof ( IMG_STR ) ) ;
       Img->xln = WIDTH-1;
       Img->yln = 0.0;
@@ -149,21 +149,23 @@
       FT_Vector pen; /* untransformed origin */
       FT_Error error;
       double angle;
+      double hfac=1.2,wfac=1.0;
       int target_height;
       int n , num_chars , i , j;
-      int Ht;
+      int Ht,Wd;
       int WIDTH,HEIGHT;
       double dx , dy;
       num_chars = strlen ( text ) ;
       angle = ( 25.0 / 360 ) * 3.14159 * 2; /* use 25 degrees */
       angle = ( 0.0 / 360 ) * 3.14159 * 2; /* use 25 degrees */
-      Ht = Size*1.2;
+      Ht = Size*hfac;
+      Wd =Size*wfac;
       HEIGHT =(int)( 2.0*Size);
       WIDTH = Size;
       target_height =(int)( HEIGHT );
       IMG_STR *Img;
       void *img;
-      unsigned char *pixls;
+      unsigned char *pixls=NULL;
       error = FT_Init_FreeType ( & library ) ; /* initialize library */
   /* error handling omitted */
       error = FT_New_Face ( library , filename , 0 , & face ) ;
@@ -172,7 +174,7 @@
   /* use 50pt at 100dpi */
 //TCB      error = FT_Set_Char_Size ( face , Ht * 64 , 0 , 120 , 0 ) ;
   //    error = FT_Set_Char_Size ( face , Ht * 64 , 0 , 120 , 0 ) ;
-     error = FT_Set_Char_Size ( face ,0, Ht*64, 120 , 120 ) ;
+     error = FT_Set_Char_Size ( face ,Wd*64, Ht*64, 120 , 120 ) ;
            /* set character size */
   /* error handling omitted */
   /* cmap selection omitted;                                        */
@@ -208,6 +210,84 @@
       FT_Done_Face ( face ) ;
       FT_Done_FreeType ( library ) ;
       free ( pixls ) ;
+      pixls=NULL;
+      Img = ( IMG_STR * ) malloc ( sizeof ( IMG_STR ) ) ;
+      Img->xln = pen.x/64;
+      Img->yln = pen.y/64;
+      Img->img = img;
+      return Img;
+  }
+  void * uiMakeFontImg ( char *filename , char *text , int Size ,int Gap,float hfac,float wfac) {
+      FT_Library library;
+      FT_Face face;
+      FT_GlyphSlot slot;
+      FT_Matrix matrix; /* transformation matrix */
+      FT_Vector pen; /* untransformed origin */
+      FT_Error error;
+      double angle;
+//      double hfac=1.2,wfac=1.0;
+      int target_height;
+      int n , num_chars , i , j;
+      int Ht,Wd;
+      int WIDTH,HEIGHT;
+      double dx , dy;
+      num_chars = strlen ( text ) ;
+      angle = ( 25.0 / 360 ) * 3.14159 * 2; /* use 25 degrees */
+      angle = ( 0.0 / 360 ) * 3.14159 * 2; /* use 25 degrees */
+      Ht = (int)(Size*1.2*hfac+0.5);
+      Wd =Size*wfac;
+      HEIGHT =(int)( Ht*2.0);
+      WIDTH = Wd;
+      target_height =(int)( HEIGHT );
+      IMG_STR *Img;
+      void *img;
+      unsigned char *pixls=NULL;
+      error = FT_Init_FreeType ( & library ) ; /* initialize library */
+  /* error handling omitted */
+      error = FT_New_Face ( library , filename , 0 , & face ) ;
+          /* create face object */
+  /* error handling omitted */
+  /* use 50pt at 100dpi */
+//TCB      error = FT_Set_Char_Size ( face , Ht * 64 , 0 , 120 , 0 ) ;
+  //    error = FT_Set_Char_Size ( face , Ht * 64 , 0 , 120 , 0 ) ;
+     error = FT_Set_Char_Size ( face ,Wd*64, Ht*64, 120 , 120 ) ;
+           /* set character size */
+  /* error handling omitted */
+  /* cmap selection omitted;                                        */
+  /* for simplicity we assume that the font contains a Unicode cmap */
+      slot = face->glyph;
+  /* set up matrix */
+      matrix.xx = ( FT_Fixed ) ( 1*0x10000L ) ;
+      matrix.xy = 0;
+      matrix.yx = 0;
+      matrix.yy = ( FT_Fixed ) ( 1*0x10000L ) ;
+      WIDTH = 2*WIDTH*num_chars+4;
+      pixls = ( unsigned char * ) calloc ( sizeof  \
+          ( unsigned char ) , WIDTH*HEIGHT ) ;
+  /* the pen position in 26.6 cartesian space coordinates; */
+  /* start at (300,200) relative to the upper left corner  */
+      pen.x = 300 * 64;
+      pen.y = ( target_height - 200 ) * 64;
+      pen.x = 0 * 64;
+      pen.y = (int)( hfac*Size/2.0+0.5 ) * 64;
+  //    pen.y = 0 * 64;
+      for ( n = 0; n < num_chars; n++ ) {
+          FT_Set_Transform ( face , & matrix , & pen ) ;
+    /* set transformation */
+    /* load glyph image into the slot (erase previous one) */
+          error = FT_Load_Char ( face , text [ n ] , FT_LOAD_RENDER ) ;
+          if ( error ) continue; /* ignore errors */
+    /* now, draw to our target surface (convert position) */
+          draw_bitmap ( pixls , & slot->bitmap , slot->bitmap_left , target_height - slot->bitmap_top,WIDTH,HEIGHT ) ;
+    /* increment pen position */
+          pen.x += slot->advance.x+32+Gap*64;
+          pen.y += slot->advance.y;
+      }
+      img = Make_image ( pixls , WIDTH ,HEIGHT) ;
+      FT_Done_Face ( face ) ;
+      FT_Done_FreeType ( library ) ;
+      free ( pixls ) ;
+      pixls=NULL;
       Img = ( IMG_STR * ) malloc ( sizeof ( IMG_STR ) ) ;
       Img->xln = pen.x/64;
       Img->yln = pen.y/64;
@@ -217,7 +297,7 @@
   void *uiFreeImgStr(void *Itmp) {
     IMG_STR *Img= (IMG_STR*)Itmp;;
     if(Itmp==NULL) return NULL;
-    if(Img->img != NULL) kgFreeImage(Img->img);
+    if(Img->img != NULL) kgFreeGmImage(Img->img);
     return NULL;
   }
   void * uiFreeImgStrs(void * Itmp) {
@@ -237,13 +317,16 @@
   void **kgFontChars ( char *Font , int Size ) {
       IMG_STR **Imgs = NULL;
       Imgs = ( IMG_STR ** ) malloc ( sizeof ( IMG_STR * ) *128 ) ;
+      void *img;
       char txt [ 2 ] = "";
       int i , k;
       for ( i = 0;i < 128;i++ ) Imgs [ i ] = NULL;
       for ( i = 31;i < 128;i++ ) {
           txt [ 0 ] = i;
           Imgs [ i ] = ( IMG_STR * ) kgMakeFontImg ( Font , txt , 2*Size ,0) ;
-          Imgs [ i ]->img = kgResizeImage ( Imgs [ i ]->img , 0.5 ) ;
+          img = Imgs [ i ]->img ; 
+          Imgs [ i ]->img = kgResizeImage ( img , 0.5 ) ;
+          kgFreeGmImage(img);
           Imgs [ i ]->xln = ( int ) ( Imgs [ i ]->xln*0.5+0.9 ) ;
           Imgs [ i ]->yln = ( int ) ( Imgs [ i ]->yln*0.5+0.9 ) ;
       }
@@ -252,13 +335,16 @@
   void **kgFixedFontChars ( char *Font , int Size ) {
       IMG_STR **Imgs = NULL;
       Imgs = ( IMG_STR ** ) malloc ( sizeof ( IMG_STR * ) *128 ) ;
+      void *img;
       char txt [ 2 ] = "";
       int i , k;
       for ( i = 0;i < 128;i++ ) Imgs [ i ] = NULL;
       for ( i = 31;i < 128;i++ ) {
           txt [ 0 ] = i;
           Imgs [ i ] = ( IMG_STR * ) kgMakeFixedFontImg ( Font , txt , 2*Size ,0) ;
-          Imgs [ i ]->img = kgResizeImage ( Imgs [ i ]->img , 0.5 ) ;
+          img = Imgs [ i ]->img ; 
+          Imgs [ i ]->img = kgResizeImage ( img , 0.5 ) ;
+          kgFreeGmImage(img);
           Imgs [ i ]->xln = ( int ) ( Imgs [ i ]->xln*0.5+0.9 ) ;
           Imgs [ i ]->yln = ( int ) ( Imgs [ i ]->yln*0.5+0.9 ) ;
       }
@@ -376,6 +462,39 @@
           deafault:
           break;
       }
+      return IMG;
+  }
+  void *uiFFString ( void *Fstr , char *str , int Ht , int Gap ,float hfac,float wfac) {
+      int n = strlen ( str ) ;
+      int lng = 0 , shft;
+      int i , pos;
+      void *img = NULL;
+      GMIMG *gimg;
+      IMG_STR **Imgs;
+      IMG_STR *IMG;
+      char *fontname;
+      void *fid;
+      int fontno;
+      float xsize,ysize;
+      float th,tw,xx,yy;
+      char Buf[1000];
+      char stmp[10]="";
+      FONT_STR *F = ( FONT_STR * ) Fstr;
+            i=0;
+            while(str[i]!='\0') {
+                if(str[i]< ' ') Buf[i]=' ';
+                else if(str[i]== 127) Buf[i]=' ';
+                else Buf[i]=str[i];
+                i++;
+            }
+            Buf[i]='\0';
+            fontname =F->name;
+            IMG  = ( IMG_STR * ) uiMakeFontImg ( fontname , Buf, F->Size,Gap,hfac,wfac ) ;
+            img = kgCreateImage(IMG->xln+1,Ht);
+            gimg = (GMIMG *)IMG->img;
+            kgReplaceImage ( img , IMG->img , 0 , 0 ) ;
+            if(IMG->img!= NULL) kgFreeImage(IMG->img);
+            IMG->img = img;
       return IMG;
   }
   void *uiMakeFixedString ( void *Fstr , char *str , int Ht , int Gap ) {
@@ -515,15 +634,15 @@
                   break;
                 case 'S':
                   Str +=2;
-                  *shft +=-0.5;
-                  *hfac = *hfac*0.5;
-                  *wfac = *wfac*0.5;
+                  *shft +=-1.0;
+                  *hfac = *hfac*0.7;
+                  *wfac = *wfac*0.7;
                   continue;
                 case 's':
                   *shft +=1.0;
                   Str +=2;
-                  *hfac = *hfac*0.5;
-                  *wfac = *wfac*0.5;
+                  *hfac = *hfac*0.7;
+                  *wfac = *wfac*0.7;
                   continue;
                 case 'x':
                   Str +=2;
@@ -586,19 +705,22 @@
       int x1 , ln1,yln;
       char *cpt=str;
       void *img = NULL;
-      float length,shft=0;
+      float length,shft=0,pos;
       FONT_STR F;
       IMG_STR *IMG=NULL,*IMGP=NULL,IMGT;
       void *imgbk , *fid;
       int rd , gr , bl;
       int fval,cval,Ht,Hto;
-      float wfac,hfac;
-      int Fz =font;
+      float wfac,hfac,fac;
+      int Fz =FontSize;
       ln = width;
       if ( str == NULL ) return NULL;
       if ( str [ 0 ] == '\0' ) return NULL;
-       Hto = 2*FontSize;
-      tpos = (int)(height*0.5-FontSize*0.7+0.5);
+      if(FontSize<=0) FontSize = height/2;
+      Hto = 2*FontSize;
+      if(height <=0) return NULL;
+      tpos = (int)(height*0.5+0.5-FontSize*0.9);
+      tpos = (int)(height*0.5+0.5);
       wfac =1.0;
       hfac = 1.0;
       cval = color;
@@ -611,27 +733,26 @@
         F.code = 'f';
         F.name = kgGetOthFont ( fval ) ;
         F.Imgs = Cimgs;
-        if ( FontSize <= 0 ) F.Size = ( height-4 ) /2;
+        if ( FontSize <= 0 ) F.Size = ( height ) /2;
         else F.Size = FontSize;
-//        if(F.Size >(( height-4 ) /2 ) ) F.Size = ( height-4 ) /2 ;
         if(F.Size != Fz) F.code='f';
         if(fval != font) F.code='f';
-        if((wfac > 1.0 )||(hfac > 1.0 )){
+        if((wfac != 1.0 )||(hfac != 1.0 )){
           float fac =wfac;
           if(hfac>fac ) fac = hfac;
           F.code = 'f';
-          F.Size = F.Size*fac;
-//          printf("TCB: %f %f %d\n",wfac,hfac,F.Size);
+//          F.Size = F.Size*fac;
         }
         if(F.Imgs==NULL) F.code='i';
-//        if(F.Size >(( height-4 ) /2 ) ) F.Size = ( height-4 ) /2 ;
-//        printf("Ht = %d\n",(int)Ht);
+        if(F.Size >(( height ) /2 ) ) F.Size = ( height ) /2 ;
         Ht = 2*F.Size;
-        if(F.Size >(( height-4 ) /2 ) ) F.Size = ( height-4 ) /2 ;
         if(F.Size != FontSize ) F.code='f';
+        F.code = 'f';
         if(F.code=='t') Ht=Hto;
-        IMG = uiMakeString ( & ( F ) , Buf , ( int )(Ht) , 0 ) ;
-#if 1
+        if(F.code != 'f')IMG = uiMakeString ( & ( F ) , Buf , ( int )(Ht) , 0 ) ;
+        else IMG = uiFFString ( & ( F ) , Buf , ( int )(2.0*F.Size*1.2*hfac+0.5) , 0 ,hfac,wfac) ;
+//        else IMG = uiFFString ( & ( F ) , Buf , ( int )(Ht*hfac) , 0 ,hfac,wfac) ;
+#if 0
           if(((wfac != 1.0)||(hfac !=1.0))) {
 //            hfac = 1.0;
 //            if(hfac > 1.0 ) hfac = 1.0;
@@ -645,12 +766,13 @@
 #endif
         if(IMG->img == NULL) {printf("IMG->img == NULL\n"); fflush(stdout);}
         kgSetImageColor ( IMG->img , rd , gr , bl ) ;
+        pos = (int)(tpos -1.3*F.Size*hfac+0.5) +(int)(shft*F.Size*hfac);
         if(IMGP==NULL){
           IMGT.xln = IMG->xln;
           IMGT.yln = IMG->yln;
           IMGT.img = kgCreateImage ( IMGT.xln+1 , (int)height ) ;
-          kgReplaceImage ( IMGT.img , IMG->img , 0,tpos+ (int)(shft*FontSize) ) ;
-          kgFreeImage(IMG->img);
+          kgReplaceImage ( IMGT.img , IMG->img , 0,pos) ;
+          if(IMG->img= NULL)kgFreeImage(IMG->img);
           IMGP=IMG;
           IMGP->img = IMGT.img;
         }
@@ -659,7 +781,7 @@
           IMGT.yln = IMGP->yln;
           IMGT.img = kgCreateImage ( IMGT.xln+1 , (int)height ) ;
           kgReplaceImage ( IMGT.img , IMGP->img , 0,0 ) ;
-          kgReplaceImage ( IMGT.img , IMG->img , IMGP->xln+1,tpos+ (int)(shft*FontSize));
+          kgReplaceImage ( IMGT.img , IMG->img , IMGP->xln+1,pos);
           kgFreeImage(IMGP->img);
           kgFreeImage(IMG->img);
           free(IMG);

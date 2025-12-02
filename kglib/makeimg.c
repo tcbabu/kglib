@@ -5419,7 +5419,8 @@ int gphStringLength(char *str,float *lngth,int font,float width,float gap) {
    txt_spx=gap;
    pr_txt=1;
 
-   ret= strlngth(str,lngth);
+ //  ret= strlngth(str,lngth);
+   *lngth = ftStringLength(font,str,width);
    return ret;
 }
 static void win_set_lnwidth(void)
