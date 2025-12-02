@@ -8565,6 +8565,7 @@ float  kgStringLength(void *Gtmp,char *title) {
       DIG *G;
       kgDC *dc;
       G = ( DIG * ) Gtmp;
+#if 0
       float vx1,vy1,vx2,vy2,wx1,wy1,wx2,wy2;
       kgGetViewport(G,&vx1,&vy1,&vx2,&vy2);
       kgGetWindow (G,&wx1,&wy1,&wx2,&wy2);
@@ -8580,6 +8581,11 @@ float  kgStringLength(void *Gtmp,char *title) {
 //       w = uiusr_x(wd+gp);
        length=ffuistrlngth(font,title)*w;
        fprintf(stderr,"Length = %f Vx1:Vx2 : %d %d\n",length,dc->v_x1,dc->v_x2);
+#else
+       float length=0;
+       ftuistrlngth(G,title,&length);
+}
+#endif
        return length;
 }
 float  uiStringLength(char *title,int width) {

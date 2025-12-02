@@ -4347,7 +4347,7 @@ void transch(int c) {
           }
           i = i+1;
       }
-      *xdsp = ( fj*wd+gj*gp ) ;
+      *xdsp = ( fj*wd+gj*gp )/16.0 ;
       ngp = gj+0.1;
       dc->O_P = FB_P;
       while ( dc->O_P != NULL ) {
