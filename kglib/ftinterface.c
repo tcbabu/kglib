@@ -4,6 +4,7 @@
 #include <math.h>
 #include "gprivate.h"
 #include <ft2build.h>
+ void * uiInitGraphicFontLists ( int font );
 #include FT_FREETYPE_H
 #if 0
   typedef struct _img_str {
@@ -815,13 +816,13 @@
       IMG_STR **IMG = (IMG_STR **)uiInitGraphicFontLists(font);
       int ln =0;
       int i=0;
-      if(str== NULL) return 0;
+      if(wd == NULL) return 0;
       
       if(IMG == NULL) {
          fprintf(stderr,"IMG_STR not loaded\n");
          return 0;
       }
       for(i=0;i<128;i++) wd[i]=0;
-      for(i=31;i<128;i++) if(IMG[i]!=NULL)wd[i]=IMG[i]->xln;      
+      for(i=31;i<128;i++) if(IMG[i]!=NULL)wd[i]=IMG[i]->xln/64.0;      
       return 1;
   }

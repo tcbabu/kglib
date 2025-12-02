@@ -4542,7 +4542,7 @@ static void  win_txtwrt(void)
         w = (txt_wt)/(v_x2 -v_x1)*(w_x2 - w_x1);
         h = (txt_ht)/(v_y2 -v_y1)*(w_y2 - w_y1);
         y1 = y1 - h*0.17;
-        lng = uiStringLength(txt,1)*w;
+        lng = ftStringLength(t_font,txt,w);
         x2 = x1 +lng;
         y2 = y1+h;        
         strln = lng/(w_x2 - w_x1)*(v_x2 -v_x1);

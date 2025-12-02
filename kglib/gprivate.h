@@ -1433,4 +1433,5 @@ void ui_Image ( void *Dtmp , void *tmp , int x0 , int y0 , int width , int heigh
   float  ffuistrlngth ( int font , char *title );
   int ftGetWarray(int font,float *wd);
   int ftuistrlngth ( void *Gtmp , char *title , float *xdsp );
+  float ftStringLength(int font,char *str,float width);
 #endif

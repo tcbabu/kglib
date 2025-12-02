@@ -3313,8 +3313,10 @@ static char *OthFonts []= {
         if(tsize <= 0) tsize=6;
         w = (float)(dc->txt_wt)/((dc->v_x2 -dc->v_x1))*(wx2 - wx1);
         h = (float)(dc->txt_ht)/((dc->v_y2 -dc->v_y1))*(wy2 - wy1);
-        lng = ffuistrlngth(dc->t_font,txt)*w;
-//        fprintf(stderr,"lng = %f\n",lng);
+
+//        ftuistrlngth(G,txt,&lng);
+        lng = ftStringLength(dc->t_font,txt,w);
+        fprintf(stderr,"lng = %f\n",lng);
         x1 = uiusr_x (dc->cur_x);
         y1 = uiusr_y(dc->cur_y)-h*0.17;
         x2 = x1 +lng;
@@ -4249,8 +4251,8 @@ void transch(int c) {
       ftGetWarray(font_o,dc->m_f );
       while ( i < j ) {
           if ( title [ i ] != '!' ) {
-              if ( dc->pr_txt > 0 ) fact1 = dc->m_f [ title [ i ] -32+dc->greek ] *fact;
-              else fact1 = 1.0;
+              fact1 = dc->m_f [ title [ i ] -32 ] *fact;
+//              else fact1 = 1.0;
               gj += 1.;
               fjl += 1.0;
               fj += fact1; dc->greek = 0;
@@ -4347,7 +4349,7 @@ void transch(int c) {
           }
           i = i+1;
       }
-      *xdsp = ( fj*wd+gj*gp )/16.0 ;
+      *xdsp = ( fj*wd+gj*gp );
       ngp = gj+0.1;
       dc->O_P = FB_P;
       while ( dc->O_P != NULL ) {
@@ -4357,6 +4359,137 @@ void transch(int c) {
       }
       if ( dc->t_font != font_o ) ui_txt_font ( G , ( int ) font_o ) ;
       return ( ngp ) ;
+  }
+  float  ftStringLength ( int font, char *title , float wdth ) {
+      float wd , gp , fj , fjl , gj , val , fact , fact1 = 1.0 , hfact = 1.0;
+      short ngp , n , i , j , k , greek = 0;
+      int font_o , Nu , De;
+      float xdsp=0;
+      float m_f[128];
+      B_K *FB_P = NULL;
+      L_N *O_L=NULL;
+      B_K *O_P=NULL,*D_P=NULL;
+      L_N *FO_L=NULL,*pt=NULL;
+      font_o = font;
+      wd = wdth;
+      gp = 0;
+      ngp = 1;
+      xdsp = 0;
+      j = 0; while ( title [ j ] != '\0' ) j++;
+      if ( j == 0 ) { xdsp = 0.; return ( 0.0 ) ; }
+      fj = 0.0; gj = -1; fact = 1.0;
+      fjl = 0.;
+      i = 0;
+      ftGetWarray(font_o,m_f );
+      while ( i < j ) {
+          if ( title [ i ] != '!' ) {
+              fact1 = m_f [ title [ i ] -32 ] *fact;
+//              else fact1 = 1.0;
+              gj += 1.;
+              fjl += 1.0;
+              fj += fact1; greek = 0;
+          }
+          else {
+              i = i+1;
+              switch ( title [ i ] ) {
+                  case 's':
+                  case 'S':
+                  fact = fact*0.6;
+                  break;
+                  case 'e':
+                  fact = fact/0.6;
+                  break;
+                  case 'b':
+                  fj = fj-fact1; fjl-= 1.; gj = gj-1;
+                  break;
+                  case 'g':
+                  greek = 128;
+                  break;
+                  case 'r':
+                  if ( O_P != NULL ) {
+                      fj = O_P->x;
+                      fjl = O_P->xl;
+                      gj = O_P->y;
+                      D_P = O_P;
+                      O_P = O_P->Pr;
+                      free ( D_P ) ;
+                      if ( O_P == NULL ) FB_P = NULL;
+                  }
+                  break;
+                  case 'k':
+                  if ( FB_P == NULL ) {
+                      FB_P = ( B_K * ) Malloc ( ( int ) sizeof ( B_K ) ) ;
+                      O_P = FB_P;
+                      O_P->Nx = NULL; O_P->Pr = NULL;
+                  }
+                  else {
+                      O_P->Nx = ( B_K * ) Malloc ( ( int ) sizeof ( B_K ) ) ;
+                      O_P->Nx->Pr = O_P;
+                      O_P = O_P->Nx;
+                      O_P->Nx = NULL;
+                  }
+                   ( O_P->x ) = fj;
+                   ( O_P->xl ) = fjl;
+                   ( O_P->y ) = gj;
+                  break;
+                  case '!':
+                  fj = fj+fact1; fjl+= 1.; gj = gj+1;
+                  break;
+                  case '%':
+                  fj = fjl;
+                  break;
+                  case 'f':
+                  Nu = ( title [ i+1 ] -'0' ) ;
+                  Nu = Nu*10+ ( title [ i+2 ] -'0' ) ;
+//                  ui_txt_font ( G , ( int ) Nu ) ;
+                  ftGetWarray(Nu,m_f );
+                  i+= 2;
+                  break;
+                  case 'c':
+                  i+= 2;
+                  break;
+                  case 'z':
+                  Nu = ( title [ i+1 ] -'0' ) ;
+                  De = ( title [ i+2 ] -'0' ) ;
+                  if ( De == 0 ) De = 1;
+                  val = ( float ) Nu/ ( float ) De;
+                  if ( val == 0.0 ) val = 1.0;
+                  fact = fact*val;
+                  i = i+2;
+                  break;
+                  case 'h':
+                  Nu = ( title [ i+1 ] -'0' ) ;
+                  De = ( title [ i+2 ] -'0' ) ;
+                  if ( De == 0 ) De = 1;
+                  val = ( float ) Nu/ ( float ) De;
+                  if ( val == 0.0 ) val = 1.0;
+                  hfact = hfact*val;
+                  i = i+2;
+                  break;
+                  case 'w':
+                  Nu = ( title [ i+1 ] -'0' ) ;
+                  De = ( title [ i+2 ] -'0' ) ;
+                  if ( De == 0 ) De = 1;
+                  val = ( float ) Nu/ ( float ) De;
+                  if ( val == 0.0 ) val = 1.0;
+                  fact = fact*val;
+                  i = i+2;
+                  break;
+                  default :
+                  break;
+              }
+          }
+          i = i+1;
+      }
+      xdsp = ( fj*wd+gj*gp );
+      ngp = gj+0.1;
+      O_P = FB_P;
+      while ( O_P != NULL ) {
+          D_P = O_P;
+          O_P = O_P->Pr;
+          free ( D_P ) ;
+      }
+      return ( xdsp ) ;
   }
   int uistrlngth_o ( kgDC *dc , char *title , float *xdsp ) {
       float wd , gp , fj , fjl , gj , val , fact , fact1 = 1.0 , hfact = 1.0;

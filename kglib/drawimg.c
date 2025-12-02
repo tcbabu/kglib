@@ -2766,7 +2766,7 @@
         if(tsize <= 0) tsize=6;
         w = (dc->txt_wt)/(dc->v_x2 -dc->v_x1)*(dc->w_x2 - dc->w_x1);
         h = (dc->txt_ht)/(dc->v_y2 -dc->v_y1)*(dc->w_y2 - dc->w_y1);
-        lng = uiStringLength(txt,1)*w;
+        lng = ftStringLength(dc->t_font,txt,w);
         x1 = uiusr_x (dc->cur_x);
         y1 = uiusr_y(dc->cur_y)-h*0.17;
         x2 = x1 +lng;
