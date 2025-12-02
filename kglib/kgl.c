@@ -8582,7 +8582,7 @@ float  kgStringLength(void *Gtmp,char *title) {
        length=ffuistrlngth(font,title)*w;
        fprintf(stderr,"Length = %f Vx1:Vx2 : %d %d\n",length,dc->v_x1,dc->v_x2);
 #else
-       ftuistrlngth(G,title,&length);
+       ftuistrlngth(Gtmp,title,&length);
 }
 #endif
        return length;
