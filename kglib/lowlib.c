@@ -4369,7 +4369,12 @@ void transch(int c) {
       B_K *FB_P = NULL;
       L_N *O_L=NULL;
       B_K *O_P=NULL,*D_P=NULL;
-      L_N *FO_L=NULL,*pt=NULL;
+      L_N *FO_L=NULL;
+      typedef struct _record {
+         float x,xl,y;
+      } RECORD;
+      RECORD *pt=NULL;
+      Dlink *L=Dopen();
       font_o = font;
       wd = wdth;
       gp = 0;
@@ -4406,6 +4411,7 @@ void transch(int c) {
                   greek = 128;
                   break;
                   case 'r':
+#if 0
                   if ( O_P != NULL ) {
                       fj = O_P->x;
                       fjl = O_P->xl;
@@ -4415,8 +4421,18 @@ void transch(int c) {
                       free ( D_P ) ;
                       if ( O_P == NULL ) FB_P = NULL;
                   }
+#else
+                  pt =(RECORD *)Dpop(L);
+                  if(pt != NULL) {
+                      fj = pt->x;
+                      fjl=pt->y;
+                      gj = pt->y;
+                      free(pt);
+                  }
+#endif
                   break;
                   case 'k':
+#if 0
                   if ( FB_P == NULL ) {
                       FB_P = ( B_K * ) Malloc ( ( int ) sizeof ( B_K ) ) ;
                       O_P = FB_P;
@@ -4431,6 +4447,13 @@ void transch(int c) {
                    ( O_P->x ) = fj;
                    ( O_P->xl ) = fjl;
                    ( O_P->y ) = gj;
+#else
+                  pt = (RECORD *)malloc(sizeof(RECORD));
+                  pt->x = fj;
+                  pt->xl = fjl;
+                  pt->y  =gj;
+                  Dpush(L,pt);
+#endif
                   break;
                   case '!':
                   fj = fj+fact1; fjl+= 1.; gj = gj+1;
@@ -4483,12 +4506,15 @@ void transch(int c) {
       }
       xdsp = ( fj*wd+gj*gp );
       ngp = gj+0.1;
+#if 0
       O_P = FB_P;
       while ( O_P != NULL ) {
           D_P = O_P;
           O_P = O_P->Pr;
           free ( D_P ) ;
       }
+#endif
+      Dempty(L);
       return ( xdsp ) ;
   }
   int uistrlngth_o ( kgDC *dc , char *title , float *xdsp ) {
