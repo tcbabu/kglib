@@ -8561,11 +8561,11 @@ void  gphStringToImagefile(char *Imgfile,char *Str,int xsize,int ysize,int font,
 }
 float  kgStringLength(void *Gtmp,char *title) {
        float length=0,wd,gp,w;
+#if 0
       int font;
       DIG *G;
       kgDC *dc;
       G = ( DIG * ) Gtmp;
-#if 0
       float vx1,vy1,vx2,vy2,wx1,wy1,wx2,wy2;
       kgGetViewport(G,&vx1,&vy1,&vx2,&vy2);
       kgGetWindow (G,&wx1,&wy1,&wx2,&wy2);
@@ -8582,7 +8582,6 @@ float  kgStringLength(void *Gtmp,char *title) {
        length=ffuistrlngth(font,title)*w;
        fprintf(stderr,"Length = %f Vx1:Vx2 : %d %d\n",length,dc->v_x1,dc->v_x2);
 #else
-       float length=0;
        ftuistrlngth(G,title,&length);
 }
 #endif
