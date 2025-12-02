@@ -2771,9 +2771,7 @@
         y1 = uiusr_y(dc->cur_y)-h*0.17;
         x2 = x1 +lng;
         y2 = y1+h;        
-        fprintf(stderr,"Text lng  :%f %f %f:%s\n",lng,w,h,txt);
         strln = lng/(dc->w_x2 - dc->w_x1)*(dc->v_x2 -dc->v_x1);
-//        fprintf(stderr,"Text strln  :%d\n",strln);
         img = (GMIMG *)uiGraphicsString(txt,strln,tsize*3,dc->t_font,dc->t_color,0,tsize);
         img_drawimage(G,img,x1,y1,x2,y2);
         kgFreeGmImage(img);
