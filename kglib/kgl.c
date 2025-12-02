@@ -53,7 +53,8 @@
 static int SLASH=92;
 static char SLASHS[2]="\\";
 #endif
-#define GAP 0.05
+//#define GAP 0.05
+#define GAP 0.0
 #define HFAC 1.30
 #define RESIZE 5
 static pthread_mutex_t _Initlock=PTHREAD_MUTEX_INITIALIZER;
@@ -13067,7 +13068,7 @@ void * kgSplashStringToImage(char *Str,int xsize,int ysize,int font,int fillcolo
    int r,g,b;
    aspc=1;
    size = xsize;
-   if(ysize > size) {size=ysize;aspc=0;}
+//   if(ysize > size) {size=ysize;aspc=0;}
    fid = kgInitImage(xsize,ysize,RESIZE);
    if(fid != NULL ) {
 //      kgUserFrame(fid,-0.,-0.,(float)xsize+0.,(float)ysize+0.);
@@ -13128,15 +13129,15 @@ void * kgSplashStringToImage(char *Str,int xsize,int ysize,int font,int fillcolo
         kgTextSize(fid,th,tw,GAP*tw);
 //        length = kgStringLength(Str,(int)tw);
 //        uistrlngth(fid,Str,&length);
-        length = kgStringLength(fid,Str);
+//        length = kgStringLength(fid,Str);
+        length = ftStringLength(font,Str,tw);
         if(length>size*0.9) {
           fac = size*0.9/length;
           kgTextSize(fid,th,tw*fac,GAP*tw);
-//          length = kgStringLength(Str,(int)(tw*fac));
-//          uistrlngth(fid,Str,&length);
-          length = kgStringLength(fid,Str);
+//          length = kgStringLength(fid,Str);
+          length = ftStringLength(font,Str,tw);
         }
-        if(!aspc) kgTextAngle(fid,90.);
+//        if(!aspc) kgTextAngle(fid,90.);
         kgTextColor(fid,color);
         switch(justification) {
           case -1:
