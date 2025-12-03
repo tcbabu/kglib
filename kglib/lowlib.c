@@ -742,9 +742,8 @@ static char *OthFonts []= {
       return 1;
   }
 
-  void * uiInitGraphicFontLists ( int font ) {
+  void * uiInitGraphicFontLists ( int font,int size ) {
       char FontFile [ 500 ] ;
-      int size=32;
       char *pt;
       int Font , FontSize;
       int count = 0,i=0;
@@ -793,7 +792,7 @@ static char *OthFonts []= {
       cval = color;
       fval = font;
       old = 0;
-      F.Imgs =(IMG_STR **) uiInitGraphicFontLists(font);
+      F.Imgs =(IMG_STR **) uiInitGraphicFontLists(font,16);
       if ( FontSize <= 0 ) F.Size = ( height-4 ) /2;
       else F.Size = FontSize;
       IMG = ( IMG_STR * ) uiComplexString ( str , F.Imgs , \
@@ -3308,7 +3307,6 @@ static char *OthFonts []= {
         wx1 = dc->w_x1, wx2 = dc->w_x2;
         wy1 = dc->w_y1, wy2 = dc->w_y2;
         Vx = 1,Vy=1;
-        printf("Vx: %d %d %d %d\n",dc->v_x1,dc->v_y1,dc->v_x2,dc->v_y2);
         tsize =  (float)dc->txt_hty /(wy2 - wy1)*((dc->v_y2 -dc->v_y1));
         if(tsize <= 0) tsize=6;
         w = (float)(dc->txt_wt)/((dc->v_x2 -dc->v_x1))*(wx2 - wx1);
@@ -3316,7 +3314,6 @@ static char *OthFonts []= {
 
 //        ftuistrlngth(G,txt,&lng);
         lng = ftStringLength(dc->t_font,txt,w);
-        fprintf(stderr,"lng = %f\n",lng);
         x1 = uiusr_x (dc->cur_x);
         y1 = uiusr_y(dc->cur_y)-h*0.17;
         x2 = x1 +lng;
@@ -4008,7 +4005,7 @@ void transch(int c) {
       int font_o , Nu , De;
       char Sub[500];
       float lng=0;
-      IMG_STR **IMG= (IMG_STR **)uiInitGraphicFontLists (font); 
+      IMG_STR **IMG= (IMG_STR **)uiInitGraphicFontLists (font,16); 
       B_K *FB_P = NULL;
       font_o = font;
       ngp = 1;

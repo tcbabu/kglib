@@ -4,7 +4,7 @@
 #include <math.h>
 #include "gprivate.h"
 #include <ft2build.h>
- void * uiInitGraphicFontLists ( int font );
+ void * uiInitGraphicFontLists ( int font,int FontSize );
 #include FT_FREETYPE_H
 #if 0
   typedef struct _img_str {
@@ -330,6 +330,7 @@
           kgFreeGmImage(img);
           Imgs [ i ]->xln = ( int ) ( Imgs [ i ]->xln*0.5+0.9 ) ;
           Imgs [ i ]->yln = ( int ) ( Imgs [ i ]->yln*0.5+0.9 ) ;
+          Imgs [ i ]->Size =Size;
       }
       return ( void ** ) Imgs;
   }
@@ -348,6 +349,7 @@
           kgFreeGmImage(img);
           Imgs [ i ]->xln = ( int ) ( Imgs [ i ]->xln*0.5+0.9 ) ;
           Imgs [ i ]->yln = ( int ) ( Imgs [ i ]->yln*0.5+0.9 ) ;
+          Imgs [ i ]->Size =Size;
       }
       return ( void ** ) Imgs;
   }
@@ -813,7 +815,7 @@
       return ln;
   }
   int ftGetWarray(int font,float *wd) {
-      IMG_STR **IMG = (IMG_STR **)uiInitGraphicFontLists(font);
+      IMG_STR **IMG = (IMG_STR **)uiInitGraphicFontLists(font,16);
       int ln =0;
       int i=0;
       if(wd == NULL) return 0;
@@ -824,7 +826,7 @@
       }
       for(i=0;i<128;i++) wd[i]=0;
       for(i=31;i<128;i++) {
-        if(IMG[i]!=NULL)wd[i]=IMG[i]->xln/48.0;      
+        if(IMG[i]!=NULL)wd[i]=(float)IMG[i]->xln/(float)(IMG[i]->Size);;      
 //        printf("I = %d wd = %f %c\n",i,wd[i],i);
       }
       return 1;

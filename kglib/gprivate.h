@@ -204,6 +204,7 @@ void set_menu_position(int xmenu,int ymenu);
       int xln;
       int yln;
       void *img;
+      int Size;
   } IMG_STR;
   typedef struct _font_str {
       char code; //i internal , t char table f fontnane
