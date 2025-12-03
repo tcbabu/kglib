@@ -168,7 +168,7 @@ void kgDefaultGuiTheme(Gclr *Gc) {
   Gc->ProgBodrColor=6;
   Gc->ProgColor=8;
   Gc->ItemHighColor=6;
-  Gc->InputFontSize=9;
+  Gc->InputFontSize=10;
   Gc->scroll_fill= Gc->fill_clr;
   Gc->scroll_dim= Gc->dim;
   Gc->scroll_bright= Gc->bright;
@@ -273,7 +273,7 @@ void kgColorTheme2(DIALOG *D,unsigned char red,unsigned char green, unsigned cha
   Gc->SplashBodrColor=46;
   Gc->SplashCharColor=26;
   Gc->ItemHighColor=6;
-  Gc->InputFontSize=9;
+  Gc->InputFontSize=10;
   Gc->scroll_fill= Gc->fill_clr;
   Gc->scroll_dim= Gc->dim;
   Gc->scroll_bright= Gc->bright;
@@ -394,7 +394,7 @@ void kgColorTheme(DIALOG *D,unsigned char red,unsigned char green, unsigned char
   Gc->ProgFillColor=55;
   Gc->ProgBodrColor=58;
   Gc->ProgColor=56;
-  Gc->InputFontSize=9;
+  Gc->InputFontSize=10;
   Gc->scroll_fill= Gc->fill_clr;
   Gc->scroll_dim= Gc->dim;
   Gc->scroll_bright= Gc->bright;
@@ -513,7 +513,7 @@ void kgColorTheme1(DIALOG *D,unsigned char red,unsigned char green, unsigned cha
   Gc->ProgFillColor=55;
   Gc->ProgBodrColor=58;
   Gc->ProgColor=56;
-  Gc->InputFontSize=9;
+  Gc->InputFontSize=10;
   Gc->scroll_fill= Gc->fill_clr;
   Gc->scroll_dim= Gc->dim;
   Gc->scroll_bright= Gc->bright;
@@ -571,7 +571,7 @@ void kgGrayGuiTheme(Gclr *Gc) {
   Gc->ProgBodrColor=6;
   Gc->ProgColor=8;
   Gc->ItemHighColor=6;
-  Gc->InputFontSize=8;
+  Gc->InputFontSize=10;
   Gc->scroll_fill= Gc->fill_clr;
   Gc->scroll_dim= Gc->dim;
   Gc->scroll_bright= Gc->bright;

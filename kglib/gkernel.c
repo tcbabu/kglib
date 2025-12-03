@@ -3373,6 +3373,7 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
   void uiDraw_String ( DIALOG *D , int x , int y , char *str , int justfic ) {
       int ln , i , maxchar;
       void *img = NULL;
+      void *rzimg = NULL;
       float length;
       kgWC *wc;
 #if 1
@@ -3388,10 +3389,16 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
       if ( ln <= 0 ) return;
 #endif
 //   img = gphStringToImage(str,ln*10,20,3,wc->c_color);
-      img = kgStringToImage ( str , NULL , ln , 20 , D->gc.Font , \
-      wc->c_color , justfic , D->gc.FontSize , -1 ) ;
+//TCBNEW 20 to 22
+
+      img = kgStringToImage ( str , NULL , ln , 30 , D->gc.Font , \
+               wc->c_color , justfic , D->gc.FontSize , -1 ) ;
+      rzimg = (void *)kgCropImage(img,0,10,ln,24);
+      kgFreeImage ( img ) ;
+      img = rzimg;
       if ( img != NULL ) {
-          kgImage ( D , img , x , y-16 , ln , 20 , 0.0 , 1.0 ) ;
+//TCBNEW 20 to 22 16 to 12
+          kgImage ( D , img , x , y-12 , ln , 20 , 0.0 , 1.0 ) ;
           kgFreeImage ( img ) ;
       }
 #else

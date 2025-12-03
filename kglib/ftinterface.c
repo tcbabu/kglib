@@ -79,14 +79,16 @@
       double angle;
       int target_height;
       int n , num_chars , i , j;
-      int Ht;
+      int Ht,Wd;
       double dx , dy;
+      double hfac=1.2,wfac=1.0;
       IMG_STR *Img = NULL;
       num_chars = strlen ( text ) ;
 //      angle = ( 25.0 / 360 ) * 3.14159 * 2; /* use 25 degrees */
       angle = ( 0.0 / 360 ) * 3.14159 * 2; /* use 25 degrees */
-      Ht = Size*1.2;
-      HEIGHT = 2*Size+2;
+      Ht = Size*hfac;
+      Wd =Size*wfac;
+      HEIGHT =(int)( 2.0*Size);
       WIDTH = Size;
       target_height = HEIGHT;
       void *img;
@@ -826,7 +828,7 @@
       }
       for(i=0;i<128;i++) wd[i]=0;
       for(i=31;i<128;i++) {
-        if(IMG[i]!=NULL)wd[i]=(float)IMG[i]->xln/(float)(IMG[i]->Size);;      
+        if(IMG[i]!=NULL)wd[i]=(float)IMG[i]->xln/((float)(IMG[i]->Size)*1.2);      
 //        printf("I = %d wd = %f %c\n",i,wd[i],i);
       }
       return 1;
