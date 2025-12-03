@@ -129,10 +129,10 @@ static char *OthFonts []= {
 "NimbusSanL-BolIta.otf",
 "Ubuntu-R.ttf",
 "Ubuntu-RI.ttf",
-"ZapfChanceryMediumItalic.otf",
+"VeraMono.ttf",
+"VeraMono-Bold.ttf",
+"DroidSansMono.ttf" ,
 "s050000l.pfb"
-"Symbols.ttf",
-"geek.ttf",
 "Madina.ttf",
 "Wasichu.ttf",
 "stewartsans.ttf",
@@ -142,6 +142,9 @@ static char *OthFonts []= {
 "Ubuntu-C.ttf",
 "Ubuntu-M.tt",
 "FreeSerif.ttf",
+"ZapfChanceryMediumItalic.otf",
+"Symbols.ttf",
+"geek.ttf",
 "MathSymbolsNormal.ttf",
 "LucidaMathSymbolRegular.otf",
   NULL

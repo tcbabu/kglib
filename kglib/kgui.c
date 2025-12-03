@@ -10246,7 +10246,8 @@ int kgCheckParentPosition(void *Dtmp) {
     if(Dtmp == NULL) return 0;
     P = (DIALOG *)(D->parent);
     if(P == NULL ) return 0;
-    if((P->xl < D->xl ) || (P->yl < D->yl)) {
+//    printf("CheckPos: %d %d %d %d\n",P->xl,D->xl,P->yl,D->yl);
+    if((P->xl <= D->xl ) || (P->yl <= D->yl)) {
         xo = P->xl/2+P->xo;
         yo = P->yl/2+P->yo;
         xo = xo-D->xl/2;
