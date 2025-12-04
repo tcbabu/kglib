@@ -819,12 +819,14 @@
             if ( str[i+1] == 'd') {
                ret =1; break;
             }
+#if 0
             if ( str[i+1] == 'x') {
                ret =1; break;
             }
             if ( str[i+1] == 'y') {
                ret =1; break;
             }
+#endif
           }
           i++;
         }
@@ -903,21 +905,30 @@
         if(IMG->img == NULL) {printf("IMG->img == NULL\n"); fflush(stdout);}
         kgSetImageColor ( IMG->img , rd , gr , bl ) ;
         pos = (int)(tpos -1.3*F.Size*hfac+0.5) +(int)(shft*F.Size*hfac);
+        pos = -1*(int)(shft*F.Size*hfac);
         if(IMGP==NULL){
+          int xsize,ysize,xsize1,ysize1;;
           IMGT.xln = IMG->xln;
           IMGT.yln = IMG->yln;
+          kgGetImageSize(IMG->img ,&xsize,&ysize);
+          if ( (ysize) > height ) height = (ysize);
           IMGT.img = kgCreateImage ( IMGT.xln+1 , (int)height ) ;
-          kgReplaceImage ( IMGT.img , IMG->img , 0,pos) ;
+//          kgReplaceImage ( IMGT.img , IMG->img , 0,pos-ysize) ;
+          kgReplaceImage ( IMGT.img , IMG->img , 0,0) ;
           if(IMG->img= NULL)kgFreeImage(IMG->img);
           IMGP=IMG;
           IMGP->img = IMGT.img;
         }
         else{
+          int xsize,ysize,xsize1,ysize1;;
           IMGT.xln = IMGP->xln+IMG->xln;
           IMGT.yln = IMGP->yln;
+          kgGetImageSize(IMGP->img ,&xsize,&ysize);
+          kgGetImageSize(IMG->img ,&xsize1,&ysize1);
+          if ( (ysize1+pos) > height ) height = (ysize1+pos);
           IMGT.img = kgCreateImage ( IMGT.xln+1 , (int)height ) ;
           kgReplaceImage ( IMGT.img , IMGP->img , 0,0 ) ;
-          kgReplaceImage ( IMGT.img , IMG->img , IMGP->xln+1,pos);
+          kgReplaceImage ( IMGT.img , IMG->img , IMGP->xln+1,0);
           kgFreeImage(IMGP->img);
           kgFreeImage(IMG->img);
           free(IMG);

@@ -3334,7 +3334,9 @@ static char *OthFonts []= {
         y2 = y1+h;        
         strln = lng/(wx2 - wx1)*(dc->v_x2 -dc->v_x1);
         img = (GMIMG *)uiGraphicsString(txt,strln,tsize,dc->t_font,dc->t_color,0,tsize);
-        ui_drawimage(G,img,x1,y1,x2,y2);
+        int xsize,ysize;
+        kgGetImageSize(img,&xsize,&ysize);
+        ui_drawimage(G,img,x1,y1,x2,(int)(y1+ysize/(wx2 - wx1)*(dc->v_x2 -dc->v_x1)));
         kgFreeGmImage(img);
         return;
       }

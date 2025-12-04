@@ -2521,7 +2521,7 @@ int  kgSetImageColor ( void *Img , int r,int g,int b ) {
               dest->green = g;
               dest->blue = b;
             }
-              dest++;
+            dest++;
           }
       }
       SyncImagePixels ( img ) ;
@@ -3163,6 +3163,7 @@ int   kgGetImageTopBottom ( void * img ,int *top,int *bottom ) {
       for ( j = 0;j < ysize;j++ ) {
           count =0;
           for ( i = 0;i < xsize;i++ ) {
+              if(pixels [ k ] .opacity != 255 ) break;
               if(pixels [ k ] .blue != 0) break;
               if(pixels [ k ] .green != 0) break;
               if(pixels [ k ] .red != 0) break;
@@ -3177,6 +3178,7 @@ int   kgGetImageTopBottom ( void * img ,int *top,int *bottom ) {
         for ( j = ysize -1;j >=0;j-- ) {
           count = xsize;
           for ( i =xsize-1;i >= 0;i-- ) {
+              if(pixels [ k ] .opacity != 255 ) break;
               if(pixels [ k ] .blue != 0) break;
               if(pixels [ k ] .green != 0) break;
               if(pixels [ k ] .red != 0) break;
@@ -3213,6 +3215,7 @@ int   kgGetImageLeftRight( void * img ,int *left,int *right ) {
           count =0;
           for ( j = 0;j < ysize;j++ ) {
               k = j*ysize+i;
+              if(pixels [ k ] .opacity != 255 ) break;
               if(pixels [ k ] .blue != 0) break;
               if(pixels [ k ] .green != 0) break;
               if(pixels [ k ] .red != 0) break;
@@ -3227,6 +3230,7 @@ int   kgGetImageLeftRight( void * img ,int *left,int *right ) {
           count = ysize;
           for ( j =ysize-1;j >= 0;j-- ) {
               k = j*ysize+i;
+              if(pixels [ k ] .opacity != 255 ) break;
               if(pixels [ k ] .blue != 0) break;
               if(pixels [ k ] .green != 0) break;
               if(pixels [ k ] .red != 0) break;
