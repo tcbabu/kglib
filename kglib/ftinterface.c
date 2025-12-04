@@ -801,6 +801,137 @@
       IMG = IMGP;
       return IMG;
   }
+  int kgCheckComplexString(char * str) {
+     int ret=0;
+     int i=0;
+     if(str != NULL) {
+        while(str[i] != '\0') {
+          if(str[i]=='!') {
+            if ( str[i+1] == 'S') {
+               ret =1; break;
+            }
+            if ( str[i+1] == 's') {
+               ret =1; break;
+            }
+            if ( str[i+1] == 'u') {
+               ret =1; break;
+            }
+            if ( str[i+1] == 'd') {
+               ret =1; break;
+            }
+            if ( str[i+1] == 'x') {
+               ret =1; break;
+            }
+            if ( str[i+1] == 'y') {
+               ret =1; break;
+            }
+          }
+          i++;
+        }
+     }
+     return ret;
+  }
+  void *uiComplexGrString ( char *str ,void *Imgtmp, int font , int color , int FontSize ,int height ) \
+  {
+      char Buf[1000];
+      char *Str;
+      int x,y,width,bkcolor,justfic;
+      IMG_STR **Cimgs= (IMG_STR **) Imgtmp;
+      int ln , i , maxchar , tempi,tpos;
+      int x1 , ln1,yln;
+      char *cpt=str;
+      void *img = NULL;
+      float length,shft=0,pos;
+      FONT_STR F;
+      IMG_STR *IMG=NULL,*IMGP=NULL,IMGT;
+      void *imgbk , *fid;
+      int rd , gr , bl;
+      int fval,cval,Ht,Hto;
+      float wfac,hfac,fac;
+      int Fz =FontSize;
+      ln = width;
+      if ( str == NULL ) return NULL;
+      if ( str [ 0 ] == '\0' ) return NULL;
+      if(FontSize<=0) FontSize = height/2;
+      Hto = 2*FontSize;
+      if(height <=0) return NULL;
+      tpos = (int)(height*0.5+0.5-FontSize*0.9);
+      tpos = (int)(height*0.5+0.5);
+      wfac =1.0;
+      hfac = 1.0;
+      cval = color;
+      fval = font;
+//      uiCleanOldString(str,Buf,&cval,&fval,&wfac,&zfac);
+      while(((cpt= uiGetStringPart(cpt,Buf,&cval,&fval,&wfac,&hfac,&shft)) != NULL)) {
+//        printf("Got Buf : %s\n",Buf);
+//       fflush(stdout);
+        kgGetDefaultRGB ( cval , & rd , & gr , & bl ) ;
+        F.code = 'f';
+        F.name = kgGetOthFont ( fval ) ;
+        F.Imgs = Cimgs;
+        if ( FontSize <= 0 ) F.Size = ( height ) /2;
+        else F.Size = FontSize;
+        if(F.Size != Fz) F.code='f';
+        if(fval != font) F.code='f';
+        if((wfac != 1.0 )||(hfac != 1.0 )){
+          float fac =wfac;
+          if(hfac>fac ) fac = hfac;
+          F.code = 'f';
+//          F.Size = F.Size*fac;
+        }
+        if(F.Imgs==NULL) F.code='i';
+        if(F.Size >(( height ) /2 ) ) F.Size = ( height ) /2 ;
+        Ht = 2*F.Size;
+        if(F.Size != FontSize ) F.code='f';
+        F.code = 'f';
+        if(F.code=='t') Ht=Hto;
+        if(F.code != 'f')IMG = uiMakeString ( & ( F ) , Buf , ( int )(Ht) , 0 ) ;
+        else IMG = uiFFString ( & ( F ) , Buf , ( int )(2.0*F.Size*1.2*hfac+0.5) , 0 ,hfac,wfac) ;
+//        else IMG = uiFFString ( & ( F ) , Buf , ( int )(Ht*hfac) , 0 ,hfac,wfac) ;
+#if 0
+          if(((wfac != 1.0)||(hfac !=1.0))) {
+//            hfac = 1.0;
+//            if(hfac > 1.0 ) hfac = 1.0;
+            IMG->xln = (IMG->xln-2)*wfac+2;
+            yln = (int)(Ht*hfac);
+            if(yln>=height) yln = height;
+            img = kgChangeSizeImage(IMG->img,IMG->xln,yln);
+            kgFreeImage(IMG->img);
+            IMG->img = img;
+          }
+#endif
+        if(IMG->img == NULL) {printf("IMG->img == NULL\n"); fflush(stdout);}
+        kgSetImageColor ( IMG->img , rd , gr , bl ) ;
+        pos = (int)(tpos -1.3*F.Size*hfac+0.5) +(int)(shft*F.Size*hfac);
+        if(IMGP==NULL){
+          IMGT.xln = IMG->xln;
+          IMGT.yln = IMG->yln;
+          IMGT.img = kgCreateImage ( IMGT.xln+1 , (int)height ) ;
+          kgReplaceImage ( IMGT.img , IMG->img , 0,pos) ;
+          if(IMG->img= NULL)kgFreeImage(IMG->img);
+          IMGP=IMG;
+          IMGP->img = IMGT.img;
+        }
+        else{
+          IMGT.xln = IMGP->xln+IMG->xln;
+          IMGT.yln = IMGP->yln;
+          IMGT.img = kgCreateImage ( IMGT.xln+1 , (int)height ) ;
+          kgReplaceImage ( IMGT.img , IMGP->img , 0,0 ) ;
+          kgReplaceImage ( IMGT.img , IMG->img , IMGP->xln+1,pos);
+          kgFreeImage(IMGP->img);
+          kgFreeImage(IMG->img);
+          free(IMG);
+          IMGP->xln = IMGT.xln;
+          IMGP->yln = IMGT.yln;
+          IMGP->img = IMGT.img;
+        }
+        shft =0.0;
+        wfac=1.0;
+        hfac=1.0;
+      }
+      IMG = IMGP;
+      return IMG;
+  }
   int ffStringLength(char *str,void *tmp) {
       IMG_STR **IMG = (IMG_STR **)tmp;
       int ln =0;

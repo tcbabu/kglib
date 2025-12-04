@@ -178,7 +178,7 @@ void kgDefaultGuiTheme(Gclr *Gc) {
   Gc->ButtonFont = 40;
   Gc->MsgFont = 40;
   Gc->Font=40;
-  Gc->SplashFont=23;
+  Gc->SplashFont=20;
   return ;
 }
 void kgColorTheme2(DIALOG *D,unsigned char red,unsigned char green, unsigned char blue) {
@@ -268,7 +268,7 @@ void kgColorTheme2(DIALOG *D,unsigned char red,unsigned char green, unsigned cha
   Gc->GuiFontSize =9;
   Gc->FontSize =9;
   Gc->Font=23;
-  Gc->SplashFont=4;
+  Gc->SplashFont=20;
   Gc->SplashFillColor=40;
   Gc->SplashBodrColor=46;
   Gc->SplashCharColor=26;
@@ -284,7 +284,7 @@ void kgColorTheme2(DIALOG *D,unsigned char red,unsigned char green, unsigned cha
   Gc->ButtonFont = 40;
   Gc->MsgFont = 40;
   Gc->Font=40;
-  Gc->SplashFont=23;
+  Gc->SplashFont=20;
   return ;
 }
 void kgColorTheme(DIALOG *D,unsigned char red,unsigned char green, unsigned char blue) {
@@ -405,7 +405,7 @@ void kgColorTheme(DIALOG *D,unsigned char red,unsigned char green, unsigned char
   Gc->ButtonFont = 40;
   Gc->MsgFont = 40;
   Gc->Font=40;
-  Gc->SplashFont=23;
+  Gc->SplashFont=20;
   return ;
 }
 void kgColorTheme1(DIALOG *D,unsigned char red,unsigned char green, unsigned char blue) {
@@ -506,7 +506,7 @@ void kgColorTheme1(DIALOG *D,unsigned char red,unsigned char green, unsigned cha
   Gc->ButtonFont = 16;
   Gc->FontSize =9;
   Gc->Font=16;
-  Gc->SplashFont=24;
+  Gc->SplashFont=20;
   Gc->SplashFillColor=55;
   Gc->SplashBodrColor=58;
   Gc->SplashCharColor=56;
@@ -524,7 +524,7 @@ void kgColorTheme1(DIALOG *D,unsigned char red,unsigned char green, unsigned cha
   Gc->ButtonFont = 40;
   Gc->MsgFont = 40;
   Gc->Font=40;
-  Gc->SplashFont=23;
+  Gc->SplashFont=20;
   return ;
 }
 void kgGrayGuiTheme(Gclr *Gc) {
@@ -563,7 +563,7 @@ void kgGrayGuiTheme(Gclr *Gc) {
   Gc->MsgFont = 23;
   Gc->FontSize =8;
   Gc->Font=23;
-  Gc->SplashFont=4;
+  Gc->SplashFont=20;
   Gc->SplashFillColor=40;
   Gc->SplashBodrColor=46;
   Gc->SplashCharColor=26;
@@ -582,7 +582,7 @@ void kgGrayGuiTheme(Gclr *Gc) {
   Gc->ButtonFont = 40;
   Gc->MsgFont = 40;
   Gc->Font=40;
-  Gc->SplashFont=23;
+  Gc->SplashFont=20;
   return ;
 }
 #if 0

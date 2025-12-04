@@ -4532,7 +4532,7 @@ static void  win_txtwrt(void)
   ishft =0;
   greek=0;
 #if 1
-      if(!trot) {
+      if((trot==0)&&(kgCheckComplexString(txt)==0)) {
         float x1,y1,x2,y2,lng,h,w;
         tsize =  txt_hty /(w_y2 - w_y1)*(v_y2 -v_y1);
         if(tsize <= 0) tsize=6;
@@ -4546,7 +4546,7 @@ static void  win_txtwrt(void)
         x2 = x1 +lng;
         y2 = y1+h;        
         strln = lng/(w_x2 - w_x1)*(v_x2 -v_x1);
-        img = (GMIMG *)uiGraphicsString(txt,strln,tsize*3,t_font,t_color,0,tsize);
+        img = (GMIMG *)uiGraphicsString(txt,strln,tsize,t_font,t_color,0,tsize);
         gph_drawimage(img,x1,y1,x2,y2);
         kgFreeGmImage(img);
         return;

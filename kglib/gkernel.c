@@ -624,7 +624,10 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
       Dsp = ( Display * ) WC ( D )->Dsp;
       wc = D->wc;
 //  if(size > 10) size=9;
-      D->gc.Font = 18;
+      D->gc.Font = 9;
+      D->gc.Font = 16;
+      D->gc.Font = 1;
+      D->gc.Font = 0;
       D->gc.FontSize = size;
 //  wc->GuiFont=18;
 //  wc->GuiFontSize=size;
@@ -3391,14 +3394,11 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
 //   img = gphStringToImage(str,ln*10,20,3,wc->c_color);
 //TCBNEW 20 to 22
 
-      img = kgStringToImage ( str , NULL , ln , 30 , D->gc.Font , \
+      img = kgStringToImage ( str , NULL , ln , 20 , D->gc.Font , \
                wc->c_color , justfic , D->gc.FontSize , -1 ) ;
-      rzimg = (void *)kgCropImage(img,0,10,ln,24);
-      kgFreeImage ( img ) ;
-      img = rzimg;
       if ( img != NULL ) {
 //TCBNEW 20 to 22 16 to 12
-          kgImage ( D , img , x , y-12 , ln , 20 , 0.0 , 1.0 ) ;
+          kgImage ( D , img , x , y-16 , ln , 20 , 0.0 , 1.0 ) ;
           kgFreeImage ( img ) ;
       }
 #else

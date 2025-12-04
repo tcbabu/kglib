@@ -3140,4 +3140,105 @@ int  kgSetImageColor ( void *Img , int r,int g,int b ) {
       *ysize = image->rows;
       return 1;
   }
+
+int   kgGetImageTopBottom ( void * img ,int *top,int *bottom ) {
+      int k,i,j,count=0,Topskip=0,Bottomskip=0;
+      unsigned long v , xsize , ysize;
+      Image *image , *tmpimg;
+      PixelPacket *pixels;
+      GMIMG *png = NULL;
+      png = ( GMIMG * ) img;
+      *top=0;
+      *bottom =0;
+      if(img==NULL) return 0;
+      uiInitGm ( ) ;
+      image = png->image;
+      pixels = GetImagePixels ( image , 0 , 0 , image->columns , image->rows ) ;
+      xsize = image->columns;
+      ysize = image->rows;
+      
+      k = 0;
+      Topskip =0;
+      Bottomskip =0;
+      for ( j = 0;j < ysize;j++ ) {
+          count =0;
+          for ( i = 0;i < xsize;i++ ) {
+              if(pixels [ k ] .blue != 0) break;
+              if(pixels [ k ] .green != 0) break;
+              if(pixels [ k ] .red != 0) break;
+              k++;
+              count++;
+          }
+          if(count!=xsize) break;
+          Topskip++;
+      }
+      if( Topskip != ysize) {
+        k = xsize*ysize -1;
+        for ( j = ysize -1;j >=0;j-- ) {
+          count = xsize;
+          for ( i =xsize-1;i >= 0;i-- ) {
+              if(pixels [ k ] .blue != 0) break;
+              if(pixels [ k ] .green != 0) break;
+              if(pixels [ k ] .red != 0) break;
+              k--;
+          }
+          if(count!=0) break;
+          Bottomskip++;
+        }
+      }
+      *top=Topskip;
+      *bottom=Bottomskip;
+      return 1;      
+}
+int   kgGetImageLeftRight( void * img ,int *left,int *right ) {
+      int k,i,j,count=0,Leftskip=0,Rightskip=0;
+      unsigned long v , xsize , ysize;
+      Image *image , *tmpimg;
+      PixelPacket *pixels;
+      GMIMG *png = NULL;
+      png = ( GMIMG * ) img;
+      *left=0;
+      *right =0;
+      if(img==NULL) return 0;
+      uiInitGm ( ) ;
+      image = png->image;
+      pixels = GetImagePixels ( image , 0 , 0 , image->columns , image->rows ) ;
+      xsize = image->columns;
+      ysize = image->rows;
+      
+      k = 0;
+      Leftskip =0;
+      Rightskip =0;
+      for ( i = 0;i < xsize;i++ ) {
+          count =0;
+          for ( j = 0;j < ysize;j++ ) {
+              k = j*ysize+i;
+              if(pixels [ k ] .blue != 0) break;
+              if(pixels [ k ] .green != 0) break;
+              if(pixels [ k ] .red != 0) break;
+              k=j+1;
+              count++;
+          }
+          if(count!=ysize) break;
+          Leftskip++;
+      }
+      if( Leftskip != xsize) {
+        for ( i = xsize -1;i >=0;i-- ) {
+          count = ysize;
+          for ( j =ysize-1;j >= 0;j-- ) {
+              k = j*ysize+i;
+              if(pixels [ k ] .blue != 0) break;
+              if(pixels [ k ] .green != 0) break;
+              if(pixels [ k ] .red != 0) break;
+              count--;
+              k=j;
+          }
+          if(count!=0) break;
+          Rightskip++;
+        }
+      }
+      *left=Leftskip;
+      *right=Rightskip;
+      return 1;      
+}
 #endif

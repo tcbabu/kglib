@@ -798,30 +798,40 @@ static char *OthFonts []= {
       F.Imgs =(IMG_STR **) uiInitGraphicFontLists(font,16);
       if ( FontSize <= 0 ) F.Size = ( height-4 ) /2;
       else F.Size = FontSize;
-      IMG = ( IMG_STR * ) uiComplexString ( str , F.Imgs , \
+      IMG = ( IMG_STR * ) uiComplexGrString ( str , F.Imgs , \
       font , cval , F.Size , height-1 ) ;
       imgbk = NULL;
+      img =( IMG->img ) ; 
+        int top=0,bottom=0,left=0,right=0;
+        kgGetImageTopBottom(img,&top,&bottom);
+        if((bottom -top )< height) top = bottom-height;
+        if(top<0) top=0;
+        if( (top >2)||(bottom >2) ){
+           int xsize,ysize;
+           kgGetImageSize(img,&xsize,&ysize);
+           void *rzimg= kgCropImage(img,0,top,xsize,ysize-bottom);
+           kgFreeGmImage(img);
+           img = rzimg;
+           kgGetImageSize(img,&xsize,&ysize);
+        }
+        if( (left >2)||(right >2) ){
+           int xsize,ysize;
+           kgGetImageSize(img,&xsize,&ysize);
+           void *rzimg= kgCropImage(img,left,0,xsize-right,ysize);
+           kgFreeGmImage(img);
+           img = rzimg;
+           kgGetImageSize(img,&xsize,&ysize);
+        }
+      IMG->img=img;
       gimg = ( GMIMG * ) ( IMG->img ) ;
       w = gimg->image_width;
       h = gimg->image_height;
-#if 0
-      if ( ( w > ln-FontSize ) || ( h > height ) ) {
-          float fac;
-          if ( h > height ) h = height;
-          if ( w > ( ln-FontSize ) ) w = ln-FontSize;
-          fac = ( float ) ( ln-FontSize ) /w ;
-          img = kgChangeSizeImage ( IMG->img , w , h ) ;
-          kgFreeGmImage ( IMG->img ) ;
-          IMG->xln = w;
-          IMG->img = img;
+      if(h < height){
+            img = kgChangeSizeImage ( IMG->img , width , height ) ;
+            kgFreeGmImage ( IMG->img ) ;
+            IMG->img = img;
       }
-#else
-          img = kgChangeSizeImage ( IMG->img , width , height ) ;
-          kgFreeGmImage ( IMG->img ) ;
-          IMG->xln = width;
-          IMG->img = img;
-#endif
-      
+      IMG->xln = width;
       x1 = 0;
       ln1 = IMG->xln+1;
       img = IMG->img;
@@ -3277,6 +3287,7 @@ static char *OthFonts []= {
       kgDC *dc;
       kgWC *wc;
       GMIMG *img=NULL;
+      GMIMG *gmimg=NULL;
       DIALOG *D = (DIALOG *)G->D;
       int tsize=10,strln=100;;
       dc = G->dc;
@@ -3301,7 +3312,7 @@ static char *OthFonts []= {
       lnwidth_o = dc->ln_width;
       dc->ln_width = 1;
 #if 1
-      if(!dc->trot) {
+      if((dc->trot==0)&&(kgCheckComplexString(txt)==0)) {
         float x1,y1,x2,y2,lng,h,w;
         float vx1,vy1,vx2,vy2,wx1,wy1,wx2,wy2;
         int Vx=(G->x2 -G->x1),Vy=(G->y2 -G->y1);
@@ -3322,7 +3333,7 @@ static char *OthFonts []= {
         x2 = x1 +lng;
         y2 = y1+h;        
         strln = lng/(wx2 - wx1)*(dc->v_x2 -dc->v_x1);
-        img = (GMIMG *)uiGraphicsString(txt,strln,tsize*3,dc->t_font,dc->t_color,0,tsize);
+        img = (GMIMG *)uiGraphicsString(txt,strln,tsize,dc->t_font,dc->t_color,0,tsize);
         ui_drawimage(G,img,x1,y1,x2,y2);
         kgFreeGmImage(img);
         return;

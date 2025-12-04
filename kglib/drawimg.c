@@ -2760,7 +2760,7 @@
       lnwidth_o = dc->ln_width;
       dc->ln_width = 1;
 #if 1
-      if(!dc->trot) {
+      if((dc->trot==0)&&(kgCheckComplexString(txt)==0)) {
         float x1,y1,x2,y2,lng,h,w;
         tsize =  dc->txt_hty /(dc->w_y2 - dc->w_y1)*(dc->v_y2 -dc->v_y1);
         if(tsize <= 0) tsize=6;
@@ -2772,7 +2772,7 @@
         x2 = x1 +lng;
         y2 = y1+h;        
         strln = lng/(dc->w_x2 - dc->w_x1)*(dc->v_x2 -dc->v_x1);
-        img = (GMIMG *)uiGraphicsString(txt,strln,tsize*3,dc->t_font,dc->t_color,0,tsize);
+        img = (GMIMG *)uiGraphicsString(txt,strln,tsize,dc->t_font,dc->t_color,0,tsize);
         img_drawimage(G,img,x1,y1,x2,y2);
         kgFreeGmImage(img);
         return;

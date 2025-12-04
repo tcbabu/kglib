@@ -2287,6 +2287,7 @@
       if ( kgGetColor ( Tmp , 100 , 200 , & r , & g , & b ) ) {
           LnColor = 901;
           kgChangeColor ( Gbox , LnColor , r , g , b ) ;
+          kgDefineColor (LnColor ,r,g,b); 
           *count = *count+18;
           kgSetint ( Tmp , 0 , 0 , LnColor ) ;
           kgUpdateWidget ( kgGetWidget ( Tmp , 0 ) ) ;
@@ -2324,6 +2325,7 @@
       if ( kgGetColor ( Tmp , 100 , 200 , & r , & g , & b ) ) {
           FillColor = 902;
           kgChangeColor ( Gbox , FillColor , r , g , b ) ;
+          kgDefineColor (FillColor ,r,g,b); 
           *count = *count+18;
           kgSetint ( Tmp , 2 , 0 , FillColor ) ;
           kgUpdateWidget ( kgGetWidget ( Tmp , 2 ) ) ;
@@ -2369,6 +2371,7 @@
       if ( kgGetColor ( Tmp , 100 , 200 , & r , & g , & b ) ) {
           TextColor = 903;
           kgChangeColor ( Gbox , TextColor , r , g , b ) ;
+          kgDefineColor (TextColor ,r,g,b); 
           *count = *count+18;
           kgSetint ( Tmp , 4 , 0 , TextColor ) ;
           kgUpdateWidget ( kgGetWidget ( Tmp , 4 ) ) ;
@@ -2398,6 +2401,7 @@
       if ( kgGetColor ( Tmp , 100 , 200 , & r , & g , & b ) ) {
           BorColor = 904;
           kgChangeColor ( Gbox , BorColor , r , g , b ) ;
+          kgDefineColor (BorColor ,r,g,b); 
           *count = *count+18;
           kgSetint ( Tmp , 5 , 0 , BorColor ) ;
           kgUpdateWidget ( kgGetWidget ( Tmp , 5 ) ) ;

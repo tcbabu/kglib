@@ -1,4 +1,4 @@
-#include "kulina.h"
+#include <kulina.h>
 #include "kgDrawingBoxCallbacks.h"
 #include "GclrkgDrawingBox.c"
 int kgDrawingBoxGroup( DIALOG *D,void **v,void *pt) {
@@ -8,7 +8,7 @@ int kgDrawingBoxGroup( DIALOG *D,void **v,void *pt) {
   DIP p0 = { 
     'p',
     2,2,  
-    118,260,  
+    115,188,  
     (void *)xpm0,
     -1, /* bkgr colour */ 
       2,0,0.000000 /* border hide transparency*/ 
@@ -51,8 +51,8 @@ int kgDrawingBoxGroup( DIALOG *D,void **v,void *pt) {
   DIE e1 = { 
     'e',
     6,5,  
-    111,255,   
-    11,  
+    111,185,   
+    8,  
     (int *)v[0],
     NULL,
     menu1 ,
@@ -128,8 +128,8 @@ int kgDrawingBox( void *parent,void **v,void *pt) {
   D.rw = 4;
   D.xo = 10;   /* Position of Dialog */ 
   D.yo = 10;
-  D.xl = 116;    /*  Length of Dialog */
-  D.yl = 259;    /*  Width  of Dialog */
+  D.xl = 112;    /*  Length of Dialog */
+  D.yl = 185;    /*  Width  of Dialog */
   D.Initfun = kgDrawingBoxinit;    /*   init fuction for Dialog */
   D.Cleanupfun = kgDrawingBoxcleanup;    /*   cleanup fuction for Dialog */
   D.kbattn = 0;    /*  1 for drawing keyborad attention */
