@@ -975,3 +975,269 @@
       }
       return 1;
   }
+void *uiAddCharImage(void *img1,void *img2,int xshft,int sft,int  *ymax,int *ymin) {
+    int xsize1,ysize1,xsize2, ysize2,xsize,ysize;
+    int ht,offset,shift = sft,yu,yl,ymaxold,yminold;
+    void *img=NULL;
+    if(img2 == NULL) return img1;
+    if (img1 == NULL){
+      kgGetImageSize(img2,&xsize2,&ysize2);
+      if((ysize2+sft) >*ymax ) *ymax = ysize2+sft;
+      *ymin = sft;
+      return img2;
+    }
+    ymaxold = *ymax;
+    yminold = *ymin;
+    kgGetImageSize(img1,&xsize1,&ysize1);
+    kgGetImageSize(img2,&xsize2,&ysize2);
+    
+    yu = shift+ysize2;
+    yl = shift;
+    if(yu > *ymax ) *ymax =yu;
+    if(yl < *ymin ) *ymin = yl;
+    xsize = xsize1+xsize2;
+    ht = ysize2+abs(shift);
+    ysize = *ymax - *ymin;
+    
+    offset = ysize - shift;
+    img = kgCreateImage ( xsize, ysize ) ;
+    kgReplaceImage ( img , img1 , 0,*ymax  -ymaxold) ;
+    kgReplaceImage ( img , img2 ,xsize1,*ymax -yu) ;
+#if 0
+    if(*ymax == ymaxold )kgReplaceImage ( img , img2 ,xsize1,*ymax -yu) ;
+    else kgReplaceImage ( img , img2 ,xsize1,*ymin-ysize2) ;
+    if(ysize==ysize1){
+      if(shift >=0 ) {
+        kgReplaceImage ( img , img2 ,xsize1,*ymax -(ysize2+shift)) ;
+      }
+      else {
+        kgReplaceImage ( img , img2 ,xsize1,*ymax -shift) ;
+      }
+    }
+    else {
+       if(shift  > 0 )kgReplaceImage ( img , img2 ,xsize1,0) ;
+       else kgReplaceImage (img,img2,xsize1,ysize-ysize2);
+    }
+#endif
+    kgFreeGmImage(img1);
+    kgFreeGmImage(img2);
+    kgGetImageSize(img,&xsize,&ysize);
+    return img;
+}
+#define YLPUSH {\
+                  ypt = ( YPOS * ) malloc ( sizeof ( YPOS )) ;\
+                  ypt->yp = yp;\
+                  ypt->hfact = hfact;\
+                  ypt->wfact = wfact;\
+                  Dpush ( YL , ypt ) ;\
+}
+#define YLPOP {\
+                  ypt = Dpop ( YL ) ;\
+                  yp = ypt->yp;\
+                  hfact = ypt->hfact;\
+                  wfact = ypt->wfact;\
+                  free ( ypt ) ;\
+}
+#define ADDGRIMG {\
+              IMG = Imgs[txt[i]];\
+              kgGetImageSize(IMG->img,&xsize,&ysize);\
+              img = kgCropImage(IMG->img,0,0,IMG->xln,ysize);\
+              kgSetImageColor ( img , rd , gr , bl ) ;\
+              rzimg = kgChangeSizeImage(img,(int)((wd*wfact+gp)*cfx+0.5) ,(int)( height*hfact*cfy+0.5));\
+              kgFreeGmImage(img);\
+              img = rzimg;\
+              shift = (int)(yp*height*cfy+0.5);             \
+              fimg = uiAddCharImage(fimg,img,xp,shift,&ymax,&ymin);\
+              img=NULL;\
+              xp += ( wd*wfact+gp ) ;\
+}
+static float Fval(char *str) {
+    float val=1.0;
+    val = str[0]-'0';
+    if(str[1]!= (int)'0')val = val/(str[1]-'0');
+    return val;
+}
+static int Ival(char *str) {
+   int val;
+   val = str[0]-'0';
+   val = val*10+(str[1]-(int)'0');
+   return val;    
+}
+  void * ftGrStringImage ( int font , int color ,int angle, char *txt , float wdth , \
+  float height , float gp , float cfx ,float cfy,int *base) {
+      float wd=wdth , xp=0 , yp=0,hfact=1.0,wfact=1.0;
+      void *img = NULL , *fimg = NULL,*rzimg=NULL;
+      int rd,gr,bl;
+      int xsize,ysize;
+      short ngp , n , i , j , k ;
+  //    int base =0;
+      int font_o , Nu , De;
+      float xdsp = 0;
+      float m_f [ 128 ] ;
+      float val;
+      char cntl;
+      IMG_STR **Imgs;
+      int ymax=0,ymin=0;
+      int top,left,bottom,right;
+      typedef struct _ypos {
+          float yp , hfact , wfact,xp ;
+      } YPOS;
+      int Fsize = 64;
+      if ( txt == NULL ) return NULL;
+      if ( txt [ 0 ] == '\0' ) return NULL;
+      YPOS *ypt = NULL;
+      Dlink *YL = Dopen ( ) ;
+      Dlink *XL = Dopen ( ) ;
+      char Str [ 2 ] ;
+      float *xpt;
+      int strln;
+      int shift;
+      Imgs =(IMG_STR **) uiInitGraphicFontLists(font,Fsize);
+      IMG_STR *IMG=NULL;
+      ypt = ( YPOS * ) malloc ( sizeof ( YPOS ) ) ;
+      xp = 0;
+      yp = 0;
+      ypt->yp = 0.;
+      ypt->hfact = 1.0;
+      ypt->wfact = 1.0;
+      ypt->xp = xp;
+      Dadd ( YL , ypt ) ;
+      xpt = ( float * ) malloc ( sizeof ( float ) ) ;
+      *xpt = 0;
+      Dadd ( XL , xpt ) ;
+      Str [ 0 ] = '\0';
+      font_o = font;
+      wd = wdth;
+      gp = 0;
+      ngp = 1;
+      xdsp = 0;
+      kgGetDefaultRGB ( color , & rd , & gr , & bl ) ;
+      strln = ftStringLength ( font,txt , wdth ) ;
+      while ( txt [ i ] != '\0' ) {
+          if ( txt [ i ] != '!' ) { 
+              Str [ 0 ] = txt [ i ] ;
+              Str [1]   = '\0';
+//              IMG  =   (IMG_STR  *) uiComplexGrString ( Str ,Imgs, font , color , (int)((wd*wfact+gp)*cfx+0.5) ,(int)( height*hfact*cfy+0.5) ) ;
+              ADDGRIMG;
+          }
+          else {
+              i++;
+              if ( txt [ i ] == '\0' ) break;
+              cntl = txt [ i ] ;
+              switch ( cntl ) {
+                  case 'S':
+                  YLPUSH;
+                  yp += ( hfact ) *0.6;
+                  hfact = hfact*0.5;
+                  wfact = wfact*0.5;
+                  break;
+                  case 's':
+                  YLPUSH;
+                  yp -= ( hfact ) *0.15;
+                  hfact = hfact*0.5;
+                  wfact = wfact*0.5;
+                  break;
+                  case 'e':
+                  YLPOP;
+                  break;
+                  case '!':
+                  ADDGRIMG;
+                  break;
+                  case 'b':
+                  xpt = ( float* ) malloc ( sizeof ( float )) ;
+                  *xpt = xp;
+                  Dpush ( XL , xpt ) ;
+                  break;
+                  case 'B':
+                  break;
+                  case 'I':
+                  break;
+                  case 'N':
+                  break;
+                  case 'g':
+                  break;
+                  case 'r':
+                  xpt = ( float * ) Dpop ( XL ) ;
+                  xp = *xpt;
+                  free ( xpt ) ;
+                  break;
+                  case 'k':
+                  xpt = ( float * ) Dpop ( XL ) ;
+                  xp = *xpt;
+                  free ( xpt ) ;
+                  break;
+                  case 'x':
+                  YLPUSH;
+                  yp += ( hfact  *0.3);
+                  break;
+                  case 'y':
+                  YLPUSH;
+                  yp -= ( hfact  *0.3);
+                  break;
+                  case 'u':
+                  val = Fval(txt+i+1);;
+                  YLPUSH;
+                  yp += ( hfact ) *val;
+                  i=i+2;
+                  break;
+                  case 'd':
+                  val = Fval(txt+i+1);
+                  YLPUSH;
+                  yp -= ( hfact  *val);
+                  i=i+2;
+                  break;
+                  case 'O':
+                  case 'U':
+                  break;
+                  case '%':
+                  break;
+                  case 'z':
+                  if ( ( txt [ i+1 ] == '\0' ) || ( txt [ i+2 ] == '\0' ) ) break;
+                  val = Fval(txt+i+1);
+                  YLPUSH;
+                  hfact = hfact*val;
+                  wfact = wfact*val;
+                  i += 2;
+                  break;
+                  case 'f':
+                  if ( ( txt [ i+1 ] == '\0' ) || ( txt [ i+2 ] == '\0' ) ) break;
+                  font  = Ival(txt+i+1);
+                  Imgs =(IMG_STR **) uiInitGraphicFontLists(font,Fsize);
+                  i+= 2;
+                  break;
+                  case 'c':
+                  color = Ival(txt+i+1);
+                  kgGetDefaultRGB ( color , & rd , & gr , & bl ) ;
+                  i+= 2;
+                  break;
+                  case 'h':
+                  if ( ( txt [ i+1 ] == '\0' ) || ( txt [ i+2 ] == '\0' ) ) break;
+                  YLPUSH;
+                  val = Fval(txt+i+1);
+                  hfact = hfact*val;
+                  i += 2;
+                  break;
+                  case 'w':
+                  if ( ( txt [ i+1 ] == '\0' ) || ( txt [ i+2 ] == '\0' ) ) break;
+                  YLPUSH;
+                  val = Fval(txt+i+1);
+                  wfact = wfact*val;
+                  i += 2;
+                  break;
+                  default :
+                  break;
+              }
+          }
+              i++;
+      }
+      Dempty ( XL ) ;
+      Dempty ( YL ) ;
+#if 0
+      IMG= (IMG_STR *)malloc(sizeof(IMG_STR));
+      IMG->img = fimg;
+      kgGetImageSize(img,&xsize,&ysize);
+      IMG->xln = xsize;
+      IMG->yln = ysize;
+#endif
+      return fimg;
+  }

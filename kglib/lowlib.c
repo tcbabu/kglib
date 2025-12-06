@@ -3312,7 +3312,8 @@ static char *OthFonts []= {
       lnwidth_o = dc->ln_width;
       dc->ln_width = 1;
 #if 1
-      if((dc->trot==0)&&(kgCheckComplexString(txt)==0)) {
+//      if((dc->trot==0)&&(kgCheckComplexString(txt)==0)) {
+        if((dc->trot==0)) {
         float x1,y1,x2,y2,lng,h,w;
         float vx1,vy1,vx2,vy2,wx1,wy1,wx2,wy2;
         int Vx=(G->x2 -G->x1),Vy=(G->y2 -G->y1);
@@ -3333,7 +3334,11 @@ static char *OthFonts []= {
         x2 = x1 +lng;
         y2 = y1+h;        
         strln = lng/(wx2 - wx1)*(dc->v_x2 -dc->v_x1);
-        img = (GMIMG *)uiGraphicsString(txt,strln,tsize,dc->t_font,dc->t_color,0,tsize);
+        int base =0;
+        float cfx = (dc->v_x2 -dc->v_x1)/(wx2 - wx1);
+        float cfy = (dc->v_y2 -dc->v_y1)/(wy2 - wy1);
+//        img = (GMIMG *)uiGraphicsString(txt,strln,tsize,dc->t_font,dc->t_color,0,tsize);
+        img = (GMIMG *)ftGrStringImage ( dc->t_font , dc->t_color ,0, txt ,w,h,0.0,cfx,cfy,&base);
         int xsize,ysize;
         kgGetImageSize(img,&xsize,&ysize);
         ui_drawimage(G,img,x1,y1,x2,(int)(y1+ysize/(wx2 - wx1)*(dc->v_x2 -dc->v_x1)));

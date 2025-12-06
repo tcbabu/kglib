@@ -3178,7 +3178,7 @@ int   kgGetImageTopBottom ( void * img ,int *top,int *bottom ) {
         for ( j = ysize -1;j >=0;j-- ) {
           count = xsize;
           for ( i =xsize-1;i >= 0;i-- ) {
-              if(pixels [ k ] .opacity != 255 ) break;
+              if(pixels [ k ] .opacity != 0 ) break;
               if(pixels [ k ] .blue != 0) break;
               if(pixels [ k ] .green != 0) break;
               if(pixels [ k ] .red != 0) break;
