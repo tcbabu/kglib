@@ -11,6 +11,7 @@
       int xln;
       int yln;
       void *img;
+      int Size;
   } IMG_STR;
   typedef struct _font_str {
       char code; //i internal , t char table f fontnane
@@ -35,23 +36,13 @@
               pixls [ j*WIDTH+i ] = bitmap->buffer [ q * bitmap->width + p ] ;
           }
       }
+//      printf("Bitmap: %d %d : %d %d : %d %d\n",x,y, bitmap->width , bitmap->rows,WIDTH,HEIGHT);
       return pixls;
   }
   static void * Make_image ( unsigned char *pixls , int WIDTH,int HEIGHT) {
       int i , j;
-      void *img , *fid , *img2;
+      void *img , *img2;
       int clr;
-#if 0
-      fid = kgInitImage ( WIDTH , HEIGHT , 1 ) ;
-      kgLineColor ( fid , 0 ) ;
-      kgMove2f ( fid , ( float ) WIDTH-1. , ( float ) HEIGHT-1. ) ;
-      kgDraw2f ( fid , ( float ) 0.0 , ( float ) HEIGHT-1. ) ;
-      kgDraw2f ( fid , ( float ) 0.0 , ( float ) 0.0 ) ;
-      kgDraw2f ( fid , ( float ) WIDTH-1. , ( float ) 0.0 ) ;
-      kgDraw2f ( fid , ( float ) WIDTH-1. , ( float ) HEIGHT-1. ) ;
-      img = kgGetSharpImage ( fid ) ;
-      kgCloseImage ( fid ) ;
-#endif
       img2 = kgCreateImage ( WIDTH , HEIGHT ) ;
       int k = -1;
       for ( i = 0; i < HEIGHT; i++ ) {
@@ -61,11 +52,8 @@
               kgSetPixelAlpha ( img2 , j , i , 255-pixls [ k ] ) ;
           }
       }
-//  kgSetImageColor(img2,255,0,0);
-//  kgMergeImages(img,img2,0,0);
-//  kgFreeImage(img2);
       img = img2;
-//  kgWriteImage(img,"Junk.png");
+//    kgWriteImage(img,"Junk.png");
       return img;
   }
   void * kgMakeFixedFontImg ( char *filename , char *text , int Size ,int Gap) {
@@ -188,7 +176,7 @@
       matrix.xy = 0;
       matrix.yx = 0;
       matrix.yy = ( FT_Fixed ) ( 1*0x10000L ) ;
-      WIDTH = 2*WIDTH*num_chars+4;
+      WIDTH = 2.0*WIDTH*num_chars+4;
       pixls = ( unsigned char * ) calloc ( sizeof  \
           ( unsigned char ) , WIDTH*HEIGHT ) ;
   /* the pen position in 26.6 cartesian space coordinates; */
@@ -204,12 +192,13 @@
           error = FT_Load_Char ( face , text [ n ] , FT_LOAD_RENDER ) ;
           if ( error ) continue; /* ignore errors */
     /* now, draw to our target surface (convert position) */
+//          printf("Slot: %d %d %d %d \n",slot->bitmap_left ,slot->bitmap_top,slot->bitmap.width,slot->bitmap.rows);
           draw_bitmap ( pixls , & slot->bitmap , slot->bitmap_left , target_height - slot->bitmap_top,WIDTH,HEIGHT ) ;
     /* increment pen position */
           pen.x += slot->advance.x+32+Gap*64;
           pen.y += slot->advance.y;
       }
-      img = Make_image ( pixls , WIDTH ,HEIGHT) ;
+      img = Make_image ( pixls ,WIDTH ,HEIGHT) ;
       FT_Done_Face ( face ) ;
       FT_Done_FreeType ( library ) ;
       free ( pixls ) ;
@@ -332,6 +321,30 @@
           kgFreeGmImage(img);
           Imgs [ i ]->xln = ( int ) ( Imgs [ i ]->xln*0.5+0.9 ) ;
           Imgs [ i ]->yln = ( int ) ( Imgs [ i ]->yln*0.5+0.9 ) ;
+          Imgs [ i ]->Size =Size;
+      }
+      return ( void ** ) Imgs;
+  }
+  void **kgGrFontChars ( char *Font , int Size ) {
+      IMG_STR **Imgs = NULL;
+      int xsize,ysize;
+      Imgs = ( IMG_STR ** ) malloc ( sizeof ( IMG_STR * ) *128 ) ;
+      void *img;
+      char txt [ 2 ] = "";
+      int i , k;
+      for ( i = 0;i < 128;i++ ) Imgs [ i ] = NULL;
+      for ( i = 31;i < 128;i++ ) {
+          txt [ 0 ] = i;
+          Imgs [ i ] = ( IMG_STR * ) kgMakeGrFontImg ( Font , txt , Size ,Size,0) ;
+          img = Imgs [ i ]->img ; 
+#if 0
+          Imgs [ i ]->img = kgResizeImage ( img , 0.5 ) ;
+          kgFreeGmImage(img);
+#endif
+          kgGetImageSize(Imgs [ i ]->img ,&xsize,&ysize);
+          Imgs [ i ]->xln = xsize;
+          Imgs [ i ]->yln = ysize ;
+
           Imgs [ i ]->Size =Size;
       }
       return ( void ** ) Imgs;
@@ -959,7 +972,7 @@
       return ln;
   }
   int ftGetWarray(int font,float *wd) {
-      IMG_STR **IMG = (IMG_STR **)uiInitGraphicFontLists(font,16);
+      IMG_STR **IMG = (IMG_STR **)uiInitGraphicFontLists(font,64);
       int ln =0;
       int i=0;
       if(wd == NULL) return 0;
@@ -1041,9 +1054,10 @@ void *uiAddCharImage(void *img1,void *img2,int xshft,int sft,int  *ymax,int *ymi
 #define ADDGRIMG {\
               IMG = Imgs[txt[i]];\
               kgGetImageSize(IMG->img,&xsize,&ysize);\
-              img = kgCropImage(IMG->img,0,0,IMG->xln,ysize);\
+              img = kgCopyImage(IMG->img);\
               kgSetImageColor ( img , rd , gr , bl ) ;\
               rzimg = kgChangeSizeImage(img,(int)((wd*wfact+gp)*cfx+0.5) ,(int)( height*hfact*cfy+0.5));\
+              kgGetImageSize(rzimg,&xsize,&ysize);\
               kgFreeGmImage(img);\
               img = rzimg;\
               shift = (int)(yp*height*cfy+0.5);             \
@@ -1108,7 +1122,7 @@ static int Ival(char *str) {
       Str [ 0 ] = '\0';
       font_o = font;
       wd = wdth;
-      gp = 0;
+      gp = 0.25;
       ngp = 1;
       xdsp = 0;
       kgGetDefaultRGB ( color , & rd , & gr , & bl ) ;
@@ -1117,7 +1131,6 @@ static int Ival(char *str) {
           if ( txt [ i ] != '!' ) { 
               Str [ 0 ] = txt [ i ] ;
               Str [1]   = '\0';
-//              IMG  =   (IMG_STR  *) uiComplexGrString ( Str ,Imgs, font , color , (int)((wd*wfact+gp)*cfx+0.5) ,(int)( height*hfact*cfy+0.5) ) ;
               ADDGRIMG;
           }
           else {
@@ -1239,5 +1252,96 @@ static int Ival(char *str) {
       IMG->xln = xsize;
       IMG->yln = ysize;
 #endif
-      return fimg;
+      kgGetImageSize(fimg,&xsize,&ysize);
+      img = kgChangeSizeImage(fimg,strln,ysize);
+      kgFreeGmImage(fimg);
+      return img;
+  }
+  void * kgMakeGrFontImg( char *filename , char *text , int Htt,int Wdd ,int Gap) {
+      FT_Library library;
+      FT_Face face;
+      FT_GlyphSlot slot;
+      FT_Matrix matrix; /* transformation matrix */
+      FT_Vector pen; /* untransformed origin */
+      FT_Error error;
+      int left,right;
+      int Size = Htt;
+      void *rzimg=NULL;
+      int xsize,ysize;
+      double angle;
+      double hfac=1.0,wfac=(float)Wdd/(float)Htt;
+      int target_height;
+      int n , num_chars , i , j;
+      int Ht,Wd;
+      int WIDTH,HEIGHT;
+      double dx , dy;
+      num_chars = strlen ( text ) ;
+      angle = ( 0.0 / 360 ) * 3.14159 * 2; 
+      Ht = Htt;
+      Wd = Wdd;;
+      IMG_STR *Img;
+      void *img;
+      unsigned char *pixls=NULL;
+      error = FT_Init_FreeType ( & library ) ; /* initialize library */
+      error = FT_New_Face ( library , filename , 0 , & face ) ;
+      error = FT_Set_Char_Size ( face ,Wd*64, Ht*64, 120 , 120 ) ;
+           /* set character size */
+      slot = face->glyph;
+  /* set up matrix */
+      matrix.xx = ( FT_Fixed ) ( 1*0x10000L ) ;
+      matrix.xy = 0;
+      matrix.yx = 0;
+      matrix.yy = ( FT_Fixed ) ( 1*0x10000L ) ;
+      HEIGHT =(int)( 2.0*Htt);
+      target_height =(int)( HEIGHT );
+      WIDTH = 2*Wdd*num_chars+4;
+      pixls = ( unsigned char * ) calloc ( sizeof  \
+          ( unsigned char ) , WIDTH*HEIGHT ) ;
+  /* the pen position in 26.6 cartesian space coordinates; */
+  /* start at (300,200) relative to the upper left corner  */
+      pen.x = 0 * 64;
+      pen.y = (int)( Wdd/2.0+0.5 ) * 64;
+      for ( n = 0; n < num_chars; n++ ) {
+          FT_Set_Transform ( face , & matrix , & pen ) ;
+          error = FT_Load_Char ( face , text [ n ] , FT_LOAD_RENDER ) ;
+          if ( error ) continue; /* ignore errors */
+
+          draw_bitmap ( pixls , & slot->bitmap ,\
+              slot->bitmap_left ,HEIGHT - slot->bitmap_top,WIDTH,HEIGHT ) ;
+          pen.x += slot->advance.x+32+Gap*64;
+          pen.y += slot->advance.y;
+      }
+      img = Make_image ( pixls , WIDTH ,HEIGHT) ;
+      FT_Done_Face ( face ) ;
+      FT_Done_FreeType ( library ) ;
+      free ( pixls ) ;
+      pixls=NULL;
+      Img = ( IMG_STR * ) malloc ( sizeof ( IMG_STR ) ) ;
+      kgGetImageSize(img,&xsize,&ysize);
+//      printf("Xsize: %d  %d\n",xsize,ysize);
+//      kgGetAlphaLeftRight(img,&left,&right);
+      right =(int) slot->bitmap.width;
+      rzimg = kgCropImage(img,0,0,right,ysize);
+      kgFreeGmImage(img);
+      img = rzimg;
+#if 0
+      rzimg = kgResizeImage(img,0.5);
+      kgFreeGmImage(img);
+      img = rzimg;
+#endif
+      kgGetImageSize(img,&xsize,&ysize);
+//      printf("Xsize1: %d  %d\n",xsize,ysize);
+      Img->img = img;
+      Img->xln = xsize;
+      Img->yln = ysize;
+      Img->img = img;
+      Img->Size = Size;
+#if 0
+      kgGetImageSize(img,&xsize,&ysize);
+      printf("Xsize1: %d  %d\n",xsize,ysize);
+      rzimg = kgCropImage(img,0,0,Img->xln,ysize);
+      kgFreeGmImage(img);
+      Img->img = rzimg;
+#endif
+      return Img;
   }

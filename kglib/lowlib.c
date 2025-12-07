@@ -764,7 +764,7 @@ static char *OthFonts []= {
       strcpy ( FontFile , ( char * ) Drecord ( FontList , Font ) ) ;
       if(Grimgs[font]==NULL){
 //        printf("New GRfont list\n");
-         Grimgs[font] = ( IMG_STR ** ) kgFontChars ( FontFile , FontSize ) ;
+         Grimgs[font] = ( IMG_STR ** ) kgGrFontChars ( FontFile , FontSize ) ;
       }
       return Grimgs[font];
   }

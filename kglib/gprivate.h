@@ -1420,7 +1420,9 @@ void ui_Image ( void *Dtmp , void *tmp , int x0 , int y0 , int width , int heigh
 /* New Code for FT interface */
   void * kgMakeFixedFontImg ( char *filename , char *text , int Size ,int Gap);
   void * kgMakeFontImg ( char *filename , char *text , int Size ,int Gap);
+  void * kgMakeGrFontImg( char *filename , char *text , int Htt,int Wdd ,int Gap);
   void **kgFontChars ( char *Font , int Size );
+  void **kgGrFontChars ( char *Font , int Size );
   void **kgFixedFontChars ( char *Font , int Size );
   void *uiMakeString ( void *Fstr , char *str , int Ht , int Gap );
   void *uiMakeFixedString ( void *Fstr , char *str , int Ht , int Gap );

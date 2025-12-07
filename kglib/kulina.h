@@ -1256,6 +1256,8 @@ void *kgFlipImage(void *img); // About X refledction overwrites img
 void *kgFlopImage(void *img); // About Y refledction overwrites img
 int   kgGetImageTopBottom ( void * img ,int *top,int *bottm ); // get blank info
 int   kgGetImageLeftRight( void * img ,int *left,int *right );
+  int   kgGetAlphaTopBottom ( void * img ,int *top,int *bottom );
+  int   kgGetAlphaLeftRight ( void * img ,int *left,int *right );
 int   kgImagetoC(char *flname);
 void *kgBorderedRectangle(int w, int h,int clr,float rfac);
 void *kgPressedRectangle(int width,int height,int fillclr,float rfac);
