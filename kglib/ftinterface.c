@@ -1090,13 +1090,12 @@ static int Ival(char *str) {
    return val;    
 }
   void * ftGrStringImage ( int font , int color ,int angle, char *txt , float wdth , \
-  float height , float gp , float cfx ,float cfy,int *base) {
+  float height , float gp , float cfx ,float cfy) {
       float wd=wdth , xp=0 , yp=0,hfact=1.0,wfact=1.0;
       void *img = NULL , *fimg = NULL,*rzimg=NULL;
       int rd,gr,bl;
       int xsize,ysize;
       short ngp , n , i , j , k ;
-  //    int base =0;
       int font_o , Nu , De;
       float xdsp = 0;
       float m_f [ 128 ] ;
@@ -1257,17 +1256,18 @@ static int Ival(char *str) {
       }
       Dempty ( XL ) ;
       Dempty ( YL ) ;
-#if 0
-      IMG= (IMG_STR *)malloc(sizeof(IMG_STR));
-      IMG->img = fimg;
-      kgGetImageSize(img,&xsize,&ysize);
-      IMG->xln = xsize;
-      IMG->yln = ysize;
-#endif
       kgGetImageSize(fimg,&xsize,&ysize);
+#if 0
       img = kgChangeSizeImage(fimg,strln,ysize);
       kgFreeGmImage(fimg);
-      return img;
+#else
+      img = fimg;
+#endif
+      IMG= (IMG_STR *)malloc(sizeof(IMG_STR));
+      IMG->img = img;
+      IMG->yln = ymin/cfy;
+      IMG->xln = ymax/cfy;
+      return IMG;
   }
   void * kgMakeGrFontImg( char *filename , char *text , int Htt,int Wdd ,int Gap) {
       FT_Library library;

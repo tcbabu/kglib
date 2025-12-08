@@ -1433,7 +1433,7 @@ void ui_Image ( void *Dtmp , void *tmp , int x0 , int y0 , int width , int heigh
   void *uiComplexString ( char *str ,void *Imgtmp, int font , int color , int FontSize ,int height ) ;
   void *uiComplexGrString ( char *str ,void *Imgtmp, int font , int color , int FontSize ,int height ) ;
   void * ftGrStringImage ( int font , int color ,int angle, char *txt , float wdth , \
-                          float height , float gp , float cfx,float cfy ,int *base);
+                          float height , float gp , float cfx,float cfy );
   int kgCheckComplexString(char * str);
   void *uiComplexFixedString ( char *str ,void *Imgtmp, int font , int color , int FontSize ,int height ) ;
   int ffStringLength(char *str,void *tmp);

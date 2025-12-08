@@ -3287,6 +3287,7 @@ static char *OthFonts []= {
       kgDC *dc;
       kgWC *wc;
       GMIMG *img=NULL;
+      IMG_STR *IMG;
       GMIMG *gmimg=NULL;
       DIALOG *D = (DIALOG *)G->D;
       int tsize=10,strln=100;;
@@ -3316,33 +3317,23 @@ static char *OthFonts []= {
         if((dc->trot==0)) {
         float x1,y1,x2,y2,lng,h,w;
         float vx1,vy1,vx2,vy2,wx1,wy1,wx2,wy2;
-        int Vx=(G->x2 -G->x1),Vy=(G->y2 -G->y1);
-        kgGetViewport(G,&vx1,&vy1,&vx2,&vy2);
         kgGetWindow (G,&wx1,&wy1,&wx2,&wy2);
         wx1 = dc->w_x1, wx2 = dc->w_x2;
         wy1 = dc->w_y1, wy2 = dc->w_y2;
-        Vx = 1,Vy=1;
-        tsize =  (float)dc->txt_hty /(wy2 - wy1)*((dc->v_y2 -dc->v_y1));
-        if(tsize <= 0) tsize=6;
         w = (float)(dc->txt_wt)/((dc->v_x2 -dc->v_x1))*(wx2 - wx1);
         h = (float)(dc->txt_ht)/((dc->v_y2 -dc->v_y1))*(wy2 - wy1);
-
-//        ftuistrlngth(G,txt,&lng);
-        lng = ftStringLength(dc->t_font,txt,w);
         x1 = uiusr_x (dc->cur_x);
-        y1 = uiusr_y(dc->cur_y)-h*0.17;
-        x2 = x1 +lng;
-        y2 = y1+h;        
-        strln = lng/(wx2 - wx1)*(dc->v_x2 -dc->v_x1);
+        y1 = uiusr_y(dc->cur_y);
         int base =0;
         float cfx = (dc->v_x2 -dc->v_x1)/(wx2 - wx1);
         float cfy = (dc->v_y2 -dc->v_y1)/(wy2 - wy1);
-//        img = (GMIMG *)uiGraphicsString(txt,strln,tsize,dc->t_font,dc->t_color,0,tsize);
-        img = (GMIMG *)ftGrStringImage ( dc->t_font , dc->t_color ,0, txt ,w,h,0.0,cfx,cfy,&base);
+        IMG = (IMG_STR *)ftGrStringImage ( dc->t_font , dc->t_color ,0, txt ,w,h,0.0,cfx,cfy);
         int xsize,ysize;
-        kgGetImageSize(img,&xsize,&ysize);
-        ui_drawimage(G,img,x1,y1,x2,(int)(y1+ysize/(wx2 - wx1)*(dc->v_x2 -dc->v_x1)));
-        kgFreeGmImage(img);
+        kgGetImageSize(IMG->img,&xsize,&ysize);
+        y1 = y1+IMG->yln;
+        ui_drawimage(G,IMG->img,x1,y1,(int)(x1+xsize/cfx),(int)(y1+ysize/cfy));
+        kgFreeGmImage(IMG->img);
+        free(IMG);
         return;
       }
 #endif
