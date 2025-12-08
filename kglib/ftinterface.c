@@ -992,17 +992,29 @@ void *uiAddCharImage(void *img1,void *img2,int xshft,int sft,int  *ymax,int *ymi
     int xsize1,ysize1,xsize2, ysize2,xsize,ysize;
     int ht,offset,shift = sft,yu,yl,ymaxold,yminold;
     void *img=NULL;
+    static float Crr=0;
+    static int  Yold=0;
     if(img2 == NULL) return img1;
-    if (img1 == NULL){
       kgGetImageSize(img2,&xsize2,&ysize2);
-      if((ysize2+sft) >*ymax ) *ymax = ysize2+sft;
-      *ymin = sft;
+      
+    if (img1 == NULL){
+      *ymin = shift;
+      Crr = 0.25*ysize2;
+      Yold = ysize2;
+      shift = sft - Crr;
+      if((ysize2+shift) >*ymax ) *ymax = ysize2+shift;
       return img2;
     }
+    if((sft  == 0 )&&(ysize2!=Yold) ) {
+      Crr = ysize2*0.25;
+      Yold  = ysize2;
+    }
+    
+    shift = sft - Crr;
     ymaxold = *ymax;
     yminold = *ymin;
     kgGetImageSize(img1,&xsize1,&ysize1);
-    kgGetImageSize(img2,&xsize2,&ysize2);
+  //  kgGetImageSize(img2,&xsize2,&ysize2);
     
     yu = shift+ysize2;
     yl = shift;
