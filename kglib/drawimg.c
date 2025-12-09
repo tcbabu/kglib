@@ -2760,7 +2760,7 @@
       lnwidth_o = dc->ln_width;
       dc->ln_width = 1;
 #if 1
-      if((dc->trot==0)&&(kgCheckComplexString(txt)==0)) {
+      if((dc->trot==0)) {
 #if 0
         float x1,y1,x2,y2,lng,h,w;
         tsize =  dc->txt_hty /(dc->w_y2 - dc->w_y1)*(dc->v_y2 -dc->v_y1);

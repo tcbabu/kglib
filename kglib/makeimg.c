@@ -4532,7 +4532,7 @@ static void  win_txtwrt(void)
   ishft =0;
   greek=0;
 #if 1
-      if((trot==0)&&(kgCheckComplexString(txt)==0)) {
+      if((trot==0)) {
 #if 0
         float x1,y1,x2,y2,lng,h,w;
         tsize =  txt_hty /(w_y2 - w_y1)*(v_y2 -v_y1);
