@@ -4533,6 +4533,7 @@ static void  win_txtwrt(void)
   greek=0;
 #if 1
       if((trot==0)&&(kgCheckComplexString(txt)==0)) {
+#if 0
         float x1,y1,x2,y2,lng,h,w;
         tsize =  txt_hty /(w_y2 - w_y1)*(v_y2 -v_y1);
         if(tsize <= 0) tsize=6;
@@ -4549,6 +4550,27 @@ static void  win_txtwrt(void)
         img = (GMIMG *)uiGraphicsString(txt,strln,tsize,t_font,t_color,0,tsize);
         gph_drawimage(img,x1,y1,x2,y2);
         kgFreeGmImage(img);
+        return;
+#endif
+        IMG_STR *IMG;
+        float x1,y1,x2,y2,lng,h,w;
+        float vx1,vy1,vx2,vy2,wx1,wy1,wx2,wy2;
+        wx1 = w_x1, wx2 = w_x2;
+        wy1 = w_y1, wy2 = w_y2;
+        w = (float)(txt_wt)/((v_x2 -v_x1))*(wx2 - wx1);
+        h = (float)(txt_ht)/((v_y2 -v_y1))*(wy2 - wy1);
+        x1 = usr_x (cur_x);
+        y1 = usr_y(cur_y);
+        int base =0;
+        float cfx = (v_x2 -v_x1)/(wx2 - wx1);
+        float cfy = (v_y2 -v_y1)/(wy2 - wy1);
+        IMG = (IMG_STR *)ftGrStringImage ( t_font , t_color ,0, txt ,w,h,0.0,cfx,cfy);
+        int xsize,ysize;
+        kgGetImageSize(IMG->img,&xsize,&ysize);
+        y1 = y1+IMG->yln;
+        gph_drawimage(IMG->img,x1,y1,(int)(x1+xsize/cfx),(int)(y1+ysize/cfy));
+        kgFreeGmImage(IMG->img);
+        free(IMG);
         return;
       }
 #endif

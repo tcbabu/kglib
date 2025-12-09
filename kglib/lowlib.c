@@ -4369,7 +4369,7 @@ void transch(int c) {
       if ( dc->t_font != font_o ) ui_txt_font ( G , ( int ) font_o ) ;
       return ( ngp ) ;
   }
-  float  ftStringLength ( int font, char *title , float wdth ) {
+  float  ftStringLength_old ( int font, char *title , float wdth ) {
       float wd , gp , fj , fjl , gj , val , fact , fact1 = 1.0 , hfact = 1.0;
       short ngp , n , i , j , k , greek = 0;
       int font_o , Nu , De;

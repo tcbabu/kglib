@@ -6,6 +6,7 @@
 #include <ft2build.h>
  void * uiInitGraphicFontLists ( int font,int FontSize );
 #include FT_FREETYPE_H
+static int Xshft=2;
 #if 0
   typedef struct _img_str {
       int xln;
@@ -32,7 +33,10 @@
   /* is `FT_PIXEL_MODE_GRAY' (i.e., not a bitmap font)   */
       for ( j = y , q = 0; j < y_max; j++, q++ ) {
           for ( i = x , p = 0; i < x_max; i++, p++ ) {
-              if ( i < 0 || j < 0 || i >= WIDTH || j >= HEIGHT ) continue;
+              if ( i < 0 || j < 0 || i >= WIDTH || j >= HEIGHT ){
+//                      printf("Limit Crossed: %d %d : %d %d\n",i,j,WIDTH,HEIGHT);
+                      continue;
+              }
               pixls [ j*WIDTH+i ] = bitmap->buffer [ q * bitmap->width + p ] ;
           }
       }
@@ -50,6 +54,57 @@
               k++;
               if ( pixls [ k ] == 0 ) continue;
               kgSetPixelAlpha ( img2 , j , i , 255-pixls [ k ] ) ;
+          }
+      }
+      img = img2;
+//    kgWriteImage(img,"Junk.png");
+      return img;
+  }
+  static  void  *draw_bitmap_img (  FT_Bitmap* bitmap , FT_Int x , FT_Int y ,int WIDTH,int HEIGHT)  \
+      {
+      FT_Int i , j , p , q;
+      FT_Int x_max = x + bitmap->width;
+      FT_Int y_max = y + bitmap->rows;
+      int Ysft = y_max;
+      int k = 0;
+      void *img , *img2;
+      int clr;
+      img2 = kgCreateImage ( WIDTH*2 , HEIGHT*2 ) ;
+  /* for simplicity, we assume that `bitmap->pixel_mode' */
+  /* is `FT_PIXEL_MODE_GRAY' (i.e., not a bitmap font)   */
+      for ( j = y , q = 0; j < y_max; j++, q++ ) {
+          for ( i = x , p = 0; i < x_max; i++, p++ ) {
+              kgSetPixelAlpha ( img2 , i+Xshft , j+HEIGHT*3/4 , 255-bitmap->buffer [ q * bitmap->width + p ]  ) ;
+//              kgSetPixelAlpha ( img2 , i , j+HEIGHT*3/4 , 255-bitmap->buffer [ q * bitmap->width + p ]  ) ;
+          }
+      }
+      return img2;
+  }
+  static void * draw_image (FT_Bitmap *bitmap,FT_GlyphSlot slot  , int WIDTH,int HEIGHT) {
+      int i , j,ix,iy;
+//      FT_Bitmap bitmap = slot->bitmap;
+//              slot->bitmap_left ,HEIGHT - slot->bitmap_top,WIDTH,HEIGHT ) ;
+      int left =  slot->bitmap_left;
+      int top = HEIGHT -slot->bitmap_top;
+      int width = slot->bitmap.width; 
+      int rows  = slot->bitmap.rows;
+      void *img , *img2;
+      int clr;
+      img2 = kgCreateImage ( WIDTH , HEIGHT ) ;
+      printf("left: %d top %d Width %d rows %d : %d %d\n",left,top,width,rows,WIDTH,HEIGHT);
+      fflush(stdout);
+      int k = -1;
+      for ( i = 0; i < rows; i++ ) {
+          for ( j = 0; j < width; j++ ) {
+              ix = (top+i)*WIDTH;
+              iy = j;
+              k++;
+              if(ix < 0) continue;
+ //             pixls [ j*WIDTH+i ] = bitmap->buffer [ q * bitmap->width + p ] ;
+//              if ( pixls [ k ] == 0 ) continue;
+              printf("I,j,k: %d %d %d\n",i,j,k);
+              fflush(stdout);
+              kgSetPixelAlpha ( img2 , iy , ix , 255-bitmap->buffer [ k ] ) ;
           }
       }
       img = img2;
@@ -1068,7 +1123,7 @@ void *uiAddCharImage(void *img1,void *img2,int xshft,int sft,int  *ymax,int *ymi
               kgGetImageSize(IMG->img,&xsize,&ysize);\
               img = kgCopyImage(IMG->img);\
               kgSetImageColor ( img , rd , gr , bl ) ;\
-              rzimg = kgChangeSizeImage(img,(int)((wd*wfact+gp)*cfx+0.5) ,(int)( height*hfact*cfy+0.5));\
+              rzimg = kgChangeSizeImage(img,(int)((wd*wfact*IMG->xln/(float)Fsize+gp)*cfx+0.5) ,(int)( height*hfact*cfy+0.5));\
               kgGetImageSize(rzimg,&xsize,&ysize);\
               kgFreeGmImage(img);\
               img = rzimg;\
@@ -1133,11 +1188,11 @@ static int Ival(char *str) {
       Str [ 0 ] = '\0';
       font_o = font;
       wd = wdth;
-      gp = 0.25;
+      gp = 0.;
       ngp = 1;
       xdsp = 0;
       kgGetDefaultRGB ( color , & rd , & gr , & bl ) ;
-      strln = ftStringLength ( font,txt , wdth ) ;
+//      strln = ftStringLength ( font,txt , wdth ) ;
       while ( txt [ i ] != '\0' ) {
           if ( txt [ i ] != '!' ) { 
               Str [ 0 ] = txt [ i ] ;
@@ -1269,13 +1324,180 @@ static int Ival(char *str) {
       IMG->xln = ymax/cfy;
       return IMG;
   }
+  float  ftStringLength ( int font , char *txt , float wdth ){
+      float wd=wdth , xp=0 , yp=0,hfact=1.0,wfact=1.0;
+      void *img = NULL , *fimg = NULL,*rzimg=NULL;
+      int rd,gr,bl;
+      int xsize,ysize;
+      short ngp , n , i , j , k ;
+      int font_o , Nu , De;
+      float xdsp = 0;
+      float m_f [ 128 ] ;
+      float val;
+      char cntl;
+      IMG_STR **Imgs;
+      int ymax=0,ymin=0;
+      int top,left,bottom,right;
+      float height=1,gp=0;
+      typedef struct _ypos {
+          float yp , hfact , wfact,xp ;
+      } YPOS;
+      int Fsize = 64;
+      if ( txt == NULL ) return 0.0;
+      if ( txt [ 0 ] == '\0' ) return 0.0;
+      YPOS *ypt = NULL;
+      Dlink *YL = Dopen ( ) ;
+      Dlink *XL = Dopen ( ) ;
+      char Str [ 2 ] ;
+      float *xpt;
+      int strln;
+      int shift;
+      Imgs =(IMG_STR **) uiInitGraphicFontLists(font,Fsize);
+      IMG_STR *IMG=NULL;
+      ypt = ( YPOS * ) malloc ( sizeof ( YPOS ) ) ;
+      xp = 0;
+      yp = 0;
+      ypt->yp = 0.;
+      ypt->hfact = 1.0;
+      ypt->wfact = 1.0;
+      ypt->xp = xp;
+      Dadd ( YL , ypt ) ;
+      xpt = ( float * ) malloc ( sizeof ( float ) ) ;
+      *xpt = 0;
+      Dadd ( XL , xpt ) ;
+      Str [ 0 ] = '\0';
+      font_o = font;
+      wd = wdth;
+      gp = 0.;
+      ngp = 1;
+      xdsp = 0;
+      while ( txt [ i ] != '\0' ) {
+          if ( txt [ i ] != '!' ) { 
+              IMG = Imgs[txt[i]];
+              xp += ( wd*wfact*IMG->xln/(float)Fsize ) ;
+          }
+          else {
+              i++;
+              if ( txt [ i ] == '\0' ) break;
+              cntl = txt [ i ] ;
+              switch ( cntl ) {
+                  case 'S':
+                  YLPUSH;
+                  yp += ( hfact ) *0.6;
+                  hfact = hfact*0.5;
+                  wfact = wfact*0.5;
+                  break;
+                  case 's':
+                  YLPUSH;
+                  yp -= ( hfact ) *0.15;
+                  hfact = hfact*0.5;
+                  wfact = wfact*0.5;
+                  break;
+                  case 'e':
+                  YLPOP;
+                  break;
+                  case '!':
+                  IMG = Imgs[txt[i]];
+                  xp += ( wd*wfact*IMG->xln/(float)Fsize ) ;
+                  break;
+                  case 'b':
+                  xpt = ( float* ) malloc ( sizeof ( float )) ;
+                  *xpt = xp;
+                  Dpush ( XL , xpt ) ;
+                  break;
+                  case 'B':
+                  break;
+                  case 'I':
+                  break;
+                  case 'N':
+                  break;
+                  case 'g':
+                  break;
+                  case 'r':
+                  xpt = ( float * ) Dpop ( XL ) ;
+                  xp = *xpt;
+                  free ( xpt ) ;
+                  break;
+                  case 'k':
+                  xpt = ( float * ) Dpop ( XL ) ;
+                  xp = *xpt;
+                  free ( xpt ) ;
+                  break;
+                  case 'x':
+                  YLPUSH;
+                  yp += ( hfact  *0.3);
+                  break;
+                  case 'y':
+                  YLPUSH;
+                  yp -= ( hfact  *0.3);
+                  break;
+                  case 'u':
+                  val = Fval(txt+i+1);;
+                  YLPUSH;
+                  yp += ( hfact ) *val;
+                  i=i+2;
+                  break;
+                  case 'd':
+                  val = Fval(txt+i+1);
+                  YLPUSH;
+                  yp -= ( hfact  *val);
+                  i=i+2;
+                  break;
+                  case 'O':
+                  case 'U':
+                  break;
+                  case '%':
+                  break;
+                  case 'z':
+                  if ( ( txt [ i+1 ] == '\0' ) || ( txt [ i+2 ] == '\0' ) ) break;
+                  val = Fval(txt+i+1);
+                  YLPUSH;
+                  hfact = hfact*val;
+                  wfact = wfact*val;
+                  i += 2;
+                  break;
+                  case 'f':
+                  if ( ( txt [ i+1 ] == '\0' ) || ( txt [ i+2 ] == '\0' ) ) break;
+                  font  = Ival(txt+i+1);
+                  Imgs =(IMG_STR **) uiInitGraphicFontLists(font,Fsize);
+                  i+= 2;
+                  break;
+                  case 'c':
+                  i+= 2;
+                  break;
+                  case 'h':
+                  if ( ( txt [ i+1 ] == '\0' ) || ( txt [ i+2 ] == '\0' ) ) break;
+                  YLPUSH;
+                  val = Fval(txt+i+1);
+                  hfact = hfact*val;
+                  i += 2;
+                  break;
+                  case 'w':
+                  if ( ( txt [ i+1 ] == '\0' ) || ( txt [ i+2 ] == '\0' ) ) break;
+                  YLPUSH;
+                  val = Fval(txt+i+1);
+                  wfact = wfact*val;
+                  i += 2;
+                  break;
+                  default :
+                  break;
+              }
+          }
+              i++;
+      }
+      Dempty ( XL ) ;
+      Dempty ( YL ) ;
+      return xp;
+  }
   void * kgMakeGrFontImg( char *filename , char *text , int Htt,int Wdd ,int Gap) {
+/* For Single Character */
       FT_Library library;
       FT_Face face;
       FT_GlyphSlot slot;
       FT_Matrix matrix; /* transformation matrix */
       FT_Vector pen; /* untransformed origin */
       FT_Error error;
+      char Str[2]="u";
       int left,right;
       int Size = Htt;
       void *rzimg=NULL;
@@ -1290,7 +1512,7 @@ static int Ival(char *str) {
       num_chars = strlen ( text ) ;
       angle = ( 0.0 / 360 ) * 3.14159 * 2; 
       Ht = Htt;
-      Wd = Wdd;;
+      Wd = Wdd;
       IMG_STR *Img;
       void *img;
       unsigned char *pixls=NULL;
@@ -1300,49 +1522,59 @@ static int Ival(char *str) {
            /* set character size */
       slot = face->glyph;
   /* set up matrix */
-      matrix.xx = ( FT_Fixed ) ( 1*0x10000L ) ;
+      matrix.xx = ( FT_Fixed ) ( 1.0*0x10000L ) ;
       matrix.xy = 0;
       matrix.yx = 0;
-      matrix.yy = ( FT_Fixed ) ( 1*0x10000L ) ;
-      HEIGHT =(int)( 2.0*Htt);
+      matrix.yy = ( FT_Fixed ) ( 1.0*0x10000L ) ;
+#if 0
+      HEIGHT =(int)( 2.0*Ht);
       target_height =(int)( HEIGHT );
       WIDTH = 2*Wdd*num_chars+4;
-      pixls = ( unsigned char * ) calloc ( sizeof  \
-          ( unsigned char ) , WIDTH*HEIGHT ) ;
+#else
+      HEIGHT =(int)( Ht);
+      target_height =(int)( HEIGHT );
+      WIDTH = Wd*num_chars;
+#endif
   /* the pen position in 26.6 cartesian space coordinates; */
   /* start at (300,200) relative to the upper left corner  */
-      pen.x = 0 * 64;
-      pen.y = (int)( Wdd/2.0+0.5 ) * 64;
+      pen.x = (0) * 64;
+ //     pen.y = (int)( Wdd/2.0+0.5 ) * 64;
+      pen.y = (int)( Ht*0.25 ) * 64;
       for ( n = 0; n < num_chars; n++ ) {
           FT_Set_Transform ( face , & matrix , & pen ) ;
           error = FT_Load_Char ( face , text [ n ] , FT_LOAD_RENDER ) ;
           if ( error ) continue; /* ignore errors */
 
-          draw_bitmap ( pixls , & slot->bitmap ,\
+          img =draw_bitmap_img (  & slot->bitmap ,\
               slot->bitmap_left ,HEIGHT - slot->bitmap_top,WIDTH,HEIGHT ) ;
-          pen.x += slot->advance.x+32+Gap*64;
+          pen.x += slot->advance.x+32;
           pen.y += slot->advance.y;
       }
-      img = Make_image ( pixls , WIDTH ,HEIGHT) ;
+//      img = Make_image ( pixls , WIDTH ,HEIGHT) ;
       FT_Done_Face ( face ) ;
       FT_Done_FreeType ( library ) ;
-      free ( pixls ) ;
       pixls=NULL;
       Img = ( IMG_STR * ) malloc ( sizeof ( IMG_STR ) ) ;
       kgGetImageSize(img,&xsize,&ysize);
-//      printf("Xsize: %d  %d\n",xsize,ysize);
-//      kgGetAlphaLeftRight(img,&left,&right);
-      right =(int) slot->bitmap.width;
+      right =(int) slot->bitmap.width+Xshft;
+#if 1
+      kgGetAlphaLeftRight(img,&left,&right);
+      right = xsize - right;
+//      printf("%c %d Wd:%d\n",text[0],right,Wd);
+      if(text[0]==' ' ) {
+//           printf("WD: %d right %d\n",Wd,right);
+           right = Wd/2;
+      }
       rzimg = kgCropImage(img,0,0,right,ysize);
       kgFreeGmImage(img);
       img = rzimg;
+#endif
 #if 0
       rzimg = kgResizeImage(img,0.5);
       kgFreeGmImage(img);
       img = rzimg;
 #endif
       kgGetImageSize(img,&xsize,&ysize);
-//      printf("Xsize1: %d  %d\n",xsize,ysize);
       Img->img = img;
       Img->xln = xsize;
       Img->yln = ysize;

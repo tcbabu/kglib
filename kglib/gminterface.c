@@ -2543,6 +2543,10 @@ int  kgSetImageColor ( void *Img , int r,int g,int b ) {
       img = png->image;
       w = img->columns;
       h = img->rows;
+      if(row >= h) return 0;
+      if(col >= w ) return 0;
+      if(row < 0) return 0;
+      if(col < 0) return 0;
       img->matte = 1;
       img->background_color.opacity = 255;
       pixels = ( PixelPacket * ) uiPixelsgmImage ( Img ) ;

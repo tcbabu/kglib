@@ -2761,6 +2761,7 @@
       dc->ln_width = 1;
 #if 1
       if((dc->trot==0)&&(kgCheckComplexString(txt)==0)) {
+#if 0
         float x1,y1,x2,y2,lng,h,w;
         tsize =  dc->txt_hty /(dc->w_y2 - dc->w_y1)*(dc->v_y2 -dc->v_y1);
         if(tsize <= 0) tsize=6;
@@ -2775,6 +2776,28 @@
         img = (GMIMG *)uiGraphicsString(txt,strln,tsize,dc->t_font,dc->t_color,0,tsize);
         img_drawimage(G,img,x1,y1,x2,y2);
         kgFreeGmImage(img);
+        return;
+#endif
+        IMG_STR *IMG=NULL;
+        float x1,y1,x2,y2,lng,h,w;
+        float vx1,vy1,vx2,vy2,wx1,wy1,wx2,wy2;
+        kgGetWindow (G,&wx1,&wy1,&wx2,&wy2);
+        wx1 = dc->w_x1, wx2 = dc->w_x2;
+        wy1 = dc->w_y1, wy2 = dc->w_y2;
+        w = (float)(dc->txt_wt)/((dc->v_x2 -dc->v_x1))*(wx2 - wx1);
+        h = (float)(dc->txt_ht)/((dc->v_y2 -dc->v_y1))*(wy2 - wy1);
+        x1 = uiusr_x (dc->cur_x);
+        y1 = uiusr_y(dc->cur_y);
+        int base =0;
+        float cfx = (dc->v_x2 -dc->v_x1)/(wx2 - wx1);
+        float cfy = (dc->v_y2 -dc->v_y1)/(wy2 - wy1);
+        IMG = (IMG_STR *)ftGrStringImage ( dc->t_font , dc->t_color ,0, txt ,w,h,0.0,cfx,cfy);
+        int xsize,ysize;
+        kgGetImageSize(IMG->img,&xsize,&ysize);
+        y1 = y1+IMG->yln;
+        img_drawimage(G,IMG->img,x1,y1,(int)(x1+xsize/cfx),(int)(y1+ysize/cfy));
+        kgFreeGmImage(IMG->img);
+        free(IMG);
         return;
       }
 #endif
