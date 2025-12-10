@@ -16,8 +16,8 @@ int kgDrawingBoxGroup( DIALOG *D,void **v,void *pt) {
   strcpy(p0.Wid,(char *)"DTbkgr");
   p0.item = -1;
   char **menu1 ; 
-  menu1= (char **)malloc(sizeof(char *)*16);
-  menu1[15]=NULL;
+  menu1= (char **)malloc(sizeof(char *)*17);
+  menu1[16]=NULL;
   menu1[0]=(char *)malloc(5);
   strcpy(menu1[0],(char *)"Move");
   menu1[1]=(char *)malloc(5);
@@ -32,22 +32,24 @@ int kgDrawingBoxGroup( DIALOG *D,void **v,void *pt) {
   strcpy(menu1[5],(char *)"Polyfill");
   menu1[6]=(char *)malloc(7);
   strcpy(menu1[6],(char *)"Rombus");
-  menu1[7]=(char *)malloc(4);
-  strcpy(menu1[7],(char *)"Arc");
-  menu1[8]=(char *)malloc(8);
-  strcpy(menu1[8],(char *)"Arcfill");
-  menu1[9]=(char *)malloc(5);
-  strcpy(menu1[9],(char *)"Text");
-  menu1[10]=(char *)malloc(7);
-  strcpy(menu1[10],(char *)"Marker");
+  menu1[7]=(char *)malloc(10);
+  strcpy(menu1[7],(char *)"FixRadius");
+  menu1[8]=(char *)malloc(4);
+  strcpy(menu1[8],(char *)"Arc");
+  menu1[9]=(char *)malloc(8);
+  strcpy(menu1[9],(char *)"Arcfill");
+  menu1[10]=(char *)malloc(5);
+  strcpy(menu1[10],(char *)"Text");
   menu1[11]=(char *)malloc(7);
-  strcpy(menu1[11],(char *)"Border");
-  menu1[12]=(char *)malloc(5);
-  strcpy(menu1[12],(char *)"Undo");
-  menu1[13]=(char *)malloc(7);
-  strcpy(menu1[13],(char *)"Repeat");
-  menu1[14]=(char *)malloc(11);
-  strcpy(menu1[14],(char *)"Attributes");
+  strcpy(menu1[11],(char *)"Marker");
+  menu1[12]=(char *)malloc(7);
+  strcpy(menu1[12],(char *)"Border");
+  menu1[13]=(char *)malloc(5);
+  strcpy(menu1[13],(char *)"Undo");
+  menu1[14]=(char *)malloc(7);
+  strcpy(menu1[14],(char *)"Repeat");
+  menu1[15]=(char *)malloc(11);
+  strcpy(menu1[15],(char *)"Attributes");
   DIE e1 = { 
     'e',
     6,5,  

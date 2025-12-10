@@ -1454,11 +1454,20 @@ void gphLineWidth( int fid,int dw)
     kgDraw2f(G,x,y);
     return((n+1)*10);
   }
+float  ui_fix_radius(DIG *G){
+    float x1=0,y1=0,x2=0,y2=0;
+    kgCrossCursor(G,&x1,&y1);
+    x2 = x1+m_radius;
+    y2 = y1;
+    kgRbrCursor(G,&x2,&y2,&x1,&y1);
+    m_radius = sqrtf( (x1-x2)*(x1-x2) + (y1 -y2)*(y1-y2));
+    return m_radius;
+}
 int ui_process_arc (DIG *G,float *xo,float *yo)
  {
     float ang1,ang2,r;
     float x1,y1,x2,y2;
-#if 0
+#if 1
     gscanf(G->D,"Give Arc Radius=%10f",&m_radius);
     y1=*yo;
     x1= *xo+m_radius;

@@ -7131,6 +7131,7 @@
       static int npoly = 0;
       static int entry =0;
       static DIALOG *parent;
+      static float Radius=0;
       kgDC *dc;
       dc = G->dc;
       if( (entry == 0) ||(dc->cmds == NULL)) {
@@ -7183,7 +7184,7 @@
               loc = dc->cmds;
           }
           switch ( ( int ) item ) {
-              case 19:
+              case 20:
               get_size_factors ( parent , & hfac , & wfac , & gfac ) ;
               kgTextSize ( G , th*hfac , tw*wfac , tg*gfac ) ;
               count++;
@@ -7269,7 +7270,7 @@
               * ( loc++ ) = 50;count++;
               kgUpdateOn(G->D);
               break;
-              case 13:
+              case 14:
               if ( count > 1 ) {
                   loc--;count--;
                   uiupdate_intr ( G , count , dc->cmds ) ;
@@ -7278,7 +7279,7 @@
               }
               kgUpdateOn(G->D);
               break;
-              case 10:
+              case 11:
               ncr = i;
               key = kgCrossCursor ( G , & xtxt , & ytxt ) ;
               nch = get_intr_text ( parent , bf ) ;
@@ -7296,7 +7297,7 @@
               last = 'f';
               kgUpdateOn(G->D);
               break;
-              case 15:
+              case 16:
 //               *(loc++)=72;count++;  
               * ( loc++ ) = uiset_atribs ( G ) ;
               count++;
@@ -7305,6 +7306,9 @@
               kgUpdateOn(G->D);
               break;
               case 8:
+              Radius = ui_fix_radius(G);
+              break;
+              case 9:
               count++;
               * ( loc ) = ui_process_arc ( G , & xx , & yy ) ;
               loc++;
@@ -7318,13 +7322,13 @@
               * ( loc++ ) = 50;count++;
               kgUpdateOn(G->D);
               break;
-              case 11:
+              case 12:
               key = kgCrossCursor ( G , & x , & y ) ;
               kgMarker2f ( G , x , y ) ;
               * ( loc++ ) = 10;count++;
               kgUpdateOn(G->D);
               break;
-              case 14:
+              case 15:
               key = kgCrossCursor ( G , & x , & y ) ;
               xx = xo+x;yy = yo+y;
               switch ( ( int ) last ) {
@@ -7376,7 +7380,7 @@
               kgUpdateOn(G->D);
               xx = x;yy = y;
               break;
-              case 12:
+              case 13:
               while ( ( key = kgRectCursor ( G , & x , & y , & xx , & yy ) ) != '\r' ) {
                   if ( key == 'u' ) {
                       if ( count != 0 ) { loc--;count--;
@@ -7392,13 +7396,13 @@
               * ( loc++ ) = 104;count++;
               kgUpdateOn(G->D);
               break;
-              case 9:
+              case 10:
               * ( loc ) = ui_process_arc_fill ( G , & xx , & yy , dc->fil_color ) ;
               loc++;
               count++;
               kgUpdateOn(G->D);
               break;
-              case 17:
+              case 18:
               if ( MAG ) {
                   kgAntialiasingOn ( G , MAG-1 ) ;
                   kgReview ( G ) ;
