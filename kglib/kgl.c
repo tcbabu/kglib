@@ -8562,7 +8562,6 @@ void  gphStringToImagefile(char *Imgfile,char *Str,int xsize,int ysize,int font,
 }
 float  kgStringLength(void *Gtmp,char *title) {
        float length=0,wd,gp,w;
-#if 0
       int font;
       DIG *G;
       kgDC *dc;
@@ -8575,15 +8574,18 @@ float  kgStringLength(void *Gtmp,char *title) {
       dc->O_L = NULL;
       dc->greek = 0;
       font= dc->t_font;
-      wd = dc->txt_wtx;
-      gp = dc->txt_spx;
-       w = (wd+gp)/((dc->v_x2 - dc->v_x1))*(wx2 - wx1);
+      wd = dc->txt_wt;
+      gp = dc->txt_sp;
+      w = (float)(dc->txt_wt+dc->txt_sp)/((dc->v_x2 -dc->v_x1))*(wx2 - wx1);
+//      w = uiusr_x(wd+gp);
+#if 0
       
 //       w = uiusr_x(wd+gp);
        length=ffuistrlngth(font,title)*w;
        fprintf(stderr,"Length = %f Vx1:Vx2 : %d %d\n",length,dc->v_x1,dc->v_x2);
 #else
-       ftuistrlngth(Gtmp,title,&length);
+//       ftuistrlngth(Gtmp,title,&length);
+       length = ftStringLength(font,title,w);
 #endif
        return length;
 }
@@ -8595,6 +8597,7 @@ float  uiStringLength(char *title,int width) {
       int font_o,Nu,De;
       wd= width;
       xdsp = &length;
+#if 0
       gp = 0.0;
       ngp =1;
       j =0; while( title[j] != '\0')j++;
@@ -8683,6 +8686,9 @@ float  uiStringLength(char *title,int width) {
       }
       *xdsp =(fj*wd);
       ngp = gj+0.1;
+#else
+      length = ftStringLength(16,title,width);
+#endif
       return length;
   }
 float  uiStringLength_new(char *title,int width) {

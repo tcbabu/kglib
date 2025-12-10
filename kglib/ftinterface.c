@@ -1192,7 +1192,7 @@ static int Ival(char *str) {
       ngp = 1;
       xdsp = 0;
       kgGetDefaultRGB ( color , & rd , & gr , & bl ) ;
-//      strln = ftStringLength ( font,txt , wdth ) ;
+      strln = ftStringLength ( font,txt , wdth*cfx ) ;
       while ( txt [ i ] != '\0' ) {
           if ( txt [ i ] != '!' ) { 
               Str [ 0 ] = txt [ i ] ;
@@ -1312,7 +1312,8 @@ static int Ival(char *str) {
       Dempty ( XL ) ;
       Dempty ( YL ) ;
       kgGetImageSize(fimg,&xsize,&ysize);
-#if 0
+#if 1
+//      printf("Strln: %d Xsize %d\n",strln,xsize);
       img = kgChangeSizeImage(fimg,strln,ysize);
       kgFreeGmImage(fimg);
 #else
@@ -1320,8 +1321,8 @@ static int Ival(char *str) {
 #endif
       IMG= (IMG_STR *)malloc(sizeof(IMG_STR));
       IMG->img = img;
-      IMG->yln = ymin/cfy;
-      IMG->xln = ymax/cfy;
+      IMG->yln = ymin;
+      IMG->xln = ymax;
       return IMG;
   }
   float  ftStringLength ( int font , char *txt , float wdth ){
@@ -1559,7 +1560,8 @@ static int Ival(char *str) {
       right =(int) slot->bitmap.width+Xshft;
 #if 1
       kgGetAlphaLeftRight(img,&left,&right);
-      right = xsize - right;
+      right = xsize - right+Gap;
+      if(right > xsize ) right = xsize;
 //      printf("%c %d Wd:%d\n",text[0],right,Wd);
       if(text[0]==' ' ) {
 //           printf("WD: %d right %d\n",Wd,right);

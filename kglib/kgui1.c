@@ -134,7 +134,7 @@
           kgUserFrame ( fid , w_x1 , w_y1 , w_x2 , w_y2 ) ;
           kgTextColor ( fid , msg->fontcolor ) ;
           kgTextFont ( fid , msg->font ) ;
-          kgTextSize ( fid , 30. , 20. , 0. ) ;
+          kgTextSize ( fid , 20. , 10. , 0. ) ;
           strcpy ( buf , ( char * ) msg->message ) ;
           pt = buf;
           j = 1;
@@ -162,9 +162,10 @@
           }
           if ( k > 0 ) {
               dyl = yl/k;
-              fac = xl/ ( length ) ;
-              dxl = fac*20;
-              kgTextSize ( fid , dyl*0.55 , dxl , 0. ) ;
+              fac = xl*10/ ( length) ;
+              dxl = fac;
+
+             kgTextSize ( fid , dyl*0.55 , dxl , 0. ) ;
               yy = yl - dyl*0.7;
               for ( i = 0;i < k;i++ ) {
                   length = kgStringLength ( fid , str [ i ] ) ;
@@ -320,7 +321,7 @@
   int kgSplashMessageinit ( void *Tmp ) {
       int ret = 0 , i , j , OK , xl , yl , count = 0 , \
       k , color , r , g , b , fcolor;
-      float ln , length = 0 , fac = 1.0;
+      float ln , length = 0 , fac = 1.0,lng,kglng;
       float w_x1 = 0.0 , w_y1 = 0.0 , w_x2 = 686 , w_y2 = 226 , dyl , dxl , yy;
       float h , s , v , Vb , rf , gf , bf;
       void *fid , *Img;
@@ -378,7 +379,7 @@
           kgChangeColor ( fid , 151 , ( int ) r , ( int ) g , ( int ) b ) ;
           kgTextColor ( fid , fcolor ) ;
           kgTextFont ( fid , msg->font ) ;
-          kgTextSize ( fid , 30. , 20. , 0. ) ;
+          kgTextSize ( fid , 15. , 15. , 0. ) ;
           xo = ( w_x1+w_x2 ) *.5;
           yo = ( w_y1+w_y2 ) *.5;
           kgRoundedRectangleFill ( fid , xo , yo , ( float ) l+2 , \
@@ -408,7 +409,8 @@
                   OK = 1;
               }
               str [ k++ ] = pt;
-              ln = kgStringLength ( fid , pt ) ;
+//              ln = kgStringLength ( fid , pt ) ;
+              ln = ftStringLength ( msg->font , pt,15.0 ) ;
               if ( length < ln ) length = ln;
 //      gphWriteText(fid,pt);
               if ( OK ) break;
@@ -416,14 +418,17 @@
           }
           if ( k > 0 ) {
               dyl = ( float ) ( yl-6 ) /k;
-              dxl = 0.75*dyl;
-              fac = ( float ) ( xl-10 ) / ( length ) ;
-              if ( dxl > fac*20 ) dxl = fac*20;
+              dxl = 0.5*dyl;
+              kgTextSize ( fid , 0.6*dyl , dxl , 0. ) ;
+//              ln = kgStringLength ( fid , pt ) ;
+              ln = ftStringLength ( msg->font , pt ,dxl) ;
+              fac = ( float ) ( xl-20) / ( ln ) ;
+              if ( dxl > fac*dxl ) dxl = fac*dxl;
               kgTextSize ( fid , 0.6*dyl , dxl , 0. ) ;
               yy = yl - dyl*0.7-3;
               for ( i = 0;i < k;i++ ) {
-                  length = kgStringLength ( fid , str [ i ] ) ;
-                  kgMove2f ( fid , ( xl-length ) *0.5 , yy ) ;
+                  lng  = ftStringLength ( msg->font , str [ i ],dxl ) ;
+                  kgMove2f ( fid , ( xl-ln ) *0.5 , yy ) ;
                   kgWriteText ( fid , str [ i ] ) ;
                   yy -= dyl;
               }
@@ -432,12 +437,15 @@
           if ( Img == NULL ) printf ( "Img==NULL\n" ) ;
           else {
 #if 1
-//      uiWriteImage(Img,"Junk.png");
+//          uiWriteImage(Img,"Junk.png");
               kgCloseImage ( fid ) ;
               if ( msg->message != NULL ) {
+                  void *rzimg;
+                  int Xsize,Ysize;
+                  kgGetImageSize(Img,&Xsize,&Ysize);
                   if ( p0->xpm != NULL ) kgImage ( D , p0->xpm , \
                   D->xo , D->yo , xl , yl , 0.0 , 1.0 ) ;
-                  kgImage ( D , Img , D->xo , D->yo , xl , yl , 0.0 , 1.0 ) ;
+                  kgImage ( D , Img , D->xo , D->yo , (xl) , yl , 0.0 , 1.0 ) ;
                   uiFreeImage ( Img ) ;
               }
 #endif

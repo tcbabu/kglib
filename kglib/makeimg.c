@@ -4567,8 +4567,8 @@ static void  win_txtwrt(void)
         IMG = (IMG_STR *)ftGrStringImage ( t_font , t_color ,0, txt ,w,h,0.0,cfx,cfy);
         int xsize,ysize;
         kgGetImageSize(IMG->img,&xsize,&ysize);
-        y1 = y1+IMG->yln;
-        gph_drawimage(IMG->img,x1,y1,(int)(x1+xsize/cfx),(int)(y1+ysize/cfy));
+        y1 = y1+IMG->yln/cfy;
+        gph_drawimage(IMG->img,x1,y1,(x1+xsize/cfx),(y1+ysize/cfy));
         kgFreeGmImage(IMG->img);
         free(IMG);
         return;
