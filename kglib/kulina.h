@@ -1034,6 +1034,7 @@ double  kgGetScrollLength(void *widget);
 int    kgWrite(void *Widget, char *str) ;
 int    kgPrintf(void *Tmp, int infob,char *str) ;
 int    kgSplash(void *Tmp,int item,char *msg);
+int    kgMessageSplash(void *Tmp,char *str);
 //char * kgGetBrowserString(void *Tmp,int menu);
 char   *kgGetSelectedString(void *Tmp);
 int    kgGetSelection(void *tmp);

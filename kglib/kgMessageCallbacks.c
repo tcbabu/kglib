@@ -1,4 +1,4 @@
-#include <kulina.h>
+#include "kulina.h"
 #include "kgMessageCallbacks.h"
 
 static void *Args=NULL,*Rets=NULL;
@@ -245,10 +245,12 @@ int ModifykgMessage(void *Tmp,int GrpId) {
     pt[0]=Img;
     kgGetImageSize(Img,&Xsize,&Ysize);
     if(Xsize >100) {
-      D->xl=Xsize+5;
+      D->xl=Xsize;
+      P->x1 =0;
       P->x2 = P->x1+Xsize;
     }
-    D->yl=Ysize+5;
+    D->yl=Ysize;
+    P->y1 =0;
     P->y2 = P->y1+Ysize;
 //    kgSetWidgetImage(P,Img);
     P->xpm = Img;
@@ -342,8 +344,13 @@ int kgMessageWaitCallBack(void *Tmp) {
   int ret = 0;
   void **pt= (void **)kgGetArgPointer(Tmp); // Change as required
 // pt[0] is args passed as inputs; pt[1] is output pointer
-  kgWait(5);
+  kgWait(2);
   kgSetExit(Tmp);
   if(pt[0] != NULL) kgFreeGmImage(pt[0]);
   return ret;
+}
+void *RunkgMessage(void *,void *);
+int kgMessageSplash(void *Tmp,char * str ){
+   RunkgMessage(Tmp,str);
+   return 1;
 }

@@ -8,7 +8,7 @@ int kgMessageGroup( DIALOG *D,void **v,void *pt) {
   DIP p0 = { 
     'p',
     2,3,  
-    518,44,  
+    198,42,  
     (void *)xpm0,
     -1, /* bkgr colour */ 
       -1,0,0.000000 /* border hide transparency*/ 
@@ -73,8 +73,8 @@ int kgMessage( void *parent,void **v,void *pt) {
   D.rw = 4;
   D.xo = 0;   /* Position of Dialog */ 
   D.yo = 1;
-  D.xl = 522;    /*  Length of Dialog */
-  D.yl = 47;    /*  Width  of Dialog */
+  D.xl = 202;    /*  Length of Dialog */
+  D.yl = 43;    /*  Width  of Dialog */
   D.Initfun = kgMessageinit;    /*   init fuction for Dialog */
   D.Cleanupfun = kgMessagecleanup;    /*   cleanup fuction for Dialog */
   D.kbattn = 0;    /*  1 for drawing keyborad attention */
@@ -82,9 +82,9 @@ int kgMessage( void *parent,void **v,void *pt) {
   D.fullscreen = 0;    /*  1 for for fullscreen mode */
   D.NoTabProcess = 0;    /*  1 for disabling Tab use */
   D.Deco = 0;    /*  1 for Window Decorration */
-  D.transparency = 1.000000;    /*  float 1.0 for full transparency */
+  D.transparency = 0.000000;    /*  float 1.0 for full transparency */
   D.Newwin = 1;    /*  1 for new window not yet implemented */
-  D.DrawBkgr = 1;    /*  1 for drawing background */
+  D.DrawBkgr = 0;    /*  1 for drawing background */
   D.Bkpixmap = NULL;    /*  background image */
   D.Sticky = 0;    /*  1 for stickyness */
   D.Resize = 0;    /*  1 for Resize option */
