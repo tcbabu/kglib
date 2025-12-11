@@ -13,6 +13,7 @@ libkulina.a  : kgl.o kgui.o kgui1.o kgui2.o kgui3.o lowlib.o gkernel.o file_pro.
 	keybrd0Callbacks.o keybrd4.o keybrd4Callbacks.o keybrd5.o keybrd5Callbacks.o kgMakeGclr.o \
 	FileListBrowser.o FileListBrowserCallbacks.o\
 	 kgDrawingBox.o kgDrawingBoxCallbacks.o \
+	 kgMessage.o kgMessageCallbacks.o \
 	GetFile.o GetFileCallbacks.o ftinterface.o
 	ar -rD libkulina.a kgl.o kgui.o kgui1.o kgui2.o kgui3.o lowlib.o gkernel.o file_pro.o  printerdia.o \
 	 shade.o PngImage.o gminterface.o makeimg.o drawimg.o dlink.o ogl.o threadtool.o hlib.o keybrd.o \
@@ -20,6 +21,7 @@ libkulina.a  : kgl.o kgui.o kgui1.o kgui2.o kgui3.o lowlib.o gkernel.o file_pro.
 	 keybrd5.o keybrd5Callbacks.o kgMakeGclr.o FileListBrowser.o \
 	 FileListBrowserCallbacks.o \
 	 kgDrawingBox.o kgDrawingBoxCallbacks.o \
+	 kgMessage.o kgMessageCallbacks.o \
 	GetFile.o GetFileCallbacks.o ftinterface.o
 	cp libkulina.a $(KULINA)/lib/libkulina.a
 	cp kulina.h $(KULINA)/include
@@ -30,6 +32,7 @@ libkulina.so  : kgl.o kgui.o kgui1.o kgui2.o kgui3.o lowlib.o gkernel.o file_pro
 	keybrd0Callbacks.o keybrd4.o keybrd4Callbacks.o keybrd5.o keybrd5Callbacks.o kgMakeGclr.o \
 	FileListBrowser.o FileListBrowserCallbacks.o\
 	 kgDrawingBox.o kgDrawingBoxCallbacks.o \
+	 kgMessage.o kgMessageCallbacks.o \
 	GetFile.o GetFileCallbacks.o ftinterface.o
 	gcc -shared -o libkulina.so kgl.o kgui.o kgui1.o kgui2.o kgui3.o lowlib.o gkernel.o file_pro.o  printerdia.o \
 	 shade.o PngImage.o gminterface.o makeimg.o drawimg.o dlink.o ogl.o threadtool.o hlib.o keybrd.o \
@@ -37,6 +40,7 @@ libkulina.so  : kgl.o kgui.o kgui1.o kgui2.o kgui3.o lowlib.o gkernel.o file_pro
 	 keybrd5.o keybrd5Callbacks.o kgMakeGclr.o FileListBrowser.o \
 	 FileListBrowserCallbacks.o \
 	 kgDrawingBox.o kgDrawingBoxCallbacks.o \
+	 kgMessage.o kgMessageCallbacks.o \
 	GetFile.o GetFileCallbacks.o ftinterface.o
 	cp libkulina.so $(KULINA)/lib/libkulina.so
 	cp kulina.h $(KULINA)/include
@@ -110,6 +114,10 @@ GetFile.o	: GetFile.c kulina.h
 	$(CC)  -c -I$(PREFIX)/include -I$(PREFIX)/include/GraphicsMagick GetFile.c
 GetFileCallbacks.o	: GetFileCallbacks.c kulina.h
 	$(CC)  -c -I$(PREFIX)/include -I$(PREFIX)/include/GraphicsMagick GetFileCallbacks.c
+kgMessage.o	: kgMessage.c kulina.h
+	$(CC)  -c -I$(PREFIX)/include -I$(PREFIX)/include/GraphicsMagick kgMessage.c
+kgMessageCallbacks.o	: kgMessageCallbacks.c kulina.h
+	$(CC)  -c -I$(PREFIX)/include -I$(PREFIX)/include/GraphicsMagick kgMessageCallbacks.c
 clean	:
 	 rm -f *.o gph2ps gph2eps gph2jpg ps2jpg imagetoc cleantmpdir glib.a
 install	: libkulina.a

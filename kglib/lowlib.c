@@ -3976,7 +3976,7 @@ void transch(int c) {
 //  if(Fontlist == NULL ) Fontlist = Loadfontstruct();
       if ( dc->Fontlist == NULL ) dc->Fontlist = Loadfontstruct ( ) ;
       count = Dcount ( dc->Fontlist ) ;
-      if ( font >= count ) font = 0;
+      if ( font >= count ) font = font%count;;
       Dposition ( dc->Fontlist , font+1 ) ;
       pt = ( FONT * ) Getrecord ( dc->Fontlist ) ;
       dc->icpos = pt->icpos;

@@ -173,11 +173,11 @@ void kgDefaultGuiTheme(Gclr *Gc) {
   Gc->scroll_dim= Gc->dim;
   Gc->scroll_bright= Gc->bright;
   Gc->scroll_vbright= Gc->vbright;
-  Gc->MenuFont = 40;
-  Gc->PromptFont = 40;
-  Gc->ButtonFont = 40;
-  Gc->MsgFont = 40;
-  Gc->Font=40;
+  Gc->MenuFont = 20;
+  Gc->PromptFont = 20;
+  Gc->ButtonFont = 20;
+  Gc->MsgFont = 21;
+  Gc->Font=20;
   Gc->SplashFont=20;
   return ;
 }
@@ -279,11 +279,12 @@ void kgColorTheme2(DIALOG *D,unsigned char red,unsigned char green, unsigned cha
   Gc->scroll_bright= Gc->bright;
   Gc->scroll_vbright= Gc->vbright;
   Gc->GuiFontSize =9;
-  Gc->MenuFont = 40;
-  Gc->PromptFont = 40;
-  Gc->ButtonFont = 40;
-  Gc->MsgFont = 40;
-  Gc->Font=40;
+  Gc->SplashFont=20;
+  Gc->MenuFont = 20;
+  Gc->PromptFont = 20;
+  Gc->ButtonFont = 20;
+  Gc->MsgFont = 21;
+  Gc->Font=20;
   Gc->SplashFont=20;
   return ;
 }
@@ -400,11 +401,11 @@ void kgColorTheme(DIALOG *D,unsigned char red,unsigned char green, unsigned char
   Gc->scroll_bright= Gc->bright;
   Gc->scroll_vbright= Gc->vbright;
   Gc->GuiFontSize =9;
-  Gc->MenuFont = 40;
-  Gc->PromptFont = 40;
-  Gc->ButtonFont = 40;
-  Gc->MsgFont = 40;
-  Gc->Font=40;
+  Gc->MenuFont = 20;
+  Gc->PromptFont = 20;
+  Gc->ButtonFont = 20;
+  Gc->MsgFont = 21;
+  Gc->Font=20;
   Gc->SplashFont=20;
   return ;
 }
@@ -519,11 +520,11 @@ void kgColorTheme1(DIALOG *D,unsigned char red,unsigned char green, unsigned cha
   Gc->scroll_bright= Gc->bright;
   Gc->scroll_vbright= Gc->vbright;
   Gc->GuiFontSize =9;
-  Gc->MenuFont = 40;
-  Gc->PromptFont = 40;
-  Gc->ButtonFont = 40;
-  Gc->MsgFont = 40;
-  Gc->Font=40;
+  Gc->MenuFont = 20;
+  Gc->PromptFont = 20;
+  Gc->ButtonFont = 20;
+  Gc->MsgFont = 21;
+  Gc->Font=20;
   Gc->SplashFont=20;
   return ;
 }
@@ -577,11 +578,12 @@ void kgGrayGuiTheme(Gclr *Gc) {
   Gc->scroll_bright= Gc->bright;
   Gc->scroll_vbright= Gc->vbright;
   Gc->GuiFontSize =9;
-  Gc->MenuFont = 40;
-  Gc->PromptFont = 40;
-  Gc->ButtonFont = 40;
-  Gc->MsgFont = 40;
-  Gc->Font=40;
+  Gc->SplashFont=20;
+  Gc->MenuFont = 20;
+  Gc->PromptFont = 20;
+  Gc->ButtonFont = 20;
+  Gc->MsgFont = 21;
+  Gc->Font=20;
   Gc->SplashFont=20;
   return ;
 }

@@ -2777,20 +2777,23 @@
         img_drawimage(G,img,x1,y1,x2,y2);
         kgFreeGmImage(img);
         return;
-#endif
+#else
         IMG_STR *IMG=NULL;
         float x1,y1,x2,y2,lng,h,w;
         float vx1,vy1,vx2,vy2,wx1,wy1,wx2,wy2;
         kgGetWindow (G,&wx1,&wy1,&wx2,&wy2);
         wx1 = dc->w_x1, wx2 = dc->w_x2;
         wy1 = dc->w_y1, wy2 = dc->w_y2;
-        w = (float)(dc->txt_wt)/((dc->v_x2 -dc->v_x1))*(wx2 - wx1);
-        h = (float)(dc->txt_ht)/((dc->v_y2 -dc->v_y1))*(wy2 - wy1);
+//        w = (float)(dc->txt_wt)/((dc->v_x2 -dc->v_x1))*(wx2 - wx1);
+//        h = (float)(dc->txt_ht)/((dc->v_y2 -dc->v_y1))*(wy2 - wy1);
+        w = (float)(dc->txt_wtx);
+        h = (float)(dc->txt_hty);
         x1 = uiusr_x (dc->cur_x);
         y1 = uiusr_y(dc->cur_y);
         int base =0;
         float cfx = (dc->v_x2 -dc->v_x1)/(wx2 - wx1);
         float cfy = (dc->v_y2 -dc->v_y1)/(wy2 - wy1);
+//        printf("Color: %d\n",dc->t_color );
         IMG = (IMG_STR *)ftGrStringImage ( dc->t_font , dc->t_color ,0, txt ,w,h,0.0,cfx,cfy);
         int xsize,ysize;
         kgGetImageSize(IMG->img,&xsize,&ysize);
@@ -2799,6 +2802,7 @@
         kgFreeGmImage(IMG->img);
         free(IMG);
         return;
+#endif
       }
 #endif
       while ( txt [ i ] != '\0' ) {
@@ -3425,6 +3429,7 @@
       if ( G->D == NULL ) wc = G->wc;
       else wc = WC ( G->D ) ;
       setpal ( wc , ( int ) ir , ( int ) ig , ( int ) ib , ( int ) no ) ;
+      kgDefineColor(no,( int ) ir , ( int ) ig , ( int ) ib );
   }
   static void put_pixl ( DIG *G , short col , short row ) {
       int addr , MAXB , row1;
@@ -3934,11 +3939,14 @@
           img = ( GMIMG * ) kgGetInlineImage ( fmg->image_data , fmg->size ) ;
       }
       if ( strcmp ( img->Sign , "IMG" ) != 0 ) return;
-      w = X2-X1+1;
-      h = Y2 -Y1+1;
+      w = X2-X1;
+      h = Y2 -Y1;
       iw = img->image_width;
       ih = img->image_height;
+//      printf("iw: %d %d : %d %d\n",iw,ih,w,h);
       rzimg = ( GMIMG * ) uiChangeSizegmImage ( img , w , h , 1 ) ;
+//      rzimg = (GMIMG *)kgChangeSizeImage(img,w,h);
+//       rzimg = kgCopyImage(img);
       if ( rzimg != NULL ) {
 //    printf(" Calling imgCopyImage\n");
           imgCopyImage ( G , X1 , Y1 , rzimg ) ;

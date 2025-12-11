@@ -1170,7 +1170,8 @@ static int Ival(char *str) {
       Dlink *XL = Dopen ( ) ;
       char Str [ 2 ] ;
       float *xpt;
-      int strln;
+      float  strln;
+      int  istrln;
       int shift;
       Imgs =(IMG_STR **) uiInitGraphicFontLists(font,Fsize);
       IMG_STR *IMG=NULL;
@@ -1192,7 +1193,9 @@ static int Ival(char *str) {
       ngp = 1;
       xdsp = 0;
       kgGetDefaultRGB ( color , & rd , & gr , & bl ) ;
-      strln = ftStringLength ( font,txt , wdth*cfx ) ;
+      strln = ftStringLength ( font,txt , wdth );
+//      printf("Strln : %f :%f:%d\n",strln,wdth,font);
+      istrln = strln*cfx+0.5;
       while ( txt [ i ] != '\0' ) {
           if ( txt [ i ] != '!' ) { 
               Str [ 0 ] = txt [ i ] ;
@@ -1314,7 +1317,7 @@ static int Ival(char *str) {
       kgGetImageSize(fimg,&xsize,&ysize);
 #if 1
 //      printf("Strln: %d Xsize %d\n",strln,xsize);
-      img = kgChangeSizeImage(fimg,strln,ysize);
+      img = kgChangeSizeImage(fimg,istrln,ysize);
       kgFreeGmImage(fimg);
 #else
       img = fimg;

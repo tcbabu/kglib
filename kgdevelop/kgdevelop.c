@@ -6373,9 +6373,9 @@
       fprintf ( fp1 , "  }    /*  end of fullscreen mode */\n" ) ;
 //  fprintf(fp1,"  D.SearchList=(void *)Dopen();    /*  list of directories picture search */\n");
 //  fprintf(fp1,"  kgDefaultGuiTheme(&(D.gc));    /*  set colors for gui*/\n");
-      fprintf ( fp1 , "  Modify%-s(&D,GrpId);    /*  add extras to  gui*/\n" , \
-           dianame ) ;
       fprintf ( fp1 , "  Modify%-sGc(&D);    /*  set colors for gui if do not like default*/\n" , \
+           dianame ) ;
+      fprintf ( fp1 , "  Modify%-s(&D,GrpId);    /*  add extras to  gui*/\n" , \
            dianame ) ;
       fprintf ( fp1 , "  ret= kgUi(&D);\n" ) ;
       fprintf ( fp1 , "  kgCleanUi(&D);\n" ) ;

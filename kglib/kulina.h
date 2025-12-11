@@ -1337,6 +1337,7 @@ void kgGouraudFill(DIG *G,int n, float *x, float *y,float *v);
 void kgWriteText( DIG *G,char *c);
 void kgTextAngle(DIG *G,float ang);
 float  kgStringLength(void *G,char *title);
+float  ftStringLength(int font,char *title,float width);
 void kgTextSize(DIG *G,float h,float w,float g);
 void kgTextFont(DIG *G,int tf);
 void kgTextColor(DIG *G,int tcolr);
