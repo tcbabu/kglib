@@ -35,6 +35,7 @@ static void *IEEEtoPCs(void *val);
 static float illm_fac = 1.0;
 static int No_of_lights=0,St_sh_clr,No_sh_clrs=0;
 static float Hue =0.,Satu=0.;
+static float t_angle=0.0;
 
   void * uiGraphicsString (  char *str , int width , \
   int height , int font , int color ,int angle, int FontSize  );
@@ -3329,6 +3330,7 @@ static void win_set_angle(void)
   float t;
   float fact,xfact,yfact;
   read_buf(&t,4);
+  t_angle =t;
   theta=-t*rad;
   cost = cos(theta);
   sint = sin(theta);
@@ -4509,6 +4511,7 @@ static void  win_txtwrt(void)
   unsigned char *txt;
   GMIMG *img=NULL;
   int tsize,strln;
+  float angle;
   font_o=t_font;
   read_buf(&nchr,4);
   txt= (unsigned char *) malloc((nchr+1)*sizeof(unsigned char));
@@ -4519,7 +4522,10 @@ static void  win_txtwrt(void)
   O_L=NULL;
   bold = txt_bold;
   slant=Slant;
-  trot = (cost<0.999999);
+//  trot = (cost<0.999999);
+//  angle = acosf(cost)/rad;
+ //     t_angle = -acosf( cost)/rad;
+//      if(sint*cost<0) t_angle = -t_angle;
   tempc=c_color;
   c_color = t_color;
   t_color_o=t_color;
@@ -4532,7 +4538,8 @@ static void  win_txtwrt(void)
   ishft =0;
   greek=0;
 #if 1
-      if((trot==0)) {
+//      if((trot==0)) {
+        {
 #if 0
         float x1,y1,x2,y2,lng,h,w;
         tsize =  txt_hty /(w_y2 - w_y1)*(v_y2 -v_y1);
@@ -4564,7 +4571,7 @@ static void  win_txtwrt(void)
         int base =0;
         float cfx = (v_x2 -v_x1)/(wx2 - wx1);
         float cfy = (v_y2 -v_y1)/(wy2 - wy1);
-        IMG = (IMG_STR *)ftGrStringImage ( t_font , t_color ,0, txt ,w,h,0.0,cfx,cfy);
+        IMG = (IMG_STR *)ftGrStringImage ( t_font , t_color ,t_angle, txt ,w,h,0.0,cfx,cfy);
         int xsize,ysize;
         kgGetImageSize(IMG->img,&xsize,&ysize);
         y1 = y1+IMG->yln/cfy;

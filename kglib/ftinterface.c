@@ -1319,6 +1319,11 @@ static int Ival(char *str) {
 //      printf("Strln: %d Xsize %d\n",strln,xsize);
       img = kgChangeSizeImage(fimg,istrln,ysize);
       kgFreeGmImage(fimg);
+      if(angle != 0){
+          fimg = kgRotateImage(img,-1.0*angle);
+          kgFreeGmImage(img);
+          img = fimg;
+      }
 #else
       img = fimg;
 #endif

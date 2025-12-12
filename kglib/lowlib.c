@@ -762,6 +762,7 @@ static char *OthFonts []= {
       FontSize = size;
       Font = font%count;
       strcpy ( FontFile , ( char * ) Drecord ( FontList , Font ) ) ;
+//      printf ("Font : %d  %s\n",Font,FontFile);
       if(Grimgs[font]==NULL){
 //        printf("New GRfont list\n");
          Grimgs[font] = ( IMG_STR ** ) kgGrFontChars ( FontFile , FontSize ) ;
@@ -3277,6 +3278,7 @@ static char *OthFonts []= {
   void ui_txt_wr ( DIG *G , int n , char *txt ) {
       short i = 0 , bold , tempc , ishft , trot , Nu , De , gap , lnwidth_o , j;
       int font_o;
+      float t_angle;
       float fact , val , xl1 , xl2 , hfact = 1.0 , slant;
       int txt_bold_o;
       L_N *FO_L = NULL , *pt = NULL;
@@ -3299,7 +3301,11 @@ static char *OthFonts []= {
       bold = dc->txt_bold;
       slant = 0;
       font_o = dc->t_font;
-      dc->trot = ( dc->cost < 0.99 ) ;
+   
+//      dc->trot = ( dc->cost < 0.99 ) ;
+      t_angle = -acosf( dc->cost)/rad;
+      if(dc->sint*dc->cost<0) t_angle = -t_angle;
+      t_angle = dc->trot;
       tempc = wc->c_color;
       wcset_clr ( wc , dc->t_color ) ;
       dc->cx = ( int ) ( dc->cur_x+0.5 ) ;
@@ -3314,7 +3320,11 @@ static char *OthFonts []= {
       dc->ln_width = 1;
 #if 1
 //      if((dc->trot==0)&&(kgCheckComplexString(txt)==0)) {
+#if 0
         if((dc->trot==0)) {
+#else
+        {
+#endif
         float x1,y1,x2,y2,lng,h,w;
         float vx1,vy1,vx2,vy2,wx1,wy1,wx2,wy2;
         kgGetWindow (G,&wx1,&wy1,&wx2,&wy2);
@@ -3327,7 +3337,7 @@ static char *OthFonts []= {
         int base =0;
         float cfx = (dc->v_x2 -dc->v_x1)/(wx2 - wx1);
         float cfy = (dc->v_y2 -dc->v_y1)/(wy2 - wy1);
-        IMG = (IMG_STR *)ftGrStringImage ( dc->t_font , dc->t_color ,0, txt ,w,h,0.0,cfx,cfy);
+        IMG = (IMG_STR *)ftGrStringImage ( dc->t_font , dc->t_color ,t_angle, txt ,w,h,0.0,cfx,cfy);
         int xsize,ysize;
         kgGetImageSize(IMG->img,&xsize,&ysize);
         y1 = y1+IMG->yln/cfy;

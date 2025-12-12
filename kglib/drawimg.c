@@ -2738,6 +2738,7 @@
       kgWC *wc;
       GMIMG *img=NULL;
       int tsize =16,strln =16;
+      float t_angle;
    
       dc = G->dc;
       wc = G->wc;
@@ -2747,7 +2748,11 @@
       bold = dc->txt_bold;
       slant = 0;
       font_o = dc->t_font;
-      dc->trot = ( dc->cost < 0.99 ) ;
+//      dc->trot = ( dc->cost < 0.99 ) ;
+      t_angle = -acosf( dc->cost)/rad;
+      if(dc->sint*dc->cost<0) t_angle = -t_angle;
+//      printf("Img trot = %d\n",dc->trot);
+      t_angle = dc->trot;
       dc->c_color = dc->t_color;
       dc->cx = ( int ) ( dc->cur_x+0.5 ) ;
       dc->cy = ( int ) ( dc->cur_y+0.5 ) ;
@@ -2760,7 +2765,8 @@
       lnwidth_o = dc->ln_width;
       dc->ln_width = 1;
 #if 1
-      if((dc->trot==0)) {
+//      if((dc->trot==0)) {
+        {
 #if 0
         float x1,y1,x2,y2,lng,h,w;
         tsize =  dc->txt_hty /(dc->w_y2 - dc->w_y1)*(dc->v_y2 -dc->v_y1);
@@ -2794,7 +2800,7 @@
         float cfx = (dc->v_x2 -dc->v_x1)/(wx2 - wx1);
         float cfy = (dc->v_y2 -dc->v_y1)/(wy2 - wy1);
 //        printf("Color: %d\n",dc->t_color );
-        IMG = (IMG_STR *)ftGrStringImage ( dc->t_font , dc->t_color ,0, txt ,w,h,0.0,cfx,cfy);
+        IMG = (IMG_STR *)ftGrStringImage ( dc->t_font , dc->t_color ,(float)t_angle, txt ,w,h,0.0,cfx,cfy);
         int xsize,ysize;
         kgGetImageSize(IMG->img,&xsize,&ysize);
         y1 = y1+IMG->yln/cfy;
@@ -3703,6 +3709,7 @@
       dc->icposf0 = dc->icpos;dc->icxvf0 = dc->icxv;
       dc->icyvf0 = dc->icyv;dc->m_f0 = dc->m_f;
       dc->t_font = font;
+      dc->trot =0;
       dc->t_bkgr = 0;
       dc->t_bodr = 0;
       dc->fil_color = 0;
