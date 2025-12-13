@@ -4572,10 +4572,30 @@ static void  win_txtwrt(void)
         float cfx = (v_x2 -v_x1)/(wx2 - wx1);
         float cfy = (v_y2 -v_y1)/(wy2 - wy1);
         IMG = (IMG_STR *)ftGrStringImage ( t_font , t_color ,t_angle, txt ,w,h,0.0,cfx,cfy);
-        int xsize,ysize;
+        int xsize,ysize,xsizeo,ysizeo;
+        float xd,yd,st,ct;;
+        st = -sint;  // sint fot -ve t so the adjustment,affects cost also
+        ct =  cost;
+        yd = (IMG->yln/cfy)*ct;
+        xd = (IMG->yln/cfy)*st;        
+        xsizeo = IMG->xln;
+        ysizeo = IMG->Size;
         kgGetImageSize(IMG->img,&xsize,&ysize);
+//        printf("xd = %f %f: %f %f\n",xd,yd,dc->cost,dc->sint);
+#if 0
         y1 = y1+IMG->yln/cfy;
-        gph_drawimage(IMG->img,x1,y1,(x1+xsize/cfx),(y1+ysize/cfy));
+        gph_drawimageuIMG->img,x1,y1,(x1+xsize/cfx),(y1+ysize/cfy));
+#else
+        y1 = y1+yd;
+        x1 = x1+xd;
+        if( (st >= 0.) && (ct>=0.)) gph_drawimage(IMG->img,x1,y1,(x1+xsize/cfx),(y1+ysize/cfy));
+        if( (st < 0.) && (ct>=0.))   gph_drawimage(IMG->img,(x1+xsize/cfx),y1,x1,(y1-ysize/cfy)); 
+        if( (st < 0.) && (ct< 0.)) gph_drawimage(IMG->img,(x1-xsize/cfx),(y1-ysize/cfy),x1,y1);
+        if( (st >= 0.) && (ct< 0.)) gph_drawimage(IMG->img,(x1-xsize/cfx),(y1+ysize/cfy),x1,y1); 
+#endif
+//        kgGetImageSize(IMG->img,&xsize,&ysize);
+//        y1 = y1+IMG->yln/cfy;
+//        gph_drawimage(IMG->img,x1,y1,(x1+xsize/cfx),(y1+ysize/cfy));
         kgFreeGmImage(IMG->img);
         free(IMG);
         return;

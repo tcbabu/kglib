@@ -2801,10 +2801,33 @@
         float cfy = (dc->v_y2 -dc->v_y1)/(wy2 - wy1);
 //        printf("Color: %d\n",dc->t_color );
         IMG = (IMG_STR *)ftGrStringImage ( dc->t_font , dc->t_color ,(float)t_angle, txt ,w,h,0.0,cfx,cfy);
+        int xsize,ysize,xsizeo,ysizeo;
+        float xd,yd,st,ct;;
+        st = -dc->sint;  // sint fot -ve t so the adjustment,affects cost also
+        ct =  dc->cost;
+        yd = (IMG->yln/cfy)*ct;
+        xd = (IMG->yln/cfy)*st;        
+        xsizeo = IMG->xln;
+        ysizeo = IMG->Size;
+        kgGetImageSize(IMG->img,&xsize,&ysize);
+//        printf("xd = %f %f: %f %f\n",xd,yd,dc->cost,dc->sint);
+#if 0
+        y1 = y1+IMG->yln/cfy;
+        img_drawimage(G,IMG->img,x1,y1,(x1+xsize/cfx),(y1+ysize/cfy));
+#else
+        y1 = y1+yd;
+        x1 = x1+xd;
+        if( (st >= 0.) && (ct>=0.)) img_drawimage(G,IMG->img,x1,y1,(x1+xsize/cfx),(y1+ysize/cfy));
+        if( (st < 0.) && (ct>=0.))   img_drawimage(G,IMG->img,(x1+xsize/cfx),y1,x1,(y1-ysize/cfy)); 
+        if( (st < 0.) && (ct< 0.)) img_drawimage(G,IMG->img,(x1-xsize/cfx),(y1-ysize/cfy),x1,y1);
+        if( (st >= 0.) && (ct< 0.)) img_drawimage(G,IMG->img,(x1-xsize/cfx),(y1+ysize/cfy),x1,y1); 
+#endif
+#if 0
         int xsize,ysize;
         kgGetImageSize(IMG->img,&xsize,&ysize);
         y1 = y1+IMG->yln/cfy;
         img_drawimage(G,IMG->img,x1,y1,(x1+xsize/cfx),(y1+ysize/cfy));
+#endif
         kgFreeGmImage(IMG->img);
         free(IMG);
         return;

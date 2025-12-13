@@ -1320,6 +1320,7 @@ static int Ival(char *str) {
       img = kgChangeSizeImage(fimg,istrln,ysize);
       kgFreeGmImage(fimg);
       if(angle != 0){
+//          fimg = kgRotateAboutImage(img,-1.0*angle,0,0);
           fimg = kgRotateImage(img,-1.0*angle);
           kgFreeGmImage(img);
           img = fimg;
@@ -1330,7 +1331,8 @@ static int Ival(char *str) {
       IMG= (IMG_STR *)malloc(sizeof(IMG_STR));
       IMG->img = img;
       IMG->yln = ymin;
-      IMG->xln = ymax;
+      IMG->xln = istrln;
+      IMG->Size = ysize;
       return IMG;
   }
   float  ftStringLength ( int font , char *txt , float wdth ){

@@ -3338,10 +3338,26 @@ static char *OthFonts []= {
         float cfx = (dc->v_x2 -dc->v_x1)/(wx2 - wx1);
         float cfy = (dc->v_y2 -dc->v_y1)/(wy2 - wy1);
         IMG = (IMG_STR *)ftGrStringImage ( dc->t_font , dc->t_color ,t_angle, txt ,w,h,0.0,cfx,cfy);
-        int xsize,ysize;
+        int xsize,ysize,xsizeo,ysizeo;
+        float xd,yd,st,ct;;
+        st = -dc->sint;  // sint fot -ve t so the adjustment,affects cost also
+        ct =  dc->cost;
+        yd = (IMG->yln/cfy)*ct;
+        xd = (IMG->yln/cfy)*st;        
+        xsizeo = IMG->xln;
+        ysizeo = IMG->Size;
         kgGetImageSize(IMG->img,&xsize,&ysize);
+#if 0
         y1 = y1+IMG->yln/cfy;
         ui_drawimage(G,IMG->img,x1,y1,(x1+xsize/cfx),(y1+ysize/cfy));
+#else
+        y1 = y1+yd;
+        x1 = x1+xd;
+        if( (st >= 0.) && (ct>=0.)) ui_drawimage(G,IMG->img,x1,y1,(x1+xsize/cfx),(y1+ysize/cfy));
+        if( (st < 0.) && (ct>=0.))   ui_drawimage(G,IMG->img,(x1+xsize/cfx),y1,x1,(y1-ysize/cfy)); 
+        if( (st < 0.) && (ct< 0.)) ui_drawimage(G,IMG->img,(x1-xsize/cfx),(y1-ysize/cfy),x1,y1);
+        if( (st >= 0.) && (ct< 0.)) ui_drawimage(G,IMG->img,(x1-xsize/cfx),(y1+ysize/cfy),x1,y1); 
+#endif
         kgFreeGmImage(IMG->img);
         free(IMG);
         return;
