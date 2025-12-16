@@ -3336,15 +3336,18 @@ static char *OthFonts []= {
         IMG = (IMG_STR *)ftGrStringImage ( dc->t_font , dc->t_color ,t_angle, txt ,w,h,0.0,cfx,cfy);
         int xsize,ysize,xsizeo,ysizeo;
         float xd,yd,st,ct;
-        float xoff,yoff,dy,X1,Y1,X2,Y2;
+        float xoff,yoff,dy,X1,Y1,X2,Y2,yl,yu;
+        double angle1;
         printf("t_angle %f\n",t_angle);
 //        t_angle = -t_angle;
         st = sin(t_angle*rad);;  // sint fot -ve t so the adjustment,affects cost also
         ct =  cos(t_angle*rad);;
         yd = (IMG->yln/cfy)*ct;
         xd = (IMG->yln/cfy)*st;        
+        yl = -(IMG->yln/cfy); 
         xsizeo = IMG->xln;
         ysizeo = IMG->Size;
+        yu = ysizeo/cfy - yl; 
         kgGetImageSize(IMG->img,&xsize,&ysize);
         dy = ysizeo/cfy + (IMG->yln/cfy);
         yoff = dy - dy*ct;
@@ -3361,9 +3364,9 @@ static char *OthFonts []= {
         if( (st >= 0.) && (ct< 0.)){
             printf("2nd:yoff %f  xoff :%f yd %f xd %f\n",yoff,xoff, yd,xd);
             printf("2nd:ct %f  st :%f \n",ct,st);
-           yoff = dy + dy*ct;
-           Y1 = y1-yoff;
-           X1 = x1-xd;
+           angle1 = t_angle -90.;
+           Y1 = y1-yu*sin(angle1*rad);
+           X1 = x1 + yl*cos(angle1*rad);
            X2 = (X1-xsize/cfx);
            Y2 = (Y1+ysize/cfy);
            ui_drawimage(G,IMG->img,X2,Y2,X1,Y1); 
@@ -3380,11 +3383,11 @@ static char *OthFonts []= {
         if( (st < 0.) && (ct>0.)){
             printf("4th:yoff %f  xoff :%f yd %f xd %f\n",yoff,xoff, yd,xd);
             printf("4th:ct %f  st :%f\n",ct,st);
-            Y1 = y1+yd;
-            X1 = x1-xoff+xd;
-            X1 = x1+xd;
-            X2 = (X1-xsize/cfx);
-            Y2 = (Y1+ysize/cfy);
+            angle1 =90.- ( t_angle -270.);
+            X1 = x1 - yl*sin(angle1*rad);
+            Y1 = y1 + yu*cos(angle1*rad);
+            X2 = (X1+xsize/cfx);
+            Y2 = (Y1-ysize/cfy);
             ui_drawimage(G,IMG->img,X2,Y2,X1,Y1); 
         }
         kgFreeGmImage(IMG->img);
