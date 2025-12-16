@@ -3362,8 +3362,8 @@ static char *OthFonts []= {
             printf("2nd:yoff %f  xoff :%f yd %f xd %f\n",yoff,xoff, yd,xd);
             printf("2nd:ct %f  st :%f \n",ct,st);
            yoff = dy + dy*ct;
-           Y1 = y1+yoff;
-           X1 = x1+xd;
+           Y1 = y1-yoff;
+           X1 = x1-xd;
            X2 = (X1-xsize/cfx);
            Y2 = (Y1+ysize/cfy);
            ui_drawimage(G,IMG->img,X2,Y2,X1,Y1); 
