@@ -3320,11 +3320,7 @@ static char *OthFonts []= {
       dc->ln_width = 1;
 #if 1
 //      if((dc->trot==0)&&(kgCheckComplexString(txt)==0)) {
-#if 0
-        if((dc->trot==0)) {
-#else
-        {
-#endif
+      {
         float x1,y1,x2,y2,lng,h,w;
         float vx1,vy1,vx2,vy2,wx1,wy1,wx2,wy2;
         kgGetWindow (G,&wx1,&wy1,&wx2,&wy2);
@@ -3339,25 +3335,58 @@ static char *OthFonts []= {
         float cfy = (dc->v_y2 -dc->v_y1)/(wy2 - wy1);
         IMG = (IMG_STR *)ftGrStringImage ( dc->t_font , dc->t_color ,t_angle, txt ,w,h,0.0,cfx,cfy);
         int xsize,ysize,xsizeo,ysizeo;
-        float xd,yd,st,ct;;
-        st = -dc->sint;  // sint fot -ve t so the adjustment,affects cost also
-        ct =  dc->cost;
+        float xd,yd,st,ct;
+        float xoff,yoff,dy,X1,Y1,X2,Y2;
+        printf("t_angle %f\n",t_angle);
+//        t_angle = -t_angle;
+        st = sin(t_angle*rad);;  // sint fot -ve t so the adjustment,affects cost also
+        ct =  cos(t_angle*rad);;
         yd = (IMG->yln/cfy)*ct;
         xd = (IMG->yln/cfy)*st;        
         xsizeo = IMG->xln;
         ysizeo = IMG->Size;
         kgGetImageSize(IMG->img,&xsize,&ysize);
-#if 0
-        y1 = y1+IMG->yln/cfy;
-        ui_drawimage(G,IMG->img,x1,y1,(x1+xsize/cfx),(y1+ysize/cfy));
-#else
-        y1 = y1+yd;
-        x1 = x1+xd;
-        if( (st >= 0.) && (ct>=0.)) ui_drawimage(G,IMG->img,x1,y1,(x1+xsize/cfx),(y1+ysize/cfy));
-        if( (st < 0.) && (ct>=0.))   ui_drawimage(G,IMG->img,(x1+xsize/cfx),y1,x1,(y1-ysize/cfy)); 
-        if( (st < 0.) && (ct< 0.)) ui_drawimage(G,IMG->img,(x1-xsize/cfx),(y1-ysize/cfy),x1,y1);
-        if( (st >= 0.) && (ct< 0.)) ui_drawimage(G,IMG->img,(x1-xsize/cfx),(y1+ysize/cfy),x1,y1); 
-#endif
+        dy = ysizeo/cfy + (IMG->yln/cfy);
+        yoff = dy - dy*ct;
+        xoff = dy*st;
+        if( (st >= 0.) && (ct>=0.)){
+            printf("1st:yoff %f  xoff :%f yd %f xd %f\n",yoff,xoff, yd,xd);
+            printf("1st:ct %f  st :%f \n",ct,st);
+           X1 = x1-xoff;
+           Y1 = y1+yd;
+           X2 = (X1+xsize/cfx);
+           Y2 = (Y1+ysize/cfy);
+           ui_drawimage(G,IMG->img,X1,Y1,X2,Y2);
+        }
+        if( (st >= 0.) && (ct< 0.)){
+            printf("2nd:yoff %f  xoff :%f yd %f xd %f\n",yoff,xoff, yd,xd);
+            printf("2nd:ct %f  st :%f \n",ct,st);
+           yoff = dy + dy*ct;
+           Y1 = y1+yoff;
+           X1 = x1+xd;
+           X2 = (X1-xsize/cfx);
+           Y2 = (Y1+ysize/cfy);
+           ui_drawimage(G,IMG->img,X2,Y2,X1,Y1); 
+        }
+        if( (st < 0.) && (ct<= 0.)){
+            printf("3rd:yoff %f  xoff :%f yd %f xd %f\n",yoff,xoff, yd,xd);
+            printf("3rd:ct %f  st :%f \n",ct,st);
+            Y1 = y1+yd;
+            X1 = x1-xoff;
+            X2 = (X1-xsize/cfx);
+            Y2 = (Y1-ysize/cfy);
+            ui_drawimage(G,IMG->img,X2,Y2,X1,Y1);
+        }
+        if( (st < 0.) && (ct>0.)){
+            printf("4th:yoff %f  xoff :%f yd %f xd %f\n",yoff,xoff, yd,xd);
+            printf("4th:ct %f  st :%f\n",ct,st);
+            Y1 = y1+yd;
+            X1 = x1-xoff+xd;
+            X1 = x1+xd;
+            X2 = (X1-xsize/cfx);
+            Y2 = (Y1+ysize/cfy);
+            ui_drawimage(G,IMG->img,X2,Y2,X1,Y1); 
+        }
         kgFreeGmImage(IMG->img);
         free(IMG);
         return;
