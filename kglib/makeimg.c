@@ -4562,40 +4562,18 @@ static void  win_txtwrt(void)
         IMG_STR *IMG;
         float x1,y1,x2,y2,lng,h,w;
         float vx1,vy1,vx2,vy2,wx1,wy1,wx2,wy2;
+        float X1,Y1,X2,Y2;
         wx1 = w_x1, wx2 = w_x2;
         wy1 = w_y1, wy2 = w_y2;
         w = (float)(txt_wt)/((v_x2 -v_x1))*(wx2 - wx1);
         h = (float)(txt_ht)/((v_y2 -v_y1))*(wy2 - wy1);
         x1 = usr_x (cur_x);
         y1 = usr_y(cur_y);
-        int base =0;
         float cfx = (v_x2 -v_x1)/(wx2 - wx1);
         float cfy = (v_y2 -v_y1)/(wy2 - wy1);
         IMG = (IMG_STR *)ftGrStringImage ( t_font , t_color ,t_angle, txt ,w,h,0.0,cfx,cfy);
-        int xsize,ysize,xsizeo,ysizeo;
-        float xd,yd,st,ct;;
-        st = -sint;  // sint fot -ve t so the adjustment,affects cost also
-        ct =  cost;
-        yd = (IMG->yln/cfy)*ct;
-        xd = (IMG->yln/cfy)*st;        
-        xsizeo = IMG->xln;
-        ysizeo = IMG->Size;
-        kgGetImageSize(IMG->img,&xsize,&ysize);
-//        printf("xd = %f %f: %f %f\n",xd,yd,dc->cost,dc->sint);
-#if 0
-        y1 = y1+IMG->yln/cfy;
-        gph_drawimageuIMG->img,x1,y1,(x1+xsize/cfx),(y1+ysize/cfy));
-#else
-        y1 = y1+yd;
-        x1 = x1+xd;
-        if( (st >= 0.) && (ct>=0.)) gph_drawimage(IMG->img,x1,y1,(x1+xsize/cfx),(y1+ysize/cfy));
-        if( (st < 0.) && (ct>=0.))   gph_drawimage(IMG->img,(x1+xsize/cfx),y1,x1,(y1-ysize/cfy)); 
-        if( (st < 0.) && (ct< 0.)) gph_drawimage(IMG->img,(x1-xsize/cfx),(y1-ysize/cfy),x1,y1);
-        if( (st >= 0.) && (ct< 0.)) gph_drawimage(IMG->img,(x1-xsize/cfx),(y1+ysize/cfy),x1,y1); 
-#endif
-//        kgGetImageSize(IMG->img,&xsize,&ysize);
-//        y1 = y1+IMG->yln/cfy;
-//        gph_drawimage(IMG->img,x1,y1,(x1+xsize/cfx),(y1+ysize/cfy));
+        uiUserImageBox(IMG, t_angle,x1,y1, cfx,cfy,&X1,&Y1,&X2,&Y2);
+        gph_drawimage(IMG->img,X1,Y1,X2,Y2); 
         kgFreeGmImage(IMG->img);
         free(IMG);
         return;

@@ -2765,33 +2765,16 @@
       lnwidth_o = dc->ln_width;
       dc->ln_width = 1;
 #if 1
-//      if((dc->trot==0)) {
         {
 #if 0
-        float x1,y1,x2,y2,lng,h,w;
-        tsize =  dc->txt_hty /(dc->w_y2 - dc->w_y1)*(dc->v_y2 -dc->v_y1);
-        if(tsize <= 0) tsize=6;
-        w = (dc->txt_wt)/(dc->v_x2 -dc->v_x1)*(dc->w_x2 - dc->w_x1);
-        h = (dc->txt_ht)/(dc->v_y2 -dc->v_y1)*(dc->w_y2 - dc->w_y1);
-        lng = ftStringLength(dc->t_font,txt,w);
-        x1 = uiusr_x (dc->cur_x);
-        y1 = uiusr_y(dc->cur_y)-h*0.17;
-        x2 = x1 +lng;
-        y2 = y1+h;        
-        strln = lng/(dc->w_x2 - dc->w_x1)*(dc->v_x2 -dc->v_x1);
-        img = (GMIMG *)uiGraphicsString(txt,strln,tsize,dc->t_font,dc->t_color,0,tsize);
-        img_drawimage(G,img,x1,y1,x2,y2);
-        kgFreeGmImage(img);
-        return;
 #else
         IMG_STR *IMG=NULL;
         float x1,y1,x2,y2,lng,h,w;
         float vx1,vy1,vx2,vy2,wx1,wy1,wx2,wy2;
+        float X1,Y1,X2,Y2;
         kgGetWindow (G,&wx1,&wy1,&wx2,&wy2);
         wx1 = dc->w_x1, wx2 = dc->w_x2;
         wy1 = dc->w_y1, wy2 = dc->w_y2;
-//        w = (float)(dc->txt_wt)/((dc->v_x2 -dc->v_x1))*(wx2 - wx1);
-//        h = (float)(dc->txt_ht)/((dc->v_y2 -dc->v_y1))*(wy2 - wy1);
         w = (float)(dc->txt_wtx);
         h = (float)(dc->txt_hty);
         x1 = uiusr_x (dc->cur_x);
@@ -2799,35 +2782,9 @@
         int base =0;
         float cfx = (dc->v_x2 -dc->v_x1)/(wx2 - wx1);
         float cfy = (dc->v_y2 -dc->v_y1)/(wy2 - wy1);
-//        printf("Color: %d\n",dc->t_color );
         IMG = (IMG_STR *)ftGrStringImage ( dc->t_font , dc->t_color ,(float)t_angle, txt ,w,h,0.0,cfx,cfy);
-        int xsize,ysize,xsizeo,ysizeo;
-        float xd,yd,st,ct;;
-        st = -dc->sint;  // sint fot -ve t so the adjustment,affects cost also
-        ct =  dc->cost;
-        yd = (IMG->yln/cfy)*ct;
-        xd = (IMG->yln/cfy)*st;        
-        xsizeo = IMG->xln;
-        ysizeo = IMG->Size;
-        kgGetImageSize(IMG->img,&xsize,&ysize);
-//        printf("xd = %f %f: %f %f\n",xd,yd,dc->cost,dc->sint);
-#if 0
-        y1 = y1+IMG->yln/cfy;
-        img_drawimage(G,IMG->img,x1,y1,(x1+xsize/cfx),(y1+ysize/cfy));
-#else
-        y1 = y1+yd;
-        x1 = x1+xd;
-        if( (st >= 0.) && (ct>=0.)) img_drawimage(G,IMG->img,x1,y1,(x1+xsize/cfx),(y1+ysize/cfy));
-        if( (st < 0.) && (ct>=0.))   img_drawimage(G,IMG->img,(x1+xsize/cfx),y1,x1,(y1-ysize/cfy)); 
-        if( (st < 0.) && (ct< 0.)) img_drawimage(G,IMG->img,(x1-xsize/cfx),(y1-ysize/cfy),x1,y1);
-        if( (st >= 0.) && (ct< 0.)) img_drawimage(G,IMG->img,(x1-xsize/cfx),(y1+ysize/cfy),x1,y1); 
-#endif
-#if 0
-        int xsize,ysize;
-        kgGetImageSize(IMG->img,&xsize,&ysize);
-        y1 = y1+IMG->yln/cfy;
-        img_drawimage(G,IMG->img,x1,y1,(x1+xsize/cfx),(y1+ysize/cfy));
-#endif
+        uiUserImageBox(IMG, t_angle,x1,y1, cfx,cfy,&X1,&Y1,&X2,&Y2);
+        img_drawimage(G,IMG->img,X1,Y1,X2,Y2); 
         kgFreeGmImage(IMG->img);
         free(IMG);
         return;
