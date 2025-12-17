@@ -7306,7 +7306,7 @@
               kgUpdateOn(G->D);
               break;
               case 8:
-              Radius = ui_fix_radius(G);
+              Radius = ui_fix_radius(G,&xx,&yy);
               break;
               case 9:
               count++;

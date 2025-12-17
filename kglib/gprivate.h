@@ -1403,7 +1403,7 @@ int uipolygon_fill(DIG *G,float *x,float *y,int fil_color);
 int ui_process_arc_fill (DIG *G,float *xo,float *yo,int fil_col);
 int ui_process_arc (DIG *G,float *xo,float *yo);
 int uiProcess_arc_fill (DIG *G,float *xo,float *yo,int fil_col);
-float  ui_fix_radius(DIG *G);
+float  ui_fix_radius(DIG *G,float *xx,float *yy);
 void uipa_gram( DIG *G,float x1,float y1,float x2,float y2);
 void uirectgl(DIG *G, float xx,float yy,float x,float y);
 int uiProcess_arc_fill (DIG *G,float *xo,float *yo,int fil_col);
