@@ -3276,49 +3276,23 @@ static char *OthFonts []= {
       dc->txt_h42 = dc->txt_ht/CFact;
   }
   void ui_txt_wr ( DIG *G , int n , char *txt ) {
-      short i = 0 , bold , tempc , ishft , trot , Nu , De , gap , lnwidth_o , j;
       int font_o;
       float t_angle;
-      float fact , val , xl1 , xl2 , hfact = 1.0 , slant;
-      int txt_bold_o;
-      L_N *FO_L = NULL , *pt = NULL;
-      B_K *FB_P = NULL;
-      char ch , cntl;
-      unsigned char *tx;
-      float Slnt [ 2 ] = {0.0 , 0.25} , Slant_o; ;
       kgDC *dc;
       kgWC *wc;
-      GMIMG *img=NULL;
       IMG_STR *IMG;
-      GMIMG *gmimg=NULL;
       DIALOG *D = (DIALOG *)G->D;
-      int tsize=10,strln=100;;
+
+      float x1,y1,x2,y2,lng,h,w;
+      float vx1,vy1,vx2,vy2,wx1,wy1,wx2,wy2;
+      float X1,Y1,X2,Y2;
+
       dc = G->dc;
       wc = G->wc;
-      tx = ( unsigned char * ) txt;
-      j = strlen ( tx ) ;
-      dc->O_L = NULL;
-      bold = dc->txt_bold;
-      slant = 0;
       font_o = dc->t_font;
       t_angle = dc->trot;
-      tempc = wc->c_color;
-      wcset_clr ( wc , dc->t_color ) ;
-      dc->cx = ( int ) ( dc->cur_x+0.5 ) ;
-      dc->cy = ( int ) ( dc->cur_y+0.5 ) ;
-      dc->xp = 0.0;
-      dc->yp = 0.0;
-      fact = 1.0;
-      hfact = 1.0;
-      ishft = 0;
-      dc->greek = 0;
-      lnwidth_o = dc->ln_width;
-      dc->ln_width = 1;
 #if 1
       {
-        float x1,y1,x2,y2,lng,h,w;
-        float vx1,vy1,vx2,vy2,wx1,wy1,wx2,wy2;
-        float X1,Y1,X2,Y2;
         kgGetWindow (G,&wx1,&wy1,&wx2,&wy2);
         wx1 = dc->w_x1, wx2 = dc->w_x2;
         wy1 = dc->w_y1, wy2 = dc->w_y2;
@@ -3326,272 +3300,16 @@ static char *OthFonts []= {
         h = (float)(dc->txt_ht)/((dc->v_y2 -dc->v_y1))*(wy2 - wy1);
         x1 = uiusr_x (dc->cur_x);
         y1 = uiusr_y(dc->cur_y);
-        int base =0;
         float cfx = (dc->v_x2 -dc->v_x1)/(wx2 - wx1);
         float cfy = (dc->v_y2 -dc->v_y1)/(wy2 - wy1);
         IMG = (IMG_STR *)ftGrStringImage ( dc->t_font , dc->t_color ,t_angle, txt ,w,h,0.0,cfx,cfy);
         uiUserImageBox(IMG, t_angle,x1,y1, cfx,cfy,&X1,&Y1,&X2,&Y2);
         ui_drawimage(G,IMG->img,X1,Y1,X2,Y2); 
-#if 0
-        int xsize,ysize,xsizeo,ysizeo;
-        float xd,yd,st,ct;
-        float xoff,yoff,dy,X1,Y1,X2,Y2,yl,yu;
-        double angle1;
-        printf("t_angle %f\n",t_angle);
-//        t_angle = -t_angle;
-        st = sin(t_angle*rad);;  // sint fot -ve t so the adjustment,affects cost also
-        ct =  cos(t_angle*rad);;
-        yd = (IMG->yln/cfy)*ct;
-        xd = (IMG->yln/cfy)*st;        
-        yl = -(IMG->yln/cfy); 
-        xsizeo = IMG->xln;
-        ysizeo = IMG->Size;
-        yu = ysizeo/cfy - yl; 
-        kgGetImageSize(IMG->img,&xsize,&ysize);
-        dy = ysizeo/cfy + (IMG->yln/cfy);
-        yoff = dy - dy*ct;
-        xoff = dy*st;
-        if( (st >= 0.) && (ct>=0.)){
-            printf("1st:yoff %f  xoff :%f yd %f xd %f\n",yoff,xoff, yd,xd);
-            printf("1st:ct %f  st :%f \n",ct,st);
-           X1 = x1-xoff;
-           Y1 = y1+yd;
-           X2 = (X1+xsize/cfx);
-           Y2 = (Y1+ysize/cfy);
-           ui_drawimage(G,IMG->img,X1,Y1,X2,Y2);
-        }
-        if( (st >= 0.) && (ct< 0.)){
-            printf("2nd:yoff %f  xoff :%f yd %f xd %f\n",yoff,xoff, yd,xd);
-            printf("2nd:ct %f  st :%f \n",ct,st);
-           angle1 = t_angle -90.;
-           Y1 = y1-yu*sin(angle1*rad);
-           X1 = x1 + yl*cos(angle1*rad);
-           X2 = (X1-xsize/cfx);
-           Y2 = (Y1+ysize/cfy);
-           ui_drawimage(G,IMG->img,X2,Y2,X1,Y1); 
-        }
-        if( (st < 0.) && (ct<= 0.)){
-            printf("3rd:yoff %f  xoff :%f yd %f xd %f\n",yoff,xoff, yd,xd);
-            printf("3rd:ct %f  st :%f \n",ct,st);
-            Y1 = y1+yd;
-            X1 = x1-xoff;
-            X2 = (X1-xsize/cfx);
-            Y2 = (Y1-ysize/cfy);
-            ui_drawimage(G,IMG->img,X2,Y2,X1,Y1);
-        }
-        if( (st < 0.) && (ct>0.)){
-            printf("4th:yoff %f  xoff :%f yd %f xd %f\n",yoff,xoff, yd,xd);
-            printf("4th:ct %f  st :%f\n",ct,st);
-            angle1 =90.- ( t_angle -270.);
-            X1 = x1 - yl*sin(angle1*rad);
-            Y1 = y1 + yu*cos(angle1*rad);
-            X2 = (X1+xsize/cfx);
-            Y2 = (Y1-ysize/cfy);
-            ui_drawimage(G,IMG->img,X2,Y2,X1,Y1); 
-        }
-#endif
         kgFreeGmImage(IMG->img);
         free(IMG);
         return;
       }
 #endif
-      while ( txt [ i ] != '\0' ) {
-          {
-              if ( txt [ i ] != '!' ) { if ( dc->trot ) uidrawgch ( G , txt [ i ] ) ;
-                  else uidrawg0ch ( G , txt [ i ] ) ;
-                  dc->greek = 0;
-              }
-              else {
-                  i++;
-                  if ( txt [ i ] == '\0' ) break;
-                  cntl = txt [ i ] ;
-                  if ( ( cntl == 'S' ) || ( cntl == 's' ) ) uisetsubsup \
-                   ( G , & fact , & ishft , cntl ) ;
-                  else {
-                      switch ( cntl ) {
-                          case 'e':
-                          uiresetsubsup ( G , & fact , & ishft ) ;
-                          break;
-                          case '!':
-                          dc->greek = 0;
-                          if ( dc->trot ) uidrawgch ( G , txt [ i ] ) ;
-                          else uidrawg0ch ( G , txt [ i ] ) ;
-                          break;
-                          case 'b':
-                          dc->xp = dc->xp -dc->txt_wt -dc->txt_sp;
-                          break;
-                          case 'B':
-                          dc->txt_bold = 2;
-                          break;
-                          case 'I':
-                          dc->Slant = Slnt [ 1 ] ;
-                          break;
-                          case 'N':
-                          dc->Slant = Slant_o; dc->txt_bold = txt_bold_o;
-                          if ( pt != NULL ) {
-                              while ( ( pt->x2 ) >= 0. ) pt = pt->Pr;
-                               ( pt->x2 ) = dc->xp-dc->txt_sp;
-                              pt = pt->Pr;
-                          }
-                          break;
-                          case 'g':
-                          dc->greek = 128;
-                          break;
-                          case 'r':
-                          if ( dc->O_P != NULL ) {
-                              dc->xp = dc->O_P->x;
-                              dc->yp = dc->O_P->y;
-                              dc->D_P = dc->O_P;
-                              dc->O_P = dc->O_P->Pr;
-                              free ( dc->D_P ) ;
-                              if ( dc->O_P == NULL ) FB_P = NULL;
-                          }
-                          break;
-                          case 'k':
-                          if ( FB_P == NULL ) {
-                              FB_P = ( B_K * ) Malloc ( ( int ) sizeof ( B_K ) ) ;
-                              dc->O_P = FB_P;
-                              dc->O_P->Nx = NULL; dc->O_P->Pr = NULL;
-                          }
-                          else {
-                              dc->O_P->Nx = ( B_K * ) Malloc ( ( int ) sizeof ( B_K ) ) ;
-                              dc->O_P->Nx->Pr = dc->O_P;
-                              dc->O_P = dc->O_P->Nx;
-                              dc->O_P->Nx = NULL;
-                          }
-                           ( dc->O_P->x ) = dc->xp;
-                           ( dc->O_P->y ) = dc->yp;
-                          break;
-                          case 'x':
-                          dc->yp += 0.2*dc->txt_ht;
-                          break;
-                          case 'y':
-                          dc->yp -= 0.2*dc->txt_ht;
-                          break;
-                          case 'u':
-                          dc->yp += 0.9*dc->txt_ht;
-                          break;
-                          case 'd':
-                          dc->yp -= 0.9*dc->txt_ht;
-                          break;
-                          case 'O':
-                          case 'U':
-                          if ( FO_L == NULL ) {
-                              FO_L = ( L_N * ) Malloc ( ( int ) sizeof ( L_N ) ) ;
-                              dc->O_L = FO_L;
-                              dc->O_L->Nx = NULL; dc->O_L->Pr = NULL;
-                          }
-                          else {
-                              dc->O_L->Nx = ( L_N * ) Malloc ( ( int ) sizeof ( L_N ) ) ;
-                              dc->O_L->Nx->Pr = dc->O_L;
-                              dc->O_L = dc->O_L->Nx;
-                              dc->O_L->Nx = NULL;
-                          }
-                           ( dc->O_L->x1 ) = dc->xp;
-                           ( dc->O_L->x2 ) = -1.0;
-                          dc->O_L->ymax = dc->yp+1.4*dc->txt_ht;
-                          dc->O_L->ymin = dc->yp-0.4*dc->txt_ht;
-                          dc->O_L->p = cntl;
-                          pt = dc->O_L;
-                          break;
-                          case '%':
-                          if ( i+2 >= j ) break;
-                          ch = txt [ i+1 ] ; txt [ i+1 ] = '\0';
-                          gap = uistrlngth ( G , txt , & xl2 ) ;
-                          txt [ i+1 ] = ch;
-                          dc->xp = ( gap+1 ) * ( dc->txt_wt+dc->txt_sp ) ;
-                          break;
-                          case 'z':
-                          if ( i+2 >= j ) break;
-                          Nu = ( txt [ i+1 ] -'0' ) ;
-                          De = ( txt [ i+2 ] -'0' ) ;
-                          if ( De == 0 ) De = 1;
-                          val = ( float ) Nu/ ( float ) De;
-                          fact = fact*val;
-                          hfact = hfact*val;
-                          i += 2;
-                          dc->txt_w42 = dc->txt_w42*val;
-                          dc->txt_h42 = dc->txt_h42*val;
-                          dc->txt_wt = dc->txt_wt*val;
-                          dc->txt_ht = dc->txt_ht*val;
-                          break;
-                          case 'f':
-                          if ( i+2 >= j ) break;
-                          Nu = ( txt [ i+1 ] -'0' ) *10+ ( txt [ i+2 ] -'0' ) ;
-                          ui_txt_font ( G , ( int ) Nu ) ;
-                          i+= 2;
-                          break;
-                          case 'c':
-                          if ( i+2 >= j ) break;
-                          Nu = ( txt [ i+1 ] -'0' ) *10+ ( txt [ i+2 ] -'0' ) ;
-//                            wcset_clr(wc,Nu);
-                          ui_txt_clr ( G , ( int ) Nu ) ;
-                          i+= 2;
-                          break;
-                          case 'h':
-                          if ( i+2 >= j ) break;
-                          Nu = ( txt [ i+1 ] -'0' ) ;
-                          De = ( txt [ i+2 ] -'0' ) ;
-                          if ( De == 0 ) De = 1;
-                          val = ( float ) Nu/ ( float ) De;
-                          hfact = hfact*val;
-                          i += 2;
-                          dc->txt_h42 = dc->txt_h42*val;
-                          dc->txt_ht = dc->txt_ht*val;
-                          break;
-                          case 'w':
-                          if ( i+2 >= j ) break;
-                          Nu = ( txt [ i+1 ] -'0' ) ;
-                          De = ( txt [ i+2 ] -'0' ) ;
-                          if ( De == 0 ) De = 1;
-                          val = ( float ) Nu/ ( float ) De;
-                          fact = fact*val;
-                          i += 2;
-                          dc->txt_w42 = dc->txt_w42*val;
-                          dc->txt_wt = dc->txt_wt*val;
-                          break;
-                          default :
-                          break;
-                      }
-                  }
-              }
-              i++;
-          }
-      }
-      dc->txt_w42 = dc->txt_w42/fact;
-      dc->txt_h42 = dc->txt_h42/hfact;
-      dc->txt_wt = dc->txt_wt/fact;
-      dc->txt_ht = dc->txt_ht/hfact;
-/*    txt_bold=bold;*/
-      dc->ln_width = 2;
-      wcset_clr ( wc , tempc ) ;
-      pt = FO_L;
-      while ( pt != NULL ) {
-          if ( pt->x2 < 0. ) pt->x2 = dc->xp;
-          if ( pt->p == 'U' ) {
-              _uimove ( G , uiTX ( ( pt->x1 ) , pt->ymin ) , uiTY \
-               ( ( pt->x1 ) , pt->ymin ) ) ;
-              _uidraw ( G , uiTX ( ( pt->x2 ) , pt->ymin ) , uiTY \
-               ( ( pt->x2 ) , pt->ymin ) ) ;
-          }
-          else{
-              _uimove ( G , uiTX ( ( pt->x1 ) , pt->ymax ) , uiTY \
-               ( ( pt->x1 ) , pt->ymax ) ) ;
-              _uidraw ( G , uiTX ( ( pt->x2 ) , pt->ymax ) , uiTY \
-               ( ( pt->x2 ) , pt->ymax ) ) ;
-          }
-          dc->O_L = pt;
-          pt = pt->Nx;
-          free ( dc->O_L ) ;
-      }
-      dc->O_P = FB_P;
-      while ( dc->O_P != NULL ) {
-          dc->D_P = dc->O_P;
-          dc->O_P = dc->O_P->Pr;
-          free ( dc->D_P ) ;
-      }
-      dc->ln_width = lnwidth_o;
-      if ( dc->t_font != font_o ) ui_txt_font ( G , font_o ) ;
   }
   void ui_clr_vu ( DIG *G ) {
       kgDC *dc;
