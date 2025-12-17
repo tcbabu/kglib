@@ -3301,10 +3301,6 @@ static char *OthFonts []= {
       bold = dc->txt_bold;
       slant = 0;
       font_o = dc->t_font;
-   
-//      dc->trot = ( dc->cost < 0.99 ) ;
-      t_angle = -acosf( dc->cost)/rad;
-      if(dc->sint*dc->cost<0) t_angle = -t_angle;
       t_angle = dc->trot;
       tempc = wc->c_color;
       wcset_clr ( wc , dc->t_color ) ;
@@ -3319,10 +3315,10 @@ static char *OthFonts []= {
       lnwidth_o = dc->ln_width;
       dc->ln_width = 1;
 #if 1
-//      if((dc->trot==0)&&(kgCheckComplexString(txt)==0)) {
       {
         float x1,y1,x2,y2,lng,h,w;
         float vx1,vy1,vx2,vy2,wx1,wy1,wx2,wy2;
+        float X1,Y1,X2,Y2;
         kgGetWindow (G,&wx1,&wy1,&wx2,&wy2);
         wx1 = dc->w_x1, wx2 = dc->w_x2;
         wy1 = dc->w_y1, wy2 = dc->w_y2;
@@ -3334,6 +3330,9 @@ static char *OthFonts []= {
         float cfx = (dc->v_x2 -dc->v_x1)/(wx2 - wx1);
         float cfy = (dc->v_y2 -dc->v_y1)/(wy2 - wy1);
         IMG = (IMG_STR *)ftGrStringImage ( dc->t_font , dc->t_color ,t_angle, txt ,w,h,0.0,cfx,cfy);
+        uiUserImageBox(IMG, t_angle,x1,y1, cfx,cfy,&X1,&Y1,&X2,&Y2);
+        ui_drawimage(G,IMG->img,X1,Y1,X2,Y2); 
+#if 0
         int xsize,ysize,xsizeo,ysizeo;
         float xd,yd,st,ct;
         float xoff,yoff,dy,X1,Y1,X2,Y2,yl,yu;
@@ -3390,6 +3389,7 @@ static char *OthFonts []= {
             Y2 = (Y1-ysize/cfy);
             ui_drawimage(G,IMG->img,X2,Y2,X1,Y1); 
         }
+#endif
         kgFreeGmImage(IMG->img);
         free(IMG);
         return;
