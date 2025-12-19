@@ -2162,7 +2162,7 @@
                       kgDC *dc;
                       dc = ( kgDC * ) ( g->dc ) ;
 //            Dfree(dc->Fontlist);
-                      Dempty ( dc->Fontlist ) ;
+//                      Dempty ( dc->Fontlist ) ;
                       Free ( g->dc ) ;
                   }
                   if ( g->wc != NULL ) Free ( g->wc ) ;

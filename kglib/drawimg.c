@@ -20,6 +20,7 @@
   static int POINTSIZE = 1;
   static int MFAC = 2;
   char * ui_mktmpdir ( void ) ;
+extern Dlink *FontList;
 #define SSF 0.6
 #define MAXZ 65000
 #define uireset_greek {\
@@ -3674,6 +3675,9 @@
       dc->bluebuf = NULL;
       dc->clrbuf = NULL;
       dc->DOUBLE = 0;
+      if(FontList == NULL) uiAddFonts();
+      count = Dcount ( FontList ) ;
+#if 0
 // the Change is for thread safety 07/21
 //  dc->Fontlist= uiGetFontlist();
       dc->Fontlist = ( Dlink * ) Loadfontstruct ( ) ;
@@ -3688,7 +3692,8 @@
       dc->m_f = pt->m_f;
       dc->icposf0 = dc->icpos;dc->icxvf0 = dc->icxv;
       dc->icyvf0 = dc->icyv;dc->m_f0 = dc->m_f;
-      dc->t_font = font;
+#endif
+      dc->t_font = font%count;
       dc->trot =0;
       dc->t_bkgr = 0;
       dc->t_bodr = 0;
@@ -3803,7 +3808,7 @@
       Dempty ( ( Dlink * ) ( wc->SBlist ) ) ;
 // the change is for thread safety
 //  Dfree((Dlink *)(dc->Fontlist));
-      Dempty ( ( Dlink * ) ( dc->Fontlist ) ) ;
+//      Dempty ( ( Dlink * ) ( dc->Fontlist ) ) ;
       free ( wc->kgcolors ) ;
       free ( G->dc ) ;
       free ( G->wc ) ;
@@ -3888,7 +3893,7 @@
       kgCleanDir ( dc->objdir ) ;
       Dempty ( ( Dlink * ) ( wc->Clip ) ) ;
       Dempty ( ( Dlink * ) ( wc->SBlist ) ) ;
-      Dfree ( ( Dlink * ) ( dc->Fontlist ) ) ;
+ //     Dfree ( ( Dlink * ) ( dc->Fontlist ) ) ;
       free ( wc->kgcolors ) ;
       free ( G->dc ) ;
       free ( G->wc ) ;

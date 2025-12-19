@@ -89,7 +89,7 @@
 #include "font52.h"
 */
   static Dlink *MonoList = NULL;
-  static Dlink *FontList = NULL;
+  Dlink *FontList = NULL;
 #define D_NOCLEANCC
  static char *MonoFonts [ ] = {
   "Anonymous.ttf" ,
@@ -583,6 +583,7 @@ static char *OthFonts []= {
   int uiAddFonts ( ) {
       int i = 0;
       char *Fn = NULL;
+      if(FontList != NULL ) return 0;
       while ( MonoFonts [ i ] != NULL ) {
           kgAddFont ( MonoFonts [ i ] ) ;
           i++;
@@ -964,7 +965,8 @@ static char *OthFonts []= {
       if ( Fontlist == NULL ) Fontlist = ( Dlink * ) Loadfontstruct ( ) ;
       return Dcopy ( Fontlist ) ;
 #else
-      return ( Dlink * ) Loadfontstruct ( ) ;
+ //     return ( Dlink * ) Loadfontstruct ( ) ;
+        return NULL;
 #endif
   }
   void ui_initialise ( DIG *G ) {
@@ -1005,8 +1007,9 @@ static char *OthFonts []= {
       dc->bod_width = 11;
       dc->bod_color = 1;
       dc->DOUBLE = 0;
-//  if(Fontlist == NULL ) Fontlist = (Dlink *)Loadfontstruct();
-//  dc->Fontlist=uiGetFontlist(); // need further modification
+      if(FontList == NULL ) uiAddFonts();
+      font =0;
+#if 0
       dc->Fontlist = ( Dlink * ) Loadfontstruct ( ) ;
       count = Dcount ( dc->Fontlist ) ;
       font = 0;
@@ -1018,6 +1021,8 @@ static char *OthFonts []= {
       dc->m_f = pt->m_f;
       dc->icposf0 = dc->icpos; dc->icxvf0 = dc->icxv;
       dc->icyvf0 = dc->icyv; dc->m_f0 = dc->m_f;
+#endif
+      dc->font = font;
       dc->ln_width = 1;
       dc->pr_txt = 1;
       dc->cost = 1.0;
@@ -3726,6 +3731,7 @@ void transch(int c) {
       char **fnames;
       int count , i = 0 , ln;
       Dlink *Fontlist = NULL;
+#if 0
       if ( Fontlist == NULL ) Fontlist = Loadfontstruct ( ) ;
       count = Dcount ( Fontlist ) ;
       fnames = ( char ** ) Malloc ( sizeof ( char * ) * ( count+1 ) ) ;
@@ -3740,7 +3746,8 @@ void transch(int c) {
       }
       Dempty ( Fontlist ) ;
       Fontlist = NULL;
-      return fnames;
+#endif
+      return kgGetFontList() ;
   }
   void ui_txt_font ( DIG *G , int font ) {
       FONT *pt;
@@ -3749,8 +3756,13 @@ void transch(int c) {
       kgWC *wc;
       dc = G->dc;
       wc = G->wc;
-//  if(Fontlist == NULL ) Fontlist = Loadfontstruct();
-      if ( dc->Fontlist == NULL ) dc->Fontlist = Loadfontstruct ( ) ;
+      if ( FontList == NULL )uiAddFonts ( ) ;
+      count = Dcount ( FontList ) ;
+      if ( font >= count ) font = font%count;;
+      dc->t_font = font;
+#if 0
+//    if(Fontlist == NULL ) Fontlist = Loadfontstruct();
+      if ( dc->Fontlist == NULL ) dc->Fontlist = FontList ;
       count = Dcount ( dc->Fontlist ) ;
       if ( font >= count ) font = font%count;;
       Dposition ( dc->Fontlist , font+1 ) ;
@@ -3760,6 +3772,7 @@ void transch(int c) {
       dc->icyv = pt->icyv;
       dc->m_f = pt->m_f;
       dc->t_font = font;
+#endif
   }
   void ui_circle ( DIG *G , float x , float y , float r ) {
       int xa , ya , rd;

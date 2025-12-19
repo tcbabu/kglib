@@ -274,7 +274,8 @@ typedef struct {
 static unsigned long imgGetColor(int no,int loc);
 static unsigned short *zbuf=NULL;
 static int Z_max=193600L;
-static Dlink *Fontlist=NULL;
+extern Dlink *FontList;
+static Dlink* Fontlist=NULL;
 static char FontName[30]={"Times-Roman"};
 static const float CFact=300000.0;
 static Dlink *Pnlist = NULL;
@@ -1050,9 +1051,10 @@ static void initialise()
   R_Byte=0;
   dp = far_ptr;
 //  icpos = icposf0;icxv=icxvf0;icyv=icyvf0;m_f=m_f0;
-  if(Fontlist == NULL ) Fontlist = (Dlink *)Loadfontstruct();
-  count = Dcount(Fontlist);
+  if(FontList == NULL )uiAddFonts();;
+  count = Dcount(FontList);
   font =0;
+#if 0
   Dposition(Fontlist,font+1);
   pt = (FONT *)Getrecord(Fontlist);
   icpos = pt->icpos;
@@ -1061,6 +1063,7 @@ static void initialise()
   m_f =  pt->m_f;
   icposf0 = icpos;icxvf0=icxv;
   icyvf0=icyv;m_f0=m_f;
+#endif
   ln_width=POINTSIZE;
   pr_txt=1;
   cost = 1.0;
@@ -4080,9 +4083,12 @@ static void win_txt_font( void)
   FONT *pt;
   int count;
   read_buf(&font,4);
-  if(Fontlist == NULL ) Fontlist =Loadfontstruct();
-  count = Dcount(Fontlist);
-  if(font >= count ) font =0;
+//  if(Fontlist == NULL ) Fontlist =Loadfontstruct();
+  if(Fontlist == NULL) uiAddFonts();
+  count = Dcount(FontList);
+  font = font%count;
+  t_font =font;
+#if 0
   Dposition(Fontlist,font+1);
   pt = (FONT *)Getrecord(Fontlist);
   icpos = pt->icpos;
@@ -4091,6 +4097,7 @@ static void win_txt_font( void)
   m_f =  pt->m_f;
   t_font =font;
   strcpy(FontName,pt->fontname);
+#endif
 }
 static void set_txt_font( int font)
  {
@@ -4098,8 +4105,10 @@ static void set_txt_font( int font)
   FONT *pt;
   int count;
   if(Fontlist == NULL ) Fontlist=Loadfontstruct();
-  count = Dcount(Fontlist);
+  count = Dcount(FontList);
   if(font >= count ) font =0;
+  t_font =font;
+#if 0
   Dposition(Fontlist,font+1);
   pt = (FONT *)Getrecord(Fontlist);
   icpos = pt->icpos;
@@ -4108,13 +4117,16 @@ static void set_txt_font( int font)
   m_f =  pt->m_f;
   t_font =font;
   strcpy(FontName,pt->fontname);
+#endif
  }
 static void t_txt_font( int font)
  {
   FONT *pt;
   int count;
-  if(Fontlist == NULL ) Loadfontstruct();
-  count = Dcount(Fontlist);
+//  if(Fontlist == NULL ) Loadfontstruct();
+  count = Dcount(FontList);
+  t_font = font%count;
+#if 0
   if(font >= count ) font =0;
   Dposition(Fontlist,font+1);
   pt = (FONT *)Getrecord(Fontlist);
@@ -4124,6 +4136,7 @@ static void t_txt_font( int font)
   m_f =  pt->m_f;
   t_font =font;
   strcpy(FontName,pt->fontname);
+#endif
  }
 
 static void drawg0ch(c)
