@@ -3266,7 +3266,7 @@ int   kgGetImageLeftRight( void * img ,int *left,int *right ) {
       for ( i = 0;i < xsize;i++ ) {
           count =0;
           for ( j = 0;j < ysize;j++ ) {
-              k = j*ysize+i;
+              k = j*xsize+i;
               if(pixels [ k ] .blue != 0) break;
               if(pixels [ k ] .green != 0) break;
               if(pixels [ k ] .red != 0) break;
@@ -3280,7 +3280,7 @@ int   kgGetImageLeftRight( void * img ,int *left,int *right ) {
         for ( i = xsize -1;i >=0;i-- ) {
           count = ysize;
           for ( j =ysize-1;j >= 0;j-- ) {
-              k = j*ysize+i;
+              k = j*xsize+i;
               if(pixels [ k ] .blue != 0) break;
               if(pixels [ k ] .green != 0) break;
               if(pixels [ k ] .red != 0) break;
@@ -3317,22 +3317,20 @@ int   kgGetAlphaLeftRight( void * img ,int *left,int *right ) {
       for ( i = 0;i < xsize;i++ ) {
           count =0;
           for ( j = 0;j < ysize;j++ ) {
-              k = j*ysize+i;
+              k = j*xsize+i;
               if(pixels [ k ] .opacity != 255 ) break;
-              k=j+1;
               count++;
           }
           if(count!=ysize) break;
           Leftskip++;
       }
-      if( Leftskip != xsize) {
+      if( Leftskip != (xsize)) {
         for ( i = xsize -1;i >=0;i-- ) {
           count = ysize;
           for ( j =ysize-1;j >= 0;j-- ) {
-              k = j*ysize+i;
+              k = j*xsize+i;
               if(pixels [ k ] .opacity != 255 ) break;
               count--;
-              k=j;
           }
           if(count!=0) break;
           Rightskip++;

@@ -383,8 +383,9 @@ static int Xshft=2;
   void **kgGrFontChars ( char *Font , int Size ) {
       IMG_STR **Imgs = NULL;
       int xsize,ysize;
+      int left,right;
       Imgs = ( IMG_STR ** ) malloc ( sizeof ( IMG_STR * ) *128 ) ;
-      void *img;
+      void *img,*rzimg;;
       char txt [ 2 ] = "";
       int i , k;
       for ( i = 0;i < 128;i++ ) Imgs [ i ] = NULL;
@@ -392,9 +393,20 @@ static int Xshft=2;
           txt [ 0 ] = i;
           Imgs [ i ] = ( IMG_STR * ) kgMakeGrFontImg ( Font , txt , Size ,Size,0) ;
           img = Imgs [ i ]->img ; 
-#if 0
-          Imgs [ i ]->img = kgResizeImage ( img , 0.5 ) ;
+#if 1  
+          if(i> 32) {
+//          printf("i = %d %c\n",i,i);
+//          fflush(stdout);
+          kgGetImageSize(Imgs [ i ]->img ,&xsize,&ysize);
+          kgGetAlphaLeftRight(img,&left,&right);
+//          printf("Left %d Right %d\n",left,right);
+//          fflush(stdout);
+          rzimg = kgCropImage(img,left,0,xsize-right+2,ysize);
+          Imgs [ i ]->img = rzimg ;
+
           kgFreeGmImage(img);
+          img = rzimg;
+          }
 #endif
           kgGetImageSize(Imgs [ i ]->img ,&xsize,&ysize);
           Imgs [ i ]->xln = xsize;
@@ -1122,20 +1134,20 @@ void *uiAddCharImage(void *img1,void *img2,int xshft,int sft,int  *ymax,int *ymi
               IMG = Imgs[txt[i]];\
               kgGetImageSize(IMG->img,&xsize,&ysize);\
               img = kgCopyImage(IMG->img);\
-              kgSetImageColor ( img , rd , gr , bl ) ;\
-              if((fimg != NULL)&&(gp>1.e-6)) {\
+              rzimg = kgChangeSizeImage(img,(int)(((wd)*wfact*IMG->xln/(float)Fsize)*cfx+0.5) ,(int)( height*hfact*cfy+0.5));\
+              kgSetImageColor ( rzimg , rd , gr , bl ) ;\
+              kgGetImageSize(rzimg,&xsize,&ysize);\
+              int gxsize = (int)((gp*wfact*IMG->xln/(float)Fsize)*cfx+0.5);\
+              kgFreeGmImage(img);\
+              img = rzimg;\
+              if((fimg != NULL)&&(gxsize >1)) {\
                  void *gimg=NULL;\
-                 int gxsize = (int)((gp*wfact*IMG->xln/(float)Fsize)*cfx+0.5);\
                  gimg = kgCreateImage(xsize+gxsize,ysize);\
                  gimg = kgAddImages(gimg,img,gxsize,0);\
                  kgFreeGmImage(img);\
                  img = gimg;\
                  kgGetImageSize(img,&xsize,&ysize);\
               }\
-              rzimg = kgChangeSizeImage(img,(int)(((wd+gp)*wfact*IMG->xln/(float)Fsize)*cfx+0.5) ,(int)( height*hfact*cfy+0.5));\
-              kgGetImageSize(rzimg,&xsize,&ysize);\
-              kgFreeGmImage(img);\
-              img = rzimg;\
               shift = (int)(yp*height*cfy+0.5);             \
               fimg = uiAddCharImage(fimg,img,xp,shift,&ymax,&ymin);\
               img=NULL;\
@@ -1576,9 +1588,9 @@ static int Ival(char *str) {
       Img = ( IMG_STR * ) malloc ( sizeof ( IMG_STR ) ) ;
       kgGetImageSize(img,&xsize,&ysize);
       right =(int) slot->bitmap.width+Xshft;
-#if 1
+#if 0
       kgGetAlphaLeftRight(img,&left,&right);
-      right = xsize - right+Gap;
+      right = xsize - right+Gap+1;
       if(right > xsize ) right = xsize;
 //      printf("%c %d Wd:%d\n",text[0],right,Wd);
       if(text[0]==' ' ) {
