@@ -1123,14 +1123,23 @@ void *uiAddCharImage(void *img1,void *img2,int xshft,int sft,int  *ymax,int *ymi
               kgGetImageSize(IMG->img,&xsize,&ysize);\
               img = kgCopyImage(IMG->img);\
               kgSetImageColor ( img , rd , gr , bl ) ;\
-              rzimg = kgChangeSizeImage(img,(int)((wd*wfact*IMG->xln/(float)Fsize+gp)*cfx+0.5) ,(int)( height*hfact*cfy+0.5));\
+              if((fimg != NULL)&&(gp>1.e-6)) {\
+                 void *gimg=NULL;\
+                 int gxsize = (int)((gp*wfact*IMG->xln/(float)Fsize)*cfx+0.5);\
+                 gimg = kgCreateImage(xsize+gxsize,ysize);\
+                 gimg = kgAddImages(gimg,img,gxsize,0);\
+                 kgFreeGmImage(img);\
+                 img = gimg;\
+                 kgGetImageSize(img,&xsize,&ysize);\
+              }\
+              rzimg = kgChangeSizeImage(img,(int)(((wd+gp)*wfact*IMG->xln/(float)Fsize)*cfx+0.5) ,(int)( height*hfact*cfy+0.5));\
               kgGetImageSize(rzimg,&xsize,&ysize);\
               kgFreeGmImage(img);\
               img = rzimg;\
               shift = (int)(yp*height*cfy+0.5);             \
               fimg = uiAddCharImage(fimg,img,xp,shift,&ymax,&ymin);\
               img=NULL;\
-              xp += ( wd*wfact+gp ) ;\
+              xp += ( (wd+gp)*wfact ) ;\
 }
 static float Fval(char *str) {
     float val=1.0;
@@ -1189,11 +1198,10 @@ static int Ival(char *str) {
       Str [ 0 ] = '\0';
       font_o = font;
       wd = wdth;
-      gp = 0.;
       ngp = 1;
       xdsp = 0;
       kgGetDefaultRGB ( color , & rd , & gr , & bl ) ;
-      strln = ftStringLength ( font,txt , wdth );
+      strln = ftStringLength ( font,txt , wdth+gp );
 //      printf("Strln : %f :%f:%d\n",strln,wdth,font);
       istrln = strln*cfx+0.5;
       while ( txt [ i ] != '\0' ) {

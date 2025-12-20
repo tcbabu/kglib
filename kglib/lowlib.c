@@ -3288,7 +3288,7 @@ static char *OthFonts []= {
       IMG_STR *IMG;
       DIALOG *D = (DIALOG *)G->D;
 
-      float x1,y1,x2,y2,lng,h,w;
+      float x1,y1,x2,y2,lng,h,w,g;
       float vx1,vy1,vx2,vy2,wx1,wy1,wx2,wy2;
       float X1,Y1,X2,Y2;
 
@@ -3302,12 +3302,13 @@ static char *OthFonts []= {
         wx1 = dc->w_x1, wx2 = dc->w_x2;
         wy1 = dc->w_y1, wy2 = dc->w_y2;
         w = (float)(dc->txt_wt)/((dc->v_x2 -dc->v_x1))*(wx2 - wx1);
+        g = (float)(dc->txt_spx)/((dc->v_x2 -dc->v_x1))*(wx2 - wx1);
         h = (float)(dc->txt_ht)/((dc->v_y2 -dc->v_y1))*(wy2 - wy1);
         x1 = uiusr_x (dc->cur_x);
         y1 = uiusr_y(dc->cur_y);
         float cfx = (dc->v_x2 -dc->v_x1)/(wx2 - wx1);
         float cfy = (dc->v_y2 -dc->v_y1)/(wy2 - wy1);
-        IMG = (IMG_STR *)ftGrStringImage ( dc->t_font , dc->t_color ,t_angle, txt ,w,h,0.0,cfx,cfy);
+        IMG = (IMG_STR *)ftGrStringImage ( dc->t_font , dc->t_color ,t_angle, txt ,w,h,g,cfx,cfy);
         uiUserImageBox(IMG, t_angle,x1,y1, cfx,cfy,&X1,&Y1,&X2,&Y2);
         ui_drawimage(G,IMG->img,X1,Y1,X2,Y2); 
         kgFreeGmImage(IMG->img);

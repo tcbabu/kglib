@@ -1274,6 +1274,9 @@ static ExceptionInfo exception;
   void *kgRotateImage ( void *img , float angle ) {
       return uiRotategmImage ( ( GMIMG * ) img , angle ) ;
   }
+  void * kgAppendImage(void *img1,void *img2) {
+   return uiAppendgmImage ((GMIMG *)img1,(GMIMG *) img2);
+  }
   void *uiAppendgmImage ( GMIMG *png1 , GMIMG *png2 ) {
       int bkgrclr , w , h;
       float rzfac;

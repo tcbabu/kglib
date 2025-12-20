@@ -4551,40 +4551,21 @@ static void  win_txtwrt(void)
   ishft =0;
   greek=0;
 #if 1
-//      if((trot==0)) {
         {
-#if 0
-        float x1,y1,x2,y2,lng,h,w;
-        tsize =  txt_hty /(w_y2 - w_y1)*(v_y2 -v_y1);
-        if(tsize <= 0) tsize=6;
-       
-        x1 = usr_x (cur_x);
-        y1 = usr_y(cur_y);
-        w = (txt_wt)/(v_x2 -v_x1)*(w_x2 - w_x1);
-        h = (txt_ht)/(v_y2 -v_y1)*(w_y2 - w_y1);
-        y1 = y1 - h*0.17;
-        lng = ftStringLength(t_font,txt,w);
-        x2 = x1 +lng;
-        y2 = y1+h;        
-        strln = lng/(w_x2 - w_x1)*(v_x2 -v_x1);
-        img = (GMIMG *)uiGraphicsString(txt,strln,tsize,t_font,t_color,0,tsize);
-        gph_drawimage(img,x1,y1,x2,y2);
-        kgFreeGmImage(img);
-        return;
-#endif
         IMG_STR *IMG;
-        float x1,y1,x2,y2,lng,h,w;
+        float x1,y1,x2,y2,lng,h,w,g;
         float vx1,vy1,vx2,vy2,wx1,wy1,wx2,wy2;
         float X1,Y1,X2,Y2;
         wx1 = w_x1, wx2 = w_x2;
         wy1 = w_y1, wy2 = w_y2;
         w = (float)(txt_wt)/((v_x2 -v_x1))*(wx2 - wx1);
+        g = (float)(txt_sp)/((v_x2 -v_x1))*(wx2 - wx1);
         h = (float)(txt_ht)/((v_y2 -v_y1))*(wy2 - wy1);
         x1 = usr_x (cur_x);
         y1 = usr_y(cur_y);
         float cfx = (v_x2 -v_x1)/(wx2 - wx1);
         float cfy = (v_y2 -v_y1)/(wy2 - wy1);
-        IMG = (IMG_STR *)ftGrStringImage ( t_font , t_color ,t_angle, txt ,w,h,0.0,cfx,cfy);
+        IMG = (IMG_STR *)ftGrStringImage ( t_font , t_color ,t_angle, txt ,w,h,g,cfx,cfy);
         uiUserImageBox(IMG, t_angle,x1,y1, cfx,cfy,&X1,&Y1,&X2,&Y2);
         gph_drawimage(IMG->img,X1,Y1,X2,Y2); 
         kgFreeGmImage(IMG->img);
