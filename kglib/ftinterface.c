@@ -394,14 +394,14 @@ static int Xshft=2;
           Imgs [ i ] = ( IMG_STR * ) kgMakeGrFontImg ( Font , txt , Size ,Size,0) ;
           img = Imgs [ i ]->img ; 
 #if 1  
-          if(i> 32) {
+          if(i> 31) {
 //          printf("i = %d %c\n",i,i);
 //          fflush(stdout);
           kgGetImageSize(Imgs [ i ]->img ,&xsize,&ysize);
           kgGetAlphaLeftRight(img,&left,&right);
 //          printf("Left %d Right %d\n",left,right);
 //          fflush(stdout);
-          rzimg = kgCropImage(img,left,0,xsize-right+2,ysize);
+          rzimg = kgCropImage(img,left,0,xsize-1-right,ysize);
           Imgs [ i ]->img = rzimg ;
 
           kgFreeGmImage(img);

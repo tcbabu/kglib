@@ -3395,7 +3395,7 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
 //TCBNEW 20 to 22
 
       img = kgStringToImage ( str , NULL , ln , 20 , D->gc.Font , \
-               wc->c_color , justfic , D->gc.FontSize , -1 ) ;
+               wc->c_color , justfic , D->gc.FontSize-1 , -1 ) ;
       if ( img != NULL ) {
 //TCBNEW 20 to 22 16 to 12
           kgImage ( D , img , x , y-16 , ln , 20 , 0.0 , 1.0 ) ;
