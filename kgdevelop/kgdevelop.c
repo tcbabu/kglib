@@ -123,14 +123,19 @@
       return th;
   }
   int Box_gincur ( float *x1 , float *y1 , float *x2 , float *y2 ) {
-      float yl , yu;
+      float yl , yu,xx,dx;
+/* it is messy due to a fix for an error in kglib */
       yl = *y1;
       yu = *y2;
       yl = Evgay-yl;
       yu = Evgay -yu;
-      kgBoxCursor ( ( DIG * ) kgGetWidget ( Parent , 1 ) , x1 , & yl , x2 , & yu ) ;
+      xx = *x1;
+      dx = fabsf(*x2 - *x1);
+      kgBoxCursor ( ( DIG * ) kgGetWidget ( Parent , 1 ) , x2 , & yl , &xx , & yu ) ;
       yl = Evgay-yl;
       yu = Evgay -yu;
+      *x1 = *x2;
+      *x2  = *x1 +dx;       
       *y1 = yl;
       *y2 = yu;
       return 1;

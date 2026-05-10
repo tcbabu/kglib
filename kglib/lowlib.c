@@ -5508,7 +5508,7 @@ void transch(int c) {
       yorg = D->evgay-uiscr_y ( *ybgn ) ;
       dc->gcur_x = xorg1;
       dc->gcur_y = yorg1;
-      xorg -= xorg1;
+      xorg = xorg1- xorg;
       yorg = yorg1-yorg;
       uiScrn_back ( wc , dc->msg_x , dc->msg_y , 40 ) ;
       xpo = dc->gcur_x , ypo = dc->gcur_y;
