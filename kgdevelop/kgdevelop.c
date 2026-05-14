@@ -123,21 +123,24 @@
       return th;
   }
   int Box_gincur ( float *x1 , float *y1 , float *x2 , float *y2 ) {
-      float yl , yu,xx,dx;
+      float yl , yu,xx,dx,dy;
 /* it is messy due to a fix for an error in kglib */
-      yl = *y1;
-      yu = *y2;
-      yl = Evgay-yl;
-      yu = Evgay -yu;
+      printf("Box: %f %f %f %f\n",*x1,*y1,*x2,*y2);
+      fflush(stdout);
+      yl = Evgay-*y2;
+      yu = Evgay -*y1;
+      printf("Box: %f %f %f %f\n",*x1,*y1,*x2,*y2);
+      fflush(stdout);
       xx = *x1;
       dx = fabsf(*x2 - *x1);
-      kgBoxCursor ( ( DIG * ) kgGetWidget ( Parent , 1 ) , x2 , & yl , &xx , & yu ) ;
+      dy = fabsf(*y2 - *y1);
+      kgBoxCursor ( ( DIG * ) kgGetWidget ( Parent , 1 ) , x2 , & yl , x1 , & yu ) ;
       yl = Evgay-yl;
       yu = Evgay -yu;
       *x1 = *x2;
-      *x2  = *x1 +dx;       
-      *y1 = yl;
-      *y2 = yu;
+      *y1 =  yl;
+      *x2 = *x1 + dx;
+      *y2 = *y1 +dy;
       return 1;
   }
   int Rect_gincur ( float *x1 , float *y1 , float *x2 , float *y2 ) {
