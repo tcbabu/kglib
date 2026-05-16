@@ -30,6 +30,7 @@
   static int Vx1 , Vy1 , Vx2 , Vy2;
 /*static Dlink *Dialink=NULL;*/
   Dlink *CallList = NULL , *SrcList = NULL , *DelList = NULL , *WidList = NULL;
+  Dlink *InclList = NULL;
   DIALOG *Parent = NULL;
   DIG *GBOX;
   DIALOG *Dia = NULL;
@@ -122,16 +123,24 @@
       return th;
   }
   int Box_gincur ( float *x1 , float *y1 , float *x2 , float *y2 ) {
-      float yl , yu;
-      yl = *y1;
-      yu = *y2;
+      float yl , yu,xx,dx,dy;
+/* it is messy due to a fix for an error in kglib */
+      printf("Box: %f %f %f %f\n",*x1,*y1,*x2,*y2);
+      fflush(stdout);
+      yl = Evgay-*y2;
+      yu = Evgay -*y1;
+      printf("Box: %f %f %f %f\n",*x1,*y1,*x2,*y2);
+      fflush(stdout);
+      xx = *x1;
+      dx = fabsf(*x2 - *x1);
+      dy = fabsf(*y2 - *y1);
+      kgBoxCursor ( ( DIG * ) kgGetWidget ( Parent , 1 ) , x2 , & yl , x1 , & yu ) ;
       yl = Evgay-yl;
       yu = Evgay -yu;
-      kgBoxCursor ( ( DIG * ) kgGetWidget ( Parent , 1 ) , x1 , & yl , x2 , & yu ) ;
-      yl = Evgay-yl;
-      yu = Evgay -yu;
-      *y1 = yl;
-      *y2 = yu;
+      *x1 = *x2;
+      *y1 =  yl;
+      *x2 = *x1 + dx;
+      *y2 = *y1 +dy;
       return 1;
   }
   int Rect_gincur ( float *x1 , float *y1 , float *x2 , float *y2 ) {
@@ -1376,7 +1385,7 @@
       g1.y2 = g1.y1+yl-52;
       D.Initfun = makeguidiainit;
       D.Cleanupfun = NULL;
-      strcpy ( D.name , "Kulina Designer Ver 1.0" ) ;
+      strcpy ( D.name , "Kulina Designer Ver 3.0" ) ;
       if ( D.fullscreen != 1 ) { /* if not fullscreen mode */
           int xres , yres;
           kgDisplaySize ( & xres , & yres ) ;
@@ -1595,7 +1604,7 @@
       Black color will not be drawn */
       D.parent = parent; /* 1 for not showing in task bar*/
       D.pt = pt; /* any data to be passed by user*/
-//  strcpy(D.name,"Kulina Designer ver 1.0");    /*  Dialog name you may change */
+      strcpy(D.name,"Kulina Designer ver 3.0");    /*  Dialog name you may change */
       if ( D.fullscreen != 1 ) { /* if not fullscreen mode */
           int xres , yres;
           kgDisplaySize ( & xres , & yres ) ;
@@ -2344,7 +2353,7 @@
 //  PrintImage(fp,t->xpm);
       fprintf ( fp , "    %d, /* bkgr colour */ \n" , t->bkgr_clr ) ;
       t->Wid [ 49 ] = '\0';
-      GetCallBack ( t->Wid ) ;
+      sprintf(CallBackName,"%-s%-sinit",dianame,t->Wid);
       fprintf ( fp , "    %-s, /* void *initgraph(int,void *)  */ \n" , \
            CallBackName ) ;
       fprintf ( fp , "    NULL,%d,%d /* *data border hide*/\n  };\n" , \
@@ -4308,11 +4317,14 @@
       }
   }
   int WriteTextBoxCallback ( int count , FILE *fp , char *dianame ) {
+#if 0
       sprintf ( CallBackName , "%-stextbox%-dcallback" , dianame , count ) ;
       while ( CheckCallBack ( CallBackName ) ) {
           count++;
           sprintf ( CallBackName , "%-stextbox%-dcallback" , dianame , count ) ;
       }
+#endif
+      sprintf(CallBackName, "%-s%-scallback",dianame,WidName);
       fprintf ( Inc , "int %s(int cellno,int i,void *Tmp) ;\n" , CallBackName ) ;
       fprintf ( fp , "int %s(int cellno,int i,void *Tmp) {\n" , CallBackName ) ;
 //      fprintf ( Inc , "int  %-stextbox%-dcallback(int cellno,int i,void *Tmp);\n" , dianame , count ) ;
@@ -4338,11 +4350,14 @@
       return count;
   }
   int WriteTableBoxCallback ( int count , FILE *fp , char *dianame ) {
+#if 0
       sprintf ( CallBackName , "%-stablebox%-dcallback" , dianame , count ) ;
       while ( CheckCallBack ( CallBackName ) ) {
           count++;
           sprintf ( CallBackName , "%-stablebox%-dcallback" , dianame , count ) ;
       }
+#endif
+      sprintf(CallBackName, "%-s%-scallback",dianame,WidName);
       fprintf ( Inc , "int %s(int cellno,int i,void *Tmp) ;\n" , CallBackName ) ;
       fprintf ( fp , "int %s(int cellno,int i,void *Tmp) {\n" , CallBackName ) ;
 //      fprintf ( Inc , "int  %-stablebox%-dcallback(int cellno,int i,void *Tmp);\n" , dianame , count ) ;
@@ -4404,11 +4419,14 @@
   }
   int WriteSelectmenuCallback ( int count , FILE *fp , char *dianame ) {
       int i;
+#if 0
       sprintf ( CallBackName , "%-sbrowser%-dcallback" , dianame , count ) ;
       while ( CheckCallBack ( CallBackName ) ) {
           count++;
           sprintf ( CallBackName , "%-sbrowser%-dcallback" , dianame , count ) ;
       }
+#endif
+      sprintf(CallBackName, "%-s%-scallback",dianame,WidName);
       fprintf ( Inc , "int %s(int item,int i,void *Tmp) ;\n" , CallBackName ) ;
       fprintf ( fp , "int %s(int item,int i,void *Tmp) {\n" , CallBackName ) ;
 //      fprintf ( Inc , "int  %-sbrowser%-dcallback(int item,int i,void *Tmp) ;\n" , dianame , count ) ;
@@ -4431,10 +4449,18 @@
       fprintf ( fp , "  }\n" ) ;
       fprintf ( fp , "  return ret;\n" ) ;
       fprintf ( fp , "}\n" ) ;
+#if 0
       fprintf ( Inc , "void  %-sbrowser%-dinit(DIX *X,void *pt) ;\n" , \
            dianame , count ) ;
       fprintf ( fp , "void  %-sbrowser%-dinit(DIX *X,void *ptmp) {\n" , \
            dianame , count ) ;
+#endif
+      
+      sprintf(CallBackName, "%-s%-sinit",dianame,WidName);
+      fprintf ( Inc , "void  %-s (DIX *X,void *pt) ;\n" , \
+            CallBackName ) ;
+      fprintf ( fp , "void  %-s (DIX *X,void *ptmp) {\n" , \
+            CallBackName ) ;
       fprintf ( fp , " // One may setup browser list here by setting X->list\n" , \
            dianame , count ) ;
       fprintf ( fp , " // if it need to be freed set it as X->pt also\n" , \
@@ -4445,11 +4471,14 @@
   }
   int WriteThumbnailBrowserCallback ( int count , FILE *fp , char *dianame ) {
       int i;
+#if 0
       sprintf ( CallBackName , "%-sbrowser%-dcallback" , dianame , count ) ;
       while ( CheckCallBack ( CallBackName ) ) {
           count++;
           sprintf ( CallBackName , "%-sbrowser%-dcallback" , dianame , count ) ;
       }
+#endif
+      sprintf(CallBackName, "%-s%-scallback",dianame,WidName);
       fprintf ( Inc , "int %s(int item,int i,void *Tmp) ;\n" , CallBackName ) ;
       fprintf ( fp , "int %s(int item,int i,void *Tmp) {\n" , CallBackName ) ;
 //      fprintf ( Inc , "int  %-sbrowser%-dcallback(int item,int i,void *Tmp) ;\n" , dianame , count ) ;
@@ -4472,10 +4501,17 @@
       fprintf ( fp , "  }\n" ) ;
       fprintf ( fp , "  return ret;\n" ) ;
       fprintf ( fp , "}\n" ) ;
+#if 0
       fprintf ( Inc , "void  %-sbrowser%-dinit(DIY *Y,void *pt) ;\n" , \
            dianame , count ) ;
       fprintf ( fp , "void  %-sbrowser%-dinit(DIY *Y,void *ptmp) {\n" , \
            dianame , count ) ;
+#endif
+      sprintf(CallBackName, "%-s%-sinit",dianame,WidName);
+      fprintf ( Inc , "void  %-s (DIY *Y,void *pt) ;\n" , \
+            CallBackName ) ;
+      fprintf ( fp , "void  %-s (DIY *Y,void *ptmp) {\n" , \
+            CallBackName ) ;
       fprintf ( fp , " // One may setup browser list here by setting Y->list\n" , \
            dianame , count ) ;
       fprintf ( fp , " // if it need to be freed set it as Y->pt also\n" , \
@@ -4486,11 +4522,14 @@
   }
   int WriteRadioButtonsCallback ( int count , FILE *fp , char *dianame ) {
       int i;
+#if 0
       sprintf ( CallBackName , "%-sbrowser%-dcallback" , dianame , count ) ;
       while ( CheckCallBack ( CallBackName ) ) {
           count++;
           sprintf ( CallBackName , "%-sbrowser%-dcallback" , dianame , count ) ;
       }
+#endif
+      sprintf(CallBackName, "%-s%-scallback",dianame,WidName);
       fprintf ( Inc , "int %s(int item,int i,void *Tmp) ;\n" , CallBackName ) ;
       fprintf ( fp , "int %s(int item,int i,void *Tmp) {\n" , CallBackName ) ;
 //      fprintf ( Inc , "int  %-sbrowser%-dcallback(int item,int i,void *Tmp) ;\n" , dianame , count ) ;
@@ -4513,21 +4552,31 @@
       fprintf ( fp , "  th = (ThumbNail **) R->list;\n" ) ;
       fprintf ( fp , "  return ret;\n" ) ;
       fprintf ( fp , "}\n" ) ;
+#if 0
       fprintf ( Inc , "void  %-sbrowser%-dinit(DIRA *R,void *pt) ;\n" , \
            dianame , count ) ;
       fprintf ( fp , "void  %-sbrowser%-dinit(DIRA *R,void *ptmp) {\n" , \
            dianame , count ) ;
+#endif
+      sprintf(CallBackName, "%-s%-sinit",dianame,WidName);
+      fprintf ( Inc , "void  %-s (DIRA *R,void *pt) ;\n" , \
+            CallBackName ) ;
+      fprintf ( fp , "void  %-s (DIRA *R,void *ptmp) {\n" , \
+            CallBackName ) ;
       fprintf ( fp , " void **pt=(void **)ptmp; //pt[0] is arg \n" ) ;
       fprintf ( fp , "}\n" ) ;
       return count;
   }
   int WriteCheckBoxCallback ( int count , FILE *fp , char *dianame ) {
       int i;
+#if 0
       sprintf ( CallBackName , "%-sbrowser%-dcallback" , dianame , count ) ;
       while ( CheckCallBack ( CallBackName ) ) {
           count++;
           sprintf ( CallBackName , "%-sbrowser%-dcallback" , dianame , count ) ;
       }
+#endif
+      sprintf(CallBackName, "%-s%-scallback",dianame,WidName);
       fprintf ( Inc , "int %s(int item,int i,void *Tmp) ;\n" , CallBackName ) ;
       fprintf ( fp , "int %s(int item,int i,void *Tmp) {\n" , CallBackName ) ;
 //      fprintf ( Inc , "int  %-sbrowser%-dcallback(int item,int i,void *Tmp) ;\n" , dianame , count ) ;
@@ -4550,10 +4599,17 @@
       fprintf ( fp , "  th = (ThumbNail **) C->list;\n" ) ;
       fprintf ( fp , "  return ret;\n" ) ;
       fprintf ( fp , "}\n" ) ;
+#if 0
       fprintf ( Inc , "void  %-sbrowser%-dinit(DICH *C,void *pt) ;\n" , \
            dianame , count ) ;
       fprintf ( fp , "void  %-sbrowser%-dinit(DICH *C,void *ptmp) {\n" , \
            dianame , count ) ;
+#endif
+      sprintf(CallBackName, "%-s%-sinit",dianame,WidName);
+      fprintf ( Inc , "void  %-s (DICH *C,void *pt) ;\n" , \
+             CallBackName ) ;
+      fprintf ( fp , "void  %-s (DICH *C,void *ptmp) {\n" , \
+            CallBackName ) ;
       fprintf ( fp , " void **pt=(void **)ptmp; //pt[0] is arg \n" ) ;
       fprintf ( fp , "}\n" ) ;
       return count;
@@ -4562,11 +4618,14 @@
        int nb , FILE *fp , char *dianame ) \
   {
       int i;
+#if 0
       sprintf ( CallBackName , "%-sbutton%-dcallback" , dianame , count ) ;
       while ( CheckCallBack ( CallBackName ) ) {
           count++;
           sprintf ( CallBackName , "%-sbutton%-dcallback" , dianame , count ) ;
       }
+#endif
+      sprintf(CallBackName, "%-s%-scallback",dianame,WidName);
       fprintf ( Inc , "int %s(int key,int i,void *Tmp) ;\n" , CallBackName ) ;
       fprintf ( fp , "int %s(int key,int i,void *Tmp) {\n" , CallBackName ) ;
 //      fprintf ( Inc , "int  %-sbutton%-dcallback(int key,int i,void *Tmp) ;\n" , dianame , count ) ;
@@ -4588,10 +4647,17 @@
       fprintf ( fp , "  }\n" ) ;
       fprintf ( fp , "  return ret;\n" ) ;
       fprintf ( fp , "}\n" ) ;
+#if 0
       fprintf ( Inc , "void  %-sbutton%-dinit(DIBN *B,void *pt) ;\n" , \
            dianame , count ) ;
       fprintf ( fp , "void  %-sbutton%-dinit(DIBN *B,void *ptmp) {\n" , \
            dianame , count ) ;
+#endif
+      sprintf(CallBackName, "%-s%-sinit",dianame,WidName);
+      fprintf ( Inc , "void  %-s (DIBN *B,void *pt) ;\n" , \
+            CallBackName ) ;
+      fprintf ( fp , "void  %-s (DIBN *B,void *ptmp) {\n" , \
+            CallBackName ) ;
       fprintf ( fp , " void **pt=(void **)ptmp; //pt[0] is arg \n" ) ;
       fprintf ( fp , "// may use kgChangeButtonNormalImage etc...\n" ) ;
       fprintf ( fp , " BUT_STR *buts;\n" ) ;
@@ -4601,11 +4667,14 @@
   }
   int WriteButnBoxCallback ( int count , int nb , FILE *fp , char *dianame ) {
       int i;
+#if 0
       sprintf ( CallBackName , "%-sbutton%-dcallback" , dianame , count ) ;
       while ( CheckCallBack ( CallBackName ) ) {
           count++;
           sprintf ( CallBackName , "%-sbutton%-dcallback" , dianame , count ) ;
       }
+#endif
+      sprintf(CallBackName, "%-s%-scallback",dianame,WidName);
       fprintf ( Inc , "int %s(int butno,int i,void *Tmp) ;\n" , CallBackName ) ;
       fprintf ( fp , "int %s(int butno,int i,void *Tmp) {\n" , CallBackName ) ;
 //      fprintf ( Inc , "int  %-sbutton%-dcallback(int butno,int i,void *Tmp) ;\n" , dianame , count ) ;
@@ -4631,10 +4700,17 @@
       fprintf ( fp , "  }\n" ) ;
       fprintf ( fp , "  return ret;\n" ) ;
       fprintf ( fp , "}\n" ) ;
+#if 0
       fprintf ( Inc , "void  %-sbutton%-dinit(DIB *B,void *pt) ;\n" , \
            dianame , count ) ;
       fprintf ( fp , "void  %-sbutton%-dinit(DIB *B,void *ptmp) {\n" , \
            dianame , count ) ;
+#endif
+      sprintf(CallBackName, "%-s%-sinit",dianame,WidName);
+      fprintf ( Inc , "void  %-s (DIB *B,void *pt) ;\n" , \
+            CallBackName ) ;
+      fprintf ( fp , "void  %-s (DIB *B,void *ptmp) {\n" , \
+            CallBackName ) ;
       fprintf ( fp , " void **pt=(void **)ptmp; //pt[0] is arg \n" ) ;
       fprintf ( fp , "// may use kgChangeButtonNormalImage etc...\n" ) ;
       fprintf ( fp , " BUT_STR *buts;\n" ) ;
@@ -4644,11 +4720,14 @@
   }
   int WriteButnBoxnCallback ( int count , int nb , FILE *fp , char *dianame ) {
       int i;
+#if 0
       sprintf ( CallBackName , "%-sbutton%-dcallback" , dianame , count ) ;
       while ( CheckCallBack ( CallBackName ) ) {
           count++;
           sprintf ( CallBackName , "%-sbutton%-dcallback" , dianame , count ) ;
       }
+#endif
+      sprintf(CallBackName, "%-s%-scallback",dianame,WidName);
       fprintf ( Inc , "int %s(int butno,int i,void *Tmp) ;\n" , CallBackName ) ;
       fprintf ( fp , "int %s(int butno,int i,void *Tmp) {\n" , CallBackName ) ;
 //      fprintf ( Inc , "int  %-sbutton%-dcallback(int butno,int i,void *Tmp) ;\n" , dianame , count ) ;
@@ -4675,10 +4754,17 @@
       fprintf ( fp , "  }\n" ) ;
       fprintf ( fp , "  return ret;\n" ) ;
       fprintf ( fp , "}\n" ) ;
+#if 0
       fprintf ( Inc , "void  %-sbutton%-dinit(DIN *B,void *pt) ;\n" , \
            dianame , count ) ;
       fprintf ( fp , "void  %-sbutton%-dinit(DIN *B,void *ptmp) {\n" , \
            dianame , count ) ;
+#endif
+      sprintf(CallBackName, "%-s%-sinit",dianame,WidName);
+      fprintf ( Inc , "void  %-s (DIN *B,void *pt) ;\n" , \
+            CallBackName ) ;
+      fprintf ( fp , "void  %-s (DIN *B,void *ptmp) {\n" , \
+            CallBackName ) ;
       fprintf ( fp , " void **pt=(void **)ptmp; //pt[0] is arg \n" ) ;
       fprintf ( fp , "// may use kgChangeButtonNormalImage etc...\n" ) ;
       fprintf ( fp , " BUT_STR *buts;\n" ) ;
@@ -4688,11 +4774,14 @@
   }
   int WriteHoriBarCallback ( int count , int nb , FILE *fp , char *dianame ) {
       int i;
+#if 0
       sprintf ( CallBackName , "%-ssplbutton%-dcallback" , dianame , count ) ;
       while ( CheckCallBack ( CallBackName ) ) {
           count++;
           sprintf ( CallBackName , "%-ssplbutton%-dcallback" , dianame , count ) ;
       }
+#endif
+      sprintf(CallBackName, "%-s%-scallback",dianame,WidName);
       fprintf ( Inc , "int %s(int butno,int i,void *Tmp) ;\n" , CallBackName ) ;
       fprintf ( fp , "int %s( int butno,int i,void *Tmp) {\n" , CallBackName ) ;
 //      fprintf ( Inc , "int  %-ssplbutton%-dcallback(int butno,int i,void *Tmp) ;\n" , dianame , count ) ;
@@ -4719,10 +4808,17 @@
       fprintf ( fp , "  }\n" ) ;
       fprintf ( fp , "  return ret;\n" ) ;
       fprintf ( fp , "}\n" ) ;
+#if 0
       fprintf ( Inc , "void  %-ssplbutton%-dinit(DIL *B,void *pt) ;\n" , \
            dianame , count ) ;
       fprintf ( fp , "void  %-ssplbutton%-dinit(DIL *B,void *ptmp) {\n" , \
            dianame , count ) ;
+#endif
+      sprintf(CallBackName, "%-s%-sinit",dianame,WidName);
+      fprintf ( Inc , "void  %-s (DIL *B,void *pt) ;\n" , \
+            CallBackName ) ;
+      fprintf ( fp , "void  %-s (DIL *B,void *ptmp) {\n" , \
+            CallBackName ) ;
       fprintf ( fp , " void **pt=(void **)ptmp; //pt[0] is arg \n" ) ;
       fprintf ( fp , "// may use kgChangeButtonNormalImage etc...\n" ) ;
       fprintf ( fp , " BUT_STR *buts;\n" ) ;
@@ -4734,11 +4830,14 @@
        int nb , FILE *fp , char *dianame ) \
   {
       int i;
+#if 0
       sprintf ( CallBackName , "%-shoribar%-dcallback" , dianame , count ) ;
       while ( CheckCallBack ( CallBackName ) ) {
           count++;
           sprintf ( CallBackName , "%-shoribar%-dcallback" , dianame , count ) ;
       }
+#endif
+      sprintf(CallBackName, "%-s%-scallback",dianame,WidName);
       fprintf ( Inc , "int %s(int butno,int i,void *Tmp) ;\n" , CallBackName ) ;
       fprintf ( fp , "int %s(int butno,int i,void *Tmp) {\n" , CallBackName ) ;
 //      fprintf ( Inc , "int  %-shoribar%-dcallback(int butno,int i,void *Tmp) ;\n" , dianame , count ) ;
@@ -4765,10 +4864,17 @@
       fprintf ( fp , "  }\n" ) ;
       fprintf ( fp , "  return ret;\n" ) ;
       fprintf ( fp , "}\n" ) ;
+#if 0
       fprintf ( Inc , "void  %-shbutton%-dinit(DILN *H,void *pt) ;\n" , \
            dianame , count ) ;
       fprintf ( fp , "void  %-shbutton%-dinit(DILN *H,void *ptmp) {\n" , \
            dianame , count ) ;
+#endif
+      sprintf(CallBackName, "%-s%-sinit",dianame,WidName);
+      fprintf ( Inc , "void  %-s (DILN *H,void *pt) ;\n" , \
+            CallBackName ) ;
+      fprintf ( fp , "void  %-s (DILN *H,void *ptmp) {\n" , \
+            CallBackName ) ;
       fprintf ( fp , " void **pt=(void **)ptmp; //pt[0] is arg \n" ) ;
       fprintf ( fp , "// may use kgChangeButtonNormalImage etc...\n" ) ;
       fprintf ( fp , " BUT_STR *buts;\n" ) ;
@@ -4778,11 +4884,14 @@
   }
   int WriteBrowserCallback ( int count , FILE *fp , char *dianame ) {
       int i;
+#if 0
       sprintf ( CallBackName , "%-sbrowser%-dcallback" , dianame , count ) ;
       while ( CheckCallBack ( CallBackName ) ) {
           count++;
           sprintf ( CallBackName , "%-sbrowser%-dcallback" , dianame , count ) ;
       }
+#endif
+      sprintf(CallBackName, "%-s%-scallback",dianame,WidName);
       fprintf ( Inc , "int %s(int item,int i,void *Tmp) ;\n" , CallBackName ) ;
       fprintf ( fp , "int %s(int item ,int i,void *Tmp) {\n" , CallBackName ) ;
 //      fprintf ( Inc , "int  %-sbrowser%-dcallback(int item,int i,void *Tmp) ;\n" , dianame , count ) ;
@@ -4809,11 +4918,14 @@
   }
   int WriteScrollmenuCallback ( int count , FILE *fp , char *dianame ) {
       int i;
+#if 0
       sprintf ( CallBackName , "%-sbrowser%-dcallback" , dianame , count ) ;
       while ( CheckCallBack ( CallBackName ) ) {
           count++;
           sprintf ( CallBackName , "%-sbrowser%-dcallback" , dianame , count ) ;
       }
+#endif
+      sprintf(CallBackName, "%-s%-scallback",dianame,WidName);
       fprintf ( Inc , "int %s(int item,int i,void *Tmp) ;\n" , CallBackName ) ;
       fprintf ( fp , "int %s(int item,int i,void *Tmp) {\n" , CallBackName ) ;
 //      fprintf ( Inc , "int  %-sbrowser%-dcallback(int item,int i,void *Tmp) ;\n" , dianame , count ) ;
@@ -4836,10 +4948,16 @@
       fprintf ( fp , "  }\n" ) ;
       fprintf ( fp , "  return ret;\n" ) ;
       fprintf ( fp , "}\n" ) ;
+#if 0
       fprintf ( Inc , "void  %-sbrowser%-dinit(DIE *E,void *pt) ;\n" , \
            dianame , count ) ;
       fprintf ( fp , "void  %-sbrowser%-dinit(DIE *E,void *ptmp) {\n" , \
            dianame , count ) ;
+#endif
+
+      sprintf(CallBackName, "%-s%-sinit",dianame,WidName);
+      fprintf ( Inc , "void * %s (DIE *E,void *pt) ;\n" , CallBackName ) ;
+      fprintf ( fp , "void * %s (DIE *E,void *ptmp) {\n" , CallBackName ) ;
       fprintf ( fp , " void **pt=(void **)ptmp; //pt[0] is arg \n" ) ;
       fprintf ( fp , "}\n" ) ;
       return count;
@@ -4847,13 +4965,16 @@
   int WriteMsgScrollinit ( int count , FILE *fp , char *dianame ) {
       int i;
       char *pt;
+#if 0
       sprintf ( CallBackName , "%-sbrowser%-dinit" , dianame , count ) ;
       while ( CheckCallBack ( CallBackName ) ) {
           count++;
           sprintf ( CallBackName , "%-sbrowser%-dinit" , dianame , count ) ;
       }
-      fprintf ( Inc , "void * %s(DIS *S,void *pt) ;\n" , CallBackName ) ;
-      fprintf ( fp , "void * %s(DIS *S,void *ptmp) {\n" , CallBackName ) ;
+#endif
+      sprintf(CallBackName, "%-s%-sinit",dianame,WidName);
+      fprintf ( Inc , "void * %s (DIS *S,void *pt) ;\n" , CallBackName ) ;
+      fprintf ( fp , "void * %s (DIS *S,void *ptmp) {\n" , CallBackName ) ;
       pt = strstr(CallBackName,"init");
       pt[0]='\0';
       strcat (CallBackName,"callback");
@@ -4865,11 +4986,14 @@
   }
   int WriteSlideDCallback ( int count , FILE *fp , char *dianame ) {
       int i;
+#if 0
       sprintf ( CallBackName , "%-sdslide%-dcallback" , dianame , count ) ;
       while ( CheckCallBack ( CallBackName ) ) {
           count++;
           sprintf ( CallBackName , "%-sdslide%-dcallback" , dianame , count ) ;
       }
+#endif
+      sprintf(CallBackName, "%-s%-scallback",dianame,WidName);
       fprintf ( Inc , "int %s(int  val,int i,void *Tmp) ;\n" , CallBackName ) ;
       fprintf ( fp , "int %s(int  val,int i,void *Tmp) {\n" , CallBackName ) ;
 //      fprintf ( Inc , "int  %-sdslide%-dcallback(int val,int i,void *Tmp) ;\n" , dianame , count ) ;
@@ -4893,11 +5017,14 @@
   }
   int WriteSlideHCallback ( int count , FILE *fp , char *dianame ) {
       int i;
+#if 0
       sprintf ( CallBackName , "%-sdslide%-dcallback" , dianame , count ) ;
       while ( CheckCallBack ( CallBackName ) ) {
           count++;
           sprintf ( CallBackName , "%-sdslide%-dcallback" , dianame , count ) ;
       }
+#endif
+      sprintf(CallBackName, "%-s%-scallback",dianame,WidName);
       fprintf ( Inc , "int %s(int val,int i,void *Tmp) ;\n" , CallBackName ) ;
       fprintf ( fp , "int %s(int  val,int i,void *Tmp) {\n" , CallBackName ) ;
 //      fprintf ( Inc , "int  %-sdslide%-dcallback(int val,int i,void *Tmp) ;\n" , dianame , count ) ;
@@ -4921,11 +5048,14 @@
   }
   int WriteSlideFCallback ( int count , FILE *fp , char *dianame ) {
       int i;
+#if 0
       sprintf ( CallBackName , "%-sfslide%-dcallback" , dianame , count ) ;
       while ( CheckCallBack ( CallBackName ) ) {
           count++;
           sprintf ( CallBackName , "%-sfslide%-dcallback" , dianame , count ) ;
       }
+#endif
+      sprintf(CallBackName, "%-s%-scallback",dianame,WidName);
       fprintf ( Inc , "int %s(double val,int i,void *Tmp) ;\n" , CallBackName ) ;
       fprintf ( fp , "int %s(double val,int i,void *Tmp) {\n" , CallBackName ) ;
 //      fprintf ( Inc , "int  %-sfslide%-dcallback(double val,int i,void *Tmp) ;\n" , dianame , count ) ;
@@ -4949,11 +5079,14 @@
   }
   int WriteVertScrollCallback ( int count , FILE *fp , char *dianame ) {
       int i;
+#if 0
       sprintf ( CallBackName , "%-svertscroll%-dcallback" , dianame , count ) ;
       while ( CheckCallBack ( CallBackName ) ) {
           count++;
           sprintf ( CallBackName , "%-svertscroll%-dcallback" , dianame , count ) ;
       }
+#endif
+      sprintf(CallBackName, "%-s%-scallback",dianame,WidName);
       fprintf ( Inc , "int %s(double val,int i,void *Tmp) ;\n" , CallBackName ) ;
       fprintf ( fp , "int %s(double val,int i,void *Tmp) {\n" , CallBackName ) ;
 //      fprintf ( Inc , "int  %-svertscroll%-dcallback(double val,int i,void *Tmp) ;\n" , dianame , count ) ;
@@ -4977,11 +5110,14 @@
   }
   int WriteHorizScrollCallback ( int count , FILE *fp , char *dianame ) {
       int i;
+#if 0
       sprintf ( CallBackName , "%-shorizscroll%-dcallback" , dianame , count ) ;
       while ( CheckCallBack ( CallBackName ) ) {
           count++;
           sprintf ( CallBackName , "%-shorizscroll%-dcallback" , dianame , count ) ;
       }
+#endif
+      sprintf(CallBackName, "%-s%-scallback",dianame,WidName);
       fprintf ( Inc , "int %s(double val,int i,void *Tmp) ;\n" , CallBackName ) ;
       fprintf ( fp , "int %s(double val,int i,void *Tmp) {\n" , CallBackName ) ;
 //      fprintf ( Inc , "int  %-shorizscroll%-dcallback(double val,int i,void *Tmp) ;\n" , dianame , count ) ;
@@ -5006,6 +5142,88 @@
   int Writeinitroutine ( FILE *fp , char *dianame ) {
       fprintf ( Inc , "int %-sinit(void *Tmp) ;\n" , dianame ) ;
       fprintf ( Inc , "int %-scleanup(void *Tmp) ;\n" , dianame ) ;
+      fprintf ( Inc , "void *Run%-s(void *,void *) ;\n",dianame);
+      fprintf ( Inc , "int Make%-sGroup(DIALOG *,void *) ;\n",dianame);
+      fprintf ( Inc , "void * %-sAction(void *,void *) ;\n",dianame);
+      fprintf ( fp , "int %-sSetup(void *Tmp,void *args) {\n" , dianame ) ;
+      fprintf ( fp , "  /*********************************** \n" ) ;
+      fprintf ( fp , "    args :  Pointer to args  \n" ) ;
+      fprintf ( fp , "   ***********************************/ \n" ) ;
+      fprintf ( fp , "  /* you add any initialisation here */\n" ) ;
+      fprintf ( fp , "  /* useful for setting is used as MakeGroup */\n" ) ;
+      fprintf ( fp , "  return 1;\n");
+      fprintf ( fp , "}\n" ) ;
+      fprintf ( fp, " \n" );
+      fprintf ( fp , "void * %-sCleanDia(void *args) {\n" , dianame ) ;
+      fprintf ( fp , "  /*********************************** \n" ) ;
+      fprintf ( fp , "    args :  Pointer to args  \n" ) ;
+      fprintf ( fp , "   ***********************************/ \n" ) ;
+      fprintf ( fp , "  \n/* you add any cleaning  here */\n\n" ) ;
+      fprintf ( fp , "  return NULL;\n");
+      fprintf ( fp , "}\n" ) ;
+      fprintf ( fp, " \n" );
+      fprintf ( fp, " \n" );
+      fprintf ( fp , "void *  %-sAction(void *Tmp,void *Args) {\n" , dianame ) ;
+      fprintf ( fp , "  return NULL;\n");
+      fprintf ( fp , "} \n" );
+      fprintf ( fp, " \n" );
+      fprintf ( fp, " \n" );
+      fprintf ( fp , "int   %-sOn(void *itmp) {\n" , dianame ) ;
+      fprintf ( fp,  "  DIAINTR * Dt = (DIAINTR *) itmp;\n");
+      fprintf ( fp,  "  if(Dt == NULL ) Dt = (DIAINTR *)It;\n");
+      fprintf ( fp , "  if(Dt != NULL) {\n");
+      fprintf ( fp , "    if(Dt->Dtmp != NULL)kgSetGrpVisibility(Dt->Dtmp,Dt->GrpId,1);\n");
+      fprintf ( fp , "    else return 0;\n");
+      fprintf ( fp , "    return 1;\n");
+      fprintf ( fp , "  } \n" );
+      fprintf ( fp , "  return 0;\n");
+      fprintf ( fp , "} \n" );
+      fprintf ( fp, " \n" );
+      fprintf ( fp , "int   %-sOff(void *itmp) {\n" , dianame ) ;
+      fprintf ( fp,  "  DIAINTR * Dt = (DIAINTR *) itmp;\n");
+      fprintf ( fp,  "  if(Dt == NULL ) Dt = (DIAINTR *)It;\n");
+      fprintf ( fp , "  if(Dt != NULL) {\n");
+      fprintf ( fp , "    if(Dt->Dtmp != NULL)kgSetGrpVisibility(Dt->Dtmp,Dt->GrpId,0);\n");
+      fprintf ( fp , "    else return 0;\n");
+      fprintf ( fp , "    return 1;\n");
+      fprintf ( fp , "  } \n" );
+      fprintf ( fp , "  return 0;\n");
+      fprintf ( fp , "} \n" );
+      fprintf ( fp, " \n" );
+      fprintf ( fp , "static char *GetPointer(char *str) { \n" );
+      fprintf ( fp , "  char *pt; \n" );
+      fprintf ( fp , "  pt = (char *)malloc(strlen(str)+1); \n" );
+      fprintf ( fp , "  strcpy(pt,str); \n" );
+      fprintf ( fp , "  return pt; \n" );
+      fprintf ( fp , "} \n" );
+      fprintf ( fp, " \n" );
+      fprintf ( fp, " \n" );
+      fprintf ( fp , "void * %-sInterface(void *args,void *rets) {\n" , dianame ) ;
+      fprintf ( fp , "  /*********************************** \n" ) ;
+      fprintf ( fp , "   ***********************************/ \n" ) ;
+      fprintf ( fp , "  DIAINTR *it= (DIAINTR *)malloc(sizeof(DIAINTR));\n" );
+      fprintf ( fp , "  it->GrpId=0;\n  // filled by MakeGroup");
+      fprintf ( fp , "  it->xsh=0;\n");
+      fprintf ( fp , "  it->ysh=0;\n");   
+      fprintf ( fp , "  it->RunDia = Run%-s;\n",dianame);
+      fprintf ( fp , "  it->MakeGroup = Make%-sGroup;\n",dianame);
+      fprintf ( fp , "  it->Title = GetPointer((char *)\"%-s\");\n",dianame);
+      fprintf ( fp , "  it->Help = GetPointer( (char *)\"No help yet, request\");\n");
+      fprintf ( fp , "  it->Action = %-sAction;\n",dianame);
+      fprintf ( fp , "  it->Settings = %-sSetup;\n",dianame);
+      fprintf ( fp,  "  it->Cleanup  = %-sCleanDia;\n",dianame);
+      fprintf ( fp , "  if(args != NULL) Args=args;\n");
+      fprintf ( fp , "  if(rets != NULL) Rets=rets;\n");
+      fprintf ( fp , "  it->args = Args;\n");
+      fprintf ( fp , "  it->rets = Rets;\n");
+      fprintf ( fp,  "  it->SwitchOn = %-sOn;\n",dianame);
+      fprintf ( fp,  "  it->SwitchOff = %-sOff;\n",dianame);
+      fprintf ( fp,  "  it->Dtmp = NULL; // fiiled by MakeGroup \n");
+      fprintf ( fp,  "  It = it;\n");
+      fprintf ( fp , "  return it;\n");
+      fprintf ( fp , "}\n" ) ;
+      fprintf ( fp, " \n" );
+      fprintf ( fp, " \n" );
       fprintf ( fp , "int %-sinit(void *Tmp) {\n" , dianame ) ;
       fprintf ( fp , "  /*********************************** \n" ) ;
       fprintf ( fp , "    Tmp :  Pointer to DIALOG  \n" ) ;
@@ -5051,12 +5269,24 @@
       fprintf ( fp , " /* pt[0] is inputs given by caller */\n" ) ;
       fprintf ( fp , "  DIA *d;\n" ) ;
       fprintf ( fp , "  int i,n;\n" ) ;
-      fprintf ( fp , "  d = D->d;\n" ) ;
+      fprintf ( fp , "  kgCheckParentPosition(Tmp);\n" ) ;
+      fprintf ( fp , "  d = D->d;\n\n" ) ;
+      fprintf ( fp , "  if( ModuleList == NULL) ModuleList = kgGetModuleList((void **)ModFuns);\n");
+      fprintf ( fp , "  i=0;\n");
+      fprintf ( fp , "  void *args=NULL;\n");
+      fprintf ( fp , "  DIAINTR *Dt;\n");
+      fprintf ( fp , "  Resetlink(ModuleList);\n");
+      fprintf ( fp , "  while ( (Dt=(DIAINTR *)Getrecord(ModuleList)) != NULL) {\n");
+      fprintf ( fp , "    Dt->GrpId = Dt->MakeGroup(Tmp,NULL);\n");
+      fprintf ( fp , "    kgShiftGrp(Tmp,Dt->GrpId,Dt->xsh,Dt->ysh);\n");
+      fprintf ( fp , "    Dt->Settings(Tmp,args);\n");
+      fprintf ( fp , "    i++;\n");
+      fprintf ( fp , "  };\n\n");
       fprintf ( fp , "  i=0;while(d[i].t!= NULL) {;\n" ) ;
       fprintf ( fp , "     i++;\n" ) ;
       fprintf ( fp , "  };\n" ) ;
       fprintf ( fp , "  n=1;\n" ) ;
-      fprintf ( fp , "//  strcpy(D->name,\"Kulina Designer ver 2.0\");    /*  Dialog name you may change */\n" ) ;
+      fprintf ( fp , "//  strcpy(D->name,\"Kulina Designer ver 3.0\");    /*  Dialog name you may change */\n" ) ;
           
       fprintf ( fp , "#if 0\n" ) ;
       fprintf ( fp , "  if(D->fullscreen!=1) {    /*  if not fullscreen mode */\n" ) ;
@@ -5136,13 +5366,16 @@
   }
   int WriteGboxinit ( int control , FILE *fp , char *dianame ) {
       int count = control;
+#if 0
       sprintf ( CallBackName , "%-sgbox%-dinit" , dianame , count ) ;
       while ( CheckCallBack ( CallBackName ) ) {
           count++;
           sprintf ( CallBackName , "%-sgbox%-dinit" , dianame , count ) ;
       }
-      fprintf ( Inc , "void %-s(int i,void *Tmp) ;\n" , CallBackName ) ;
-      fprintf ( fp , "void %-s(int i,void *Tmp) {\n" , CallBackName ) ;
+#endif
+      sprintf(CallBackName, "%-s%-sinit",dianame,WidName);
+      fprintf ( Inc , "void %-s (int i,void *Tmp) ;\n" , CallBackName ) ;
+      fprintf ( fp , "void %-s (int i,void *Tmp) {\n" , CallBackName ) ;
       fprintf ( fp , "  /*********************************** \n" ) ;
       fprintf ( fp , "    int routine for grahics area \n" ) ;
       fprintf ( fp , "   ***********************************/ \n" ) ;
@@ -5316,6 +5549,11 @@
               break;
           }
           if ( strcmp ( CallBackName , "NotUsed" ) != 0 ) {
+              char *pt;
+              if((pt=strstr(CallBackName,(char *) "init"))!=NULL) {
+                pt[0]='\0';
+                strcat(CallBackName,(char *)"callback");
+              }
               sprintf ( buff , "%s %s" , WidName , CallBackName ) ;
               wpt = ( char * ) malloc ( strlen ( buff ) +1 ) ;
               strcpy ( wpt , buff ) ;
@@ -5962,6 +6200,13 @@
       fprintf ( fp1 , "#include \"%-s\"\n" , Includecode ) ;
       fprintf ( fp1 , "#include \"%-s\"\n" , Gclrcode ) ;
       fprintf ( fpc , "#include <kulina.h>\n" ) ;
+      fprintf ( fpc , "#include \"%-sCallbacks.h\"\n",dianame);
+      fprintf ( fpc , "\nstatic void *Args=NULL,*Rets=NULL;\n\n");
+      fprintf ( fpc , "static DIAINTR *It = NULL;\n");
+      fprintf ( fpc , "\n\nstatic MODINTERFACE ModFuns[] = { \n");
+      fprintf ( fpc , "    (MODINTERFACE) NULL \n");
+      fprintf ( fpc , "};\n");
+      fprintf ( fpc , "static Dlink *ModuleList=NULL;\n");
       WriteCallBacks ( L , fpc , dianame ) ;
       fclose ( fpc ) ;
       fclose ( Inc ) ;
@@ -6065,7 +6310,7 @@
       fprintf ( fp1 , "  D.yl = %d;    /*  Width  of Dialog */\n" , D->yl ) ;
       fprintf ( fp1 , "  D.Initfun = %-sinit;    /*   init fuction for Dialog */\n" , \
            dianame ) ;
-      fprintf ( fp1 , "  D.Cleanupfun = %-scleanup;    /*   init fuction for Dialog */\n" , \
+      fprintf ( fp1 , "  D.Cleanupfun = %-scleanup;    /*   cleanup fuction for Dialog */\n" , \
            dianame ) ;
       fprintf ( fp1 , "  D.kbattn = %-d;    /*  1 for drawing keyborad attention */\n" , \
            D->kbattn ) ;
@@ -6120,7 +6365,7 @@
       fprintf ( fp1 , "  D.parent = parent;    /*  1 for not showing in task bar*/\n" ) ;
           
       fprintf ( fp1 , "  D.pt = pt;    /*  any data to be passed by user*/\n" ) ;
-      fprintf ( fp1 , "//  strcpy(D.name,\"Kulina Designer ver 2.0\");    /*  Dialog name you may change */\n" ) ;
+      fprintf ( fp1 , "//  strcpy(D.name,\"Kulina Designer ver 3.0\");    /*  Dialog name you may change */\n" ) ;
           
       fprintf ( fp1 , "  if(D.fullscreen!=1) {    /*  if not fullscreen mode */\n" ) ;
           
@@ -6136,9 +6381,9 @@
       fprintf ( fp1 , "  }    /*  end of fullscreen mode */\n" ) ;
 //  fprintf(fp1,"  D.SearchList=(void *)Dopen();    /*  list of directories picture search */\n");
 //  fprintf(fp1,"  kgDefaultGuiTheme(&(D.gc));    /*  set colors for gui*/\n");
-      fprintf ( fp1 , "  Modify%-s(&D,GrpId);    /*  add extras to  gui*/\n" , \
-           dianame ) ;
       fprintf ( fp1 , "  Modify%-sGc(&D);    /*  set colors for gui if do not like default*/\n" , \
+           dianame ) ;
+      fprintf ( fp1 , "  Modify%-s(&D,GrpId);    /*  add extras to  gui*/\n" , \
            dianame ) ;
       fprintf ( fp1 , "  ret= kgUi(&D);\n" ) ;
       fprintf ( fp1 , "  kgCleanUi(&D);\n" ) ;
@@ -7124,6 +7369,7 @@
      and returns 0 if it can be used
   */ 
       char *pt = NULL , *spt = NULL , *dpt = NULL;
+      int ret = 0;
       if ( CallList == NULL ) return 0;
       Resetlink ( CallList ) ;
       Resetlink ( SrcList ) ;
@@ -7132,11 +7378,28 @@
               Resetlink ( SrcList ) ;
               while ( ( spt = ( char * ) Getrecord ( SrcList ) ) != NULL ) {
                   if ( strstr ( spt , call ) != NULL ) {
-                      if ( DelList == NULL ) return 0;
-                      Resetlink ( DelList ) ;
-                      while ( ( dpt = ( char * ) Getrecord ( DelList ) ) != NULL ) {
-                          if ( strstr ( spt , dpt ) != NULL ) return 1;
+                      if ( DelList != NULL ) {
+                        Resetlink ( DelList ) ;
+                        while ( ( dpt = ( char * ) Getrecord ( DelList ) ) != NULL ) {
+                          if ( strstr ( spt , dpt ) != NULL ) {
+                            printf("%s : %s in deletelist\n",spt,dpt);
+                            return 1;
+                          }
+                        }
                       }
+#if 0
+                      if ( InclList != NULL ) {
+                        Resetlink ( InclList ) ;
+                        while ( ( dpt = ( char * ) Getrecord ( InclList ) ) != NULL ) {
+                            printf("%s %s\n",spt,dpt);
+                            if ( strstr ( spt , dpt ) != NULL ){
+                                printf("Returning 0\n");
+                                return 0;
+                            }
+                        }
+                        return 1;
+                      }
+#endif
                       return 0;
                   }
               }
@@ -9360,6 +9623,8 @@
       sprintf ( Gclrcode , "Gclr%-s.c" , args [ 1 ] ) ;
       sprintf ( buff , "%-sCallbacks.c" , DiaName ) ;
       CallList = Dreadfile ( buff ) ;
+      sprintf ( buff , "%-sCallbacks.h" , DiaName ) ;
+      InclList = Dreadfile ( buff ) ;
       sprintf ( buff , "%-s.src" , DiaName ) ;
       SrcList = Dreadfile ( buff ) ;
 #if 0
@@ -9373,11 +9638,14 @@
           fp = fopen ( "Makefile" , "w" ) ;
           fprintf ( fp , "KULINA=/usr\n" ) ;
           fprintf ( fp , "#CC\t=g++ -pthread\n" ) ;
-          fprintf ( fp , "CC\t=cc -pthread\n" ) ;
+          fprintf ( fp , "CC\t=cc -fPIC -pthread\n" ) ;
           fprintf ( fp , "%-s\t: %-s.o %-sCallbacks.o %-smain.o\n" , \
                args [ 1 ] , args [ 1 ] , args [ 1 ] , args [ 1 ] ) ;
-    /* fprintf(fp,"\t cc -o %-s %-s.o %-sCallbacks.o main.o $(PARAS)/lib/glib.a -lX11 -lm\n",args[1],args[1],args[1]);*/
           fprintf ( fp , "\t $(CC) -o %-s %-s.o %-sCallbacks.o %-smain.o -I$(KULINA)/include $(KULINA)/lib/libkulina.a $(KULINA)/lib/libgm.a -L/usr/X11R6/lib -lX11 -lXext -lm -lpthread -lz -lbz2 -lGL\n" , \
+               args [ 1 ] , args [ 1 ] , args [ 1 ] , args [ 1 ] ) ;
+          fprintf ( fp , "\t ar -rD  lib%-s.a  %-s.o %-sCallbacks.o \n",  \
+               args [ 1 ] , args [ 1 ] , args [ 1 ] , args [ 1 ] ) ;
+          fprintf ( fp , "\t $(CC) -shared -o  lib%-s.so  %-s.o %-sCallbacks.o \n", \
                args [ 1 ] , args [ 1 ] , args [ 1 ] , args [ 1 ] ) ;
           fprintf ( fp , "%-s.o\t: %-s.c Gclr%-s.c \n" , \
                args [ 1 ] , args [ 1 ] , args [ 1 ] ) ;

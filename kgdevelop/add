@@ -1,9 +1,1 @@
-  if(parent != Parent) {
-	  D.xo=0;D.yo=200;
-  }
-  else {
-     int xres,yres; 
-     kgDisplaySize(&xres,&yres); 
-     D.xo = (xres - D.xl)*0.5;
-     D.yo = (yres - D.yl)*0.25;
-  }
+      sprintf(CallBackName, "%-s%-scallback",dianame,Widname);
