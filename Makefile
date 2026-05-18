@@ -70,6 +70,7 @@ install	: bin/kgdevelop lib/libkulina.a lib/libgm.a
 tarball	: bin/kgdevelop
 	  install -m 755  bin/kgdevelop TARBALL/
 	  install -m 755  lib/libkulina.a TARBALL/
+	  install -m 755  lib/libkulina.so TARBALL/
 	  install -m 755  lib/libdlink.a TARBALL/
 	  install -m 755  lib/libgm.a TARBALL/
 	  install -m 755  include/kulina.h  TARBALL/
@@ -81,6 +82,7 @@ tarball	: bin/kgdevelop
 	  mv kulinagraphics TARBALL
 	  rm -f TARBALL/kgdevelop
 	  rm -f TARBALL/libkulina.a
+	  rm -f TARBALL/libkulina.so
 	  rm -f TARBALL/libdlink.a
 	  rm -f TARBALL/libgm.a
 	  rm -f TARBALL/kulina.h
