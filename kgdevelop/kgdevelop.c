@@ -5145,6 +5145,7 @@
       fprintf ( Inc , "void *Run%-s(void *,void *) ;\n",dianame);
       fprintf ( Inc , "int Make%-sGroup(DIALOG *,void *) ;\n",dianame);
       fprintf ( Inc , "void * %-sAction(void *,void *) ;\n",dianame);
+      fprintf ( Inc , "int %-sSetup(void *Tmp,void *args) ;\n" , dianame ) ;
       fprintf ( fp , "int %-sSetup(void *Tmp,void *args) {\n" , dianame ) ;
       fprintf ( fp , "  /*********************************** \n" ) ;
       fprintf ( fp , "    args :  Pointer to args  \n" ) ;
@@ -6274,6 +6275,7 @@
       fprintf ( fp1 , "   GrpId = %-sGroup(D,v,pt);\n" , dianame ) ;
       fprintf ( fp1 , "   Gpt = kgGetWidgetGrp(D,GrpId);\n" ) ;
       fprintf ( fp1 , "   Gpt->arg= v; " "// kulina will double free this; you may modify\n" ) ;
+      fprintf ( fp1 , "   %-sSetup(D,Gpt->arg);\n", dianame );
           
       fprintf ( fp1 , "   return GrpId;\n" ) ;
       fprintf ( fp1 , "}\n" ) ;
