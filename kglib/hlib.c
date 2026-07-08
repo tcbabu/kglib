@@ -82,8 +82,10 @@ typedef struct {
 
 void *Loadfontstruct(void);
 Dlink *uiGetFontlist(void);
+int uiAddFonts(void);
 
 static Dlink *Fontlist=NULL;
+extern Dlink *FontList;
 static float CFact=300000.0;
 static Dlink *Pnlist = NULL;
 typedef struct Line {
@@ -4913,6 +4915,8 @@ int  pscript(char *inf,char *outf) {
   float fact;
   FILE *fp;
   char *TmpDir;
+  char *Newfont;
+  FONT *pt;
   T_rot=0;
   LSCAPE=0;
   A4 =0;
@@ -4926,6 +4930,19 @@ int  pscript(char *inf,char *outf) {
   ln = ((int)(evgax+1))*((int)(evgay+1))*fact+8;
   ln >>=3;
   y_mulf=1.0;
+  if(FontList == NULL ) uiAddFonts();
+  if(Fontlist == NULL ) Fontlist=(Dlink *)Loadfontstruct();
+  Resetlink(FontList);
+  Resetlink(Fontlist);
+  while (((pt = (FONT *)Getrecord(Fontlist))!=NULL)&&
+           ((Newfont=(char *)Getrecord(FontList))!=NULL)) {
+        int pos = strlen(Newfont)-1;
+        while( Newfont[pos] !='/')pos--;
+        pos++;
+        strcpy(pt->fontname,Newfont+pos);
+  }
+  Resetlink(FontList);
+  Resetlink(Fontlist);
   if (LSCAPE){
    T_rot=0.0;
    A4=0;
