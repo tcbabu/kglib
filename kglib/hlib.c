@@ -4916,10 +4916,12 @@ int  pscript(char *inf,char *outf) {
   FILE *fp;
   char *TmpDir;
   char *Newfont;
-  FONT *pt;
+  FONT *pt,*ptmp;
+  Dlink *Dummy;
   T_rot=0;
   LSCAPE=0;
   A4 =0;
+ 
   EVGAX=LEVGAX;
   EVGAY=LEVGAY;
   strcpy(InFile,inf);
@@ -4934,6 +4936,25 @@ int  pscript(char *inf,char *outf) {
   if(Fontlist == NULL ) Fontlist=(Dlink *)Loadfontstruct();
   Resetlink(FontList);
   Resetlink(Fontlist);
+
+  Dummy = Dopen();;
+  while ((Newfont=(char *)Getrecord(FontList))!=NULL){
+    if((pt = (FONT *)Getrecord(Fontlist))==NULL){
+       Resetlink(Fontlist);
+       pt =(FONT *)Getrecord(Fontlist);
+    } 
+        int pos = strlen(Newfont)-1;
+        while( Newfont[pos] !='/')pos--;
+        pos++;
+        ptmp = (FONT *)malloc(sizeof(FONT));
+        *ptmp = *pt;
+        strcpy(ptmp->fontname,Newfont+pos);
+        Dadd(Dummy,ptmp);
+  }
+  Dempty(Fontlist);
+  Fontlist = Dcopy(Dummy);
+  Dfree(Dummy);
+#if 0 
   while (((pt = (FONT *)Getrecord(Fontlist))!=NULL)&&
            ((Newfont=(char *)Getrecord(FontList))!=NULL)) {
         int pos = strlen(Newfont)-1;
@@ -4941,6 +4962,7 @@ int  pscript(char *inf,char *outf) {
         pos++;
         strcpy(pt->fontname,Newfont+pos);
   }
+#endif
   Resetlink(FontList);
   Resetlink(Fontlist);
   if (LSCAPE){
