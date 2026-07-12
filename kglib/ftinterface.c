@@ -1130,7 +1130,7 @@ void *uiAddCharImage(void *img1,void *img2,int xshft,int sft,int  *ymax,int *ymi
                   wfact = ypt->wfact;\
                   free ( ypt ) ;\
 }
-#define ADDGRIMG {\
+#define ADDGRIMG_O {\
               IMG = Imgs[txt[i]];\
               kgGetImageSize(IMG->img,&xsize,&ysize);\
               img = kgCopyImage(IMG->img);\
@@ -1153,7 +1153,7 @@ void *uiAddCharImage(void *img1,void *img2,int xshft,int sft,int  *ymax,int *ymi
               img=NULL;\
               xp += ( (wd+gp)*wfact ) ;\
 }
-#define ADDGRIMG_N {\
+#define ADDGRIMG {\
               IMG = Imgs[txt[i]];\
               kgGetImageSize(IMG->img,&xsize,&ysize);\
               rzimg = kgChangeSizeImage(IMG->img,(int)(((wd)*wfact*IMG->xln/(float)Fsize)*cfx+0.5) ,(int)( height*hfact*cfy+0.5));\
