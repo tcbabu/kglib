@@ -3147,6 +3147,7 @@ static void win_txt_font( void)
   m_f =  pt->m_f;
   t_font =font;
   strcpy(FontName,pt->fontname);
+//  printf("FontName: %s\n",FontName);
 }
 static void set_txt_font( int font)
  {
@@ -3164,6 +3165,7 @@ static void set_txt_font( int font)
   m_f =  pt->m_f;
   t_font =font;
   strcpy(FontName,pt->fontname);
+//  printf("FontName set: %s\n",FontName);
   fprintf(TX_F,"ZF%-s findfont %-6.1f scalefont setfont\n",FontName,font_size);
  }
 static void t_txt_font( int font)
@@ -4944,7 +4946,10 @@ int  pscript(char *inf,char *outf) {
        pt =(FONT *)Getrecord(Fontlist);
     } 
         int pos = strlen(Newfont)-1;
-        while( Newfont[pos] !='/')pos--;
+        while( Newfont[pos] !='/'){
+          if(Newfont[pos]== '.') Newfont[pos]='\0';
+          pos--;
+        }
         pos++;
         ptmp = (FONT *)malloc(sizeof(FONT));
         *ptmp = *pt;
