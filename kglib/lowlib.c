@@ -764,11 +764,11 @@ static char *OthFonts []= {
       Font = font%count;
       strcpy ( FontFile , ( char * ) Drecord ( FontList , Font ) ) ;
 //      printf ("Font : %d  %s\n",Font,FontFile);
-      if(Grimgs[font]==NULL){
-//        printf("New GRfont list\n");
+      if(Grimgs[Font]==NULL){
+         printf("New GRfont list : %d %d\n",FontFile , FontSize );
          Grimgs[font] = ( IMG_STR ** ) kgGrFontChars ( FontFile , FontSize ) ;
       }
-      return Grimgs[font];
+      return Grimgs[Font];
   }
   void * uiGraphicsString (  char *str , int width , \
   int height , int font , int color ,int angle, int FontSize  )   {
