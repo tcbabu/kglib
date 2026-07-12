@@ -1153,6 +1153,27 @@ void *uiAddCharImage(void *img1,void *img2,int xshft,int sft,int  *ymax,int *ymi
               img=NULL;\
               xp += ( (wd+gp)*wfact ) ;\
 }
+#define ADDGRIMG_N {\
+              IMG = Imgs[txt[i]];\
+              kgGetImageSize(IMG->img,&xsize,&ysize);\
+              rzimg = kgChangeSizeImage(IMG->img,(int)(((wd)*wfact*IMG->xln/(float)Fsize)*cfx+0.5) ,(int)( height*hfact*cfy+0.5));\
+              kgSetImageColor ( rzimg , rd , gr , bl ) ;\
+              kgGetImageSize(rzimg,&xsize,&ysize);\
+              int gxsize = (int)((gp*wfact*IMG->xln/(float)Fsize)*cfx+0.5);\
+              img = rzimg;\
+              if((fimg != NULL)&&(gxsize >1)) {\
+                 void *gimg=NULL;\
+                 gimg = kgCreateImage(xsize+gxsize,ysize);\
+                 gimg = kgAddImages(gimg,img,gxsize,0);\
+                 kgFreeGmImage(img);\
+                 img = gimg;\
+                 kgGetImageSize(img,&xsize,&ysize);\
+              }\
+              shift = (int)(yp*height*cfy+0.5);             \
+              fimg = uiAddCharImage(fimg,img,xp,shift,&ymax,&ymin);\
+              img=NULL;\
+              xp += ( (wd+gp)*wfact ) ;\
+}
 static float Fval(char *str) {
     float val=1.0;
     val = str[0]-'0';
@@ -1335,7 +1356,7 @@ static int Ival(char *str) {
       Dempty ( XL ) ;
       Dempty ( YL ) ;
       kgGetImageSize(fimg,&xsize,&ysize);
-#if 1
+#if 0
 //      printf("Strln: %d Xsize %d\n",strln,xsize);
       img = kgChangeSizeImage(fimg,istrln,ysize);
       kgFreeGmImage(fimg);
