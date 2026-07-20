@@ -6,6 +6,7 @@
 #include <ft2build.h>
  void * uiInitGraphicFontLists ( int font,int FontSize );
 #include FT_FREETYPE_H
+static int Xshft=2;
 #if 0
   typedef struct _img_str {
       int xln;
@@ -68,16 +69,15 @@
       int k = 0;
       void *img , *img2;
       int clr;
-      img2 = kgCreateImage ( WIDTH*5 , HEIGHT*2 ) ;
+      img2 = kgCreateImage ( WIDTH*2 , HEIGHT*2 ) ;
   /* for simplicity, we assume that `bitmap->pixel_mode' */
   /* is `FT_PIXEL_MODE_GRAY' (i.e., not a bitmap font)   */
       for ( j = y , q = 0; j < y_max; j++, q++ ) {
           for ( i = x , p = 0; i < x_max; i++, p++ ) {
-              kgSetPixelAlpha ( img2 , i+5 , j+HEIGHT*3/4 , 255-bitmap->buffer [ q * bitmap->width + p ]  ) ;
+              kgSetPixelAlpha ( img2 , i+Xshft , j+HEIGHT*3/4 , 255-bitmap->buffer [ q * bitmap->width + p ]  ) ;
 //              kgSetPixelAlpha ( img2 , i , j+HEIGHT*3/4 , 255-bitmap->buffer [ q * bitmap->width + p ]  ) ;
           }
       }
-//      printf("Bitmap: %d %d : %d %d : %d %d\n",x,y, bitmap->width , bitmap->rows,WIDTH,HEIGHT);
       return img2;
   }
   static void * draw_image (FT_Bitmap *bitmap,FT_GlyphSlot slot  , int WIDTH,int HEIGHT) {
@@ -383,8 +383,9 @@
   void **kgGrFontChars ( char *Font , int Size ) {
       IMG_STR **Imgs = NULL;
       int xsize,ysize;
+      int left,right;
       Imgs = ( IMG_STR ** ) malloc ( sizeof ( IMG_STR * ) *128 ) ;
-      void *img;
+      void *img,*rzimg;;
       char txt [ 2 ] = "";
       int i , k;
       for ( i = 0;i < 128;i++ ) Imgs [ i ] = NULL;
@@ -392,9 +393,20 @@
           txt [ 0 ] = i;
           Imgs [ i ] = ( IMG_STR * ) kgMakeGrFontImg ( Font , txt , Size ,Size,0) ;
           img = Imgs [ i ]->img ; 
-#if 0
-          Imgs [ i ]->img = kgResizeImage ( img , 0.5 ) ;
+#if 1  
+          if(i> 31) {
+//          printf("i = %d %c\n",i,i);
+//          fflush(stdout);
+          kgGetImageSize(Imgs [ i ]->img ,&xsize,&ysize);
+          kgGetAlphaLeftRight(img,&left,&right);
+//          printf("Left %d Right %d\n",left,right);
+//          fflush(stdout);
+          rzimg = kgCropImage(img,left,0,xsize-1-right,ysize);
+          Imgs [ i ]->img = rzimg ;
+
           kgFreeGmImage(img);
+          img = rzimg;
+          }
 #endif
           kgGetImageSize(Imgs [ i ]->img ,&xsize,&ysize);
           Imgs [ i ]->xln = xsize;
@@ -1122,15 +1134,24 @@ void *uiAddCharImage(void *img1,void *img2,int xshft,int sft,int  *ymax,int *ymi
               IMG = Imgs[txt[i]];\
               kgGetImageSize(IMG->img,&xsize,&ysize);\
               img = kgCopyImage(IMG->img);\
-              kgSetImageColor ( img , rd , gr , bl ) ;\
-              rzimg = kgChangeSizeImage(img,(int)((wd*wfact*IMG->xln/(float)Fsize+gp)*cfx+0.5) ,(int)( height*hfact*cfy+0.5));\
+              rzimg = kgChangeSizeImage(img,(int)(((wd)*wfact*IMG->xln/(float)Fsize)*cfx+0.5) ,(int)( height*hfact*cfy+0.5));\
+              kgSetImageColor ( rzimg , rd , gr , bl ) ;\
               kgGetImageSize(rzimg,&xsize,&ysize);\
+              int gxsize = (int)((gp*wfact*IMG->xln/(float)Fsize)*cfx+0.5);\
               kgFreeGmImage(img);\
               img = rzimg;\
+              if((fimg != NULL)&&(gxsize >1)) {\
+                 void *gimg=NULL;\
+                 gimg = kgCreateImage(xsize+gxsize,ysize);\
+                 gimg = kgAddImages(gimg,img,gxsize,0);\
+                 kgFreeGmImage(img);\
+                 img = gimg;\
+                 kgGetImageSize(img,&xsize,&ysize);\
+              }\
               shift = (int)(yp*height*cfy+0.5);             \
               fimg = uiAddCharImage(fimg,img,xp,shift,&ymax,&ymin);\
               img=NULL;\
-              xp += ( wd*wfact+gp ) ;\
+              xp += ( (wd+gp)*wfact ) ;\
 }
 static float Fval(char *str) {
     float val=1.0;
@@ -1170,7 +1191,8 @@ static int Ival(char *str) {
       Dlink *XL = Dopen ( ) ;
       char Str [ 2 ] ;
       float *xpt;
-      int strln;
+      float  strln;
+      int  istrln;
       int shift;
       Imgs =(IMG_STR **) uiInitGraphicFontLists(font,Fsize);
       IMG_STR *IMG=NULL;
@@ -1188,11 +1210,12 @@ static int Ival(char *str) {
       Str [ 0 ] = '\0';
       font_o = font;
       wd = wdth;
-      gp = 0.;
       ngp = 1;
       xdsp = 0;
       kgGetDefaultRGB ( color , & rd , & gr , & bl ) ;
-//      strln = ftStringLength ( font,txt , wdth ) ;
+      strln = ftStringLength ( font,txt , wdth+gp );
+//      printf("Strln : %f :%f:%d\n",strln,wdth,font);
+      istrln = strln*cfx+0.5;
       while ( txt [ i ] != '\0' ) {
           if ( txt [ i ] != '!' ) { 
               Str [ 0 ] = txt [ i ] ;
@@ -1312,16 +1335,24 @@ static int Ival(char *str) {
       Dempty ( XL ) ;
       Dempty ( YL ) ;
       kgGetImageSize(fimg,&xsize,&ysize);
-#if 0
-      img = kgChangeSizeImage(fimg,strln,ysize);
+#if 1
+//      printf("Strln: %d Xsize %d\n",strln,xsize);
+      img = kgChangeSizeImage(fimg,istrln,ysize);
       kgFreeGmImage(fimg);
+      if(angle != 0){
+//          fimg = kgRotateAboutImage(img,-1.0*angle,0,0);
+          fimg = kgRotateImage(img,-1.0*angle);
+          kgFreeGmImage(img);
+          img = fimg;
+      }
 #else
       img = fimg;
 #endif
       IMG= (IMG_STR *)malloc(sizeof(IMG_STR));
       IMG->img = img;
-      IMG->yln = ymin/cfy;
-      IMG->xln = ymax/cfy;
+      IMG->yln = ymin;
+      IMG->xln = istrln;
+      IMG->Size = ysize;
       return IMG;
   }
   float  ftStringLength ( int font , char *txt , float wdth ){
@@ -1497,6 +1528,7 @@ static int Ival(char *str) {
       FT_Matrix matrix; /* transformation matrix */
       FT_Vector pen; /* untransformed origin */
       FT_Error error;
+      char Str[2]="u";
       int left,right;
       int Size = Htt;
       void *rzimg=NULL;
@@ -1521,7 +1553,7 @@ static int Ival(char *str) {
            /* set character size */
       slot = face->glyph;
   /* set up matrix */
-      matrix.xx = ( FT_Fixed ) ( 1.2*0x10000L ) ;
+      matrix.xx = ( FT_Fixed ) ( 1.0*0x10000L ) ;
       matrix.xy = 0;
       matrix.yx = 0;
       matrix.yy = ( FT_Fixed ) ( 1.0*0x10000L ) ;
@@ -1534,11 +1566,9 @@ static int Ival(char *str) {
       target_height =(int)( HEIGHT );
       WIDTH = Wd*num_chars;
 #endif
-      pixls = ( unsigned char * ) calloc ( sizeof  \
-          ( unsigned char ) , WIDTH*HEIGHT ) ;
   /* the pen position in 26.6 cartesian space coordinates; */
   /* start at (300,200) relative to the upper left corner  */
-      pen.x = (Wdd*0.1) * 64;
+      pen.x = (0) * 64;
  //     pen.y = (int)( Wdd/2.0+0.5 ) * 64;
       pen.y = (int)( Ht*0.25 ) * 64;
       for ( n = 0; n < num_chars; n++ ) {
@@ -1546,37 +1576,37 @@ static int Ival(char *str) {
           error = FT_Load_Char ( face , text [ n ] , FT_LOAD_RENDER ) ;
           if ( error ) continue; /* ignore errors */
 
-#if 1
           img =draw_bitmap_img (  & slot->bitmap ,\
               slot->bitmap_left ,HEIGHT - slot->bitmap_top,WIDTH,HEIGHT ) ;
-#else
-          printf("Char: %c \n",text[n]);
-          img = draw_image(&slot->bitmap,slot,WIDTH,HEIGHT);
-#endif
           pen.x += slot->advance.x+32;
           pen.y += slot->advance.y;
       }
 //      img = Make_image ( pixls , WIDTH ,HEIGHT) ;
       FT_Done_Face ( face ) ;
       FT_Done_FreeType ( library ) ;
-      free ( pixls ) ;
       pixls=NULL;
       Img = ( IMG_STR * ) malloc ( sizeof ( IMG_STR ) ) ;
       kgGetImageSize(img,&xsize,&ysize);
-//      printf("Xsize: %d  %d\n",xsize,ysize);
-//      kgGetAlphaLeftRight(img,&left,&right);
-      right =(int) slot->bitmap.width+3;
-//      if(right <10 ) right=10;
+      right =(int) slot->bitmap.width+Xshft;
+#if 0
+      kgGetAlphaLeftRight(img,&left,&right);
+      right = xsize - right+Gap+1;
+      if(right > xsize ) right = xsize;
+//      printf("%c %d Wd:%d\n",text[0],right,Wd);
+      if(text[0]==' ' ) {
+//           printf("WD: %d right %d\n",Wd,right);
+           right = Wd/2;
+      }
       rzimg = kgCropImage(img,0,0,right,ysize);
       kgFreeGmImage(img);
       img = rzimg;
+#endif
 #if 0
       rzimg = kgResizeImage(img,0.5);
       kgFreeGmImage(img);
       img = rzimg;
 #endif
       kgGetImageSize(img,&xsize,&ysize);
-//      printf("Xsize1: %d  %d\n",xsize,ysize);
       Img->img = img;
       Img->xln = xsize;
       Img->yln = ysize;
@@ -1591,3 +1621,56 @@ static int Ival(char *str) {
 #endif
       return Img;
   }
+int uiUserImageBox(IMG_STR *IMG,float t_angle,float x1,float y1,\
+    float cfx,float cfy,float *XX1,float *YY1,float *XX2,float *YY2){
+/*   Gets the Image box with x1,y1 as point
+     of rotation, specified in user space.
+     Useful only for IMGSTR returned by ftGstring...
+     as (0,yl) is mapped to x1,y1
+**************************************************/
+        int xsize,ysize,xsizeo,ysizeo;
+        float X1,Y1,X2,Y2,yl,yu;
+
+        double angle1,ct,st;
+        double rad = 0.017453293;
+        st = sin(t_angle*rad);
+        ct = cos(t_angle*rad);
+        yl = -(IMG->yln/cfy); 
+        xsizeo = IMG->xln;
+        ysizeo = IMG->Size;
+        yu = ysizeo/cfy - yl; 
+        kgGetImageSize(IMG->img,&xsize,&ysize);
+        if( (st >= 0.) && (ct>=0.)){
+           angle1 = t_angle;
+           X1 = x1-yu*sin(angle1*rad);;
+           Y1 = y1-yl*cos(angle1*rad);;
+           X2 = (X1+xsize/cfx);
+           Y2 = (Y1+ysize/cfy);
+        }
+        if( (st >= 0.) && (ct< 0.)){
+           angle1 = t_angle -90.;
+           Y1 = y1-yu*sin(angle1*rad);
+           X1 = x1 + yl*cos(angle1*rad);
+           X2 = (X1-xsize/cfx);
+           Y2 = (Y1+ysize/cfy);
+        }
+        if( (st < 0.) && (ct<= 0.)){
+            angle1 = t_angle -180.;
+            Y1 = y1+yl*cos(angle1*rad);;
+            X1 = x1+yu*sin(angle1*rad);;
+            X2 = (X1-xsize/cfx);
+            Y2 = (Y1-ysize/cfy);
+        }
+        if( (st < 0.) && (ct>0.)){
+            angle1 =90.- ( t_angle -270.);
+            X1 = x1 - yl*sin(angle1*rad);
+            Y1 = y1 + yu*cos(angle1*rad);
+            X2 = (X1+xsize/cfx);
+            Y2 = (Y1-ysize/cfy);
+        }
+        *XX1 = X1;
+        *YY1 = Y1;
+        *XX2 = X2;
+        *YY2 = Y2;
+        return 1;
+}
