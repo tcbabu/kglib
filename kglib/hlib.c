@@ -856,32 +856,53 @@ static void psCopyImage(int x0,int y0,GMIMG *img) {
 #endif
 static  void DRAW_IMAGE(void *imgfile,int X1,int Y1,int X2,int Y2) {
   float fac;
-  GMIMG *img,*rzimg;
+  GMIMG *img=NULL,*rzimg;
   char *pt;
   int IMG =1,iw,ih,w,h,temp;
+  int xl,yl,xu,yu;
+  float lper,rper,tper,bper;
   if(imgfile== NULL) return;
   if(X1>X2) {temp=X2; X2=X1;X1=temp;}
   if(Y1>Y2) {temp=Y2; X2=Y1;Y1=temp;}
-  if(X1 < c_v_x1) X1=c_v_x1;
-  if(X2 < c_v_x1) X2=c_v_x1;
-  if(X1 > c_v_x2) X1=c_v_x2;
-  if(X2 > c_v_x2) X2=c_v_x2;
-  if(Y1 < c_v_y1) Y1=c_v_y1;
-  if(Y2 < c_v_y1) Y2=c_v_y1;
-  if(Y1 > c_v_y2) Y1=c_v_y2;
-  if(Y2 > c_v_y2) Y2=c_v_y2;
-  pt = (char *)imgfile;
+  xl=X1,yl=Y1,xu=X2,yu=Y2;
+  if(xl < c_v_x1) xl=c_v_x1;
+  if(xu < c_v_x1) xu=c_v_x1;
+  if(xl > c_v_x2) xl=c_v_x2;
+  if(xu > c_v_x2) xu=c_v_x2;
+  if(yl < c_v_y1) yl=c_v_y1;
+  if(yu < c_v_y1) yu=c_v_y1;
+  if(yl > c_v_y2) yl=c_v_y2;
+  if(yu > c_v_y2) yu=c_v_y2;
+  w = xu -xl+1;
+  h = yu -yl+1;
+  if((w<=0)||(h<=0)) return;
+  lper = (xl-X1)/(float)(X2-X1);
+  rper = (X2-xu)/(float)(X2-X1);
+  tper = (yl-Y1)/(float)(Y2-Y1);
+  bper = (Y2-yu)/(float)(Y2-Y1);
+  printf("%d %d %d %d\n",X1,Y1,X2,Y2);
+  printf("%d %d %d %d\n",xl,yl,xu,yu);
+  printf("%f %f %f %f\n",lper,rper,bper,tper);
+  
   if((pt[0]=='#')&&(pt[1]=='#')) { 
     IMG=0; img = uiGetImage((void *)(pt+2));
   }
   else img = kgGetImage((void *) pt);
   if(img== NULL) return;
   if(strcmp(img->Sign,"IMG")!=0) return;
-  w = X2-X1+1;
-  h = Y2 -Y1+1;
-  if((w<=0)||(h<=0)) return;
   iw = img->image_width;
   ih = img->image_height;
+  if ( (lper!=0) ||(rper!=0) ||(tper!=0) ||(bper!=0)) {
+    void *timg=NULL;
+    int l,r,b,t;
+    printf("Cropping\n");
+    l= iw*lper+1;r=iw*(1-rper);
+    b= ih*bper+1;t=ih*(1-tper);
+    timg = kgCropImage(img,l,b,r,t);
+    if(!IMG) uiFreeImage(img);
+    IMG=0;
+    img=timg;
+  }
   if(img != NULL) {
     FILE *fp;
 //    psCopyImage(G,X1,Y1,rzimg);
@@ -891,23 +912,23 @@ static  void DRAW_IMAGE(void *imgfile,int X1,int Y1,int X2,int Y2) {
 //    fprintf(fp," -30  -60 translate\n");
     fprintf(fp,"0.07087 0.07087 scale\n");
     if(LSCAPE) {
-         fprintf(fp," %d %d translate\n",EVGAY-Y1,X1);
-         fprintf(fp,"  %d %d scale\n",(Y2-Y1),(X2-X1));
+         fprintf(fp," %d %d translate\n",EVGAY-yl,xl);
+         fprintf(fp,"  %d %d scale\n",(yu-yl),(xu-xl));
     }
     else {
-         fprintf(fp," %d %d translate\n",X1,Y1);
-         fprintf(fp,"  %d %d scale\n",(X2-X1),(Y2-Y1));
+         fprintf(fp," %d %d translate\n",xl,yl);
+         fprintf(fp,"  %d %d scale\n",(xu-xl),(yu-yl));
     }
     if(LSCAPE) fprintf(fp,"  90 rotate\n");
     WriteImgData(fp,img);
     if(LSCAPE) fprintf(fp,"  -90 rotate\n");
     if(LSCAPE) {
-      fprintf(fp," %f %f scale\n",1.0/(Y2-Y1),1.0/(X2-X1));
-      fprintf(fp," -%-d -%-d translate\n",EVGAY-Y1,X1);
+      fprintf(fp," %f %f scale\n",1.0/(yu-yl),1.0/(xu-xl));
+      fprintf(fp," -%-d -%-d translate\n",EVGAY-yl,xl);
     }
     else {
-      fprintf(fp," %f %f scale\n",1.0/(X2-X1),1.0/(Y2-Y1));
-      fprintf(fp," -%-d -%-d translate\n",X1,Y1);
+      fprintf(fp," %f %f scale\n",1.0/(xu-xl),1.0/(yu-yl));
+      fprintf(fp," -%-d -%-d translate\n",xl,yl);
     }
     fprintf(fp," %f %f scale\n",1.0/0.07087,1.0/0.07087);
 //    fprintf(fp," 30  60 translate\n");
@@ -967,7 +988,7 @@ static void win_boxfill()
   read_buf(&color,4);
 }
 
-static win_circle()
+static int win_circle()
 {
   float x1,y1,r;
   int xa,ya,rd;
@@ -982,7 +1003,7 @@ static win_circle()
   return(0);
 }
 
-static win_circlefill()
+static int win_circlefill()
 {
   float x1,y1,r;
   unsigned char color;
