@@ -762,6 +762,7 @@ static char *OthFonts []= {
       }
       FontSize = size;
       Font = font%count;
+ //     printf("Font font count: %d %d %d\n",Font,font,count);
       strcpy ( FontFile , ( char * ) Drecord ( FontList , Font ) ) ;
 //      printf ("Font : %s  %d\n",FontFile,FontSize);
       if(Grimgs[Font]==NULL){

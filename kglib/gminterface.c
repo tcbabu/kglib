@@ -865,7 +865,7 @@ static ExceptionInfo exception;
 //  resize_image=ResizeImage(image,w,h,QuadraticFilter,1.2,Exception);
 //  resize_image=ResizeImage(image,w,h,BesselFilter,1.2,Exception);
       if ( Exception->severity != UndefinedException ) {
-          DestroyImageInfo ( Image_info ) ;
+          if(Image_info != NULL) DestroyImageInfo ( Image_info ) ;
           DestroyExceptionInfo ( Exception ) ;
           free ( Exception ) ;
           return NULL;
