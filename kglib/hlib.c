@@ -6,12 +6,15 @@
 // A4 Size is 8.3inch x 11.7 inch
 //#define LEVGAX 10159
 //#define LEVGAY 7619
+//#define LEVGAX 11882
+//#define LEVGAY 8400
 /*
 #define MONO
 */
 
 #define LEVGAX 10530
 #define LEVGAY 7470
+
 #define RS6000
 #include <stdio.h>
 #include <math.h>
@@ -781,13 +784,15 @@ static void win_drawline()
 #if 1
 
 
-static int WriteImgData(FILE *fp,void *img) {
+static int WriteImgData_ci(FILE *fp,void *img) {
   int i,j,w,h,k=0;
+  int channels;
   GMIMG *Simg;
   PixelPacket *spixels;
   Simg = (GMIMG *)img; 
   w  = Simg->image_width;
   h  = Simg->image_height;
+  channels= Simg->image_channels;
   spixels = GetImagePixels((Image *)(Simg->image),0,0,
            ((Image *)(Simg->image))->columns,
            ((Image *)(Simg->image))->rows);
@@ -802,12 +807,149 @@ static int WriteImgData(FILE *fp,void *img) {
   k=0;
   for(j=0;j<(h);j++)  {
     for(i=0;i<w;i++) {
-       fprintf(fp,"%2.2x%2.2x%2.2x",spixels[k].red,spixels[k].green,
+       if((channels!=4)||(spixels[k].opacity!=255)) {
+         fprintf(fp,"%2.2x%2.2x%2.2x",spixels[k].red,spixels[k].green,
                                      spixels[k].blue);
+       }
+       else fprintf(fp,"%2.2x%2.2x%2.2x",255,255,255);
+       k++;
+    }
+    fprintf(fp,"\n");
+  }
+  fprintf(fp,"\n");
+  
+}
+static int WriteImgData_dir(FILE *fp,void *img) {
+  int i,j,w,h,k=0;
+  int channels;
+  GMIMG *Simg;
+  PixelPacket *spixels;
+  Simg = (GMIMG *)img; 
+  w  = Simg->image_width;
+  h  = Simg->image_height;
+  channels= Simg->image_channels;
+  spixels = GetImagePixels((Image *)(Simg->image),0,0,
+           ((Image *)(Simg->image))->columns,
+           ((Image *)(Simg->image))->rows);
+  fprintf(fp,"  /DeviceRGB setcolorspace\n");
+  fprintf(fp,"  <<\n");
+  if(channels==4) {
+    fprintf(fp,"   /ImageType 4\n");
+    fprintf(fp,"   /MaskColor [1 2 3]\n");
+  }
+  else {
+    fprintf(fp,"   /ImageType 1\n");
+  }
+  fprintf(fp,"   /Width %d\n",w);
+  fprintf(fp,"   /Height %d\n",h);
+  fprintf(fp,"   /BitsPerComponent 8\n");
+  fprintf(fp,"   /Decode [0 1 0 1 0 1]\n");
+  fprintf(fp,"   /ImageMatrix [%d 0  0 -%-d 0 %d]\n",w,h,h);
+  fprintf(fp,"   /DataSource  currentfile /ASCIIHexDecode filter\n");
+  fprintf(fp,"  >>\n");
+  fprintf(fp,"  image \n");
+  k=0;
+  for(j=0;j<(h);j++)  {
+    for(i=0;i<w;i++) {
+       if((channels!=4)||(spixels[k].opacity!=255)) {
+         fprintf(fp,"%2.2x%2.2x%2.2x",spixels[k].red,spixels[k].green,
+                                     spixels[k].blue);
+       }
+       else fprintf(fp,"%2.2x%2.2x%2.2x",1,2,3);
+       k++;
+    }
+//    fprintf(fp,"\n");
+  }
+  fprintf(fp,">\n");
+  
+}
+static int WriteMaskData_o(FILE *fp,void *img) {
+  int i,j,w,h,k=0,loc,bitpos;
+  int channels;
+  unsigned char Mask;
+  unsigned char MV[8]={0x7f,0xbf,0xdf,0xef,0xf7,0xfb,0xfd,0xfe};
+  GMIMG *Simg;
+  PixelPacket *spixels;
+  Simg = (GMIMG *)img; 
+  w  = Simg->image_width;
+  h  = Simg->image_height;
+  channels= Simg->image_channels;
+  if(channels==3) return 0;
+  spixels = GetImagePixels((Image *)(Simg->image),0,0,
+           ((Image *)(Simg->image))->columns,
+           ((Image *)(Simg->image))->rows);
+  fprintf(fp,"  /maskstr 8 string def\n");
+  fprintf(fp,"  %d %d\n",w,h);
+  fprintf(fp,"  true\n");
+  fprintf(fp,"  [ %d 0 0 -%-d 0 %d ]\n",w,h,h);
+  fprintf(fp,"  { currentfile \n");
+  fprintf(fp,"    maskstr readhexstring pop\n");
+  fprintf(fp,"  }\n");
+//  fprintf(fp,"  true 1\n");
+  fprintf(fp,"  imagemask \n");
+  k=0;
+  Mask=0xff;
+  for(j=0;j<(h);j++)  {
+    for(i=0;i<w;i++) {
+       loc = k/8;
+       bitpos = k%8;
+       if((spixels[k].opacity==255)) {
+         Mask &= MV[bitpos];
+       }
+       if(bitpos==7) {
+         fprintf(fp,"%2.2x",Mask);
+         Mask=0xff;
+       }
        k++;
     }
   }
   fprintf(fp,"\n");
+  
+}
+static int WriteMaskData(FILE *fp,void *img) {
+  int i,j,w,h,k=0,loc,bitpos;
+  int channels;
+  unsigned char Mask;
+  unsigned char MV[8]={0x7f,0xbf,0xdf,0xef,0xf7,0xfb,0xfd,0xfe};
+  GMIMG *Simg;
+  int count;
+  
+  PixelPacket *spixels;
+  count=0;
+  Simg = (GMIMG *)img; 
+  w  = Simg->image_width;
+  h  = Simg->image_height;
+  channels= Simg->image_channels;
+  if(channels==3) return 0;
+  spixels = GetImagePixels((Image *)(Simg->image),0,0,
+           ((Image *)(Simg->image))->columns,
+           ((Image *)(Simg->image))->rows);
+  fprintf(fp,"  %d %d\n",w,h);
+  fprintf(fp,"  false\n");
+  fprintf(fp,"  [ %d 0 0 -%-d 0 %d ]\n",w,h,h);
+  fprintf(fp,"  {<");
+//  fprintf(fp,"  true 1\n");
+  k=0;
+  Mask=0xff;
+  for(j=0;j<(h);j++)  {
+    for(i=0;i<w;i++) {
+       loc = k/8;
+       bitpos = k%8;
+       if((spixels[k].opacity==255)) {
+         Mask &= MV[bitpos];
+       }
+       if(bitpos==7) {
+         fprintf(fp,"%2.2x",Mask);
+//         printf("Mask= %2.2x\n",Mask);
+         Mask=0xff;
+         count++;
+         if(count==64){fprintf(fp,"\n");count=0;}
+       }
+       k++;
+    }
+  }
+  fprintf(fp,">}\n");
+  fprintf(fp,"  imagemask \n");
   
 }
 #if 0
@@ -880,10 +1022,7 @@ static  void DRAW_IMAGE(void *imgfile,int X1,int Y1,int X2,int Y2) {
   rper = (X2-xu)/(float)(X2-X1);
   tper = (yl-Y1)/(float)(Y2-Y1);
   bper = (Y2-yu)/(float)(Y2-Y1);
-  printf("%d %d %d %d\n",X1,Y1,X2,Y2);
-  printf("%d %d %d %d\n",xl,yl,xu,yu);
-  printf("%f %f %f %f\n",lper,rper,bper,tper);
-  
+  pt = (char *)imgfile;
   if((pt[0]=='#')&&(pt[1]=='#')) { 
     IMG=0; img = uiGetImage((void *)(pt+2));
   }
@@ -893,15 +1032,13 @@ static  void DRAW_IMAGE(void *imgfile,int X1,int Y1,int X2,int Y2) {
   iw = img->image_width;
   ih = img->image_height;
   if ( (lper!=0) ||(rper!=0) ||(tper!=0) ||(bper!=0)) {
-    void *timg=NULL;
     int l,r,b,t;
-    printf("Cropping\n");
     l= iw*lper+1;r=iw*(1-rper);
     b= ih*bper+1;t=ih*(1-tper);
-    timg = kgCropImage(img,l,b,r,t);
+    rzimg = kgCropImage(img,l,b,r,t);
     if(!IMG) uiFreeImage(img);
     IMG=0;
-    img=timg;
+    img=rzimg;
   }
   if(img != NULL) {
     FILE *fp;
@@ -920,7 +1057,8 @@ static  void DRAW_IMAGE(void *imgfile,int X1,int Y1,int X2,int Y2) {
          fprintf(fp,"  %d %d scale\n",(xu-xl),(yu-yl));
     }
     if(LSCAPE) fprintf(fp,"  90 rotate\n");
-    WriteImgData(fp,img);
+//    WriteMaskData(fp,img); // no use
+    WriteImgData_dir(fp,img);
     if(LSCAPE) fprintf(fp,"  -90 rotate\n");
     if(LSCAPE) {
       fprintf(fp," %f %f scale\n",1.0/(yu-yl),1.0/(xu-xl));
@@ -1033,10 +1171,10 @@ static void win_poly_fill(void)
   int *x1,*y1;
   short i;
   read_buf(&n,4);
-  x = (float *)malloc(sizeof(float)*n);
-  y = (float *)malloc(sizeof(float)*n);
-  x1 = (int  *)malloc(sizeof(int )*n);
-  y1 = (int  *)malloc(sizeof(int )*n);
+  x = (float *)Malloc(sizeof(float)*n);
+  y = (float *)Malloc(sizeof(float)*n);
+  x1 = (int  *)Malloc(sizeof(int )*n);
+  y1 = (int  *)Malloc(sizeof(int )*n);
   read_buf(x,4*n);
   read_buf(y,4*n);
   read_buf(&flag,4);
@@ -1170,7 +1308,6 @@ static void cpy_files(void)
                 y2=get_int();
                 i=0;while((ch=getc(tmppt))!='\n') buf1[i++]=ch;
                 buf1[i]='\0';
-                printf("%s\n",buf1);
                 DRAW_IMAGE(buf1,x1,y1,x2,y2);
                }
                break;
@@ -1357,7 +1494,7 @@ static void initialise()
   for(i=0;i<10;i++) st_ptr[i]=0;
   ln_style=LN_STYL;
   m_style=M_STYL;
-  if (ENTRY==0) { RBUFF = (unsigned char *) malloc(B_max+100);
+  if (ENTRY==0) { RBUFF = (unsigned char *) Malloc(B_max+100);
                   ENTRY=1;};
   Entry =0;
   Byte=0,R_max=0,R_Byte=0;
@@ -1658,7 +1795,7 @@ static void win_3_draw()
     transfrm(x,y,z);
     projection(trnstr);
     if (ZBUFF == 1) {
-       lt = (LINE *) malloc(sizeof(LINE));
+       lt = (LINE *) Malloc(sizeof(LINE));
        lt->code ='l';
        if( Cz > newstr.zstr ) { lt->zmax = Cz; lt->zmin = newstr.zstr;}
        else { lt->zmin = Cz; lt->zmax = newstr.zstr;}
@@ -1673,8 +1810,8 @@ static void t_panel(float *x,float *y,int color,int flag,int n)
   int *x1,*y1;
   int xo,yo,xv,yv;
   short i,j=0;
-  x1 = (int *) malloc(sizeof(int)*(n+1));
-  y1 = (int *) malloc(sizeof(int)*(n+1));
+  x1 = (int *) Malloc(sizeof(int)*(n+1));
+  y1 = (int *) Malloc(sizeof(int)*(n+1));
   if( (y1==NULL) ){
     printf(" Error: Not enough buffer for polyfill..\n");
     exit(0);
@@ -1718,12 +1855,12 @@ static void win_3_polyfill()
      *(z+i) = newstr.zstr;
     } 
     if (ZBUFF == 1) {
-      pt = (POLY *) malloc(sizeof(POLY));
+      pt = (POLY *) Malloc(sizeof(POLY));
       pt->code = 'p';
       pt->n = n;
-      xt = (float *)malloc(sizeof(float)*n);
-      yt = (float *)malloc(sizeof(float)*n);
-      zt = (float *)malloc(sizeof(float)*n);
+      xt = (float *)Malloc(sizeof(float)*n);
+      yt = (float *)Malloc(sizeof(float)*n);
+      zt = (float *)Malloc(sizeof(float)*n);
       for(i=0;i<n;i++) {
         if(zmin > *(z+i) ) zmin = *(z+i);
         if(zmax < *(z+i) ) zmax = *(z+i);
@@ -1776,12 +1913,12 @@ static void win_3_boxfill()
    y2 = newstr.ystr;
    z2 = newstr.zstr;
    if (ZBUFF == 1) {
-      pt = (POLY *) malloc(sizeof(POLY));
+      pt = (POLY *) Malloc(sizeof(POLY));
       pt->code = 'p';
       pt->n = 4;
-      xt = (float *)malloc(sizeof(float)*4);
-      yt = (float *)malloc(sizeof(float)*4);
-      yt = (float *)malloc(sizeof(float)*4);
+      xt = (float *)Malloc(sizeof(float)*4);
+      yt = (float *)Malloc(sizeof(float)*4);
+      yt = (float *)Malloc(sizeof(float)*4);
       if( z1 >z2 ) { zmin = z2;zmax = z1;}
       else { zmin = z1;zmax = z2;}
       xt[0] = x1; yt[0] = y1; zt[0] = z1;
@@ -1833,13 +1970,13 @@ static void win_3_godrfill()
      *(z+i) = newstr.zstr;
    }
  if (ZBUFF == 1) {
-      st = (SHADE *) malloc(sizeof(SHADE));
+      st = (SHADE *) Malloc(sizeof(SHADE));
       st->code = 's';
       st->n = n;
-      xt = (float *)malloc(sizeof(float)*n);
-      yt = (float *)malloc(sizeof(float)*n);
-      zt = (float *)malloc(sizeof(float)*n);
-      vt = (float *)malloc(sizeof(float)*n);
+      xt = (float *)Malloc(sizeof(float)*n);
+      yt = (float *)Malloc(sizeof(float)*n);
+      zt = (float *)Malloc(sizeof(float)*n);
+      vt = (float *)Malloc(sizeof(float)*n);
       for(i=0;i<n;i++) {
         if(zmin > *(z+i) ) zmin = *(z+i);
         if(zmax < *(z+i) ) zmax = *(z+i);
@@ -2798,6 +2935,13 @@ static void win_txt_color( void)
   t_color= color;
   fprintf(TX_F,"Zc%d\n",t_color);
  }
+static void t_txt_color(int color) {
+#ifdef MONO
+  if(color != 0 ) color =15;
+#endif
+  t_color= color;
+  fprintf(TX_F,"ZC col%3.3d s  n\n",color);
+}
 static void win_txt_fill( void)
  {
   int  color;
@@ -3460,7 +3604,7 @@ static void  win_txtwrt(void) {
   }
   font_o=t_font;
   read_buf(&nchr,4);
-  txt= (unsigned char *) malloc((nchr+1)*sizeof(unsigned char));
+  txt= (unsigned char *) Malloc((nchr+1)*sizeof(unsigned char));
   read_buf(txt,nchr);
   txt[nchr]='\0';
   bold=txt_bold;
@@ -3540,12 +3684,12 @@ static void  win_txtwrt(void) {
                             break;
                    case 'k':
                             if(FB_P==NULL) {
-                              FB_P=(B_K *) malloc((int)sizeof(B_K));
+                              FB_P=(B_K *) Malloc((int)sizeof(B_K));
                               O_P=FB_P;
                               O_P->Nx=NULL;O_P->Pr=NULL;
                             }
                             else {
-                              O_P->Nx=(B_K *) malloc((int)sizeof(B_K));
+                              O_P->Nx=(B_K *) Malloc((int)sizeof(B_K));
                               O_P->Nx->Pr=O_P;
                               O_P=O_P->Nx;
                               O_P->Nx=NULL;
@@ -3568,12 +3712,12 @@ static void  win_txtwrt(void) {
                    case 'O':
                    case 'U':
                             if(FO_L==NULL) {
-                              FO_L=(L_N *) malloc((int)sizeof(L_N));
+                              FO_L=(L_N *) Malloc((int)sizeof(L_N));
                               O_L=FO_L;
                               O_L->Nx=NULL;O_L->Pr=NULL;
                             }
                             else {
-                              O_L->Nx=(L_N *) malloc((int)sizeof(L_N));
+                              O_L->Nx=(L_N *) Malloc((int)sizeof(L_N));
                               O_L->Nx->Pr=O_L;
                               O_L=O_L->Nx;
                               O_L->Nx=NULL;
@@ -3596,6 +3740,11 @@ static void  win_txtwrt(void) {
                             i+=2;
                             t_txt_font((int)Nu);
                             change_size_font();
+                            break;
+                   case 'c':
+                            Nu= (txt[i+1] -'0')*10+(txt[i+2]-'0');
+                            i+=2;
+                            t_txt_color((int)Nu);
                             break;
                    case 'z':
                             Nu= (txt[i+1] -'0');
@@ -4537,7 +4686,7 @@ static void  win_clip_limit(void)
     read_buf(&y1,4);
     read_buf(&x2,4);
     read_buf(&y2,4);
-    temp = (CLIP *) malloc(sizeof(CLIP));
+    temp = (CLIP *) Malloc(sizeof(CLIP));
     if( temp ==NULL) {
                       printf(" Error: memory allocation in clip\n");
                       exit(0);
@@ -4638,9 +4787,9 @@ static short ichk_blnk( unsigned char  *c,int n)
 static void cpy_hdr(void)
 {
   int i;
-  fprintf(hbuf,"%%!PS-Adobe-2.0\n");
-  fprintf(hbuf,"%%%%Title: plot.gph\n");
-  fprintf(hbuf,"%%%%Creator: Glib\n");
+  fprintf(hbuf,"%%!PS-Adobe-3.0\n");
+  fprintf(hbuf,"%%%%Title: Gph Convert\n");
+  fprintf(hbuf,"%%%%Creator: Kulina Graphics\n");
   /*fprintf(hbuf,"%%%%BoundingBox: 146 196 465 596\n");*/
   fprintf(hbuf,"%%%%EndComments\n");
   fprintf(hbuf,"/$F2psDict 200 dict def \n");
