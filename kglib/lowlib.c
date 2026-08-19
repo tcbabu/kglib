@@ -558,10 +558,16 @@ static char *OthFonts []= {
       return -1;
   }
   int kgAddFont ( char *Font ) {
-      int ret = -1;
-      char *Fn = NULL;
+      int ret = -1,i;
+      char *Fn = NULL,*Lfn=NULL;;
       if ( FontList == NULL ) FontList = Dopen ( ) ;
       if ( ( Fn = ( char * ) kgWhichFont ( Font ) ) != NULL ) {
+          i=0;
+          Resetlink(FontList);
+          while( (Lfn=(char *)Getrecord(FontList))!= NULL) {
+             if(strstr(Fn,Lfn) != NULL )return i;
+             i++;
+          }      
           Dappend ( FontList , Fn ) ;
           ret = Dcount ( FontList ) -1;
       }
@@ -15871,7 +15877,9 @@ void transch(int c) {
               y2 = elmt [ cell1 ] .y2+1;
               strcpy ( elmt [ cell1 ] .df , elmt [ cell ] .df ) ;
               elmt [ cell1 ] .startchar = elmt [ cell ] . startchar;
+              kgFreeImage(elmt [ cell1 ] . img);
               elmt [ cell1 ] . img =  elmt [ cell ] .img;
+              elmt [ cell ] .img =NULL;
 #if 0
               kgRestoreImage ( D , img , x1 , y1 , x2-x1+1 , y2-y1+1 ) ;
               kgFreeImage ( img ) ;
@@ -15925,7 +15933,9 @@ void transch(int c) {
               x2 = elmt [ cell1 ] .x2;
               y2 = elmt [ cell1 ] .y2+1;
               strcpy ( elmt [ cell1 ] .df , elmt [ cell ] .df ) ;
+              kgFreeImage(elmt [ cell1 ] . img );
               elmt [ cell1 ] . img =  elmt [ cell ] .img;
+              elmt [ cell ] .img =NULL;
 #if 0
               if ( img != NULL ) {
 //TCB
