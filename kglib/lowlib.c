@@ -565,7 +565,7 @@ static char *OthFonts []= {
           i=0;
           Resetlink(FontList);
           while( (Lfn=(char *)Getrecord(FontList))!= NULL) {
-             if(strcmp(Fn,Lfn)==0 )return i;
+             if(strstr(Fn,Lfn) != NULL )return i;
              i++;
           }      
           Dappend ( FontList , Fn ) ;
