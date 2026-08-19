@@ -1455,6 +1455,7 @@ char *kgWhich(char *pgr);
 int kgAddFixedFont(char *);
 int kgCheckFont(char *);
 int kgAddFont(char *);
+int kgGetFontNumber(char * Font);
 char **kgGetMonoList();
 char **kgGetFontList();
 char *kgGetMonoFont(int);

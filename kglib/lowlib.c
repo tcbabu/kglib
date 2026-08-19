@@ -562,12 +562,6 @@ static char *OthFonts []= {
       char *Fn = NULL,*Lfn=NULL;;
       if ( FontList == NULL ) FontList = Dopen ( ) ;
       if ( ( Fn = ( char * ) kgWhichFont ( Font ) ) != NULL ) {
-          i=0;
-          Resetlink(FontList);
-          while( (Lfn=(char *)Getrecord(FontList))!= NULL) {
-             if(strstr(Fn,Lfn) != NULL )return i;
-             i++;
-          }      
           Dappend ( FontList , Fn ) ;
           ret = Dcount ( FontList ) -1;
       }
@@ -585,6 +579,18 @@ static char *OthFonts []= {
           }
       }
       return ret;
+  }
+  int kgGetFontNumber(char * Font) {
+      int i=0;
+      char *Fn = NULL,*Lfn=NULL;;
+      if ( FontList == NULL ) return kgAddFont(Font);
+      i=0;
+      Resetlink(FontList);
+      while( (Lfn=(char *)Getrecord(FontList))!= NULL) {
+             if(strstr(Font,Lfn) != NULL )return i;
+             i++;
+      }      
+      return kgAddFont(Font);  
   }
   int uiAddFonts ( ) {
       int i = 0;
