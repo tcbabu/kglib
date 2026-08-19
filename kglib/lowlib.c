@@ -558,10 +558,16 @@ static char *OthFonts []= {
       return -1;
   }
   int kgAddFont ( char *Font ) {
-      int ret = -1;
-      char *Fn = NULL;
+      int ret = -1,i;
+      char *Fn = NULL,*Lfn=NULL;;
       if ( FontList == NULL ) FontList = Dopen ( ) ;
       if ( ( Fn = ( char * ) kgWhichFont ( Font ) ) != NULL ) {
+          i=0;
+          Resetlink(FontList);
+          while( (Lfn=(char *)Getrecord(FontList))!= NULL) {
+             if(strcmp(Fn,Lfn)==0 )return i;
+             i++;
+          }      
           Dappend ( FontList , Fn ) ;
           ret = Dcount ( FontList ) -1;
       }
