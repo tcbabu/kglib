@@ -15867,6 +15867,7 @@ void transch(int c) {
       for ( i = 0;i < T->nx;i++ ) {
               cell = ( k ) *T->nx+i;
               kgFreeImage(elmt[cell].img);
+              elmt[cell].img = NULL;
       }
       for ( j = 1;j <= row;j++ ) {
           k = row-j;
@@ -15876,7 +15877,7 @@ void transch(int c) {
               y1 = elmt [ cell ] .y1;
               x2 = elmt [ cell ] .x2;
               y2 = elmt [ cell ] .y2+1;
-              img = kgGetBackground ( D , x1 , y1 , x2 , y2 ) ;
+//              img = kgGetBackground ( D , x1 , y1 , x2 , y2 ) ;
               cell1 = cell+T->nx;
               x1 = elmt [ cell1 ] .x1;
               y1 = elmt [ cell1 ] .y1;
@@ -15925,7 +15926,10 @@ void transch(int c) {
       xmax= elmt [ cell ] .x2;
       ymax = elmt [ cell ] .y2+1;
       bkgr = kgGetBackground ( D , xmin , ymin , xmax , ymax ) ;
-      for ( i = 0;i < T->nx;i++ ) kgFreeImage(elmt[i].img);
+      for ( i = 0;i < T->nx;i++ ){
+             kgFreeImage(elmt[i].img);
+             elmt[i].img = NULL;
+      }
       for ( k = 1;k <= row;k++ ) {
           for ( i = 0;i < T->nx;i++ ) {
               cell = ( k ) *T->nx+i;
@@ -15933,7 +15937,7 @@ void transch(int c) {
               y1 = elmt [ cell ] .y1;
               x2 = elmt [ cell ] .x2;
               y2 = elmt [ cell ] .y2+1;
-              img = kgGetBackground ( D , x1 , y1 , x2 , y2 ) ;
+//              img = kgGetBackground ( D , x1 , y1 , x2 , y2 ) ;
               cell1 = cell-T->nx;
               x1 = elmt [ cell1 ] .x1;
               y1 = elmt [ cell1 ] .y1;
