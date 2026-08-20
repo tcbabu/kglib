@@ -563,6 +563,7 @@ static char *OthFonts []= {
       if ( FontList == NULL ) FontList = Dopen ( ) ;
       if ( ( Fn = ( char * ) kgWhichFont ( Font ) ) != NULL ) {
           Dappend ( FontList , Fn ) ;
+//          printf("Font: %s  (Added)\n",Fn);
           ret = Dcount ( FontList ) -1;
       }
       else {
@@ -581,15 +582,15 @@ static char *OthFonts []= {
       return ret;
   }
   int kgGetFontNumber(char * Font) {
-      int i=0;
-      char *Fn = NULL,*Lfn=NULL;;
-      if ( FontList == NULL ) return kgAddFont(Font);
+      int i=0,font;
+      char *Fn = NULL,*Lfn=NULL;
+      font = kgCheckFont(Font);
+      if(font >= 0) return font;
       i=0;
-      Resetlink(FontList);
-      while( (Lfn=(char *)Getrecord(FontList))!= NULL) {
-             if(strstr(Font,Lfn) != NULL )return i;
-             i++;
-      }      
+      if(FontList == NULL) {
+        fprintf(stderr,"FontList NULL!!! \n");
+        exit(0);
+      }
       return kgAddFont(Font);  
   }
   int uiAddFonts ( ) {
@@ -15866,6 +15867,7 @@ void transch(int c) {
       for ( i = 0;i < T->nx;i++ ) {
               cell = ( k ) *T->nx+i;
               kgFreeImage(elmt[cell].img);
+              elmt[cell].img = NULL;
       }
       for ( j = 1;j <= row;j++ ) {
           k = row-j;
@@ -15875,7 +15877,7 @@ void transch(int c) {
               y1 = elmt [ cell ] .y1;
               x2 = elmt [ cell ] .x2;
               y2 = elmt [ cell ] .y2+1;
-              img = kgGetBackground ( D , x1 , y1 , x2 , y2 ) ;
+//              img = kgGetBackground ( D , x1 , y1 , x2 , y2 ) ;
               cell1 = cell+T->nx;
               x1 = elmt [ cell1 ] .x1;
               y1 = elmt [ cell1 ] .y1;
@@ -15924,7 +15926,10 @@ void transch(int c) {
       xmax= elmt [ cell ] .x2;
       ymax = elmt [ cell ] .y2+1;
       bkgr = kgGetBackground ( D , xmin , ymin , xmax , ymax ) ;
-      for ( i = 0;i < T->nx;i++ ) kgFreeImage(elmt[i].img);
+      for ( i = 0;i < T->nx;i++ ){
+             kgFreeImage(elmt[i].img);
+             elmt[i].img = NULL;
+      }
       for ( k = 1;k <= row;k++ ) {
           for ( i = 0;i < T->nx;i++ ) {
               cell = ( k ) *T->nx+i;
@@ -15932,7 +15937,7 @@ void transch(int c) {
               y1 = elmt [ cell ] .y1;
               x2 = elmt [ cell ] .x2;
               y2 = elmt [ cell ] .y2+1;
-              img = kgGetBackground ( D , x1 , y1 , x2 , y2 ) ;
+//              img = kgGetBackground ( D , x1 , y1 , x2 , y2 ) ;
               cell1 = cell-T->nx;
               x1 = elmt [ cell1 ] .x1;
               y1 = elmt [ cell1 ] .y1;
