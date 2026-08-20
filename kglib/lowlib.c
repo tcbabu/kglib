@@ -563,6 +563,7 @@ static char *OthFonts []= {
       if ( FontList == NULL ) FontList = Dopen ( ) ;
       if ( ( Fn = ( char * ) kgWhichFont ( Font ) ) != NULL ) {
           Dappend ( FontList , Fn ) ;
+//          printf("Font: %s  (Added)\n",Fn);
           ret = Dcount ( FontList ) -1;
       }
       else {
@@ -581,15 +582,15 @@ static char *OthFonts []= {
       return ret;
   }
   int kgGetFontNumber(char * Font) {
-      int i=0;
-      char *Fn = NULL,*Lfn=NULL;;
-      if ( FontList == NULL ) return kgAddFont(Font);
+      int i=0,font;
+      char *Fn = NULL,*Lfn=NULL;
+      font = kgCheckFont(Font);
+      if(font >= 0) return font;
       i=0;
-      Resetlink(FontList);
-      while( (Lfn=(char *)Getrecord(FontList))!= NULL) {
-             if(strstr(Font,Lfn) != NULL )return i;
-             i++;
-      }      
+      if(FontList == NULL) {
+        fprintf(stderr,"FontList NULL!!! \n");
+        exit(0);
+      }
       return kgAddFont(Font);  
   }
   int uiAddFonts ( ) {
