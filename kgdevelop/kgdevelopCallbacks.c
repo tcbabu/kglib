@@ -136,12 +136,8 @@ static Dlink *ModuleList=NULL;
   int Box_gincur ( float *x1 , float *y1 , float *x2 , float *y2 ) {
       float yl , yu,xx,dx,dy;
 /* it is messy due to a fix for an error in kglib */
-      printf("Box: %f %f %f %f\n",*x1,*y1,*x2,*y2);
-      fflush(stdout);
       yl = Evgay-*y2;
       yu = Evgay -*y1;
-      printf("Box: %f %f %f %f\n",*x1,*y1,*x2,*y2);
-      fflush(stdout);
       xx = *x1;
       dx = fabsf(*x2 - *x1);
       dy = fabsf(*y2 - *y1);
@@ -1158,11 +1154,7 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
       x2 = g->x2;
       y2 = g->y2;
       Evgay = ( int ) ( y2-y1-1 ) ;
-      printf("InitDialog \n");
-      fflush(stdout);
       InitDialog ( ) ;
-      printf("InitDialog Over\n");
-      fflush(stdout);
       Dia->gc = D->gc;
       Dia->evgax = D->evgax;
       Dia->evgay = D->evgay;
@@ -1172,24 +1164,14 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
       Convert_gui_data ( Dia , Evgay , -1 ) ; /* rewriting */
       Print_gui_data ( Dia , "JUNK.rc" ) ; /* rewriting */
 #endif
-      printf("Conver\n");
-      fflush(stdout);
       Convert_gui_data ( ) ;
-      printf("Conver Over\n");
-      fflush(stdout);
 //  set_window(0.,0.,(float)(x2-x1),(float)(y2-y1));
       kgUserFrame ( GBOX , 0. , 0. , ( float ) \
        ( x2-x1-1 ) , ( float ) ( y2-y1-1 ) ) ;
 //  change_cur_format("5.0f","5.0f");
 //  clr_viewport();
-      printf("kgClearView\n");
-      fflush(stdout);
       kgClearView ( GBOX ) ;
-      printf("kgClearView over\n");
-      fflush(stdout);
       DRAW_DIALOG ( Dia ) ;
-      printf("DRAW_DIA over\n");
-      fflush(stdout);
 #endif
       return;
   }
@@ -6583,11 +6565,7 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
       kgAddSearchDir ( D , ( char * ) "/usr/share/local/icons/kulina" ) ;
       kgAddSearchDir ( D , ( char * ) "/usr/share/kulina/Pictures" ) ;
       kgAddSearchDir ( D , ( char * ) "/usr/share/local/kulina/Pictures" ) ;
-      printf("kgDrawDialog\n");
-      fflush(stdout);
       kgDrawDiaDialog ( D ) ;
-      printf("Over\n");
-      fflush(stdout);
       Dempty ( ( Dlink * ) ( D->SearchList ) ) ;
       D->SearchList = NULL;
       D->bkup = bkup;
@@ -9357,8 +9335,6 @@ int kgdevelopKDbarcallback(int butno,int i,void *Tmp) {
       Parent = ( DIALOG * ) Tmp;
       T = ( ( DIALOG * ) Tmp )->d [ 2 ] .i->twin;
       kgSetDefaultWidget ( Tmp , 1 ) ;
-      printf("Init function over\n");
-      fflush(stdout);
       return 1;
   }
  /* Callback for  KDbar   */ 

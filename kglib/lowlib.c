@@ -7928,8 +7928,8 @@ void transch(int c) {
       kgWC *wc;
       wc = D->wc;
       ln = width;
-      printf("MSG: type = %d\n",type);
-      fflush(stdout);
+//      printf("MSG: type = %d\n",type);
+//      fflush(stdout);
       switch ( type ) {
           case 0:
           uiString ( D , str , x , y+height+5 , ln , 20 , font , \
@@ -12085,9 +12085,6 @@ void transch(int c) {
       uiBkup_clip_limits ( wc ) ;
       uiSet_full_scrn ( wc ) ;
 #if 1
-      printf("MSG: x %d y %d w %d\n",x,y,w);
-      printf("MSG: fsize : %d fill: %d\n", D->gc.FontSize-1 ,D->gc.scroll_fill);
-      fflush(stdout);
       uiShadedString ( D , "!f35!w32!xs" , x , y , \
            w , w , 35 , D->gc.scroll_fill , \
       0 , D->gc.v_dim , D->gc.FontSize-1 , 0 , rfac , 1 , type ) ;
@@ -12105,9 +12102,6 @@ void transch(int c) {
       uiBkup_clip_limits ( wc ) ;
       uiSet_full_scrn ( wc ) ;
 #if 1
-      printf("MSG: fsize : %d fill: %d\n", D->gc.FontSize-1 ,D->gc.scroll_fill);
-      printf("MSG: fsize : %d fill: %d\n", D->gc.FontSize-1 ,D->gc.scroll_fill);
-      fflush(stdout);
       uiShadedString ( D , "!f35!w32!xt" , x , y , \
            w , w , 35 , D->gc.scroll_fill , \
       0 , D->gc.v_dim , D->gc.FontSize-1 , 0 , rfac , 1 , type ) ;
@@ -22244,8 +22238,6 @@ void transch(int c) {
       xx = br->tbx1;
       yy = br->tby1;
       w = br->w;
-      printf("MSG: _dvup_dir w=%d xx %d yy %d\n",w,xx,yy);
-      fflush(stdout);
       _dvup_dir ( D , xx , yy , w , 0.2 , 4 ) ;
       yy = br->bby1;
       _dvdown_dir ( D , xx , yy , w , 0.2 , 4 ) ;
