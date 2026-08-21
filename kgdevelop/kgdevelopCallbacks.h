@@ -1,0 +1,13 @@
+int kgdevelopKDbarcallback(int butno,int i,void *Tmp) ;
+void  kgdevelopKDbarinit (DIN *B,void *pt) ;
+void kgdevelopKDgboxinit (int i,void *Tmp) ;
+int kgdevelopinit(void *Tmp) ;
+int kgdevelopcleanup(void *Tmp) ;
+void *Runkgdevelop(void *,void *) ;
+int MakekgdevelopGroup(DIALOG *,void *) ;
+void * kgdevelopAction(void *,void *) ;
+int kgdevelopSetup(void *Tmp,void *args) ;
+int Modifykgdevelop(void *Tmp,int GrpId) ;
+int kgdevelopCallBack(void *Tmp,void *tmp) ;
+int kgdevelopResizeCallBack(void *Tmp) ;
+int kgdevelopWaitCallBack(void *Tmp) ;

@@ -1,5 +1,17 @@
-#include <unistd.h>
 #include <kulina.h>
+#include "kgdevelopCallbacks.h"
+
+static void *Args=NULL,*Rets=NULL;
+
+static DIAINTR *It = NULL;
+
+
+static MODINTERFACE ModFuns[] = { 
+    (MODINTERFACE) NULL 
+};
+static Dlink *ModuleList=NULL;
+
+#include <unistd.h>
 #include <malloc.h>
 #include <string.h>
 #include <malloc.h>
@@ -103,10 +115,9 @@
       void *img , *thimg;
       ThumbNail **th;
       char **Str;
-      n++;
-      Str = ( char ** ) malloc ( sizeof ( char * ) *n-1 ) ;
-      Str [ n-1 ] = NULL;
-      for ( i = 0;i < ( n-1 ) ;i++ ) {
+      Str = ( char ** ) malloc ( sizeof ( char * ) *(n+1) ) ;
+      Str [ n ] = NULL;
+      for ( i = 0;i < ( n ) ;i++ ) {
           Str [ i ] = ( char * ) malloc ( 15 ) ;
           sprintf ( Str [ i ] , "Test item%-d" , i ) ;
       }
@@ -116,7 +127,7 @@
       if ( img != NULL ) {
           thimg = kgChangeSizeImage ( img , size , size ) ;
           kgFreeImage ( img ) ;
-          for ( i = 0;i < ( n-1 ) ;i++ ) {
+          for ( i = 0;i < ( n ) ;i++ ) {
               th [ i ]->img = thimg;
           }
       }
@@ -1086,18 +1097,50 @@
       Dia->tmpdir = ( char * ) malloc ( 200 ) ;
       Dia->Shapexpm = NULL;
       Dia->Callback = DiaCallBack;
+      Dia->WaitCallback = NULL;
+      Dia->Initfun = NULL;
+      Dia->Cleanupfun = NULL;
+      Dia->ResizeCallback = NULL;
+      Dia->pt = NULL;
+     Dia->kbattn = 0;    /*  1 for drawing keyborad attention */
+     Dia->butattn = 0;    /*  1 for drawing button attention */
+     Dia->fullscreen = 0;    /*  1 for for fullscreen mode */
+     Dia->NoTabProcess = 0;    /*  1 for disabling Tab use */
+     Dia->Deco = 1;    /*  1 for Window Decorration */
+     Dia->transparency = 0.000000;    /*  float 1.0 for full transparency */
+     Dia->Newwin = 1;    /*  1 for new window not yet implemented */
+     Dia->DrawBkgr = 1;    /*  1 for drawing background */
+     Dia->Bkpixmap = NULL;    /*  background image */
+     Dia->Sticky = 0;    /*  1 for stickyness */
+     Dia->Resize = 0;    /*  1 for Resize option */
+     Dia->MinWidth = 100;    /*   for Resize option */
+     Dia->MinHeight = 100;    /*   for Resize option */
+//     Dia->Callback = NULL;    
+     Dia->Fixpos = 1;    /*  1 for Fixing Position */
+     Dia->NoTaskBar = 0;    /*  1 for not showing in task bar*/
+     Dia->NoWinMngr = 0;    /*  1 for no Window Manager*/
+     Dia->StackPos = 0;    /* -1,0,1 for for Stack Position -1:below 0:normal 1:above*/
+     strcpy(   Dia->name,"Testing Design");    /*  Dialog name you may change */
+// TCB check needed
+      Dia->parent = Parent;
       strcpy ( Dia->tmpdir , "/tmp" ) ;
       SetControlCounters ( Dia ) ;
       Dia->ThInfo = OpenThreads ( 0 ) ;
       return;
   }
-  void makeguidiagbox1init ( int i , void *tmp ) {
+ /* InitFunction for  KDgbox   */ 
+
+void kgdevelopKDgboxinit (int i,void *tmp) {
+  /*********************************** 
+    int routine for grahics area 
+   ***********************************/ 
       DIALOG *D;
       DIG *g;
       int x1 , y1 , x2 , y2 , xres , yres;
       D = ( DIALOG * ) tmp;
       g = D->d [ i ] .g;
       GBOX = D->d [ i ] .g;
+      g->D = (void *)(tmp);
 //  get_resolution(&xres,&yres);
       xres = D->evgax;
       yres = D->evgay;
@@ -1115,8 +1158,12 @@
       x2 = g->x2;
       y2 = g->y2;
       Evgay = ( int ) ( y2-y1-1 ) ;
+      printf("InitDialog \n");
+      fflush(stdout);
       InitDialog ( ) ;
-//  Dia->gc = D->gc;
+      printf("InitDialog Over\n");
+      fflush(stdout);
+      Dia->gc = D->gc;
       Dia->evgax = D->evgax;
       Dia->evgay = D->evgay;
       Dia->Hsize = 1;
@@ -1125,14 +1172,24 @@
       Convert_gui_data ( Dia , Evgay , -1 ) ; /* rewriting */
       Print_gui_data ( Dia , "JUNK.rc" ) ; /* rewriting */
 #endif
+      printf("Conver\n");
+      fflush(stdout);
       Convert_gui_data ( ) ;
+      printf("Conver Over\n");
+      fflush(stdout);
 //  set_window(0.,0.,(float)(x2-x1),(float)(y2-y1));
       kgUserFrame ( GBOX , 0. , 0. , ( float ) \
        ( x2-x1-1 ) , ( float ) ( y2-y1-1 ) ) ;
 //  change_cur_format("5.0f","5.0f");
 //  clr_viewport();
+      printf("kgClearView\n");
+      fflush(stdout);
       kgClearView ( GBOX ) ;
+      printf("kgClearView over\n");
+      fflush(stdout);
       DRAW_DIALOG ( Dia ) ;
+      printf("DRAW_DIA over\n");
+      fflush(stdout);
 #endif
       return;
   }
@@ -1162,477 +1219,6 @@
           return 1;
       }
   }
-  int makeguidiabutton1callback ( int key , int i , void *Tmp ) {
-      DIA *D;DIN *B;
-      char Bkup [ 300 ] ;
-      int n , ret = 0 , but;
-      float xx , yy;
-      D = ( ( DIALOG * ) Tmp )->d;
-//  B = D[i].n;
-      B = ( DIN * ) kgGetWidget ( Tmp , i ) ;
-      n = B->nx*B->ny;
-      xx = Dia->xo;
-      yy = Dia->yo;
-      kgPrintf ( Parent , 2 , ( char * ) "!c02!f22DESIGN MODE" ) ;
-      switch ( key ) {
-          case 1:
-          ret = 0;
-          switch ( RunFileoptdia ( Tmp ) ) {
-              case 1:
-              ret = 0;
-              SetOptions ( Dia ) ;
-              Convert_gui_data ( ) ;
-              Make_gui_code ( Dia , Sourcecode , DiaName ) ;
-              Print_gui_data ( Dia , flname ) ; /* rewriting */
-              strcpy ( Bkup , flname ) ;
-              strcat ( Bkup , ".bak" ) ;
-              Print_gui_data ( Dia , Bkup ) ;
-              Convert_gui_data ( ) ;
-              break;
-              case 2:
-              SetOptions ( Dia ) ;
-              Convert_gui_data ( ) ;
-              Make_gui_code ( Dia , Sourcecode , DiaName ) ;
-              Print_gui_data ( Dia , flname ) ; /* rewriting */
-              strcpy ( Bkup , flname ) ;
-              strcat ( Bkup , ".bak" ) ;
-              Print_gui_data ( Dia , Bkup ) ;
-              Convert_gui_data ( ) ;
-              RunUpdatesCheck(Tmp,SrcUpdates);
-              ret = 1;
-              break;
-              case 3:
-              if ( ! kgCheckMenu ( Parent , 100 , 200 , ( char * ) "Quit without SAVING..." , \
-                   0 ) ) \
-              {
-                  ret = 0;
-              }
-              else ret = 1;
-              break;
-              default:
-              ret = 0;
-              break;
-          }
-          break;
-          case 2:
-          kgPrintf ( Parent , 2 , ( char * ) "!f22!z53WIDGET ACTIONS" ) ;
-          RunItemoptdia ( Tmp ) ;
-          ret = 0;
-          break;
-          case 3:
-          but = RunBorderoptdia ( Tmp ) ;
-      /*BorderActions(but);*/
-          ret = 0;
-          break;
-          case 5:
-//      cross_gincur((DIG *)kgGetWidget(Parent,1),&xx,&yy);
-          kgCrossCursor ( GBOX , & xx , & yy ) ;
-          Dia->xo = xx;
-          Dia->yo = yy;
-          DRAW_DIALOG ( Dia ) ;
-          ret = 0;
-          break;
-          case 6:
-//      RunOptionsdia(Tmp);
-//      SetOptions(Dia);
-          RunOptions ( Tmp ) ;
-          InitOptions ( Dia ) ;
-          DRAW_DIALOG ( Dia ) ;
-          ret = 0;
-          break;
-          case 4:
-          ChangeDialogSize ( Dia ) ;
-          DRAW_DIALOG ( Dia ) ;
-          ret = 0;
-          break;
-          case 7:
-          kgPrintf ( Parent , 2 , ( char * ) "!c01!f03TESTING DESIGN" ) ;
-          ShowDialog ( Dia ) ;
-          kgPrintf ( Parent , 2 , ( char * ) "!c02!f03DESIGN MODE    " ) ;
-          DRAW_DIALOG ( Dia ) ;
-          ret = 0;
-          break;
-      }
-      return ret;
-  }
-  void makeguidiabutton1init ( DIN *B , void *pt ) {
-  }
-  int makeguidiacleanup ( void *Tmp ) {
-  /* you add any cleanup/mem free here */
-  /*********************************** 
-    Tmp :  Pointer to DIALOG  
-   ***********************************/ 
-      int ret = 1;
-      DIALOG *D;void *pt;
-      D = ( DIALOG * ) Tmp;
-      pt = D->pt;
-      return ret;
-  }
-  int makeguidiaCallBack ( void *Tmp , void *tmp ) {
-  /*********************************** 
-    Tmp :  Pointer to DIALOG  
-    tmp :  Pointer to KBEVENT  
-   ***********************************/ 
-      int ret = 0;
-      int xo , yo;
-      DIALOG *D;
-      KBEVENT *kbe;
-      DIT *T = NULL;
-      D = ( DIALOG * ) Tmp;
-      kbe = ( KBEVENT * ) tmp;
-      yo = Evgay -Dia->yo;
-      xo = Dia->xo;
-      if ( kbe->event == 1 ) {
-          if ( kbe->button == 3 ) {
-              T = ( DIT * ) GetClickedWidget ( kbe->x-Xoff , kbe->y-Yoff ) ;
-//	    printf (" X: Y = %d %d : %d %d\n",kbe->x-Xoff ,kbe->y-Yoff ,xo,yo);
-              if ( T != NULL ) {
-                  ModifyWidget ( T ) ;
-                  DRAW_DIALOG ( Dia ) ;
-//		    printf("Clicked Widget\n");
-              }
-          }
-      }
-      return ret;
-  }
-  int makeguidiaResizeCallBack ( void *Tmp ) {
-  /*********************************** 
-    Tmp :  Pointer to DIALOG  
-   ***********************************/ 
-      int ret = 0;
-      int xres , yres , dx , dy;
-      DIALOG *D;
-      D = ( DIALOG * ) Tmp;
-      kgGetWindowSize ( D , & xres , & yres ) ;
-      dx = xres - D->xl;
-      dy = yres - D->yl;
-  /* extra code */
-      D->xl = xres;
-      D->yl = yres;
-      kgRedrawDialog ( D ) ;
-      return ret;
-  }
-  int makeguidiaWaitCallBack ( void *Tmp ) {
-  /*********************************** 
-    Tmp :  Pointer to DIALOG  
-    Called while waiting for event  
-    return value 1 will close the the UI  
-   ***********************************/ 
-      int ret = 0;
-      return ret;
-  }
-  int makeguidiainit ( void *Tmp ) {
-//  DRAW_DIALOG(Dia);
-      Parent = ( DIALOG * ) Tmp;
-      T = ( ( DIALOG * ) Tmp )->d [ 2 ] .i->twin;
-      kgSetDefaultWidget ( Tmp , 1 ) ;
-      printf("Init function over\n");
-      fflush(stdout);
-      return 1;
-  }
-#if 0
-  int makeguidia ( void *parent , void *v0 ) {
-      int xres , yres , xl , yl;
-      int ret = 1;
-      DIALOG D;
-      DIA d [ 4 ] ;
-      char *titles0 [ ] = {
-           ( char * ) "File" , ( char * ) "Widget" , ( char * ) "Border" , \
-                ( char * ) "Resize" , \
-       ( char * ) "Repos" , ( char * ) "Options" , ( char * ) "Test" , NULL };
-      char *butncode0 = NULL;
-      int sw [ 7 ] = {1 , 1 , 1 , 1 , 1 , 1 , 1};
-      DIB n0 = {
-          'b' , 7 , 3 , 774 , 40 , 9 , 0 , 88 , 30 , 7 , 1 , ( int * ) v0 , sw , titles0 , \
-               butncode0 , NULL , makeguidiabutnbox1callback , /* args , Callback */
-      NULL , NULL , 1 , 0.5 , 0 , 0 };
-      char *xpm0=   NULL; /* pixmap info */ 
-      DIG g1 = {
-          'g' , 6 , 45 , 888 , 664 , NULL , /* pixmap info */
-          0 , /* bkgr colour */
-          makeguidiagbox1init , /* void *initgraph ( int , void * ) */
-          (void *)xpm0 , 0 , 0 /* *data */
-      };
-      DII i3 = {
-      'i' , 716 , 5 , 1002 , 38 , 22 , 0 , 30 , 1 };
-      kgDisplaySize ( & xres , & yres ) ;
-      D.fullscreen = FullScreen;
-      if ( D.fullscreen ) {
-          yl = ( ( yres ) ) ;
-          xl = ( xres ) ;
-      }
-      else {
-          yl = ( ( yres-50 ) ) ;
-          xl = ( xres -30 ) ;
-      }
-      d [ 0 ] .b = & n0;
-      d [ 1 ] .g = & g1;
-      d [ 2 ] .i = & i3;
-      d [ 3 ] .t = NULL;
-      i3.hide = 0;
-      D.d = d;
-      D.bkup = 0; /* set to 1 for backup */
-      D.bor_type = 3;
-      D.df = -1;
-      D.tw = 43;
-      D.bw = 4;
-      D.lw = 4;
-      D.rw = 4;
-      D.xo = 0; /* Position of Dialog */
-      D.yo = 0;
-      D.xl = 900; /* Length of Dialog */
-      D.yl = 675; /* Width of Dialog */
-      D.xl = xl;
-      D.yl = yl;
-      g1.x2 = g1.x1+xl-12;
-      g1.y2 = g1.y1+yl-52;
-      D.Initfun = makeguidiainit;
-      D.Cleanupfun = NULL;
-      strcpy ( D.name , "Kulina Designer Ver 3.0" ) ;
-      if ( D.fullscreen != 1 ) { /* if not fullscreen mode */
-          int xres , yres;
-          kgDisplaySize ( & xres , & yres ) ;
-          D.xo = xres - D.xl-10;D.yo = 10;
-      }
-      else { // for fullscreen
-          int xres , yres;
-          kgDisplaySize ( & xres , & yres ) ;
-          D.xo = D.yo = 0; D.xl = xres; D.yl = yres;
-      } /* end of fullscreen mode */
-      D.kbattn = 1;
-      D.butattn = 1;
-      D.Deco = 1;
-      D.DrawBkgr = 1;
-      D.Bkpixmap = NULL;
-      D.Callback = NULL;
-      D.transparency = 0;
-      D.Newwin = 1;
-      D.Sticky = 0;
-      D.Resize = 0;
-      D.ResizeCallback = NULL;
-      D.WaitCallback = NULL;
-      D.MinWidth = D.MinHeight = 200;
-      D.Fixpos = 1;
-      D.NoTaskBar = 0;
-      D.parent = parent;
-      D.Shapexpm = NULL;
-      D.StackPos = 0;
-//  D.Initfun = NULL;
-//  ret= sDialog(&D);
-      Parent = & D;
-      kgDefaultGuiTheme ( & ( D.gc ) ) ;
-//  kgColorTheme(&(D),210,210,210);
-//  D.gc.GuiFontSize=9;
-      D.SearchList = NULL;
-//  Print_gui_data(&D,"/root/makeguidia.rc");
-      ret = kgUi ( & D ) ;
-      return ret;
-  }
-#else
-  void ModifymakeguidiaGc ( Gclr *gc ) {
-/*
-//  You may change default settings here
-//  probably you can allow the user to create a config in $HOME
-//  and try to read that file (if exits); so dynamic configuration is possible
-   gc->FontSize =8;
-   gc->Font=23;
-*/
-      gc->GuiFontSize = 9;
-      gc->ButtonFont = 40;
-      gc->MsgFont = 40;
-  }
-  int makeguidiaGroup ( DIALOG *D , void **v , void *pt ) {
-      int GrpId = 0 , oitems = 0 , i , j;
-      DIA *d = NULL , *dtmp;
-      BUT_STR *butn0 = NULL;
-      butn0 = ( BUT_STR * ) malloc ( sizeof ( BUT_STR ) *7 ) ;
-      butn0 [ 0 ] .sw = 1;
-      strcpy ( butn0 [ 0 ] .title , ( char * ) "File" ) ;
-      butn0 [ 0 ] .xpmn = NULL;
-      butn0 [ 0 ] .xpmp = NULL;
-      butn0 [ 0 ] .xpmh = NULL;
-      butn0 [ 0 ] .bkgr = -1;
-      butn0 [ 0 ] .butncode = 127;
-      butn0 [ 1 ] .sw = 1;
-      strcpy ( butn0 [ 1 ] .title , ( char * ) "Widget" ) ;
-      butn0 [ 1 ] .xpmn = NULL;
-      butn0 [ 1 ] .xpmp = NULL;
-      butn0 [ 1 ] .xpmh = NULL;
-      butn0 [ 1 ] .bkgr = -1;
-      butn0 [ 1 ] .butncode = 127;
-      butn0 [ 2 ] .sw = 1;
-      strcpy ( butn0 [ 2 ] .title , ( char * ) "Border" ) ;
-      butn0 [ 2 ] .xpmn = NULL;
-      butn0 [ 2 ] .xpmp = NULL;
-      butn0 [ 2 ] .xpmh = NULL;
-      butn0 [ 2 ] .bkgr = -1;
-      butn0 [ 2 ] .butncode = 127;
-      butn0 [ 3 ] .sw = 1;
-      strcpy ( butn0 [ 3 ] .title , ( char * ) "Resize" ) ;
-      butn0 [ 3 ] .xpmn = NULL;
-      butn0 [ 3 ] .xpmp = NULL;
-      butn0 [ 3 ] .xpmh = NULL;
-      butn0 [ 3 ] .bkgr = -1;
-      butn0 [ 3 ] .butncode = 127;
-      butn0 [ 4 ] .sw = 1;
-      strcpy ( butn0 [ 4 ] .title , ( char * ) "Repos" ) ;
-      butn0 [ 4 ] .xpmn = NULL;
-      butn0 [ 4 ] .xpmp = NULL;
-      butn0 [ 4 ] .xpmh = NULL;
-      butn0 [ 4 ] .bkgr = -1;
-      butn0 [ 4 ] .butncode = 127;
-      butn0 [ 5 ] .sw = 1;
-      strcpy ( butn0 [ 5 ] .title , ( char * ) "Options" ) ;
-      butn0 [ 5 ] .xpmn = NULL;
-      butn0 [ 5 ] .xpmp = NULL;
-      butn0 [ 5 ] .xpmh = NULL;
-      butn0 [ 5 ] .bkgr = -1;
-      butn0 [ 5 ] .butncode = 127;
-      butn0 [ 6 ] .sw = 1;
-      strcpy ( butn0 [ 6 ] .title , ( char * ) "Test" ) ;
-      butn0 [ 6 ] .xpmn = NULL;
-      butn0 [ 6 ] .xpmp = NULL;
-      butn0 [ 6 ] .xpmh = NULL;
-      butn0 [ 6 ] .bkgr = -1;
-      butn0 [ 6 ] .butncode = 127;
-      DIN b0 = {
-          'n' , 7 , 3 , 774 , 40 , 12 , 5 , 84 , 25 , 7 , 1 , 1 , 0.50000 , \
-               0 , 0 , 0 , 0 , /* button type and roundinfg factor \
-           ( 0-0.5 ) , bordr , hide , nodrawbkgr*/
-          butn0 , makeguidiabutton1callback , /* Callback */
-          NULL /* any args */
-      };
-      b0.item = 1;
-      strcpy ( b0.Wid , ( char * ) "buttons" ) ;
-      char *xpm1 = NULL; /* pixmap info */
-      DIG g1 = {
-          'g' , 6 , 45 , 1330 , 711 , ( void * ) xpm1 , 0 , /* bkgr colour */
-          makeguidiagbox1init , /* void *initgraph ( int , void * ) */
-          NULL , 0 , 0 /* *data border hide*/
-      };
-      strcpy ( g1.Wid , ( char * ) "" ) ;
-      DII i2 = {
-      'i' , 716 , 5 , 1002 , 38 , 1 , 0 , 0 };
-      strcpy ( i2.Wid , ( char * ) "" ) ;
-      dtmp = D->d;
-      i = 0;
-      if ( dtmp != NULL ) while ( dtmp [ i ] .t != NULL ) i++;
-      dtmp = ( DIA * ) realloc ( dtmp , sizeof ( DIA ) * ( i+4 ) ) ;
-      d = dtmp+i;
-      d [ 3 ] .t = NULL;
-      d [ 0 ] .t = ( DIT * ) malloc ( sizeof ( DIN ) ) ;
-      makeguidiabutton1init ( & b0 , pt ) ;
-      *d [ 0 ] .N = b0;
-      d [ 0 ] .N->item = -1;
-      d [ 1 ] .t = ( DIT * ) malloc ( sizeof ( DIG ) ) ;
-      *d [ 1 ] .g = g1;
-      d [ 1 ] .g->item = -1;
-      d [ 2 ] .t = ( DIT * ) malloc ( sizeof ( DII ) ) ;
-      *d [ 2 ] .i = i2;
-      d [ 2 ] .i->item = -1;
-      d [ 3 ] .t = NULL;
-      GrpId = kgOpenGrp ( D ) ;
-      D->d = dtmp;
-      j = 0;
-      while ( d [ j ] .t != NULL ) { kgAddtoGrp ( D , GrpId , \
-       ( void * ) ( d [ j ] .t ) ) ;j++;}
-      return GrpId;
-  }
-/* One can also use the following code to add Widgets to an existing Dialog */
-  int MakemakeguidiaGroup ( DIALOG *D , void *arg ) {
-      int GrpId;
-      WIDGETGRP *Gpt;
-/*************************************************
-
-
-*************************************************/
-      void **v = NULL;
-      void *pt = NULL; /* pointer to send any extra information */
-      GrpId = makeguidiaGroup ( D , v , pt ) ;
-      Gpt = kgGetWidgetGrp ( D , GrpId ) ;
-      Gpt->arg = v;
-      return GrpId;
-  }
-  int makeguidia ( void *parent , void **v , void *pt ) {
-      int ret = 1 , GrpId , k;
-      DIALOG D;
-      DIA *d = NULL;
-      D.VerId = 1401010200;
-      kgInitUi ( & D ) ;
-      D.d = NULL;
-      GrpId = makeguidiaGroup ( & D , v , pt ) ;
-      d = D.d;
-      D.d = d;
-      D.bkup = 0; /* set to 1 for backup */
-      D.bor_type = 3;
-      D.df = 0;
-      D.tw = 43;
-      D.bw = 4;
-      D.lw = 4;
-      D.rw = 4;
-      D.xo = 20; /* Position of Dialog */
-      D.yo = 10;
-      D.xl = 1336; /* Length of Dialog */
-      D.yl = 718; /* Width of Dialog */
-      D.Initfun = makeguidiainit; /* init fuction for Dialog */
-      D.Cleanupfun = makeguidiacleanup; /* init fuction for Dialog */
-      D.kbattn = 1; /* 1 for drawing keyborad attention */
-      D.butattn = 1; /* 1 for drawing button attention */
-      D.NoTabProcess = 0;
-      D.fullscreen = 0; /* 1 for for fullscreen mode */
-      D.Deco = 1; /* 1 for Window Decorration */
-      D.transparency = 0.000000; /* float 1.0 for full transparency */
-      D.Newwin = 1; /* 1 for new window not yet implemented */
-      D.DrawBkgr = 1; /* 1 for drawing background */
-      D.Bkpixmap = NULL; /* background image */
-      D.Sticky = 0; /* 1 for stickyness */
-      D.Resize = 0; /* 1 for Resize option */
-      D.MinWidth = 100; /* for Resize option */
-      D.MinHeight = 100; /* for Resize option */
-#if 1
-      D.Callback = makeguidiaCallBack; /* default callback */
-#else
-      D.Callback = NULL;
-#endif
-      D.ResizeCallback = makeguidiaResizeCallBack; /* Resize callback */
-#if 1
-      D.WaitCallback = NULL; /* Wait callback */
-#else
-      D.WaitCallback = makeguidiaWaitCallBack; /* Wait callback */
-#endif
-      D.Fixpos = 1; /* 1 for Fixing Position */
-      D.NoTaskBar = 0; /* 1 for not showing in task bar*/
-      D.StackPos = 0; /* -1 , 0 , 1 for for Stack Position -1:below 0:normal 1:above*/
-      D.NoWinMngr = 0;
-      D.Shapexpm = NULL; /* PNG/jpeg file for window shape;
-      Black color will not be drawn */
-      D.parent = parent; /* 1 for not showing in task bar*/
-      D.pt = pt; /* any data to be passed by user*/
-      strcpy(D.name,"Kulina Designer ver 3.0");    /*  Dialog name you may change */
-      if ( D.fullscreen != 1 ) { /* if not fullscreen mode */
-          int xres , yres;
-          kgDisplaySize ( & xres , & yres ) ;
-          D.xo = D.yo = 0; D.xl = xres-30; D.yl = yres-60;
-//       D.xo= xres - D.xl-10;D.yo=10;
-          d [ 1 ] .g->x2 = D.xl-8;
-          d [ 1 ] .g->y2 = D.yl-8;
-      }
-      else { // for fullscreen
-          int xres , yres;
-          kgDisplaySize ( & xres , & yres ) ;
-          D.xo = D.yo = 0; D.xl = xres; D.yl = yres;
-//     D.StackPos = 1; // you may need it
-      } /* end of fullscreen mode */
-//  kgColorTheme(&D,210,210,210);    /*  set colors for gui*/
-      ModifymakeguidiaGc ( & ( D.gc ) ) ; /* set colors for gui*/
-      printf("Calling kgUi\n");
-      fflush(stdout);
-//      Print_gui_data(&D,(void *)"kgdevelop.rc");
-      ret = kgUi ( & D ) ;
-      kgCleanUi ( & D ) ;
-      return ret;
-  }
-#endif
 #define GETDATALINE  if(Get_data_line() < 0 ) {\
    printf ( "Error : In reading.... %s\n" , buff ) ;\
        exit ( 0 ) ; \
@@ -2268,7 +1854,7 @@
           }
       }
   }
-  void PrintXpm ( FILE *fp , void *img , int id ) {
+  static void PrintXpm ( FILE *fp , void *img , int id ) {
       JPGIMG *jpg;
       char *pt;
       int ch;
@@ -3888,12 +3474,13 @@
               case 'x':
               tmp = ( DIA * ) Read_data_selectmenu ( fp ) ;
               X = ( DIX * ) tmp;
+//              X->list = ( void ** ) MakeSampleThumbNails ( ( int ) ( X->width*0.8 ) , 12 ) ;
               X->list = ( void ** ) MakeSampleThumbNails ( ( int ) ( X->width*0.8 ) , 12 ) ;
               break;
               case 'y':
               tmp = ( DIA * ) Read_data_thumbnailbrowser ( fp ) ;
               Y = ( DIY * ) tmp;
-              Y->list = ( void ** ) MakeSampleThumbNails ( ( int ) ( Y->width ) , 20 ) ;
+              Y->list = ( void ** ) MakeSampleThumbNails ( ( int ) ( Y->width ) , 2 ) ;
               break;
               case 'r':
               tmp = ( DIA * ) Read_data_radiobutton ( fp ) ;
@@ -6981,9 +6568,11 @@
       D->xo += Xoff;
       D->yo += Yoff;
       D->parent = Parent;
-      D->wc = Parent->wc;
-      D->evgax = Parent->evgax;
-      D->evgay = Parent->evgay;
+      if(Parent != NULL) {
+       D->wc = Parent->wc;
+       D->evgax = Parent->evgax;
+       D->evgay = Parent->evgay;
+      }
 //  D->gc = Parent->gc;
       D->Bkpixmap = NULL;
 //TCB
@@ -6994,7 +6583,11 @@
       kgAddSearchDir ( D , ( char * ) "/usr/share/local/icons/kulina" ) ;
       kgAddSearchDir ( D , ( char * ) "/usr/share/kulina/Pictures" ) ;
       kgAddSearchDir ( D , ( char * ) "/usr/share/local/kulina/Pictures" ) ;
-      kgDrawDialog ( D ) ;
+      printf("kgDrawDialog\n");
+      fflush(stdout);
+      kgDrawDiaDialog ( D ) ;
+      printf("Over\n");
+      fflush(stdout);
       Dempty ( ( Dlink * ) ( D->SearchList ) ) ;
       D->SearchList = NULL;
       D->bkup = bkup;
@@ -7322,7 +6915,7 @@
       }
       return ln;
   }
-  int get_t_length ( char *ctmp , int sz ) {
+  static   int get_t_length ( char *ctmp , int sz ) {
       int i = 0 , no = 0 , j = 0;
       int lng , ln;
       char *c = NULL;
@@ -9150,7 +8743,7 @@
       W->df = ( int * ) malloc ( sizeof ( int ) ) ;
       max = W->ny;
       * ( ( int * ) ( W->df ) ) = 1;
-      W->list = ( void ** ) MakeSampleThumbNails ( ( int ) ( W->width*0.8 ) , 12 ) ;
+      W->list = ( void ** ) MakeSampleThumbNails ( ( int ) ( W->width*0.8 ) , 2 ) ;
       W->nx = 1;
       W->ny = max;
       lngth = W->x2-W->x1;
@@ -9347,7 +8940,7 @@
       W->df = ( int * ) malloc ( sizeof ( int ) ) ;
       max = W->ny;
       * ( ( int * ) ( W->df ) ) = 1;
-      W->list = ( void ** ) MakeSampleThumbNails ( ( int ) ( W->width ) , 20 ) ;
+      W->list = ( void ** ) MakeSampleThumbNails ( ( int ) ( W->width ) , 2 ) ;
       W->nx = 1;
       W->ny = max;
       lngth = W->x2-W->x1;
@@ -9594,16 +9187,314 @@
       SetControlCounters ( D ) ;
       Dfree ( L ) ;
   }
-  void Runmakeguidia ( void *parent ) {
-/*************************************************
+ /* Callback for  KDbar   */ 
 
-    Buttonbox1 (new) 1 data value
-
-*************************************************/
-      void **v = NULL;
-      void *pt = NULL;
-      makeguidia ( parent , v , pt ) ;
+int kgdevelopKDbarcallback(int butno,int i,void *Tmp) {
+  /*********************************** 
+    butno : selected item (1 to max_item) 
+    i :  Index of Widget  (0 to max_widgets-1) 
+    Tmp :  Pointer to DIALOG  
+   ***********************************/ 
+      DIA *D;DIN *B;
+      char Bkup [ 300 ] ;
+      int n , ret = 0 , but,key;
+      float xx , yy;
+      D = ( ( DIALOG * ) Tmp )->d;
+//  B = D[i].n;
+      B = ( DIN * ) kgGetWidget ( Tmp , i ) ;
+      key = butno;
+      n = B->nx*B->ny;
+      xx = Dia->xo;
+      yy = Dia->yo;
+      kgPrintf ( Parent , 2 , ( char * ) "!c02!f22DESIGN MODE" ) ;
+      switch ( key ) {
+          case 1:
+          ret = 0;
+          switch ( RunFileoptdia ( Tmp ) ) {
+              case 1:
+              ret = 0;
+              SetOptions ( Dia ) ;
+              Convert_gui_data ( ) ;
+              Make_gui_code ( Dia , Sourcecode , DiaName ) ;
+              Print_gui_data ( Dia , flname ) ; /* rewriting */
+              strcpy ( Bkup , flname ) ;
+              strcat ( Bkup , ".bak" ) ;
+              Print_gui_data ( Dia , Bkup ) ;
+              Convert_gui_data ( ) ;
+              break;
+              case 2:
+              SetOptions ( Dia ) ;
+              Convert_gui_data ( ) ;
+              Make_gui_code ( Dia , Sourcecode , DiaName ) ;
+              Print_gui_data ( Dia , flname ) ; /* rewriting */
+              strcpy ( Bkup , flname ) ;
+              strcat ( Bkup , ".bak" ) ;
+              Print_gui_data ( Dia , Bkup ) ;
+              Convert_gui_data ( ) ;
+              RunUpdatesCheck(Tmp,SrcUpdates);
+              ret = 1;
+              break;
+              case 3:
+              if ( ! kgCheckMenu ( Parent , 100 , 200 , ( char * ) "Quit without SAVING..." , \
+                   0 ) ) \
+              {
+                  ret = 0;
+              }
+              else ret = 1;
+              break;
+              default:
+              ret = 0;
+              break;
+          }
+          break;
+          case 2:
+          kgPrintf ( Parent , 2 , ( char * ) "!f22!z53WIDGET ACTIONS" ) ;
+          RunItemoptdia ( Tmp ) ;
+          ret = 0;
+          break;
+          case 3:
+          but = RunBorderoptdia ( Tmp ) ;
+      /*BorderActions(but);*/
+          ret = 0;
+          break;
+          case 5:
+//      cross_gincur((DIG *)kgGetWidget(Parent,1),&xx,&yy);
+          kgCrossCursor ( GBOX , & xx , & yy ) ;
+          Dia->xo = xx;
+          Dia->yo = yy;
+          DRAW_DIALOG ( Dia ) ;
+          ret = 0;
+          break;
+          case 6:
+//      RunOptionsdia(Tmp);
+//      SetOptions(Dia);
+          RunOptions ( Tmp ) ;
+          InitOptions ( Dia ) ;
+          DRAW_DIALOG ( Dia ) ;
+          ret = 0;
+          break;
+          case 4:
+          ChangeDialogSize ( Dia ) ;
+          DRAW_DIALOG ( Dia ) ;
+          ret = 0;
+          break;
+          case 7:
+          kgPrintf ( Parent , 2 , ( char * ) "!c01!f03TESTING DESIGN" ) ;
+          ShowDialog ( Dia ) ;
+          kgPrintf ( Parent , 2 , ( char * ) "!c02!f03DESIGN MODE    " ) ;
+          DRAW_DIALOG ( Dia ) ;
+          ret = 0;
+          break;
+      }
+      return ret;
   }
+  int kgdevelopcleanup ( void *Tmp ) {
+  /* you add any cleanup/mem free here */
+  /*********************************** 
+    Tmp :  Pointer to DIALOG  
+   ***********************************/ 
+      int ret = 1;
+      DIALOG *D;void *pt;
+      D = ( DIALOG * ) Tmp;
+      pt = D->pt;
+      return ret;
+  }
+  int kgdevelopCallBack ( void *Tmp , void *tmp ) {
+  /*********************************** 
+    Tmp :  Pointer to DIALOG  
+    tmp :  Pointer to KBEVENT  
+   ***********************************/ 
+      int ret = 0;
+      int xo , yo;
+      DIALOG *D;
+      KBEVENT *kbe;
+      DIT *T = NULL;
+      D = ( DIALOG * ) Tmp;
+      kbe = ( KBEVENT * ) tmp;
+      yo = Evgay -Dia->yo;
+      xo = Dia->xo;
+      if ( kbe->event == 1 ) {
+          if ( kbe->button == 3 ) {
+              T = ( DIT * ) GetClickedWidget ( kbe->x-Xoff , kbe->y-Yoff ) ;
+//	    printf (" X: Y = %d %d : %d %d\n",kbe->x-Xoff ,kbe->y-Yoff ,xo,yo);
+              if ( T != NULL ) {
+                  ModifyWidget ( T ) ;
+                  DRAW_DIALOG ( Dia ) ;
+//		    printf("Clicked Widget\n");
+              }
+          }
+      }
+      return ret;
+  }
+  int kgdevelopResizeCallBack ( void *Tmp ) {
+  /*********************************** 
+    Tmp :  Pointer to DIALOG  
+   ***********************************/ 
+      int ret = 0;
+      int xres , yres , dx , dy;
+      DIALOG *D;
+      D = ( DIALOG * ) Tmp;
+      kgGetWindowSize ( D , & xres , & yres ) ;
+      dx = xres - D->xl;
+      dy = yres - D->yl;
+  /* extra code */
+      D->xl = xres;
+      D->yl = yres;
+      kgRedrawDialog ( D ) ;
+      return ret;
+  }
+  int kgdevelopWaitCallBack ( void *Tmp ) {
+  /*********************************** 
+    Tmp :  Pointer to DIALOG  
+    Called while waiting for event  
+    return value 1 will close the the UI  
+   ***********************************/ 
+      int ret = 0;
+      return ret;
+  }
+  int kgdevelopinit ( void *Tmp ) {
+//  DRAW_DIALOG(Dia);
+      Parent = ( DIALOG * ) Tmp;
+      T = ( ( DIALOG * ) Tmp )->d [ 2 ] .i->twin;
+      kgSetDefaultWidget ( Tmp , 1 ) ;
+      printf("Init function over\n");
+      fflush(stdout);
+      return 1;
+  }
+ /* Callback for  KDbar   */ 
+
+void  kgdevelopKDbarinit (DIN *B,void *ptmp) {
+ void **pt=(void **)ptmp; //pt[0] is arg 
+// may use kgChangeButtonNormalImage etc...
+ BUT_STR *buts;
+ buts = (BUT_STR *) (B->buts);
+}
+
+int kgdevelopSetup(void *Tmp,void *args) {
+  /*********************************** 
+    args :  Pointer to args  
+   ***********************************/ 
+  /* you add any initialisation here */
+  /* useful for setting is used as MakeGroup */
+  return 1;
+}
+ 
+void * kgdevelopCleanDia(void *args) {
+  /*********************************** 
+    args :  Pointer to args  
+   ***********************************/ 
+  
+/* you add any cleaning  here */
+
+  return NULL;
+}
+ 
+ 
+void *  kgdevelopAction(void *Tmp,void *Args) {
+  return NULL;
+} 
+ 
+ 
+int   kgdevelopOn(void *itmp) {
+  DIAINTR * Dt = (DIAINTR *) itmp;
+  if(Dt == NULL ) Dt = (DIAINTR *)It;
+  if(Dt != NULL) {
+    if(Dt->Dtmp != NULL)kgSetGrpVisibility(Dt->Dtmp,Dt->GrpId,1);
+    else return 0;
+    return 1;
+  } 
+  return 0;
+} 
+ 
+int   kgdevelopOff(void *itmp) {
+  DIAINTR * Dt = (DIAINTR *) itmp;
+  if(Dt == NULL ) Dt = (DIAINTR *)It;
+  if(Dt != NULL) {
+    if(Dt->Dtmp != NULL)kgSetGrpVisibility(Dt->Dtmp,Dt->GrpId,0);
+    else return 0;
+    return 1;
+  } 
+  return 0;
+} 
+ 
+static char *GetPointer(char *str) { 
+  char *pt; 
+  pt = (char *)malloc(strlen(str)+1); 
+  strcpy(pt,str); 
+  return pt; 
+} 
+ 
+ 
+void * kgdevelopInterface(void *args,void *rets) {
+  /*********************************** 
+   ***********************************/ 
+  DIAINTR *it= (DIAINTR *)malloc(sizeof(DIAINTR));
+  it->GrpId=0;
+  // filled by MakeGroup  it->xsh=0;
+  it->ysh=0;
+  it->RunDia = Runkgdevelop;
+  it->MakeGroup = MakekgdevelopGroup;
+  it->Title = GetPointer((char *)"kgdevelop");
+  it->Help = GetPointer( (char *)"No help yet, request");
+  it->Action = kgdevelopAction;
+  it->Settings = kgdevelopSetup;
+  it->Cleanup  = kgdevelopCleanDia;
+  if(args != NULL) Args=args;
+  if(rets != NULL) Rets=rets;
+  it->args = Args;
+  it->rets = Rets;
+  it->SwitchOn = kgdevelopOn;
+  it->SwitchOff = kgdevelopOff;
+  it->Dtmp = NULL; // fiiled by MakeGroup 
+  It = it;
+  return it;
+}
+ 
+ 
+int Modifykgdevelop(void *Tmp,int GrpId) {
+  DIALOG *D;
+  D = (DIALOG *)Tmp;
+  void **pt= (void **)kgGetArgPointer(Tmp); // Change as required
+// pt[0] is args passed as inputs; pt[1] is output pointer
+ /* pt[0] is inputs given by caller */
+  DIA *d;
+  int i,n;
+  kgCheckParentPosition(Tmp);
+  d = D->d;
+
+  if( ModuleList == NULL) ModuleList = kgGetModuleList((void **)ModFuns);
+  i=0;
+  void *args=NULL;
+  DIAINTR *Dt;
+  Resetlink(ModuleList);
+  while ( (Dt=(DIAINTR *)Getrecord(ModuleList)) != NULL) {
+    Dt->GrpId = Dt->MakeGroup(Tmp,NULL);
+    kgShiftGrp(Tmp,Dt->GrpId,Dt->xsh,Dt->ysh);
+    Dt->Settings(Tmp,args);
+    i++;
+  };
+
+  i=0;while(d[i].t!= NULL) {;
+     i++;
+  };
+  n=1;
+  strcpy(D->name,"kgdevelop Ver: 3.1");    /*  Dialog name you may change */
+#if 0
+  if(D->fullscreen!=1) {    /*  if not fullscreen mode */
+     int xres,yres; 
+     kgDisplaySize(&xres,&yres); 
+      // D->xo=D->yo=0; D->xl = xres-10; D->yl=yres-80;
+  }
+  else {    // for fullscreen
+     int xres,yres; 
+     kgDisplaySize(&xres,&yres); 
+     D->xo=D->yo=0; D->xl = xres; D->yl=yres;
+//     D->StackPos = 1; // you may need it
+  }    /*  end of fullscreen mode */
+#endif
+  return GrpId;
+}
+
   int main ( int narg , char **args ) {
       FILE *fp , *tp;
       char buff [ 500 ] ;
@@ -9642,7 +9533,7 @@
 #endif
       getcwd ( CWD , 499 ) ;
       mkdir ( ( char * ) "Images" , 0700 ) ;
-      Runmakeguidia ( NULL ) ;
+      Runkgdevelop ( NULL,NULL ) ;
       if ( ( fp = fopen ( "Makefile" , "r" ) ) == NULL ) {
           fp = fopen ( "Makefile" , "w" ) ;
           fprintf ( fp , "KULINA=/usr\n" ) ;

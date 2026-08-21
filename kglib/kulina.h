@@ -1107,6 +1107,7 @@ int kgPickImage( void *parent,int xo,int yo,void *pt);
 int kgSelectImage( void *parent,int xo,int yo,int ThSize,void *pt);
 int kgRedrawDialog(DIALOG *Dialog);
 int kgDrawDialog(DIALOG *D);
+int kgDrawDiaDialog(DIALOG *D);
 void *kgGetThumbNail(void *Wid,int item);
 char *kgGetThumbNailName(void *Wid,int item);
 void *kgGetThumbNailImage(void *Wid,int item);
@@ -1444,6 +1445,9 @@ int kgFileBrowser(void *parent,int x0,int y0,  char *v0, char *v1 );
 int kgGetFont(void *parent,int xo,int yo);
 void * kgGetFreeTypeFont(void *parent,void *Font);
 int kgGetColor(void *parent,int xo,int yo,int *r,int *g,int *b);
+
+ int kgFileStat(char *flname);
+int kgMakeTmpFolderInHome(char *Tfolder);
 /* 
   utilities 
 */

@@ -1,0 +1,82 @@
+D      //GUI dimensions xo,yo,xl,yl,lw,rw,tw,bw,df,bor_type,bkup
+0 0 2514 963
+4 4 43 4
+0 3 0 0 1 1 0 1 1 1 1 0 0.000000 0 100 100 0
+//Button Box
+n
+n     //code
+7 3  //x1,y1
+700 38  //x2,y2
+12 5  //xgap,ygap
+84 //length 
+25 //Width 
+7 1  //Nx,Ny,
+1 //status
+"File" //title 
+NULL // XPM 
+NULL // XPM 
+NULL // XPM 
+-1 //back ground color
+} //keyboard code
+1 //status
+"Widget" //title 
+NULL // XPM 
+NULL // XPM 
+NULL // XPM 
+-1 //back ground color
+} //keyboard code
+1 //status
+"Border" //title 
+NULL // XPM 
+NULL // XPM 
+NULL // XPM 
+-1 //back ground color
+} //keyboard code
+1 //status
+"Resize" //title 
+NULL // XPM 
+NULL // XPM 
+NULL // XPM 
+-1 //back ground color
+} //keyboard code
+1 //status
+"Repos" //title 
+NULL // XPM 
+NULL // XPM 
+NULL // XPM 
+-1 //back ground color
+} //keyboard code
+1 //status
+"Options" //title 
+NULL // XPM 
+NULL // XPM 
+NULL // XPM 
+-1 //back ground color
+} //keyboard code
+1 //status
+"Test" //title 
+NULL // XPM 
+NULL // XPM 
+NULL // XPM 
+-1 //back ground color
+} //keyboard code
+1 0.500000 0  //type,fac
+0 0 //hide
+"KDbar"
+//Graph Box
+g
+g     //code
+9 43  //x1,y1
+2505 956 //x2,y2
+NULL // XPM 
+0   // background color 
+0 0 //border hide
+"KDgbox"
+//Info Box
+i
+i     //code
+716 5  //x1,y1
+1002 38 //x2,y2
+30 1 //nchrs,nlines
+0 //hide
+"KDinfo"
