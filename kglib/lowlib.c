@@ -6568,7 +6568,8 @@ void transch(int c) {
               if ( status > 0 ) {
                   kgMove2f ( fid , width1+0.2*FontSize , xp+0.1*BxSize ) ;
                   kgTextSize ( fid , th , tw , GAP*tw ) ;
-                  kgWriteText ( fid , "!f354" ) ;
+//                  kgWriteText ( fid , "!f354" ) ;
+                  kgDrawTick(fid,width1+0.2*FontSize , xp+0.1*BxSize ,BxSize,60,80,60);
               }
           }
 //      img=kgGetResizedImage(fid);
@@ -7077,7 +7078,8 @@ void transch(int c) {
                   kgTextColor ( fid , color ) ;
                   kgMove2f ( fid , width1+0.2*FontSize , xp+0.3*BxSize ) ;
                   kgTextSize ( fid , th , tw , GAP*tw ) ;
-                  kgWriteText ( fid , "!f354" ) ;
+//                  kgWriteText ( fid , "!f354" ) ;
+                  kgDrawTick(fid,width1+0.2*FontSize , xp+0.3*BxSize ,BxSize,60,80,60);
               }
           }
 //      img=kgGetResizedImage(fid);
@@ -7171,7 +7173,10 @@ void transch(int c) {
                ( float ) BxSize*0.7 , rf , gf , bf , 0.5 , 0.7 ) ;
 #endif
               kgMove2f ( fid , ( float ) BxSize-0.4*FontSize , yp+0.1*BxSize ) ;
-              if ( status > 0 ) kgWriteText ( fid , "!z34!f354" ) ;
+              if ( status > 0 ) {
+//                    kgWriteText ( fid , "!z34!f354" ) ;
+                  kgDrawTick(fid,( float ) BxSize-0.4*FontSize , yp+0.1*BxSize ,BxSize,60,80,60);
+              }
           }
           img = kgGetResizedImage ( fid ) ;
           kgCloseImage ( fid ) ;
@@ -7237,7 +7242,10 @@ void transch(int c) {
                ( float ) ( BxSize+3 ) *0.35 ) ;
 #endif
               kgMove2f ( fid , ( float ) BxSize-0.4*FontSize , xp+0.1*BxSize ) ;
-              if ( status > 0 ) kgWriteText ( fid , "!z34!f354" ) ;
+              if ( status > 0 ) {
+//                 kgWriteText ( fid , "!z34!f354" ) ;
+                  kgDrawTick(fid,( float ) BxSize-0.4*FontSize , xp+0.1*BxSize ,BxSize,60,80,60);
+              }
           }
 //      img=kgGetResizedImage(fid);
           img = kgGetSharpImage ( fid ) ;
@@ -7928,8 +7936,6 @@ void transch(int c) {
       kgWC *wc;
       wc = D->wc;
       ln = width;
-//      printf("MSG: type = %d\n",type);
-//      fflush(stdout);
       switch ( type ) {
           case 0:
           uiString ( D , str , x , y+height+5 , ln , 20 , font , \
@@ -12062,8 +12068,19 @@ void transch(int c) {
       EVGAY = D->evgay;
       uiBkup_clip_limits ( wc ) ;
       uiSet_full_scrn ( wc ) ;
-      uiShadedString ( D , "!f35!w32!xs" , x-1 , EVGAY-y-1 , w+2 , w+2 , 35 , \
+#if 0
+      uiShadedString ( D , "!f48!w32!xa" , x-1 , EVGAY-y-1 , w+2 , w+2 , 35 , \
       D->gc.fill_clr , 0 , D->gc.v_dim , D->gc.FontSize-1 , 0 , rfac , 1 , type ) ;
+#endif
+      void *uimg,*img;     
+//      uimg = kgUpdirImage(w-2,60,80,60);
+      uimg = kgUpImage(w-2,60,80,60);
+      img  = kgShadedImage(uimg,w,w,D->gc.scroll_fill); 
+      if ( img != NULL ) {
+              kgImage ( D , img , x , EVGAY-y , w,w, 0.0 , 1.0 ) ;
+              uiFreeImage ( img ) ;
+      }
+      uiFreeImage ( uimg ) ;
       uiRest_clip_limits ( wc ) ;
   }
   void _uidown_dir ( DIALOG *D , int x , int y , \
@@ -12075,8 +12092,18 @@ void transch(int c) {
       EVGAY = D->evgay;
       uiBkup_clip_limits ( wc ) ;
       uiSet_full_scrn ( wc ) ;
-      uiShadedString ( D , "!f35!w32!xt" , x-1 , EVGAY-y-1 , w+2 , w+2 , 35 , \
+#if 0
+      uiShadedString ( D , "!f48!w32!xu" , x-1 , EVGAY-y-1 , w+2 , w+2 , 35 , \
       D->gc.fill_clr , 0 , D->gc.v_dim , D->gc.FontSize-1 , 0 , rfac , 1 , type ) ;
+#endif
+      void *uimg,*img;     
+      uimg = kgDownImage(w-2,60,80,60);
+      img  = kgShadedImage(uimg,w,w,D->gc.scroll_fill); 
+      if ( img != NULL ) {
+              kgImage ( D , img , x , EVGAY-y , w,w , 0.0 , 1.0 ) ;
+              uiFreeImage ( img ) ;
+      }
+      uiFreeImage ( uimg ) ;
       uiRest_clip_limits ( wc ) ;
   }
   void _dvup_dir ( DIALOG *D , int x , int y , int w , float rfac , int type ) {
@@ -12084,13 +12111,22 @@ void transch(int c) {
       wc = WC ( D ) ;
       uiBkup_clip_limits ( wc ) ;
       uiSet_full_scrn ( wc ) ;
-#if 1
-      uiShadedString ( D , "!f35!w32!xs" , x , y , \
+#if 0
+      uiShadedString ( D , "!f48!w32!xa" , x , y , \
            w , w , 35 , D->gc.scroll_fill , \
       0 , D->gc.v_dim , D->gc.FontSize-1 , 0 , rfac , 1 , type ) ;
 #else
-      printf("MSG: shaded string\n");
-      fflush(stdout);
+      void *uimg,*img;     
+//      uimg = kgUpdirImage(w-2,60,80,60);
+      uimg = kgUpImage(w-2,60,80,60);
+      img  = kgShadedImage(uimg,w,w,D->gc.scroll_fill); 
+      if ( img != NULL ) {
+              kgImage ( D , img , x , y , w,w, 0.0 , 1.0 ) ;
+              uiFreeImage ( img ) ;
+      }
+      uiFreeImage ( uimg ) ;
+//      printf("MSG: shaded string\n");
+//      fflush(stdout);
 #endif
       uiRest_clip_limits ( wc ) ;
   }
@@ -12101,13 +12137,21 @@ void transch(int c) {
       wc = WC ( D ) ;
       uiBkup_clip_limits ( wc ) ;
       uiSet_full_scrn ( wc ) ;
-#if 1
-      uiShadedString ( D , "!f35!w32!xt" , x , y , \
+#if 0
+      uiShadedString ( D , "!f48!w32!xu" , x , y , \
            w , w , 35 , D->gc.scroll_fill , \
       0 , D->gc.v_dim , D->gc.FontSize-1 , 0 , rfac , 1 , type ) ;
 #else
-      printf("MSG: shaded string down\n");
-      fflush(stdout);
+      void *uimg,*img;     
+      uimg = kgDownImage(w-2,60,80,60);
+      img  = kgShadedImage(uimg,w,w,D->gc.scroll_fill); 
+      if ( img != NULL ) {
+              kgImage ( D , img , x , y , w,w , 0.0 , 1.0 ) ;
+              uiFreeImage ( img ) ;
+      }
+      uiFreeImage ( uimg ) ;
+//      printf("MSG: shaded string down\n");
+//      fflush(stdout);
 #endif
       uiRest_clip_limits ( wc ) ;
   }

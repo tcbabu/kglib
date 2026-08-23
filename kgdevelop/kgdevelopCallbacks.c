@@ -5771,7 +5771,10 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
       i = 0;while ( d [ i ] .t != NULL ) {Dadd ( L , d [ i ] .t ) ;i++;};
       fp1 = fopen ( flname , "w" ) ;
       fpc = fopen ( Callbackcode , "w" ) ;
-      fpg = fopen ( Gclrcode , "w" ) ;
+      if(kgFileStat(Gclrcode )==0) {
+        fpg = fopen ( Gclrcode , "w" ) ;
+      }
+      else fpg=NULL;
       Inc = fopen ( Includecode , "w" ) ;
       fprintf ( fp1 , "#include <kulina.h>\n" ) ;
       fprintf ( fp1 , "#include \"%-s\"\n" , Includecode ) ;
@@ -5788,34 +5791,36 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
       fclose ( fpc ) ;
       fclose ( Inc ) ;
       codes = Get_gui_args ( L ) ;
-      fprintf ( fpg , "void Modify%-sGc(void *Tmp) {\n" , dianame ) ;
-      fprintf ( fpg , "   DIALOG *D;\n" ) ;
-      fprintf ( fpg , "   Gclr *gc;\n" ) ;
-      fprintf ( fpg , "   D = (DIALOG *)Tmp;\n" ) ;
-      fprintf ( fpg , "   gc = &(D->gc);\n" ) ;
-      fprintf ( fpg , "/*\n" ) ;
-      fprintf ( fpg , "//  You may change default settings here \n" ) ;
-      fprintf ( fpg , "//  probably you can allow the user to create a config in $HOME\n" ) ;
+      if(fpg != NULL) {
+       fprintf ( fpg , "void Modify%-sGc(void *Tmp) {\n" , dianame ) ;
+       fprintf ( fpg , "   DIALOG *D;\n" ) ;
+       fprintf ( fpg , "   Gclr *gc;\n" ) ;
+       fprintf ( fpg , "   D = (DIALOG *)Tmp;\n" ) ;
+       fprintf ( fpg , "   gc = &(D->gc);\n" ) ;
+       fprintf ( fpg , "/*\n" ) ;
+       fprintf ( fpg , "//  You may change default settings here \n" ) ;
+       fprintf ( fpg , "//  probably you can allow the user to create a config in $HOME\n" ) ;
+           
+       fprintf ( fpg , "//  and try to read that file (if exits); so dynamic configuration is possible\n" ) ;
           
-      fprintf ( fpg , "//  and try to read that file (if exits); so dynamic configuration is possible\n" ) ;
-          
-      fprintf ( fpg , "   kgColorTheme(D,220,220,200);\n" ) ;
-      fprintf ( fpg , "   kgColorTheme1(D,220,220,200);\n" ) ;
-      fprintf ( fpg , "   kgColorTheme2(D,220,220,200);\n" ) ;
-      fprintf ( fpg , "   kgDefaultGuiTheme(gc);\n" ) ;
-      fprintf ( fpg , "   kgGrayGuiTheme(gc);\n" ) ;
-      fprintf ( fpg , "   gc->FontSize =9;\n" ) ;
-      fprintf ( fpg , "   gc->GuiFontSize =9;\n" ) ;
-      fprintf ( fpg , "   gc->InputFontSize =8;\n" ) ;
-      fprintf ( fpg , "   gc->MenuFont = 21;\n" ) ;
-      fprintf ( fpg , "   gc->PromptFont = 21;\n" ) ;
-      fprintf ( fpg , "   gc->ButtonFont = 21;\n" ) ;
-      fprintf ( fpg , "   gc->MsgFont = 21;\n" ) ;
-      fprintf ( fpg , "   gc->Font=23;\n" ) ;
-      fprintf ( fpg , "   kgMkgclr((char *)\"%-s\",Tmp);\n" , dianame ) ;
-      fprintf ( fpg , "*/\n" ) ;
-      fprintf ( fpg , "}\n" ) ;
-      fclose ( fpg ) ;
+       fprintf ( fpg , "   kgColorTheme(D,220,220,200);\n" ) ;
+       fprintf ( fpg , "   kgColorTheme1(D,220,220,200);\n" ) ;
+       fprintf ( fpg , "   kgColorTheme2(D,220,220,200);\n" ) ;
+       fprintf ( fpg , "   kgDefaultGuiTheme(gc);\n" ) ;
+       fprintf ( fpg , "   kgGrayGuiTheme(gc);\n" ) ;
+       fprintf ( fpg , "   gc->FontSize =9;\n" ) ;
+       fprintf ( fpg , "   gc->GuiFontSize =9;\n" ) ;
+       fprintf ( fpg , "   gc->InputFontSize =8;\n" ) ;
+       fprintf ( fpg , "   gc->MenuFont = 21;\n" ) ;
+       fprintf ( fpg , "   gc->PromptFont = 21;\n" ) ;
+       fprintf ( fpg , "   gc->ButtonFont = 21;\n" ) ;
+       fprintf ( fpg , "   gc->MsgFont = 21;\n" ) ;
+       fprintf ( fpg , "   gc->Font=23;\n" ) ;
+       fprintf ( fpg , "   kgMkgclr((char *)\"%-s\",Tmp);\n" , dianame ) ;
+       fprintf ( fpg , "*/\n" ) ;
+       fprintf ( fpg , "}\n" ) ;
+       fclose ( fpg ) ;
+      }
       n = strlen ( codes ) ;
 #if 1 
 // Group Code

@@ -1276,6 +1276,10 @@ void * kgFilledStringToImage2(char *Str,void *image,int xsize,int ysize,int font
 void * kgFilledStringToImage3(char *Str,void *image,int xsize,int ysize,int font,int fillcolor,int highli,int color,int bodr,int justification,int width,float rfac,int state,float depthfac);
 void * kgBoxedStringToImage(char *Str,void *image,int xsize,int ysize,int font,int border,int highli,int color,int justification,int width,float rfac,int state);
 void * kgShadedStringToImage(char *Str,void *image,int xsize,int ysize,int font,int fillcolor,int highli,int color,int justification,int width,float rfac,int state,int type);
+void * kgShadedImage ( void *image , int xsize , \
+  int ysize , int fillcolor );
+  void * kgShadedTick ( int Size , int fillcolor );
+int kgDrawTick(void *G,float xo,float yo,int  size,int r,int g,int b);
 void *kgFMGtogmImage(void *tmp);
 void *kgGetBackground(void *Tmp,int x1,int y1,int x2,int y2);
 int kgRestoreImage(DIALOG *D,void *tmp,int x0,int y0,int width,int height);
@@ -1301,6 +1305,8 @@ void * kgGoback1Image(int size,int red,int green,int blue);
 void * kgGobackImage(int size,int red,int green,int blue);
 void * kgPowerdownImage(int size,int red,int green,int blue);
 void * kgHomeImage(int size,int red,int green,int blue);
+void * kgTickImage(int size,int red,int green,int blue);
+
 int    kgFmgToFile(unsigned char *array,int sz,char * flname);
 /* end  of built in images */
 /*
