@@ -1042,6 +1042,8 @@ int    kgSetSelection(void *tmp,int val);
 int    kgSetSwitch(void *Widget,int item, int val);
 int    kgGetSwitch(void *Widget,int item);
 void **kgSetList(void *Widget,void **list);
+
+char **kgAllocStrings(char **menu);
 void **kgGetList(void *Widget);
 int    kgAddThumbNail(void *Widget,void *th,int pos);
 int    kgDeleteThumbNail(void *Widget,int pos);
@@ -1107,6 +1109,7 @@ int kgPickImage( void *parent,int xo,int yo,void *pt);
 int kgSelectImage( void *parent,int xo,int yo,int ThSize,void *pt);
 int kgRedrawDialog(DIALOG *Dialog);
 int kgDrawDialog(DIALOG *D);
+int kgDrawDiaDialog(DIALOG *D);
 void *kgGetThumbNail(void *Wid,int item);
 char *kgGetThumbNailName(void *Wid,int item);
 void *kgGetThumbNailImage(void *Wid,int item);
@@ -1275,6 +1278,10 @@ void * kgFilledStringToImage2(char *Str,void *image,int xsize,int ysize,int font
 void * kgFilledStringToImage3(char *Str,void *image,int xsize,int ysize,int font,int fillcolor,int highli,int color,int bodr,int justification,int width,float rfac,int state,float depthfac);
 void * kgBoxedStringToImage(char *Str,void *image,int xsize,int ysize,int font,int border,int highli,int color,int justification,int width,float rfac,int state);
 void * kgShadedStringToImage(char *Str,void *image,int xsize,int ysize,int font,int fillcolor,int highli,int color,int justification,int width,float rfac,int state,int type);
+void * kgShadedImage ( void *image , int xsize , \
+  int ysize , int fillcolor );
+  void * kgShadedTick ( int Size , int fillcolor );
+int kgDrawTick(void *G,float xo,float yo,int  size,int r,int g,int b);
 void *kgFMGtogmImage(void *tmp);
 void *kgGetBackground(void *Tmp,int x1,int y1,int x2,int y2);
 int kgRestoreImage(DIALOG *D,void *tmp,int x0,int y0,int width,int height);
@@ -1300,6 +1307,8 @@ void * kgGoback1Image(int size,int red,int green,int blue);
 void * kgGobackImage(int size,int red,int green,int blue);
 void * kgPowerdownImage(int size,int red,int green,int blue);
 void * kgHomeImage(int size,int red,int green,int blue);
+void * kgTickImage(int size,int red,int green,int blue);
+
 int    kgFmgToFile(unsigned char *array,int sz,char * flname);
 /* end  of built in images */
 /*
@@ -1444,6 +1453,9 @@ int kgFileBrowser(void *parent,int x0,int y0,  char *v0, char *v1 );
 int kgGetFont(void *parent,int xo,int yo);
 void * kgGetFreeTypeFont(void *parent,void *Font);
 int kgGetColor(void *parent,int xo,int yo,int *r,int *g,int *b);
+
+ int kgFileStat(char *flname);
+int kgMakeTmpFolderInHome(char *Tfolder);
 /* 
   utilities 
 */

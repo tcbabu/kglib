@@ -238,8 +238,8 @@ int  EditWidgetsbrowser1callback(int item,int i,void *Tmp) {
       UpdateList((((DIF *)T)->Wid));
       break;
     case 'P':
-      RundefaultEdit(Tmp,(char *)"Horizontal Slide",((DIF *)T)->Wid);
-      UpdateList((((DIF *)T)->Wid));
+      RundefaultEdit(Tmp,(char *)"Horizontal Slide",((DIHB *)T)->Wid);
+      UpdateList((((DIHB *)T)->Wid));
       break;
     default:
       break;
@@ -350,7 +350,7 @@ int  ModifyWidget(void *Tpt) {
       RundefaultEdit(Tmp,(char *)"Float Slide",((DIF *)T)->Wid);
       break;
     case 'P':
-      RundefaultEdit(Tmp,(char *)"Horizontal Slide",((DIF *)T)->Wid);
+      RundefaultEdit(Tmp,(char *)"Horizontal Slide",((DIHB *)T)->Wid);
       break;
     default:
       break;
