@@ -56,6 +56,7 @@ static Dlink *ModuleList=NULL;
   int Runslidebaropt ( void *arg ) ;
   int RunOptions ( void *Tmp ) ;
   int Rundemo ( void *Tmp,void *Arg ) ;
+  int RunMsg( void *Tmp,void *Arg ) ;
   int RunBorderoptdia ( void *Tmp ) ;
   int RunItemoptdia ( void *Tmp ) ;
   int RunFileoptdia ( void * ) ;
@@ -9358,8 +9359,12 @@ int kgdevelopHelpcallback(int butno,int i,void *Tmp) {
   D = (DIALOG *)Tmp;
   B = (DIN *)kgGetWidget(Tmp,i);
   n = B->nx*B->ny;
+  char *hmsg[]={
+      "Try !c38Demo!c00 ",
+      NULL};
   switch(butno) {
     case 1: //  Help 
+      RunMsg(Tmp,hmsg);
       break;
   }
   return ret;
