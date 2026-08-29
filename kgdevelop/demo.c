@@ -60,7 +60,7 @@ int demoGroup( DIALOG *D,void **v,void *pt) {
   butn2[0].xpmp=NULL;
   butn2[0].xpmh=NULL;
   butn2[0].bkgr=-1;
-  butn2[0].butncode=-2302850;
+  butn2[0].butncode=126;
   DIN b2 = { 
     'n',
     16,161,  
@@ -84,7 +84,7 @@ int demoGroup( DIALOG *D,void **v,void *pt) {
   butn3[0].xpmp=NULL;
   butn3[0].xpmh=NULL;
   butn3[0].bkgr=-1;
-  butn3[0].butncode=-1077952642;
+  butn3[0].butncode=126;
   DIN b3 = { 
     'n',
     16,87,  
@@ -151,18 +151,18 @@ int demoGroup( DIALOG *D,void **v,void *pt) {
   BUT_STR  *butn6=NULL; 
   butn6= (BUT_STR *)malloc(sizeof(BUT_STR)*1);
   butn6[0].sw=1;
-  strcpy(butn6[0].title,(char *)"Folder");
+  strcpy(butn6[0].title,(char *)"FolderUp");
   butn6[0].xpmn=NULL;
   butn6[0].xpmp=NULL;
   butn6[0].xpmh=NULL;
   butn6[0].bkgr=-1;
-  butn6[0].butncode=11046014;
+  butn6[0].butncode=123;
   DIN b6 = { 
     'n',
-    768,551,  
-    990,580,
+    901,553,  
+    988,580,
     2,2,  
-    210, 
+    80, 
     20, 
     1,1, 
     7,0.500000,0,0,0,1,/* button type and roundinfg factor(0-0.5),bordr,hide ,nodrawbkgr*/ 
@@ -180,7 +180,7 @@ int demoGroup( DIALOG *D,void **v,void *pt) {
   butn7[0].xpmp=NULL;
   butn7[0].xpmh=NULL;
   butn7[0].bkgr=-1;
-  butn7[0].butncode=46838654;
+  butn7[0].butncode=126;
   DIN b7 = { 
     'n',
     93,14,  
@@ -204,7 +204,7 @@ int demoGroup( DIALOG *D,void **v,void *pt) {
   butn8[0].xpmp=NULL;
   butn8[0].xpmh=NULL;
   butn8[0].bkgr=-1;
-  butn8[0].butncode=-2302850;
+  butn8[0].butncode=126;
   DIN b8 = { 
     'n',
     94,90,  
@@ -228,7 +228,7 @@ int demoGroup( DIALOG *D,void **v,void *pt) {
   butn9[0].xpmp=NULL;
   butn9[0].xpmh=NULL;
   butn9[0].bkgr=-1;
-  butn9[0].butncode=-2302850;
+  butn9[0].butncode=126;
   DIN b9 = { 
     'n',
     95,166,  
@@ -252,7 +252,7 @@ int demoGroup( DIALOG *D,void **v,void *pt) {
   butn10[0].xpmp=NULL;
   butn10[0].xpmh=NULL;
   butn10[0].bkgr=-1;
-  butn10[0].butncode=-2302850;
+  butn10[0].butncode=-16777090;
   DIN b10 = { 
     'n',
     96,243,  
@@ -276,7 +276,7 @@ int demoGroup( DIALOG *D,void **v,void *pt) {
   butn11[0].xpmp=NULL;
   butn11[0].xpmh=NULL;
   butn11[0].bkgr=-1;
-  butn11[0].butncode=-2302850;
+  butn11[0].butncode=-16777090;
   DIN b11 = { 
     'n',
     91,322,  
@@ -523,7 +523,7 @@ int demoGroup( DIALOG *D,void **v,void *pt) {
     10,2,  
     160, 
     25, 
-    1,82395408, 
+    1,90611024, 
     0,5, 
     (int *)v[12], 
     NULL, 
@@ -610,7 +610,7 @@ int demoGroup( DIALOG *D,void **v,void *pt) {
     8,20,  
     64, 
     64, 
-    1,82395408, 
+    1,90611024, 
     0,1, 
     (int *)v[15], 
     NULL, 
@@ -672,7 +672,7 @@ int demoGroup( DIALOG *D,void **v,void *pt) {
   butn33[0].xpmp=NULL;
   butn33[0].xpmh=NULL;
   butn33[0].bkgr=-1;
-  butn33[0].butncode=11645054;
+  butn33[0].butncode=12491390;
   DIN b33 = { 
     'n',
     15,383,  
@@ -697,12 +697,21 @@ int demoGroup( DIALOG *D,void **v,void *pt) {
   strncpy(m34.msg,(char *)"(type10 hidden)",499);
   strcpy(m34.Wid,(char *)"demoMsg10");
   m34.item = -1;
+  DIM m35 = { 
+    'm',
+    609,556,  
+    859,580,  
+    -1,0  
+  };
+  strncpy(m35.msg,(char *)"",499);
+  strcpy(m35.Wid,(char *)"demoFmsg");
+  m35.item = -1;
   dtmp = D->d;
   i=0;
   if(dtmp!= NULL) while(dtmp[i].t!=NULL)i++;
-  dtmp = (DIA *)realloc(dtmp,sizeof(DIA )*(i+36));
+  dtmp = (DIA *)realloc(dtmp,sizeof(DIA )*(i+37));
   d =dtmp+i; 
-  d[35].t=NULL;
+  d[36].t=NULL;
   d[0].t = (DIT *)malloc(sizeof(DIL));
   *d[0].h = h0;
   d[0].h->item = -1;
@@ -827,7 +836,10 @@ int demoGroup( DIALOG *D,void **v,void *pt) {
   d[34].t = (DIT *)malloc(sizeof(DIM));
   *d[34].m = m34;
   d[34].m->item = -1;
-  d[35].t = NULL;
+  d[35].t = (DIT *)malloc(sizeof(DIM));
+  *d[35].m = m35;
+  d[35].m->item = -1;
+  d[36].t = NULL;
   GrpId=kgOpenGrp(D);
   D->d = dtmp;
   j=0;
