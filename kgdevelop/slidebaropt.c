@@ -247,7 +247,7 @@ int slidebaroptGroup( DIALOG *D,void **v,void *pt) {
   butn4[0].xpmp=NULL;
   butn4[0].xpmh=NULL;
   butn4[0].bkgr=-1;
-  butn4[0].butncode='';
+  butn4[0].butncode='\0';
   DIN b4 = { 
     'n',
     199,147,  
@@ -453,5 +453,7 @@ int Runslidebaropt(void *arg) {
    W->type = v0-1;
    W->min=v1;
    W->max = v2;
+//   fprintf(stderr,"HIB name: %s\n",W->Wid);
+//   fflush(stdout);
    return ret;
 }

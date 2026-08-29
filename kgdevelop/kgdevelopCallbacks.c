@@ -4535,6 +4535,12 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
       fprintf ( Inc , "void * %s (DIE *E,void *pt) ;\n" , CallBackName ) ;
       fprintf ( fp , "void * %s (DIE *E,void *ptmp) {\n" , CallBackName ) ;
       fprintf ( fp , " void **pt=(void **)ptmp; //pt[0] is arg \n" ) ;
+      fprintf ( fp ,"#if 0\n");
+      fprintf (fp , " char *menu[]= {(char *)\"one\",(char *)\"two\",NULL};\n");
+      fprintf (fp ,"  kgFreeDouble(kgGetList(E));\n");
+      fprintf (fp ,"  kgSetList(E,(void **)kgAllocStrings(menu));\n");
+      fprintf ( fp ,"#endif\n");
+      fprintf (fp, " return NULL;\n");    
       fprintf ( fp , "}\n" ) ;
       return count;
   }
@@ -5470,6 +5476,8 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
               fprintf ( fp1 , "  d[%d].t = (DIT *)malloc(sizeof(DIE));\n" , n ) ;
               fprintf ( fp1 , "  *d[%-d].e = e%-d;\n" , n , n ) ;
               fprintf ( fp1 , "  d[%-d].e->item = -1;\n" , n ) ;
+              GetInit ( ( ( DIE* ) t )->Wid ) ;
+              fprintf ( fp1 , "  %-s(d[%-d].e,pt) ;\n" , InitName , n ) ;
               brwsr++;
               break;
               case 's':
@@ -8565,9 +8573,9 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
            NULL , NULL , NULL , NULL , 0 , 0 , 2 , -1};
       W = ( DIHB * ) malloc ( sizeof ( DIHB ) ) ;
       Wtmp.Wid [ 0 ] = '\0';
-      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      sprintf ( WidName , "%-sHBslide%-d" , DiaName , ++WidCount ) ;
       while ( CheckWidgetName ( Dia , WidName ) ) {
-          sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+          sprintf ( WidName , "%-sHBslide%-d" , DiaName , ++WidCount ) ;
       }
       strcpy ( Wtmp.Wid , WidName ) ;
       *W = Wtmp;
@@ -8595,6 +8603,7 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
           W->y1 = y1+0.5;
           W->x2 = x1+0.5+ln;
           W->y2 = y1+0.5+wd;
+//          fprintf(stderr,"HIB: %s\n",W->Wid);
           return W;
       }
   }

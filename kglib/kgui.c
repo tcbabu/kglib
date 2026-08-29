@@ -6722,6 +6722,24 @@ int kgMakeTmpFolderInHome(char *Tfolder) {
       }
       return 1;
   }
+  char **kgAllocStrings(char **menu) {
+     char **spt=NULL,*tpt;
+     int i,count,ln;
+     if (menu == NULL ) return NULL;
+     i=0;
+     while(menu[i] != NULL) i++;
+     count = i+1;
+     spt = (char **)malloc(sizeof(char *)*count);
+     spt[i]=NULL;
+     i=0;
+     while(menu[i] != NULL){
+       tpt = (char *)malloc(strlen(menu[i])+1);
+       strcpy(tpt,menu[i]);
+       spt[i]=tpt;
+       i++;
+     }
+     return spt;     
+  }
   int kgGetSelection ( void *tmp ) {
       DIA *D;DIX *X;DIW *W;DIE *E;
       int df = 0;
