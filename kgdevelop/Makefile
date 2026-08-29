@@ -12,6 +12,8 @@ kgdevelop	: kgdevelop.o kgdevelopCallbacks.o Fileoptdia.o Itemoptdia.o Borderopt
 		  defaultEdit.o defaultEditCallbacks.o \
 		  EditThumbnails.o EditThumbnailsCallbacks.o \
 		  tablebox.o tableboxCallbacks.o \
+		  demo.o demoCallbacks.o \
+		  Msg.o MsgCallbacks.o \
 		  AddItem.o  ProcCallbacks.o UpdatesCheck.o UpdatesCheckCallbacks.o \
 		 $(KULINA)/lib/libkulina.a 
 		 $(CC) $(CFLAGS) -o kgdevelop kgdevelop.o kgdevelopCallbacks.o Fileoptdia.o \
@@ -26,6 +28,8 @@ kgdevelop	: kgdevelop.o kgdevelopCallbacks.o Fileoptdia.o Itemoptdia.o Borderopt
 		  defaultEdit.o defaultEditCallbacks.o \
 		  EditThumbnails.o EditThumbnailsCallbacks.o \
 		  tablebox.o tableboxCallbacks.o \
+		  demo.o demoCallbacks.o \
+		  Msg.o MsgCallbacks.o \
 		  AddItem.o ProcCallbacks.o UpdatesCheck.o UpdatesCheckCallbacks.o \
 		 $(KULINA)/lib/libkulina.a $(KULINA)/lib/libgm.a -L/usr/X11R6/lib -lX11 -lXext -lm -lpthread  
 clean	:

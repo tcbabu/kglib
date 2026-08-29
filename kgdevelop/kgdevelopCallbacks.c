@@ -55,6 +55,7 @@ static Dlink *ModuleList=NULL;
   void *RunEditWidgets ( void *arg ) ;
   int Runslidebaropt ( void *arg ) ;
   int RunOptions ( void *Tmp ) ;
+  int Rundemo ( void *Tmp,void *Arg ) ;
   int RunBorderoptdia ( void *Tmp ) ;
   int RunItemoptdia ( void *Tmp ) ;
   int RunFileoptdia ( void * ) ;
@@ -9344,6 +9345,57 @@ int kgdevelopKDbarcallback(int butno,int i,void *Tmp) {
       int ret = 0;
       return ret;
   }
+int kgdevelopHelpcallback(int butno,int i,void *Tmp) {
+  /*********************************** 
+    butno : selected item (1 to max_item) 
+    i :  Index of Widget  (0 to max_widgets-1) 
+    Tmp :  Pointer to DIALOG  
+   ***********************************/ 
+  DIALOG *D;DIN *B; 
+  int n,ret =0; 
+  void **pt= (void **)kgGetArgPointer(Tmp); // Change as required
+// pt[0] is args passed as inputs; pt[1] is output pointer
+  D = (DIALOG *)Tmp;
+  B = (DIN *)kgGetWidget(Tmp,i);
+  n = B->nx*B->ny;
+  switch(butno) {
+    case 1: //  Help 
+      break;
+  }
+  return ret;
+}
+void  kgdevelopHelpinit (DIN *B,void *ptmp) {
+ void **pt=(void **)ptmp; //pt[0] is arg 
+// may use kgChangeButtonNormalImage etc...
+ BUT_STR *buts;
+ buts = (BUT_STR *) (B->buts);
+}
+int kgdevelopDemocallback(int butno,int i,void *Tmp) {
+  /*********************************** 
+    butno : selected item (1 to max_item) 
+    i :  Index of Widget  (0 to max_widgets-1) 
+    Tmp :  Pointer to DIALOG  
+   ***********************************/ 
+  DIALOG *D;DIN *B; 
+  int n,ret =0; 
+  void **pt= (void **)kgGetArgPointer(Tmp); // Change as required
+// pt[0] is args passed as inputs; pt[1] is output pointer
+  D = (DIALOG *)Tmp;
+  B = (DIN *)kgGetWidget(Tmp,i);
+  n = B->nx*B->ny;
+  switch(butno) {
+    case 1: //  Demo 
+      Rundemo(NULL,NULL);
+      break;
+  }
+  return ret;
+}
+void  kgdevelopDemoinit (DIN *B,void *ptmp) {
+ void **pt=(void **)ptmp; //pt[0] is arg 
+// may use kgChangeButtonNormalImage etc...
+ BUT_STR *buts;
+ buts = (BUT_STR *) (B->buts);
+}
   int kgdevelopinit ( void *Tmp ) {
 //  DRAW_DIALOG(Dia);
       Parent = ( DIALOG * ) Tmp;
@@ -9469,11 +9521,14 @@ int Modifykgdevelop(void *Tmp,int GrpId) {
   };
   n=1;
   strcpy(D->name,"kgdevelop Ver: 3.1");    /*  Dialog name you may change */
-#if 0
+#if 1
   if(D->fullscreen!=1) {    /*  if not fullscreen mode */
      int xres,yres; 
      kgDisplaySize(&xres,&yres); 
-      // D->xo=D->yo=0; D->xl = xres-10; D->yl=yres-80;
+       D->xo=D->yo=0; D->xl = xres-10; D->yl=yres-10;
+     DIG *G = (DIG *)kgGetNamedWidget(D,(char *)"KDgbox");
+     G->x2 =D->xl-10;
+     G->y2 =D->yl-50;;
   }
   else {    // for fullscreen
      int xres,yres; 

@@ -1,6 +1,10 @@
 int kgdevelopKDbarcallback(int butno,int i,void *Tmp) ;
 void  kgdevelopKDbarinit (DIN *B,void *pt) ;
 void kgdevelopKDgboxinit (int i,void *Tmp) ;
+int kgdevelopHelpcallback(int butno,int i,void *Tmp) ;
+void  kgdevelopHelpinit (DIN *B,void *pt) ;
+int kgdevelopDemocallback(int butno,int i,void *Tmp) ;
+void  kgdevelopDemoinit (DIN *B,void *pt) ;
 int kgdevelopinit(void *Tmp) ;
 int kgdevelopcleanup(void *Tmp) ;
 void *Runkgdevelop(void *,void *) ;

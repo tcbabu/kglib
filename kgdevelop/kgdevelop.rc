@@ -1,7 +1,7 @@
 D      //GUI dimensions xo,yo,xl,yl,lw,rw,tw,bw,df,bor_type,bkup
-0 0 2514 963
+0 0 2420 1050
 4 4 43 4
-0 3 0 0 1 1 0 1 1 1 1 0 0.000000 0 100 100 0
+4 3 0 0 1 1 0 0 0 1 1 0 0.000000 0 100 100 0
 //Button Box
 n
 n     //code
@@ -17,49 +17,49 @@ NULL // XPM
 NULL // XPM 
 NULL // XPM 
 -1 //back ground color
-} //keyboard code
+~ //keyboard code
 1 //status
 "Widget" //title 
 NULL // XPM 
 NULL // XPM 
 NULL // XPM 
 -1 //back ground color
-} //keyboard code
+~ //keyboard code
 1 //status
 "Border" //title 
 NULL // XPM 
 NULL // XPM 
 NULL // XPM 
 -1 //back ground color
-} //keyboard code
+~ //keyboard code
 1 //status
 "Resize" //title 
 NULL // XPM 
 NULL // XPM 
 NULL // XPM 
 -1 //back ground color
-} //keyboard code
+~ //keyboard code
 1 //status
 "Repos" //title 
 NULL // XPM 
 NULL // XPM 
 NULL // XPM 
 -1 //back ground color
-} //keyboard code
+~ //keyboard code
 1 //status
 "Options" //title 
 NULL // XPM 
 NULL // XPM 
 NULL // XPM 
 -1 //back ground color
-} //keyboard code
+~ //keyboard code
 1 //status
 "Test" //title 
 NULL // XPM 
 NULL // XPM 
 NULL // XPM 
 -1 //back ground color
-} //keyboard code
+~ //keyboard code
 1 0.500000 0  //type,fac
 0 0 //hide
 "KDbar"
@@ -67,7 +67,7 @@ NULL // XPM
 g
 g     //code
 9 43  //x1,y1
-2505 956 //x2,y2
+2300 900 //x2,y2
 NULL // XPM 
 0   // background color 
 0 0 //border hide
@@ -75,8 +75,46 @@ NULL // XPM
 //Info Box
 i
 i     //code
-716 5  //x1,y1
-1002 38 //x2,y2
+708 5  //x1,y1
+994 38 //x2,y2
 30 1 //nchrs,nlines
 0 //hide
 "KDinfo"
+//Button Box
+n
+n     //code
+1016 6  //x1,y1
+1090 38  //x2,y2
+2 2  //xgap,ygap
+64 //length 
+22 //Width 
+1 1  //Nx,Ny,
+1 //status
+"Help" //title 
+NULL // XPM 
+NULL // XPM 
+NULL // XPM 
+-177186177 //back ground color
+ //keyboard code
+7 0.500000 0  //type,fac
+0 0 //hide
+"Help"
+//Button Box
+n
+n     //code
+1088 6  //x1,y1
+1162 38  //x2,y2
+2 2  //xgap,ygap
+64 //length 
+22 //Width 
+1 1  //Nx,Ny,
+1 //status
+"Demo" //title 
+NULL // XPM 
+NULL // XPM 
+NULL // XPM 
+-177186177 //back ground color
+ //keyboard code
+7 0.500000 0  //type,fac
+0 0 //hide
+"Demo"

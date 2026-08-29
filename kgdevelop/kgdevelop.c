@@ -12,49 +12,49 @@ int kgdevelopGroup( DIALOG *D,void **v,void *pt) {
   butn0[0].xpmp=NULL;
   butn0[0].xpmh=NULL;
   butn0[0].bkgr=-1;
-  butn0[0].butncode=125;
+  butn0[0].butncode=-2302851;
   butn0[1].sw=1;
   strcpy(butn0[1].title,(char *)"Widget");
   butn0[1].xpmn=NULL;
   butn0[1].xpmp=NULL;
   butn0[1].xpmh=NULL;
   butn0[1].bkgr=-1;
-  butn0[1].butncode=125;
+  butn0[1].butncode=-2302851;
   butn0[2].sw=1;
   strcpy(butn0[2].title,(char *)"Border");
   butn0[2].xpmn=NULL;
   butn0[2].xpmp=NULL;
   butn0[2].xpmh=NULL;
   butn0[2].bkgr=-1;
-  butn0[2].butncode=125;
+  butn0[2].butncode=-2302851;
   butn0[3].sw=1;
   strcpy(butn0[3].title,(char *)"Resize");
   butn0[3].xpmn=NULL;
   butn0[3].xpmp=NULL;
   butn0[3].xpmh=NULL;
   butn0[3].bkgr=-1;
-  butn0[3].butncode=125;
+  butn0[3].butncode=-2302850;
   butn0[4].sw=1;
   strcpy(butn0[4].title,(char *)"Repos");
   butn0[4].xpmn=NULL;
   butn0[4].xpmp=NULL;
   butn0[4].xpmh=NULL;
   butn0[4].bkgr=-1;
-  butn0[4].butncode=125;
+  butn0[4].butncode=-2302850;
   butn0[5].sw=1;
   strcpy(butn0[5].title,(char *)"Options");
   butn0[5].xpmn=NULL;
   butn0[5].xpmp=NULL;
   butn0[5].xpmh=NULL;
   butn0[5].bkgr=-1;
-  butn0[5].butncode=125;
+  butn0[5].butncode=-2302850;
   butn0[6].sw=1;
   strcpy(butn0[6].title,(char *)"Test");
   butn0[6].xpmn=NULL;
   butn0[6].xpmp=NULL;
   butn0[6].xpmh=NULL;
   butn0[6].bkgr=-1;
-  butn0[6].butncode=125;
+  butn0[6].butncode=-2302850;
   DIN b0 = { 
     'n',
     7,3,  
@@ -74,7 +74,7 @@ int kgdevelopGroup( DIALOG *D,void **v,void *pt) {
   DIG g1 = { 
     'g',
     9,43,  
-    2505,956,  
+    2300,900,  
     (void *)xpm1,
     0, /* bkgr colour */ 
     kgdevelopKDgboxinit, /* void *initgraph(int,void *)  */ 
@@ -84,18 +84,66 @@ int kgdevelopGroup( DIALOG *D,void **v,void *pt) {
   g1.item = -1;
   DII i2 = { 
     'i',
-    716,5,  
-    1002,38,  
+    708,5,  
+    994,38,  
     30,1,0   
   };
   strcpy(i2.Wid,(char *)"KDinfo");
   i2.item = -1;
+  BUT_STR  *butn3=NULL; 
+  butn3= (BUT_STR *)malloc(sizeof(BUT_STR)*1);
+  butn3[0].sw=1;
+  strcpy(butn3[0].title,(char *)"Help");
+  butn3[0].xpmn=NULL;
+  butn3[0].xpmp=NULL;
+  butn3[0].xpmh=NULL;
+  butn3[0].bkgr=-177186177;
+  butn3[0].butncode=31;
+  DIN b3 = { 
+    'n',
+    1016,6,  
+    1090,38,
+    2,2,  
+    64, 
+    22, 
+    1,1, 
+    7,0.500000,0,0,0,1,/* button type and roundinfg factor(0-0.5),bordr,hide ,nodrawbkgr*/ 
+    butn3, 
+    kgdevelopHelpcallback , /* *args, Callback */
+    NULL  /* any args */
+  };
+  strcpy(b3.Wid,(char *)"Help");
+  b3.item = -1;
+  BUT_STR  *butn4=NULL; 
+  butn4= (BUT_STR *)malloc(sizeof(BUT_STR)*1);
+  butn4[0].sw=1;
+  strcpy(butn4[0].title,(char *)"Demo");
+  butn4[0].xpmn=NULL;
+  butn4[0].xpmp=NULL;
+  butn4[0].xpmh=NULL;
+  butn4[0].bkgr=-177186177;
+  butn4[0].butncode=31;
+  DIN b4 = { 
+    'n',
+    1088,6,  
+    1162,38,
+    2,2,  
+    64, 
+    22, 
+    1,1, 
+    7,0.500000,0,0,0,1,/* button type and roundinfg factor(0-0.5),bordr,hide ,nodrawbkgr*/ 
+    butn4, 
+    kgdevelopDemocallback , /* *args, Callback */
+    NULL  /* any args */
+  };
+  strcpy(b4.Wid,(char *)"Demo");
+  b4.item = -1;
   dtmp = D->d;
   i=0;
   if(dtmp!= NULL) while(dtmp[i].t!=NULL)i++;
-  dtmp = (DIA *)realloc(dtmp,sizeof(DIA )*(i+4));
+  dtmp = (DIA *)realloc(dtmp,sizeof(DIA )*(i+6));
   d =dtmp+i; 
-  d[3].t=NULL;
+  d[5].t=NULL;
   d[0].t = (DIT *)malloc(sizeof(DIN));
   *d[0].N = b0;
   d[0].N->item = -1;
@@ -106,7 +154,15 @@ int kgdevelopGroup( DIALOG *D,void **v,void *pt) {
   d[2].t = (DIT *)malloc(sizeof(DII));
   *d[2].i = i2;
   d[2].i->item = -1;
-  d[3].t = NULL;
+  d[3].t = (DIT *)malloc(sizeof(DIN));
+  *d[3].N = b3;
+  d[3].N->item = -1;
+  kgdevelopHelpinit(d[3].N,pt) ;
+  d[4].t = (DIT *)malloc(sizeof(DIN));
+  *d[4].N = b4;
+  d[4].N->item = -1;
+  kgdevelopDemoinit(d[4].N,pt) ;
+  d[5].t = NULL;
   GrpId=kgOpenGrp(D);
   D->d = dtmp;
   j=0;
@@ -149,19 +205,19 @@ int kgdevelop( void *parent,void **v,void *pt) {
   D.d = d;
   D.bkup = 0; /* set to 1 for backup */
   D.bor_type = 3;
-  D.df = 0;
+  D.df = 4;
   D.tw = 43;
   D.bw = 4;
   D.lw = 4;
   D.rw = 4;
   D.xo = 0;   /* Position of Dialog */ 
   D.yo = 0;
-  D.xl = 2514;    /*  Length of Dialog */
-  D.yl = 963;    /*  Width  of Dialog */
+  D.xl = 2420;    /*  Length of Dialog */
+  D.yl = 1050;    /*  Width  of Dialog */
   D.Initfun = kgdevelopinit;    /*   init fuction for Dialog */
   D.Cleanupfun = kgdevelopcleanup;    /*   cleanup fuction for Dialog */
-  D.kbattn = 1;    /*  1 for drawing keyborad attention */
-  D.butattn = 1;    /*  1 for drawing button attention */
+  D.kbattn = 0;    /*  1 for drawing keyborad attention */
+  D.butattn = 0;    /*  1 for drawing button attention */
   D.fullscreen = 0;    /*  1 for for fullscreen mode */
   D.NoTabProcess = 0;    /*  1 for disabling Tab use */
   D.Deco = 1;    /*  1 for Window Decorration */
