@@ -1,2 +1,2 @@
-PREFIX=/home/kulina/BUILD/kglib
-KULINA=/home/kulina/BUILD/kglib
+PREFIX=/home/kulina/BUILD/Kglib
+KULINA=/home/kulina/BUILD/Kglib

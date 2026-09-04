@@ -68,7 +68,10 @@
               line = ( char * ) Getrecord ( SrcLink ) ;
               if ( line == NULL ) break;
               pt = strstr ( line , DiaName ) ;
-              if ( pt != NULL ) break;
+              if ( pt != NULL ){
+                 if( strstr(pt,(char *) "(")== NULL ) continue;
+                 break;
+              }
           }
           if ( pt != NULL ) {
               if ( GetFunName ( pt , Fun ) == 0 ) continue;

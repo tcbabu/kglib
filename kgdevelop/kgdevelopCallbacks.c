@@ -21,7 +21,7 @@ static Dlink *ModuleList=NULL;
 #include <sys/types.h>
 #include "image.c"
 //#include "Wimages.c"
-#define VER 2107030000
+#define VER 2609040000
   int SrcUpdates[0];
   char kulinahome [ 500 ] ;
   char CWD [ 500 ] ;
@@ -2529,6 +2529,8 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
       fprintf ( fp , "  strcpy(t%-d.Wid,(char *)\"%-s\");\n" , Tbox , t->Wid ) ;
       fprintf ( fp , "  t%-d.pt=NULL;\n" , Tbox ) ;
       fprintf ( fp , "  t%-d.type = %d;\n" , Tbox , t->type ) ;
+      fprintf ( fp , "  t%-d.Font = -1;\n" , Tbox ) ;
+      fprintf ( fp , "  t%-d.FontSize = 9;\n" , Tbox ) ;
       fprintf ( fp , "  t%-d.item = -1;\n" , Tbox ) ;
       Tbox++;
       t->y1 = t->y1;
@@ -7183,6 +7185,7 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
   }
   DILN * Making_hori_bar ( DIALOG *D ) { /* NEW TYPE */
       DILN *h;
+      static int WidCount=0;
       int i , n = 0 , sw , offset = 4;
       char buf [ 100 ] , buf1 [ 100 ] = "";
       int lng = 100;
@@ -7208,9 +7211,9 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
       htmp.type = type;
       htmp.fac = fac;
       nyb = 1;
-      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      sprintf ( WidName , "Splbutnold%-d" ,  ++WidCount ) ;
       while ( CheckWidgetName ( Dia , WidName ) ) {
-          sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+          sprintf ( WidName , "Splbutnold%-d" ,  ++WidCount ) ;
       }
       strcpy ( htmp.Wid , WidName ) ;
 //      sprintf ( htmp.Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
@@ -7255,6 +7258,7 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
   }
   DIN * Making_Buttons ( DIALOG *D ) { /* NEW TYPE */
       DIN *h;
+      static int WidCount=0;
       int i , n = 0 , sw , offset = 4;
       char buf [ 100 ] , buf1 [ 100 ] = "";
       int lng = 100;
@@ -7271,9 +7275,9 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
       htmp.Wid [ 0 ] = '\0';
       nyb = 1;
 //      sprintf ( htmp.Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
-      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      sprintf ( WidName , "Button%-d" ,  ++WidCount ) ;
       while ( CheckWidgetName ( Dia , WidName ) ) {
-          sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+          sprintf ( WidName , "Button%-d" , ++WidCount ) ;
       }
       strcpy ( htmp.Wid , WidName ) ;
       htmp.type = type;
@@ -7337,6 +7341,7 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
   }
   DIL * Making_SplButtons ( DIALOG *D ) { /* NEW TYPE */
       DIL *h;
+      static int WidCount=0;
       int i , n = 0 , sw , offset = 4;
       char buf [ 100 ] , buf1 [ 100 ] = "";
       int lng = 100;
@@ -7353,9 +7358,9 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
       htmp.Wid [ 0 ] = '\0';
       nyb = 1;
 //      sprintf ( htmp.Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
-      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      sprintf ( WidName , "Splbutn%-d" , ++WidCount ) ;
       while ( CheckWidgetName ( Dia , WidName ) ) {
-          sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+          sprintf ( WidName , "Splbutn%-d" ,  ++WidCount ) ;
       }
       strcpy ( htmp.Wid , WidName ) ;
       htmp.type = type;
@@ -7458,6 +7463,7 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
   }
   DII * Making_Infobox ( DIALOG *D ) {
       DII *g;
+      static int WidCount=0;
       int i , n;
       char buf [ 60 ] , buf1 [ 60 ] = " ";
       int nchrs = 60 , nlines = 10 , l , w;
@@ -7465,9 +7471,9 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
       DII gtmp = {'i' , 10 , 10 , 20 , 20 , 22 , 0 , 0 , 0 , 0 , 0};
       gtmp.Wid [ 0 ] = '\0';
 //      sprintf ( gtmp.Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
-      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      sprintf ( WidName , "Infobox%-d" ,  ++WidCount ) ;
       while ( CheckWidgetName ( Dia , WidName ) ) {
-          sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+          sprintf ( WidName , "Infobox%-d" , ++WidCount ) ;
       }
       strcpy ( gtmp.Wid , WidName ) ;
       gscanf ( Parent , ( char * ) "No of chars :%3dNo of Lines :%3dName%20s" , \
@@ -7489,6 +7495,7 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
   }
   DIG * Making_Graphbox ( DIALOG *D ) {
       DIG *g;
+      static int WidCount=0;
       int i , n;
       char buf [ 60 ] , buf1 [ 60 ] = " ";
       int lng = 640 , wdth = 480;
@@ -7497,9 +7504,9 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
       DIG gtmp = {'g' , 10 , 10 , 20 , 20 , NULL , 0 , NULL , NULL , 0 , 0};
       gtmp.Wid [ 0 ] = '\0';
 //      sprintf ( gtmp.Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
-      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      sprintf ( WidName , "Gbox%-d" ,  ++WidCount ) ;
       while ( CheckWidgetName ( Dia , WidName ) ) {
-          sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+          sprintf ( WidName , "Gbox%-d" , ++WidCount ) ;
       }
       strcpy ( gtmp.Wid , WidName ) ;
       gscanf ( Parent , ( char * ) "X dir size (in pixels):%4dY dir size (in pixels):%4dHide:%2dName%20s" , \
@@ -7524,6 +7531,7 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
   }
   DIP * Making_Pixmap ( DIALOG *D ) {
       DIP *p;
+      static int WidCount=0;
       int i , n , col = -1;
       char buf [ 60 ] , buf1 [ 60 ] = " " , *xpm;
       int lng = 128 , wdth = 128;
@@ -7532,9 +7540,9 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
       DIP ptmp = {'p' , 10 , 10 , 20 , 20 , NULL , -1};
       ptmp.Wid [ 0 ] = '\0';
 //      sprintf ( ptmp.Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
-      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      sprintf ( WidName , "Imagebox%-d" , ++WidCount ) ;
       while ( CheckWidgetName ( Dia , WidName ) ) {
-          sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+          sprintf ( WidName , "Imagebox%-d" , ++WidCount ) ;
       }
       strcpy ( ptmp.Wid , WidName ) ;
       ptmp.bordr = 3;
@@ -7564,6 +7572,7 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
   }
   DIM * Making_DisplayBox ( DIALOG *D ) {
       DIM *m;
+      static int WidCount=0;
       int i , n;
       char buf [ 500 ] , buf1 [ 500 ] = " ";
       int lng = 100;
@@ -7572,9 +7581,9 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
       DIM mtmp = {'M' , 10L , 10L , 0 , 0 , 1 , 0};
       m = ( DIM * ) malloc ( sizeof ( DIM ) ) ;
       mtmp.Wid [ 0 ] = '\0';
-      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      sprintf ( WidName , "Display%-d" , ++WidCount ) ;
       while ( CheckWidgetName ( Dia , WidName ) ) {
-          sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+          sprintf ( WidName , "Display%-d" ,  ++WidCount ) ;
       }
       strcpy ( mtmp.Wid , WidName ) ;
       *m = mtmp;
@@ -7606,6 +7615,7 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
   }
   DIO * Making_Progressbar ( DIALOG *D ) {
       DIO *m;
+      static int WidCount=0;
       int i , n;
       char buf [ 500 ] , buf1 [ 500 ] = " ";
       int lng = 100;
@@ -7614,9 +7624,9 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
       DIO mtmp = {'o' , 10L , 10L , 0 , 0 , 0 , 50 , 0 , 2 , -1 , 0};
       m = ( DIO * ) malloc ( sizeof ( DIO ) ) ;
       mtmp.Wid [ 0 ] = '\0';
-      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      sprintf ( WidName , "Pbar%-d" ,  ++WidCount ) ;
       while ( CheckWidgetName ( Dia , WidName ) ) {
-          sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+          sprintf ( WidName , "Pbar%-d" ,  ++WidCount ) ;
       }
       strcpy ( mtmp.Wid , WidName ) ;
       *m = mtmp;
@@ -7640,6 +7650,7 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
   }
   DIV * Making_Vertscroll ( DIALOG *D ) {
       DIV *m;
+      static int WidCount=0;
       int i , n;
       char buf [ 500 ] , buf1 [ 500 ] = " ";
       int lng = 100;
@@ -7649,9 +7660,9 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
       DIV mtmp = {'v' , 10L , 10L , 30 , 210 , 0 , 100. , 0. , 5. , NULL , NULL};
       m = ( DIV * ) malloc ( sizeof ( DIV ) ) ;
       mtmp.Wid [ 0 ] = '\0';
-      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      sprintf ( WidName , "Vscroll%-d" , ++WidCount ) ;
       while ( CheckWidgetName ( Dia , WidName ) ) {
-          sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+          sprintf ( WidName , "Vscroll%-d" , ++WidCount ) ;
       }
       strcpy ( mtmp.Wid , WidName ) ;
       *m = mtmp;
@@ -7675,6 +7686,7 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
   }
   DIZ * Making_Horizscroll ( DIALOG *D ) {
       DIZ *m;
+      static int WidCount=0;
       int i , n;
       char buf [ 500 ] , buf1 [ 500 ] = " ";
       int lng = 100;
@@ -7684,9 +7696,9 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
       DIZ mtmp = {'z' , 10L , 10L , 30 , 210 , 0 , 100. , 0. , 5. , NULL , NULL};
       m = ( DIZ * ) malloc ( sizeof ( DIZ ) ) ;
       mtmp.Wid [ 0 ] = '\0';
-      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      sprintf ( WidName , "Hscroll%-d" ,  ++WidCount ) ;
       while ( CheckWidgetName ( Dia , WidName ) ) {
-          sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+          sprintf ( WidName , "Hscroll%-d" , ++WidCount ) ;
       }
       strcpy ( mtmp.Wid , WidName ) ;
       *m = mtmp;
@@ -7710,6 +7722,7 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
   }
   DIM * Making_Message ( DIALOG *D ) {
       DIM *m;
+      static int WidCount=0;
       int i , n;
       char buf [ 500 ] , buf1 [ 500 ] = " ";
       int lng = 100 , ln = 100 , wd = 24 , hide = 0;
@@ -7718,9 +7731,9 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
       DIM mtmp = {'m' , 10L , 10L , 0 , 0 , 1 , 0};
       m = ( DIM * ) malloc ( sizeof ( DIM ) ) ;
       mtmp.Wid [ 0 ] = '\0';
-      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      sprintf ( WidName , "Message%-d" ,  ++WidCount ) ;
       while ( CheckWidgetName ( Dia , WidName ) ) {
-          sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+          sprintf ( WidName , "Message%-d" , ++WidCount ) ;
       }
       strcpy ( mtmp.Wid , WidName ) ;
       *m = mtmp;
@@ -7755,6 +7768,7 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
       return m;
   }
   DIM * Making_Messageb ( DIALOG *D ) {
+      static int WidCount=0;
       DIM *m;
       int i , n;
       char buf [ 60 ] , buf1 [ 60 ] = " ";
@@ -7765,9 +7779,9 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
       DIM mtmp = {'B' , 10L , 10L , 0 , 0 , 0 , 0};
       m = ( DIM * ) malloc ( sizeof ( DIM ) ) ;
       mtmp.Wid [ 0 ] = '\0';
-      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      sprintf ( WidName , "Bmessage%-d" , ++WidCount ) ;
       while ( CheckWidgetName ( Dia , WidName ) ) {
-          sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+          sprintf ( WidName , "Bmessage%-d" ,  ++WidCount ) ;
       }
       strcpy ( mtmp.Wid , WidName ) ;
       *m = mtmp;
@@ -7900,6 +7914,7 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
       return T;
   }
   DIT * Making_t_box ( DIALOG *D ) {
+      static int WidCount=0;
       DIT *T = NULL;
       T_ELMT *E = NULL;
       int i , n , k , j , code = 0 , size = 0 , l;
@@ -7914,9 +7929,9 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
            1L , 1L , NULL , 0 , 0 , NULL , NULL};
       T = ( DIT * ) malloc ( sizeof ( DIT ) ) ;
       Tmp.Wid [ 0 ] = '\0';
-      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      sprintf ( WidName , "Textbox%-d" , ++WidCount ) ;
       while ( CheckWidgetName ( Dia , WidName ) ) {
-          sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+          sprintf ( WidName , "Textbox%-d" ,  ++WidCount ) ;
       }
       strcpy ( Tmp.Wid , WidName ) ;
       *T = Tmp;
@@ -8068,6 +8083,7 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
       return ttmp;
   }
   DIT * Making_T_box ( DIALOG *D ) {
+      static int WidCount=0;
       DIT *T = NULL;
       T_ELMT *E = NULL;
       int i , n , k , j , code = 0 , size = 0 , l , sw = 1;
@@ -8081,9 +8097,9 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
            1L , 1L , NULL , 0 , 0 , NULL , NULL};
       T = ( DIT * ) malloc ( sizeof ( DIT ) ) ;
       Tmp.Wid [ 0 ] = '\0';
-      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      sprintf ( WidName , "Table%-d" ,  ++WidCount ) ;
       while ( CheckWidgetName ( Dia , WidName ) ) {
-          sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+          sprintf ( WidName , "Table%-d" ,  ++WidCount ) ;
       }
       strcpy ( Tmp.Wid , WidName ) ;
       *T = Tmp;
@@ -8155,15 +8171,17 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
    /* lngth = nx+1+lngth;*/
 //   lngth += 10;
       lngth += 2*4+1;
-//TCB
-      width += 2*4+1;
+//TCB MSG:TB
+      if(T->type != 1)width += 2*4+1;
       x1 += D->xo;
       y1 += D->yo;
       x2 = x1+lngth;
       y2 = y1+width;
       Box_gincur ( & x1 , & y1 , & x2 , & y2 ) ;
-      x2 = x1+lngth;
-      y2 = y1+width;
+      if(T->type != 1){
+        x2 = x1+lngth;
+        y2 = y1+width;
+      }
       T->x1 = x1-D->xo;
       T->y1 = y1-D->yo;
       T->x2 = x2-D->xo;
@@ -8351,6 +8369,7 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
       return N;
   }
   DIW * Making_Browser ( DIALOG *D ) {
+      static int WidCount=0;
       DIW *W;
       int i , n;
       char buf [ 60 ] , buf1 [ 30 ] = " ";
@@ -8363,9 +8382,9 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
            NULL , NULL , NULL , NULL , NULL , 0};
       W = ( DIW * ) malloc ( sizeof ( DIW ) ) ;
       Wtmp.Wid [ 0 ] = '\0';
-      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      sprintf ( WidName , "Pulldown%-d" , ++WidCount ) ;
       while ( CheckWidgetName ( Dia , WidName ) ) {
-          sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+          sprintf ( WidName , "Pulldown%-d" ,  ++WidCount ) ;
       }
       strcpy ( Wtmp.Wid , WidName ) ;
       *W = Wtmp;
@@ -8419,6 +8438,7 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
       return W;
   }
   DIE * Making_Menu ( DIALOG *D ) {
+      static int WidCount=0;
       DIE *W;
       int i , n;
       char **menu;
@@ -8431,9 +8451,9 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
            NULL , NULL , NULL , 20 , 6 , 22 , 1 , 1 , 1 , 0};
       W = ( DIE * ) malloc ( sizeof ( DIE ) ) ;
       Wtmp.Wid [ 0 ] = '\0';
-      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      sprintf ( WidName , "Emenu%-d" , ++WidCount ) ;
       while ( CheckWidgetName ( Dia , WidName ) ) {
-          sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+          sprintf ( WidName , "Emenu%-d" ,  ++WidCount ) ;
       }
       strcpy ( Wtmp.Wid , WidName ) ;
       *W = Wtmp;
@@ -8482,6 +8502,7 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
       return W;
   }
   DIS * Making_MsgScroll ( DIALOG *D ) {
+      static int WidCount=0;
       DIS *W;
       int i , n;
       char buf [ 60 ] , buf1 [ 30 ] = " ";
@@ -8493,9 +8514,9 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
            NULL , NULL , NULL , 20 , 6 , 22 , 0 , 1 , 1 , 0};
       W = ( DIS * ) malloc ( sizeof ( DIS ) ) ;
       Wtmp.Wid [ 0 ] = '\0';
-      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      sprintf ( WidName , "Msgscroll%-d" , ++WidCount ) ;
       while ( CheckWidgetName ( Dia , WidName ) ) {
-          sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+          sprintf ( WidName , "Msgscroll%-d" ,  ++WidCount ) ;
       }
       strcpy ( Wtmp.Wid , WidName ) ;
       *W = Wtmp;
@@ -8564,6 +8585,7 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
       return 0;
   }
   DIHB * Making_SlideH ( DIALOG *D ) {
+      static int WidCount=0;
       DIHB *W;
       int i , n;
       char buf [ 60 ] , buf1 [ 30 ] = " ";
@@ -8575,9 +8597,9 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
            NULL , NULL , NULL , NULL , 0 , 0 , 2 , -1};
       W = ( DIHB * ) malloc ( sizeof ( DIHB ) ) ;
       Wtmp.Wid [ 0 ] = '\0';
-      sprintf ( WidName , "%-sHBslide%-d" , DiaName , ++WidCount ) ;
+      sprintf ( WidName , "HBslide%-d" ,  ++WidCount ) ;
       while ( CheckWidgetName ( Dia , WidName ) ) {
-          sprintf ( WidName , "%-sHBslide%-d" , DiaName , ++WidCount ) ;
+          sprintf ( WidName , "HBslide%-d" ,  ++WidCount ) ;
       }
       strcpy ( Wtmp.Wid , WidName ) ;
       *W = Wtmp;
@@ -8610,6 +8632,7 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
       }
   }
   DID * Making_SlideD ( DIALOG *D ) {
+      static int WidCount=0;
       DID *W;
       int i , n;
       char buf [ 60 ] , buf1 [ 30 ] = " ";
@@ -8621,9 +8644,9 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
            101 , NULL , NULL , NULL , NULL};
       W = ( DID * ) malloc ( sizeof ( DID ) ) ;
       Wtmp.Wid [ 0 ] = '\0';
-      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      sprintf ( WidName , "Dslide%-d" , ++WidCount ) ;
       while ( CheckWidgetName ( Dia , WidName ) ) {
-          sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+          sprintf ( WidName , "Dslide%-d" , ++WidCount ) ;
       }
       strcpy ( Wtmp.Wid , WidName ) ;
       *W = Wtmp;
@@ -8657,6 +8680,7 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
       return W;
   }
   DIF * Making_SlideF ( DIALOG *D ) {
+      static int WidCount=0;
       DIF *W;
       int i , n;
       char buf [ 60 ] , buf1 [ 30 ] = " ";
@@ -8669,9 +8693,9 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
            100 , NULL , NULL , NULL , NULL};
       W = ( DIF * ) malloc ( sizeof ( DIF ) ) ;
       Wtmp.Wid [ 0 ] = '\0';
-      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      sprintf ( WidName , "Fslide%-d" , ++WidCount ) ;
       while ( CheckWidgetName ( Dia , WidName ) ) {
-          sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+          sprintf ( WidName , "Fslide%-d" , ++WidCount ) ;
       }
       strcpy ( Wtmp.Wid , WidName ) ;
       *W = Wtmp;
@@ -8709,6 +8733,7 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
       return W;
   }
   DIX * Making_Selectmenu ( DIALOG *D ) {
+      static int WidCount=0;
       DIX *W;
       int i , n;
       char buf [ 60 ] , buf1 [ 30 ] = " ";
@@ -8725,9 +8750,9 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
       static int Entry = 0;
       W = ( DIX * ) malloc ( sizeof ( DIX ) ) ;
       Wtmp.Wid [ 0 ] = '\0';
-      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      sprintf ( WidName , "Xmenu%-d" , ++WidCount ) ;
       while ( CheckWidgetName ( Dia , WidName ) ) {
-          sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+          sprintf ( WidName , "Xmenu%-d" , ++WidCount ) ;
       }
       strcpy ( Wtmp.Wid , WidName ) ;
       *W = Wtmp;
@@ -8754,6 +8779,7 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
       return W;
   }
   DIRA * Making_RadioButtons ( DIALOG *D ) {
+      static int WidCount=0;
       DIRA *W;
       char **menu;
       int i , n;
@@ -8772,9 +8798,9 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
       static int Entry = 0;
       W = ( DIRA * ) malloc ( sizeof ( DIRA ) ) ;
       Wtmp.Wid [ 0 ] = '\0';
-      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      sprintf ( WidName , "Radio%-d" ,  ++WidCount ) ;
       while ( CheckWidgetName ( Dia , WidName ) ) {
-          sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+          sprintf ( WidName , "Radio%-d" , ++WidCount ) ;
       }
       strcpy ( Wtmp.Wid , WidName ) ;
       *W = Wtmp;
@@ -8829,6 +8855,7 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
       return W;
   }
   DICH * Making_CheckBox ( DIALOG *D ) {
+      static int WidCount=0;
       char **menu;
       DICH *W;
       int i , n;
@@ -8847,9 +8874,9 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
       static int Entry = 0;
       W = ( DICH * ) malloc ( sizeof ( DICH ) ) ;
       Wtmp.Wid [ 0 ] = '\0';
-      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+      sprintf ( WidName , "Checkbox%-d" , ++WidCount ) ;
       while ( CheckWidgetName ( Dia , WidName ) ) {
-          sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+          sprintf ( WidName , "Checkbox%-d" , ++WidCount ) ;
       }
       strcpy ( Wtmp.Wid , WidName ) ;
       *W = Wtmp;
@@ -8904,6 +8931,7 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
       return W;
   }
   DIY * Making_ThumbnailBrowser ( DIALOG *D ) {
+      static int WidCount=0;
       DIY *W;
       int i , n;
       char buf [ 60 ] , buf1 [ 30 ] = " ";
@@ -8921,10 +8949,10 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
       static int Entry = 0;
       W = ( DIY * ) malloc ( sizeof ( DIY ) ) ;
       Wtmp.Wid [ 0 ] = '\0';
-//      sprintf ( W->Wid , "%-sWidget%-d" , DiaName , ++WidCount ) ;
-      sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+//      sprintf ( W->Wid , "Ybox%-d" ,  ++WidCount ) ;
+      sprintf ( WidName , "Ybox%-d" ,  ++WidCount ) ;
       while ( CheckWidgetName ( Dia , WidName ) ) {
-          sprintf ( WidName , "%-sWidget%-d" , DiaName , ++WidCount ) ;
+          sprintf ( WidName , "Ybox%-d" , ++WidCount ) ;
       }
       strcpy ( Wtmp.Wid , WidName ) ;
       *W = Wtmp;
