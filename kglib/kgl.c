@@ -7975,7 +7975,14 @@ void  kgAntialiasedReview(DIG *G) {
     strcat(flname,"/Junk.Gph");
     kgBackupGph(G,flname);
     uiUpdateOff(D);
+#if 0
    img = uiGetAntialiasedImage(flname,w,h,dc->ls_list,G->MAG);
+#else
+   void *fid = kgInitImage(w,h,G->MAG);
+   kgImportGphFile(fid,flname,0.,0.,(float)w,(float)h);
+   img = kgGetResizedImage(fid);
+   kgCloseImage(fid);
+#endif
 #if 1
 //   kgClearView(G);
    if(img!=NULL) {
