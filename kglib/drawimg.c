@@ -2790,7 +2790,6 @@ extern Dlink *FontList;
       int tsize =16,strln =16;
       float t_angle;
       int X1V,X2V,Y1V,Y2V;
-   
       dc = G->dc;
       wc = G->wc;
       tx = ( unsigned char * ) txt;

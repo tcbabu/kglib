@@ -1008,6 +1008,8 @@ void kgWriteText( DIG *G,char *c)
        uiwrite_bf(G,&W,1);
        uiwrite_bf(G,&n,4);
        uiwrite_bf(G,c,n);
+// MSG : check needed
+       if(!G->D_ON) return;
      }
      if(G->D_ON)ui_txt_wr(G,n,c);
      else img_txt_wr(G,n,c);
