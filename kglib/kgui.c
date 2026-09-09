@@ -6003,25 +6003,40 @@
   struct stat buff;
   ret = stat(flname,&buff);
   if(ret < 0) return 0;
+  if ( S_ISDIR ( buff.st_mode ) ) return 2;
   else return 1;
 }
 int kgMakeTmpFolderInHome(char *Tfolder) {
   int Fstat = 0;
   int id=1;
-  sprintf(Tfolder,"%-s/%-d",getenv("HOME"),getpid());
-  if(!kgFileStat(Tfolder)) mkdir(	Tfolder,0700);
-//  sprintf(Tfolder,"%-s/%-d_%-3.3d",getenv("HOME"),getpid(),id);
-  sprintf(Tfolder,"%-s/%-d/%-d_%-3.3d",getenv("HOME"),getpid(),getpid(),id);
+  sprintf(Tfolder,"%-s/%-d_%-3.3d",getenv("HOME"),getpid(),id);
   while(kgFileStat(Tfolder)) {
     id++;
-//    sprintf(Tfolder,"%-s/%-d_%-3.3d",getenv("HOME"),getpid(),id);
-     sprintf(Tfolder,"%-s/%-d/%-d_%-3.3d",getenv("HOME"),getpid(),getpid(),id);
+    sprintf(Tfolder,"%-s/%-d_%-3.3d",getenv("HOME"),getpid(),id);
   }
    mkdir(Tfolder,0700);
 //    printf("Created: %s\n",Tfolder);
     Fstat=1;
   return Fstat;
 }
+int kgMakeFileInFolder(char *Folder,char *Ext,char *Flname) {
+    int id=1;
+    if(Ext != NULL) {
+    sprintf(Flname,"%-s/%-d_%-4.4d.%-s",Folder,getpid(),id,Ext);
+    while(kgFileStat(Flname)) {
+      id++;
+      sprintf(Flname,"%-s/%-d_%-4.4d.%-s",Folder,getpid(),id,Ext);
+    }
+    }
+    else {
+      sprintf(Flname,"%-s/%-d_%-4.4d",Folder,getpid(),id);
+      while(kgFileStat(Flname)) {
+        id++;
+        sprintf(Flname,"%-s/%-d_%-4.4d",Folder,getpid(),id);
+      }
+    }
+    return 1;
+  }
   char * ui_mktmpdir ( void ) {
       static int pid = 0;
       static char dir [ 200 ] ;

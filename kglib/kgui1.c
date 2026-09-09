@@ -8487,6 +8487,7 @@ int kgFB( void *parent,void **v,void *pt) {
   ModifykgFB(&D,GrpId);    /*  add extras to  gui*/
   ret= kgUi(&D);
   kgCleanUi(&D);
+  if(D.parent != NULL) kgUpdateOn(D.parent);
   return ret;
 }
 void *RunkgFB(void *parent ,void *args) {

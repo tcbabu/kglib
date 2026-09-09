@@ -79,12 +79,15 @@ int kgMessage( void *parent,void **v,void *pt) {
   D.Cleanupfun = kgMessagecleanup;    /*   cleanup fuction for Dialog */
   D.kbattn = 0;    /*  1 for drawing keyborad attention */
   D.butattn = 0;    /*  1 for drawing button attention */
+  if(parent != NULL) D.bkup =1;
+  else D.bkup =0;
   D.fullscreen = 0;    /*  1 for for fullscreen mode */
   D.NoTabProcess = 0;    /*  1 for disabling Tab use */
   D.Deco = 0;    /*  1 for Window Decorration */
   D.transparency = 0.000000;    /*  float 1.0 for full transparency */
+  if(parent == NULL)D.transparency = 1.000000;  
   D.Newwin = 1;    /*  1 for new window not yet implemented */
-  D.DrawBkgr = 0;    /*  1 for drawing background */
+  D.DrawBkgr = 1;    /*  1 for drawing background */
   D.Bkpixmap = NULL;    /*  background image */
   D.Sticky = 0;    /*  1 for stickyness */
   D.Resize = 0;    /*  1 for Resize option */

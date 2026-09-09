@@ -4856,6 +4856,8 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
       fprintf ( fp , " /* pt[0] is inputs given by caller */\n" ) ;
       fprintf ( fp , "  DIA *d;\n" ) ;
       fprintf ( fp , "  int i,n;\n" ) ;
+      fprintf ( fp , "  if(D->parent != NULL) D->bkup=1;\n");
+      fprintf ( fp , "  else D->bkup=0;\n");
       fprintf ( fp , "  kgCheckParentPosition(Tmp);\n" ) ;
       fprintf ( fp , "  d = D->d;\n\n" ) ;
       fprintf ( fp , "  if( ModuleList == NULL) ModuleList = kgGetModuleList((void **)ModFuns);\n");
@@ -5933,6 +5935,8 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
            D->MinWidth ) ;
       fprintf ( fp1 , "  D.MinHeight = %-d;    /*   for Resize option */\n" , \
            D->MinHeight ) ;
+      fprintf ( fp1 , "  D.bkup = 0;    /*   bkup background  */\n" );
+      fprintf ( fp1 , "  if(parent != NULL ) D.bkup =1;\n");
       fprintf ( fp1 , "#if 1 \n" ) ;
       fprintf ( fp1 , "  D.Callback = %-sCallBack;    /*  default Callback  */\n" , \
            dianame ) ;

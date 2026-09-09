@@ -1456,6 +1456,7 @@ int kgGetColor(void *parent,int xo,int yo,int *r,int *g,int *b);
 
  int kgFileStat(char *flname);
 int kgMakeTmpFolderInHome(char *Tfolder);
+int kgMakeFileInFolder(char *Folder,char *Ext,char *Flname) ;
 /* 
   utilities 
 */
@@ -1685,6 +1686,7 @@ char * DgetFlagArg(Dlink *Alist,char **argv,char *flag,int nv); //Alist from Dge
 char **  DprocessFlags(char *argv[],DARGS fargpt[]);
 Dlink *Dreadfile(char *flname);
 int Dwritefile(Dlink *L,char *flname);
+int Dappendfile(Dlink *L,char *flname);
 int Dpush(Dlink *L,void *bf);
 void * Dpop(Dlink *L);
 int Dfifoin(Dlink *L,void *bf);

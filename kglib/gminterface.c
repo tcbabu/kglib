@@ -875,6 +875,8 @@ static ExceptionInfo exception;
       resize_image->background_color.blue = 0;
       resize_image->background_color.green = 0;
       resize_image->background_color.opacity = 255;
+//MSG:
+//     resize_image->background_color.opacity = 0;
       png = ( GMIMG * ) Malloc ( sizeof ( GMIMG ) ) ;
 //      Image_info = CloneImageInfo ( ( ImageInfo * ) NULL ) ;
 //      GetImageInfo ( Image_info ) ;
@@ -892,8 +894,11 @@ static ExceptionInfo exception;
       png->image_width = resize_image->columns;
       png->image_height = resize_image->rows;
       png->image_channels = 4;
+#if 0
+//MSG:
       if ( resize_image->matte == 0 ) png->image_channels = 3;
       else png->image_channels = 4;
+#endif
       png->image_rowbytes = png->image_width*png->image_channels;
       return png;
   }

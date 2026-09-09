@@ -1189,6 +1189,24 @@
       fclose ( fp ) ;
       return 1;
   }
+  int Dappendfile ( Dlink *L , char *flname ) {
+      char *bf;
+      FILE *fp;
+      int i;
+      fp = fopen ( flname , "a" ) ;
+      if ( fp == NULL ) {
+	      fprintf(stderr,"Failed to Open (%s) to write\n",flname);
+	      return 0;
+      }
+      i = 0;
+      while ( ( bf = ( char * ) Drecord ( L , i ) ) != NULL ) {
+          fprintf ( fp , "%s" , bf ) ;
+//		fputs(bf,fp);
+          i++;
+      }
+      fclose ( fp ) ;
+      return 1;
+  }
   int Dpush ( Dlink *L , void *bf ) {
       if ( L == NULL ) {
           fprintf ( stderr , "Empty Link in Dpush\n" ) ;
