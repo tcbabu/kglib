@@ -7989,10 +7989,23 @@ int ModifykgFB(void *Tmp,int GrpId) {
   D->xo = *ipt;
   ipt = (int *)iargs[1];
   D->yo = *ipt;
-#if 0
+#if 1
   if(D->fullscreen!=1) {    /*  if not fullscreen mode */
      int xres,yres; 
      kgDisplaySize(&xres,&yres); 
+     DIALOG *Pr = (DIALOG *)D->parent;
+     if((D->xo<= 0)&&(D->yo<=0)){
+        if(Pr==NULL) {
+           D->xo = (xres -D->xl)/2;
+           D->yo = (yres -D->yl)/2;
+        }
+        else {
+          xres =Pr->xl;
+          yres =Pr->yl;
+          D->xo = (xres -D->xl)/2;
+          D->yo = (yres -D->yl)/2;
+        }          
+     }
       // D->xo=D->yo=0; D->xl = xres-10; D->yl=yres-80;
   }
   else {    // for fullscreen
