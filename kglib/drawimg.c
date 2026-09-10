@@ -20,6 +20,7 @@
   static int POINTSIZE = 1;
   static int MFAC = 2;
   char * ui_mktmpdir ( void ) ;
+  int uiAddFonts ( ) ;
 extern Dlink *FontList;
 #define SSF 0.6
 #define MAXZ 65000
