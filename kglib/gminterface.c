@@ -1445,7 +1445,7 @@ static ExceptionInfo exception;
       Image *image , *resize_image = NULL;
       PixelPacket *pixels;
       unsigned int gray = 10;
-      double radius = 0.0 , sigma = 5.0;
+      double radius = 0.0 , sigma = 1.0;
       ImageInfo *Image_info = NULL;
       ExceptionInfo *Exception;
       Exception = ( ExceptionInfo * ) malloc ( sizeof ( ExceptionInfo ) ) ;
@@ -1455,7 +1455,8 @@ static ExceptionInfo exception;
       GetExceptionInfo ( Exception ) ;
       bkgrclr = png->bkgrclr;
       rzfac = png->rzfac;
-      resize_image = BlurImage ( image , radius , sigma , Exception ) ;
+      resize_image = GaussianBlurImage ( image , radius , sigma , Exception ) ;
+//      resize_image = MotionBlurImage ( image , radius , sigma ,135.0, Exception ) ;
 //  resize_image=ThumbnailImage(image,w,h,Exception);
       if ( Exception->severity != UndefinedException ) {
           DestroyImageInfo ( Image_info ) ;
@@ -1499,7 +1500,7 @@ static ExceptionInfo exception;
       Image *image , *resize_image = NULL;
       PixelPacket *pixels;
       unsigned int gray = 255;
-      double radius = 0.0 , sigma = 200.0;
+      double radius = 0.0 , sigma = 1.0;
       ImageInfo *Image_info = NULL;
       ExceptionInfo *Exception;
       Exception = ( ExceptionInfo * ) malloc ( sizeof ( ExceptionInfo ) ) ;
@@ -1552,7 +1553,7 @@ static ExceptionInfo exception;
       Image *image , *resize_image = NULL;
       PixelPacket *pixels;
       unsigned int gray = 10;
-      double radius = 0.0 , sigma = 5.0;
+      double radius = 0.0 , sigma = 1.0;
       ImageInfo *Image_info = NULL;
       ExceptionInfo *Exception;
       Exception = ( ExceptionInfo * ) malloc ( sizeof ( ExceptionInfo ) ) ;
@@ -1562,7 +1563,10 @@ static ExceptionInfo exception;
       GetExceptionInfo ( Exception ) ;
       bkgrclr = png->bkgrclr;
       rzfac = png->rzfac;
-      resize_image = SharpenImage ( image , radius , sigma , Exception ) ;
+      double bevel_sharpness = 1.5;
+      resize_image = SharpenImage ( image , radius ,sigma , Exception ) ;
+ //     resize_image = SharpenImage ( image , radius ,bevel_sharpness  , Exception ) ;
+ //     resize_image = UnsharpMaskImage ( image,0.,0.5,1.0,0.05 , Exception ) ;
 //  resize_image=ThumbnailImage(image,w,h,Exception);
       GetExceptionInfo ( Exception ) ;
       if ( Exception->severity != UndefinedException ) {
@@ -3106,7 +3110,7 @@ int  kgSetImageColor ( void *Img , int r,int g,int b ) {
   void *kgImageModifyColor ( void *img , float rfac , float gfac , float bfac )  \
       {
 /*
- Converts the Image to Gray scale
+   Changes Color
   
 */
       int i , j , k = 0;
