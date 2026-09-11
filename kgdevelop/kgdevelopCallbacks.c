@@ -5994,6 +5994,7 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
       fprintf ( fp1 , "   %-s(" , dianame ) ;
       Write_gui_args ( codes , fp1 ) ;
       fprintf ( fp1 , " );\n" ) ;
+      fprintf (fp1  , "   if(parent != NULL) kgUpdateOn(parent);\n" );
       fprintf ( fp1 , "   return pt[1];\n" ) ;
       fprintf ( fp1 , "}\n" ) ;
       fclose ( fp1 ) ;
