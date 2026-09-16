@@ -10484,19 +10484,31 @@ int kgModuleOff(void *Mtmp) {
 int kgCheckParentPosition(void *Dtmp) {
     DIALOG *D=(DIALOG *)Dtmp;
     DIALOG *P=NULL;
-    int xo,yo,xl,yl;
+    int xo,yo,xl,yl,pxo,pyo;
     if(Dtmp == NULL) return 0;
     P = (DIALOG *)(D->parent);
     if(P == NULL ) return 0;
     if((P->xl <= D->xl ) || (P->yl <= D->yl)) {
-        xo = P->xl/2+P->xo;
-        yo = P->yl/2+P->yo;
-        xo = xo-D->xl/2;
-        yo = yo - D->yl/2;
-        if(xo< 0) xo=0;
-        if(yo< 0) yo =0;
-        D->xo = xo;
-        D->yo = yo;                       
+        if((D->xo ==0)&&(D->yo == 0)) {
+           int xres,yres; 
+           kgDisplaySize(&xres,&yres); 
+           D->xo= (xres -D->xl)/2;
+           D->yo= (yres -D->yl)/2;
+        }
+        else {
+          while(P->parent != NULL){
+                P=P->parent;
+          }
+          kgGetWindowPosition(P,&pxo,&pyo);
+          xo = P->xl/2+pxo;
+          yo = P->yl/2+pyo;
+          xo = xo-D->xl/2;
+          yo = yo - D->yl/2;
+          if(xo< 0) xo=0;
+          if(yo< 0) yo =0;
+          D->xo = xo;
+          D->yo = yo;                       
+        }
         D->parent = NULL;
         return 0;
     }

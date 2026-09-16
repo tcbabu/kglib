@@ -4285,6 +4285,19 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
       wc->eventback.type = -100;
       return;
   }
+  void kgGetWindowPosition ( DIALOG *D , int *xo , int *yo ) {
+      int bw , dpth , length,height,x,y;
+      kgWC *wc;
+      Window win,rwin;
+      wc = WC ( D ) ;
+      XWindowAttributes xwa;
+//      XGetWindowAttributes(wc->Dsp,wc->Win,&xwa);
+      XGetGeometry ( wc->Dsp , wc->Win , & win , &x , \
+       &y , &length , &height , & bw , & dpth ) ;
+      rwin = DefaultRootWindow ( wc->Dsp ) ;
+      XTranslateCoordinates(wc->Dsp,wc->Win,rwin,x,y,xo,yo,&win);
+      return;
+  }
   void kgGetWindowSize ( DIALOG *D , int *length , int *height ) {
       int bw , dpth , x0 , y0;
       kgWC *wc;

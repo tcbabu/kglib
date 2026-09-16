@@ -6809,10 +6809,16 @@ void uireview_file(DIG *G,char *stri)
       sy3 = (sy1+sy2)*0.25 + y2*0.5;
       ax[0]=sx1;ax[1]=x2;ax[2]=sx2;ax[3]=sx3;
       ay[0]=sy1;ay[1]=y2;ay[2]=sy2;ay[3]=sy3;
-      kgPolyFill(G,(int)4,ax,ay,(int)1,dc->fil_color);
+//      kgPolyFill(G,(int)4,ax,ay,(int)1,dc->fil_color);
+      kgPolyFill(G,(int)4,ax,ay,(int)1,dc->ln_color);
       return;
 /*
 */
+    }
+ void kgArrow(DIG *G,float x1,float y1, float x2,float y2,float fac)
+  {
+      uidrarrow(G,x1, y1, x2,y2,fac);
+      return;
     }
 void uirectgl(DIG *G, float xx,float yy,float x,float y)
 {
@@ -6902,6 +6908,11 @@ int uipolygon_fill(DIG *G,float *x,float *y,int fil_color)
   kgPolyFill(G,(int) i, x, y, 1L,fil_color);
 //  return( 26+8*i);
   return( 14+8*i);
+ }
+ int kgDrawLine(DIG *G,float x1,float y1,float x2,float y2) {
+  /* No buffering; So review willnot draw this */
+    ui_DRAW_LINE(G,x1,y1,x2,y2);
+    return 1;
  }
 void uihoreview(DIG *G)
  {

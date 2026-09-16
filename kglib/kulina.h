@@ -1241,7 +1241,9 @@ void *kgSharpenImage(void *img);
 void *kgSpreadImage(void *img);
 void *kgEnhanceImage(void *img);
 void *kgImagetoGray(void *img);
+void *kgImagetoColor(void *img);
 void *kgImageModifyColor(void *img,float rfac,float gfac,float bfac);
+void *kgImageAddColor(void *img,float rfac,float gfac,float bfac);
 void *kgModifyImageHSV(void *Img,float hfac,float sfac,float vfac);
 void *kgShadowImage(void* img,int xoffset,int yoffset,void *shimg);
 void *kgMergeImages(void  *img1,void  *img2,int Xshft,int Yshft); /* second on first */
@@ -1255,6 +1257,7 @@ void *kgCopyImage(void *img);
 void *  kgAppendImage(void *img1,void *img2);
 void *kgCreateImage(int xzise,int ysize);
 int kgSetImageColor(void *img,int r,int g,int b);
+int  kgSetImageColortoAlpha ( void *Img , int r,int g,int b );
 int kgSetPixelAlpha(void *img,int col, int row,int alpha);
 void *kgCleanImage(void *img);
 void *kgFlipImage(void *img); // About X refledction overwrites img
@@ -1338,6 +1341,8 @@ void kgClearBuffer(DIG *G);
 void kgMove2f(DIG *G,float x,float y);
 void kgMarkerType(DIG *G,int mtype);
 void kgDraw2f(DIG *G,float x,float y);
+void kgArrow(DIG *G,float x1,float y1, float x2,float y2,float fac);
+int kgDrawLine(DIG *G,float x1,float y1,float x2,float y2); // no backup
 int  kgImagePixel(DIG *G,int col,int row,int r,int g,int b,int a);
 void kgMarker2f(DIG *G,float x,float y);
 void kgDefaultGuiTheme(Gclr *Gc);
@@ -1488,6 +1493,7 @@ int HLStoRGB(float *r,float *g,float *b,float h, float l,float s);
 int RGBtoHLS(float r,float g, float b,float *h,float *l,float *s);
 
 void kgGetWindowSize(DIALOG *D,int *length,int *height);
+void kgGetWindowPosition ( DIALOG *D , int *xo , int *yo );
 int kgGetRootPos( int *xp,int *yp);
 int kgGetRootRect( int *x1,int *y1,int *x2,int *y2) ;
 void * kgGetInputFocus (void *Tmp);

@@ -1339,7 +1339,7 @@ static ExceptionInfo exception;
       float rzfac;
       Image *image , *resize_image = NULL;
       PixelPacket *pixels;
-      unsigned int gray = 150;
+      unsigned int gray = 0;
       double azimuth = 135.0 , elevation = 45.0;
       if ( png == NULL ) return NULL;
       ImageInfo *Image_info = NULL;
@@ -2546,6 +2546,39 @@ int  kgSetImageColor ( void *Img , int r,int g,int b ) {
       SyncImagePixels ( img ) ;
       return 1;
   }
+int  kgSetImageColortoAlpha ( void *Img , int r,int g,int b ) {
+  /* Adding Transparency to Image */
+      int w , h , i , j , k;
+      GMIMG *png;
+      Image *img;
+      int channels = 3 , opacity , red , green , blue;
+      float  hu , s , v;
+      float f;
+      PixelPacket *pixels , *dest;
+      if ( Img == NULL ) return 0;
+      png = ( GMIMG * ) Img;
+      channels = png->image_channels;
+      png->image_channels = 4;
+      img = png->image;
+      w = img->columns;
+      h = img->rows;
+      img->matte = 1;
+      img->background_color.opacity = 255;
+      pixels = ( PixelPacket * ) uiPixelsgmImage ( Img ) ;
+      for ( i = 0; i < h; ++i ) {
+          dest = pixels + i*w;
+          for ( j = 0;j < w; j++ ) {
+            if(dest->opacity != 255) {
+              if((dest->red==r)&&(dest->green==g)&&(dest->blue==b)){
+              dest->opacity = 255;
+              }
+            }
+            dest++;
+          }
+      }
+      SyncImagePixels ( img ) ;
+      return 1;
+  }
   int kgSetPixelAlpha ( void *Img , int col,int row,int alpha ) {
   /* Adding Transparency to Image */
       int w , h , i , j , k;
@@ -3107,6 +3140,33 @@ int  kgSetImageColor ( void *Img , int r,int g,int b ) {
       SyncImagePixels ( image ) ;
       return png;
   }
+  void *kgImagetoColor ( void *img ) {
+/*
+ Converts the Image to Color
+  
+*/
+      int i , j , k = 0;
+      GMIMG *png = NULL;
+      int gray = 0;
+      int xsize , ysize;
+      Image *image,*cimage;
+      ExceptionInfo exception;
+      png = ( GMIMG * ) img;
+      if ( png == NULL ) return NULL;
+      image = ( Image * ) ( png->image ) ;
+      PixelPacket pixels;
+      const char *colorize_opaque="40/30/10";
+//      const char *tint_color ="#DEB48C";
+      const char *tint_color ="#D28A2A";
+      image = ( Image * ) ( png->image ) ;
+      uiInitGm ( ) ;
+      GetExceptionInfo(&exception);
+      QueryColorDatabase(tint_color,&pixels,&exception);
+      cimage=ColorizeImage(image,colorize_opaque,pixels,&exception);
+      DestroyImage(image);
+      png->image = cimage;
+      return png;
+  }
   void *kgImageModifyColor ( void *img , float rfac , float gfac , float bfac )  \
       {
 /*
@@ -3146,9 +3206,53 @@ int  kgSetImageColor ( void *Img , int r,int g,int b ) {
       SyncImagePixels ( image ) ;
       return png;
   }
+  void *kgImageAddColor ( void *img , float rfac , float gfac , float bfac )  \
+      {
+/*
+   Changes Color
+  
+*/
+      int i , j , k = 0;
+      GMIMG *png = NULL;
+      int gray = 0;
+      int xsize , ysize;
+      Image *image;
+      PixelPacket *pixels;
+      int red , green , blue;
+      int dr,dg,db;
+      png = ( GMIMG * ) img;
+      if ( png == NULL ) return NULL;
+      image = ( Image * ) ( png->image ) ;
+      uiInitGm ( ) ;
+      pixels = GetImagePixels ( image , 0 , 0 , image->columns , image->rows ) ;
+      xsize = image->columns;
+      ysize = image->rows;
+      dr = 255*rfac;
+      dg = 255*gfac;
+      db = 255*bfac;
+      k = 0;
+      for ( j = 0;j < ( ysize ) ;j++ ) {
+          for ( i = 0;i < ( xsize ) ;i++ ) {
+              blue = pixels [ k ] .blue+db;
+              green = pixels [ k ] .green+dg;
+              red = pixels [ k ] .red+dr;
+              if ( blue > 255 ) blue = 255;
+              if ( green > 255 ) green = 255;
+              if ( red > 255 ) red = 255;
+              if ( blue < 0 ) blue = 0;
+              if ( green < 0 ) green = 0;
+              if ( red < 0 ) red = 0;;
+              pixels [ k ] .blue = blue;
+              pixels [ k ] .green = green;
+              pixels [ k ] .red = red;
+              k++;
+          }
+      }
+      SyncImagePixels ( image ) ;
+      return png;
+  }
   int kgGetImageSize ( void *img , int *xsize , int *ysize ) {
 /*
- Converts the Image to Gray scale
   
 */
       int i , j , k = 0;

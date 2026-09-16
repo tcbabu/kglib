@@ -50,6 +50,7 @@ static float t_angle=0.0;
 static Dlink *ls_list=NULL;
 void *Loadfontstruct(void);
 static  void writetiff(char *flname,int sizex,int sizey);
+int uiAddFonts ( ) ;
 
 extern short  kgIcode[1024][3];
 static int kgIcodeLoc[1024][3];
