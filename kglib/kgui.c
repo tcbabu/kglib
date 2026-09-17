@@ -10487,15 +10487,25 @@ int kgCheckParentPosition(void *Dtmp) {
     int xo,yo,xl,yl,pxo,pyo;
     if(Dtmp == NULL) return 0;
     P = (DIALOG *)(D->parent);
-    if(P == NULL ) return 0;
-    if((P->xl <= D->xl ) || (P->yl <= D->yl)) {
+    if(P == NULL ){
         if((D->xo ==0)&&(D->yo == 0)) {
            int xres,yres; 
            kgDisplaySize(&xres,&yres); 
            D->xo= (xres -D->xl)/2;
            D->yo= (yres -D->yl)/2;
         }
+        return 0;
+    }
+    if((P->xl <= D->xl ) || (P->yl <= D->yl)) {
+        if((D->xo ==0)&&(D->yo == 0)) {
+#if 0
+           int xres,yres; 
+           kgDisplaySize(&xres,&yres); 
+           D->xo= (xres -D->xl)/2;
+           D->yo= (yres -D->yl)/2;
+        }
         else {
+#endif
           while(P->parent != NULL){
                 P=P->parent;
           }
@@ -10511,6 +10521,18 @@ int kgCheckParentPosition(void *Dtmp) {
         }
         D->parent = NULL;
         return 0;
+    }
+    if((D->xo ==0)&&(D->yo == 0)) {
+          pxo = P->xo;
+          pyo = P->yo;
+          xo = P->xl/2+pxo;
+          yo = P->yl/2+pyo;
+          xo = xo-D->xl/2;
+          yo = yo - D->yl/2;
+          if(xo< 0) xo=0;
+          if(yo< 0) yo =0;
+          D->xo = xo;
+          D->yo = yo;                       
     }
     int OK=1;
     while(OK) {

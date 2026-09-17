@@ -4858,6 +4858,10 @@ void kgdevelopKDgboxinit (int i,void *tmp) {
       fprintf ( fp , "  int i,n;\n" ) ;
       fprintf ( fp , "  if(D->parent != NULL) D->bkup=1;\n");
       fprintf ( fp , "  else D->bkup=0;\n");
+      fprintf ( fp , "// Set to auto fix position\n");
+      fprintf ( fp , "// May set to desired position, if needed\n");
+      fprintf ( fp , "  D->xo =0;\n");
+      fprintf ( fp , "  D->yo =0;\n");
       fprintf ( fp , "  kgCheckParentPosition(Tmp);\n" ) ;
       fprintf ( fp , "  d = D->d;\n\n" ) ;
       fprintf ( fp , "  if( ModuleList == NULL) ModuleList = kgGetModuleList((void **)ModFuns);\n");
