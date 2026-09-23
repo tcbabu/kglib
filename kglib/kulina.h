@@ -1251,13 +1251,14 @@ void *kgAddImages(void  *img1,void  *img2,int Xshft,int Yshft); /* second on fir
 void *kgReplaceImage(void  *img1,void  *img2,int Xshft,int Yshft); /* second on first */
 void *kgMergeTransparentImage(void  *img1,void  *img2,int Xshft,int Yshft); /* second on first */
 void *kgAddTransparentImage ( void *png1 , void *png2 , int Xshft , int Yshft );
+void *kgBlendImages (void *bottom  , void *top,int xo,int yo );
 int  kgGetImageSize(void *img,int *xsize,int *ysize);
 void *kgMaskImage(void *png,void *mask);
 void *kgCopyImage(void *img);
 void *  kgAppendImage(void *img1,void *img2);
 void *kgCreateImage(int xzise,int ysize);
 int kgSetImageColor(void *img,int r,int g,int b);
-int  kgSetImageColortoAlpha ( void *Img , int r,int g,int b );
+int  kgSetImageColortoAlpha ( void *Img , int r,int g,int b,float alpha );
 int kgSetPixelAlpha(void *img,int col, int row,int alpha);
 void *kgCleanImage(void *img);
 void *kgFlipImage(void *img); // About X refledction overwrites img

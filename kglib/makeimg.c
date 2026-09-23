@@ -794,7 +794,6 @@ static void gphCopyImage(int x0,int y0,GMIMG *img) {
       sloc = j*w+i;
       dloc= jj*iw+ii;
               if ( ( channels != 4 )  ) {
-                  pixels [ dloc ] = spixels [ sloc ] ;
                   pixels [ dloc ] .blue = spixels [ sloc ] .blue;
                   pixels [ dloc ] .green = spixels [ sloc ] .green;
 
@@ -803,7 +802,6 @@ static void gphCopyImage(int x0,int y0,GMIMG *img) {
               else {
                 if( spixels [ sloc ] .opacity == 255 ) continue;
                 if( spixels [ sloc ] .opacity < 0  ) {
-                  pixels [ dloc ] = spixels [ sloc ] ;
                   pixels [ dloc ] .blue = spixels [ sloc ] .blue;
                   pixels [ dloc ] .green = spixels [ sloc ] .green;
                   pixels [ dloc ] .red = spixels [ sloc ] .red;
@@ -811,17 +809,19 @@ static void gphCopyImage(int x0,int y0,GMIMG *img) {
                 }
                 else {
 #if 1
-                  fd = 1;
+                  fd = 1-pixels [ dloc ] .opacity/255.0; ;
                   fs = 1. - spixels [ sloc ] .opacity/255.0;
-                  fd = 1 - fs;
-                  pixels [ dloc ] = spixels [ sloc ] ;
+                  fd = fd*(1- fs);
+                  float aout = fs +fd;
+                  fs = fs/(aout);               
+                  fd = fd/(aout);
                   pixels [ dloc ] .blue = fd*pixels [ dloc ] .blue+fs* spixels [ sloc ] .blue;
-                  if ( pixels [ dloc ] .blue >255 ) pixels [ dloc ] .blue =255;
+//                  if ( pixels [ dloc ] .blue >255 ) pixels [ dloc ] .blue =255;
                   pixels [ dloc ] .green = fd*pixels [ dloc ] .green+fs* spixels [ sloc ] .green;
-                  if ( pixels [ dloc ] .green>255 ) pixels [ dloc ] .green=255;
+//                  if ( pixels [ dloc ] .green>255 ) pixels [ dloc ] .green=255;
                   pixels [ dloc ] .red = fd*pixels [ dloc ] .red+fs* spixels [ sloc ] .red;
-                  if ( pixels [ dloc ] .red>255 ) pixels [ dloc ] .red=255;
-                  pixels [ dloc ] .opacity += spixels [ sloc ] .opacity;
+//                  if ( pixels [ dloc ] .red>255 ) pixels [ dloc ] .red=255;
+                  pixels [ dloc ] .opacity = (1.-aout)*255;;
                   if(pixels [ dloc ] .opacity > 255 ) pixels [ dloc ] .opacity =255;
 #endif
                 }

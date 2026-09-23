@@ -5234,6 +5234,8 @@ void kgrev_box_fill3f(DIG *G,FILE *fp)
                 FREAD(pf,(void *)&y1,4);
                 FREAD(pf,(void *)&y2,4);
                 uirevtxtsize(G,y*fy,x1*fx,x2*fx,x*fx,y1*fy,y2*fy);
+//As on 22nd Sept 2026
+//                kgTextSize(G,uicnv_y(dc,y),uicnv_x(dc,x1),uicnv_x(dc,x2));
                 break;
         case 'r':
                 FREAD(pf,(void *)&x1,4);

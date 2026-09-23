@@ -1984,8 +1984,8 @@ static ExceptionInfo exception;
       image = ( Image * ) ( png1->image ) ;
       dimage = ( Image * ) ( png2->image ) ;
       uiInitGm ( ) ;
-      pixels = GetImagePixels ( dimage , 0 , 0 , dimage->columns , dimage->rows ) ;
-      spixels = GetImagePixels ( image , 0 , 0 , image->columns , image->rows ) ;
+      spixels = GetImagePixels ( dimage , 0 , 0 , dimage->columns , dimage->rows ) ;
+      pixels = GetImagePixels ( image , 0 , 0 , image->columns , image->rows ) ;
       w = image->columns;
       h = image->rows;
       xsize = image->columns;
@@ -1995,16 +1995,16 @@ static ExceptionInfo exception;
       k = 0;
       for ( j = yoff;j < ( yoff+dimage->rows ) ;j++ ) {
           for ( i = xoff;i < ( xoff+dimage->columns ) ;i++ ) {
-              opacity = pixels [ k ] .opacity;
+              opacity = spixels [ k ] .opacity;
               alpha = 255- opacity;
               if ( ( alpha == 0 ) ) {k++;continue;}
               kk = ( j*xsize+i ) ;
-              opacity = spixels [ kk ] .opacity;
+              opacity = pixels [ kk ] .opacity;
               alphas = 255 -opacity;
               if ( alpha == 0xff ) {
-                  blue = pixels [ k ] .blue;
-                  green = pixels [ k ] .green;
-                  red = pixels [ k ] .red;
+                  blue = spixels [ k ] .blue;
+                  green = spixels [ k ] .green;
+                  red = spixels [ k ] .red;
               }
               else {
                   f1 = alphas/255.0;
@@ -2019,14 +2019,7 @@ static ExceptionInfo exception;
                   b = pixels [ k ] .blue;
                   g = pixels [ k ] .green;
                   r = pixels [ k ] .red;
-#if 0
-                  if ( alphas == 0 ) f = 1.0;
-                  alpha += alphas;
-                  if ( alpha > 255 ) alpha = 255;
-                  spixels [ kk ] .opacity = 255 -alpha;
-#else
                   f1 = 1-f;
-#endif
                   red = bg_r*f1+r*f;
                   green = bg_g*f1+g*f;
                   blue = bg_b*f1+b*f;
@@ -2034,9 +2027,9 @@ static ExceptionInfo exception;
               if ( blue > 255 ) blue = 255;
               if ( green > 255 ) green = 255;
               if ( red > 255 ) red = 255;
-              spixels [ kk ] .blue = blue;
-              spixels [ kk ] .green = green;
-              spixels [ kk ] .red = red;
+              pixels [ kk ] .blue = blue;
+              pixels [ kk ] .green = green;
+              pixels [ kk ] .red = red;
               k++;
           }
       }
@@ -2546,7 +2539,7 @@ int  kgSetImageColor ( void *Img , int r,int g,int b ) {
       SyncImagePixels ( img ) ;
       return 1;
   }
-int  kgSetImageColortoAlpha ( void *Img , int r,int g,int b ) {
+int  kgSetImageColortoAlpha ( void *Img , int r,int g,int b,float a ) {
   /* Adding Transparency to Image */
       int w , h , i , j , k;
       GMIMG *png;
@@ -2562,6 +2555,9 @@ int  kgSetImageColortoAlpha ( void *Img , int r,int g,int b ) {
       img = png->image;
       w = img->columns;
       h = img->rows;
+      if(a> 1.0) a =1.0;
+      if(a < 0.0 ) a =0;
+      int Opacity = (int)((1. -a)*MaxRGB+0.01);
       img->matte = 1;
       img->background_color.opacity = 255;
       pixels = ( PixelPacket * ) uiPixelsgmImage ( Img ) ;
@@ -2570,7 +2566,7 @@ int  kgSetImageColortoAlpha ( void *Img , int r,int g,int b ) {
           for ( j = 0;j < w; j++ ) {
             if(dest->opacity != 255) {
               if((dest->red==r)&&(dest->green==g)&&(dest->blue==b)){
-              dest->opacity = 255;
+              dest->opacity = Opacity;;
               }
             }
             dest++;

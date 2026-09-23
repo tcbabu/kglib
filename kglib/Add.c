@@ -1,77 +1,76 @@
-#include <kulina.h>
-  void * kgShadedImage ( void *image , int xsize , \
-  int ysize , int fillcolor ) {
-      int ReSize = 8,width=3;
-      int aspc = 1;
-      void *fid;
-      void *img = NULL;
-      char *tmpdir , flname [ 200 ] ;
-      float length = 0.0 , fac , th , tw , vmin , \
-      vmax , size , lnwidth = 2 , xm , ym;
-      float h , s , v , red , blue , green;
-      float rfac=0.15;
-      int r , g , b;
-      fid = kgInitImage ( xsize , ysize , ReSize ) ;
-      aspc = 1;
-      size = xsize;
-      if ( fillcolor >= 0 ) kgGetRGB ( ( DIG * ) fid , \
-      fillcolor , & r , & g , & b ) ;
-      else {
-          fillcolor = -fillcolor;
-          b = ( fillcolor%1000 ) ;
-          g = ( fillcolor/1000 ) %1000;
-          r = ( fillcolor/1000000 ) %1000;
-          b = b%256;g = g%256;r = r%256;
-          fillcolor = 127;
-          kgChangeColor ( fid , fillcolor , r , g , b ) ;
-      }
-      RGBtoHSV ( ( float ) r , ( float ) g , ( float ) b , & h , & s , & v ) ;
-      if ( v > 1 ) v = 1.0;
-      if ( ysize > size ) {size = ysize;aspc = 0;}
-      if ( fid != NULL ) {
-          kgUserFrame ( fid , -3. , -3. , ( float ) xsize+3. , ( float ) ysize+3. ) ;
-          th = ( float ) ysize*.5;
-          tw = ( float ) width;
-          th = HFAC*tw;
-          if ( aspc ) {if ( th > 0.6*ysize ) th = 0.6*ysize;}
-          else { if ( th > 0.6*xsize ) th = 0.6*xsize;}
-          kgLineWidth ( fid , 2 ) ;
-          lnwidth = 2;
-          vmin = 0.85*v;
-          vmax = 1.3*v;
-          if ( vmax > 1.0 ) vmax = 1.0;
-          HSVtoRGB ( & red , & green , & blue , h , s , vmax ) ;
-          kgChangeColor ( fid , 150 , red , green , blue ) ;
-          vmax = 1.1*v;
-          if ( vmax > 1.0 ) vmax = 1.0;
-          HSVtoRGB ( & red , & green , & blue , h , s , vmax ) ;
-          kgChangeColor ( fid , 151 , red , green , blue ) ;
-          HSVtoRGB ( & red , & green , & blue , h , s , v*0.5 ) ;
-          kgChangeColor ( fid , 149 , red , green , blue ) ;
-          HSVtoRGB ( & red , & green , & blue , h , s , v*0.8 ) ;
-          kgChangeColor ( fid , 148 , red , green , blue ) ;
-          vmax = 1.5*v;
-          if ( vmax > 1.0 ) vmax = 1.0;
-          vmin = vmax*0.75;
-          HSVtoRGB ( & red , & green , & blue , h , s , vmin ) ;
-          kgChangeColor ( fid , 152 , red , green , blue ) ;
-          kgLineWidth ( fid , 5 ) ;
-          lnwidth = 5;
-          kgRoundedRectangleFill ( fid , ( float ) xsize*0.5+1.0 , \
-               ( float ) ysize*0.5-1.0 , \
-           ( float ) xsize , ( float ) ysize , 0 , 0 , rfac ) ;
-          kgRoundedRectangleFill ( fid , ( float ) xsize*0.5-1.0 , \
-               ( float ) ysize*0.5+1.0 , \
-           ( float ) xsize , ( float ) ysize , 0 , 15 , rfac ) ;
-          kgRoundedRectangleShade0 ( fid , ( float ) xsize*0.5 , ( float ) ysize*0.5 , \
-           ( float ) xsize , ( float ) ysize , fillcolor , rfac , v , vmax*0.95 ) ;
-          xm = xsize*0.5;
-          ym = ysize*0.5;
-          if ( image != NULL ) { kgDrawImage ( fid , image , \
-              3.0 , 3.0 , xsize-3. , ysize-3. ) ;
+  void imgCopyImage ( DIG *G , int x0 , int y0 , GMIMG *img ) {
+      GMIMG *Dimg , *Simg;
+      kgDC *dc;
+      kgWC *wc;
+      PixelPacket *pixels , *spixels;
+      int w , h , iw , ih , i , j , ii , jj , sloc , dloc , cx0 , cx1 , cy0 , cy1;
+      int channels;
+      float fs,fd;
+      dc = G->dc;
+      wc = G->wc;
+      Simg = ( GMIMG * ) img;
+      Dimg = G->img;
+      iw = Dimg->image_width;
+      ih = Dimg->image_height;
+      w = Simg->image_width;
+      h = Simg->image_height;
+      channels = Simg->image_channels;
+      cx0 = wc->c_v_x1;
+      cx1 = wc->c_v_x2;
+      cy0 = dc->EVGAY-1-wc->c_v_y2;
+      cy1 = dc->EVGAY-1-wc->c_v_y1;
+//  printf("%d %d %d %d\n",cx0,cy0,cx1,cy1);
+      spixels = GetImagePixels ( ( Image * ) ( Simg->image ) , 0 , 0 , ( ( Image * )  \
+          ( Simg->image ) )->columns , ( ( Image * ) ( Simg->image ) )->rows ) ;
+      pixels = G->pixels;
+//      printf("Channels = %d\n",channels);
+      for ( j = 0;j < ( h ) ;j++ ) {
+          jj = j+y0;
+          if ( jj < cy0 ) continue;
+          if ( jj >= cy1 ) break;
+          if ( jj >= ih ) break;
+          for ( i = 0;i < w;i++ ) {
+              ii = i+x0;
+              if ( ii < cx0 ) continue;
+              if ( ii > cx1 ) continue;
+              if ( ii >= iw ) continue;
+              sloc = j*w+i;
+              dloc = jj*iw+ii;
+              if ( ( channels != 4 )  ) {
+                  pixels [ dloc ] .blue = spixels [ sloc ] .blue;
+                  pixels [ dloc ] .green = spixels [ sloc ] .green;
+                  pixels [ dloc ] .red = spixels [ sloc ] .red;
+                  pixels [ dloc ] .opacity = 255;
+              }
+              else {
+                if( spixels [ sloc ] .opacity == 255 ) continue;
+                if( spixels [ sloc ] .opacity == 0 ) {
+                  pixels [ dloc ] .blue = spixels [ sloc ] .blue;
+                  pixels [ dloc ] .green = spixels [ sloc ] .green;
+                  pixels [ dloc ] .red = spixels [ sloc ] .red;
+                  pixels [ dloc ] .opacity = spixels [ sloc ] .opacity;
+                }
+                else {
+                  fd = 1-pixels [ dloc ] .opacity/255.0; ;
+                  fs = 1. - spixels [ sloc ] .opacity/255.0;
+                  fd = fd*(1- fs);
+                  float aout = fs +fd;
+                  fs = fs/(fs+fd);               
+                  fd = fd/(fs+fs);
+                  pixels [ dloc ] .blue = fd*pixels [ dloc ] .blue+fs* spixels [ sloc ] .blue;
+//                  if ( pixels [ dloc ] .blue >255 ) pixels [ dloc ] .blue =255;
+                  pixels [ dloc ] .green = fd*pixels [ dloc ] .green+fs* spixels [ sloc ] .green;
+//                  if ( pixels [ dloc ] .green>255 ) pixels [ dloc ] .green=255;
+                  pixels [ dloc ] .red = fd*pixels [ dloc ] .red+fs* spixels [ sloc ] .red;
+//                  if ( pixels [ dloc ] .red>255 ) pixels [ dloc ] .red=255;
+                  pixels [ dloc ] .opacity = (1.-aout)*255;;
+                  if(pixels [ dloc ] .opacity > 255 ) pixels [ dloc ] .opacity =255;
+                }
+              }
+//TCB
+//      printf("%x %x %x %x\n",pixels[dloc].blue,pixels[dloc].green,pixels[dloc].red,pixels[dloc].opacity);
+//      pixels[dloc].red=255;
           }
-          img = kgGetResizedImage ( fid ) ;
-          kgCloseImage ( fid ) ;
       }
-      return img;
+      return;
   }

@@ -92,6 +92,7 @@ extern Dlink *FontList;
        float y1 , float x2 , float y2 ) ;
   void img_chng_clr ( DIG *G , int no , int ir , int ig , int ib ) ;
   void uiput_shade_pix3 ( DIG *G , int col , int row , int z , float illu ) ;
+  void *kgBlendImages (void *bottom  , void *top ,int xoff,int yoff) ;
 #if 1
   static pthread_mutex_t _Tmplock = PTHREAD_MUTEX_INITIALIZER;
 #define Lock pthread_mutex_lock(&_Tmplock)
@@ -210,7 +211,6 @@ extern Dlink *FontList;
               sloc = j*w+i;
               dloc = jj*iw+ii;
               if ( ( channels != 4 )  ) {
-                  pixels [ dloc ] = spixels [ sloc ] ;
                   pixels [ dloc ] .blue = spixels [ sloc ] .blue;
                   pixels [ dloc ] .green = spixels [ sloc ] .green;
                   pixels [ dloc ] .red = spixels [ sloc ] .red;
@@ -219,24 +219,25 @@ extern Dlink *FontList;
               else {
                 if( spixels [ sloc ] .opacity == 255 ) continue;
                 if( spixels [ sloc ] .opacity == 0 ) {
-                  pixels [ dloc ] = spixels [ sloc ] ;
                   pixels [ dloc ] .blue = spixels [ sloc ] .blue;
                   pixels [ dloc ] .green = spixels [ sloc ] .green;
                   pixels [ dloc ] .red = spixels [ sloc ] .red;
                   pixels [ dloc ] .opacity = spixels [ sloc ] .opacity;
                 }
                 else {
-                  fd = 1;
+                  fd = 1-pixels [ dloc ] .opacity/255.0; ;
                   fs = 1. - spixels [ sloc ] .opacity/255.0;
-                  fd = 1 - fs;
-                  pixels [ dloc ] = spixels [ sloc ] ;
+                  fd = fd*(1- fs);
+                  float aout = fs +fd;
+                  fs = fs/(fs+fd);               
+                  fd = fd/(fs+fs);
                   pixels [ dloc ] .blue = fd*pixels [ dloc ] .blue+fs* spixels [ sloc ] .blue;
-                  if ( pixels [ dloc ] .blue >255 ) pixels [ dloc ] .blue =255;
+//                  if ( pixels [ dloc ] .blue >255 ) pixels [ dloc ] .blue =255;
                   pixels [ dloc ] .green = fd*pixels [ dloc ] .green+fs* spixels [ sloc ] .green;
-                  if ( pixels [ dloc ] .green>255 ) pixels [ dloc ] .green=255;
+//                  if ( pixels [ dloc ] .green>255 ) pixels [ dloc ] .green=255;
                   pixels [ dloc ] .red = fd*pixels [ dloc ] .red+fs* spixels [ sloc ] .red;
-                  if ( pixels [ dloc ] .red>255 ) pixels [ dloc ] .red=255;
-                  pixels [ dloc ] .opacity += spixels [ sloc ] .opacity;
+//                  if ( pixels [ dloc ] .red>255 ) pixels [ dloc ] .red=255;
+                  pixels [ dloc ] .opacity = (1.-aout)*255;;
                   if(pixels [ dloc ] .opacity > 255 ) pixels [ dloc ] .opacity =255;
                 }
               }
@@ -285,7 +286,6 @@ extern Dlink *FontList;
               if ( ii >= iw ) continue;
               sloc = j*w+i;
               dloc = jj*iw+ii;
-                  pixels [ dloc ] = spixels [ sloc ] ;
                   pixels [ dloc ] .blue = spixels [ sloc ] .blue;
                   pixels [ dloc ] .green = spixels [ sloc ] .green;
                   pixels [ dloc ] .red = spixels [ sloc ] .red;
@@ -2835,13 +2835,300 @@ extern Dlink *FontList;
  //       printf("img_txt_wr Font= %d\n",dc->t_font);
         IMG = (IMG_STR *)ftGrStringImage ( dc->t_font , dc->t_color ,(float)t_angle, txt ,w,h,g,cfx,cfy);
         uiUserImageBox(IMG, t_angle,x1,y1, cfx,cfy,&X1,&Y1,&X2,&Y2);
+#if 0
         uiConvertBox(G,X1,Y1,X2,Y2,&X1V,&Y1V,&X2V,&Y2V);
         void *crpimg = kgCropImage(G->img,X1V,Y1V,X2V,Y2V); 
+#if 0
         kgMergeImages(crpimg,IMG->img,0,0);
+#else
+        kgBlendImages(crpimg,IMG->img,0,0);
+#endif
         img_drawimage(G,crpimg,X1,Y1,X2,Y2); 
 //        imgUpdateImage(G,X1V,Y1V,crpimg);
         kgFreeGmImage(crpimg);
+#else
+       img_drawimage(G,IMG->img,X1,Y1,X2,Y2);
+#endif
         kgFreeGmImage(IMG->img);
+        free(IMG);
+        return;
+      }
+#endif
+      while ( txt [ i ] != '\0' ) {
+          {
+              if ( txt [ i ] != '!' ) { if ( dc->trot ) uidrawgch ( G , txt [ i ] ) ;
+                  else uidrawg0ch ( G , txt [ i ] ) ;
+                  dc->greek = 0;
+              }
+              else {
+                  i++;
+                  if ( txt [ i ] == '\0' ) break;
+                  cntl = txt [ i ] ;
+                  if ( ( cntl == 'S' ) || ( cntl == 's' ) ) uisetsubsup  \
+                      ( G , & fact , & ishft , cntl ) ;
+                  else {
+                      switch ( cntl ) {
+                          case 'e':
+                          uiresetsubsup ( G , & fact , & ishft ) ;
+                          break;
+                          case '!':
+                          dc->greek = 0;
+                          if ( dc->trot ) uidrawgch ( G , txt [ i ] ) ;
+                          else uidrawg0ch ( G , txt [ i ] ) ;
+                          break;
+                          case 'b':
+                          dc->xp = dc->xp -dc->txt_wt -dc->txt_sp;
+                          break;
+                          case 'B':
+                          dc->txt_bold = 2;
+                          break;
+                          case 'I':
+                          dc->Slant = Slnt [ 1 ] ;
+                          break;
+                          case 'N':
+                          dc->Slant = Slant_o; dc->txt_bold = txt_bold_o;
+                          if ( pt != NULL ) {
+                              while ( ( pt->x2 ) >= 0. ) pt = pt->Pr;
+                               ( pt->x2 ) = dc->xp-dc->txt_sp;
+                              pt = pt->Pr;
+                          }
+                          break;
+                          case 'g':
+                          dc->greek = 128;
+                          break;
+                          case 'r':
+                          if ( dc->O_P != NULL ) {
+                              dc->xp = dc->O_P->x;
+                              dc->yp = dc->O_P->y;
+                              dc->D_P = dc->O_P;
+                              dc->O_P = dc->O_P->Pr;
+                              free ( dc->D_P ) ;
+                              if ( dc->O_P == NULL ) FB_P = NULL;
+                          }
+                          break;
+                          case 'k':
+                          if ( FB_P == NULL ) {
+                              FB_P = ( B_K * ) Malloc ( ( int ) sizeof ( B_K ) ) ;
+                              dc->O_P = FB_P;
+                              dc->O_P->Nx = NULL;dc->O_P->Pr = NULL;
+                          }
+                          else {
+                              dc->O_P->Nx = ( B_K * ) Malloc ( ( int ) sizeof ( B_K ) ) ;
+                              dc->O_P->Nx->Pr = dc->O_P;
+                              dc->O_P = dc->O_P->Nx;
+                              dc->O_P->Nx = NULL;
+                          }
+                           ( dc->O_P->x ) = dc->xp;
+                           ( dc->O_P->y ) = dc->yp;
+                          break;
+                          case 'x':
+                          dc->yp += 0.2*dc->txt_ht;
+                          break;
+                          case 'y':
+                          dc->yp -= 0.2*dc->txt_ht;
+                          break;
+                          case 'u':
+                          dc->yp += 0.9*dc->txt_ht;
+                          break;
+                          case 'd':
+                          dc->yp -= 0.9*dc->txt_ht;
+                          break;
+                          case 'O':
+                          case 'U':
+                          if ( FO_L == NULL ) {
+                              FO_L = ( L_N * ) Malloc ( ( int ) sizeof ( L_N ) ) ;
+                              dc->O_L = FO_L;
+                              dc->O_L->Nx = NULL;dc->O_L->Pr = NULL;
+                          }
+                          else {
+                              dc->O_L->Nx = ( L_N * ) Malloc ( ( int ) sizeof ( L_N ) ) ;
+                              dc->O_L->Nx->Pr = dc->O_L;
+                              dc->O_L = dc->O_L->Nx;
+                              dc->O_L->Nx = NULL;
+                          }
+                           ( dc->O_L->x1 ) = dc->xp;
+                           ( dc->O_L->x2 ) = -1.0;
+                          dc->O_L->ymax = dc->yp+1.4*dc->txt_ht;
+                          dc->O_L->ymin = dc->yp-0.4*dc->txt_ht;
+                          dc->O_L->p = cntl;
+                          pt = dc->O_L;
+                          break;
+                          case '%':
+                          if ( i+2 >= j ) break;
+                          ch = txt [ i+1 ] ;txt [ i+1 ] = '\0';
+                          gap = uistrlngth ( G , txt , & xl2 ) ;
+                          txt [ i+1 ] = ch;
+                          dc->xp = ( gap+1 ) * ( dc->txt_wt+dc->txt_sp ) ;
+                          break;
+                          case 'z':
+                          if ( i+2 >= j ) break;
+                          Nu = ( txt [ i+1 ] -'0' ) ;
+                          De = ( txt [ i+2 ] -'0' ) ;
+                          if ( De == 0 ) De = 1;
+                          val = ( float ) Nu/ ( float ) De;
+                          fact = fact*val;
+                          hfact = hfact*val;
+                          i += 2;
+                          dc->txt_w42 = dc->txt_w42*val;
+                          dc->txt_h42 = dc->txt_h42*val;
+                          dc->txt_wt = dc->txt_wt*val;
+                          dc->txt_ht = dc->txt_ht*val;
+                          break;
+                          case 'f':
+                          if ( i+2 >= j ) break;
+                          Nu = ( txt [ i+1 ] -'0' ) *10+ ( txt [ i+2 ] -'0' ) ;
+                          ui_txt_font ( G , ( int ) Nu ) ;
+                          i+= 2;
+                          break;
+                          case 'c':
+                          if ( i+2 >= j ) break;
+                          Nu = ( txt [ i+1 ] -'0' ) *10+ ( txt [ i+2 ] -'0' ) ;
+//                            wcset_clr(wc,Nu);
+                          ui_txt_clr ( G , ( int ) Nu ) ;
+                          i+= 2;
+                          break;
+                          case 'h':
+                          if ( i+2 >= j ) break;
+                          Nu = ( txt [ i+1 ] -'0' ) ;
+                          De = ( txt [ i+2 ] -'0' ) ;
+                          if ( De == 0 ) De = 1;
+                          val = ( float ) Nu/ ( float ) De;
+                          hfact = hfact*val;
+                          i += 2;
+                          dc->txt_h42 = dc->txt_h42*val;
+                          dc->txt_ht = dc->txt_ht*val;
+                          break;
+                          case 'w':
+                          if ( i+2 >= j ) break;
+                          Nu = ( txt [ i+1 ] -'0' ) ;
+                          De = ( txt [ i+2 ] -'0' ) ;
+                          if ( De == 0 ) De = 1;
+                          val = ( float ) Nu/ ( float ) De;
+                          fact = fact*val;
+                          i += 2;
+                          dc->txt_w42 = dc->txt_w42*val;
+                          dc->txt_wt = dc->txt_wt*val;
+                          break;
+                          default :
+                          break;
+                      }
+                  }
+              }
+              i++;
+          }
+      }
+      dc->txt_w42 = dc->txt_w42/fact;
+      dc->txt_h42 = dc->txt_h42/hfact;
+      dc->txt_wt = dc->txt_wt/fact;
+      dc->txt_ht = dc->txt_ht/hfact;
+/*    txt_bold=bold;*/
+      dc->ln_width = 2;
+      dc->c_color = dc->ln_color;
+      pt = FO_L;
+      while ( pt != NULL ) {
+          if ( pt->x2 < 0. ) pt->x2 = dc->xp;
+          if ( pt->p == 'U' ) {
+              _move ( G , TX ( ( pt->x1 ) , pt->ymin ) , TY ( ( pt->x1 ) , pt->ymin ) ) ;
+              _draw ( G , TX ( ( pt->x2 ) , pt->ymin ) , TY ( ( pt->x2 ) , pt->ymin ) ) ;
+          }
+          else{
+              _move ( G , TX ( ( pt->x1 ) , pt->ymax ) , TY ( ( pt->x1 ) , pt->ymax ) ) ;
+              _draw ( G , TX ( ( pt->x2 ) , pt->ymax ) , TY ( ( pt->x2 ) , pt->ymax ) ) ;
+          }
+          dc->O_L = pt;
+          pt = pt->Nx;
+          free ( dc->O_L ) ;
+      }
+      dc->O_P = FB_P;
+      while ( dc->O_P != NULL ) {
+          dc->D_P = dc->O_P;
+          dc->O_P = dc->O_P->Pr;
+          free ( dc->D_P ) ;
+      }
+      dc->ln_width = lnwidth_o;
+      if ( dc->t_font != font_o ) ui_txt_font ( G , font_o ) ;
+  }
+  void img_txt_wr_new ( DIG *G , int n , char *txt ) {
+      short i = 0 , bold , tempc , ishft , trot , Nu , De , gap , lnwidth_o , j;
+      int font_o;
+      float fact , val , xl1 , xl2 , hfact = 1.0 , slant;
+      int txt_bold_o;
+      L_N *FO_L = NULL , *pt = NULL;
+      B_K *FB_P = NULL;
+      char ch , cntl;
+      unsigned char *tx;
+      float Slnt [ 2 ] = {0.0 , 0.25} , Slant_o;;
+      kgDC *dc;
+      kgWC *wc;
+      GMIMG *img=NULL;
+      int tsize =16,strln =16;
+      float t_angle;
+      int X1V,X2V,Y1V,Y2V;
+      dc = G->dc;
+      wc = G->wc;
+      tx = ( unsigned char * ) txt;
+      j = strlen ( tx ) ;
+      dc->O_L = NULL;
+      bold = dc->txt_bold;
+      slant = 0;
+      font_o = dc->t_font;
+//      dc->trot = ( dc->cost < 0.99 ) ;
+      t_angle = -acosf( dc->cost)/rad;
+      if(dc->sint*dc->cost<0) t_angle = -t_angle;
+//      printf("Img trot = %d\n",dc->trot);
+      t_angle = dc->trot;
+      dc->c_color = dc->t_color;
+      dc->cx = ( int ) ( dc->cur_x+0.5 ) ;
+      dc->cy = ( int ) ( dc->cur_y+0.5 ) ;
+      dc->xp = 0.0;
+      dc->yp = 0.0;
+      fact = 1.0;
+      hfact = 1.0;
+      ishft = 0;
+      dc->greek = 0;
+      lnwidth_o = dc->ln_width;
+      dc->ln_width = 1;
+#if 1
+        {
+        IMG_STR *IMG=NULL;
+        float x1,y1,x2,y2,lng,h,w,g;
+        float vx1,vy1,vx2,vy2,wx1,wy1,wx2,wy2;
+        float X1,Y1,X2,Y2;
+        int xres,yres,cxres,cyres;
+        kgGetWindow (G,&wx1,&wy1,&wx2,&wy2);
+        wx1 = dc->w_x1, wx2 = dc->w_x2;
+        wy1 = dc->w_y1, wy2 = dc->w_y2;
+        w = (float)(dc->txt_wtx);
+        g = (float)(dc->txt_spx);
+        h = (float)(dc->txt_hty);
+        x1 = uiusr_x (dc->cur_x);
+        y1 = uiusr_y(dc->cur_y);
+        int base =0;
+        float cfx = (dc->v_x2 -dc->v_x1)/(wx2 - wx1);
+        float cfy = (dc->v_y2 -dc->v_y1)/(wy2 - wy1);
+        IMG = (IMG_STR *)ftGrStringImage ( dc->t_font , dc->t_color ,(float)t_angle, txt ,w,h,g,cfx,cfy);
+        uiUserImageBox(IMG, t_angle,x1,y1, cfx,cfy,&X1,&Y1,&X2,&Y2);
+        uiConvertBox(G,X1,Y1,X2,Y2,&X1V,&Y1V,&X2V,&Y2V);
+        void *crpimg = kgCropImage(G->img,X1V,Y1V,X2V,Y2V); 
+        kgGetImageSize(crpimg,&cxres,&cyres);
+        kgGetImageSize(IMG->img,&xres,&yres);
+#if 0
+#if 0
+        kgAddImages(crpimg,IMG->img,0,0);
+        img_drawimage(G,crpimg,X1,Y1,X2,Y2); 
+#else
+        void *timg = kgCropImage(IMG->img,0,0,cxres,cyres);
+        kgMergeImages(crpimg,timg,0,0);
+        img_drawimage(G,crpimg,X1,Y1,X2,Y2); 
+        kgFreeImage(timg);
+#endif
+#else
+        kgMergeImages(crpimg,IMG->img,0,0);
+        img_drawimage(G,crpimg,X1,Y1,X2,Y2); 
+#endif
+        kgFreeGmImage(crpimg);
+        kgFreeGmImage(IMG->img);
+
         free(IMG);
         return;
       }
@@ -3960,6 +4247,7 @@ extern Dlink *FontList;
       Converts to Screen coordinate
   */
       int X1 , Y1 , X2 , Y2 , EVGAY,temp;
+ 
       kgDC *dc;
       dc = G->dc;
       EVGAY = dc->EVGAY-1;
@@ -3973,7 +4261,87 @@ extern Dlink *FontList;
       *y1new = Y1;
       *x2new = X2;
       *y2new = Y2;
+//      printf("%f %f %f %f %d %d %d %d\n",x1,y1,x2,y2,X1,Y1,X2,Y2);      
+
       return 1;
+  }
+
+  void *kgBlendImages (void *bottom  , void *top,int xo,int yo ) {
+      GMIMG *Dimg , *Simg;
+      PixelPacket *pixels , *spixels;
+      int w , h , iw , ih , i , j , ii , jj , sloc , dloc , cx0 , cx1 , cy0 , cy1;
+      int channels;
+      float fs,fd;
+      int xres,yres;
+//      int x0=0,y0=0;  // offset, now not used
+      Simg = ( GMIMG * ) top;
+      Dimg = (GMIMG *)bottom;;
+      iw = Dimg->image_width;
+      ih = Dimg->image_height;
+      w = Simg->image_width;
+      h = Simg->image_height;
+      channels = Simg->image_channels;
+      kgGetImageSize(Dimg,&xres,&yres);
+      cx0 = 0;
+      cx1 = xres;
+      cy0 = 0;
+      cy1 = yres;
+//  printf("%d %d %d %d\n",cx0,cy0,cx1,cy1);
+      spixels = GetImagePixels ( ( Image * ) ( Simg->image ) , 0 , 0 , ( ( Image * )  \
+          ( Simg->image ) )->columns , ( ( Image * ) ( Simg->image ) )->rows ) ;
+      pixels = GetImagePixels ( ( Image * ) ( Dimg->image ) , 0 , 0 , ( ( Image * )  \
+          ( Dimg->image ) )->columns , ( ( Image * ) ( Dimg->image ) )->rows ) ;
+//      pixels = G->pixels;
+//      printf("Channels = %d\n",channels);
+      for ( j = 0;j < ( h ) ;j++ ) {
+          jj = j+yo;
+          if ( jj < cy0 ) continue;
+          if ( jj >= cy1 ) break;
+          if ( jj >= ih ) break;
+          for ( i = 0;i < w;i++ ) {
+              ii = i+xo;
+              if ( ii < cx0 ) continue;
+              if ( ii > cx1 ) continue;
+              if ( ii >= iw ) continue;
+              sloc = j*w+i;
+              dloc = jj*iw+ii;
+              if ( ( channels != 4 )  ) {
+                  pixels [ dloc ] .blue = spixels [ sloc ] .blue;
+                  pixels [ dloc ] .green = spixels [ sloc ] .green;
+                  pixels [ dloc ] .red = spixels [ sloc ] .red;
+                  pixels [ dloc ] .opacity = 255;
+              }
+              else {
+                if( spixels [ sloc ] .opacity == 255 ) continue;
+                if( spixels [ sloc ] .opacity == 0 ) {
+                  pixels [ dloc ] .blue = spixels [ sloc ] .blue;
+                  pixels [ dloc ] .green = spixels [ sloc ] .green;
+                  pixels [ dloc ] .red = spixels [ sloc ] .red;
+                  pixels [ dloc ] .opacity = spixels [ sloc ] .opacity;
+                }
+                else {
+                  fd = 1-pixels [ dloc ] .opacity/255.0; ;
+                  fs = 1. - spixels [ sloc ] .opacity/255.0;
+                  fd = fd*(1- fs);
+                  float aout = fs +fd;
+                  fs = fs/(aout);               
+                  fd = fd/(aout);
+                  pixels [ dloc ] .blue = fd*pixels [ dloc ] .blue+fs* spixels [ sloc ] .blue;
+ //                 if ( pixels [ dloc ] .blue >255 ) pixels [ dloc ] .blue =255;
+                  pixels [ dloc ] .green = fd*pixels [ dloc ] .green+fs* spixels [ sloc ] .green;
+//                  if ( pixels [ dloc ] .green>255 ) pixels [ dloc ] .green=255;
+                  pixels [ dloc ] .red = fd*pixels [ dloc ] .red+fs* spixels [ sloc ] .red;
+//                  if ( pixels [ dloc ] .red>255 ) pixels [ dloc ] .red=255;
+                  pixels [ dloc ] .opacity = (1.-aout)*255;;
+                  if(pixels [ dloc ] .opacity > 255 ) pixels [ dloc ] .opacity =255;
+                }
+              }
+//TCB
+//      printf("%x %x %x %x\n",pixels[dloc].blue,pixels[dloc].green,pixels[dloc].red,pixels[dloc].opacity);
+//      pixels[dloc].red=255;
+          }
+      }
+      return bottom;
   }
   void img_drawimage ( DIG *G , void *imgfile , float x1 , \
        float y1 , float x2 , float y2 ) {
