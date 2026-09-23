@@ -289,7 +289,7 @@ extern Dlink *FontList;
                   pixels [ dloc ] .blue = spixels [ sloc ] .blue;
                   pixels [ dloc ] .green = spixels [ sloc ] .green;
                   pixels [ dloc ] .red = spixels [ sloc ] .red;
-                  pixels [ dloc ] .opacity = 255;
+                  pixels [ dloc ] .opacity =spixels [ sloc ] .opacity;
           }
       }
       return;
@@ -2835,7 +2835,7 @@ extern Dlink *FontList;
  //       printf("img_txt_wr Font= %d\n",dc->t_font);
         IMG = (IMG_STR *)ftGrStringImage ( dc->t_font , dc->t_color ,(float)t_angle, txt ,w,h,g,cfx,cfy);
         uiUserImageBox(IMG, t_angle,x1,y1, cfx,cfy,&X1,&Y1,&X2,&Y2);
-#if 0
+#if 1
         uiConvertBox(G,X1,Y1,X2,Y2,&X1V,&Y1V,&X2V,&Y2V);
         void *crpimg = kgCropImage(G->img,X1V,Y1V,X2V,Y2V); 
 #if 0
@@ -2843,8 +2843,8 @@ extern Dlink *FontList;
 #else
         kgBlendImages(crpimg,IMG->img,0,0);
 #endif
-        img_drawimage(G,crpimg,X1,Y1,X2,Y2); 
-//        imgUpdateImage(G,X1V,Y1V,crpimg);
+//        img_drawimage(G,crpimg,X1,Y1,X2,Y2); 
+        imgUpdateImage(G,X1V,Y1V,crpimg);
         kgFreeGmImage(crpimg);
 #else
        img_drawimage(G,IMG->img,X1,Y1,X2,Y2);

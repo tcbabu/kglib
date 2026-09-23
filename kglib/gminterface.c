@@ -2721,7 +2721,8 @@ int  kgSetImageColortoAlpha ( void *Img , int r,int g,int b,float a ) {
       return Img;
   }
 #if 1
-  void *uiMergegmImages ( GMIMG *png1 , GMIMG *png2 , int Xshft , int Yshft ) {
+
+  void *uiMergegmImages_org ( GMIMG *png1 , GMIMG *png2 , int Xshft , int Yshft ) {
 /*
   Second Picture is put on the first and the
   pointer to the first picture is returned
@@ -2792,6 +2793,142 @@ int  kgSetImageColortoAlpha ( void *Img , int r,int g,int b,float a ) {
               if ( alpha > 255 ) alpha = 255;
               spixels [ kk ] .opacity = 255 -alpha;
               k++;
+          }
+      }
+      SyncImagePixels ( image ) ;
+      return png1;
+  }
+  void *uiMergegmImages_new ( GMIMG *png1 , GMIMG *png2 , int Xshft , int Yshft ) {
+/*
+  Second Picture is put on the first and the
+  pointer to the first picture is returned
+*/
+      int w , h , bkgrclr , xsize , ysize;
+      float rzfac;
+      int i , j , k = 0 , kk;
+      unsigned int opacity , alpha , alphas;
+      int xoff , yoff;
+      float f , f1;
+      float fs,fd,aout;
+      int dloc,sloc;
+
+      GMIMG *dpng = NULL;
+      Image *image , *tmpimg , *dimage , *oimage;
+      PixelPacket *spixels , *pixels , *opixels;
+      unsigned char r , g , b , bg_r , bg_g , bg_b;
+      unsigned int red , green , blue;
+      if ( png1 == NULL ) return NULL;
+      if ( png2 == NULL ) return NULL;
+      image = ( Image * ) ( png1->image ) ;
+      dimage = ( Image * ) ( png2->image ) ;
+      uiInitGm ( ) ;
+      spixels = GetImagePixels ( dimage , 0 , 0 , dimage->columns , dimage->rows ) ;
+      pixels = GetImagePixels ( image , 0 , 0 , image->columns , image->rows ) ;
+      w = image->columns;
+      h = image->rows;
+      xsize = image->columns;
+      ysize = image->rows;
+      xoff = ( xsize - dimage->columns ) *0.5+Xshft;
+      yoff = ( ysize - dimage->rows ) *0.5+Yshft;
+      k = 0;
+      for ( j = yoff;j < ( yoff+dimage->rows ) ;j++ ) {
+          for ( i = xoff;i < ( xoff+dimage->columns ) ;i++ ) {
+              opacity = pixels [ k ] .opacity;
+              alpha = 255- opacity;
+              if ( ( alpha == 0 ) ) {k++;continue;}
+              kk = ( j*xsize+i ) ;
+              opacity = pixels [ kk ] .opacity;
+              alphas = 255 -opacity;
+              if ( alpha == 0xff ) {
+                   pixels[kk].blue = spixels [ k ] .blue;
+                   pixels[kk].green = spixels [ k ] .green;
+                   pixels[kk].red = spixels [ k ] .red;
+                   pixels [ kk ] .opacity = spixels[k].opacity;
+              }
+              else {
+                  fd = 1-pixels [ kk ] .opacity/255.0; ;
+                  fs = 1. - spixels [ k ] .opacity/255.0;
+                  fd = fd*(1- fs);
+                  aout = fs +fd;
+                  fs = fs/(aout);               
+                  fd = fd/(aout);
+                  
+                  pixels [ kk ] .blue = fd*pixels [ kk ] .blue+fs* spixels [ k ] .blue;
+//                  if ( pixels [ kk ] .blue >255 ) pixels [ kk ] .blue =255;
+                  pixels [ kk ] .green = fd*pixels [ kk ] .green+fs* spixels [ k ] .green;
+//                  if ( pixels [ kk ] .green>255 ) pixels [ kk ] .green=255;
+                  pixels [ kk ] .red = fd*pixels [ kk ] .red+fs* spixels [ k ] .red;
+//                  if ( pixels [ kk ] .red>255 ) pixels [ kk ] .red=255;
+                  pixels [ kk ] .opacity = (1.-aout)*255;;
+                  if(pixels [ kk ] .opacity > 255 ) pixels [ kk ] .opacity =255;
+              }
+              k++;
+          }
+      }
+      SyncImagePixels ( image ) ;
+      return png1;
+  }
+  void *uiMergegmImages ( GMIMG *png1 , GMIMG *png2 , int Xshft , int Yshft ) {
+/*
+  Second Picture is put on the first and the
+  pointer to the first picture is returned
+*/
+      int w , h , bkgrclr , xsize , ysize;
+      float rzfac;
+      int i , j , sloc = 0 , dloc;
+      unsigned int opacity , alpha , alphas;
+      int xoff , yoff;
+      float f , f1,fs,fd,aout;
+      GMIMG *dpng = NULL;
+      Image *image , *tmpimg , *simage , *oimage;
+      PixelPacket *spixels , *pixels , *opixels;
+      unsigned char r , g , b , bg_r , bg_g , bg_b;
+      unsigned int red , green , blue;
+      if ( png1 == NULL ) return NULL;
+      if ( png2 == NULL ) return NULL;
+      image = ( Image * ) ( png1->image ) ;
+      simage = ( Image * ) ( png2->image ) ;
+      uiInitGm ( ) ;
+      spixels = GetImagePixels ( simage , 0 , 0 , simage->columns , simage->rows ) ;
+      pixels = GetImagePixels ( image , 0 , 0 , image->columns , image->rows ) ;
+      w = image->columns;
+      h = image->rows;
+      xsize = image->columns;
+      ysize = image->rows;
+      xoff = ( xsize - simage->columns ) *0.5+Xshft;
+      yoff = ( ysize - simage->rows ) *0.5+Yshft;
+      sloc = 0;
+      for ( j = yoff;j < ( yoff+simage->rows ) ;j++ ) {
+          for ( i = xoff;i < ( xoff+simage->columns ) ;i++ ) {
+              opacity = spixels [ sloc ] .opacity;
+              alpha = 255- opacity;
+              if ( ( alpha == 0 ) ) {sloc++;continue;}
+              dloc = ( j*xsize+i ) ;
+              opacity = pixels [ dloc ] .opacity;
+              alphas = 255 -opacity;
+              if ( alpha == 0xff ) {
+                  pixels[dloc].blue = spixels [ sloc ] .blue;
+                  pixels[dloc].green = spixels [ sloc ] .green;
+                  pixels[dloc].red = spixels [ sloc ] .red;
+                  pixels[dloc].opacity = spixels [ sloc ] .opacity ;
+              }
+              else {
+                  fd = 1-pixels [ dloc ] .opacity/255.0; ;
+                  fs = 1. - spixels [ sloc ] .opacity/255.0;
+                  fd = fd*(1- fs);
+                  float aout = fs +fd;
+                  fs = fs/(aout);               
+                  fd = fd/(aout);
+                  pixels [ dloc ] .blue = fd*pixels [ dloc ] .blue+fs* spixels [ sloc ] .blue;
+//                  if ( pixels [ dloc ] .blue >255 ) pixels [ dloc ] .blue =255;
+                  pixels [ dloc ] .green = fd*pixels [ dloc ] .green+fs* spixels [ sloc ] .green;
+//                  if ( pixels [ dloc ] .green>255 ) pixels [ dloc ] .green=255;
+                  pixels [ dloc ] .red = fd*pixels [ dloc ] .red+fs* spixels [ sloc ] .red;
+//                  if ( pixels [ dloc ] .red>255 ) pixels [ dloc ] .red=255;
+                  pixels [ dloc ] .opacity = (1.-aout)*255;;
+                  if(pixels [ dloc ] .opacity > 255 ) pixels [ dloc ] .opacity =255;
+              }
+              sloc++;
           }
       }
       SyncImagePixels ( image ) ;
