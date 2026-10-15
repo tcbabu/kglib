@@ -144,7 +144,7 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
 #define CopyPoint(x,y,i) XCopyArea(Dsp,Win,linebuf,Gc,(short)x,(short)(y) ,1,1,i,0)
 #define GetPoint(x,y,i) XCopyArea(Dsp,linebuf,Win,Gc,i,0,1,1,(short)x,(short)(y))
 #define icde(i,j) kgIcode[j-1][i-1]
-  short kgIcode [ 1024 ] [ 3 ] = {
+  int kgIcode [ 1024 ] [ 3 ] = {
       0 , 0 , 0 , /* black */
       0 , 0 , 255 , /* blue */
       0 , 255 , 0 , /* green */
@@ -547,7 +547,7 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
   Getting the color definition of a given index
 */
   void uiget_color ( Display *Dsp , Colormap Cmap , \
-  int i , short *ir , short *ig , short *ib ) \
+  int i , int *ir , int *ig , int *ib ) \
   {
       XColor col;
       if ( i >= NCLRS ) i = i%NCLRS +1;
@@ -557,7 +557,7 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
       *ig = col.green*255./65535+0.5;
       *ib = col.blue*255./65535+0.5;
   }
-  void uiput_pixl ( kgWC *wc , short col , short row ) {
+  void uiput_pixl ( kgWC *wc , int col , int row ) {
       XDrawPoint ( wc->Dsp , wc->ActWin , wc->Gc , ( short ) col , ( short ) row ) ;
       return;
   }

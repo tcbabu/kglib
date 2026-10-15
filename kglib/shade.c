@@ -38,7 +38,7 @@ static float Hue =0.,Satu=0.;
 
 
 int Chng_sh_clr(int no,int ir,int ib,int ig,int file);
-void _shade_fill3(short n,int *px,int *py,int *pz ,short flag,float *pv);
+void _shade_fill3(int n,int *px,int *py,int *pz ,int flag,float *pv);
 void t_3_shade_fill(int n,float *x,float *y,float *z,float *p,int clr);
 
 typedef struct 

@@ -46,7 +46,7 @@
   struct line *Pr;struct line *Nx;} L_N;
   typedef struct point {float x;float y;float xl;
   struct point *Pr;struct point *Nx;} B_K;
-#define DR_BT(x1,y1,x2,y2,t,s) draw_button((short)(x1),(short)(y2),(short)(x2),(short)(y1+2),t,(short)(s))
+#define DR_BT(x1,y1,x2,y2,t,s) draw_button((int)(x1),(int)(y2),(int)(x2),(int)(y1+2),t,(int)(s))
   static int Pointer = 1;
   static L_N *O_L = NULL;
   static B_K *O_P = NULL , *D_P;
@@ -54,13 +54,13 @@
   static int GR_ON = 0 , GUI_ON = 0;
   static int MSCROLL = 0;
   static int SCROLL = 0;
-  static short Cur_On;
+  static int Cur_On;
   static float *m_F;
-  static short *icxvF , *icyvF;
+  static int *icxvF , *icyvF;
   static unsigned int ln_ptn [ 10 ] = {0xffffffff , 0x88888888 , 0xcccccccc , 0xf0f0f0f0 , 0xff18ff18 , 0xffff0f0f , 0xe7e7e7e7 , 0xfafafafa , 0xffff0000 , 0xffffff00};
       
   static Pixmap linebuf;
-  static short st_ptr [ 10 ] = {0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0};
+  static int st_ptr [ 10 ] = {0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0};
   typedef struct c_limit{ int cx1;int cy1;int cx2;int cy2;int * pt;} CLIP;
   static CLIP *c_loc;
   typedef struct Scrn {int x1;int y1;int x2;int y2;Pixmap buf;
@@ -75,8 +75,8 @@
   static Colormap Cmap;
   static Visual *Vis;
   char getch ( void ) ;
-#define CopyPoint(x,y,i) XCopyArea(Dsp,Win,linebuf,Gc,(short)x,(short)(y) ,1,1,i,0)
-#define GetPoint(x,y,i) XCopyArea(Dsp,linebuf,Win,Gc,i,0,1,1,(short)x,(short)(y))
+#define CopyPoint(x,y,i) XCopyArea(Dsp,Win,linebuf,Gc,(int)x,(int)(y) ,1,1,i,0)
+#define GetPoint(x,y,i) XCopyArea(Dsp,linebuf,Win,Gc,i,0,1,1,(int)x,(int)(y))
   static unsigned char KEY = 0;
   static int msg_btn;
   static int PON_X = 0 , PON_Y = 0;
@@ -101,7 +101,7 @@
   static int *ftblc [ 2 ] ;
   static int op = 1;
   char PAK_B = 0x18;
-  static short opc , lp , lser = 0;
+  static int opc , lp , lser = 0;
   static int ierr , ierrc , bk;
   static float pmax , pmin , dfac;
   static int ibdr;
@@ -154,7 +154,7 @@
       
   static int old_xp = 0 , old_yp = 0;
   static float V_x = 600. , V_y = 450.;
-  static short txt_bold = 1 , txt_bold_o = 1 , ln_width = 1 , ln_style , m_style , po , jmp;
+  static int txt_bold = 1 , txt_bold_o = 1 , ln_width = 1 , ln_style , m_style , po , jmp;
       
   static float PS_Slant = 0. , Slant = 0. , Slant_o = 0. , Slnt [ 2 ] = 
       {0.0 , 0.25};
@@ -174,10 +174,10 @@
   } TWIN;
   static TWIN *Twin = NULL;
   static int xmin , ymin , xmax , ymax , xrbr , yrbr;
-  static short hbuf , rbuf , nmenu;
-  static short t_color , t_bkgr , t_pattern , t_fill , t_bodr , greek = 0;
-  static short *icxv , *icyv;
-  static short *icpos;
+  static int hbuf , rbuf , nmenu;
+  static int t_color , t_bkgr , t_pattern , t_fill , t_bodr , greek = 0;
+  static int *icxv , *icyv;
+  static int *icpos;
   static float *m_f;
   static float fact;
   static float cost = 1.0 , sint = 0.0;
@@ -186,33 +186,33 @@
   static int po_cur_x , po_cur_y;
   static float gw_x1 , gw_y1 , gw_x2 , gw_y2;
 #ifdef RS6000
-  static short max_clr = 15 , min_clr = 15;
+  static int max_clr = 15 , min_clr = 15;
 #else
 #ifdef LINUX
-  static short max_clr = 15 , min_clr = 15;
+  static int max_clr = 15 , min_clr = 15;
 #else
-  static short max_clr = 15 , min_clr = 0;
+  static int max_clr = 15 , min_clr = 0;
 #endif
 #endif
-  static short EVGAX = 600;
-  static short EVGAY = 450;
-  static short msg_x , msg_y;
+  static int EVGAX = 600;
+  static int EVGAY = 450;
+  static int msg_x , msg_y;
   static unsigned int Dpth = 4;
   static float xpos , ypos , txs = 0. , txc = 1.;
   static float cx , cy , xp , yp;
   void get_scan_code ( void ) ;
   void char_hilit_off ( void ) ;
   void char_hilit_on ( void ) ;
-  void draw_button ( short x1 , short y1 , short x2 , short y2 , char *t , short s ) ;
+  void draw_button ( int x1 , int y1 , int x2 , int y2 , char *t , int s ) ;
       
   void text_menu_n ( int x , int y , int n , int *maxq , char **ch1 , int *maxf , char **ch2 ) ;
       
   int menu ( int ixx , int iyy , int imenu , int ichr , char *cmenu , int item ) ;
       
-  void Scrn_back ( short ix , short iy , short n ) ;
+  void Scrn_back ( int ix , int iy , int n ) ;
   void Scrn_recover ( void ) ;
   void setnormal ( void ) ;
-  void msg_menu ( short ix , short iy , short max1 , char *ch1 ) ;
+  void msg_menu ( int ix , int iy , int max1 , char *ch1 ) ;
   void t_initialise ( ) ;
   void clear_clip ( void ) ;
   void t_pop_clip ( void ) ;
@@ -231,9 +231,9 @@
   char gincur ( float *xx , float *yy ) ;
   char rect_gincur ( float *xx , float *yy , float *xbgn , float *ybgn ) ;
   char cross_gincur ( float *xx , float *yy ) ;
-  void set_graphics ( short n ) ;
-  void make_area ( short w , short h ) ;
-  void t_graph_new ( short w , short h ) ;
+  void set_graphics ( int n ) ;
+  void make_area ( int w , int h ) ;
+  void t_graph_new ( int w , int h ) ;
   void set_mode1 ( ) ;
   void set_mode2 ( ) ;
   void _move ( int x , int y ) ;
@@ -243,17 +243,17 @@
   void godr_line ( int xa , int xb , int y , float pa , float pb ) ;
   void set_color ( char color ) ;
   void put_pixel ( int col , int row ) ;
-  void put_byte ( short col , short row ) ;
+  void put_byte ( int col , int row ) ;
   void user_conv ( ) ;
   void _marker ( int x , int y ) ;
   void _box_fill ( int x1 , int y1 , int x2 , int y2 , unsigned char color ) ;
   void _draw_line ( int x1 , int y1 , int x2 , int y2 ) ;
   void clear_screen ( ) ;
-  void _poly_fill ( short n , int *px , int *py , short flag , unsigned char b_color ) ;
+  void _poly_fill ( int n , int *px , int *py , int flag , unsigned char b_color ) ;
       
-  void _mpoly_fill ( short n , int *px , int *py , int *px1 , int *py1 , unsigned char b_color ) ;
+  void _mpoly_fill ( int n , int *px , int *py , int *px1 , int *py1 , unsigned char b_color ) ;
       
-  void _godard_fill ( short n , int *px , int *py , short flag , float *pv ) ;
+  void _godard_fill ( int n , int *px , int *py , int flag , float *pv ) ;
   void scr_back ( int x1 , int y1 , int x2 , int y2 ) ;
   void scr_recover ( void ) ;
   void scr_copy ( int x0 , int y0 ) ;
@@ -284,83 +284,84 @@
   void hstretch ( ) ;
   void vshrink ( ) ;
   void hshrink ( ) ;
-  short clip_line ( int *xa , int *ya , int *xb , int *yb ) ;
+  int clip_line ( int *xa , int *ya , int *xb , int *yb ) ;
   unsigned char code ( int x , int y ) ;
   void gbell ( void ) ;
   void display_on ( void ) ;
   void display_off ( void ) ;
-  void text_control ( short n , short l , short ny , short txtpos , char *txtdat ) ;
+  void text_control ( int n , int l , int ny , int txtpos , char *txtdat ) ;
       
-  void mline ( short ixb , short iyb , short ixe , short iye ) ;
+  void mline ( int ixb , int iyb , int ixe , int iye ) ;
   void menuch ( char c , int ix1 , int iy1 , int char_clr ) ;
   void chng_clr ( int l , int ir , int ib , int ig ) ;
-  void _rect_fill ( short x1 , short y1 , short x2 , short y2 , unsigned char color ) ;
+  void _rect_fill ( int x1 , int y1 , int x2 , int y2 , unsigned char color ) ;
       
-  short p_control ( ) ;
-  void _draw_bound ( short x1 , short y1 , short x2 , short y2 ) ;
+  int p_control ( ) ;
+  void _draw_bound ( int x1 , int y1 , int x2 , int y2 ) ;
   void menu_clrs_menu ( void ) ;
   void ghelp_menu ( void ) ;
-  void set_ghelp_menu ( short lines , char * str ) ;
+  void set_ghelp_menu ( int lines , char * str ) ;
   void set_dfclrs ( void ) ;
   void menu_clrs_menu ( void ) ;
   void backup_view ( void ) ;
   void restore_view ( void ) ;
-  char *h_short ( float *x , float *y ) ;
+  char *h_int ( float *x , float *y ) ;
   void get_view ( unsigned char *bf ) ;
   void read_view ( unsigned char *bf ) ;
   void horeview ( void ) ;
   void Get_Attn ( void ) ;
   int strlngth ( char *title , float *xdsp ) ;
-  static short GHMAX = 0 , SCRN , S_OPEN = 0;
+  static int GHMAX = 0 , SCRN , S_OPEN = 0;
   static char *GHBUF;
   static char df_gbuf [ 20 ] = {"No help available"};
   unsigned char far *Rbuff;
-  short MODE = 18;
+  int MODE = 18;
   unsigned char far * RBUFF;
 #define icde(i,j) icode[j-1][i-1]
   static unsigned char char_clr = 0x0f , fill_clr = 0x08 , bodr_clr = 0x07 , cur_clr = 0x09 , high_clr = 0x04 , char_hclr = 11 , char_hclr_bk = 11;
       
 /*
-static short  icode[256][3]= {0,0,0, 0,100,0, 0,0,50, 10,70,30, 50,0,0,
+static int  icode[256][3]= {0,0,0, 0,100,0, 0,0,50, 10,70,30, 50,0,0,
                     50,50,0, 50,0,75, 65,65,65, 45,45,45, 20,100,40, 0,0,100,
                     0,100,100, 100,60,60, 100,100,75, 100,0,100, 100,100,100};
-static short  icode_df[16][3]= {0,0,0, 0,100,0, 0,0,50, 10,70,30, 50,0,0,
+static int  icode_df[16][3]= {0,0,0, 0,100,0, 0,0,50, 10,70,30, 50,0,0,
                     50,50,0, 50,0,75, 65,65,65, 45,45,45, 20,100,40, 0,0,100,
                     0,100,100, 100,60,60, 100,100,75, 100,0,100, 100,100,100};
-static short  icode[256][3]= {0,0,0, 0,100,0, 0,0,50, 10,70,30, 50,0,0,
+static int  icode[256][3]= {0,0,0, 0,100,0, 0,0,50, 10,70,30, 50,0,0,
                     50,50,0, 50,0,75, 81,44,35, 57,32,25, 20,100,40, 0,0,100,
                     0,100,100, 100,60,60, 100,100,75, 100,0,100, 100,100,100};
-static short  icode_df[16][3]= {0,0,0, 0,100,0, 0,0,50, 10,70,30, 50,0,0,
+static int  icode_df[16][3]= {0,0,0, 0,100,0, 0,0,50, 10,70,30, 50,0,0,
                     50,50,0, 50,0,75, 81,44,35, 57,32,25, 20,100,40, 0,0,100,
                     0,100,100, 100,60,60, 100,100,75, 100,0,100, 100,100,100};
-static short  icode[256][3]= {
+static int  icode[256][3]= {
   0,0,0 ,0,255,0 ,64,208,224 ,46,87,139 ,107,35,142 ,205,92,92
 ,255,147,20 ,255,255,0 ,205,205,0 ,28,238,134 ,139,0,0 ,144,144,238
  ,244,96,164 ,255,0,215 ,0,255,255 ,255,255,255};
-static short  icode_df[16][3]= {
+static int  icode_df[16][3]= {
   0,0,0 ,0,255,0 ,64,208,224 ,46,87,139 ,107,35,142 ,205,92,92
 ,255,147,20 ,255,255,0 ,205,205,0 ,28,238,134 ,139,0,0 ,144,144,238
  ,244,96,164 ,255,0,215 ,0,255,255 ,255,255,255};
-static short  icode[256][3]= {
+static int  icode[256][3]= {
        0,0,0, 0,255,0, 0,0,127, 25,180,190, 127,0,0,
        127,127,0, 127,0,190, 170,170,170, 110,110,110, 50,255,100, 0,0,255,
        0,255,255, 255,160,160, 255,255,190, 255,0,255, 255,255,255};
-static short  icode_df[16][3]= {
+static int  icode_df[16][3]= {
        0,0,0, 0,255,0, 0,0,127, 25,180,190, 127,0,0,
        127,127,0, 127,0,190, 170,170,170, 110,110,110, 50,255,100, 0,0,255,
        0,255,255, 255,160,160, 255,255,190, 255,0,255, 255,255,255};
 */
-  static short icode [ 256 ] [ 3 ] = {
+  static int icode [ 256 ] [ 3 ] = {
   0 , 0 , 0 , 0 , 255 , 0 , 0 , 0 , 127 , 25 , 180 , 190 , 127 , 0 , 0 , 127 , 127 , 0 , 127 , 0 , 190 , 170 , 170 , 170 , 110 , 110 , 110 , 50 , 255 , 100 , 0 , 0 , 255 , 0 , 255 , 255 , 255 , 160 , 160 , 255 , 255 , 190 , 255 , 0 , 255 , 255 , 255 , 255};
       
-  static short icode_df [ 16 ] [ 3 ] = {
+  static int icode_df [ 16 ] [ 3 ] = {
   0 , 0 , 0 , 0 , 255 , 0 , 0 , 0 , 127 , 25 , 180 , 190 , 127 , 0 , 0 , 127 , 127 , 0 , 127 , 0 , 190 , 170 , 170 , 170 , 110 , 110 , 110 , 50 , 255 , 100 , 0 , 0 , 255 , 0 , 255 , 255 , 255 , 160 , 160 , 255 , 255 , 190 , 255 , 0 , 255 , 255 , 255 , 255};
       
-  static int clrtbl [ 256 ] = {0 , 1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 , 10 , 11 , 12 , 13 , 14 , 15 , 16 , 17 , 18 , 19 , 20 , 21 , 22 , 23 , 24 , 25 , 26 , 27 , 28 , 29 , 30 , 31 , 32 , 33 , 34 , 35 , 36 , 37 , 38 , 39 , 40 , 41 , 42 , 43 , 44 , 45 , 46 , 47 , 48 , 49 , 50 , 51 , 52 , 53 , 54 , 55 , 56 , 57 , 58 , 59 , 60 , 61 , 62 , 63 , 64 , 65 , 66 , 67 , 68 , 69 , 70 , 71 , 72 , 73 , 74 , 75 , 76 , 77 , 78 , 79 , 80 , 81 , 82 , 83 , 84 , 85 , 86 , 87 , 88 , 89 , 90 , 91 , 92 , 93 , 94 , 95 , 96 , 97 , 98 , 99 , 100 , 101 , 102 , 103 , 104 , 105 , 106 , 107 , 108 , 109 , 110 , 111 , 112 , 113 , 114 , 115 , 116 , 117 , 118 , 119 , 120 , 121 , 122 , 123 , 124 , 125 , 126 , 127 , 128 , 129 , 130 , 131 , 132 , 133 , 134 , 135 , 136 , 137 , 138 , 139 , 140 , 141 , 142 , 143 , 144 , 145 , 146 , 147 , 148 , 149 , 150 , 151 , 152 , 153 , 154 , 155 , 156 , 157 , 158 , 159 , 160 , 161 , 162 , 163 , 164 , 165 , 166 , 167 , 168 , 169 , 170 , 171 , 172 , 173 , 174 , 175 , 176 , 177 , 178 , 179 , 180 , 181 , 182 , 183 , 184 , 185 , 186 , 187 , 188 , 189 , 190 , 191 , 192 , 193 , 194 , 195 , 196 , 197 , 198 , 199 , 200 , 201 , 202 , 203 , 204 , 205 , 206 , 207 , 208 , 209 , 210 , 211 , 212 , 213 , 214 , 215 , 216 , 217 , 218 , 219 , 220 , 221 , 222 , 223 , 224 , 225 , 226 , 227 , 228 , 229 , 230 , 231 , 232 , 233 , 234 , 235 , 236 , 237 , 238 , 239 , 240 , 241 , 242 , 243 , 244 , 245 , 246 , 247 , 248 , 249 , 250 , 251 , 252 , 253 , 254 , 255 };
+  static int clrtbl [ 256 ] = {0 , 1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 , 10 , 11 , 12 , 13 , 14 , 15 , 16 , 17 , 18 , 19 , 20 , 21 , 22 , 23 , 24 , 25 , 26 , 27 , 28 , 29 , 30 , 31 , 32 , 33 , 34 , 35 , 36 , 37 , 38 , 39 , 40 , 41 , 42 , 43 , 44 , 45 , 46 , 47 , 48 , 49 , 50 , 51 , 52 , 53 , 54 , 55 , 56 , 57 , 58 , 59 , 60 , 61 , 62 , 63 , 64 , 65 , 66 , 67 , 68 , 69 , 70 , 71 , 72 , 73 , 74 , 75 , 76 , 77 , 78 , 79 , 80 , 81 , 82 , 83 , 84 , 85 , 86 , 87 , 88 , 89 , 90 , 91 , 92 , 93 , 94 , 95 
+ , 180 , 181 , 182 , 183 , 184 , 185 , 186 , 187 , 188 , 189 , 190 , 191 , 192 , 193 , 194 , 195 , 196 , 197 , 198 , 199 , 200 , 201 , 202 , 203 , 204 , 205 , 206 , 207 , 208 , 209 , 210 , 211 , 212 , 213 , 214 , 215 , 216 , 217 , 218 , 219 , 220 , 221 , 222 , 223 , 224 , 225 , 226 , 227 , 228 , 229 , 230 , 231 , 232 , 233 , 234 , 235 , 236 , 237 , 238 , 239 , 240 , 241 , 242 , 243 , 244 , 245 , 246 , 247 , 248 , 249 , 250 , 251 , 252 , 253 , 254 , 255 };
       
   static char ch , bf [ 200 ] = {" "};
   static unsigned char cmds [ 1000 ] ;
-  static short step;
+  static int step;
   char PIXL = 0xFF;
   typedef struct r_c {int x1;int y1;int x2;int y2;} RECT;
   static struct menu_str {
@@ -382,42 +383,42 @@ static short  icode_df[16][3]= {
 #define CURKEY 00
 #define BIT_MASK(bits) outp(0x3CF,bits)
 /*
-#define EVGA_CN(y)  (short)(((y)*EVGAY)/479)
-#define EVGA_CNX(x)  (short)(((x)*EVGAX)/639)
+#define EVGA_CN(y)  (int)(((y)*EVGAY)/479)
+#define EVGA_CNX(x)  (int)(((x)*EVGAX)/639)
 */
 #define EVGA_CN(y)  y
 #define EVGA_CNX(x) x
   unsigned char OFF = 0x0F;
   char C_CLR = 0x0F;
   char fname [ 15 ] ;
-  union kbinp { short kbint; char kbc [ 2 ] ;} kb;
-  union vd { short vdint; char vdc [ 2 ] ;} vd , bl;
+  union kbinp { int kbint; char kbc [ 2 ] ;} kb;
+  union vd { int vdint; char vdc [ 2 ] ;} vd , bl;
   unsigned char far *buffer;
   unsigned char arr [ ] = {0x80 , 0x40 , 0x20 , 0x10 , 0x08 , 0x04 , 0x02 , 0x01};
       
   char temp;
 #define EIGHT 8
   void goto_xy ( void ) ;
-  short kb_hit ( void ) ;
+  int kb_hit ( void ) ;
   unsigned char get_ch ( void ) ;
   static unsigned char pix = 0xFF;
-  static unsigned short IPO1 = 0x3CE;
-  static unsigned short IPO2 = 0x3CF;
-  static unsigned short IPO3 = 0x3C4;
-  static unsigned short IPO4 = 0x3C5;
+  static unsigned int IPO1 = 0x3CE;
+  static unsigned int IPO2 = 0x3CF;
+  static unsigned int IPO3 = 0x3C4;
+  static unsigned int IPO4 = 0x3C5;
 #define set_clr(x) XSetForeground(Dsp,Gc,(unsigned int)(clrtbl[x]))
 #define XDraw(x1,y1,x2,y2) XDrawLine(Dsp,Win,Gc,x1,(EVGAY-y1),x2,(EVGAY-y2))
-#define XDRAW(x1,y1,x2,y2) XDrawLine(Dsp,Win,Gc,(short)(x1),(short)(y1),(short)(x2),(short)(y2))
+#define XDRAW(x1,y1,x2,y2) XDrawLine(Dsp,Win,Gc,(int)(x1),(int)(y1),(int)(x2),(int)(y2))
 #define XSDraw(x1,y1,x2,y2) XDrawLine(Dsp,Win,Gc,x1,(y1),x2,(y2))
-#define XCPix(x1,y1,x2,y2) XCreatePixmap(Dsp,Win,(short)(x2-(x1)+1),(short)(y2-(y1)+1),Dpth);
+#define XCPix(x1,y1,x2,y2) XCreatePixmap(Dsp,Win,(int)(x2-(x1)+1),(int)(y2-(y1)+1),Dpth);
 #include <termio.h>
   static tcflag_t oldc_c , oldc_l , oldc_i , oldc_o;
   static cc_t oldc_c4 , oldc_c5;
   static struct termios tty;
   static int Shift = 0 , Caplock = 0;
-  static int Scan_code [ 256 ] = {0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 27 , '1' , '2' , '3' , '4' , '5' , '6' , '7' , '8' , '9' , '0' , '-' , '=' , '\b' , 0 , 'q' , 'w' , 'e' , 'r' , 't' , 'y' , 'u' , 'i' , 'o' , 'p' , 0 , 0 , '\r' , 0 , 'a' , 's' , 'd' , 'f' , 'g' , 'h' , 'j' , 'k' , 'l' , ';' , '\'' , '`' , 0 , '\\' , 'z' , 'x' , 'c' , 'v' , 'b' , 'n' , 'm' , ',' , '.' , '/' , 0 , 0 , 0 , ' ' , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 103 , 104 , 105 , 106};
+  static int Scan_code [ 256 ] = {0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 27 , '1' , '2' , '3' , '4' , '5' , '6' , '7' , '8' , '9' , '0' , '-' , '=' , '\b' , 0 , 'q' , 'w' , 'e' , 'r' , 't' , 'y' , 'u' , 'i' , 'o' , 'p' , 0 , 0 , '\r' , 0 , 'a' , 's' , 'd' , 'f' , 'g' , 'h' , 'j' , 'k' , 'l' , ';' , '\'' , '`' , 0 , '\\' , 'z' , 'x' , 'c' , 'v' , 'b' , 'n' , 'm' , ',' , '.' , '/' , 0 , 0 , 0 , ' ' , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 
       
-  static int Scan_sh_code [ 256 ] = {0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 27 , '!' , ' ' , '#' , '$' , '%' , '^' , '&' , '*' , '(' , ')' , '_' , '+' , '\b' , 0 , 'Q' , 'W' , 'E' , 'R' , 'T' , 'Y' , 'U' , 'I' , 'O' , 'P' , 0 , 0 , '\r' , 0 , 'A' , 'S' , 'D' , 'F' , 'G' , 'H' , 'J' , 'K' , 'L' , ':' , '"' , '~' , 0 , '|' , 'Z' , 'X' , 'C' , 'V' , 'B' , 'N' , 'M' , '<' , '>' , '?' , 0 , 0 , 0 , ' ' , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 103 , 104 , 105 , 106};
+  static int Scan_sh_code [ 256 ] = {0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 27 , '!' , ' ' , '#' , '$' , '%' , '^' , '&' , '*' , '(' , ')' , '_' , '+' , '\b' , 0 , 'Q' , 'W' , 'E' , 'R' , 'T' , 'Y' , 'U' , 'I' , 'O' , 'P' , 0 , 0 , '\r' , 0 , 'A' , 'S' , 'D' , 'F' , 'G' , 'H' , 'J' , 'K' , 'L' , ':' , '"' , '~' , 0 , '|' , 'Z' , 'X' , 'C' , 'V' , 'B' , 'N' , 'M' , '<' , '>' , '?' , 0 , 0 , 0 , ' ' , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ,
       
   static S_STR *sld_ptr = NULL;
   static BUTS *but_ptr = NULL;
@@ -448,11 +449,11 @@ static short  icode_df[16][3]= {
   }
   void scr_scroll_back ( int x1 , int y1 , int x2 , int y2 , int width ) {
       int i , j , addr;
-      XCopyArea ( Dsp , Win , Win , Gc , ( short ) x1 , ( short ) ( y1 ) , ( short ) 
-          ( x2-x1+1 ) , ( short ) ( y2-y1+1 ) , ( short ) x1 , 
-          ( short ) ( y1-width ) ) ;
+      XCopyArea ( Dsp , Win , Win , Gc , ( int ) x1 , ( int ) ( y1 ) , ( int ) 
+          ( x2-x1+1 ) , ( int ) ( y2-y1+1 ) , ( int ) x1 , 
+          ( int ) ( y1-width ) ) ;
   }
-  void g_scroll_up ( short x1 , short y1 , short x2 , short y2 , short jmp ) {
+  void g_scroll_up ( int x1 , int y1 , int x2 , int y2 , int jmp ) {
       int yy1 , yy2;
       yy1 = EVGAY-y1;
       yy2 = EVGAY-y2;
@@ -484,7 +485,7 @@ static short  icode_df[16][3]= {
           else setnormal ( ) ;
       }
   }
-  short key_press ( int *c ) {
+  int key_press ( int *c ) {
       int ch;
       int keypress , i , code;
       int *scan;
@@ -517,10 +518,10 @@ static short  icode_df[16][3]= {
       *c = ch;
       return ( keypress ) ;
   }
-  short get_kb ( int t ) {
+  int get_kb ( int t ) {
       int ch , ch1;
       int i;
-      union kbinp { short kbint; char kbc [ 2 ] ;} kb;
+      union kbinp { int kbint; char kbc [ 2 ] ;} kb;
       kb.kbint = 0;
       XSync ( Dsp , False ) ;
       if ( key_press ( & ch ) < 0 ) return ( -1 ) ;
@@ -764,7 +765,7 @@ static short  icode_df[16][3]= {
       if ( ierr == -1 ) printf ( "ERROR IN  IOCTL\n" ) ;
   }
   void set_dfclrs ( void ) {
-      short i , j;
+      int i , j;
       for ( i = 0;i < 16;i++ ) for ( j = 0;j < 3;j++ ) icode [ i ] [ j ] = icode_df [ i ] [ j ] ;
           
       for ( i = 0;i < 16;i++ ) df_clr ( i , ( int ) icode [ i ] [ 0 ] , 
@@ -772,10 +773,10 @@ static short  icode_df[16][3]= {
   }
   void setwin ( color ) unsigned char color;
   {
-      short ierr;
+      int ierr;
       t_ln_clr ( color ) ;
   }
-  void g_dash ( col , row ) short col , row;
+  void g_dash ( col , row ) int col , row;
   {
   }
   int GetMIncr ( int dx , int dy ) {
@@ -783,19 +784,19 @@ static short  icode_df[16][3]= {
       if ( abs ( dx ) > abs ( dy ) ) return ( dx ) ;
       else return ( dy ) ;
   }
-  short get_key ( int t ) {
+  int get_key ( int t ) {
       unsigned char ch;
       int dx , dy;
       int i , key;
-      union kbinp { short kbint; char kbc [ 2 ] ;} kb;
+      union kbinp { int kbint; char kbc [ 2 ] ;} kb;
       if ( ( kb.kbint = get_kb ( 0 ) ) > 0 ) return ( kb.kbint ) ;
       return ( 0 ) ;
   }
-  short get_key_pointer ( int t ) {
+  int get_key_pointer ( int t ) {
       unsigned char ch;
       int dx , dy;
       int i , key;
-      union kbinp { short kbint; char kbc [ 2 ] ;} kb;
+      union kbinp { int kbint; char kbc [ 2 ] ;} kb;
       for ( ;; ) {
           if ( ( kb.kbint = get_kb ( 0 ) ) > 0 ) return ( kb.kbint ) ;
           if ( ( key = GetPointer ( & dx , & dy ) ) > 0 ) {
@@ -805,11 +806,11 @@ static short  icode_df[16][3]= {
           }
       }
   }
-  short get_text_position ( RECT *r , int n , int *old_i ) {
+  int get_text_position ( RECT *r , int n , int *old_i ) {
       unsigned char ch;
       int dx , dy , yy;
       int i , key;
-      union kbinp { short kbint; char kbc [ 2 ] ;} kb;
+      union kbinp { int kbint; char kbc [ 2 ] ;} kb;
       for ( ;; ) {
           if ( ( kb.kbint = get_kb ( 0 ) ) > 0 ) return ( kb.kbint ) ;
           if ( ( key = GetPointer ( & dx , & dy ) ) >= 0 ) {
@@ -837,10 +838,10 @@ static short  icode_df[16][3]= {
           }
       }
   }
-  short get_kb_o ( int t ) {
+  int get_kb_o ( int t ) {
       unsigned char ch;
       int i;
-      union kbinp { short kbint; char kbc [ 2 ] ;} kb;
+      union kbinp { int kbint; char kbc [ 2 ] ;} kb;
       XSync ( Dsp , False ) ;
       i = 0;
       while ( ( ( ierr = read ( 0 , & ch , 1 ) ) != 1 ) && ( i < 100 ) ) i++;
@@ -897,7 +898,7 @@ static short  icode_df[16][3]= {
       icode [ i ] [ 2 ] = col.green*255./65535+0.5;
       icode [ i ] [ 1 ] = col.blue*255./65535+0.5;
   }
-  void get_color ( int i , short *ir , short *ig , short *ib ) {
+  void get_color ( int i , int *ir , int *ig , int *ib ) {
       XColor col;
       if ( i >= NCLRS ) i = i%NCLRS +1;
       col.pixel = clrtbl [ i ] ;
@@ -943,10 +944,10 @@ static short  icode_df[16][3]= {
       ya = scr_y ( y1 ) ;
       xb = scr_x ( x2 ) ;
       yb = scr_y ( y2 ) ;
-      XDraw ( ( short ) xa , ( short ) ya , ( short ) xb , ( short ) yb ) ;
+      XDraw ( ( int ) xa , ( int ) ya , ( int ) xb , ( int ) yb ) ;
   }
   void t_initialise ( ) {
-      short i;
+      int i;
       for ( i = 0;i < 10;i++ ) st_ptr [ i ] = 0;
       cur_x = 320;cur_y = 240;
       ln_style = LN_STYL;
@@ -1010,8 +1011,8 @@ static short  icode_df[16][3]= {
       set_graphics ( 2 ) ;
       t_initialise ( ) ;
   }
-  void t_graph_new ( short width , short height ) {
-      make_area ( ( short ) width , ( short ) height ) ;
+  void t_graph_new ( int width , int height ) {
+      make_area ( ( int ) width , ( int ) height ) ;
       t_initialise ( ) ;
   }
   void user_conv ( ) {
@@ -1026,12 +1027,12 @@ static short  icode_df[16][3]= {
           ( rcur_y - v_y2 ) * ( w_y2 - w_y1 ) /V_y ) ;
       t_window ( ( float ) x1 , ( float ) y1 , ( float ) x2 , ( float ) y2 ) ;
   }
-  void put_pixl ( short col , short row ) {
+  void put_pixl ( int col , int row ) {
       XDrawPoint ( Dsp , Win , Gc , col , row ) ;
       return;
   }
   void put_pixel ( int col , int row ) {
-      short pos , j;
+      int pos , j;
       if ( ( col > c_v_x2 ) || ( col < c_v_x1 ) || ( row > c_v_y2 ) 
           || ( row < c_v_y1 ) ) return;
       pos = col;
@@ -1040,11 +1041,11 @@ static short  icode_df[16][3]= {
       return;
   }
   void put_pix ( int col , int row ) {
-      XDrawPoint ( Dsp , Win , Gc , ( short ) col , ( short ) row ) ;
+      XDrawPoint ( Dsp , Win , Gc , ( int ) col , ( int ) row ) ;
   }
   void put_dot ( int col , int row , unsigned char clr ) {
       XSetForeground ( Dsp , Gc , ( unsigned int ) ( clrtbl [ clr ] ) ) ;
-      XDrawPoint ( Dsp , Win , Gc , ( short ) col , ( short ) row ) ;
+      XDrawPoint ( Dsp , Win , Gc , ( int ) col , ( int ) row ) ;
   }
   void set_visual ( Visual *vis ) {
       int visclass;
@@ -1072,7 +1073,7 @@ static short  icode_df[16][3]= {
           icode [ i ] [ 1 ] = col.blue*255./65535+0.5;
       }
   }
-  void set_graphics ( short n ) {
+  void set_graphics ( int n ) {
       static int ENTRY = 1;
       static int argc = 1;
       static char *argv [ 1 ] = {"Testing"};
@@ -1262,8 +1263,8 @@ static short  icode_df[16][3]= {
       *xres = EVGAX;
       *yres = EVGAY;
   }
-  void make_area ( short width , short height ) {
-      short n = 2 , i;
+  void make_area ( int width , int height ) {
+      int n = 2 , i;
       static int ENTRY = 1;
       static int argc = 1;
       static char *argv [ 1 ] = {"Testing"};
@@ -1397,9 +1398,9 @@ static short  icode_df[16][3]= {
       return;
   }
   void _marker ( int x , int y ) {
-      short fac = 1;
+      int fac = 1;
       int px [ 4 ] , py [ 4 ] ;
-      short style , mf;
+      int style , mf;
       style = m_style%20;
       mf = m_style/20;
       fac += mf;
@@ -1464,25 +1465,25 @@ static short  icode_df[16][3]= {
           case 9 :
           px [ 0 ] = x+4*fac;py [ 0 ] = y;px [ 1 ] = x-4*fac;py [ 1 ] = y+4*fac;
           px [ 2 ] = x-4*fac;py [ 2 ] = y-4*fac;
-          _poly_fill ( ( short ) 3 , px , py , ( short ) 0 , 
+          _poly_fill ( ( int ) 3 , px , py , ( int ) 0 , 
               ( unsigned char ) c_color ) ;
           break;
           case 10:
           px [ 0 ] = x-4*fac;py [ 0 ] = y;px [ 1 ] = x+4*fac;py [ 1 ] = y+4*fac;
           px [ 2 ] = x+4*fac;py [ 2 ] = y-4*fac;
-          _poly_fill ( ( short ) 3 , px , py , ( short ) 0 , 
+          _poly_fill ( ( int ) 3 , px , py , ( int ) 0 , 
               ( unsigned char ) c_color ) ;
           break;
           case 11:
           px [ 0 ] = x;py [ 0 ] = y+4*fac;px [ 1 ] = x-4*fac;py [ 1 ] = y-4*fac;
           px [ 2 ] = x+4*fac;py [ 2 ] = y-4*fac;
-          _poly_fill ( ( short ) 3 , px , py , ( short ) 0 , 
+          _poly_fill ( ( int ) 3 , px , py , ( int ) 0 , 
               ( unsigned char ) c_color ) ;
           break;
           case 12:
           px [ 0 ] = x;py [ 0 ] = y-4*fac;px [ 1 ] = x-4*fac;py [ 1 ] = y+4*fac;
           px [ 2 ] = x+4*fac;py [ 2 ] = y+4*fac;
-          _poly_fill ( ( short ) 3 , px , py , ( short ) 0 , 
+          _poly_fill ( ( int ) 3 , px , py , ( int ) 0 , 
               ( unsigned char ) c_color ) ;
           break;
           case 13 :
@@ -1499,25 +1500,25 @@ static short  icode_df[16][3]= {
           case 16:
           px [ 0 ] = x+2*fac;py [ 0 ] = y;px [ 1 ] = x-2*fac;py [ 1 ] = y+2*fac;
           px [ 2 ] = x-2*fac;py [ 2 ] = y-2*fac;
-          _poly_fill ( ( short ) 3 , px , py , ( short ) 0 , 
+          _poly_fill ( ( int ) 3 , px , py , ( int ) 0 , 
               ( unsigned char ) c_color ) ;
           break;
           case 17:
           px [ 0 ] = x-2*fac;py [ 0 ] = y;px [ 1 ] = x+2*fac;py [ 1 ] = y+2*fac;
           px [ 2 ] = x+2*fac;py [ 2 ] = y-2*fac;
-          _poly_fill ( ( short ) 3 , px , py , ( short ) 0 , 
+          _poly_fill ( ( int ) 3 , px , py , ( int ) 0 , 
               ( unsigned char ) c_color ) ;
           break;
           case 18:
           px [ 0 ] = x;py [ 0 ] = y+2*fac;px [ 1 ] = x-2*fac;py [ 1 ] = y-2*fac;
           px [ 2 ] = x+2*fac;py [ 2 ] = y-2*fac;
-          _poly_fill ( ( short ) 3 , px , py , ( short ) 0 , 
+          _poly_fill ( ( int ) 3 , px , py , ( int ) 0 , 
               ( unsigned char ) c_color ) ;
           break;
           case 19:
           px [ 0 ] = x;py [ 0 ] = y-2*fac;px [ 1 ] = x-2*fac;py [ 1 ] = y+2*fac;
           px [ 2 ] = x+2*fac;py [ 2 ] = y+2*fac;
-          _poly_fill ( ( short ) 3 , px , py , ( short ) 0 , 
+          _poly_fill ( ( int ) 3 , px , py , ( int ) 0 , 
               ( unsigned char ) c_color ) ;
           break;
           default :break;
@@ -1532,7 +1533,7 @@ static short  icode_df[16][3]= {
       if ( x < c_v_x1 ) t++;
       return ( t ) ;
   }
-  short clip_line ( int *xa , int *ya , int *xb , int *yb ) {
+  int clip_line ( int *xa , int *ya , int *xb , int *yb ) {
       int x , y , tx , ty , xs = c_v_x1 , ys = c_v_y1;
       unsigned char c1 , c2 , c;
       c1 = code ( *xa , *ya ) ;
@@ -1588,8 +1589,8 @@ static short  icode_df[16][3]= {
       }
       return ( 1 ) ;
   }
-  void mline ( short ixb , short iyb , short ixe , short iye ) {
-      short i , ix , iy , ixdf , iydf , id , ixl , ixu , iyl , iyu;
+  void mline ( int ixb , int iyb , int ixe , int iye ) {
+      int i , ix , iy , ixdf , iydf , id , ixl , ixu , iyl , iyu;
       float dx , dy , xx , yy;
       ixl = ixb;
       ixu = ixe;
@@ -1622,15 +1623,15 @@ static short  icode_df[16][3]= {
   }
   void _draw_line ( int x1 , int y1 , int x2 , int y2 ) {
       char far *addr;
-      short i , dx , dy , f , g , inc1 , inc2 , ab , dx1 , dy1 , miny , maxy , minx , maxx;
+      int i , dx , dy , f , g , inc1 , inc2 , ab , dx1 , dy1 , miny , maxy , minx , maxx;
           
-      short clip , ch , rh , r , c;
+      int clip , ch , rh , r , c;
       unsigned char temp;
       int xa , ya , xb , yb;
       xa = x1 , xb = x2 , ya = y1 , yb = y2;
       clip = clip_line ( & xa , & ya , & xb , & yb ) ;
       if ( clip == 0 ) return;
-      XDraw ( ( short ) xa , ( short ) ya , ( short ) xb , ( short ) yb ) ;
+      XDraw ( ( int ) xa , ( int ) ya , ( int ) xb , ( int ) yb ) ;
       return;
   }
   void draw_line ( int xa , int ya , int xb , int yb ) {
@@ -1661,7 +1662,7 @@ static short  icode_df[16][3]= {
       return;
   }
   void hori_line ( int x1 , int x2 , int y ) {
-      short i , clip;
+      int i , clip;
       char far *addr;
       int xa , ya , xb , yb;
       int temp;
@@ -1669,10 +1670,10 @@ static short  icode_df[16][3]= {
       xa = x1 , xb = x2 , ya = y , yb = y;
       clip = clip_line ( & xa , & ya , & xb , & yb ) ;
       if ( clip == 0 ) return;
-      XDraw ( ( short ) xa , ( short ) ya , ( short ) xb , ( short ) yb ) ;
+      XDraw ( ( int ) xa , ( int ) ya , ( int ) xb , ( int ) yb ) ;
   }
   void vert_line ( int y1 , int y2 , int x ) {
-      short i , clip;
+      int i , clip;
       char far *addr;
       int xa , ya , xb , yb;
       int temp;
@@ -1680,19 +1681,19 @@ static short  icode_df[16][3]= {
       xa = x , xb = x , ya = y1 , yb = y2;
       clip = clip_line ( & xa , & ya , & xb , & yb ) ;
       if ( clip == 0 ) return;
-      XDraw ( ( short ) xa , ( short ) ya , ( short ) xb , ( short ) yb ) ;
+      XDraw ( ( int ) xa , ( int ) ya , ( int ) xb , ( int ) yb ) ;
   }
-  void v_line ( short ya , short yb , short x ) {
-      XDraw ( ( short ) x , ( short ) ya , ( short ) x , ( short ) yb ) ;
+  void v_line ( int ya , int yb , int x ) {
+      XDraw ( ( int ) x , ( int ) ya , ( int ) x , ( int ) yb ) ;
   }
-  void h_line ( short xa , short xb , short y ) {
-      XDraw ( ( short ) xa , ( short ) y , ( short ) xb , ( short ) y ) ;
+  void h_line ( int xa , int xb , int y ) {
+      XDraw ( ( int ) xa , ( int ) y , ( int ) xb , ( int ) y ) ;
   }
   void _draw_ ( int x , int y ) {
       int xa , ya , xb , yb;
       unsigned int ptn;
-      short dx , dy , f , inc1 , inc2 , g , dx1 , dy1 , ab;
-      short clip , i , ch , rh , c , r;
+      int dx , dy , f , inc1 , inc2 , g , dx1 , dy1 , ab;
+      int clip , i , ch , rh , c , r;
       float h;
       xa = cur_x;
       ya = cur_y;
@@ -1822,7 +1823,7 @@ static short  icode_df[16][3]= {
       {
       int xp , yp , temp;
       float xx , yy , xx0 , yy0 , xx1 , xx2 , yy1 , yy2 , xx3 , xx4 , yy3 , yy4;
-      short i , j , j1 , k;
+      int i , j , j1 , k;
       j = 0;
       xx0 = x [ 0 ] ; yy0 = y [ 0 ] ;
       x1 [ j ] = ( xx0 ) +0.5; y1 [ j ] = ( yy0 ) +0.5; j++;
@@ -1865,7 +1866,7 @@ static short  icode_df[16][3]= {
       int xp , yp , temp;
       int x1 [ 300 ] , y1 [ 300 ] ;
       float xx , yy , xx0 , yy0 , xx1 , xx2 , yy1 , yy2 , xx3 , xx4 , yy3 , yy4;
-      short i , j , j1;
+      int i , j , j1;
       j = 0;
       xx0 = x [ 0 ] ; yy0 = y [ 0 ] ;
       x1 [ j ] = ( xx0 ) ; y1 [ j ] = ( yy0 ) ; j++;
@@ -1894,9 +1895,9 @@ static short  icode_df[16][3]= {
           xx0 = xx;yy0 = yy;
       }
       if ( t_fill ) {
-          if ( code == 0 ) _poly_fill ( ( short ) j , x1 , y1 , 
-              ( short ) 0 , ( unsigned char ) t_bkgr ) ;
-          else _poly_fill ( ( short ) j , x1 , y1 , ( short ) 0 , 
+          if ( code == 0 ) _poly_fill ( ( int ) j , x1 , y1 , 
+              ( int ) 0 , ( unsigned char ) t_bkgr ) ;
+          else _poly_fill ( ( int ) j , x1 , y1 , ( int ) 0 , 
               ( unsigned char ) t_pattern ) ;
       }
       if ( t_bodr ) {
@@ -1910,10 +1911,10 @@ static short  icode_df[16][3]= {
 */
       return;
   }
-  void _mpoly_fill ( short n , int *px , int *py , int *px1 , int *py1 , unsigned char b_color ) 
+  void _mpoly_fill ( int n , int *px , int *py , int *px1 , int *py1 , unsigned char b_color ) 
       {
-      short j , imd;
-      short i , cnt , ind;
+      int j , imd;
+      int i , cnt , ind;
       int xcord [ 500 ] ;
       int xlow , xup;
       int txx;
@@ -1997,8 +1998,8 @@ static short  icode_df[16][3]= {
       float x [ 300 ] , y [ 300 ] ;
       int x1 [ 500 ] , y1 [ 500 ] , x2 [ 500 ] , y2 [ 500 ] ;
       int code , n , i , xdum , ydum , pnts;
-      short ptr;
-      short j , pnt , asc , tempc;
+      int ptr;
+      int j , pnt , asc , tempc;
       float fact = 1.0;
       int xo , yo;
       unsigned char color;
@@ -2034,7 +2035,7 @@ static short  icode_df[16][3]= {
               code = icxv [ ptr ] ;n = icyv [ ptr ] ;
               if ( code != 0 ) {
                   if ( t_fill ) {
-                      _mpoly_fill ( ( short ) pnts , x1 , y1 , x2 , y2 , color ) ;
+                      _mpoly_fill ( ( int ) pnts , x1 , y1 , x2 , y2 , color ) ;
                   }
                   if ( t_bodr ) {
                       temp = c_color;set_clr ( t_color ) ;
@@ -2057,8 +2058,8 @@ static short  icode_df[16][3]= {
       int x1 [ 500 ] , y1 [ 500 ] , x2 [ 500 ] , y2 [ 500 ] ;
       int pnts;
       float xdum , ydum;
-      short ptr;
-      short j , pnt , asc , tempc;
+      int ptr;
+      int j , pnt , asc , tempc;
       float xa , ya;
       float fact = 1.0;
       float xo , yo;
@@ -2097,7 +2098,7 @@ static short  icode_df[16][3]= {
               code = icxv [ ptr ] ;n = icyv [ ptr ] ;
               if ( code != 0 ) {
                   if ( t_fill ) {
-                      _mpoly_fill ( ( short ) pnts , x1 , y1 , x2 , y2 , color ) ;
+                      _mpoly_fill ( ( int ) pnts , x1 , y1 , x2 , y2 , color ) ;
                   }
                   if ( t_bodr ) {
                       temp = c_color;set_clr ( t_color ) ;
@@ -2117,8 +2118,8 @@ static short  icode_df[16][3]= {
   {
       float x [ 150 ] , y [ 150 ] ;
       int code , n , i , xdum , ydum;
-      short ptr;
-      short j , pnt , asc , tempc;
+      int ptr;
+      int j , pnt , asc , tempc;
       float fact = 1.0;
       int xo , yo;
       tempc = ln_width;
@@ -2159,8 +2160,8 @@ static short  icode_df[16][3]= {
       float x [ 150 ] , y [ 150 ] ;
       int code , n , i;
       float xdum , ydum;
-      short ptr;
-      short j , pnt , asc , tempc;
+      int ptr;
+      int j , pnt , asc , tempc;
       float xa , ya;
       float fact = 1.0;
       float xo , yo;
@@ -2205,7 +2206,7 @@ static short  icode_df[16][3]= {
   }
   void drawg0ch_o ( c ) char c;
   {
-      short j , pnt , asc , tempc;
+      int j , pnt , asc , tempc;
       float fact = 1.0;
       int x , y , xa , ya , xo , yo;
       float tempx , tempy;
@@ -2250,7 +2251,7 @@ static short  icode_df[16][3]= {
   }
   void drawgch_o ( c ) char c;
   {
-      short j , pnt , asc , tempc;
+      int j , pnt , asc , tempc;
       int x , y , xa , ya;
       float fact = 1.0;
       float tempx , tempy;
@@ -2294,7 +2295,7 @@ static short  icode_df[16][3]= {
   }
   float get_val ( char *ch ) {
       char chr [ 4 ] ;
-      short err;
+      int err;
       float val;
       chr [ 0 ] = *ch;chr [ 1 ] = * ( ch+1 ) ;chr [ 2 ] = * 
           ( ch+2 ) ;chr [ 3 ] = ' ';
@@ -2302,7 +2303,7 @@ static short  icode_df[16][3]= {
       if ( err < 1 ) return ( 1.0 ) ;
       else return ( val ) ;
   }
-  void setsubsup ( float *fact , short *ishft , char cntl ) {
+  void setsubsup ( float *fact , int *ishft , char cntl ) {
       L_N *pt;
       *fact = ( *fact ) *SSF;
       txt_w42 = SSF*txt_w42;
@@ -2326,9 +2327,9 @@ static short  icode_df[16][3]= {
       return;
   }
   void resetsubsup ( fact , ishft ) float *fact;
-  short *ishft;
+  int *ishft;
   {
-      short is;
+      int is;
       *ishft = ( *ishft ) /10;
       is = *ishft- ( ( *ishft ) /10 ) *10;
       if ( is == 1 ) {
@@ -2345,7 +2346,7 @@ static short  icode_df[16][3]= {
   }
   void _box_fill ( int x1 , int y1 , int x2 , int y2 , unsigned char color ) {
       int x_min , y_min , x_max , x_max1 , x_min1 , y_max , i , j;
-      short po1;
+      int po1;
       unsigned char temp;
       temp = c_color;
       c_color = color;
@@ -2372,10 +2373,10 @@ static short  icode_df[16][3]= {
       _box_fill ( v_x1 , v_y1 , v_x2 , v_y2 , 0x00 ) ;
       return;
   }
-  void _poly_fill ( short n , int *px , int *py , short flag , unsigned char b_color ) 
+  void _poly_fill ( int n , int *px , int *py , int flag , unsigned char b_color ) 
       {
-      short j , imd;
-      short i , cnt , ind;
+      int j , imd;
+      int i , cnt , ind;
       int xcord [ 15 ] ;
       int xlow , xup;
       int txx;
@@ -2457,12 +2458,12 @@ static short  icode_df[16][3]= {
           ( i+1 ) %n ] , py [ ( i+1 ) %n ] ) ;
   }
   void _circle ( int x , int y , int r ) {
-      short i , j;
+      int i , j;
       int ym , sqrd;
       sqrd = r*r;
-      ym = y- ( short ) ( r/sqrt ( ( double ) 2. ) ) ;
+      ym = y- ( int ) ( r/sqrt ( ( double ) 2. ) ) ;
       for ( j = y;j >= ym;--j ) {
-          i = x+ ( short ) sqrt ( ( double ) sqrd- ( ( y-j ) * ( y-j ) ) ) ;
+          i = x+ ( int ) sqrt ( ( double ) sqrd- ( ( y-j ) * ( y-j ) ) ) ;
           put_pixel ( i , j ) ;
           put_pixel ( i , 2*y-j ) ;
           put_pixel ( x+y-j , y+i-x ) ;
@@ -2479,7 +2480,7 @@ static short  icode_df[16][3]= {
       double t , sqrd;
       unsigned char temp;
       sqrd = ( double ) r* ( double ) r;
-      ym = y- ( short ) ( r/sqrt ( ( double ) 2. ) ) ;
+      ym = y- ( int ) ( r/sqrt ( ( double ) 2. ) ) ;
       temp = c_color;
       put_pixel ( x , y+r ) , put_pixel ( x , y-r ) ;
       put_pixel ( x+r , y ) , put_pixel ( x-r , y ) ;
@@ -2543,16 +2544,16 @@ static short  icode_df[16][3]= {
       scpt->x1 = x1; scpt->x2 = x2;
       scpt->y1 = y1; scpt->y2 = y2;
       scpt->buf = XCPix ( x1 , y1 , x2 , y2 ) ;
-      XCopyArea ( Dsp , Win , ( scpt->buf ) , Gc , ( short ) x1 , ( short ) 
-          ( y1 ) , ( short ) ( x2-x1+1 ) , ( short ) ( y2-y1+1 ) , 0 , 0 ) ;
+      XCopyArea ( Dsp , Win , ( scpt->buf ) , Gc , ( int ) x1 , ( int ) 
+          ( y1 ) , ( int ) ( x2-x1+1 ) , ( int ) ( y2-y1+1 ) , 0 , 0 ) ;
   }
   void scr_recover ( ) {
       int i , j , addr;
       int x1 , x2 , y1 , y2;
       x1 = scpt->x1; x2 = scpt->x2;
       y1 = scpt->y1; y2 = scpt->y2;
-      XCopyArea ( Dsp , ( scpt->buf ) , Win , Gc , 0 , 0 , ( short ) ( x2-x1+1 ) , 
-          ( short ) ( y2-y1+1 ) , ( short ) x1 , ( short ) y1 ) ;
+      XCopyArea ( Dsp , ( scpt->buf ) , Win , Gc , 0 , 0 , ( int ) ( x2-x1+1 ) , 
+          ( int ) ( y2-y1+1 ) , ( int ) x1 , ( int ) y1 ) ;
       XFreePixmap ( Dsp , scpt->buf ) ;
       release_scrn_buffer ( ) ;
   }
@@ -2565,8 +2566,8 @@ static short  icode_df[16][3]= {
       int x1 , x2 , y1 , y2;
       x1 = scpt->x1 + x0; x2 = scpt->x2 + x0;
       y1 = scpt->y1 + y0; y2 = scpt->y2 + y0;
-      XCopyArea ( Dsp , ( scpt->buf ) , Win , Gc , 0 , 0 , ( short ) ( x2-x1+1 ) , 
-          ( short ) ( y2-y1+1 ) , ( short ) x1 , ( short ) y1 ) ;
+      XCopyArea ( Dsp , ( scpt->buf ) , Win , Gc , 0 , 0 , ( int ) ( x2-x1+1 ) , 
+          ( int ) ( y2-y1+1 ) , ( int ) x1 , ( int ) y1 ) ;
   }
   void draw_o_cursor ( ) {
       unsigned char tempc;
@@ -3013,9 +3014,9 @@ static short  icode_df[16][3]= {
       char ch;
       _box_fill ( v_x1 , v_y1 , v_x2 , v_y2 , 0 ) ;
   }
-  void _godard_fill ( short n , int *px , int *py , short flag , float *pv ) {
-      short j , imd;
-      short i , cnt , ind;
+  void _godard_fill ( int n , int *px , int *py , int flag , float *pv ) {
+      int j , imd;
+      int i , cnt , ind;
       int xcord [ 15 ] ;
       int xlow , xup;
       int txx;
@@ -3159,9 +3160,9 @@ static short  icode_df[16][3]= {
       }
       set_clr ( c_color ) ;
   }
-  void _rect_fill ( short x1 , short y1 , short x2 , short y2 , unsigned char color ) 
+  void _rect_fill ( int x1 , int y1 , int x2 , int y2 , unsigned char color ) 
       {
-      short x_min , y_min , x_max , x_max1 , x_min1 , y_max , i , j , po1;
+      int x_min , y_min , x_max , x_max1 , x_min1 , y_max , i , j , po1;
       unsigned char temp;
       temp = c_color;
       c_color = color;
@@ -3185,7 +3186,7 @@ static short  icode_df[16][3]= {
       return;
   }
   void menuch ( char c , int ix1 , int iy1 , int char_clr ) {
-      short jj , k , i , iy;
+      int jj , k , i , iy;
       char str [ 2 ] ;
       unsigned char temp;
       temp = c_color;
@@ -3200,8 +3201,8 @@ static short  icode_df[16][3]= {
       set_clr ( c_color ) ;
       return;
   }
-  short p_control ( ) {
-      short sam , b_x , b_y;
+  int p_control ( ) {
+      int sam , b_x , b_y;
       char ch;
       b_y = 462;
       b_x = 5;
@@ -3237,7 +3238,7 @@ static short  icode_df[16][3]= {
   char *h_int ( float *x , float *y ) {
       unsigned char *loc , *loco;
       char key , cr , bsp;
-      short ihori , i , count , k , counto;
+      int ihori , i , count , k , counto;
       int itxclr_o , pattern_o;
       float xx , yy , ytwtg;
       float tw , th , tg;
@@ -3291,7 +3292,7 @@ static short  icode_df[16][3]= {
   char *h_int_o ( float *x , float *y ) {
       unsigned char *loc , *loco;
       char key , cr , bsp;
-      short ihori , i , count , k , counto;
+      int ihori , i , count , k , counto;
       int itxclr_o;
       float xx , yy , ytwtg;
       float tw , th , tg;
@@ -3477,7 +3478,7 @@ static short  icode_df[16][3]= {
       txt_h42 = txt_ht/3000.0;
   }
   void t_txt_wr ( int n , char *txt ) {
-      short i = 0 , bold , tempc , ishft , trot , Nu , De , gap , lnwidth_o;
+      int i = 0 , bold , tempc , ishft , trot , Nu , De , gap , lnwidth_o;
       int font_o;
       float fact , val , xl1 , xl2 , hfact = 1.0 , slant;
       L_N *FO_L = NULL , *pt = NULL;
@@ -3789,7 +3790,7 @@ static short  icode_df[16][3]= {
   void t_panel ( float *x , float *y , int color , int flag , int n ) {
       int *x1 , *y1;
       int xo , yo , xv , yv;
-      short i , j = 0;
+      int i , j = 0;
       x1 = ( int * ) Malloc ( sizeof ( int ) * ( n+1 ) ) ;
       y1 = ( int * ) Malloc ( sizeof ( int ) * ( n+1 ) ) ;
       if ( ( y1 == NULL ) ) {
@@ -3809,8 +3810,8 @@ static short  icode_df[16][3]= {
               xo = xv , yo = yv;j++;
           }
       }
-      if ( ( j > 2 ) && ( j < 500 ) ) _poly_fill ( ( short ) j , x1 , y1 , 
-          ( short ) flag , ( unsigned char ) color ) ;
+      if ( ( j > 2 ) && ( j < 500 ) ) _poly_fill ( ( int ) j , x1 , y1 , 
+          ( int ) flag , ( unsigned char ) color ) ;
       free ( x1 ) , free ( y1 ) ;
   }
   void t_box_fill ( float x1 , float y1 , float x2 , float y2 , int color , int ib ) 
@@ -3832,13 +3833,13 @@ static short  icode_df[16][3]= {
   void t_godr_fill ( int n , float *x , float *y , float *p ) {
       int x1 [ 20 ] , y1 [ 20 ] ;
       float p1 [ 20 ] , pv;
-      short i;
+      int i;
       for ( i = 0;i < n;i++ ) {
           x1 [ i ] = scr_x ( x [ i ] ) ;
           y1 [ i ] = scr_y ( y [ i ] ) ;
       }
       for ( i = 0;i < n;i++ ) {pv = * ( p++ ) , p1 [ i ] = pclr ( pv ) ; }
-      _godard_fill ( ( short ) n , x1 , y1 , ( short ) ibdr , p1 ) ;
+      _godard_fill ( ( int ) n , x1 , y1 , ( int ) ibdr , p1 ) ;
   }
   void t_marker ( float x , float y ) {
       int x1 , y1;
@@ -3850,7 +3851,7 @@ static short  icode_df[16][3]= {
       m_style = istl;
   }
   void t_zoom ( float *x1 , float *y1 , float *x2 , float *y2 ) {
-      short it = 7 , item = 1;
+      int it = 7 , item = 1;
       char cmenu [ 49 ] = {
       "Zoom   Pan    StretchView   Quit   MenuoffpOinter"};
       lcur_x = v_x1;
@@ -3909,7 +3910,7 @@ static short  icode_df[16][3]= {
       XDefineCursor ( Dsp , Win , Curo ) ;
   }
   void pick_box ( float *x1 , float *y1 , float *x2 , float *y2 ) {
-      short it = 6 , item = 1;
+      int it = 6 , item = 1;
       char cmenu [ 66 ] = {
       "Diagonal   move_AroundStretch    Quit       menuOff    Usepointer "};
       XSync ( Dsp , False ) ;
@@ -3965,7 +3966,7 @@ static short  icode_df[16][3]= {
       * ( ptr+i ) = '\0';i--;
       while ( ( i >= 0 ) && ( * ( ptr+i ) <= ' ' ) ) {* ( ptr+i ) = '\0';i--;}
   }
-  void Scrn_back ( short ix , short iy , short n ) {
+  void Scrn_back ( int ix , int iy , int n ) {
       int x2 , y , y2;
       x2 = ix+n*9+10;
       scr_back ( ( int ) ix , ( int ) ( iy ) , x2 , ( int ) ( 22+iy ) ) ;
@@ -3979,8 +3980,8 @@ static short  icode_df[16][3]= {
   void transch ( int c ) {
       int code , n , i;
       float xdum , ydum;
-      short ptr;
-      short j , pnt , asc , tempc;
+      int ptr;
+      int j , pnt , asc , tempc;
       float fact = 1.0;
       asc = c;
       pnt = asc-32;
@@ -4146,7 +4147,7 @@ static short  icode_df[16][3]= {
   }
   int strlngth ( char *title , float *xdsp ) {
       float wd , gp , fj , fjl , gj , val , fact , fact1 = 1.0 , hfact = 1.0;
-      short ngp , n , i , j , k , greek = 0;
+      int ngp , n , i , j , k , greek = 0;
       int font_o;
       B_K *FB_P = NULL;
       font_o = t_font;
@@ -4285,7 +4286,7 @@ static short  icode_df[16][3]= {
   char getch ( void ) {
       int ierr;
       char ch;
-      union kbinp { short kbint; char kbc [ 2 ] ;} kb;
+      union kbinp { int kbint; char kbc [ 2 ] ;} kb;
       while ( ( kb.kbint = get_kb ( 1 ) ) <= 0 ) ;
       ch = kb.kbc [ 0 ] ;
       return ( ch ) ;
@@ -4812,8 +4813,8 @@ static short  icode_df[16][3]= {
 void backup_line(int x0,int y0,int x, int y)
 {
   int xa, ya, xb, yb,ptn;
-  short  dx, dy,  f, inc1, inc2, g,dx1,dy1,ab;
-  short clip,i,ch,rh,c,r;
+  int  dx, dy,  f, inc1, inc2, g,dx1,dy1,ab;
+  int clip,i,ch,rh,c,r;
   float h;
 
   xa=x0;
@@ -4877,8 +4878,8 @@ void backup_line(int x0,int y0,int x, int y)
 void recover_line(int x0,int y0,int x, int y)
 {
   int xa, ya, xb, yb,ptn;
-  short  dx, dy,  f, inc1, inc2, g,dx1,dy1,ab;
-  short clip,i,ch,rh,c,r;
+  int  dx, dy,  f, inc1, inc2, g,dx1,dy1,ab;
+  int clip,i,ch,rh,c,r;
   float h;
 
   xa=x0;
@@ -4946,8 +4947,8 @@ void recover_line(int x0,int y0,int x, int y)
       else {xmin = x2;xmax = x1;}
       if ( y1 < y2 ) {ymin = y1 , ymax = y2;}
       else {ymin = y2;ymax = y1;}
-      XCopyArea ( Dsp , Win , linebuf , Gc , ( short ) xmin , ( short ) ( ymin ) , 
-          ( short ) ( xmax-xmin+1 ) , ( short ) ( ymax-ymin+1 ) , i*nx , 0 ) ;
+      XCopyArea ( Dsp , Win , linebuf , Gc , ( int ) xmin , ( int ) ( ymin ) , 
+          ( int ) ( xmax-xmin+1 ) , ( int ) ( ymax-ymin+1 ) , i*nx , 0 ) ;
   }
   void backup_line ( int x1 , int y1 , int x2 , int y2 ) {
       int i , dx , dy , nb , nx , ny , length , width , xl , yl , xu , yu , nxp;
@@ -4962,8 +4963,8 @@ void recover_line(int x0,int y0,int x, int y)
       nxp = abs ( nx ) +1;
       length = nb*nxp;
       width = abs ( ny ) +1;
-      linebuf = XCreatePixmap ( Dsp , Win , ( short ) 
-          ( length ) , ( short ) ( width ) , Dpth ) ;
+      linebuf = XCreatePixmap ( Dsp , Win , ( int ) 
+          ( length ) , ( int ) ( width ) , Dpth ) ;
       dxx = ( ( float ) dx ) / ( float ) nb;
       dyy = ( ( float ) dy ) / ( float ) nb;
       for ( i = 0;i < ( nb-1 ) ;i++ ) {
@@ -4982,8 +4983,8 @@ void recover_line(int x0,int y0,int x, int y)
       else {xmin = x2;xmax = x1;}
       if ( y1 < y2 ) {ymin = y1 , ymax = y2;}
       else {ymin = y2;ymax = y1;}
-      XCopyArea ( Dsp , linebuf , Win , Gc , i*nx , 0 , ( short ) ( xmax-xmin+1 ) , 
-          ( short ) ( ymax-ymin+1 ) , ( short ) xmin , ( short ) ( ymin ) ) ;
+      XCopyArea ( Dsp , linebuf , Win , Gc , i*nx , 0 , ( int ) ( xmax-xmin+1 ) , 
+          ( int ) ( ymax-ymin+1 ) , ( int ) xmin , ( int ) ( ymin ) ) ;
   }
   void recover_line ( int x1 , int y1 , int x2 , int y2 ) {
       int i , dx , dy , nb , nx , ny , length , width , xl , yl , xu , yu , nxp;

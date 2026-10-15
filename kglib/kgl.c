@@ -6707,7 +6707,9 @@ void uicheck_and_do(DIG *G,char ch)
         case 'b': uiwin_boxfill(G); break;
         case 'r': uiwin_circlefill(G); break;
         case 'p': uiwin_poly_fill(G); break;
-        case 'g': uiwin_godard_fill(G); break;
+        case 'g': 
+              printf("Godard Fill\n");
+              uiwin_godard_fill(G); break;
         case 's': uiwin_set_godr(G); break;
         case 'h': uiwin_set_shade_params(G); break;
         case 'B' : uiwin_3_boxfill(G); break;
@@ -6928,7 +6930,8 @@ void uihoreview(DIG *G)
   dc = G->dc;
   if(G->D_ON)ui_clr_vu(G); 
 //TCBTCB
-#if 1
+#if 1 
+//MSG:
 //  if( ZBUFF==1)clear_zbuf();
   if (G->BACK_UP == 1) { 
       uiwrite_file(G,&(G->rbuf),dc->reviewfile);
@@ -7812,7 +7815,7 @@ void kgGetRGB(DIG *G,int no,int *r,int *g,int *b) {
 #if 0
 void check_abort(void *parent)
  {
-   union kbinp { short kbint; char kbc[2];} kb;
+   union kbinp { intkbint; char kbc[2];} kb;
    if((kb.kbint=get_kb(0))<0)return;
    if(kb.kbc[0] != 27) return;
    if( kgCheckMenu(parent,100L,200L," DO YOU WANT TO ABORT THE JOB ?",1L)){
@@ -7990,7 +7993,7 @@ void  kgAntialiasedReview(DIG *G) {
     strcat(flname,"/Junk.Gph");
     kgBackupGph(G,flname);
     uiUpdateOff(D);
-#if 0
+#if 1
    img = uiGetAntialiasedImage(flname,w,h,dc->ls_list,G->MAG);
 #else
    void *fid = kgInitImage(w,h,G->MAG);
@@ -8628,7 +8631,7 @@ float  kgStringLength(void *Gtmp,char *title) {
 float  uiStringLength(char *title,int width) {
       float length=0,*xdsp;
       float wd,gp,fj,fjl,gj,val,fact,fact1=1.0,hfact=1.0;
-      short ngp,n,i,j,k,greek=0;
+      int ngp,n,i,j,k,greek=0;
       int font_o,Nu,De;
       wd= width;
       xdsp = &length;
@@ -8729,7 +8732,7 @@ float  uiStringLength(char *title,int width) {
 float  uiStringLength_new(char *title,int width) {
       float length=0,*xdsp;
       float wd,gp,fj,fjl,gj,val,fact,fact1=1.0,hfact=1.0;
-      short ngp,n,i,j,k,greek=0;
+      int ngp,n,i,j,k,greek=0;
       int font_o,Nu,De;
       wd= width;
       xdsp = &length;
@@ -9132,9 +9135,9 @@ int kgRoundedRectangleRing2(void * fid,float xo,float yo,float xl,float yl,float
    /* xo,yo is the centre of the rectangle */
    float vmin,vmax;
    int count,Dang=3,count1,count2,hcount,np,pos,size,size1;
-   float x[800],y[800],v[800],xx,yy;
-   float xd[800],yd[800],vd[800];
-   float xd1[800],yd1[800],vd1[800];
+   float x[1500],y[1500],v[1500],xx,yy;
+   float xd[1500],yd[1500],vd[1500];
+   float xd1[1500],yd1[1500],vd1[1500];
    float dl,xp,yp,h,s,vv,vorg,vmid,vlow,horg,sorg,vlow1,vmid1,fac1,fac2;
    double dl1,dl2;
    double ang,dang;
@@ -10279,7 +10282,7 @@ int kgRoundedRectangleRing(void *fid,float xo,float yo,float xl,float yl,float r
 int kgRoundedRectangleFill(void * fid,float xo,float yo,float xl,float yl,int ib,int clr,float fac) {
    /* xo,yo is the centre of the rectangle */
    int count,Dang=3,count1,count2;
-   float x[450],y[450],v[450];
+   float x[1500],y[1500],v[1500];
    float dl,xp,yp;
    double ang,dang;
    int i,j;
@@ -10574,6 +10577,7 @@ int kgRoundedRectangleShade4(void * fid,float xo,float yo,float xl,float yl,int 
        np =kgGetCirclePoints( xl,yl,fac, x, y, v,vlow,vlow, count);
        np =kgGetCirclePoints( xl-2*bordrsize,yl-2*bordrsize,fac1, xd, yd, vd,vmid,vmid, count);
    }
+   printf("Np = %d\n",np);
    for(i=0;i<np;i++) {
      npi= np+i;
      npj = np-1-i;
@@ -10596,6 +10600,8 @@ int kgRoundedRectangleShade4(void * fid,float xo,float yo,float xl,float yl,int 
      vd[i]= vv;
    }
    kgGouraudFill(fid,np2,xd,yd,vd);
+   printf("Np = %d\n",np);
+   fflush(stdout);
    xd[0]= x[np-1];
    yd[0]= y[np-1];
    vd[0]= v[np-1];
@@ -10614,6 +10620,8 @@ int kgRoundedRectangleShade4(void * fid,float xo,float yo,float xl,float yl,int 
      yd[i] = yd[i] +yo;
    }
    kgGouraudFill(fid,4,xd,yd,vd);
+   printf("Np = %d\n",np);
+   fflush(stdout);
    xd[0]= xo;
    yd[0]= yo;
    vd[0]= vv;
@@ -11009,8 +11017,8 @@ int kgRoundedRectangle(void * fid,float xo,float yo,float xl,float yl,int clr,fl
    /* xo,yo is the centre of the rectangle */
    int count,Dang=3,count1,count2,hcount,np,pos,size,size1;
 //   float bordrsize=2.5;
-   float x[800],y[800],v[800],xx,yy;
-   float xd[800],yd[800],vd[800];
+   float x[1500],y[1500],v[1500],xx,yy;
+   float xd[1500],yd[1500],vd[1500];
    float dl,xp,yp,red,green,blue,h,s,vv,vorg,vmid,vlow,horg,sorg,vlow1,vmid1,fac1;
    double dl1;
    double ang,dang;
