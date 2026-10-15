@@ -29,9 +29,9 @@
 //static float clip_min=0.,clip_max=1000.;
   static float CPCONS = 1.0;
   static int BY_P_LN = 80;
-  void get_color ( int col , int*r , int*g , int*b ) ;
+  void get_color ( int col , int *r , int *g , int *b ) ;
   void get_cur_color ( int *r , int *g , int *b ) ;
-  void _put_trans_pix3 ( int col , int row , intr , intg , intb ) ;
+  void _put_trans_pix3 ( int col , int row , int r , int g , int b ) ;
   int PutPixel_IMAGE ( int x , int y , int red , int green , int blue ) ;
   void uiput_shade_pix3 ( DIG *G , int col , int row , int z , float illu ) ;
   void draw_line3 ( int xa , int ya , int za , int xb , int yb , int zb ) ;
@@ -42,9 +42,9 @@
   void _box_fill3 ( int x1 , int y1 , int z1 , int x2 , int y2 , int z2 , unsigned int color ) ;
       
   void _draw_line3 ( int x1 , int y1 , int z1 , int x2 , int y2 , int z2 ) ;
-  void _poly_fill3 ( int n , int *px , int *py , float *pz , intflag , unsigned int b_color ) ;
+  void _poly_fill3 ( int n , int *px , int *py , float *pz , int flag , unsigned int b_color ) ;
       
-  void _godard_fill3 ( int n , int *px , int *py , int *pz , intflag , float *pv ) ;
+  void _godard_fill3 ( int n , int *px , int *py , int *pz , int flag , float *pv ) ;
       
   void mline3 ( int ixb , int iyb , int izb , int ixe , int iye , int ize ) ;
       
@@ -130,7 +130,7 @@
           || ( ymax < ( dc->v_y1+dc->D_y ) ) || ( ymin > 
           ( dc->v_y2+dc->D_y ) ) ) return;
       for ( i = 0;i < n;i++ ) {pv = * ( p++ ) , p1 [ i ] = uipclr ( pv ) ; }
-      _uigodard_fill3 ( G , ( int) n , x1 , y1 , z1 , ( int) dc->ibdr , p1 ) ;
+      _uigodard_fill3 ( G , ( int ) n , x1 , y1 , z1 , ( int ) dc->ibdr , p1 ) ;
   }
   void ui_3_shade_fill ( DIG *G , int n , float *x , float *y , float *z , float *p , int clr ) 
       {
@@ -157,7 +157,7 @@
    //for (i=0;i<n;i++) {pv=*(p++), p1[i] = pclr(pv); }
       temp = dc->wc->c_color;
       wcset_clr ( dc->wc , clr ) ;
-      _uishade_fill3 ( G , ( int) n , x1 , y1 , z1 , ( int) dc->ibdr , p ) ;
+      _uishade_fill3 ( G , ( int ) n , x1 , y1 , z1 , ( int ) dc->ibdr , p ) ;
       wcset_clr ( dc->wc , temp ) ;
   }
   void uiclear_zbuf ( DIG *G ) {
@@ -638,7 +638,7 @@
   }
   void _uidraw3_ ( DIG *G , int x , int y , int z ) {
       int xa , ya , za , xb , yb , zb;
-      intdx , dy , f , inc1 , inc2 , g , dx1 , dy1 , ab;
+      int dx , dy , f , inc1 , inc2 , g , dx1 , dy1 , ab;
       int clip , i , ch , rh , c , r;
       double h , m , cons;
       kgWC *wc;
@@ -770,7 +770,7 @@
   void _uibox_fill3 ( DIG *G , int x1 , int y1 , int z1 , int x2 , int y2 , int z2 , unsigned int color ) 
       {
       int x_min , y_min , x_max , x_max1 , x_min1 , y_max , i , j;
-      intpo1;
+      int po1;
       unsigned int temp;
       double cons , m;
       int z;
@@ -807,9 +807,9 @@
       wcset_clr ( wc , temp ) ;
       return;
   }
-  void _uipoly_fill3 ( DIG *G , int n , int *px , int *py , float *pz , intflag , unsigned int b_color ) 
+  void _uipoly_fill3 ( DIG *G , int n , int *px , int *py , float *pz , int flag , unsigned int b_color ) 
       {
-      intj , imd;
+      int j , imd;
       int i , cnt , ind , flg;
       int xcord [ 50 ] ;
       float zcord [ 50 ] ;
@@ -924,9 +924,9 @@
           ( int ) ( pz [ i ] +0.5 ) , px [ ( i+1 ) %n ] , py [ 
           ( i+1 ) %n ] , ( int ) ( pz [ ( i+1 ) %n ] +0.5 ) ) ;
   }
-  void _uigodard_fill3 ( DIG *G , int n , int *px , int *py , int *pz , intflag , float *pv ) 
+  void _uigodard_fill3 ( DIG *G , int n , int *px , int *py , int *pz , int flag , float *pv ) 
       {
-      intj , imd;
+      int j , imd;
       int i , cnt , ind , flg;
       int xcord [ 15 ] ;
       int zcord [ 15 ] ;
@@ -1140,9 +1140,9 @@
       }
       wcset_clr ( wc , c_color ) ;
   }
-  void _uishade_fill3 ( DIG *G , int n , int *px , int *py , int *pz , intflag , float *pv ) 
+  void _uishade_fill3 ( DIG *G , int n , int *px , int *py , int *pz , int flag , float *pv ) 
       {
-      intj , imd;
+      int j , imd;
       int i , cnt , ind , flg;
       int xcord [ 15 ] ;
       int zcord [ 15 ] ;

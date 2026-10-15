@@ -410,9 +410,9 @@ static float xpos,ypos,txs=0.,txc=1.;
 static float cx,cy,xp,yp;
 
 static void t_txt_font( int font);
-static void put_pixl(intcol, introw);
-static void put_dot(intcol, introw);
-static void put_blnk(intcol, introw);
+static void put_pixl(int col, int row);
+static void put_dot(int col, int row);
+static void put_blnk(int col, int row);
 static void hardcopy(void);
 static void  getwin(float w[]);
 static void  getvu( float v[]);
@@ -433,15 +433,15 @@ static void DRAW_LINE(float x1,float y1,float x2,float y2);
 static void box_fill(float x1,float y1,float x2,float y2,unsigned int color);
 static void win_chng_clr();
 static void win_box_fill(void);
-static void poly_fill(intn,float *x,float *y,intflag,unsigned int color);
-static void godard_fill(intn,float *px,float *py,intflag,float *pv);
+static void poly_fill(int n,float *x,float *y,intflag,unsigned int color);
+static void godard_fill(int n,float *px,float *py,intflag,float *pv);
 static void win_godard_fill(void);
 static void win_poly_fill(void);
 static void circle(float x1,float y1,float r);
 static void circle_fill(float x1,float y1,float r,unsigned int color);
 static void init_graph();
 static void initialise();
-static void set_graphics(intn);
+static void set_graphics(int n);
 static void set_mode1();
 static void set_mode2();
 static void _move(int x,int y);
@@ -459,7 +459,7 @@ static void txt_write(char *txt);
 static void txt_incl(char *txt);
 static void txtwrt(char *txt);
 static void win_txtwrt(void);
-static void txt_color(intcolor);
+static void txt_color(int color);
 static void win_txt_color(void);
 static void win_txt_pattern(void);
 static void win_txt_fill(void);
@@ -488,9 +488,9 @@ static void win_set_txtbold(void);
 static void _marker (int x,int y);
 static void _box_fill(int x1,int y1,int x2,int y2,unsigned int color);
 static void clear_screen();
-static void _poly_fill(intn,int *px,int *py,intflag,unsigned int b_color);
-static void _mpoly_fill(intn,int *px,int *py,int *px1,int *py1,unsigned int b_color);
-static void _godard_fill(intn,int *px,int *py,intflag,float *pv);
+static void _poly_fill(int n,int *px,int *py,intflag,unsigned int b_color);
+static void _mpoly_fill(int n,int *px,int *py,int *px1,int *py1,unsigned int b_color);
+static void _godard_fill(int n,int *px,int *py,intflag,float *pv);
 static void scr_back(int x1,int y1,int x2, int y2, int *mem);
 static void scr_recover(int x1,int y1,int x2,int y2, int *mem);
 static void pixel_copy(int x1,int y1,int x2,int y2, int x3,int y3);
@@ -516,14 +516,14 @@ static void win_boxfill();
 static void display_on(void);
 static void display_off(void);
 static void review_cmds(void);
-static void write_buf(void *ch, intn);
+static void write_buf(void *ch, int n);
 static void close_file(intrbuf);
-static void read_buf(void *ch, intn);
-static void mline( intixb, intiyb, intixe,intiye);
+static void read_buf(void *ch, int n);
+static void mline( int ixb, int iyb, int ixe,int iye);
 static void write_file(intrbuf);
 static void review_file(char *str);
 static void read_file(intrbuf);
-static void menuch(char c,intix1,intiy1);
+static void menuch(char c,int ix1,int iy1);
 static intreview(void);
 static void _rect_fill(intx1,inty1,intx2,inty2,unsigned int color);
 static void _draw_bound(intx1,inty1,intx2,inty2);
@@ -737,7 +737,7 @@ static  void setclr(unsigned int color) {
    PIXL =color&0xFF;
    return;
  }
-static       void g_fill(intix,intiy,int col)
+static       void g_fill(int ix,int iy,int col)
        {
         _rect_fill((int)ix,(int)(iy+15),(int)(ix+11),(int)(iy),col);
        }
@@ -975,7 +975,7 @@ static void win_poly_fill(void)
   int color;
   int *x1,*y1;
   float *x,*y;
-  inti,j=0;
+  int i,j=0;
   int xo,yo,xv,yv;
   read_buf(&n,4);
   x = (float *) malloc(sizeof(float)*n);
@@ -1226,14 +1226,14 @@ static void set_usrcord(void)
  }
 #ifndef UNIX
 #define Fflush
-static void wait_for_printing(void)
+static void wait_for_print ing(void)
  {
    return;
  }
 #else
 #define Fflush fflush(NULL)
 #ifndef RS6000
-static void wait_for_printing(void)
+static void wait_for_print ing(void)
  {
    int i,Wait=0;
    FILE *Fp;
@@ -1290,7 +1290,7 @@ static int Printer_ready(char *b)
   if( Printer[i] != '\0') return(0);
   else return(1);
  }
-static void wait_for_printing(void)
+static void wait_for_print ing(void)
  {
    int i,Wait=0;
    FILE *Fp;
@@ -1465,7 +1465,7 @@ static void win_3_move()
 static void _draw_line3(int x1,int y1,int z1,int x2,int y2,int z2)
 {
  char far *addr;
- inti,dx,dy,f,g,inc1,inc2,ab,dx1,dy1,miny,maxy,minx,maxx;
+ int i,dx,dy,f,g,inc1,inc2,ab,dx1,dy1,miny,maxy,minx,maxx;
  int clip,ch,rh,r,c;
  unsigned int temp;
  int xa,ya,xb,yb,za,zb,z;
@@ -1600,7 +1600,7 @@ static void draw_line3(int xa,int ya,int za,int xb,int yb,int zb)
  }
 static void hori_line3(int xa,int xb,int y,int za,int zb)
 {
-  inti,clip;
+  int i,clip;
   char far *addr;
   int temp;
   int x1,x2,z1,z2;
@@ -1788,10 +1788,10 @@ static void win_3_draw()
     else t_draw(newstr.xstr,newstr.ystr);
 }
 
-static void _poly_fill3(intn,int *px,int *py,int *pz,intflag,unsigned int b_color)
+static void _poly_fill3(int n,int *px,int *py,int *pz,intflag,unsigned int b_color)
 {
   intj,imd;
-  inti,cnt,ind,flg;
+  int i,cnt,ind,flg;
   int xcord[15];
   float zcord[15];
   int xlow,xup;
@@ -1912,10 +1912,10 @@ static void _poly_fill3(intn,int *px,int *py,int *pz,intflag,unsigned int b_colo
 }
 
 
-static void _godard_fill3(intn,int *px,int *py,int *pz ,intflag,float *pv)
+static void _godard_fill3(int n,int *px,int *py,int *pz ,intflag,float *pv)
 {
   intj,imd;
-  inti,cnt,ind,flg;
+  int i,cnt,ind,flg;
   int xcord[15];
   int zcord[15];
   int xlow,xup;
@@ -2055,7 +2055,7 @@ static void _godard_fill3(intn,int *px,int *py,int *pz ,intflag,float *pv)
 }
 static void godr_line3(int xa,int xb,int y,int za,int zb,float pa,float pb)
 {
-  inti,pos,p1,p2;
+  int i,pos,p1,p2;
   char far* addr;
   int tempc;
   float tempp,pval,pfac,yy;
@@ -2126,7 +2126,7 @@ static void t_panel(float *x,float *y,int color,int flag,int n)
   {
   int *x1,*y1;
   int xo,yo,xv,yv;
-  inti,j=0;
+  int i,j=0;
   x1 = (int *) malloc(sizeof(int)*(n+1));
   y1 = (int *) malloc(sizeof(int)*(n+1));
   if( (y1==NULL) ){
@@ -2152,7 +2152,7 @@ static void t_panel(float *x,float *y,int color,int flag,int n)
 static void t_3_panel(float *x,float *y,float *z,int color,int flag,int n)
   {
   int x1[20],y1[20],z1[20];
-  inti;
+  int i;
   for(i=0;i<n;i++) 
   {
     x1[i] =scr_x(x[i]); 
@@ -2287,10 +2287,10 @@ static void win_3_boxfill()
    else
    t_box_fill(x1,y1,x2,y2,fl,ib);
 }
-static void _godard_fill(intn,int *px,int *py,intflag,float *pv)
+static void _godard_fill(int n,int *px,int *py,intflag,float *pv)
 {
   intj,imd,tempc;
-  inti,cnt,ind;
+  int i,cnt,ind;
   int pcrl=0;
   int xcord[15];
   int xlow,xup;
@@ -2505,7 +2505,7 @@ static  void t_godr_fill(int n,float *x,float *y,float *p)
  {
   int x1[200],y1[200];
   float p1[20],pv;
-  inti;
+  int i;
   for(i=0;i<n;i++)
   {
     x1[i] =scr_x(x[i]); 
@@ -2518,7 +2518,7 @@ static  void t_3_godr_fill(int n,float *x,float *y,float *z,float *p)
  {
   int x1[20],y1[20],z1[20];
   float p1[20],pv;
-  inti;
+  int i;
   for(i=0;i<n;i++)
   {
     x1[i] =scr_x(x[i]); 
@@ -3438,9 +3438,9 @@ static intclip_line(int *xa,int *ya, int *xb, int *yb)
 }
 
 
-static  void mline( intixb, intiyb, intixe,intiye)
+static  void mline( int ixb, int iyb, int ixe,int iye)
    {
-     inti,ix,iy,ixdf,iydf,id,ixl,ixu,iyl,iyu;
+     int i,ix,iy,ixdf,iydf,id,ixl,ixu,iyl,iyu;
      float dx,dy,xx,yy;
 
       ixl = ixb;
@@ -3479,7 +3479,7 @@ static  void mline( intixb, intiyb, intixe,intiye)
 static void _draw_line(int x1,int y1,int x2,int y2)
 {
  char far *addr;
- inti,dx,dy,f,g,inc1,inc2,ab,dx1,dy1,miny,maxy,minx,maxx;
+ int i,dx,dy,f,g,inc1,inc2,ab,dx1,dy1,miny,maxy,minx,maxx;
  intclip,ch,rh,r,c;
  unsigned int temp;
  int xa,ya,xb,yb,dum;
@@ -3587,7 +3587,7 @@ static void draw_line(int xa,int ya,int xb,int yb)
  }
 static void hori_line(int xa,int xb,int y)
 {
-  inti,clip;
+  int i,clip;
   char far *addr;
   int temp;
   if(xa==xb) return;
@@ -3603,7 +3603,7 @@ static void hori_line(int xa,int xb,int y)
 }
 static void phori_line(int xa,int xb,int y)
 {
-  inti,j,ip,ib,jp,clip,pt_no;
+  int i,j,ip,ib,jp,clip,pt_no;
   char far *addr;
   unsigned char dot;
   int temp;
@@ -3633,7 +3633,7 @@ static void phori_line(int xa,int xb,int y)
 
 static void vert_line(int ya,int yb,int x)
 {
-  inti,clip;
+  int i,clip;
   char far *addr;
   int temp;
   if(ya==yb) return;
@@ -4365,7 +4365,7 @@ static int t_fillchr(float *x,float *y,int n,int *x1,int *y1,int *x2,int*y2)
   {
   int xp,yp,temp;
   float xx,yy,xx0,yy0,xx1,xx2,yy1,yy2,xx3,xx4,yy3,yy4;
-  inti,j,j1,k;
+  int i,j,j1,k;
   j=0;
   xx0=x[0]; yy0=y[0];
   x1[j] =(xx0)*Mag+0.5; y1[j] =(yy0)*Mag+0.5; j++;
@@ -4412,7 +4412,7 @@ static void t_fillchr_o(float *x,float *y,int code,int n)
   int xp,yp,temp;
   int x1[300],y1[300];
   float xx,yy,xx0,yy0,xx1,xx2,yy1,yy2,xx3,xx4,yy3,yy4;
-  inti,j,j1;
+  int i,j,j1;
   j=0;
   xx0=x[0]; yy0=y[0];
   x1[j] =(xx0); y1[j] =(yy0); j++;
@@ -4497,7 +4497,7 @@ static   void resetsubsup(fact,ishft)
   float *fact;
   int*ishft;
    {
-     intis;
+     int is;
       *ishft = (*ishft)/10;
       is = *ishft-((*ishft)/10)*10;
       if( is==1){
@@ -4515,7 +4515,7 @@ static   void resetsubsup(fact,ishft)
 
 static void  win_txtwrt(void)
   {
-  inti=0,bold,tempc,ishft,trot,Nu,De,gap,lnwidth_o,t_color_o;
+  int i=0,bold,tempc,ishft,trot,Nu,De,gap,lnwidth_o,t_color_o;
   float fact,val,xl1,xl2,hfact=1.0,slant;
   int font_o;
   L_N *FO_L=NULL,*pt=NULL;
@@ -4784,7 +4784,7 @@ static void  win_txtwrt(void)
   }
 static void  win_txtwrt_o(void)
 {
-  inti=0,bold,j,pnt,tempc,ishft,trot,Nu,De,gap;
+  int i=0,bold,j,pnt,tempc,ishft,trot,Nu,De,gap;
   float fact,val,xl1,xl2,hfact,slant;
   int nchr;
   unsigned char txt[200],cntl;
@@ -4940,10 +4940,10 @@ static void clear_screen()
 }
 
 
-static void _poly_fill(intn,int *px,int *py,intflag,unsigned int b_color)
+static void _poly_fill(int n,int *px,int *py,intflag,unsigned int b_color)
 {
   intj,imd;
-  inti,cnt,ind;
+  int i,cnt,ind;
   int xcord[50];
   int xlow,xup;
   int txx;
@@ -5031,10 +5031,10 @@ static void _poly_fill(intn,int *px,int *py,intflag,unsigned int b_color)
       for(i=0;i<n;i++) _draw_line(px[i],py[i],px[(i+1)%n],py[(i+1)%n]);
 }
 
-static void _mpoly_fill_o(intn,int *px,int *py,int *px1,int *py1,unsigned int b_color)
+static void _mpoly_fill_o(int n,int *px,int *py,int *px1,int *py1,unsigned int b_color)
 {
   intj,imd;
-  inti,cnt,ind;
+  int i,cnt,ind;
   int xcord[1500];
   int xlow,xup;
   int txx;
@@ -5120,10 +5120,10 @@ static void _mpoly_fill_o(intn,int *px,int *py,int *px1,int *py1,unsigned int b_
   c_color=tempc;
 }
 
-static void _mpoly_fill(intn,int *px,int *py,int *px1,int *py1,unsigned int b_color)
+static void _mpoly_fill(int n,int *px,int *py,int *px1,int *py1,unsigned int b_color)
 {
   intj,imd;
-  inti,cnt,ind;
+  int i,cnt,ind;
   int xcord[5000];
   int xlow,xup;
   int txx;
@@ -5208,7 +5208,7 @@ static void _mpoly_fill(intn,int *px,int *py,int *px1,int *py1,unsigned int b_co
 }
 static void _circle(int x,int y,int r)
 {
-  inti,j;
+  int i,j;
   int ym,sqrd;
   sqrd=r*r;
   ym=y-(int)(r/sqrt((double)2.));
@@ -5292,9 +5292,9 @@ static void _rect_fill(intx1,inty1,intx2,inty2,unsigned int color)
   c_color=temp;
   return;
 }
-static void read_buf(void *ch,intn)
+static void read_buf(void *ch,int n)
   {
-    inti;
+    int i;
     unsigned char *ptr;
     ptr = (unsigned char *)ch;
     for(i=0;i<n;i++)
@@ -5306,7 +5306,7 @@ static void read_buf(void *ch,intn)
 static   int strlngth(char *title,float *xdsp)
     {
       float wd,gp,fj,fjl,gj,val,fact,fact1=1.0,hfact=1.0;
-      intngp,n,i,j,k,greek=0;
+      int ngp,n,i,j,k,greek=0;
       int font_o,Nu,De;
       B_K *FB_P=NULL;
       font_o=t_font;
@@ -5464,9 +5464,9 @@ static  void read_file(intrbuf)
   {
    Byte=read(rbuf,(void *)Rbuff,B_min);
   }
-static  void write_buf( void *ch, intn)
+static  void write_buf( void *ch, int n)
   {
-    inti;
+    int i;
     int j;
     unsigned char * ptr;
     ptr = (unsigned char *) ch;
@@ -5659,7 +5659,7 @@ static  void set_a4copy(void)
        InitTiffBuf(EVGAX,EVGAY);
 #endif
    }
-static  intichk_blnk( unsigned char  *c,int n)
+static  int ichk_blnk( unsigned char  *c,int n)
 
   {
     int i;
@@ -5671,7 +5671,7 @@ static  void hardcopy()
 //      WriteTiff();
       return;
    }
-static void put_pixl(intcol, introw)
+static void put_pixl(int col, int row)
 {
   int addr,Row;
   if(col >= MAXB) return;
@@ -5683,18 +5683,18 @@ static void put_pixl(intcol, introw)
   return;
 }
 
-static void put_dot(intcol, introw)
+static void put_dot(int col, int row)
 {
-  intpos,j,temp;
+  int pos,j,temp;
   int addr;
   addr = ((row)*MAXB + (col));
 //  *(buffer+addr) = imgGetColor(c_color);
   imgGetColor(c_color,addr);
   return;
 }
-static void put_blnk(intcol, introw)
+static void put_blnk(int col, int row)
 {
-  intpos,j,temp;
+  int pos,j,temp;
   int addr;
   addr = ((row)*MAXB + (col));
 //  *(buffer+addr) =imgGetColor(0);
@@ -5703,7 +5703,7 @@ static void put_blnk(intcol, introw)
 }
 static void put_pixel(int col, int row)
 {
-  intpos,j,temp;
+  int pos,j,temp;
   int addr;
   if(col >= MAXB) return;
   if ((col >= c_v_x2) || (col <c_v_x1) || (row > c_v_y2) || (row <c_v_y1)) return;
