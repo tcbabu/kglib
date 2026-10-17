@@ -68,7 +68,7 @@ static float TI[16] = {1.,0.,0.,0.,0.,1.,0.,0.,0.,0.,1.,0.,0.,0.,0.,1.};
       exit(0); \
      }\
    }
-static unsigned char esc=0x1b,G='g',N='n',C='c',P='p',Z='z',L='l',V='v';
+static unsigned char esc=0x1b,G2='g',N='n',C='c',P='p',Z='z',L='l',V='v';
 static unsigned char S='s',T='t',R='r',M='m',D='d',Y='y',U='u';
 static unsigned char O='o',B='b',X='x',F='f',I='i',A='a',E='e',W='w';
 static unsigned char H='h',K='k',M3 ='M',D3='D',P3='P',G3='G',B3='B',S3='S',S4='H',T3='T';
@@ -1127,7 +1127,7 @@ void kgGouraudFill(DIG *G,int n, float *x, float *y,float *v)
  {
      if(G->Rbuff != NULL) {
        uiwrite_bf(G,&P,1);
-       uiwrite_bf(G,&G,1);
+       uiwrite_bf(G,&G2,1);
        uiwrite_bf(G,&n,4);
        uiwrite_bf(G,x,4*n);
        uiwrite_bf(G,y,4*n);
@@ -1149,7 +1149,7 @@ void gphSetShadeParams(int fid,float p2, float p1,int startclr, int n, int ib)
 void gphGouraudFill(int fid,int n, float *x, float *y,float *v)
  {
      WRITE(fid,&P,1);
-     WRITE(fid,&G,1);
+     WRITE(fid,&G2,1);
      WRITE(fid,&n,4);
      WRITE(fid,x,4*n);
      WRITE(fid,y,4*n);
@@ -1720,6 +1720,47 @@ int kgGetEllipsePoints(float xsize,float ysize,float fac,int n,float *x,float *y
        
    }
    return n+3;
+
+}
+int kgGetEllipsePointsNew(float xsize,float ysize,int n,float *x,float *y) {
+   int i;
+   float a,b,e,emax,xx,yy,dx,dy,ba,xp,yp;
+   xsize = xsize/2.0;
+   ysize = ysize/2.0;
+   a = xsize;
+   b = ysize;
+   if(b>a) {
+    a = ysize;
+    b= xsize;
+   }
+   xx = xsize;
+   yy = ysize;
+   e = sqrtf( 1+b*b/(a*a));
+   dx = xx/(n-1);
+   xp = xsize;
+   if(xsize >= ysize) {
+     for(i=0;i<n;i++) {
+       x[i]= xp;
+       y[i]= b/a*sqrtf(a*a-xp*xp);
+       xp =xp-dx;
+     }
+   }
+   else {
+     for(i=0;i<n;i++) {
+       x[i]= xp;
+       y[i]= a/b*sqrtf(b*b-xp*xp);
+       xp =xp-dx;
+     }
+   }
+#if 0
+     for(i=0;i<n-1;i++) {
+       x[i+n]= -x[n-2-i];
+       y[i+n]= y[n-2-i];
+     }
+   return 2*n-1;
+#else
+   return n;
+#endif
 
 }
 int gphRoundedRectangleRing2(int fid,float xo,float yo,float xl,float yl,float red,float green,float blue,float fac,float bordrsize) {
@@ -5063,7 +5104,7 @@ void kgrev_box_fill3f(DIG *G,FILE *fp)
  }
  void uirev_file(FILE * pf,DIG *G,float sx,float fx,float sy, float fy)
   {
-    char ch,ch2;
+    unsigned char ch,ch2;
     int clr,n,i,flag;
     int no,ir,ig,ib;
     float x,y;
@@ -6620,7 +6661,7 @@ void uiwin_chng_clr(DIG *G)
 }
 void uicheck_and_do(DIG *G,char ch)
  {
-   char ch2;
+   unsigned char ch2;
    uiread_buf(G,&ch2,1);
 //   printf("uicheck: %c%c \n",ch,ch2);
    switch((int)ch)
@@ -6702,6 +6743,7 @@ void uicheck_and_do(DIG *G,char ch)
        }
       break;
      case 'p' :
+      fflush(stdout);
       switch((int)ch2)
       {
         case 'b': uiwin_boxfill(G); break;
@@ -7812,7 +7854,7 @@ void kgGetRGB(DIG *G,int no,int *r,int *g,int *b) {
 #if 0
 void check_abort(void *parent)
  {
-   union kbinp { short kbint; char kbc[2];} kb;
+   union kbinp { int kbint; char kbc[2];} kb;
    if((kb.kbint=get_kb(0))<0)return;
    if(kb.kbc[0] != 27) return;
    if( kgCheckMenu(parent,100L,200L," DO YOU WANT TO ABORT THE JOB ?",1L)){
@@ -7894,13 +7936,13 @@ void  kgReview(DIG *G) {
     kgWC *wc;
     kgDC *dc;
     if(G->D == NULL) return;
+    D = (DIALOG *)G->D;
     if(G->D_ON==0) {
 //      kgSetAntialiasing(G,0);
       kgAntialiasedReview(G);
 //      kgSetAntialiasing(G,1);
       return;
     }
-    D = (DIALOG *)G->D;
     EVGAY=D->evgay;
     wc = G->wc;
     dc = G->dc;
@@ -8628,7 +8670,7 @@ float  kgStringLength(void *Gtmp,char *title) {
 float  uiStringLength(char *title,int width) {
       float length=0,*xdsp;
       float wd,gp,fj,fjl,gj,val,fact,fact1=1.0,hfact=1.0;
-      short ngp,n,i,j,k,greek=0;
+      int ngp,n,i,j,k,greek=0;
       int font_o,Nu,De;
       wd= width;
       xdsp = &length;
@@ -8729,7 +8771,7 @@ float  uiStringLength(char *title,int width) {
 float  uiStringLength_new(char *title,int width) {
       float length=0,*xdsp;
       float wd,gp,fj,fjl,gj,val,fact,fact1=1.0,hfact=1.0;
-      short ngp,n,i,j,k,greek=0;
+      int ngp,n,i,j,k,greek=0;
       int font_o,Nu,De;
       wd= width;
       xdsp = &length;
@@ -9143,8 +9185,8 @@ int kgRoundedRectangleRing2(void * fid,float xo,float yo,float xl,float yl,float
    if(fac > 1.0) fac=1.0;
    if(fac > 0.25 ) Dang=2;
    if(fac > 0.4 ) Dang=1;
-   count = 90/Dang;
    if(fac==0.0) {count=1;Dang=90;}
+   count = 90/Dang;
    size = yl;
    if(size > xl){ size=xl;}
    if(bordrsize > size*0.5) bordrsize=size*0.5;
@@ -9333,8 +9375,8 @@ int kgRoundedRectangleRing1(void * fid,float xo,float yo,float xl,float yl,float
    if(fac > 1.0) fac=1.0;
    if(fac > 0.25 ) Dang=2;
    if(fac > 0.4 ) Dang=1;
+   if(fac <= 0.001) {count=1;Dang=90;}
    count = 90/Dang;
-   if(fac==0.0) {count=1;Dang=90;}
    size = yl;
    if(size > xl){ size=xl;}
    if(bordrsize > size*0.5) bordrsize=size*0.5;
@@ -9644,8 +9686,8 @@ int kgRoundedRectangleRing3(void * fid,float xo,float yo,float xl,float yl,float
    if(fac > 1.0) fac=1.0;
    if(fac > 0.25 ) Dang=2;
    if(fac > 0.4 ) Dang=1;
+   if(fac <= 0.001) {count=1;Dang=90;}
    count = 90/Dang;
-   if(fac==0.0) {count=1;Dang=90;}
    size = yl;
    if(size > xl){ size=xl;}
    if(bordrsize > size*0.5) bordrsize=size*0.5;
@@ -9955,8 +9997,8 @@ int kgRoundedRectangleRing(void *fid,float xo,float yo,float xl,float yl,float r
    if(fac > 1.0) fac=1.0;
    if(fac > 0.25 ) Dang=2;
    if(fac > 0.4 ) Dang=1;
+   if(fac <= 0.001) {count=1;Dang=90;}
    count = 90/Dang;
-   if(fac==0.0) {count=1;Dang=90;}
    size = yl;
    if(size > xl){ size=xl;}
    if(bordrsize > size*0.5) bordrsize=size*0.5;
@@ -10286,8 +10328,8 @@ int kgRoundedRectangleFill(void * fid,float xo,float yo,float xl,float yl,int ib
    if(fac > 1.0) fac=1.0;
    if(fac > 0.25 ) Dang=2;
    if(fac > 0.4 ) Dang=1;
+   if(fac <= 0.001) {count=1;Dang=90;}
    count = 90/Dang;
-   if(fac==0.0) {count=0;Dang=90;}
    dl = fac*yl;
    if(dl > fac*xl) dl=fac*xl;
    dang = Dang*3.14159265/180.0;
@@ -10300,7 +10342,7 @@ int kgRoundedRectangleFill(void * fid,float xo,float yo,float xl,float yl,int ib
        if(fac > 1.0) fac=1.0;
 //       printf("Getting kgGetEllipsePoints\n");
        fac = (fac-0.5)/0.5;
-       count = kgGetEllipsePoints(xl, yl,fac,count,x,y) - 2;
+       count = kgGetEllipsePointsNew(xl, yl,count,x,y) ;
        count2 = count -1;
        count1=  count2-1;
    }
@@ -10434,8 +10476,8 @@ int kgRoundedRectangleShade_o(void * fid,float xo,float yo,float xl,float yl,int
    int i,j;
    if(fac > 0.25 ) Dang=2;
    if(fac > 0.4 ) Dang=1;
+   if(fac <= 0.001) {count=1;Dang=90;}
    count = 90/Dang;
-   if(fac==0.0) {count=0;Dang=90;}
 //   kgGetDefaultRGB(clr,&r,&g,&b);
 //   kgGetRGB((DIG *)fid,clr,&r,&g,&b);
    if(clr >=0 ) kgGetRGB((DIG *)fid,clr,&r,&g,&b);
@@ -10504,8 +10546,8 @@ int kgRoundedRectangleShade4(void * fid,float xo,float yo,float xl,float yl,int 
    if(fac > 1.0) fac=1.0;
    if(fac > 0.25 ) Dang=2;
    if(fac > 0.4 ) Dang=1;
+   if(fac <= 0.0001) {count=1;Dang=90;}
    count = 90/Dang;
-   if(fac==0.0) {count=1;Dang=90;}
    size = yl;
    if(size > xl){ size=xl;}
    bordrsize = size*0.1;
@@ -10552,8 +10594,8 @@ int kgRoundedRectangleShade4(void * fid,float xo,float yo,float xl,float yl,int 
        vmax = vlow;
        fac = (fac-0.5)/0.5;
        fac1 = (fac1-0.5)/0.5;
-       np = kgGetEllipsePoints(xl, yl,fac,count,x,y) - 2;
-       np =kgGetEllipsePoints( xl-2*bordrsize,yl-2*bordrsize,fac1, count,xd, yd)-2;
+       np = kgGetEllipsePointsNew(xl, yl,count,x,y) ;
+       np =kgGetEllipsePointsNew( xl-2*bordrsize,yl-2*bordrsize, count,xd, yd);
        dv = (vmax-vmin);
        dv1 = (vmax1-vmin1);
        Dang = 90.0/(np-1);
@@ -10589,12 +10631,15 @@ int kgRoundedRectangleShade4(void * fid,float xo,float yo,float xl,float yl,int 
    }
    kgMixHsvColors(fid,200,128,h,s,vmin,vmax);
    kgSetShadeParams(fid,vmax,vmin,200, 128, 0);
+//   printf("Np= %d\n",np);
+//   fflush(stdout);
    kgGouraudFill(fid,np2,xd,yd,vd);
    for(i=0;i<np;i++) {
      xd[i]= xo;
      yd[i]= yo;
      vd[i]= vv;
    }
+#if 1
    kgGouraudFill(fid,np2,xd,yd,vd);
    xd[0]= x[np-1];
    yd[0]= y[np-1];
@@ -10613,14 +10658,14 @@ int kgRoundedRectangleShade4(void * fid,float xo,float yo,float xl,float yl,int 
      xd[i] = xd[i]+xo;
      yd[i] = yd[i] +yo;
    }
-   kgGouraudFill(fid,4,xd,yd,vd);
+   if(fac <= 0.5)kgGouraudFill(fid,4,xd,yd,vd);
    xd[0]= xo;
    yd[0]= yo;
    vd[0]= vv;
    xd[3]= xo;
    yd[3]= yo;
    vd[3]= vv;
-   kgGouraudFill(fid,4,xd,yd,vd);
+   if(fac <= 0.5) kgGouraudFill(fid,4,xd,yd,vd);
    for(i=0;i<np;i++) {
      xd[i] = -x[i]+xo;
      yd[i] = y[i] +yo;
@@ -10656,14 +10701,14 @@ int kgRoundedRectangleShade4(void * fid,float xo,float yo,float xl,float yl,int 
      xd[i] = xd[i]+xo;
      yd[i] = yd[i] +yo;
    }
-   kgGouraudFill(fid,4,xd,yd,vd);
+   if(fac <= 0.5) kgGouraudFill(fid,4,xd,yd,vd);
    xd[0]= xo;
    yd[0]= yo;
    vd[0]= vv;
    xd[1]= xo;
    yd[1]= yo;
    vd[1]= vv;
-   kgGouraudFill(fid,4,xd,yd,vd);
+   if(fac <= 0.5) kgGouraudFill(fid,4,xd,yd,vd);
    xd[0]= x[0];
    yd[0]= y[0];
    vd[0]= v[0];
@@ -10680,14 +10725,14 @@ int kgRoundedRectangleShade4(void * fid,float xo,float yo,float xl,float yl,int 
      xd[i] = xd[i]+xo;
      yd[i] = yd[i] +yo;
    }
-   kgGouraudFill(fid,4,xd,yd,vd);
+   if(fac <= 0.5) kgGouraudFill(fid,4,xd,yd,vd);
    xd[0]= xo;
    yd[0]= yo;
    vd[0]= vv;
    xd[1]= xo;
    yd[1]= yo;
    vd[1]= vv;
-   kgGouraudFill(fid,4,xd,yd,vd);
+   if(fac <= 0.5) kgGouraudFill(fid,4,xd,yd,vd);
    for(i=0;i<np2;i++) {
      xd[i] = -x[i]+xo;
      yd[i] = -y[i] +yo;
@@ -10739,14 +10784,15 @@ int kgRoundedRectangleShade4(void * fid,float xo,float yo,float xl,float yl,int 
      xd[i] = xd[i]+xo;
      yd[i] = -yd[i] +yo;
    }
-   kgGouraudFill(fid,4,xd,yd,vd);
+   if(fac <= 0.5) kgGouraudFill(fid,4,xd,yd,vd);
    xd[0]= xo;
    yd[0]= yo;
    vd[0]= vv;
    xd[3]= xo;
    yd[3]= yo;
    vd[3]= vv;
-   kgGouraudFill(fid,4,xd,yd,vd);
+   if(fac <= 0.5) kgGouraudFill(fid,4,xd,yd,vd);
+#endif
    return 1;
 }
 int kgRoundedRectangleShade0(void * fid,float xo,float yo,float xl,float yl,int clr,float fac,float vmin,float vmax) {
@@ -10761,8 +10807,8 @@ int kgRoundedRectangleShade0(void * fid,float xo,float yo,float xl,float yl,int 
    if(fac > 1.0) fac=1.0;
    if(fac > 0.25 ) Dang=2;
    if(fac > 0.4 ) Dang=1;
+   if(fac <= 0.001) {count=1;Dang=90;}
    count = 90/Dang;
-   if(fac==0.0) {count=0;Dang=90;}
 //   kgGetDefaultRGB(clr,&r,&g,&b);
 //   kgGetRGB((DIG *)fid,clr,&r,&g,&b);
    if(clr >=0 ) kgGetRGB((DIG *)fid,clr,&r,&g,&b);
@@ -10788,7 +10834,7 @@ int kgRoundedRectangleShade0(void * fid,float xo,float yo,float xl,float yl,int 
        if(fac > 1.0) fac=1.0;
 //       printf("Getting kgGetEllipsePoints\n");
        fac = (fac-0.5)/0.5;
-       count = kgGetEllipsePoints(xl, yl,fac,count,x,y) - 2;
+       count = kgGetEllipsePointsNew(xl, yl,count,x,y) ;
        count2 = count -1;
        count1=  count2-1;
    }
@@ -10842,8 +10888,8 @@ int kgRoundedRectangleShade1(void * fid,float xo,float yo,float xl,float yl,int 
    if(fac > 1.0) fac=1.0;
    if(fac > 0.25 ) Dang=2;
    if(fac > 0.4 ) Dang=1;
+   if(fac <= 0.001) {count=1;Dang=90;}
    count = 90/Dang;
-   if(fac==0.0) {count=0;Dang=90;}
 //   kgGetDefaultRGB(clr,&r,&g,&b);
 //   kgGetRGB((DIG *)fid,clr,&r,&g,&b);
    if(clr >=0 ) kgGetRGB((DIG *)fid,clr,&r,&g,&b);
@@ -10866,7 +10912,10 @@ int kgRoundedRectangleShade1(void * fid,float xo,float yo,float xl,float yl,int 
        if(fac > 1.0) fac=1.0;
 //       printf("Getting kgGetEllipsePoints\n");
        fac = (fac-0.5)/0.5;
-       count = kgGetEllipsePoints(xl, yl,fac,count,x,y) ;
+       count = kgGetEllipsePointsNew(xl, yl,count,x,y) ;
+       x[count]=0.;
+       y[count]=0.;
+       count++;
    }
    else {
      dang = Dang*3.14159265/180.0;
@@ -10925,8 +10974,8 @@ int kgRoundedRectangleShade(void * fid,float xo,float yo,float xl,float yl,int c
    int i,j;
    if(fac > 0.25 ) Dang=2;
    if(fac > 0.4 ) Dang=1;
+   if(fac <= 0.001) {count=1;Dang=90;}
    count = 90/Dang;
-   if(fac==0.0) {count=0;Dang=90;}
 //   kgGetDefaultRGB(clr,&r,&g,&b);
 //   kgGetRGB((DIG *)fid,clr,&r,&g,&b);
    if(clr >=0 ) kgGetRGB((DIG *)fid,clr,&r,&g,&b);
@@ -10953,7 +11002,10 @@ int kgRoundedRectangleShade(void * fid,float xo,float yo,float xl,float yl,int c
        if(fac > 1.0) fac=1.0;
 //       printf("Getting kgGetEllipsePoints\n");
        fac = (fac-0.5)/0.5;
-       count = kgGetEllipsePoints(xl, yl,fac,count,x,y) ;
+       count = kgGetEllipsePointsNew(xl, yl,count,x,y) ;
+       x[count]=0.;
+       y[count]=0.;
+       count++;
    }
    else {
      dang = Dang*3.14159265/180.0;
@@ -11020,8 +11072,8 @@ int kgRoundedRectangle(void * fid,float xo,float yo,float xl,float yl,int clr,fl
    if(fac > 1.0) fac=1.0;
    if(fac > 0.25 ) Dang=2;
    if(fac > 0.4 ) Dang=1;
+   if(fac <= 0.001) {count=1;Dang=90;}
    count = 90/Dang;
-   if(fac==0.0) {count=1;Dang=90;}
    size = yl;
    if(size > xl){ size=xl;}
    dl = size*fac;
@@ -11071,8 +11123,8 @@ int kgRoundedRectangle(void * fid,float xo,float yo,float xl,float yl,int clr,fl
        vmax1 = vv;
        fac = (fac-0.5)/0.5;
        fac1 = (fac1-0.5)/0.5;
-       np = kgGetEllipsePoints(xl, yl,fac,count,x,y) - 2;
-       np =kgGetEllipsePoints( xl-2*bordrsize,yl-2*bordrsize,fac1, count,xd, yd)-2;
+       np = kgGetEllipsePointsNew(xl, yl,count,x,y) ;
+       np =kgGetEllipsePointsNew( xl-2*bordrsize,yl-2*bordrsize,count,xd, yd);
        dv = (vmax-vmin);
        dv1 = (vmax1-vmin1);
        Dang = 90.0/(np-1);
@@ -11127,6 +11179,7 @@ int kgRoundedRectangle(void * fid,float xo,float yo,float xl,float yl,int clr,fl
    }
    kgLineColor(fid,clr);
    kgPolyFill(fid,np2,xd,yd,1,clr);
+#if 1
    xd[0]= x[np-1];
    yd[0]= y[np-1];
    vd[0]= v[np-1];
@@ -11145,7 +11198,7 @@ int kgRoundedRectangle(void * fid,float xo,float yo,float xl,float yl,int clr,fl
      yd[i] = yd[i] +yo;
    }
 //   kgGouraudFill(fid,4,xd,yd,vd);
-   kgPolyFill(fid,4,xd,yd,1,clr);
+   if(fac <= 0.5)kgPolyFill(fid,4,xd,yd,1,clr);
    for(i=0;i<np;i++) {
      xd[i] = -x[i]+xo;
      yd[i] = y[i] +yo;
@@ -11175,7 +11228,7 @@ int kgRoundedRectangle(void * fid,float xo,float yo,float xl,float yl,int clr,fl
      xd[i] = xd[i]+xo;
      yd[i] = yd[i] +yo;
    }
-   kgPolyFill(fid,4,xd,yd,1,clr);
+   if(fac <=0.5)kgPolyFill(fid,4,xd,yd,1,clr);
    xd[0]= x[0];
    yd[0]= y[0];
    vd[0]= v[0];
@@ -11192,7 +11245,7 @@ int kgRoundedRectangle(void * fid,float xo,float yo,float xl,float yl,int clr,fl
      xd[i] = xd[i]+xo;
      yd[i] = yd[i] +yo;
    }
-   kgPolyFill(fid,4,xd,yd,1,clr);
+   if(fac <=0.5) kgPolyFill(fid,4,xd,yd,1,clr);
    for(i=0;i<np2;i++) {
      xd[i] = -x[i]+xo;
      yd[i] = -y[i] +yo;
@@ -11231,7 +11284,8 @@ int kgRoundedRectangle(void * fid,float xo,float yo,float xl,float yl,int clr,fl
      xd[i] = xd[i]+xo;
      yd[i] = -yd[i] +yo;
    }
-   kgPolyFill(fid,4,xd,yd,1,clr);
+   if(fac<= 0.5) kgPolyFill(fid,4,xd,yd,1,clr);
+#endif
    return 1;
 }
 int kgRoundedRectangle_o(void * fid,float xo,float yo,float xl,float yl,int clr,float fac) {
@@ -11244,8 +11298,8 @@ int kgRoundedRectangle_o(void * fid,float xo,float yo,float xl,float yl,int clr,
    if(fac > 1.0) fac=1.0;
    if(fac > 0.25 ) Dang=2;
    if(fac > 0.4 ) Dang=1;
+   if(fac <= 0.001) {count=1;Dang=90;}
    count = 90/Dang;
-   if(fac==0.0) {count=0;Dang=90;}
    dl = fac*yl;
    if(dl > fac*xl) dl=fac*xl;
    dang = Dang*3.14159265/180.0;
@@ -11317,8 +11371,8 @@ int kgRoundedRectanglePressed(void * fid,float xo,float yo,float xl,float yl,int
    if(fac > 1.0) fac=1.0;
    if(fac > 0.25 ) Dang=2;
    if(fac > 0.4 ) Dang=1;
+   if(fac <= 0.001) {count=1;Dang=90;}
    count = 90/Dang;
-   if(fac==0.0) {count=1;Dang=90;}
    size = yl;
    if(size > xl){ size=xl;}
    dl = size*fac;
@@ -11519,8 +11573,8 @@ int kgRoundedRectangleRaised(void * fid,float xo,float yo,float xl,float yl,int 
    if(fac > 1.0) fac=1.0;
    if(fac > 0.25 ) Dang=2;
    if(fac > 0.4 ) Dang=1;
+   if(fac <= 0.001) {count=1;Dang=90;}
    count = 90/Dang;
-   if(fac==0.0) {count=1;Dang=90;}
    size = yl;
    if(size > xl){ size=xl;}
    dl = size*fac;
@@ -11752,8 +11806,8 @@ int kgRoundedRectangleRaised_1(void * fid,float xo,float yo,float xl,float yl,in
    int i,j,r,g,b;
    if(fac > 0.25 ) Dang=2;
    if(fac > 0.4 ) Dang=1;
+   if(fac <= 0.001) {count=1;Dang=90;}
    count = 90/Dang;
-   if(fac==0.0) {count=0;Dang=90;}
    dl = fac*yl;
    if(dl > fac*xl) dl=fac*xl;
    dang = Dang*3.14159265/180.0;
@@ -11918,8 +11972,8 @@ int kgRoundedRectangleRaised_o(void * fid,float xo,float yo,float xl,float yl,in
    int i,j,r,g,b;
    if(fac > 0.25 ) Dang=2;
    if(fac > 0.4 ) Dang=1;
+   if(fac <= 0.001) {count=1;Dang=90;}
    count = 90/Dang;
-   if(fac==0.0) {count=0;Dang=90;}
    dl = fac*yl;
    if(dl > fac*xl) dl=fac*xl;
    dang = Dang*3.14159265/180.0;
@@ -12076,8 +12130,8 @@ int kgRoundedRectangleLowered(void * fid,float xo,float yo,float xl,float yl,int
    int i,j,r,g,b;
    if(fac > 0.25 ) Dang=2;
    if(fac > 0.4 ) Dang=1;
+   if(fac <= 0.001) {count=1;Dang=90;}
    count = 90/Dang;
-   if(fac==0.0) {count=0;Dang=90;}
    dl = fac*yl;
    if(dl > fac*xl) dl=fac*xl;
    dang = Dang*3.14159265/180.0;
@@ -12198,8 +12252,8 @@ int kgRoundedRectanglePressed_o(void * fid,float xo,float yo,float xl,float yl,i
    int i,j,r,g,b;
    if(fac > 0.25 ) Dang=2;
    if(fac > 0.4 ) Dang=1;
+   if(fac <= 0.001) {count=1;Dang=90;}
    count = 90/Dang;
-   if(fac==0.0) {count=0;Dang=90;}
    dl = fac*yl;
    if(dl > fac*xl) dl=fac*xl;
    dang = Dang*3.14159265/180.0;
@@ -12319,8 +12373,8 @@ int kgRoundedRectangleLowered_o(void * fid,float xo,float yo,float xl,float yl,i
    int i,j,r,g,b;
    if(fac > 0.25 ) Dang=2;
    if(fac > 0.4 ) Dang=1;
+   if(fac <= 0.001) {count=1;Dang=90;}
    count = 90/Dang;
-   if(fac==0.0) {count=0;Dang=90;}
    dl = fac*yl;
    if(dl > fac*xl) dl=fac*xl;
    dang = Dang*3.14159265/180.0;

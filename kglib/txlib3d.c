@@ -29,9 +29,9 @@
 //static float clip_min=0.,clip_max=1000.;
   static float CPCONS = 1.0;
   static int BY_P_LN = 80;
-  void get_color ( int col , short *r , short *g , short *b ) ;
+  void get_color ( int col , int *r , int *g , int *b ) ;
   void get_cur_color ( int *r , int *g , int *b ) ;
-  void _put_trans_pix3 ( int col , int row , short r , short g , short b ) ;
+  void _put_trans_pix3 ( int col , int row , int r , int g , int b ) ;
   int PutPixel_IMAGE ( int x , int y , int red , int green , int blue ) ;
   void uiput_shade_pix3 ( DIG *G , int col , int row , int z , float illu ) ;
   void draw_line3 ( int xa , int ya , int za , int xb , int yb , int zb ) ;
@@ -42,11 +42,11 @@
   void _box_fill3 ( int x1 , int y1 , int z1 , int x2 , int y2 , int z2 , unsigned int color ) ;
       
   void _draw_line3 ( int x1 , int y1 , int z1 , int x2 , int y2 , int z2 ) ;
-  void _poly_fill3 ( short n , int *px , int *py , float *pz , short flag , unsigned int b_color ) ;
+  void _poly_fill3 ( int n , int *px , int *py , float *pz , int flag , unsigned int b_color ) ;
       
-  void _godard_fill3 ( short n , int *px , int *py , int *pz , short flag , float *pv ) ;
+  void _godard_fill3 ( int n , int *px , int *py , int *pz , int flag , float *pv ) ;
       
-  void mline3 ( short ixb , short iyb , short izb , short ixe , short iye , short ize ) ;
+  void mline3 ( int ixb , int iyb , int izb , int ixe , int iye , int ize ) ;
       
   void check_clip ( int r , int c , int z ) ;
   void shade_line3 ( int xa , int xb , int y , int za , int zb , float pa , float pb ) ;
@@ -76,7 +76,7 @@
       {
       int x1 [ 1000 ] , y1 [ 1000 ] ;
       float z1 [ 1000 ] ;
-      short i;
+      int i;
       int xmin = 100000000 , xmax = -100000000 , ymin = 100000000 , ymax = -100000000;
           
       kgDC *dc;
@@ -112,7 +112,7 @@
       {
       int x1 [ 20 ] , y1 [ 20 ] , z1 [ 20 ] ;
       float p1 [ 20 ] , pv;
-      short i;
+      int i;
       int xmin = 100000000 , xmax = -100000000 , ymin = 100000000 , ymax = -100000000;
           
       kgDC *dc;
@@ -130,13 +130,13 @@
           || ( ymax < ( dc->v_y1+dc->D_y ) ) || ( ymin > 
           ( dc->v_y2+dc->D_y ) ) ) return;
       for ( i = 0;i < n;i++ ) {pv = * ( p++ ) , p1 [ i ] = uipclr ( pv ) ; }
-      _uigodard_fill3 ( G , ( short ) n , x1 , y1 , z1 , ( short ) dc->ibdr , p1 ) ;
+      _uigodard_fill3 ( G , ( int ) n , x1 , y1 , z1 , ( int ) dc->ibdr , p1 ) ;
   }
   void ui_3_shade_fill ( DIG *G , int n , float *x , float *y , float *z , float *p , int clr ) 
       {
       int x1 [ 20 ] , y1 [ 20 ] , z1 [ 20 ] ;
       float p1 [ 20 ] , pv;
-      short i;
+      int i;
       int temp;
       int xmin = 100000000 , xmax = -100000000 , ymin = 100000000 , ymax = -100000000;
           
@@ -157,7 +157,7 @@
    //for (i=0;i<n;i++) {pv=*(p++), p1[i] = pclr(pv); }
       temp = dc->wc->c_color;
       wcset_clr ( dc->wc , clr ) ;
-      _uishade_fill3 ( G , ( short ) n , x1 , y1 , z1 , ( short ) dc->ibdr , p ) ;
+      _uishade_fill3 ( G , ( int ) n , x1 , y1 , z1 , ( int ) dc->ibdr , p ) ;
       wcset_clr ( dc->wc , temp ) ;
   }
   void uiclear_zbuf ( DIG *G ) {
@@ -442,7 +442,7 @@
   void _uidraw_line3 ( DIG *G , int x1 , int y1 , int z1 , int x2 , int y2 , int z2 ) 
       {
       char *addr;
-      short i , dx , dy , f , g , inc1 , inc2 , ab , dx1 , dy1 , miny , maxy , minx , maxx;
+      int i , dx , dy , f , g , inc1 , inc2 , ab , dx1 , dy1 , miny , maxy , minx , maxx;
           
       int clip , ch , rh , r , c;
       unsigned int temp;
@@ -573,7 +573,7 @@
       return;
   }
   void uihori_line3 ( DIG *G , int xa , int xb , int y , int za , int zb ) {
-      short i , clip;
+      int i , clip;
       char *addr;
       int temp;
       int x1 , x2 , z1 , z2;
@@ -605,7 +605,7 @@
   }
   void uipoly_hori_line3 ( DIG *G , int xa , int xb , int y , float za , float zb ) 
       {
-      short i , clip;
+      int i , clip;
       char *addr;
       int temp;
       int x1 , x2;
@@ -638,8 +638,8 @@
   }
   void _uidraw3_ ( DIG *G , int x , int y , int z ) {
       int xa , ya , za , xb , yb , zb;
-      short dx , dy , f , inc1 , inc2 , g , dx1 , dy1 , ab;
-      short clip , i , ch , rh , c , r;
+      int dx , dy , f , inc1 , inc2 , g , dx1 , dy1 , ab;
+      int clip , i , ch , rh , c , r;
       double h , m , cons;
       kgWC *wc;
       kgDC *dc;
@@ -770,7 +770,7 @@
   void _uibox_fill3 ( DIG *G , int x1 , int y1 , int z1 , int x2 , int y2 , int z2 , unsigned int color ) 
       {
       int x_min , y_min , x_max , x_max1 , x_min1 , y_max , i , j;
-      short po1;
+      int po1;
       unsigned int temp;
       double cons , m;
       int z;
@@ -807,10 +807,10 @@
       wcset_clr ( wc , temp ) ;
       return;
   }
-  void _uipoly_fill3 ( DIG *G , short n , int *px , int *py , float *pz , short flag , unsigned int b_color ) 
+  void _uipoly_fill3 ( DIG *G , int n , int *px , int *py , float *pz , int flag , unsigned int b_color ) 
       {
-      short j , imd;
-      short i , cnt , ind , flg;
+      int j , imd;
+      int i , cnt , ind , flg;
       int xcord [ 50 ] ;
       float zcord [ 50 ] ;
       int xlow , xup;
@@ -924,10 +924,10 @@
           ( int ) ( pz [ i ] +0.5 ) , px [ ( i+1 ) %n ] , py [ 
           ( i+1 ) %n ] , ( int ) ( pz [ ( i+1 ) %n ] +0.5 ) ) ;
   }
-  void _uigodard_fill3 ( DIG *G , short n , int *px , int *py , int *pz , short flag , float *pv ) 
+  void _uigodard_fill3 ( DIG *G , int n , int *px , int *py , int *pz , int flag , float *pv ) 
       {
-      short j , imd;
-      short i , cnt , ind , flg;
+      int j , imd;
+      int i , cnt , ind , flg;
       int xcord [ 15 ] ;
       int zcord [ 15 ] ;
       int xlow , xup;
@@ -1066,11 +1066,11 @@
   }
   void uigodr_line3 ( DIG *G , int xa , int xb , int y , int za , int zb , float pa , float pb ) 
       {
-      short i , pos , p1 , p2;
+      int i , pos , p1 , p2;
       char * addr;
       char tempc;
       float tempp , pval , pfac , yy;
-      short clip;
+      int clip;
       int temp , c_color;
       int x1 , x2 , z1 , z2;
       double cons , m;
@@ -1140,10 +1140,10 @@
       }
       wcset_clr ( wc , c_color ) ;
   }
-  void _uishade_fill3 ( DIG *G , short n , int *px , int *py , int *pz , short flag , float *pv ) 
+  void _uishade_fill3 ( DIG *G , int n , int *px , int *py , int *pz , int flag , float *pv ) 
       {
-      short j , imd;
-      short i , cnt , ind , flg;
+      int j , imd;
+      int i , cnt , ind , flg;
       int xcord [ 15 ] ;
       int zcord [ 15 ] ;
       int xlow , xup;
@@ -1282,11 +1282,11 @@
   }
   void uishade_line3 ( DIG *G , int xa , int xb , int y , int za , int zb , float pa , float pb ) 
       {
-      short i , pos , p1 , p2;
+      int i , pos , p1 , p2;
       char * addr;
       char tempc;
       float tempp , pval , pfac , yy;
-      short clip;
+      int clip;
       int temp;
       int x1 , x2 , z1 , z2;
       double cons , m;

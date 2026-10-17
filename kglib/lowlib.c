@@ -252,7 +252,7 @@ static char *OthFonts []= {
   static unsigned int ln_ptn [ 10 ] = {0xffffffff , 0x88888888 , 0xcccccccc , \
       0xf0f0f0f0 , 0xff18ff18 , 0xffff0f0f , 0xe7e7e7e7 , \
   0xfafafafa , 0xffff0000 , 0xffffff00};
-  static short st_ptr [ 10 ] = {0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0};
+  static int st_ptr [ 10 ] = {0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0};
   typedef struct c_limit{ int cx1; int cy1; int cx2; int cy2; int * pt; } CLIP;
 #define uiset_clip_limits(wc,x1,y1,x2,y2) wc->c_v_x1=x1,wc->c_v_y1=y1,wc->c_v_x2=x2,wc->c_v_y2=y2
 #define uibkup_clip_limits wc->c_v_x1_o=wc->c_v_x1,wc->c_v_y1_o=wc->c_v_y1,wc->c_v_x2_o=wc->c_v_x2,wc->c_v_y2_o=wc->c_v_y2
@@ -291,7 +291,7 @@ static char *OthFonts []= {
   static unsigned char GREEN [ 4 ] = {0x00 , 0x02 , 0x10 , 0x12 };
   static char Posfmt [ 200 ] = {"%14.5g , %-14.5g"} , Xfmt [ 7 ] = \
   {" 14.5g"} , Yfmt [ 7 ] = {"-14.5g"};
-  static union kbinp { short kbint; char kbc [ 2 ] ; } kb;
+  static union kbinp { int kbint; char kbc [ 2 ] ; } kb;
   void *kgBorderedRectangle ( int width , int height , \
   int fillclr , float rfac ) ;
   void *kgPressedRectangle ( int width , int height , \
@@ -895,8 +895,8 @@ static char *OthFonts []= {
       return GetPointer ( x , y ) ;
   }
 #endif
-  void uig_scroll_up ( DIALOG *D , short x1 , short y1 , \
-  short x2 , short y2 , short jmp ) \
+  void uig_scroll_up ( DIALOG *D , int x1 , int y1 , \
+  int x2 , int y2 , int jmp ) \
   {
       int yy1 , yy2;
       int EVGAY;
@@ -906,17 +906,17 @@ static char *OthFonts []= {
       if ( yy1+jmp > yy2 ) return;
       uiscr_scroll_back ( D , x1 , yy1+jmp , x2 , yy2 , jmp ) ;
   }
-  short get_key ( int t ) {
-      union kbinp { short kbint; char kbc [ 2 ] ; } kb;
+  int get_key ( int t ) {
+      union kbinp { int kbint; char kbc [ 2 ] ; } kb;
       if ( ( kb.kbint = ui_get_kb ( ) ) > 0 ) return ( kb.kbint ) ;
       return ( 0 ) ;
   }
 #if 0
-  short get_text_position ( RECT *r , int n , int *old_i ) {
+  int get_text_position ( RECT *r , int n , int *old_i ) {
       unsigned char ch;
       int dx , dy , yy;
       int i , key;
-      union kbinp { short kbint; char kbc [ 2 ] ; } kb;
+      union kbinp { int kbint; char kbc [ 2 ] ; } kb;
       for ( ; ; ) {
           if ( ( kb.kbint = ui_get_kb ( ) ) > 0 ) return ( kb.kbint ) ;
           if ( ( key = GetPointer ( & dx , & dy ) ) >= 0 ) {
@@ -945,10 +945,10 @@ static char *OthFonts []= {
       }
   }
 #endif
-  short get_kb_o ( int t ) {
+  int get_kb_o ( int t ) {
       unsigned char ch;
       int i , ierr;
-      union kbinp { short kbint; char kbc [ 2 ] ; } kb;
+      union kbinp { int kbint; char kbc [ 2 ] ; } kb;
       i = 0;
       while ( ( ( ierr = read ( 0 , & ch , 1 ) ) != 1 ) && ( i < 100 ) ) i++;
   /*
@@ -1121,9 +1121,9 @@ static char *OthFonts []= {
   }
   void _marker ( int x , int y ) {
 #if 0
-      short fac = 1;
+      int fac = 1;
       int px [ 4 ] , py [ 4 ] ;
-      short style , mf;
+      int style , mf;
       style = m_style%20;
       mf = m_style/20;
       fac += mf;
@@ -1188,25 +1188,25 @@ static char *OthFonts []= {
           case 9 :
           px [ 0 ] = x+4*fac; py [ 0 ] = y; px [ 1 ] = x-4*fac; py [ 1 ] = y+4*fac;
           px [ 2 ] = x-4*fac; py [ 2 ] = y-4*fac;
-          _poly_fill ( ( short ) 3 , px , py , ( short ) 0 , \
+          _poly_fill ( ( int ) 3 , px , py , ( int ) 0 , \
            ( unsigned int ) c_color ) ;
           break;
           case 10:
           px [ 0 ] = x-4*fac; py [ 0 ] = y; px [ 1 ] = x+4*fac; py [ 1 ] = y+4*fac;
           px [ 2 ] = x+4*fac; py [ 2 ] = y-4*fac;
-          _poly_fill ( ( short ) 3 , px , py , ( short ) 0 , \
+          _poly_fill ( ( int ) 3 , px , py , ( int ) 0 , \
            ( unsigned int ) c_color ) ;
           break;
           case 11:
           px [ 0 ] = x; py [ 0 ] = y+4*fac; px [ 1 ] = x-4*fac; py [ 1 ] = y-4*fac;
           px [ 2 ] = x+4*fac; py [ 2 ] = y-4*fac;
-          _poly_fill ( ( short ) 3 , px , py , ( short ) 0 , \
+          _poly_fill ( ( int ) 3 , px , py , ( int ) 0 , \
            ( unsigned int ) c_color ) ;
           break;
           case 12:
           px [ 0 ] = x; py [ 0 ] = y-4*fac; px [ 1 ] = x-4*fac; py [ 1 ] = y+4*fac;
           px [ 2 ] = x+4*fac; py [ 2 ] = y+4*fac;
-          _poly_fill ( ( short ) 3 , px , py , ( short ) 0 , \
+          _poly_fill ( ( int ) 3 , px , py , ( int ) 0 , \
            ( unsigned int ) c_color ) ;
           break;
           case 13 :
@@ -1223,25 +1223,25 @@ static char *OthFonts []= {
           case 16:
           px [ 0 ] = x+2*fac; py [ 0 ] = y; px [ 1 ] = x-2*fac; py [ 1 ] = y+2*fac;
           px [ 2 ] = x-2*fac; py [ 2 ] = y-2*fac;
-          _poly_fill ( ( short ) 3 , px , py , ( short ) 0 , \
+          _poly_fill ( ( int ) 3 , px , py , ( int ) 0 , \
            ( unsigned int ) c_color ) ;
           break;
           case 17:
           px [ 0 ] = x-2*fac; py [ 0 ] = y; px [ 1 ] = x+2*fac; py [ 1 ] = y+2*fac;
           px [ 2 ] = x+2*fac; py [ 2 ] = y-2*fac;
-          _poly_fill ( ( short ) 3 , px , py , ( short ) 0 , \
+          _poly_fill ( ( int ) 3 , px , py , ( int ) 0 , \
            ( unsigned int ) c_color ) ;
           break;
           case 18:
           px [ 0 ] = x; py [ 0 ] = y+2*fac; px [ 1 ] = x-2*fac; py [ 1 ] = y-2*fac;
           px [ 2 ] = x+2*fac; py [ 2 ] = y-2*fac;
-          _poly_fill ( ( short ) 3 , px , py , ( short ) 0 , \
+          _poly_fill ( ( int ) 3 , px , py , ( int ) 0 , \
            ( unsigned int ) c_color ) ;
           break;
           case 19:
           px [ 0 ] = x; py [ 0 ] = y-2*fac; px [ 1 ] = x-2*fac; py [ 1 ] = y+2*fac;
           px [ 2 ] = x+2*fac; py [ 2 ] = y+2*fac;
-          _poly_fill ( ( short ) 3 , px , py , ( short ) 0 , \
+          _poly_fill ( ( int ) 3 , px , py , ( int ) 0 , \
            ( unsigned int ) c_color ) ;
           break;
           default :break;
@@ -1258,9 +1258,9 @@ static char *OthFonts []= {
       wc = G->wc;
       dc = G->dc;
       EVGAY = D->evgay;
-      short fac = 1;
+      int fac = 1;
       int px [ 4 ] , py [ 4 ] ;
-      short style , mf;
+      int style , mf;
       dc->cur_x = x ;
       dc->cur_y = y ;
       style = dc->m_style%20;
@@ -1327,22 +1327,22 @@ static char *OthFonts []= {
           case 9 :
           px [ 0 ] = x+4*fac; py [ 0 ] = y; px [ 1 ] = x-4*fac; py [ 1 ] = y+4*fac;
           px [ 2 ] = x-4*fac; py [ 2 ] = y-4*fac;
-          _uipoly_fill ( G , ( short ) 3 , px , py , ( short ) 0 , dc->ln_color ) ;
+          _uipoly_fill ( G , ( int ) 3 , px , py , ( int ) 0 , dc->ln_color ) ;
           break;
           case 10:
           px [ 0 ] = x-4*fac; py [ 0 ] = y; px [ 1 ] = x+4*fac; py [ 1 ] = y+4*fac;
           px [ 2 ] = x+4*fac; py [ 2 ] = y-4*fac;
-          _uipoly_fill ( G , ( short ) 3 , px , py , ( short ) 0 , dc->ln_color ) ;
+          _uipoly_fill ( G , ( int ) 3 , px , py , ( int ) 0 , dc->ln_color ) ;
           break;
           case 11:
           px [ 0 ] = x; py [ 0 ] = y+4*fac; px [ 1 ] = x-4*fac; py [ 1 ] = y-4*fac;
           px [ 2 ] = x+4*fac; py [ 2 ] = y-4*fac;
-          _uipoly_fill ( G , ( short ) 3 , px , py , ( short ) 0 , dc->ln_color ) ;
+          _uipoly_fill ( G , ( int ) 3 , px , py , ( int ) 0 , dc->ln_color ) ;
           break;
           case 12:
           px [ 0 ] = x; py [ 0 ] = y-4*fac; px [ 1 ] = x-4*fac; py [ 1 ] = y+4*fac;
           px [ 2 ] = x+4*fac; py [ 2 ] = y+4*fac;
-          _uipoly_fill ( G , ( short ) 3 , px , py , ( short ) 0 , dc->ln_color ) ;
+          _uipoly_fill ( G , ( int ) 3 , px , py , ( int ) 0 , dc->ln_color ) ;
           break;
           case 13 :
           _uicircle_fill ( G , x , y , ( int ) ( 3*fac ) , dc->ln_color ) ;
@@ -1358,22 +1358,22 @@ static char *OthFonts []= {
           case 16:
           px [ 0 ] = x+2*fac; py [ 0 ] = y; px [ 1 ] = x-2*fac; py [ 1 ] = y+2*fac;
           px [ 2 ] = x-2*fac; py [ 2 ] = y-2*fac;
-          _uipoly_fill ( G , ( short ) 3 , px , py , ( short ) 0 , dc->ln_color ) ;
+          _uipoly_fill ( G , ( int ) 3 , px , py , ( int ) 0 , dc->ln_color ) ;
           break;
           case 17:
           px [ 0 ] = x-2*fac; py [ 0 ] = y; px [ 1 ] = x+2*fac; py [ 1 ] = y+2*fac;
           px [ 2 ] = x+2*fac; py [ 2 ] = y-2*fac;
-          _uipoly_fill ( G , ( short ) 3 , px , py , ( short ) 0 , dc->ln_color ) ;
+          _uipoly_fill ( G , ( int ) 3 , px , py , ( int ) 0 , dc->ln_color ) ;
           break;
           case 18:
           px [ 0 ] = x; py [ 0 ] = y+2*fac; px [ 1 ] = x-2*fac; py [ 1 ] = y-2*fac;
           px [ 2 ] = x+2*fac; py [ 2 ] = y-2*fac;
-          _uipoly_fill ( G , ( short ) 3 , px , py , ( short ) 0 , dc->ln_color ) ;
+          _uipoly_fill ( G , ( int ) 3 , px , py , ( int ) 0 , dc->ln_color ) ;
           break;
           case 19:
           px [ 0 ] = x; py [ 0 ] = y-2*fac; px [ 1 ] = x-2*fac; py [ 1 ] = y+2*fac;
           px [ 2 ] = x+2*fac; py [ 2 ] = y+2*fac;
-          _uipoly_fill ( G , ( short ) 3 , px , py , ( short ) 0 , dc->ln_color ) ;
+          _uipoly_fill ( G , ( int ) 3 , px , py , ( int ) 0 , dc->ln_color ) ;
           break;
           default :break;
       }
@@ -1388,7 +1388,7 @@ static char *OthFonts []= {
       if ( x < wc->c_v_x1 ) t++;
       return ( t ) ;
   }
-  short uiclip_line ( kgWC *wc , int *xa , int *ya , int *xb , int *yb ) {
+  int uiclip_line ( kgWC *wc , int *xa , int *ya , int *xb , int *yb ) {
       int x , y , tx , ty , xs , ys;
       unsigned char c1 , c2 , c;
 //  kgWC *wc;
@@ -1487,8 +1487,8 @@ static char *OthFonts []= {
   void _uidraw_ ( DIG *G , int x , int y ) {
       int xa , ya , xb , yb;
       unsigned int ptn;
-      short dx , dy , f , inc1 , inc2 , g , dx1 , dy1 , ab;
-      short clip , i , ch , rh , c , r;
+      int dx , dy , f , inc1 , inc2 , g , dx1 , dy1 , ab;
+      int clip , i , ch , rh , c , r;
       float h;
       int EVGAY;
       kgDC *dc;
@@ -1727,7 +1727,7 @@ static char *OthFonts []= {
   {
       int xp , yp , temp;
       float xx , yy , xx0 , yy0 , xx1 , xx2 , yy1 , yy2 , xx3 , xx4 , yy3 , yy4;
-      short i , j , j1 , k;
+      int i , j , j1 , k;
       j = 0;
       xx0 = x [ 0 ] ; yy0 = y [ 0 ] ;
       x1 [ j ] = ( xx0 ) *Mag+0.5; y1 [ j ] = ( yy0 ) *Mag+0.5; j++;
@@ -1772,8 +1772,8 @@ static char *OthFonts []= {
   int *px1 , int *py1 , unsigned int b_color ) \
   {
 #if 1
-      short j , imd;
-      short i , cnt , ind;
+      int j , imd;
+      int i , cnt , ind;
       int xcord [ 5000 ] ;
       int xlow , xup;
       int txx;
@@ -1860,8 +1860,8 @@ static char *OthFonts []= {
       float x [ 300 ] , y [ 300 ] ;
       int x1 [ 5000 ] , y1 [ 5000 ] , x2 [ 5000 ] , y2 [ 5000 ] ;
       int code , n , i , xdum , ydum , pnts;
-      short ptr;
-      short j , pnt , asc , tempc;
+      int ptr;
+      int j , pnt , asc , tempc;
       float fact = 1.0;
       int xo , yo , temp;
       unsigned int color;
@@ -1914,8 +1914,8 @@ static char *OthFonts []= {
       int x1 [ 5000 ] , y1 [ 5000 ] , x2 [ 5000 ] , y2 [ 5000 ] ;
       int pnts , temp;
       float xdum , ydum;
-      short ptr;
-      short j , pnt , asc , tempc;
+      int ptr;
+      int j , pnt , asc , tempc;
       float xa , ya;
       float fact = 1.0;
       float xo , yo;
@@ -1972,8 +1972,8 @@ static char *OthFonts []= {
 #if 0
       float x [ 150 ] , y [ 150 ] ;
       int code , n , i , xdum , ydum;
-      short ptr;
-      short j , pnt , asc , tempc;
+      int ptr;
+      int j , pnt , asc , tempc;
       float fact = 1.0;
       int xo , yo;
       tempc = ln_width;
@@ -2016,8 +2016,8 @@ static char *OthFonts []= {
       float x [ 150 ] , y [ 150 ] ;
       int code , n , i;
       float xdum , ydum;
-      short ptr;
-      short j , pnt , asc , tempc;
+      int ptr;
+      int j , pnt , asc , tempc;
       float xa , ya;
       float fact = 1.0;
       float xo , yo;
@@ -2064,7 +2064,7 @@ static char *OthFonts []= {
   void drawg0ch_o ( c ) char c;
   {
 #if 0
-      short j , pnt , asc , tempc;
+      int j , pnt , asc , tempc;
       float fact = 1.0;
       int x , y , xa , ya , xo , yo;
       float tempx , tempy;
@@ -2111,7 +2111,7 @@ static char *OthFonts []= {
   void drawgch_o ( c ) char c;
   {
 #if 0
-      short j , pnt , asc , tempc;
+      int j , pnt , asc , tempc;
       int x , y , xa , ya;
       float fact = 1.0;
       float tempx , tempy;
@@ -2156,7 +2156,7 @@ static char *OthFonts []= {
   }
   float get_val ( char *ch ) {
       char chr [ 4 ] ;
-      short err;
+      int err;
       float val;
       chr [ 0 ] = *ch; chr [ 1 ] = * ( ch+1 ) ; chr [ 2 ] = * \
        ( ch+2 ) ; chr [ 3 ] = ' ';
@@ -2164,7 +2164,7 @@ static char *OthFonts []= {
       if ( err < 1 ) return ( 1.0 ) ;
       else return ( val ) ;
   }
-  void uisetsubsup ( DIG *G , float *fact , short *ishft , char cntl ) {
+  void uisetsubsup ( DIG *G , float *fact , int *ishft , char cntl ) {
       L_N *pt;
       kgWC *wc;
       kgDC *dc;
@@ -2193,8 +2193,8 @@ static char *OthFonts []= {
       *ishft = ( *ishft ) *10;
       return;
   }
-  void uiresetsubsup ( DIG *G , float *fact , short *ishft ) {
-      short is;
+  void uiresetsubsup ( DIG *G , float *fact , int *ishft ) {
+      int is;
       kgWC *wc;
       kgDC *dc;
       wc = G->wc;
@@ -2216,18 +2216,23 @@ static char *OthFonts []= {
   void _uipoly_fill ( DIG *G , int n , int *px , \
   int *py , int flag , unsigned int color ) \
   {
-      short j , imd;
-      short i , cnt , ind;
-      int xcord [ 15 ] ;
+      int j , imd;
+      int i , cnt , ind;
+      int *xcord  ;
       int xlow , xup;
       int txx;
-      int ymax [ 300 ] , ymin [ 300 ] , xmax [ 300 ] , \
-      xmin [ 300 ] , tyx , tyn , txn , scan , ygrt;
+      int *ymax  , *ymin  , *xmax  , \
+         *xmin  , tyx , tyn , txn , scan , ygrt;
       unsigned int tempc;
       kgWC *wc;
       kgDC *dc;
       dc = G->dc;
       wc = G->wc;
+      xcord = (int *)malloc(sizeof(int)*(n+1));
+      ymax = (int *)malloc(sizeof(int)*(n+1));
+      ymin = (int *)malloc(sizeof(int)*(n+1));
+      xmax = (int *)malloc(sizeof(int)*(n+1));
+      xmin = (int *)malloc(sizeof(int)*(n+1));
       xup = -100000;
       xlow = 1000000;
       scan = 10000;
@@ -2303,14 +2308,19 @@ static char *OthFonts []= {
        ( wc , px [ i ] , py [ i ] , px [ \
        ( i+1 ) %n ] , py [ ( i+1 ) %n ] ) ;
       wcset_clr ( wc , tempc ) ;
+      free(xcord);
+      free(xmin);
+      free(xmax);
+      free(ymin);
+      free(ymax);
   }
   void _uicircle ( kgWC *wc , int x , int y , int r ) {
-      short i , j;
+      int i , j;
       int ym , sqrd;
       sqrd = r*r;
-      ym = y- ( short ) ( r/sqrt ( ( double ) 2. ) ) ;
+      ym = y- ( int ) ( r/sqrt ( ( double ) 2. ) ) ;
       for ( j = y; j >= ym; --j ) {
-          i = x+ ( short ) sqrt ( ( double ) sqrd- ( ( y-j ) * ( y-j ) ) ) ;
+          i = x+ ( int ) sqrt ( ( double ) sqrd- ( ( y-j ) * ( y-j ) ) ) ;
           uiput_pixel ( wc , i , j ) ;
           uiput_pixel ( wc , i , 2*y-j ) ;
           uiput_pixel ( wc , x+y-j , y+i-x ) ;
@@ -2331,7 +2341,7 @@ static char *OthFonts []= {
       dc = G->dc;
       wc = G->wc;
       sqrd = ( double ) r* ( double ) r;
-      ym = y- ( short ) ( r/sqrt ( ( double ) 2. ) ) ;
+      ym = y- ( int ) ( r/sqrt ( ( double ) 2. ) ) ;
       temp = wc->c_color;
       uiput_pixel ( wc , x , y+r ) , uiput_pixel ( wc , x , y-r ) ;
       uiput_pixel ( wc , x+r , y ) , uiput_pixel ( wc , x-r , y ) ;
@@ -2788,14 +2798,22 @@ static char *OthFonts []= {
   void _uigodard_fill ( DIG *G , int n , int *px , \
   int *py , int flag , float *pv ) \
   {
-      short j , imd;
-      short i , cnt , ind;
-      int xcord [ 15 ] ;
+      int j , imd;
+      int i , cnt , ind;
       int xlow , xup;
       int txx;
-      int ymax [ 15 ] , ymin [ 15 ] , xmax [ 15 ] , xmin [ 15 ] , \
+      int *xcord ;
+      int *ymax  , *ymin  , *xmax , *xmin, \
       tyx , tyn , txn , scan , ygrt;
-      float pmax [ 15 ] , pmin [ 15 ] , pcord [ 15 ] , tpx , tpn , tpp;
+      float *pmax  , *pmin , *pcord  , tpx , tpn , tpp;
+      xmin = (int *)malloc(sizeof(int)*(n+1));
+      ymin = (int *)malloc(sizeof(int)*(n+1));
+      xmax = (int *)malloc(sizeof(int)*(n+1));
+      ymax  = (int *)malloc(sizeof(int)*(n+1));
+      pmax = (float *)malloc(sizeof(float)*(n+1));
+      pmin = (float *)malloc(sizeof(float)*(n+1));
+      pcord = (float *)malloc(sizeof(float)*(n+1));
+      xcord = (int *)malloc(sizeof(int)*(n+1));
       unsigned int tempc;
       kgDC *dc;
       kgWC *wc;
@@ -2890,6 +2908,14 @@ static char *OthFonts []= {
       if ( flag == 1 ) for ( i = 0; i < n; i++ ) _uidraw_line \
        ( wc , px [ i ] , py [ i ] , px [ \
        ( i+1 ) %n ] , py [ ( i+1 ) %n ] ) ;
+      free(xmin);
+      free(ymin);
+      free(xmax);
+      free(ymax);
+      free(pmin);
+      free(pmax);
+      free(pcord);
+      free(xcord);
   }
   void uigodr_line ( DIG *G , int xa , int xb , int y , float pa , float pb ) {
       int i , pos , p1 , p2 , yy;
@@ -3355,7 +3381,7 @@ static char *OthFonts []= {
   {
       int *x1 , *y1;
       int xo , yo , xv , yv;
-      short i , j = 0;
+      int i , j = 0;
       kgDC *dc;
       kgWC *wc;
       dc = G->dc;
@@ -3411,14 +3437,17 @@ static char *OthFonts []= {
 //  printf("%f %f %f\n",dc->pmax,dc->pmin,dc->dfac);
   }
   void ui_godr_fill ( DIG *G , int n , float *x , float *y , float *p ) {
-      int x1 [ 100 ] , y1 [ 100 ] ;
-      float p1 [ 100 ] , pv;
-      short i;
+      int *x1  , *y1  ;
+      float *p1 , pv;
+      int i;
       int xmin = 10000000 , xmax = -10000000 , ymin = 10000000 , ymax = -10000000;
       kgDC *dc;
       kgWC *wc;
       dc = G->dc;
       wc = G->wc;
+      x1 = (int *)malloc(sizeof(int)*(n+1));
+      y1 = (int *)malloc(sizeof(int)*(n+1));
+      p1 = (float  *)malloc(sizeof(float)*(n+1));
       for ( i = 0; i < n; i++ ) {
           x1 [ i ] = uiscr_x ( x [ i ] ) ;
           y1 [ i ] = uiscr_y ( y [ i ] ) ;
@@ -3432,6 +3461,9 @@ static char *OthFonts []= {
        || ( ymin > dc->v_y2 ) ) return;
       for ( i = 0; i < n; i++ ) {pv = * ( p++ ) , p1 [ i ] = uipclr ( pv ) ; }
       _uigodard_fill ( G , n , x1 , y1 , dc->ibdr , p1 ) ;
+      free(x1);
+      free(y1);
+      free(p1);
   }
   void ui_marker ( DIG *G , float x , float y ) {
       int x1 , y1;
@@ -3456,13 +3488,13 @@ static char *OthFonts []= {
       while ( ( i >= 0 ) && ( * ( ptr+i ) <= ' ' ) ) {* ( ptr+i ) = '\0'; i--; }
   }
 #if 0
-  void Scrn_back ( short ix , short iy , short n ) {
+  void Scrn_back ( int ix , int iy , int n ) {
       int x2 , y , y2;
       x2 = ix+n*9+10;
       scr_back ( ( int ) ix , ( int ) ( iy ) , x2 , ( int ) ( 22+iy ) ) ;
   }
 #endif
-  void uiScrn_back ( kgWC *wc , short ix , short iy , short n ) {
+  void uiScrn_back ( kgWC *wc , int ix , int iy , int n ) {
       int x2 , y , y2;
       x2 = ix+n*9+10;
       kg_scr_back ( wc , ( int ) ix , ( int ) ( iy ) , x2 , ( int ) ( 22+iy ) ) ;
@@ -3471,8 +3503,8 @@ static char *OthFonts []= {
 void transch(int c) {
   int code,n,i;
   float xdum,ydum;
-  short ptr;
-  short j,pnt,asc,tempc;
+  int ptr;
+  int j,pnt,asc,tempc;
   float fact=1.0;
   asc=c;
   pnt=asc-32;
@@ -3819,7 +3851,7 @@ void transch(int c) {
   }
   float ffuistrlngth ( int font , char *title ) {
       float wd , gp , fj , fjl , gj , val , fact , fact1 = 1.0 , hfact = 1.0;
-      short ngp , n , i , j , k , greek = 0;
+      int ngp , n , i , j , k , greek = 0;
       int font_o , Nu , De;
       char Sub [ 500 ] ;
       float lng = 0;
@@ -3913,7 +3945,7 @@ void transch(int c) {
   }
   int uistrlngth ( void *Gtmp , char *title , float *xdsp ) {
       float wd , gp , fj , fjl , gj , val , fact , fact1 = 1.0 , hfact = 1.0;
-      short ngp , n , i , j , k , greek = 0;
+      int ngp , n , i , j , k , greek = 0;
       int font_o , Nu , De;
       B_K *FB_P = NULL;
       DIG *G;
@@ -4044,7 +4076,7 @@ void transch(int c) {
   }
   int ftuistrlngth ( void *Gtmp , char *title , float *xdsp ) {
       float wd , gp , fj , fjl , gj , val , fact , fact1 = 1.0 , hfact = 1.0;
-      short ngp , n , i , j , k , greek = 0;
+      int ngp , n , i , j , k , greek = 0;
       int font_o , Nu , De;
       B_K *FB_P = NULL;
       DIG *G;
@@ -4177,7 +4209,7 @@ void transch(int c) {
   }
   float ftStringLength_old ( int font , char *title , float wdth ) {
       float wd , gp , fj , fjl , gj , val , fact , fact1 = 1.0 , hfact = 1.0;
-      short ngp , n , i , j , k , greek = 0;
+      int ngp , n , i , j , k , greek = 0;
       int font_o , Nu , De;
       float xdsp = 0;
       float m_f [ 128 ] ;
@@ -4334,7 +4366,7 @@ void transch(int c) {
   }
   int uistrlngth_o ( kgDC *dc , char *title , float *xdsp ) {
       float wd , gp , fj , fjl , gj , val , fact , fact1 = 1.0 , hfact = 1.0;
-      short ngp , n , i , j , k , greek = 0;
+      int ngp , n , i , j , k , greek = 0;
       int font_o;
       B_K *FB_P = NULL;
       font_o = dc->t_font;
@@ -4736,7 +4768,7 @@ void transch(int c) {
   void _box_fill ( int x1 , int y1 , int x2 , int y2 , unsigned int color ) {
 #if 0
       int x_min , y_min , x_max , x_max1 , x_min1 , y_max , i , j;
-      short po1;
+      int po1;
       unsigned int temp;
       temp = get_cur_clr ( ) ;
       set_clr ( color ) ;
@@ -4761,7 +4793,7 @@ void transch(int c) {
   int x2 , int y2 , unsigned int color ) \
   {
       int x_min , y_min , x_max , x_max1 , x_min1 , y_max , i , j;
-      short po1;
+      int po1;
       unsigned int temp;
       DIALOG *D;
       D = wc->D;
@@ -4786,7 +4818,7 @@ void transch(int c) {
   void ui_PointerZoom ( DIG *G , float *xmin , float *ymin , \
   float *xmax , float *ymax ) \
   {
-      short it = 7 , item = 1;
+      int it = 7 , item = 1;
       int EVGAY , DBLBUF = 0 , MAG = 0;
       float X0 , Y0 , X1 , Y1;
       DIALOG *D;
@@ -4868,7 +4900,7 @@ void transch(int c) {
   float *ymin , float *xmax , float *ymax ) \
   {
       int EVGAY , DBLBUF = 0; ;
-      short it = 7 , item = 1;
+      int it = 7 , item = 1;
       float X0 , Y0 , X1 , Y1;
       DIALOG *D;
       D = ( DIALOG * ) G->D;
@@ -5013,7 +5045,7 @@ void transch(int c) {
 #endif
   void pick_box ( DIG *G , float *x1 , float *y1 , float *x2 , float *y2 ) {
 #if 0
-      short it = 6 , item = 1;
+      int it = 6 , item = 1;
       char *cmenu [ ] = {
           "Diagonal" , "move_Around" , "Stretch" , "Quit" , \
       "menuOff" , "Usepointer" , NULL};
@@ -5414,9 +5446,9 @@ void transch(int c) {
   }
   void _uidraw_line ( kgWC *wc , int x1 , int y1 , int x2 , int y2 ) {
       char far *addr;
-      short i , dx , dy , f , g , inc1 , inc2 , ab , \
+      int i , dx , dy , f , g , inc1 , inc2 , ab , \
       dx1 , dy1 , miny , maxy , minx , maxx;
-      short clip , ch , rh , r , c;
+      int clip , ch , rh , r , c;
       unsigned int temp;
       int xa , ya , xb , yb;
       xa = x1 , xb = x2 , ya = y1 , yb = y2;
@@ -5426,7 +5458,7 @@ void transch(int c) {
       return;
   }
   void uiCliped_Line ( kgWC *wc , int x1 , int y1 , int x2 , int y2 ) {
-      short clip;
+      int clip;
       int xa , ya , xb , yb;
       int EVGAY;
       DIALOG *D;
@@ -5440,7 +5472,7 @@ void transch(int c) {
       return;
   }
   void uiCliped_Line_n ( kgWC *wc , int x1 , int y1 , int x2 , int y2 ) {
-      short clip;
+      int clip;
       int xa , ya , xb , yb;
       DIALOG *D;
       D = ( DIALOG * ) ( wc->D ) ;
@@ -5451,7 +5483,7 @@ void transch(int c) {
       return;
   }
   void _uihori_line ( kgWC *wc , int x1 , int x2 , int y ) {
-      short i , clip;
+      int i , clip;
       int xa , ya , xb , yb;
       if ( x1 == x2 ) return;
       xa = x1 , xb = x2 , ya = y , yb = y;
@@ -5460,7 +5492,7 @@ void transch(int c) {
       _uiLine ( wc , xa , ( ya ) , xb , ( yb ) ) ;
   }
   void _uimhori_line ( kgWC *wc , int x1 , int x2 , int y ) {
-      short i , clip;
+      int i , clip;
       int xa , ya , xb , yb;
       if ( ( x2-x1 ) > 1 ) {x1++; }
       xa = x1 , xb = x2 , ya = y , yb = y;
@@ -5469,7 +5501,7 @@ void transch(int c) {
       _uiLine ( wc , xa , ( ya ) , xb , ( yb ) ) ;
   }
   void _uivert_line ( kgWC *wc , int y1 , int y2 , int x ) {
-      short i , clip;
+      int i , clip;
       int xa , ya , xb , yb;
       if ( y1 == y2 ) return;
       xa = x , xb = x , ya = y1 , yb = y2;
@@ -5478,19 +5510,19 @@ void transch(int c) {
       _uiLine ( wc , xa , ( ya ) , xb , ( yb ) ) ;
   }
   void _ui_v_line ( kgWC *wc , int ya , int yb , int x ) {
-  /*XDraw((short)x,(short)ya,(short)x,(short)yb);*/
+  /*XDraw((int)x,(int)ya,(int)x,(int)yb);*/
       _uiLine ( wc , x , ( ya ) , x , ( yb ) ) ;
   }
   void _ui_h_line ( kgWC *wc , int xa , int xb , int y ) {
-  /*XDraw((short)xa,(short)y,(short)xb,(short)y);*/
+  /*XDraw((int)xa,(int)y,(int)xb,(int)y);*/
       _uiLine ( wc , xa , ( y ) , xb , ( y ) ) ;
   }
   void _dv_v_line ( kgWC *wc , int ya , int yb , int x ) {
-  /*XDraw((short)x,(short)ya,(short)x,(short)yb);*/
+  /*XDraw((int)x,(int)ya,(int)x,(int)yb);*/
       _dvLine ( wc , x , ( ya ) , x , ( yb ) ) ;
   }
   void _dv_h_line ( kgWC *wc , int xa , int xb , int y ) {
-  /*XDraw((short)xa,(short)y,(short)xb,(short)y);*/
+  /*XDraw((int)xa,(int)y,(int)xb,(int)y);*/
       _dvLine ( wc , xa , ( y ) , xb , ( y ) ) ;
   }
   char kgBoxCursor ( DIG *G , float *xx , float *yy , \
@@ -6388,14 +6420,14 @@ void transch(int c) {
       yb = uiscr_y ( y2 ) ;
       tempc = wc->c_color;
       wcset_clr ( wc , dc->ln_color ) ;
-  /*XDraw((short)xa,(short)ya,(short)xb,(short)yb);*/
+  /*XDraw((int)xa,(int)ya,(int)xb,(int)yb);*/
       _uiLINE ( wc , xa , ( EVGAY-ya ) , xb , ( EVGAY-yb ) ) ;
       wcset_clr ( wc , tempc ) ;
   }
   void _uirect_fill ( kgWC *wc , int x1 , int y1 , \
   int x2 , int y2 , unsigned int color ) \
   {
-      short x_min , y_min , x_max , x_max1 , x_min1 , y_max , i , j , po1;
+      int x_min , y_min , x_max , x_max1 , x_min1 , y_max , i , j , po1;
       unsigned int temp;
       DIALOG *D;
       D = wc->D;
@@ -6421,7 +6453,7 @@ void transch(int c) {
   void _dvrect_fill ( kgWC *wc , int x1 , int y1 , \
   int x2 , int y2 , unsigned int color ) \
   {
-      short x_min , y_min , x_max , x_max1 , x_min1 , y_max , i , j , po1;
+      int x_min , y_min , x_max , x_max1 , x_min1 , y_max , i , j , po1;
       unsigned int temp;
       DIALOG *D;
       D = wc->D;
@@ -6446,7 +6478,7 @@ void transch(int c) {
   void _uirect_fill_transparent ( kgWC *wc , int x1 , int y1 , int x2 , \
   int y2 , unsigned int color , float transparency ) \
   {
-      short x_min , y_min , x_max , x_max1 , x_min1 , y_max , i , j , po1;
+      int x_min , y_min , x_max , x_max1 , x_min1 , y_max , i , j , po1;
       unsigned int temp;
       DIALOG *D;
       D = wc->D;
@@ -6475,7 +6507,7 @@ void transch(int c) {
   void _dvrect_fill_transparent ( kgWC *wc , int x1 , int y1 , int x2 , \
   int y2 , unsigned int color , float transparency ) \
   {
-      short x_min , y_min , x_max , x_max1 , x_min1 , y_max , i , j , po1;
+      int x_min , y_min , x_max , x_max1 , x_min1 , y_max , i , j , po1;
       unsigned int temp;
       DIALOG *D;
       D = wc->D;
@@ -8408,7 +8440,7 @@ void transch(int c) {
       }
   }
   void uimenuch ( DIALOG *D , char c , int ix1 , int iy1 , int char_clr ) {
-      short jj , k , i , iy;
+      int jj , k , i , iy;
       char str [ 3 ] ;
       unsigned int temp;
       temp = WC ( D )->c_color;
@@ -8467,7 +8499,7 @@ void transch(int c) {
   void uiwrite_string ( DIALOG *D , char* c , \
   int ix1 , int iy1 , int char_clr ) \
   {
-      short jj , k , i , iy;
+      int jj , k , i , iy;
       unsigned int temp;
       temp = WC ( D )->c_color;
       uiset_clr ( D , char_clr ) ;

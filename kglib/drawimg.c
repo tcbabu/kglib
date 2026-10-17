@@ -105,7 +105,7 @@ extern Dlink *FontList;
 #define max(x,y) (x >= y? x : y)
 #endif
 #define FREE(a) if(a!=NULL){free(a);a=NULL;}
-  extern short kgIcode [ 1024 ] [ 3 ] ;
+  extern int kgIcode [ 1024 ] [ 3 ] ;
 //static kgIcodeLoc[1024][3];
   void * uiGraphicsString (  char *str , int width , \
   int height , int font , int color ,int angle, int FontSize  ) ;
@@ -404,7 +404,7 @@ extern Dlink *FontList;
       float *m_f;
   } FONT;
   static unsigned long imgGetColor ( DIG *G , int no , int loc ) ;
-  static unsigned short *zbuf = NULL;
+  static unsigned int *zbuf = NULL;
   static int Z_max = 193600L;
   static char FontName [ 30 ] = {"Times-Roman"};
   static const float CFact = 300000.0;
@@ -439,7 +439,7 @@ extern Dlink *FontList;
   static unsigned int ln_ptn [ 10 ] = {0xffffffff , 0x88888888 , 0xcccccccc , \
        0xf0f0f0f0 , 0xff18ff18 , 0xffff0f0f , 0xe7e7e7e7 , \
        0xfafafafa , 0xffff0000 , 0xffffff00};
-  static short st_ptr [ 10 ] = {0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0};
+  static int st_ptr [ 10 ] = {0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0};
 #define TX(x,y) (dc->cx +(x)*dc->cost+(y)*dc->sint)
 #define TY(x,y) (dc->cy -(x)*dc->sint+(y)*dc->cost)
 #define z_inter(x,m,c) (int)(((x)*(m) + c)+0.5)
@@ -493,18 +493,18 @@ extern Dlink *FontList;
   static unsigned char RED [ 4 ] = {0x00 , 0x04 , 0x20 , 0x24 };
   static unsigned char BLUE [ 4 ] = {0x00 , 0x01 , 0x08 , 0x09 };
   static unsigned char GREEN [ 4 ] = {0x00 , 0x02 , 0x10 , 0x12 };
-  static void put_pixl ( DIG *G , short col , short row ) ;
-  static void put_dot ( DIG *G , short col , short row ) ;
+  static void put_pixl ( DIG *G , int col , int row ) ;
+  static void put_dot ( DIG *G , int col , int row ) ;
   static void move ( DIG *G , float x , float y ) ;
   static void marker ( DIG *G , float x , float y ) ;
   static void draw ( DIG *G , float x , float y ) ;
   static void DRAW_LINE ( DIG *G , float x1 , float y1 , float x2 , float y2 ) ;
   static void box_fill ( DIG *G , float x1 , float y1 , \
        float x2 , float y2 , unsigned int color ) ;
-  static void poly_fill ( DIG *G , short n , float *x , \
-       float *y , short flag , unsigned int color ) ;
-  static void godard_fill ( DIG *G , short n , float *px , \
-       float *py , short flag , float *pv ) ;
+  static void poly_fill ( DIG *G , int n , float *x , \
+       float *y , int flag , unsigned int color ) ;
+  static void godard_fill ( DIG *G , int n , float *px , \
+       float *py , int flag , float *pv ) ;
   static void circle ( DIG *G , float x1 , float y1 , float r ) ;
   static void circle_fill ( DIG *G , float x1 , float y1 , \
        float r , unsigned int color ) ;
@@ -521,21 +521,21 @@ extern Dlink *FontList;
   static void user_cord ( float x1 , float y1 , float x2 , float y2 ) ;
   static void _box_fill ( DIG *G , int x1 , int y1 , \
        int x2 , int y2 , unsigned int color ) ;
-  static void _poly_fill ( DIG *G , short n , int *px , \
-       int *py , short flag , unsigned int b_color ) ;
-  static void _mpoly_fill ( DIG *G , short n , int *px , int *py , \
+  static void _poly_fill ( DIG *G , int n , int *px , \
+       int *py , int flag , unsigned int b_color ) ;
+  static void _mpoly_fill ( DIG *G , int n , int *px , int *py , \
        int *px1 , int *py1 , unsigned int b_color ) ;
-  static void _godard_fill ( DIG *G , short n , int *px , \
-       int *py , short flag , float *pv ) ;
+  static void _godard_fill ( DIG *G , int n , int *px , \
+       int *py , int flag , float *pv ) ;
   static void _circle ( DIG *G , int x , int y , int r ) ;
   static void _circle_fill ( DIG *G , int x , \
        int y1 , int r , unsigned int color ) ;
-  static short clip_line ( DIG *G , int *xa , int *ya , int *xb , int *yb ) ;
+  static int clip_line ( DIG *G , int *xa , int *ya , int *xb , int *yb ) ;
   static unsigned char code ( kgWC *wc , int x , int y ) ;
-  static void _rect_fill ( DIG *G , short x1 , short y1 , \
-       short x2 , short y2 , unsigned int color ) ;
-  static void _draw_bound ( DIG *G , short x1 , \
-       short y1 , short x2 , short y2 ) ;
+  static void _rect_fill ( DIG *G , int x1 , int y1 , \
+       int x2 , int y2 , unsigned int color ) ;
+  static void _draw_bound ( DIG *G , int x1 , \
+       int y1 , int x2 , int y2 ) ;
   static void _draw_line ( DIG *G , int x1 , int y1 , int x2 , int y2 ) ;
   static int t_fillchr ( kgWC *wc , float *x , float *y , \
        int n , int *x1 , int *y1 , int *x2 , int*y2 ) ;
@@ -545,17 +545,17 @@ extern Dlink *FontList;
   static void shade_line3 ( DIG *G , int xa , int xb , \
        int y , int za , int zb , float pa , float pb ) ;
   static int uistrlngth_loc ( kgDC *dc , char *title , float *xdsp ) ;
-  static short GHMAX = 0 , SCRN , S_OPEN = 0;
+  static int GHMAX = 0 , SCRN , S_OPEN = 0;
   static char *GHBUF;
   static char df_gbuf [ 20 ] = {"No help available"};
   static unsigned char far *Rbuff;
   static char ch , bf [ 200 ] = {" "};
   static unsigned char cmds [ 1000 ] ;
-  static short step;
+  static int step;
   static unsigned char PIXL = 0xFF;
   static int B_OFF_SET = 0;
 #define CURKEY 00
-#define EVGA_CN(y)  (short)(y*((float)EVGAY/1799.0))
+#define EVGA_CN(y)  (int)(y*((float)EVGAY/1799.0))
   static unsigned char OFF = 0xFF;
   static unsigned char C_CLR = 0xFF;
   static char PAK_B = 0x18;
@@ -706,7 +706,7 @@ extern Dlink *FontList;
   void img_poly_fill ( DIG *G , int n , float *x , \
        float *y , int flag , int color ) {
       int x1 [ 1000 ] , y1 [ 1000 ] ;
-      short i , j = 0;
+      int i , j = 0;
       int xo , yo , xv , yv;
       kgDC *dc;
       dc = G->dc;
@@ -728,8 +728,8 @@ extern Dlink *FontList;
   }
   static void put_pix3 ( DIG *G , int col , int row , int z ) {
       int r , c , EVGAX , row1;
-      unsigned short *loc;
-      unsigned short *zbuf;
+      unsigned int *loc;
+      unsigned int *zbuf;
       kgDC *dc;
       kgWC *wc;
       dc = G->dc;
@@ -810,7 +810,7 @@ extern Dlink *FontList;
   static void _draw_line3 ( DIG *G , int x1 , int y1 , \
        int z1 , int x2 , int y2 , int z2 ) {
       char far *addr;
-      short i , dx , dy , f , g , inc1 , inc2 , ab , \
+      int i , dx , dy , f , g , inc1 , inc2 , ab , \
            dx1 , dy1 , miny , maxy , minx , maxx;
       int clip , ch , rh , r , c;
       unsigned int temp;
@@ -940,7 +940,7 @@ extern Dlink *FontList;
   }
   static void hori_line3 ( DIG *G , int xa , \
        int xb , int y , int za , int zb ) {
-      short i , clip;
+      int i , clip;
       char far *addr;
       int temp;
       int x1 , x2 , z1 , z2;
@@ -972,8 +972,8 @@ extern Dlink *FontList;
   }
   static void _draw3_ ( DIG *G , int x , int y , int z ) {
       int xa , ya , za , xb , yb , zb;
-      short dx , dy , f , inc1 , inc2 , g , dx1 , dy1 , ab;
-      short clip , i , ch , rh , c , r;
+      int dx , dy , f , inc1 , inc2 , g , dx1 , dy1 , ab;
+      int clip , i , ch , rh , c , r;
       float h , m , cons;
       int EVGAY;
       kgDC *dc;
@@ -1112,10 +1112,10 @@ extern Dlink *FontList;
   void img_draw3f ( DIG *G , float x , float y , float z ) {
       t_3_draw ( G , x , y , z ) ;
   }
-  static void _poly_fill3 ( DIG *G , short n , int *px , int *py , \
-       int *pz , short flag , unsigned int b_color ) {
-      short j , imd;
-      short i , cnt , ind , flg;
+  static void _poly_fill3 ( DIG *G , int n , int *px , int *py , \
+       int *pz , int flag , unsigned int b_color ) {
+      int j , imd;
+      int i , cnt , ind , flg;
       int xcord [ 15 ] ;
       float zcord [ 15 ] ;
       int xlow , xup;
@@ -1227,10 +1227,10 @@ extern Dlink *FontList;
       if ( flag == 1 ) for ( i = 0;i < n;i++ ) _draw_line3 ( G , px [ i ] , py [ i ] , \
            pz [ i ] , px [ ( i+1 ) %n ] , py [ ( i+1 ) %n ] , pz [ ( i+1 ) %n ] ) ;
   }
-  static void _godard_fill3 ( DIG *G , short n , int *px , \
-       int *py , int *pz , short flag , float *pv ) {
-      short j , imd;
-      short i , cnt , ind , flg;
+  static void _godard_fill3 ( DIG *G , int n , int *px , \
+       int *py , int *pz , int flag , float *pv ) {
+      int j , imd;
+      int i , cnt , ind , flg;
       int xcord [ 15 ] ;
       int zcord [ 15 ] ;
       int xlow , xup;
@@ -1369,11 +1369,11 @@ extern Dlink *FontList;
   }
   static void godr_line3 ( DIG *G , int xa , int xb , int y , \
        int za , int zb , float pa , float pb ) {
-      short i , pos , p1 , p2;
+      int i , pos , p1 , p2;
       char * addr;
       char tempc;
       float tempp , pval , pfac , yy;
-      short clip;
+      int clip;
       int temp , c_color;
       int x1 , x2 , z1 , z2;
       double cons , m;
@@ -1444,10 +1444,10 @@ extern Dlink *FontList;
       }
       dc->c_color = c_color;
   }
-  static void _shade_fill3 ( DIG *G , short n , int *px , \
-       int *py , int *pz , short flag , float *pv ) {
-      short j , imd;
-      short i , cnt , ind , flg;
+  static void _shade_fill3 ( DIG *G , int n , int *px , \
+       int *py , int *pz , int flag , float *pv ) {
+      int j , imd;
+      int i , cnt , ind , flg;
       int xcord [ 15 ] ;
       int zcord [ 15 ] ;
       int xlow , xup;
@@ -1586,11 +1586,11 @@ extern Dlink *FontList;
   }
   static void shade_line3 ( DIG *G , int xa , int xb , \
        int y , int za , int zb , float pa , float pb ) {
-      short i , pos , p1 , p2;
+      int i , pos , p1 , p2;
       char * addr;
       char tempc;
       float tempp , pval , pfac , yy;
-      short clip;
+      int clip;
       int temp;
       int x1 , x2 , z1 , z2;
       double cons , m;
@@ -1646,7 +1646,7 @@ extern Dlink *FontList;
        int color , int flag , int n ) {
       int x1 [ 1000 ] , y1 [ 1000 ] ;
       int xo , yo , xv , yv;
-      short i , j = 0;
+      int i , j = 0;
       kgDC *dc;
       dc = G->dc;
       x1 [ 0 ] = scr_x ( x [ 0 ] ) ;
@@ -1661,13 +1661,13 @@ extern Dlink *FontList;
               xo = xv , yo = yv;j++;
           }
       }
-      if ( ( j > 2 ) && ( j < 500 ) ) _poly_fill ( G , ( short ) j , \
-           x1 , y1 , ( short ) flag , ( unsigned int ) color ) ;
+      if ( ( j > 2 ) && ( j < 500 ) ) _poly_fill ( G , ( int ) j , \
+           x1 , y1 , ( int ) flag , ( unsigned int ) color ) ;
   }
   static void t_3_panel ( DIG *G , float *x , float *y , \
        float *z , int color , int flag , int n ) {
       int x1 [ 1000 ] , y1 [ 1000 ] , z1 [ 1000 ] ;
-      short i;
+      int i;
       kgDC *dc;
       dc = G->dc;
       for ( i = 0;i < n;i++ ) {
@@ -1695,7 +1695,7 @@ extern Dlink *FontList;
   static void _box_fill3 ( DIG *G , int x1 , int y1 , int z1 , \
        int x2 , int y2 , int z2 , unsigned int color ) {
       int x_min , y_min , x_max , x_max1 , x_min1 , y_max , i , j;
-      short po1;
+      int po1;
       unsigned int temp;
       float cons , m;
       int z;
@@ -1751,17 +1751,25 @@ extern Dlink *FontList;
        float x2 , float y2 , float z2 , int ib , int color ) {
       t_3_box_fill ( G , x1 , y1 , z1 , x2 , y2 , z2 , color , ib ) ;
   }
-  static void _godard_fill ( DIG *G , short n , int *px , \
-       int *py , short flag , float *pv ) {
-      short j , imd , tempc;
-      short i , cnt , ind;
+  static void _godard_fill ( DIG *G , int n , int *px , \
+       int *py , int flag , float *pv ) {
+      int j , imd , tempc;
+      int i , cnt , ind;
       int pcrl = 0;
-      int xcord [ 15 ] ;
       int xlow , xup;
       int txx;
-      int ymax [ 1000 ] , ymin [ 1000 ] , xmax [ 1000 ] , \
-           xmin [ 1000 ] , tyx , tyn , txn , scan , ygrt;
-      float pmax [ 1000 ] , pmin [ 1000 ] , pcord [ 1000 ] , tpx , tpn , tpp;
+      int *xcord ;
+      int *ymax  , *ymin  , *xmax , *xmin, \
+      tyx , tyn , txn , scan , ygrt;
+      float *pmax  , *pmin , *pcord  , tpx , tpn , tpp;
+      xmin = (int *)malloc(sizeof(int)*(n+1));
+      ymin = (int *)malloc(sizeof(int)*(n+1));
+      xmax = (int *)malloc(sizeof(int)*(n+1));
+      ymax  = (int *)malloc(sizeof(int)*(n+1));
+      pmax = (float *)malloc(sizeof(float)*(n+1));
+      pmin = (float *)malloc(sizeof(float)*(n+1));
+      xcord = (int *)malloc(sizeof(int)*10000);
+      pcord = (float *)malloc(sizeof(float)*10000);
       int width = 5;
       kgDC *dc;
       kgWC *wc;
@@ -1817,6 +1825,8 @@ extern Dlink *FontList;
           pmax [ j+1 ] = tpx;
           pmin [ j+1 ] = tpn;
       }
+//      pcord = (float *)malloc(sizeof(float)*(abs(scan-ygrt)+2));
+//      xcord = (int *)malloc(sizeof(int)*(abs(scan-ygrt)+2));
       ind = 0;
       if ( ( scan > wc->c_v_y2 ) || ( ygrt < wc->c_v_y1 ) ||  \
           ( xlow > wc->c_v_x2 ) || ( xup < wc->c_v_x1 ) ) return;
@@ -1834,6 +1844,7 @@ extern Dlink *FontList;
                       ++cnt;
                   }
               }
+          scan++;
           }
   /*sorting scan line intersection xcords of edges*/
           for ( i = 0;i < cnt;++i ) {
@@ -1854,6 +1865,14 @@ extern Dlink *FontList;
       if ( flag == 1 ) for ( i = 0;i < n;i++ ) _draw_line ( G , px [ i ] , \
            py [ i ] , px [ ( i+1 ) %n ] , py [ ( i+1 ) %n ] ) ;
   /*GTW(ln_width);*/
+      free(xmin);
+      free(ymin);
+      free(xmax);
+      free(ymax);
+      free(pmin);
+      free(pmax);
+      free(pcord);
+      free(xcord);
   }
   static void godr_line ( DIG *G , int xa , int xb , \
        int y , float pa , float pb ) {
@@ -1923,23 +1942,29 @@ extern Dlink *FontList;
       dc->c_color = c_color;
   }
   static void t_godr_fill ( DIG *G , int n , float *x , float *y , float *p ) {
-      int x1 [ 200 ] , y1 [ 200 ] ;
-      float p1 [ 200 ] , pv;
-      short i;
+      int *x1  , *y1 ;
+      float *p1  , pv;
+      int i;
       kgDC *dc;
       dc = G->dc;
+      x1 = (int *)malloc(sizeof(int)*(n+1));
+      y1 = (int *)malloc(sizeof(int)*(n+1));
+      p1 = (float *)malloc(sizeof(float)*(n+1));
       for ( i = 0;i < n;i++ ) {
           x1 [ i ] = scr_x ( x [ i ] ) ;
           y1 [ i ] = scr_y ( y [ i ] ) ;
       }
       for ( i = 0;i < n;i++ ) {pv = * ( p++ ) , p1 [ i ] = pclr ( pv ) ; }
-      _godard_fill ( G , ( short ) n , x1 , y1 , 0 , p1 ) ;
+      _godard_fill ( G , ( int ) n , x1 , y1 , 0 , p1 ) ;
+      free(x1);
+      free(y1);
+      free(p1);
   }
   static void t_3_godr_fill ( DIG *G , int n , float *x , \
        float *y , float *z , float *p ) {
       int x1 [ 1000 ] , y1 [ 1000 ] , z1 [ 1000 ] ;
       float p1 [ 1000 ] , pv;
-      short i;
+      int i;
       kgDC *dc;
       dc = G->dc;
       for ( i = 0;i < n;i++ ) {
@@ -1948,7 +1973,7 @@ extern Dlink *FontList;
           z1 [ i ] = scr_z ( z [ i ] ) ;
       }
       for ( i = 0;i < n;i++ ) {pv = * ( p++ ) , p1 [ i ] = pclr ( pv ) ; }
-      _godard_fill3 ( G , ( short ) n , x1 , y1 , z1 , ( short ) dc->ibdr , p1 ) ;
+      _godard_fill3 ( G , ( int ) n , x1 , y1 , z1 , ( int ) dc->ibdr , p1 ) ;
   }
   void img_godrfill3f ( DIG *G , int n , float *x , \
        float *y , float *z , float *v ) {
@@ -1969,9 +1994,9 @@ extern Dlink *FontList;
       return;
   }
   static void _marker ( DIG *G , int x , int y ) {
-      short fac = 2;
+      int fac = 2;
       int px [ 4 ] , py [ 4 ] ;
-      short style , mf;
+      int style , mf;
       kgDC *dc;
       kgWC *wc;
       dc = G->dc;
@@ -2040,22 +2065,22 @@ extern Dlink *FontList;
           case 9 :
           px [ 0 ] = x+4*fac;py [ 0 ] = y;px [ 1 ] = x-4*fac;py [ 1 ] = y+4*fac;
           px [ 2 ] = x-4*fac;py [ 2 ] = y-4*fac;
-          _poly_fill ( G , ( short ) 3 , px , py , ( short ) 0 , ( unsigned int ) 15 ) ;
+          _poly_fill ( G , ( int ) 3 , px , py , ( int ) 0 , ( unsigned int ) 15 ) ;
           break;
           case 10:
           px [ 0 ] = x-4*fac;py [ 0 ] = y;px [ 1 ] = x+4*fac;py [ 1 ] = y+4*fac;
           px [ 2 ] = x+4*fac;py [ 2 ] = y-4*fac;
-          _poly_fill ( G , ( short ) 3 , px , py , ( short ) 0 , ( unsigned int ) 15 ) ;
+          _poly_fill ( G , ( int ) 3 , px , py , ( int ) 0 , ( unsigned int ) 15 ) ;
           break;
           case 11:
           px [ 0 ] = x;py [ 0 ] = y+4*fac;px [ 1 ] = x-4*fac;py [ 1 ] = y-4*fac;
           px [ 2 ] = x+4*fac;py [ 2 ] = y-4*fac;
-          _poly_fill ( G , ( short ) 3 , px , py , ( short ) 0 , ( unsigned int ) 15 ) ;
+          _poly_fill ( G , ( int ) 3 , px , py , ( int ) 0 , ( unsigned int ) 15 ) ;
           break;
           case 12:
           px [ 0 ] = x;py [ 0 ] = y-4*fac;px [ 1 ] = x-4*fac;py [ 1 ] = y+4*fac;
           px [ 2 ] = x+4*fac;py [ 2 ] = y+4*fac;
-          _poly_fill ( G , ( short ) 3 , px , py , ( short ) 0 , ( unsigned int ) 15 ) ;
+          _poly_fill ( G , ( int ) 3 , px , py , ( int ) 0 , ( unsigned int ) 15 ) ;
           break;
           case 13 :
           _circle_fill ( G , x , y , ( int ) ( 3*fac ) , ( unsigned int ) 0 ) ;
@@ -2071,22 +2096,22 @@ extern Dlink *FontList;
           case 16:
           px [ 0 ] = x+2*fac;py [ 0 ] = y;px [ 1 ] = x-2*fac;py [ 1 ] = y+2*fac;
           px [ 2 ] = x-2*fac;py [ 2 ] = y-2*fac;
-          _poly_fill ( G , ( short ) 3 , px , py , ( short ) 0 , ( unsigned int ) 15 ) ;
+          _poly_fill ( G , ( int ) 3 , px , py , ( int ) 0 , ( unsigned int ) 15 ) ;
           break;
           case 17:
           px [ 0 ] = x-2*fac;py [ 0 ] = y;px [ 1 ] = x+2*fac;py [ 1 ] = y+2*fac;
           px [ 2 ] = x+2*fac;py [ 2 ] = y-2*fac;
-          _poly_fill ( G , ( short ) 3 , px , py , ( short ) 0 , ( unsigned int ) 15 ) ;
+          _poly_fill ( G , ( int ) 3 , px , py , ( int ) 0 , ( unsigned int ) 15 ) ;
           break;
           case 18:
           px [ 0 ] = x;py [ 0 ] = y+2*fac;px [ 1 ] = x-2*fac;py [ 1 ] = y-2*fac;
           px [ 2 ] = x+2*fac;py [ 2 ] = y-2*fac;
-          _poly_fill ( G , ( short ) 3 , px , py , ( short ) 0 , ( unsigned int ) 15 ) ;
+          _poly_fill ( G , ( int ) 3 , px , py , ( int ) 0 , ( unsigned int ) 15 ) ;
           break;
           case 19:
           px [ 0 ] = x;py [ 0 ] = y-2*fac;px [ 1 ] = x-2*fac;py [ 1 ] = y+2*fac;
           px [ 2 ] = x+2*fac;py [ 2 ] = y+2*fac;
-          _poly_fill ( G , ( short ) 3 , px , py , ( short ) 0 , ( unsigned int ) 15 ) ;
+          _poly_fill ( G , ( int ) 3 , px , py , ( int ) 0 , ( unsigned int ) 15 ) ;
           break;
           default :break;
       }
@@ -2116,7 +2141,7 @@ extern Dlink *FontList;
       if ( x < wc->c_v_x1 ) t++;
       return ( t ) ;
   }
-  static short clip_line ( DIG *G , int *xa , int *ya , int *xb , int *yb ) {
+  static int clip_line ( DIG *G , int *xa , int *ya , int *xb , int *yb ) {
       int x , y , tx , ty , xs , ys;
       unsigned char c1 , c2 , c;
       kgWC *wc;
@@ -2182,9 +2207,9 @@ extern Dlink *FontList;
   }
   static void _draw_line ( DIG *G , int x1 , int y1 , int x2 , int y2 ) {
       char far *addr;
-      short i , dx , dy , f , g , inc1 , inc2 , ab , \
+      int i , dx , dy , f , g , inc1 , inc2 , ab , \
            dx1 , dy1 , miny , maxy , minx , maxx;
-      short clip , ch , rh , r , c;
+      int clip , ch , rh , r , c;
       unsigned int temp;
       int xa , ya , xb , yb , dum;
       int EVGAY;
@@ -2291,7 +2316,7 @@ extern Dlink *FontList;
       return;
   }
   static void hori_line ( DIG *G , int xa , int xb , int y ) {
-      short i , clip;
+      int i , clip;
       char far *addr;
       int temp;
       int EVGAY;
@@ -2309,7 +2334,7 @@ extern Dlink *FontList;
       for ( i = xa;i <= xb;i++ ) put_pixl ( G , i , ( EVGAY-y ) ) ;
   }
   static void phori_line ( DIG *G , int xa , int xb , int y ) {
-      short i , j , ip , ib , jp , clip , pt_no;
+      int i , j , ip , ib , jp , clip , pt_no;
       char far *addr;
       unsigned char dot;
       int temp;
@@ -2340,7 +2365,7 @@ extern Dlink *FontList;
       }
   }
   static void vert_line ( DIG *G , int ya , int yb , int x ) {
-      short i , clip;
+      int i , clip;
       char far *addr;
       int temp;
       int EVGAY;
@@ -2360,8 +2385,8 @@ extern Dlink *FontList;
   static void _draw_ ( DIG *G , int x , int y ) {
       int xa , ya , xb , yb;
       unsigned int ptn;
-      short dx , dy , f , inc1 , inc2 , g , dx1 , dy1 , ab;
-      short clip , i , ch , rh , c , r;
+      int dx , dy , f , inc1 , inc2 , g , dx1 , dy1 , ab;
+      int clip , i , ch , rh , c , r;
       float h;
       int EVGAY;
       kgDC *dc;
@@ -2472,8 +2497,8 @@ extern Dlink *FontList;
       float x [ 300 ] , y [ 300 ] ;
       int x1 [ 5000 ] , y1 [ 5000 ] , x2 [ 5000 ] , y2 [ 5000 ] ;
       int code , n , i , xdum , ydum , pnts;
-      short ptr;
-      short j , pnt , asc , tempc;
+      int ptr;
+      int j , pnt , asc , tempc;
       float fact = 1.0;
       int xo , yo , temp;
       unsigned char color;
@@ -2526,8 +2551,8 @@ extern Dlink *FontList;
       int x1 [ 5000 ] , y1 [ 5000 ] , x2 [ 5000 ] , y2 [ 5000 ] ;
       int pnts , temp;
       float xdum , ydum;
-      short ptr;
-      short j , pnt , asc , tempc;
+      int ptr;
+      int j , pnt , asc , tempc;
       float xa , ya;
       float fact = 1.0;
       float xo , yo;
@@ -2579,7 +2604,7 @@ extern Dlink *FontList;
       return;
 #endif
   }
-  static void uisetsubsup ( DIG *G , float *fact , short *ishft , char cntl ) {
+  static void uisetsubsup ( DIG *G , float *fact , int *ishft , char cntl ) {
       L_N *pt;
       kgWC *wc;
       kgDC *dc;
@@ -2608,8 +2633,8 @@ extern Dlink *FontList;
       *ishft = ( *ishft ) *10;
       return;
   }
-  static void uiresetsubsup ( DIG *G , float *fact , short *ishft ) {
-      short is;
+  static void uiresetsubsup ( DIG *G , float *fact , int *ishft ) {
+      int is;
       kgWC *wc;
       kgDC *dc;
       wc = G->wc;
@@ -2725,7 +2750,7 @@ extern Dlink *FontList;
        int n , int *x1 , int *y1 , int *x2 , int*y2 ) {
       int xp , yp , temp;
       float xx , yy , xx0 , yy0 , xx1 , xx2 , yy1 , yy2 , xx3 , xx4 , yy3 , yy4;
-      short i , j , j1 , k;
+      int i , j , j1 , k;
       j = 0;
       xx0 = x [ 0 ] ; yy0 = y [ 0 ] ;
       x1 [ j ] = ( xx0 ) *Mag+0.5; y1 [ j ] = ( yy0 ) *Mag+0.5; j++;
@@ -2767,7 +2792,7 @@ extern Dlink *FontList;
   }
   static float get_val ( char *ch ) {
       char chr [ 4 ] ;
-      short err;
+      int err;
       float val;
       chr [ 0 ] = *ch;chr [ 1 ] = * ( ch+1 ) ;chr [ 2 ] = *  \
           ( ch+2 ) ;chr [ 3 ] = ' ';
@@ -2776,7 +2801,7 @@ extern Dlink *FontList;
       else return ( val ) ;
   }
   void img_txt_wr ( DIG *G , int n , char *txt ) {
-      short i = 0 , bold , tempc , ishft , trot , Nu , De , gap , lnwidth_o , j;
+      int i = 0 , bold , tempc , ishft , trot , Nu , De , gap , lnwidth_o , j;
       int font_o;
       float fact , val , xl1 , xl2 , hfact = 1.0 , slant;
       int txt_bold_o;
@@ -3049,7 +3074,7 @@ extern Dlink *FontList;
       if ( dc->t_font != font_o ) ui_txt_font ( G , font_o ) ;
   }
   void img_txt_wr_new ( DIG *G , int n , char *txt ) {
-      short i = 0 , bold , tempc , ishft , trot , Nu , De , gap , lnwidth_o , j;
+      int i = 0 , bold , tempc , ishft , trot , Nu , De , gap , lnwidth_o , j;
       int font_o;
       float fact , val , xl1 , xl2 , hfact = 1.0 , slant;
       int txt_bold_o;
@@ -3330,7 +3355,7 @@ extern Dlink *FontList;
   static void _box_fill ( DIG *G , int x1 , int y1 , \
        int x2 , int y2 , unsigned int color ) {
       int x_min , y_min , x_max , x_max1 , x_min1 , y_max , i , j;
-      short po1;
+      int po1;
       unsigned int temp;
       kgDC *dc;
       kgWC *wc;
@@ -3354,10 +3379,10 @@ extern Dlink *FontList;
       dc->c_color = temp;
       return;
   }
-  static void _poly_fill ( DIG *G , short n , int *px , \
-       int *py , short flag , unsigned int b_color ) {
-      short j , imd;
-      short i , cnt , ind;
+  static void _poly_fill ( DIG *G , int n , int *px , \
+       int *py , int flag , unsigned int b_color ) {
+      int j , imd;
+      int i , cnt , ind;
       int xcord [ 50 ] ;
       int xlow , xup;
       int txx;
@@ -3441,10 +3466,10 @@ extern Dlink *FontList;
       if ( flag == 1 ) for ( i = 0;i < n;i++ ) _draw_line ( G , px [ i ] , \
            py [ i ] , px [ ( i+1 ) %n ] , py [ ( i+1 ) %n ] ) ;
   }
-  static void _mpoly_fill ( DIG *G , short n , int *px , int *py , \
+  static void _mpoly_fill ( DIG *G , int n , int *px , int *py , \
        int *px1 , int *py1 , unsigned int b_color ) {
-      short j , imd;
-      short i , cnt , ind;
+      int j , imd;
+      int i , cnt , ind;
       int xcord [ 5000 ] ;
       int txx;
       int xlow , xup;
@@ -3529,12 +3554,12 @@ extern Dlink *FontList;
       dc->c_color = tempc;
   }
   static void _circle ( DIG *G , int x , int y , int r ) {
-      short i , j;
+      int i , j;
       int ym , sqrd;
       sqrd = r*r;
-      ym = y- ( short ) ( r/sqrt ( ( double ) 2. ) ) ;
+      ym = y- ( int ) ( r/sqrt ( ( double ) 2. ) ) ;
       for ( j = y;j >= ym;--j ) {
-          i = x+ ( short ) sqrt ( ( double ) sqrd- ( ( y-j ) * ( y-j ) ) ) ;
+          i = x+ ( int ) sqrt ( ( double ) sqrd- ( ( y-j ) * ( y-j ) ) ) ;
           put_pixel ( G , i , j ) ;
           put_pixel ( G , i , 2*y-j ) ;
           put_pixel ( G , x+y-j , y+i-x ) ;
@@ -3554,7 +3579,7 @@ extern Dlink *FontList;
       kgDC *dc;
       dc = G->dc;
       sqrd = ( double ) r* ( double ) r;
-      ym = y- ( short ) ( r/sqrt ( ( double ) 2. ) ) ;
+      ym = y- ( int ) ( r/sqrt ( ( double ) 2. ) ) ;
       temp = dc->c_color;
       put_pixel ( G , x , y+r ) , put_pixel ( G , x , y-r ) ;
       put_pixel ( G , x+r , y ) , put_pixel ( G , x-r , y ) ;
@@ -3574,10 +3599,10 @@ extern Dlink *FontList;
       }
       dc->c_color = temp;
   }
-  static void _rect_fill ( DIG *G , short x1 , short y1 , \
-       short x2 , short y2 , unsigned int color ) {
+  static void _rect_fill ( DIG *G , int x1 , int y1 , \
+       int x2 , int y2 , unsigned int color ) {
       int EVGAX , EVGAY;
-      short x_min , y_min , x_max , x_max1 , x_min1 , y_max , i , j , po1;
+      int x_min , y_min , x_max , x_max1 , x_min1 , y_max , i , j , po1;
       unsigned int temp;
       kgDC *dc;
       dc = G->dc;
@@ -3603,7 +3628,7 @@ extern Dlink *FontList;
   }
   static int uistrlngth_loc ( kgDC *dc , char *title , float *xdsp ) {
       float wd , gp , fj , fjl , gj , val , fact , fact1 = 1.0 , hfact = 1.0;
-      short ngp , n , i , j , k , greek = 0;
+      int ngp , n , i , j , k , greek = 0;
       int font_o;
       B_K *FB_P = NULL;
       font_o = dc->t_font;
@@ -3731,18 +3756,24 @@ extern Dlink *FontList;
   }
   void img_godard_fill ( DIG *G , int n , float *x , float *y , float *p ) {
       int i;
-      int x1 [ 1000 ] , y1 [ 1000 ] ;
-      float p1 [ 1000 ] ;
+      int *x1  , *y1  ;
+      float *p1  ;
       int color;
       float pv;
       kgDC *dc;
       dc = G->dc;
+      x1 = (int *)malloc(sizeof(int)*(n+1));
+      y1 = (int *)malloc(sizeof(int)*(n+1));
+      p1 = (float *)malloc(sizeof(float)*(n+1));
       for ( i = 0;i < n;i++ ) {
           x1 [ i ] = scr_x ( x [ i ] ) ;
           y1 [ i ] = scr_y ( y [ i ] ) ;
       }
       for ( i = 0;i < n;i++ ) {pv = * ( p+i ) , p1 [ i ] = pclr ( pv ) ; }
-      _godard_fill ( G , ( short ) n , x1 , y1 , ( short ) dc->ibdr , p1 ) ;
+      _godard_fill ( G , ( int ) n , x1 , y1 , ( int ) dc->ibdr , p1 ) ;
+      free(x1);
+      free(y1);
+      free(p1);
   }
   static void setpal ( kgWC *wc , int r , int g , int b , int i ) {
       kgColor *kgcolors;
@@ -3759,7 +3790,7 @@ extern Dlink *FontList;
       setpal ( wc , ( int ) ir , ( int ) ig , ( int ) ib , ( int ) no ) ;
       kgDefineColor(no,( int ) ir , ( int ) ig , ( int ) ib );
   }
-  static void put_pixl ( DIG *G , short col , short row ) {
+  static void put_pixl ( DIG *G , int col , int row ) {
       int addr , MAXB , row1;
       kgWC *wc;
       kgDC *dc;
@@ -3776,8 +3807,8 @@ extern Dlink *FontList;
       imgGetColor ( G , dc->c_color , addr ) ;
       return;
   }
-  static void put_dot ( DIG *G , short col , short row ) {
-      short pos , j , temp;
+  static void put_dot ( DIG *G , int col , int row ) {
+      int pos , j , temp;
       int addr , MAXB , row1;
       kgDC *dc;
       kgWC *wc;
@@ -3792,7 +3823,7 @@ extern Dlink *FontList;
       return;
   }
   static void put_pixel ( DIG *G , int col , int row ) {
-      short pos , j , temp;
+      int pos , j , temp;
       int addr , MAXB , EVGAY;
       kgWC *wc;
       kgDC *dc;
