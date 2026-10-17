@@ -1768,8 +1768,8 @@ extern Dlink *FontList;
       ymax  = (int *)malloc(sizeof(int)*(n+1));
       pmax = (float *)malloc(sizeof(float)*(n+1));
       pmin = (float *)malloc(sizeof(float)*(n+1));
-      xcord = (int *)malloc(sizeof(int)*10000);
-      pcord = (float *)malloc(sizeof(float)*10000);
+      xcord = (int *)malloc(sizeof(int)*1000);
+      pcord = (float *)malloc(sizeof(float)*1000);
       int width = 5;
       kgDC *dc;
       kgWC *wc;
@@ -1825,8 +1825,6 @@ extern Dlink *FontList;
           pmax [ j+1 ] = tpx;
           pmin [ j+1 ] = tpn;
       }
-//      pcord = (float *)malloc(sizeof(float)*(abs(scan-ygrt)+2));
-//      xcord = (int *)malloc(sizeof(int)*(abs(scan-ygrt)+2));
       ind = 0;
       if ( ( scan > wc->c_v_y2 ) || ( ygrt < wc->c_v_y1 ) ||  \
           ( xlow > wc->c_v_x2 ) || ( xup < wc->c_v_x1 ) ) return;
@@ -1844,7 +1842,6 @@ extern Dlink *FontList;
                       ++cnt;
                   }
               }
-          scan++;
           }
   /*sorting scan line intersection xcords of edges*/
           for ( i = 0;i < cnt;++i ) {
