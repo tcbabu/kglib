@@ -3467,7 +3467,6 @@ static char *OthFonts []= {
       free(x1);
       free(y1);
       free(p1);
-      printf("MSG:Over\n");
   }
   void ui_marker ( DIG *G , float x , float y ) {
       int x1 , y1;
