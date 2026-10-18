@@ -1764,6 +1764,33 @@ int kgGetEllipsePointsNew(float xsize,float ysize,int n,float *x,float *y) {
 #endif
 
 }
+int kgGetCirclePointsNew(float xl,float yl,float fac,float *x,float *y,int count) {
+   int i,j;
+   int count1,count2,hcount;
+   float dl,xp,yp;
+   double ang,dang,Dang,dv,ss,cs;
+   dl = fac*yl;
+   if(dl > fac*xl){ dl=fac*xl;}
+   Dang = 90.0/count;
+   dang = Dang*3.14159265/180.0;
+   ang=0;
+   count1 = count+1;
+   count2 = count+2;
+   xp = xl*0.5 -dl;
+   yp = yl*0.5 - dl;
+   x[0]=dl +xp;
+   y[0]= yp;
+   for(i=1;i< count;i++) {
+     ang +=dang;
+     ss = sin(ang);
+     cs = cos(ang);
+     x[i]= dl*cs+xp;
+     y[i]= dl*ss+yp;
+   }
+   x[count]= xp;
+   y[count]= yp+dl;
+   return count1;
+}
 int gphRoundedRectangleRing2(int fid,float xo,float yo,float xl,float yl,float red,float green,float blue,float fac,float bordrsize) {
    /* xo,yo is the centre of the rectangle */
    float vmin,vmax;
@@ -10541,7 +10568,7 @@ int kgRoundedRectangleShade_o(void * fid,float xo,float yo,float xl,float yl,int
    return 1;
 }
 
-int kgRoundedRectangleShade4(void * fid,float xo,float yo,float xl,float yl,int clr,float fac,float vmin,float vmax) {
+int kgRoundedRectangleShade4_o(void * fid,float xo,float yo,float xl,float yl,int clr,float fac,float vmin,float vmax) {
    /* xo,yo is the centre of the rectangle */
    int count,Dang=3,count1,count2,hcount,np,pos,size,size1;
    float bordrsize=3;
@@ -10549,7 +10576,7 @@ int kgRoundedRectangleShade4(void * fid,float xo,float yo,float xl,float yl,int 
    float xd[800],yd[800],vd[800];
    float dl,xp,yp,red,green,blue,h,s,vv,vorg,vmid,vlow,horg,sorg,vlow1,vmid1,fac1;
    double dl1;
-   double ang,dang;
+   double ang,dang,ss;
    int i,j,npi,npj,np2;
    int r,g,b;
    if(fac > 1.0) fac=1.0;
@@ -10590,13 +10617,14 @@ int kgRoundedRectangleShade4(void * fid,float xo,float yo,float xl,float yl,int 
    sorg =s;
    vorg = vv;
    vmid = vmax;
-   vv = (vmin+0.4*(vmax-vmin));
+   vv = (vmin+0.8*(vmax-vmin));
+
 //   if(vmid>vorg) vmid=vorg;
    vlow= vmin;
    if(vv > 1 ) vv=1;
    if(vlow > 1 ) vlow=1;
    if(fac > 0.5) {
-       double ss,dv,vmin,vmax,dv1,vmin1,vmax1,ang;
+       double dv,vmin,vmax,dv1,vmin1,vmax1,ang;
        vmin1= vv;
        vmax1 = vv;
        vmin = vlow;
@@ -10802,6 +10830,177 @@ int kgRoundedRectangleShade4(void * fid,float xo,float yo,float xl,float yl,int 
    vd[3]= vv;
    if(fac <= 0.5) kgGouraudFill(fid,4,xd,yd,vd);
 #endif
+   return 1;
+}
+int kgRoundedRectangleShade4(void * fid,float xo,float yo,float xl,float yl,int clr,float fac,float vmin,float vmax) {
+   /* xo,yo is the centre of the rectangle */
+   int count,Dang=3,count1,count2,hcount,np,pos,size,size1;
+   float bordrsize=3;
+   float x[800],y[800],v[800],xx,yy;
+   float xd[800],yd[800],vd[800];
+   float xp[3],yp[3],vp[3];
+   float dl,red,green,blue,h,s,vv,vorg,vmid,vlow,horg,sorg,vlow1,vmid1,fac1;
+   double dl1;
+   double ang,dang,ss;
+   int i,j,npi,npj,np2;
+   int r,g,b;
+   if(fac > 1.0) fac=1.0;
+   if(fac > 0.25 ) Dang=2;
+   if(fac > 0.4 ) Dang=1;
+   if(fac <= 0.0001) {count=1;Dang=90;}
+   count = 90/Dang;
+   size = yl;
+   if(size > xl){ size=xl;}
+   bordrsize = size*0.1;
+   if(bordrsize< 4) bordrsize=4;
+   if(bordrsize > size*0.3) bordrsize=size*0.3;
+   dl = size*fac;
+   if(dl < bordrsize ) dl = bordrsize;
+   dl1 = dl -bordrsize;
+   fac1 = dl1/(size-2*bordrsize);
+//   fac1=0.5;
+   dang = Dang*3.14159265/180.0;
+   ang=0;
+   count1 = count+1;
+   count2 = count+2;
+//   kgGetDefaultRGB(clr,&r,&g,&b);
+//   kgGetRGB((DIG *)fid,clr,&r,&g,&b);
+   if(clr >=0 ) kgGetRGB((DIG *)fid,clr,&r,&g,&b);
+   else {
+         clr = -clr;
+         b = (clr%1000);
+         g = (clr/1000)%1000;
+         r = (clr/1000000)%1000;
+         b = b%256;g=g%256;r=r%256;
+         clr = 127;
+         kgChangeColor(fid,clr,r,g,b);
+   }
+//TCB
+//   r=g=b=220;
+   RGBtoHSV((float)r,(float)g,(float)b,&h,&s,&vv);
+   horg = h;
+   sorg =s;
+   vorg = vv;
+   vmid = vmax;
+   vv = (vmin+0.8*(vmax-vmin));
+
+   if(fac > 0.5) {
+       double dv,vmin,vmax,dv1,vmin1,vmax1,ang;
+       vmin1= vv;
+       vmax1 = vv;
+       vmin = vlow;
+       vmax = vlow;
+       fac = (fac-0.5)/0.5;
+       fac1 = (fac1-0.5)/0.5;
+       np = kgGetEllipsePointsNew(xl, yl,count,x,y) ;
+       np =kgGetEllipsePointsNew( xl-2*bordrsize,yl-2*bordrsize, count,xd, yd);
+   }
+   else {
+       int offset=0;
+       if(xl != yl) {
+         offset=1;
+         y[0]= 0.0;;
+         x[0]= xl*0.5;
+         xd[0]= xl*0.5- bordrsize;
+         yd[0]= 0.0;;
+       }
+       np =kgGetCirclePointsNew( xl,yl,fac, x+offset, y+offset, count);
+       np =kgGetCirclePointsNew( xl-2*bordrsize,yl-2*bordrsize,fac1, xd+offset, yd+offset, count);
+       np = np+offset;
+       if(xl != yl) {
+         np= np+1;
+         x[np-1]= 0.0;
+         y[np-1]= yl*0.5;
+         xd[np-1]= 0.0;;
+         yd[np-1]= yl*0.5 -bordrsize ;
+       }
+   }
+#if 1 
+// Testing
+       vmid =vv;
+       vv = vmax;
+       Dang = 90.0/(np-1);
+       dang = 3.14159265/180.0;
+ 
+       ang =0;
+       for(i=0;i<np;i++) {
+//         ss = sin(ang);
+         v[i]= vmin;
+         vd[i]= vmid;
+         ang +=dang;
+       }
+#endif
+   for(i=0;i<np;i++) {
+     npi= np+i;
+     npj = np-1-i;
+     x[npi]= xd[npj];
+     y[npi]= yd[npj];
+     v[npi]= vd[npj];
+   }
+   np2 = np*2;
+   for(i=0;i<np2;i++) {
+     xd[i] = x[i]+xo;
+     yd[i] = y[i] +yo;
+     vd[i] = v[i];
+   }
+   xd[np2]= xo;
+   yd[np2] = yo;
+   vd[np2] = vmax;
+   kgMixHsvColors(fid,200,128,h,s,vmin,vmax);
+   kgSetShadeParams(fid,vmax,vmin,200, 128, 0);
+   for(i=0;i<(np-1);i++) {
+     xp[0]=xd[i]; yp[0]=yd[i];vp[0]=vd[i];
+     xp[1]=xd[i+1]; yp[1]=yd[i+1];vp[1]=vd[i+1];
+     j= np2-1-i;
+     xp[2]=xd[j]; yp[2]=yd[j];vp[2]=vd[j];
+     kgGouraudFill(fid,3,xp,yp,vp);
+     xp[0]=xd[j-1]; yp[0]=yd[j-1];vp[0]=vd[j-1];
+     kgGouraudFill(fid,3,xp,yp,vp);
+   }
+//   kgGouraudFill(fid,np2,xd,yd,vd);
+   kgGouraudFill(fid,np+1,xd+np,yd+np,vd+np);
+   for(i=0;i<np2;i++) {
+     xd[i] = -x[i]+xo;
+   }
+   for(i=0;i<(np-1);i++) {
+     xp[0]=xd[i]; yp[0]=yd[i];vp[0]=vd[i];
+     xp[1]=xd[i+1]; yp[1]=yd[i+1];vp[1]=vd[i+1];
+     j= np2-1-i;
+     xp[2]=xd[j]; yp[2]=yd[j];vp[2]=vd[j];
+     kgGouraudFill(fid,3,xp,yp,vp);
+     xp[0]=xd[j-1]; yp[0]=yd[j-1];vp[0]=vd[j-1];
+     kgGouraudFill(fid,3,xp,yp,vp);
+   }
+//   kgGouraudFill(fid,np2,xd,yd,vd);
+   kgGouraudFill(fid,np+1,xd+np,yd+np,vd+np);
+   for(i=0;i<np2;i++) {
+     yd[i] = -y[i] +yo;
+   }
+   for(i=0;i<(np-1);i++) {
+     xp[0]=xd[i]; yp[0]=yd[i];vp[0]=vd[i];
+     xp[1]=xd[i+1]; yp[1]=yd[i+1];vp[1]=vd[i+1];
+     j= np2-1-i;
+     xp[2]=xd[j]; yp[2]=yd[j];vp[2]=vd[j];
+     kgGouraudFill(fid,3,xp,yp,vp);
+     xp[0]=xd[j-1]; yp[0]=yd[j-1];vp[0]=vd[j-1];
+     kgGouraudFill(fid,3,xp,yp,vp);
+   }
+//   kgGouraudFill(fid,np2,xd,yd,vd);
+   kgGouraudFill(fid,np+1,xd+np,yd+np,vd+np);
+   for(i=0;i<np2;i++) {
+     xd[i] = x[i]+xo;
+   }
+   for(i=0;i<(np-1);i++) {
+     xp[0]=xd[i]; yp[0]=yd[i];vp[0]=vd[i];
+     xp[1]=xd[i+1]; yp[1]=yd[i+1];vp[1]=vd[i+1];
+     j= np2-1-i;
+     xp[2]=xd[j]; yp[2]=yd[j];vp[2]=vd[j];
+     kgGouraudFill(fid,3,xp,yp,vp);
+     xp[0]=xd[j-1]; yp[0]=yd[j-1];vp[0]=vd[j-1];
+     kgGouraudFill(fid,3,xp,yp,vp);
+   }
+//   kgGouraudFill(fid,np2,xd,yd,vd);
+   kgGouraudFill(fid,np+1,xd+np,yd+np,vd+np);
    return 1;
 }
 int kgRoundedRectangleShade0(void * fid,float xo,float yo,float xl,float yl,int clr,float fac,float vmin,float vmax) {
