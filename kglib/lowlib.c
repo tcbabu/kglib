@@ -2917,8 +2917,6 @@ static char *OthFonts []= {
       free(pmax);
       free(pcord);
       free(xcord);
-      printf("Godard Fill Over\n ");
-      fflush(stdout);
   }
   void uigodr_line ( DIG *G , int xa , int xb , int y , float pa , float pb ) {
       int i , pos , p1 , p2 , yy;
@@ -6681,8 +6679,6 @@ void transch(int c) {
   int *fval , float *wfac , float *zfac ) {
       int i , k;
       char *pt = Str;
-//      printf("Str: %s\n",Str);
-//      fflush(stdout);
       while ( Str [ 0 ] == '!' ) {
           switch ( Str [ 1 ] ) {
               case 'f':
@@ -6740,13 +6736,9 @@ void transch(int c) {
           else {
               Buf [ k++ ] = Str [ i++ ] ;
               Buf [ k ] = '\0';
-//      printf("Buf: %s\n",Buf);
-//      fflush(stdout);
           }
       }
       Buf [ k ] = '\0';
-//      printf("Buf: %s\n",Buf);
-//      fflush(stdout);
       return Buf;
   }
   void **uiMenuStringImages ( DIALOG *D , char **Strs , \
@@ -10387,8 +10379,6 @@ void transch(int c) {
               if ( simg != NULL ) kgFreeImage ( simg ) ;
               xpm = NULL;xpmp = NULL;xpmh = NULL;simg = NULL;
           }
-//             printf("TCB:k=%d\n",k);
-//             fflush(stdout);
       }
       kgFreeGmImage ( cimgn ) ;
       kgFreeGmImage ( cimgp ) ;
@@ -10729,8 +10719,6 @@ void transch(int c) {
           uiFreeImage ( img ) ;
       }
       uiFreeImage ( uimg ) ;
-//      printf("MSG: shaded string\n");
-//      fflush(stdout);
       uiRest_clip_limits ( wc ) ;
   }
   void _ui_right_dir ( DIALOG *D , int x , int y , int w , int bright ) {
@@ -10759,8 +10747,6 @@ void transch(int c) {
           uiFreeImage ( img ) ;
       }
       uiFreeImage ( uimg ) ;
-//      printf("MSG: shaded string\n");
-//      fflush(stdout);
       uiRest_clip_limits ( wc ) ;
   }
   void _dvleft_dir ( DIALOG *D , int x , int y , \
@@ -10787,8 +10773,6 @@ void transch(int c) {
           uiFreeImage ( img ) ;
       }
       uiFreeImage ( uimg ) ;
-//      printf("MSG: shaded string\n");
-//      fflush(stdout);
       uiRest_clip_limits ( wc ) ;
   }
   void _dvright_dir ( DIALOG *D , int x , int y , \
@@ -10817,7 +10801,6 @@ void transch(int c) {
       }
       uiFreeImage ( uimg ) ;
 //      printf("MSG: shaded string\n");
-//      fflush(stdout);
       uiRest_clip_limits ( wc ) ;
   }
   void _ui_slidebar_o ( DIALOG *D , S_STR *pt ) {
@@ -12214,8 +12197,6 @@ void transch(int c) {
           uiFreeImage ( img ) ;
       }
       uiFreeImage ( uimg ) ;
-//      printf("MSG: shaded string\n");
-//      fflush(stdout);
 #endif
       uiRest_clip_limits ( wc ) ;
   }
@@ -12239,8 +12220,6 @@ void transch(int c) {
           uiFreeImage ( img ) ;
       }
       uiFreeImage ( uimg ) ;
-//      printf("MSG: shaded string down\n");
-//      fflush(stdout);
 #endif
       uiRest_clip_limits ( wc ) ;
   }

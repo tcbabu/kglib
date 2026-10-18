@@ -1783,7 +1783,6 @@
       pmax = ( float * ) malloc ( sizeof ( float ) * ( n+1 ) ) ;
       pmin = ( float * ) malloc ( sizeof ( float ) * ( n+1 ) ) ;
       icord = 2*n+2;
-      printf("icord = %d\n",icord);
       xcord = ( int * ) malloc ( sizeof ( int ) *icord ) ;
       pcord = ( float * ) malloc ( sizeof ( float ) *icord ) ;
       int width = 5;
@@ -1861,8 +1860,6 @@
                            ( ymax [ i ] -ymin [ i ] ) * \
                            ( scan-ymin [ i ] ) +pmin [ i ] ) ) ;
                           ++cnt;
-                          printf("cnt = %d\n",cnt);
-                          fflush(stdout);
                       }
                   }
               }

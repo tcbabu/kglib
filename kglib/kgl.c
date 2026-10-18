@@ -5958,7 +5958,7 @@ break;
      {
        if ( G->R_Byte>=G->R_max){ G->R_max=read(G->review,(void *)G->Rbuff,B_min);G->R_Byte=0;}
        if(G->R_max ==0) {
-         printf("Trying to read beyond file\n");
+//         printf("Trying to read beyond file\n");
            return 0;
        }
        *(ptr+i)=G->Rbuff[G->R_Byte++];
@@ -6670,8 +6670,8 @@ void uicheck_and_do(DIG *G,char ch)
  {
    unsigned char ch2;
    uiread_buf(G,&ch2,1);
-   printf("uicheck: %c%c \n",ch,ch2);
-   fflush(stdout);
+//   printf("uicheck: %c%c \n",ch,ch2);
+//   fflush(stdout);
    switch((int)ch)
     { 
      case 'l' :
@@ -6993,13 +6993,9 @@ void uihoreview(DIG *G)
   {
     uicheck_and_do(G,ch);
     if(uiread_buf(G,&ch,1)==0){
-     printf("MSG: horeview %c\n",ch);
-     fflush(stdout);
      break;
     }
   }
-  printf("MSG:horeview Over\n");
-  fflush(stdout);
   if( G->BACK_UP ==1) {  G->Byte=0;G->R_max=0;}
   G->review= -1;
 #else
