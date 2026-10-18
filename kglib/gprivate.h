@@ -541,7 +541,7 @@ void ui_DRAW_LINE(DIG *G,float x1,float y1,float x2,float y2);
 void uiupdate_intr(DIG *G,int count,unsigned int *loc);
 void uiupdate_view(DIG *G);
 void uicheck_and_do(DIG *G,char ch);
-void uiread_buf(DIG *G, void *ch, int n);
+int  uiread_buf(DIG *G, void *ch, int n);
 void uireview_cmds(DIG *G);
 void uiread_file(DIG *G,int rbuf);
 void uireview_file(DIG *G,char *stri);

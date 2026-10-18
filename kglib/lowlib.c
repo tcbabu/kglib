@@ -2869,8 +2869,8 @@ static char *OthFonts []= {
           pmin [ j+1 ] = tpn;
       }
       ind = 0;
-      if ( ( scan > wc->c_v_y2 ) || ( ygrt < wc->c_v_y1 ) || \
-       ( xlow > wc->c_v_x2 ) || ( xup < wc->c_v_x1 ) ) return;
+      if (!( ( scan > wc->c_v_y2 ) || ( ygrt < wc->c_v_y1 ) || \
+       ( xlow > wc->c_v_x2 ) || ( xup < wc->c_v_x1 ) )) {
       if ( ymax [ ind ] == scan ) ind++;
       while ( scan <= ygrt ) {
           cnt = 0;
@@ -2905,6 +2905,7 @@ static char *OthFonts []= {
           xcord [ i+1 ] , scan , pcord [ i ] , pcord [ i+1 ] ) ;
           scan++;
       }
+      }
       if ( flag == 1 ) for ( i = 0; i < n; i++ ) _uidraw_line \
        ( wc , px [ i ] , py [ i ] , px [ \
        ( i+1 ) %n ] , py [ ( i+1 ) %n ] ) ;
@@ -2916,6 +2917,8 @@ static char *OthFonts []= {
       free(pmax);
       free(pcord);
       free(xcord);
+      printf("Godard Fill Over\n ");
+      fflush(stdout);
   }
   void uigodr_line ( DIG *G , int xa , int xb , int y , float pa , float pb ) {
       int i , pos , p1 , p2 , yy;
@@ -3456,14 +3459,17 @@ static char *OthFonts []= {
           if ( xmax < x1 [ i ] ) xmax = x1 [ i ] ;
           if ( ymax < y1 [ i ] ) ymax = y1 [ i ] ;
       }
-      if ( ( xmin == xmax ) || ( ymin == ymax ) ) return;
-      if ( ( xmax < dc->v_x1 ) || ( xmin > dc->v_x2 ) || ( ymax < dc->v_y1 ) \
-       || ( ymin > dc->v_y2 ) ) return;
+      if (!( ( xmin == xmax ) || ( ymin == ymax ) )) {
+      if (!( ( xmax < dc->v_x1 ) || ( xmin > dc->v_x2 ) || ( ymax < dc->v_y1 ) \
+       || ( ymin > dc->v_y2 ) )){
       for ( i = 0; i < n; i++ ) {pv = * ( p++ ) , p1 [ i ] = uipclr ( pv ) ; }
       _uigodard_fill ( G , n , x1 , y1 , dc->ibdr , p1 ) ;
+      }
+      }
       free(x1);
       free(y1);
       free(p1);
+      printf("MSG:Over\n");
   }
   void ui_marker ( DIG *G , float x , float y ) {
       int x1 , y1;

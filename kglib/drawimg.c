@@ -21,7 +21,7 @@
   static int MFAC = 2;
   char * ui_mktmpdir ( void ) ;
   int uiAddFonts ( ) ;
-extern Dlink *FontList;
+  extern Dlink *FontList;
 #define SSF 0.6
 #define MAXZ 65000
 #define uireset_greek {\
@@ -30,7 +30,7 @@ extern Dlink *FontList;
            dc->icxv = dc->icxvtmp;\
            dc->icyv = dc->icyvtmp;\
        }\
-  }
+   }
 #define uiset_greek {\
    if ( dc->greek > 0 ) {\
            dc->icpostmp = dc->icpos;\
@@ -40,7 +40,7 @@ extern Dlink *FontList;
            dc->icxv = dc->icxvf0;\
            dc->icyv = dc->icyvf0;\
        }\
-  }
+   }
 #define uiset_sup_clip_limits(wc,x1,y1,x2,y2) wc->s_v_x1=x1,wc->s_v_y1=y1,wc->s_v_x2=x2,wc->s_v_y2=y2
 #define uiset_clip_limits(wc,x1,y1,x2,y2) wc->c_v_x1=x1,wc->c_v_y1=y1,wc->c_v_x2=x2,wc->c_v_y2=y2
   Dlink *uiGetFontlist ( void ) ;
@@ -51,23 +51,23 @@ extern Dlink *FontList;
   void img_DRAW_LINE ( DIG *G , float x1 , float y1 , float x2 , float y2 ) ;
   void img_drawline ( DIG *G , float x1 , float y1 , float x2 , float y2 ) ;
   void img_boxfill ( DIG *G , float x1 , float y1 , \
-       float x2 , float y2 , int color ) ;
+  float x2 , float y2 , int color ) ;
   void img_circle ( DIG *G , float x1 , float y1 , float r ) ;
   void img_circlefill ( DIG *G , float x1 , float y1 , float r , int color ) ;
   void img_poly_fill ( DIG *G , int n , float *x , \
-       float *y , int flag , int color ) ;
+  float *y , int flag , int color ) ;
   void img_viewport ( DIG *G , float x1 , float y1 , float x2 , float y2 ) ;
   void img_userframe ( DIG *G , float x1 , float y1 , float x2 , float y2 ) ;
   void img_userframe3d ( DIG *G , float x1 , float y1 , float x2 , float y2 , \
-       float xe , float ye , float ze , float zc , float clmin , float clmax ) ;
+  float xe , float ye , float ze , float zc , float clmin , float clmax ) ;
   void img_move3f ( DIG *G , float x , float y , float z ) ;
   void img_draw3f ( DIG *G , float x , float y , float z ) ;
   void img_polyfill3f ( DIG *G , int n , float *x , \
-       float *y , float *z , int flag , int color ) ;
+  float *y , float *z , int flag , int color ) ;
   void img_boxfill3f ( DIG *G , float x1 , float y1 , float z1 , \
-       float x2 , float y2 , float z2 , int ib , int color ) ;
+  float x2 , float y2 , float z2 , int ib , int color ) ;
   void img_godrfill3f ( DIG *G , int n , float *x , \
-       float *y , float *z , float *v ) ;
+  float *y , float *z , float *v ) ;
   void img_set_markstyle ( DIG *G , int style ) ;
   void img_set_color ( DIG *G , int color ) ;
   void img_set_lnstyle ( DIG *G , int style ) ;
@@ -84,15 +84,15 @@ extern Dlink *FontList;
   void img_set_txtbold ( DIG *G , int bold ) ;
   void img_godard_fill ( DIG *G , int n , float *x , float *y , float *p ) ;
   void img_set_godard_clrs ( DIG *G , float max , float min , \
-       int ib , int startclr , int nclrs ) ;
+  int ib , int startclr , int nclrs ) ;
   void img_set_shade_clrs ( DIG *G , float max , float min , \
-       int ib , int startclr , int nclrs ) ;
+  int ib , int startclr , int nclrs ) ;
   void img_set_prtxt ( DIG *G , int txt ) ;
   void img_sup_clip_limit ( DIG *G , float x1 , \
-       float y1 , float x2 , float y2 ) ;
+  float y1 , float x2 , float y2 ) ;
   void img_chng_clr ( DIG *G , int no , int ir , int ig , int ib ) ;
   void uiput_shade_pix3 ( DIG *G , int col , int row , int z , float illu ) ;
-  void *kgBlendImages (void *bottom  , void *top ,int xoff,int yoff) ;
+  void *kgBlendImages ( void *bottom , void *top , int xoff , int yoff ) ;
 #if 1
   static pthread_mutex_t _Tmplock = PTHREAD_MUTEX_INITIALIZER;
 #define Lock pthread_mutex_lock(&_Tmplock)
@@ -107,8 +107,8 @@ extern Dlink *FontList;
 #define FREE(a) if(a!=NULL){free(a);a=NULL;}
   extern int kgIcode [ 1024 ] [ 3 ] ;
 //static kgIcodeLoc[1024][3];
-  void * uiGraphicsString (  char *str , int width , \
-  int height , int font , int color ,int angle, int FontSize  ) ;
+  void * uiGraphicsString ( char *str , int width , \
+  int height , int font , int color , int angle , int FontSize ) ;
 #if 0
   static unsigned long _uiPlotPixel ( DIG *G , int x , int y , float v ) {
       unsigned long color = 1 , no , loc;
@@ -149,7 +149,7 @@ extern Dlink *FontList;
       return color;
   }
   int kgImagePixel ( DIG *G , int col , int row , \
-       int r , int g , int b , int a ) {
+  int r , int g , int b , int a ) {
       unsigned long color = 1;
       int addr , MAXB , row1 , loc;
       kgWC *wc;
@@ -161,8 +161,8 @@ extern Dlink *FontList;
       MAXB = dc->EVGAX;
       if ( col >= MAXB ) return 0;
       row1 = dc->EVGAY-1-row;
-      if ( ( col > wc->c_v_x2 ) || ( col < wc->c_v_x1 ) || ( row1 > wc->c_v_y2 )  \
-          || ( row1 < wc->c_v_y1 ) ) return 0;
+      if ( ( col > wc->c_v_x2 ) || ( col < wc->c_v_x1 ) || ( row1 > wc->c_v_y2 ) \
+       || ( row1 < wc->c_v_y1 ) ) return 0;
       loc = ( ( row ) *MAXB + col ) ;
       PixelPacket *pixels;
       pixels = G->pixels;
@@ -179,7 +179,7 @@ extern Dlink *FontList;
       PixelPacket *pixels , *spixels;
       int w , h , iw , ih , i , j , ii , jj , sloc , dloc , cx0 , cx1 , cy0 , cy1;
       int channels;
-      float fs,fd;
+      float fs , fd;
       dc = G->dc;
       wc = G->wc;
       Simg = ( GMIMG * ) img;
@@ -194,8 +194,9 @@ extern Dlink *FontList;
       cy0 = dc->EVGAY-1-wc->c_v_y2;
       cy1 = dc->EVGAY-1-wc->c_v_y1;
 //  printf("%d %d %d %d\n",cx0,cy0,cx1,cy1);
-      spixels = GetImagePixels ( ( Image * ) ( Simg->image ) , 0 , 0 , ( ( Image * )  \
-          ( Simg->image ) )->columns , ( ( Image * ) ( Simg->image ) )->rows ) ;
+      spixels = GetImagePixels ( ( Image * ) ( Simg->image ) , \
+      0 , 0 , ( ( Image * ) \
+       ( Simg->image ) )->columns , ( ( Image * ) ( Simg->image ) )->rows ) ;
       pixels = G->pixels;
 //      printf("Channels = %d\n",channels);
       for ( j = 0;j < ( h ) ;j++ ) {
@@ -210,36 +211,37 @@ extern Dlink *FontList;
               if ( ii >= iw ) continue;
               sloc = j*w+i;
               dloc = jj*iw+ii;
-              if ( ( channels != 4 )  ) {
+              if ( ( channels != 4 ) ) {
                   pixels [ dloc ] .blue = spixels [ sloc ] .blue;
                   pixels [ dloc ] .green = spixels [ sloc ] .green;
                   pixels [ dloc ] .red = spixels [ sloc ] .red;
                   pixels [ dloc ] .opacity = 255;
               }
               else {
-                if( spixels [ sloc ] .opacity == 255 ) continue;
-                if( spixels [ sloc ] .opacity == 0 ) {
-                  pixels [ dloc ] .blue = spixels [ sloc ] .blue;
-                  pixels [ dloc ] .green = spixels [ sloc ] .green;
-                  pixels [ dloc ] .red = spixels [ sloc ] .red;
-                  pixels [ dloc ] .opacity = spixels [ sloc ] .opacity;
-                }
-                else {
-                  fd = 1-pixels [ dloc ] .opacity/255.0; ;
-                  fs = 1. - spixels [ sloc ] .opacity/255.0;
-                  fd = fd*(1- fs);
-                  float aout = fs +fd;
-                  fs = fs/(fs+fd);               
-                  fd = fd/(fs+fs);
-                  pixels [ dloc ] .blue = fd*pixels [ dloc ] .blue+fs* spixels [ sloc ] .blue;
+                  if ( spixels [ sloc ] .opacity == 255 ) continue;
+                  if ( spixels [ sloc ] .opacity == 0 ) {
+                      pixels [ dloc ] .blue = spixels [ sloc ] .blue;
+                      pixels [ dloc ] .green = spixels [ sloc ] .green;
+                      pixels [ dloc ] .red = spixels [ sloc ] .red;
+                      pixels [ dloc ] .opacity = spixels [ sloc ] .opacity;
+                  }
+                  else {
+                      fd = 1-pixels [ dloc ] .opacity/255.0; ;
+                      fs = 1. - spixels [ sloc ] .opacity/255.0;
+                      fd = fd* ( 1- fs ) ;
+                      float aout = fs +fd;
+                      fs = fs/ ( fs+fd ) ;
+                      fd = fd/ ( fs+fs ) ;
+                      pixels [ dloc ] .blue = fd*pixels [ dloc ] .blue+fs* spixels [ sloc ] .blue;
 //                  if ( pixels [ dloc ] .blue >255 ) pixels [ dloc ] .blue =255;
-                  pixels [ dloc ] .green = fd*pixels [ dloc ] .green+fs* spixels [ sloc ] .green;
+                      pixels [ dloc ] .green = fd*pixels [ dloc ] .green+fs* spixels [ sloc ] .green;
+                          
 //                  if ( pixels [ dloc ] .green>255 ) pixels [ dloc ] .green=255;
-                  pixels [ dloc ] .red = fd*pixels [ dloc ] .red+fs* spixels [ sloc ] .red;
+                      pixels [ dloc ] .red = fd*pixels [ dloc ] .red+fs* spixels [ sloc ] .red;
 //                  if ( pixels [ dloc ] .red>255 ) pixels [ dloc ] .red=255;
-                  pixels [ dloc ] .opacity = (1.-aout)*255;;
-                  if(pixels [ dloc ] .opacity > 255 ) pixels [ dloc ] .opacity =255;
-                }
+                      pixels [ dloc ] .opacity = ( 1.-aout ) *255;;
+                      if ( pixels [ dloc ] .opacity > 255 ) pixels [ dloc ] .opacity = 255;
+                  }
               }
 //TCB
 //      printf("%x %x %x %x\n",pixels[dloc].blue,pixels[dloc].green,pixels[dloc].red,pixels[dloc].opacity);
@@ -255,7 +257,7 @@ extern Dlink *FontList;
       PixelPacket *pixels , *spixels;
       int w , h , iw , ih , i , j , ii , jj , sloc , dloc , cx0 , cx1 , cy0 , cy1;
       int channels;
-      float fs,fd;
+      float fs , fd;
       dc = G->dc;
       wc = G->wc;
       Simg = ( GMIMG * ) img;
@@ -270,8 +272,9 @@ extern Dlink *FontList;
       cy0 = dc->EVGAY-1-wc->c_v_y2;
       cy1 = dc->EVGAY-1-wc->c_v_y1;
 //  printf("%d %d %d %d\n",cx0,cy0,cx1,cy1);
-      spixels = GetImagePixels ( ( Image * ) ( Simg->image ) , 0 , 0 , ( ( Image * )  \
-          ( Simg->image ) )->columns , ( ( Image * ) ( Simg->image ) )->rows ) ;
+      spixels = GetImagePixels ( ( Image * ) ( Simg->image ) , \
+      0 , 0 , ( ( Image * ) \
+       ( Simg->image ) )->columns , ( ( Image * ) ( Simg->image ) )->rows ) ;
       pixels = G->pixels;
 //      printf("Channels = %d\n",channels);
       for ( j = 0;j < ( h ) ;j++ ) {
@@ -286,10 +289,10 @@ extern Dlink *FontList;
               if ( ii >= iw ) continue;
               sloc = j*w+i;
               dloc = jj*iw+ii;
-                  pixels [ dloc ] .blue = spixels [ sloc ] .blue;
-                  pixels [ dloc ] .green = spixels [ sloc ] .green;
-                  pixels [ dloc ] .red = spixels [ sloc ] .red;
-                  pixels [ dloc ] .opacity =spixels [ sloc ] .opacity;
+              pixels [ dloc ] .blue = spixels [ sloc ] .blue;
+              pixels [ dloc ] .green = spixels [ sloc ] .green;
+              pixels [ dloc ] .red = spixels [ sloc ] .red;
+              pixels [ dloc ] .opacity = spixels [ sloc ] .opacity;
           }
       }
       return;
@@ -437,8 +440,8 @@ extern Dlink *FontList;
   static SHADE *st;
   static float Cx , Cy , Cz;
   static unsigned int ln_ptn [ 10 ] = {0xffffffff , 0x88888888 , 0xcccccccc , \
-       0xf0f0f0f0 , 0xff18ff18 , 0xffff0f0f , 0xe7e7e7e7 , \
-       0xfafafafa , 0xffff0000 , 0xffffff00};
+      0xf0f0f0f0 , 0xff18ff18 , 0xffff0f0f , 0xe7e7e7e7 , \
+  0xfafafafa , 0xffff0000 , 0xffffff00};
   static int st_ptr [ 10 ] = {0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0};
 #define TX(x,y) (dc->cx +(x)*dc->cost+(y)*dc->sint)
 #define TY(x,y) (dc->cy -(x)*dc->sint+(y)*dc->cost)
@@ -475,19 +478,19 @@ extern Dlink *FontList;
 #define set_sup_clip_limits(x1,y1,x2,y2) wc->s_v_x1=x1,wc->s_v_y1=y1,wc->s_v_x2=x2,wc->s_v_y2=y2
 #define pclr(p)  (float)(((p-dc->pmin)*dc->dfac+0.))
   static float PS_Slant = 0. , Slant = 0. , Slant_o = 0. , \
-       Slnt [ 2 ] = {0.0 , 0.25};
+  Slnt [ 2 ] = {0.0 , 0.25};
   static float *m_F;
   static int *icxvF , *icyvF;
   static float pmax , pmin , dfac;
   static float x_mulf = 1.0 , y_mulf = 1.0;
   static unsigned char godr_ptn [ 13 ] = {0 , 6 , 7 , \
-       9 , 14 , 13 , 12 , 4 , 10 , 2 , 1 , 3 , 15};
+  9 , 14 , 13 , 12 , 4 , 10 , 2 , 1 , 3 , 15};
   static unsigned char MASK [ 8 ] = { 0x80 , 0x40 , \
-       0x20 , 0x10 , 0x08 , 0x04 , 0x02 , 0x01 };
+  0x20 , 0x10 , 0x08 , 0x04 , 0x02 , 0x01 };
   static unsigned char MASKB [ 8 ] = {0xFF , 0x7F , \
-       0x3F , 0x1F , 0x0F , 0x07 , 0x03 , 0x01 };
+  0x3F , 0x1F , 0x0F , 0x07 , 0x03 , 0x01 };
   static unsigned char MASKE [ 8 ] = {0x80 , 0xC0 , \
-       0xE0 , 0xF0 , 0xF8 , 0xFC , 0xFE , 0xFF };
+  0xE0 , 0xF0 , 0xF8 , 0xFC , 0xFE , 0xFF };
   static unsigned char RMASK [ 4 ] = { 0x00 , 0x01 , 0x10 , 0x11 };
   static unsigned char MMASK [ 4 ] = { 0x01 , 0x02 , 0x04 , 0x08 };
   static unsigned char RED [ 4 ] = {0x00 , 0x04 , 0x20 , 0x24 };
@@ -500,50 +503,50 @@ extern Dlink *FontList;
   static void draw ( DIG *G , float x , float y ) ;
   static void DRAW_LINE ( DIG *G , float x1 , float y1 , float x2 , float y2 ) ;
   static void box_fill ( DIG *G , float x1 , float y1 , \
-       float x2 , float y2 , unsigned int color ) ;
+  float x2 , float y2 , unsigned int color ) ;
   static void poly_fill ( DIG *G , int n , float *x , \
-       float *y , int flag , unsigned int color ) ;
+  float *y , int flag , unsigned int color ) ;
   static void godard_fill ( DIG *G , int n , float *px , \
-       float *py , int flag , float *pv ) ;
+  float *py , int flag , float *pv ) ;
   static void circle ( DIG *G , float x1 , float y1 , float r ) ;
   static void circle_fill ( DIG *G , float x1 , float y1 , \
-       float r , unsigned int color ) ;
+  float r , unsigned int color ) ;
   static void _move ( DIG *G , int x , int y ) ;
   static void _draw ( DIG *G , int x , int y ) ;
   static void draw_line ( DIG *G , int xa , int ya , int xb , int yb ) ;
   static void hori_line ( DIG *G , int xa , int xb , int y ) ;
   static void phori_line ( DIG *G , int xa , int xb , int y ) ;
   static void godr_line ( DIG *G , int xa , int xb , \
-       int y , float pa , float pb ) ;
+  int y , float pa , float pb ) ;
   static void put_pixel ( DIG *G , int col , int row ) ;
   static void txt_write ( DIG *G , char *txt ) ;
   static void txtwrt ( DIG *G , char *txt ) ;
   static void user_cord ( float x1 , float y1 , float x2 , float y2 ) ;
   static void _box_fill ( DIG *G , int x1 , int y1 , \
-       int x2 , int y2 , unsigned int color ) ;
+  int x2 , int y2 , unsigned int color ) ;
   static void _poly_fill ( DIG *G , int n , int *px , \
-       int *py , int flag , unsigned int b_color ) ;
+  int *py , int flag , unsigned int b_color ) ;
   static void _mpoly_fill ( DIG *G , int n , int *px , int *py , \
-       int *px1 , int *py1 , unsigned int b_color ) ;
+  int *px1 , int *py1 , unsigned int b_color ) ;
   static void _godard_fill ( DIG *G , int n , int *px , \
-       int *py , int flag , float *pv ) ;
+  int *py , int flag , float *pv ) ;
   static void _circle ( DIG *G , int x , int y , int r ) ;
   static void _circle_fill ( DIG *G , int x , \
-       int y1 , int r , unsigned int color ) ;
+  int y1 , int r , unsigned int color ) ;
   static int clip_line ( DIG *G , int *xa , int *ya , int *xb , int *yb ) ;
   static unsigned char code ( kgWC *wc , int x , int y ) ;
   static void _rect_fill ( DIG *G , int x1 , int y1 , \
-       int x2 , int y2 , unsigned int color ) ;
+  int x2 , int y2 , unsigned int color ) ;
   static void _draw_bound ( DIG *G , int x1 , \
-       int y1 , int x2 , int y2 ) ;
+  int y1 , int x2 , int y2 ) ;
   static void _draw_line ( DIG *G , int x1 , int y1 , int x2 , int y2 ) ;
   static int t_fillchr ( kgWC *wc , float *x , float *y , \
-       int n , int *x1 , int *y1 , int *x2 , int*y2 ) ;
+  int n , int *x1 , int *y1 , int *x2 , int*y2 ) ;
   static void godr_line3 ( DIG *G , int xa , int xb , int y , \
-       int za , int zb , float pa , float pb ) ;
+  int za , int zb , float pa , float pb ) ;
   static void _marker ( DIG *G , int x , int y ) ;
   static void shade_line3 ( DIG *G , int xa , int xb , \
-       int y , int za , int zb , float pa , float pb ) ;
+  int y , int za , int zb , float pa , float pb ) ;
   static int uistrlngth_loc ( kgDC *dc , char *title , float *xdsp ) ;
   static int GHMAX = 0 , SCRN , S_OPEN = 0;
   static char *GHBUF;
@@ -561,56 +564,56 @@ extern Dlink *FontList;
   static char PAK_B = 0x18;
   static char fname [ 15 ] ;
   static unsigned char arr [ ] = {0x80 , 0x40 , \
-       0x20 , 0x10 , 0x08 , 0x04 , 0x02 , 0x01};
+  0x20 , 0x10 , 0x08 , 0x04 , 0x02 , 0x01};
 #define EIGHT 8
   static unsigned char fil_pt [ 16 ] [ 16 ] [ 2 ] = {
-  0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , \
-       0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , \
-       0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x11 , \
-       0x11 , 0x22 , 0x22 , 0x44 , 0x44 , 0x88 , 0x88 , 0x11 , 0x11 , 0x22 , 0x22 , \
-       0x44 , 0x44 , 0x88 , 0x88 , 0x11 , 0x11 , 0x22 , 0x22 , 0x44 , 0x44 , 0x88 , \
-       0x88 , 0x11 , 0x11 , 0x22 , 0x22 , 0x44 , 0x44 , 0x88 , 0x88 , 0x33 , 0x33 , \
-       0x66 , 0x66 , 0xcc , 0xcc , 0x99 , 0x99 , 0x33 , 0x33 , 0x66 , 0x66 , 0xcc , \
-       0xcc , 0x99 , 0x99 , 0x33 , 0x33 , 0x66 , 0x66 , 0xcc , 0xcc , 0x99 , 0x99 , \
-       0x33 , 0x33 , 0x66 , 0x66 , 0xcc , 0xcc , 0x99 , 0x99 , 0x55 , 0x55 , 0xaa , \
-       0xaa , 0x55 , 0x55 , 0xaa , 0xaa , 0x55 , 0x55 , 0xaa , 0xaa , 0x55 , 0x55 , \
-       0xaa , 0xaa , 0x55 , 0x55 , 0xaa , 0xaa , 0x55 , 0x55 , 0xaa , 0xaa , 0x55 , \
-       0x55 , 0xaa , 0xaa , 0x55 , 0x55 , 0xaa , 0xaa , 0x44 , 0x44 , 0x44 , 0x44 , \
-       0x44 , 0x44 , 0x44 , 0x44 , 0x44 , 0x44 , 0x44 , 0x44 , 0x44 , 0x44 , 0x44 , \
-       0x44 , 0x44 , 0x44 , 0x44 , 0x44 , 0x44 , 0x44 , 0x44 , 0x44 , 0x44 , 0x44 , \
-       0x44 , 0x44 , 0x44 , 0x44 , 0x44 , 0x44 , 0x00 , 0x01 , 0x00 , 0x02 , 0x00 , \
-       0x04 , 0x00 , 0x08 , 0x00 , 0x10 , 0x00 , 0x20 , 0x00 , 0x40 , 0x00 , 0x80 , \
-       0x01 , 0x00 , 0x02 , 0x00 , 0x04 , 0x00 , 0x08 , 0x00 , 0x10 , 0x00 , 0x20 , \
-       0x00 , 0x40 , 0x00 , 0x80 , 0x00 , 0x80 , 0x00 , 0x40 , 0x00 , 0x20 , 0x00 , \
-       0x10 , 0x00 , 0x08 , 0x00 , 0x04 , 0x00 , 0x02 , 0x00 , 0x01 , 0x00 , 0x00 , \
-       0x80 , 0x00 , 0x40 , 0x00 , 0x20 , 0x00 , 0x10 , 0x00 , 0x08 , 0x00 , 0x04 , \
-       0x00 , 0x02 , 0x00 , 0x01 , 0xff , 0xff , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , \
-       0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0xff , 0xff , \
-       0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , \
-       0x00 , 0x00 , 0x00 , 0x80 , 0x00 , 0x80 , 0x00 , 0x80 , 0x00 , 0x80 , 0x00 , \
-       0x80 , 0x00 , 0x80 , 0x00 , 0x80 , 0x00 , 0x80 , 0x00 , 0x80 , 0x00 , 0x80 , \
-       0x00 , 0x80 , 0x00 , 0x80 , 0x00 , 0x80 , 0x00 , 0x80 , 0x00 , 0x80 , 0x00 , \
-       0x80 , 0x00 , 0x10 , 0x00 , 0x20 , 0x00 , 0x40 , 0x00 , 0x80 , 0x00 , 0x01 , \
-       0x00 , 0x02 , 0x00 , 0x04 , 0x00 , 0x08 , 0x00 , 0x00 , 0x10 , 0x00 , 0x20 , \
-       0x00 , 0x40 , 0x00 , 0x80 , 0x00 , 0x01 , 0x00 , 0x02 , 0x00 , 0x04 , 0x00 , \
-       0x08 , 0x81 , 0x81 , 0x42 , 0x42 , 0x24 , 0x24 , 0x18 , 0x18 , 0x18 , 0x18 , \
-       0x24 , 0x24 , 0x42 , 0x42 , 0x81 , 0x81 , 0x81 , 0x81 , 0x42 , 0x42 , 0x24 , \
-       0x24 , 0x18 , 0x18 , 0x18 , 0x18 , 0x24 , 0x24 , 0x42 , 0x42 , 0x81 , 0x81 , \
-       0x80 , 0x00 , 0x80 , 0x00 , 0x80 , 0x00 , 0x80 , 0x00 , 0x80 , 0x00 , 0x80 , \
-       0x00 , 0x80 , 0x00 , 0x80 , 0x00 , 0x80 , 0x00 , 0x80 , 0x00 , 0x80 , 0x00 , \
-       0x80 , 0x00 , 0x80 , 0x00 , 0x80 , 0x00 , 0x80 , 0x00 , 0xff , 0xff , 0x80 , \
-       0x00 , 0x80 , 0x00 , 0x80 , 0x00 , 0x80 , 0x00 , 0x80 , 0x00 , 0x80 , 0x00 , \
-       0x80 , 0x00 , 0xff , 0xff , 0x08 , 0x00 , 0x08 , 0x00 , 0x08 , 0x00 , 0x08 , \
-       0x00 , 0x08 , 0x00 , 0x08 , 0x00 , 0x08 , 0x00 , 0xff , 0xff , 0x00 , 0x00 , \
-       0x01 , 0x01 , 0x00 , 0x00 , 0x10 , 0x10 , 0x00 , 0x00 , 0x01 , 0x01 , 0x00 , \
-       0x00 , 0x10 , 0x10 , 0x00 , 0x00 , 0x01 , 0x01 , 0x00 , 0x00 , 0x10 , 0x10 , \
-       0x00 , 0x00 , 0x01 , 0x01 , 0x00 , 0x00 , 0x10 , 0x10 , 0x00 , 0x00 , 0x01 , \
-       0x01 , 0x00 , 0x00 , 0x04 , 0x04 , 0x00 , 0x00 , 0x20 , 0x20 , 0x00 , 0x00 , \
-       0x80 , 0x80 , 0x00 , 0x00 , 0x01 , 0x01 , 0x00 , 0x00 , 0x04 , 0x04 , 0x00 , \
-       0x00 , 0x20 , 0x20 , 0x00 , 0x00 , 0x80 , 0x80 , 0xff , 0xff , 0xff , 0xff , \
-       0xff , 0xff , 0xff , 0xff , 0xff , 0xff , 0xff , 0xff , 0xff , 0xff , 0xff , \
-       0xff , 0xff , 0xff , 0xff , 0xff , 0xff , 0xff , 0xff , 0xff , \
-       0xff , 0xff , 0xff , 0xff , 0xff , 0xff , 0xff , 0xff , };
+      0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , \
+      0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , \
+      0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x11 , \
+      0x11 , 0x22 , 0x22 , 0x44 , 0x44 , 0x88 , 0x88 , 0x11 , 0x11 , 0x22 , 0x22 , \
+      0x44 , 0x44 , 0x88 , 0x88 , 0x11 , 0x11 , 0x22 , 0x22 , 0x44 , 0x44 , 0x88 , \
+      0x88 , 0x11 , 0x11 , 0x22 , 0x22 , 0x44 , 0x44 , 0x88 , 0x88 , 0x33 , 0x33 , \
+      0x66 , 0x66 , 0xcc , 0xcc , 0x99 , 0x99 , 0x33 , 0x33 , 0x66 , 0x66 , 0xcc , \
+      0xcc , 0x99 , 0x99 , 0x33 , 0x33 , 0x66 , 0x66 , 0xcc , 0xcc , 0x99 , 0x99 , \
+      0x33 , 0x33 , 0x66 , 0x66 , 0xcc , 0xcc , 0x99 , 0x99 , 0x55 , 0x55 , 0xaa , \
+      0xaa , 0x55 , 0x55 , 0xaa , 0xaa , 0x55 , 0x55 , 0xaa , 0xaa , 0x55 , 0x55 , \
+      0xaa , 0xaa , 0x55 , 0x55 , 0xaa , 0xaa , 0x55 , 0x55 , 0xaa , 0xaa , 0x55 , \
+      0x55 , 0xaa , 0xaa , 0x55 , 0x55 , 0xaa , 0xaa , 0x44 , 0x44 , 0x44 , 0x44 , \
+      0x44 , 0x44 , 0x44 , 0x44 , 0x44 , 0x44 , 0x44 , 0x44 , 0x44 , 0x44 , 0x44 , \
+      0x44 , 0x44 , 0x44 , 0x44 , 0x44 , 0x44 , 0x44 , 0x44 , 0x44 , 0x44 , 0x44 , \
+      0x44 , 0x44 , 0x44 , 0x44 , 0x44 , 0x44 , 0x00 , 0x01 , 0x00 , 0x02 , 0x00 , \
+      0x04 , 0x00 , 0x08 , 0x00 , 0x10 , 0x00 , 0x20 , 0x00 , 0x40 , 0x00 , 0x80 , \
+      0x01 , 0x00 , 0x02 , 0x00 , 0x04 , 0x00 , 0x08 , 0x00 , 0x10 , 0x00 , 0x20 , \
+      0x00 , 0x40 , 0x00 , 0x80 , 0x00 , 0x80 , 0x00 , 0x40 , 0x00 , 0x20 , 0x00 , \
+      0x10 , 0x00 , 0x08 , 0x00 , 0x04 , 0x00 , 0x02 , 0x00 , 0x01 , 0x00 , 0x00 , \
+      0x80 , 0x00 , 0x40 , 0x00 , 0x20 , 0x00 , 0x10 , 0x00 , 0x08 , 0x00 , 0x04 , \
+      0x00 , 0x02 , 0x00 , 0x01 , 0xff , 0xff , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , \
+      0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0xff , 0xff , \
+      0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , \
+      0x00 , 0x00 , 0x00 , 0x80 , 0x00 , 0x80 , 0x00 , 0x80 , 0x00 , 0x80 , 0x00 , \
+      0x80 , 0x00 , 0x80 , 0x00 , 0x80 , 0x00 , 0x80 , 0x00 , 0x80 , 0x00 , 0x80 , \
+      0x00 , 0x80 , 0x00 , 0x80 , 0x00 , 0x80 , 0x00 , 0x80 , 0x00 , 0x80 , 0x00 , \
+      0x80 , 0x00 , 0x10 , 0x00 , 0x20 , 0x00 , 0x40 , 0x00 , 0x80 , 0x00 , 0x01 , \
+      0x00 , 0x02 , 0x00 , 0x04 , 0x00 , 0x08 , 0x00 , 0x00 , 0x10 , 0x00 , 0x20 , \
+      0x00 , 0x40 , 0x00 , 0x80 , 0x00 , 0x01 , 0x00 , 0x02 , 0x00 , 0x04 , 0x00 , \
+      0x08 , 0x81 , 0x81 , 0x42 , 0x42 , 0x24 , 0x24 , 0x18 , 0x18 , 0x18 , 0x18 , \
+      0x24 , 0x24 , 0x42 , 0x42 , 0x81 , 0x81 , 0x81 , 0x81 , 0x42 , 0x42 , 0x24 , \
+      0x24 , 0x18 , 0x18 , 0x18 , 0x18 , 0x24 , 0x24 , 0x42 , 0x42 , 0x81 , 0x81 , \
+      0x80 , 0x00 , 0x80 , 0x00 , 0x80 , 0x00 , 0x80 , 0x00 , 0x80 , 0x00 , 0x80 , \
+      0x00 , 0x80 , 0x00 , 0x80 , 0x00 , 0x80 , 0x00 , 0x80 , 0x00 , 0x80 , 0x00 , \
+      0x80 , 0x00 , 0x80 , 0x00 , 0x80 , 0x00 , 0x80 , 0x00 , 0xff , 0xff , 0x80 , \
+      0x00 , 0x80 , 0x00 , 0x80 , 0x00 , 0x80 , 0x00 , 0x80 , 0x00 , 0x80 , 0x00 , \
+      0x80 , 0x00 , 0xff , 0xff , 0x08 , 0x00 , 0x08 , 0x00 , 0x08 , 0x00 , 0x08 , \
+      0x00 , 0x08 , 0x00 , 0x08 , 0x00 , 0x08 , 0x00 , 0xff , 0xff , 0x00 , 0x00 , \
+      0x01 , 0x01 , 0x00 , 0x00 , 0x10 , 0x10 , 0x00 , 0x00 , 0x01 , 0x01 , 0x00 , \
+      0x00 , 0x10 , 0x10 , 0x00 , 0x00 , 0x01 , 0x01 , 0x00 , 0x00 , 0x10 , 0x10 , \
+      0x00 , 0x00 , 0x01 , 0x01 , 0x00 , 0x00 , 0x10 , 0x10 , 0x00 , 0x00 , 0x01 , \
+      0x01 , 0x00 , 0x00 , 0x04 , 0x04 , 0x00 , 0x00 , 0x20 , 0x20 , 0x00 , 0x00 , \
+      0x80 , 0x80 , 0x00 , 0x00 , 0x01 , 0x01 , 0x00 , 0x00 , 0x04 , 0x04 , 0x00 , \
+      0x00 , 0x20 , 0x20 , 0x00 , 0x00 , 0x80 , 0x80 , 0xff , 0xff , 0xff , 0xff , \
+      0xff , 0xff , 0xff , 0xff , 0xff , 0xff , 0xff , 0xff , 0xff , 0xff , 0xff , \
+      0xff , 0xff , 0xff , 0xff , 0xff , 0xff , 0xff , 0xff , 0xff , \
+  0xff , 0xff , 0xff , 0xff , 0xff , 0xff , 0xff , 0xff , };
 #if 0
   static void SetIcode ( void ) {
       int i;
@@ -621,8 +624,8 @@ extern Dlink *FontList;
       }
   }
 #endif
-  int uiConvertBox(DIG *G,float x1,float y1,float x2,float y2,int *x1new,
-       int *y1new,int *x2new,int *y2new);
+  int uiConvertBox ( DIG *G , float x1 , float y1 , float x2 , float y2 , \
+  int *x1new , int *y1new , int *x2new , int *y2new ) ;
   void img_move ( DIG *G , float x , float y ) {
       int x1 , y1;
       kgDC *dc;
@@ -671,7 +674,7 @@ extern Dlink *FontList;
       img_DRAW_LINE ( G , xa , ya , xb , yb ) ;
   }
   void img_boxfill ( DIG *G , float x1 , float y1 , \
-       float x2 , float y2 , int color ) {
+  float x2 , float y2 , int color ) {
       int xa , ya , xb , yb;
       kgDC *dc;
       dc = G->dc;
@@ -704,7 +707,7 @@ extern Dlink *FontList;
       return;
   }
   void img_poly_fill ( DIG *G , int n , float *x , \
-       float *y , int flag , int color ) {
+  float *y , int flag , int color ) {
       int x1 [ 1000 ] , y1 [ 1000 ] ;
       int i , j = 0;
       int xo , yo , xv , yv;
@@ -724,7 +727,7 @@ extern Dlink *FontList;
           }
       }
       _poly_fill ( G , ( int ) j , x1 , y1 , ( int ) flag , \
-           ( unsigned int ) color ) ;
+       ( unsigned int ) color ) ;
   }
   static void put_pix3 ( DIG *G , int col , int row , int z ) {
       int r , c , EVGAX , row1;
@@ -736,8 +739,8 @@ extern Dlink *FontList;
       if ( ( z < 0 ) || ( z > 65000L ) ) return;
       wc = G->wc;
       row1 = dc->EVGAY-1-row;
-      if ( ( col > wc->c_v_x2 ) || ( col < wc->c_v_x1 ) || ( row1 > wc->c_v_y2 )  \
-          || ( row1 < wc->c_v_y1 ) ) return;
+      if ( ( col > wc->c_v_x2 ) || ( col < wc->c_v_x1 ) || ( row1 > wc->c_v_y2 ) \
+       || ( row1 < wc->c_v_y1 ) ) return;
       zbuf = ( ( kgDC * ) ( G->dc ) )->zbuf;
       EVGAX = dc->EVGAX;
       loc = zbuf+row*EVGAX+col;
@@ -746,7 +749,7 @@ extern Dlink *FontList;
       put_pixl ( G , col , row ) ;
   }
   void img_userframe3d ( DIG *G , float x1 , float y1 , float x2 , float y2 , \
-       float xe , float ye , float ze , float zc , float clmin , float clmax ) {
+  float xe , float ye , float ze , float zc , float clmin , float clmax ) {
       FILE *fp;
 #if 0
 //   printf("Set_3d\n");
@@ -808,10 +811,10 @@ extern Dlink *FontList;
       t_3_move ( G , x , y , z ) ;
   }
   static void _draw_line3 ( DIG *G , int x1 , int y1 , \
-       int z1 , int x2 , int y2 , int z2 ) {
+  int z1 , int x2 , int y2 , int z2 ) {
       char far *addr;
       int i , dx , dy , f , g , inc1 , inc2 , ab , \
-           dx1 , dy1 , miny , maxy , minx , maxx;
+      dx1 , dy1 , miny , maxy , minx , maxx;
       int clip , ch , rh , r , c;
       unsigned int temp;
       int xa , ya , xb , yb , za , zb , z;
@@ -823,8 +826,8 @@ extern Dlink *FontList;
       EVGAY = dc->EVGAY-1;
       xa = x1 , xb = x2 , ya = y1 , yb = y2 , za = z1 , zb = z2;
       xf = x2-x1;yf = y2-y1;
-      if ( ( ( ( z1 ) < 0 ) && ( ( z2 ) < 0 ) ) || ( ( ( z1 ) > 65000L ) &&  \
-          ( ( z2 ) > 65000L ) ) ) return;
+      if ( ( ( ( z1 ) < 0 ) && ( ( z2 ) < 0 ) ) || ( ( ( z1 ) > 65000L ) && \
+       ( ( z2 ) > 65000L ) ) ) return;
       clip = clip_line ( G , & xa , & ya , & xb , & yb ) ;
       if ( clip == 0 ) return;
       if ( abs ( xf ) <= abs ( yf ) ) {
@@ -910,14 +913,14 @@ extern Dlink *FontList;
       return;
   }
   static void draw_line3 ( DIG *G , int xa , int ya , \
-       int za , int xb , int yb , int zb ) {
+  int za , int xb , int yb , int zb ) {
       int i , i2;
       float dx , dy , ct , st , dl;
       int x1 , y1 , z1 , x2 , y2 , z2 , dx1 , dy1;
       kgDC *dc;
       dc = G->dc;
       if ( dc->ln_width == 1 ) { _draw_line3 ( G , \
-           xa , ya , za , xb , yb , zb ) ;return;};
+      xa , ya , za , xb , yb , zb ) ;return;};
       if ( xa > xb ) {x1 = xa , xa = xb , xb = x1 , y1 = ya , ya = yb , yb = y1;};
       i2 = dc->ln_width/2;
       dx = ( float ) ( xb-xa ) ;
@@ -939,7 +942,7 @@ extern Dlink *FontList;
       return;
   }
   static void hori_line3 ( DIG *G , int xa , \
-       int xb , int y , int za , int zb ) {
+  int xb , int y , int za , int zb ) {
       int i , clip;
       char far *addr;
       int temp;
@@ -951,8 +954,8 @@ extern Dlink *FontList;
       dc = G->dc;
       EVGAY = dc->EVGAY-1;
       x1 = xa;x2 = xb;z1 = za;z2 = zb;
-      if ( ( ( za < 0 ) && ( zb < 0 ) ) || ( ( za > 65000L ) &&  \
-          ( zb > 65000L ) ) ) return;
+      if ( ( ( za < 0 ) && ( zb < 0 ) ) || ( ( za > 65000L ) && \
+       ( zb > 65000L ) ) ) return;
       clip = clip_line ( G , & xa , & y , & xb , & y ) ;
       if ( clip == 0 ) return;
       if ( xa == xb ) {
@@ -968,7 +971,7 @@ extern Dlink *FontList;
           xb = temp;
       }
       for ( i = xa;i <= xb;i++ ) {z = z_inter ( i , m , cons ) ;
-          put_pix3 ( G , i , ( EVGAY-y ) , z ) ;}
+      put_pix3 ( G , i , ( EVGAY-y ) , z ) ;}
   }
   static void _draw3_ ( DIG *G , int x , int y , int z ) {
       int xa , ya , za , xb , yb , zb;
@@ -985,8 +988,8 @@ extern Dlink *FontList;
       xb = x;
       yb = y;
       zb = z;
-      if ( ( ( za < 0 ) && ( zb < 0 ) ) || ( ( za > 65000L ) &&  \
-          ( zb > 65000L ) ) ) return;
+      if ( ( ( za < 0 ) && ( zb < 0 ) ) || ( ( za > 65000L ) && \
+       ( zb > 65000L ) ) ) return;
       clip = clip_line ( G , & xa , & ya , & xb , & yb ) ;
       if ( clip == 0 ) {
           dc->cur_x = x;
@@ -1035,7 +1038,7 @@ extern Dlink *FontList;
       while ( abs ( c-f ) > 0 ) { i = 0;
           while ( ( i <= dc->ln_style ) && ( abs ( c-f ) > 0 ) ) {
               if ( dx1 > dy1 ) {z = z_inter ( c , m , cons ) ;
-                  put_pix3 ( G , c , ( EVGAY-r ) , z ) ;}
+              put_pix3 ( G , c , ( EVGAY-r ) , z ) ;}
               else {z = z_inter ( r , m , cons ) ;put_pix3 ( G , r , ( EVGAY-c ) , z ) ;}
               c+= ch;
               if ( g > 0 ) { r+= rh; g+= inc2; }
@@ -1113,7 +1116,7 @@ extern Dlink *FontList;
       t_3_draw ( G , x , y , z ) ;
   }
   static void _poly_fill3 ( DIG *G , int n , int *px , int *py , \
-       int *pz , int flag , unsigned int b_color ) {
+  int *pz , int flag , unsigned int b_color ) {
       int j , imd;
       int i , cnt , ind , flg;
       int xcord [ 15 ] ;
@@ -1121,7 +1124,7 @@ extern Dlink *FontList;
       int xlow , xup;
       int txx;
       int ymax [ 15 ] , ymin [ 15 ] , xmax [ 15 ] , xmin [ 15 ] , zmax [ 15 ] , \
-           zmin [ 15 ] , tyx , tyn , txn , scan , ygrt;
+      zmin [ 15 ] , tyx , tyn , txn , scan , ygrt;
       float tzn , tzx;
       unsigned int tempc;
       kgDC *dc;
@@ -1187,8 +1190,8 @@ extern Dlink *FontList;
           zmin [ j+1 ] = tzn;
       }
       ind = 0;
-      if ( ( scan > ( dc->EVGAY-1 ) ) || ( ygrt < 0 ) ||  \
-          ( xlow > ( dc->EVGAX-1 ) ) || ( xup < 0 ) ) return;
+      if ( ( scan > ( dc->EVGAY-1 ) ) || ( ygrt < 0 ) || \
+       ( xlow > ( dc->EVGAX-1 ) ) || ( xup < 0 ) ) return;
       tempc = dc->c_color;
       dc->c_color = b_color;
       if ( ymax [ ind ] == scan ) ind++;
@@ -1200,10 +1203,12 @@ extern Dlink *FontList;
           for ( i = ind;i < n;++i ) {
               if ( ymin [ i ] <= scan ) {
                   if ( ymax [ i ] != ymin [ i ] ) {
-                      xcord [ cnt ] = ( ( ( float ) ( xmax [ i ] -xmin [ i ] ) / ( ymax [ i ] -ymin [ i ] ) *  \
-                          ( scan-ymin [ i ] ) +xmin [ i ] ) +0.5 ) ;
-                      zcord [ cnt ] = ( ( ( float ) ( zmax [ i ] -zmin [ i ] ) / ( ymax [ i ] -ymin [ i ] ) *  \
-                          ( scan-ymin [ i ] ) +zmin [ i ] ) ) ;
+                      xcord [ cnt ] = ( ( ( float ) ( xmax [ i ] -xmin [ i ] ) / \
+                       ( ymax [ i ] -ymin [ i ] ) * \
+                       ( scan-ymin [ i ] ) +xmin [ i ] ) +0.5 ) ;
+                      zcord [ cnt ] = ( ( ( float ) ( zmax [ i ] -zmin [ i ] ) / \
+                       ( ymax [ i ] -ymin [ i ] ) * \
+                       ( scan-ymin [ i ] ) +zmin [ i ] ) ) ;
                       ++cnt;
                   }
               }
@@ -1214,21 +1219,22 @@ extern Dlink *FontList;
               txx = xcord [ i ] ;
               tzx = zcord [ i ] ;
               while ( j >= 0 && txx < xcord [ j ] ) { zcord [ j+1 ] = zcord [ j ] ;
-                  xcord [ j+1 ] = xcord [ j ] ;j--;}
+              xcord [ j+1 ] = xcord [ j ] ;j--;}
               xcord [ j+1 ] = ( txx ) ;
               zcord [ j+1 ] = ( tzx ) ;
           }
 	 /*displaying scan lines*/
           for ( i = 0;i < cnt;i+= 2 ) hori_line3 ( G , xcord [ i ] , xcord [ i+1 ] , \
-               scan , ( int ) ( zcord [ i ] +0.5 ) , ( int ) ( zcord [ i+1 ] +0.5 ) ) ;
+          scan , ( int ) ( zcord [ i ] +0.5 ) , ( int ) ( zcord [ i+1 ] +0.5 ) ) ;
           scan++;
       }
       dc->c_color = dc->ln_color;
-      if ( flag == 1 ) for ( i = 0;i < n;i++ ) _draw_line3 ( G , px [ i ] , py [ i ] , \
-           pz [ i ] , px [ ( i+1 ) %n ] , py [ ( i+1 ) %n ] , pz [ ( i+1 ) %n ] ) ;
+      if ( flag == 1 ) for ( i = 0;i < n;i++ ) _draw_line3 \
+       ( G , px [ i ] , py [ i ] , \
+      pz [ i ] , px [ ( i+1 ) %n ] , py [ ( i+1 ) %n ] , pz [ ( i+1 ) %n ] ) ;
   }
   static void _godard_fill3 ( DIG *G , int n , int *px , \
-       int *py , int *pz , int flag , float *pv ) {
+  int *py , int *pz , int flag , float *pv ) {
       int j , imd;
       int i , cnt , ind , flg;
       int xcord [ 15 ] ;
@@ -1236,7 +1242,7 @@ extern Dlink *FontList;
       int xlow , xup;
       int txx , tzx , tzn , temp;
       int ymax [ 15 ] , ymin [ 15 ] , xmax [ 15 ] , \
-           xmin [ 15 ] , zmax [ 15 ] , zmin [ 15 ] ;
+      xmin [ 15 ] , zmax [ 15 ] , zmin [ 15 ] ;
       int tyx , tyn , txn , scan , ygrt;
       float pmax [ 15 ] , pmin [ 15 ] , pcord [ 15 ] , tpx , tpn , tpp;
       unsigned char tempc;
@@ -1311,14 +1317,14 @@ extern Dlink *FontList;
           pmin [ j+1 ] = tpn;
       }
       ind = 0;
-      if ( ( scan > wc->c_v_y2 ) || ( ygrt < wc->c_v_y1 ) ||  \
-          ( xlow > wc->c_v_x2 ) || ( xup < wc->c_v_x1 ) ) return;
+      if ( ( scan > wc->c_v_y2 ) || ( ygrt < wc->c_v_y1 ) || \
+       ( xlow > wc->c_v_x2 ) || ( xup < wc->c_v_x1 ) ) return;
       while ( ( ind < n ) && ( ymax [ ind ] == scan ) ) ind++;
       if ( scan == ygrt ) { /* ie a single line panel */
           for ( i = 0;i < n;i++ ) if ( xmax [ i ] != xmin [ i ] ) break;
           if ( i == n ) i = 0; /* ie for single point panel */
           godr_line3 ( G , xmin [ i ] , xmax [ i ] , scan , zmin [ i ] , \
-               zmax [ i ] , pmin [ i ] , pmax [ i ] ) ;
+          zmax [ i ] , pmin [ i ] , pmax [ i ] ) ;
           scan++;
       }
       else {
@@ -1333,12 +1339,15 @@ extern Dlink *FontList;
               for ( i = ind;i < n;++i ) {
                   if ( ymin [ i ] <= scan ) {
                       if ( ymax [ i ] != ymin [ i ] ) {
-                          xcord [ cnt ] = ( ( ( float ) ( xmax [ i ] -xmin [ i ] ) / ( ymax [ i ] -ymin [ i ] ) *  \
-                              ( scan-ymin [ i ] ) +xmin [ i ] ) +0.5 ) ;
-                          zcord [ cnt ] = ( ( ( float ) ( zmax [ i ] -zmin [ i ] ) / ( ymax [ i ] -ymin [ i ] ) *  \
-                              ( scan-ymin [ i ] ) +zmin [ i ] ) +0.5 ) ;
-                          pcord [ cnt ] = ( ( ( float ) ( pmax [ i ] -pmin [ i ] ) / ( ymax [ i ] -ymin [ i ] ) *  \
-                              ( scan-ymin [ i ] ) +pmin [ i ] ) ) ;
+                          xcord [ cnt ] = ( ( ( float ) ( xmax [ i ] -xmin [ i ] ) / \
+                           ( ymax [ i ] -ymin [ i ] ) * \
+                           ( scan-ymin [ i ] ) +xmin [ i ] ) +0.5 ) ;
+                          zcord [ cnt ] = ( ( ( float ) ( zmax [ i ] -zmin [ i ] ) / \
+                           ( ymax [ i ] -ymin [ i ] ) * \
+                           ( scan-ymin [ i ] ) +zmin [ i ] ) +0.5 ) ;
+                          pcord [ cnt ] = ( ( ( float ) ( pmax [ i ] -pmin [ i ] ) / \
+                           ( ymax [ i ] -ymin [ i ] ) * \
+                           ( scan-ymin [ i ] ) +pmin [ i ] ) ) ;
                           ++cnt;
                       }
                   }
@@ -1359,16 +1368,17 @@ extern Dlink *FontList;
               }
 	 /*displaying scan lines*/
               for ( i = 0;i < cnt;i+= 2 ) godr_line3 ( G , xcord [ i ] , xcord [ i+1 ] , \
-                   scan , zcord [ i ] , zcord [ i+1 ] , pcord [ i ] , pcord [ i+1 ] ) ;
+              scan , zcord [ i ] , zcord [ i+1 ] , pcord [ i ] , pcord [ i+1 ] ) ;
               scan++;
           }
       }
       dc->c_color = dc->ln_color;
-      if ( flag == 1 ) for ( i = 0;i < n;i++ ) _draw_line3 ( G , px [ i ] , py [ i ] , \
-           pz [ i ] , px [ ( i+1 ) %n ] , py [ ( i+1 ) %n ] , pz [ ( i+1 ) %n ] ) ;
+      if ( flag == 1 ) for ( i = 0;i < n;i++ ) _draw_line3 \
+       ( G , px [ i ] , py [ i ] , \
+      pz [ i ] , px [ ( i+1 ) %n ] , py [ ( i+1 ) %n ] , pz [ ( i+1 ) %n ] ) ;
   }
   static void godr_line3 ( DIG *G , int xa , int xb , int y , \
-       int za , int zb , float pa , float pb ) {
+  int za , int zb , float pa , float pb ) {
       int i , pos , p1 , p2;
       char * addr;
       char tempc;
@@ -1387,8 +1397,8 @@ extern Dlink *FontList;
       yy = EVGAY-y;
       if ( ( y > wc->c_v_y2 ) || ( y < wc->c_v_y1 ) ) return;
       x1 = xa;x2 = xb;z1 = za;z2 = zb;
-      if ( ( ( za < 0 ) && ( zb < 0 ) ) || ( ( za > MAXZ ) &&  \
-          ( zb > MAXZ ) ) ) return;
+      if ( ( ( za < 0 ) && ( zb < 0 ) ) || ( ( za > MAXZ ) && \
+       ( zb > MAXZ ) ) ) return;
       clip = clip_line ( G , & xa , & y , & xb , & y ) ;
       if ( clip == 0 ) return;
       p1 = pa+0.5;
@@ -1445,7 +1455,7 @@ extern Dlink *FontList;
       dc->c_color = c_color;
   }
   static void _shade_fill3 ( DIG *G , int n , int *px , \
-       int *py , int *pz , int flag , float *pv ) {
+  int *py , int *pz , int flag , float *pv ) {
       int j , imd;
       int i , cnt , ind , flg;
       int xcord [ 15 ] ;
@@ -1453,7 +1463,7 @@ extern Dlink *FontList;
       int xlow , xup;
       int txx , tzx , tzn , temp;
       int ymax [ 15 ] , ymin [ 15 ] , xmax [ 15 ] , \
-           xmin [ 15 ] , zmax [ 15 ] , zmin [ 15 ] ;
+      xmin [ 15 ] , zmax [ 15 ] , zmin [ 15 ] ;
       int tyx , tyn , txn , scan , ygrt;
       float pmax [ 15 ] , pmin [ 15 ] , pcord [ 15 ] , tpx , tpn , tpp;
       unsigned char tempc;
@@ -1528,14 +1538,14 @@ extern Dlink *FontList;
           pmin [ j+1 ] = tpn;
       }
       ind = 0;
-      if ( ( scan > wc->c_v_y2 ) || ( ygrt < wc->c_v_y1 ) ||  \
-          ( xlow > wc->c_v_x2 ) || ( xup < wc->c_v_x1 ) ) return;
+      if ( ( scan > wc->c_v_y2 ) || ( ygrt < wc->c_v_y1 ) || \
+       ( xlow > wc->c_v_x2 ) || ( xup < wc->c_v_x1 ) ) return;
       while ( ( ind < n ) && ( ymax [ ind ] == scan ) ) ind++;
       if ( scan == ygrt ) { /* ie a single line panel */
           for ( i = 0;i < n;i++ ) if ( xmax [ i ] != xmin [ i ] ) break;
           if ( i == n ) i = 0; /* ie for single point panel */
           shade_line3 ( G , xmin [ i ] , xmax [ i ] , scan , zmin [ i ] , \
-               zmax [ i ] , pmin [ i ] , pmax [ i ] ) ;
+          zmax [ i ] , pmin [ i ] , pmax [ i ] ) ;
           scan++;
       }
       else {
@@ -1550,12 +1560,15 @@ extern Dlink *FontList;
               for ( i = ind;i < n;++i ) {
                   if ( ymin [ i ] <= scan ) {
                       if ( ymax [ i ] != ymin [ i ] ) {
-                          xcord [ cnt ] = ( ( ( float ) ( xmax [ i ] -xmin [ i ] ) / ( ymax [ i ] -ymin [ i ] ) *  \
-                              ( scan-ymin [ i ] ) +xmin [ i ] ) +0.5 ) ;
-                          zcord [ cnt ] = ( ( ( float ) ( zmax [ i ] -zmin [ i ] ) / ( ymax [ i ] -ymin [ i ] ) *  \
-                              ( scan-ymin [ i ] ) +zmin [ i ] ) +0.5 ) ;
-                          pcord [ cnt ] = ( ( ( float ) ( pmax [ i ] -pmin [ i ] ) / ( ymax [ i ] -ymin [ i ] ) *  \
-                              ( scan-ymin [ i ] ) +pmin [ i ] ) ) ;
+                          xcord [ cnt ] = ( ( ( float ) ( xmax [ i ] -xmin [ i ] ) / \
+                           ( ymax [ i ] -ymin [ i ] ) * \
+                           ( scan-ymin [ i ] ) +xmin [ i ] ) +0.5 ) ;
+                          zcord [ cnt ] = ( ( ( float ) ( zmax [ i ] -zmin [ i ] ) / \
+                           ( ymax [ i ] -ymin [ i ] ) * \
+                           ( scan-ymin [ i ] ) +zmin [ i ] ) +0.5 ) ;
+                          pcord [ cnt ] = ( ( ( float ) ( pmax [ i ] -pmin [ i ] ) / \
+                           ( ymax [ i ] -ymin [ i ] ) * \
+                           ( scan-ymin [ i ] ) +pmin [ i ] ) ) ;
                           ++cnt;
                       }
                   }
@@ -1576,16 +1589,17 @@ extern Dlink *FontList;
               }
 	 /*displaying scan lines*/
               for ( i = 0;i < cnt;i+= 2 ) shade_line3 ( G , xcord [ i ] , xcord [ i+1 ] , \
-                   scan , zcord [ i ] , zcord [ i+1 ] , pcord [ i ] , pcord [ i+1 ] ) ;
+              scan , zcord [ i ] , zcord [ i+1 ] , pcord [ i ] , pcord [ i+1 ] ) ;
               scan++;
           }
       }
       dc->c_color = dc->ln_color;
-      if ( flag == 1 ) for ( i = 0;i < n;i++ ) _draw_line3 ( G , px [ i ] , py [ i ] , \
-           pz [ i ] , px [ ( i+1 ) %n ] , py [ ( i+1 ) %n ] , pz [ ( i+1 ) %n ] ) ;
+      if ( flag == 1 ) for ( i = 0;i < n;i++ ) _draw_line3 \
+       ( G , px [ i ] , py [ i ] , \
+      pz [ i ] , px [ ( i+1 ) %n ] , py [ ( i+1 ) %n ] , pz [ ( i+1 ) %n ] ) ;
   }
   static void shade_line3 ( DIG *G , int xa , int xb , \
-       int y , int za , int zb , float pa , float pb ) {
+  int y , int za , int zb , float pa , float pb ) {
       int i , pos , p1 , p2;
       char * addr;
       char tempc;
@@ -1604,8 +1618,8 @@ extern Dlink *FontList;
       yy = EVGAY-y;
       if ( ( y > wc->c_v_y2 ) || ( y < wc->c_v_y1 ) ) return;
       x1 = xa;x2 = xb;z1 = za;z2 = zb;
-      if ( ( ( za < 0 ) && ( zb < 0 ) ) || ( ( za > MAXZ ) &&  \
-          ( zb > MAXZ ) ) ) return;
+      if ( ( ( za < 0 ) && ( zb < 0 ) ) || ( ( za > MAXZ ) && \
+       ( zb > MAXZ ) ) ) return;
       clip = clip_line ( G , & xa , & y , & xb , & y ) ;
       if ( clip == 0 ) return;
       if ( xa == xb ) { pa = pb; }
@@ -1643,7 +1657,7 @@ extern Dlink *FontList;
       }
   }
   static void t_panel ( DIG *G , float *x , float *y , \
-       int color , int flag , int n ) {
+  int color , int flag , int n ) {
       int x1 [ 1000 ] , y1 [ 1000 ] ;
       int xo , yo , xv , yv;
       int i , j = 0;
@@ -1662,10 +1676,10 @@ extern Dlink *FontList;
           }
       }
       if ( ( j > 2 ) && ( j < 500 ) ) _poly_fill ( G , ( int ) j , \
-           x1 , y1 , ( int ) flag , ( unsigned int ) color ) ;
+      x1 , y1 , ( int ) flag , ( unsigned int ) color ) ;
   }
   static void t_3_panel ( DIG *G , float *x , float *y , \
-       float *z , int color , int flag , int n ) {
+  float *z , int color , int flag , int n ) {
       int x1 [ 1000 ] , y1 [ 1000 ] , z1 [ 1000 ] ;
       int i;
       kgDC *dc;
@@ -1678,11 +1692,11 @@ extern Dlink *FontList;
       _poly_fill3 ( G , n , x1 , y1 , z1 , flag , color ) ;
   }
   void img_polyfill3f ( DIG *G , int n , float *x , \
-       float *y , float *z , int flag , int color ) {
+  float *y , float *z , int flag , int color ) {
       t_3_panel ( G , x , y , z , color , flag , n ) ;
   }
   static void t_box_fill ( DIG *G , float x1 , float y1 , \
-       float x2 , float y2 , int color , int ib ) {
+  float x2 , float y2 , int color , int ib ) {
       int xa , ya , xb , yb;
       kgDC *dc;
       dc = G->dc;
@@ -1693,7 +1707,7 @@ extern Dlink *FontList;
       _box_fill ( G , xa , ya , xb , yb , color ) ;
   }
   static void _box_fill3 ( DIG *G , int x1 , int y1 , int z1 , \
-       int x2 , int y2 , int z2 , unsigned int color ) {
+  int x2 , int y2 , int z2 , unsigned int color ) {
       int x_min , y_min , x_max , x_max1 , x_min1 , y_max , i , j;
       int po1;
       unsigned int temp;
@@ -1727,7 +1741,7 @@ extern Dlink *FontList;
               if ( y_min < 0 ) y_min = 0;
               for ( i = x_min;i <= x_max1;i++ ) {
                   for ( j = y_min;j <= y_max;++j ) {z = z_inter ( x_min , \
-                       m , cons ) ;put_pix3 ( G , x_min , EVGAY-j , z ) ;}
+                  m , cons ) ;put_pix3 ( G , x_min , EVGAY-j , z ) ;}
               }
           }
       }
@@ -1735,7 +1749,7 @@ extern Dlink *FontList;
       return;
   }
   static void t_3_box_fill ( DIG *G , float x1 , float y1 , float z1 , \
-       float x2 , float y2 , float z2 , int color , int ib ) {
+  float x2 , float y2 , float z2 , int color , int ib ) {
       int xa , ya , za , xb , yb , zb;
       kgDC *dc;
       dc = G->dc;
@@ -1748,28 +1762,30 @@ extern Dlink *FontList;
       _box_fill3 ( G , xa , ya , za , xb , yb , zb , color ) ;
   }
   void img_boxfill3f ( DIG *G , float x1 , float y1 , float z1 , \
-       float x2 , float y2 , float z2 , int ib , int color ) {
+  float x2 , float y2 , float z2 , int ib , int color ) {
       t_3_box_fill ( G , x1 , y1 , z1 , x2 , y2 , z2 , color , ib ) ;
   }
   static void _godard_fill ( DIG *G , int n , int *px , \
-       int *py , int flag , float *pv ) {
+  int *py , int flag , float *pv ) {
       int j , imd , tempc;
-      int i , cnt , ind;
+      int i , cnt , ind , icord = 299;
       int pcrl = 0;
       int xlow , xup;
       int txx;
       int *xcord ;
-      int *ymax  , *ymin  , *xmax , *xmin, \
+      int *ymax , *ymin , *xmax , *xmin , \
       tyx , tyn , txn , scan , ygrt;
-      float *pmax  , *pmin , *pcord  , tpx , tpn , tpp;
-      xmin = (int *)malloc(sizeof(int)*(n+1));
-      ymin = (int *)malloc(sizeof(int)*(n+1));
-      xmax = (int *)malloc(sizeof(int)*(n+1));
-      ymax  = (int *)malloc(sizeof(int)*(n+1));
-      pmax = (float *)malloc(sizeof(float)*(n+1));
-      pmin = (float *)malloc(sizeof(float)*(n+1));
-      xcord = (int *)malloc(sizeof(int)*1000);
-      pcord = (float *)malloc(sizeof(float)*1000);
+      float *pmax , *pmin , *pcord , tpx , tpn , tpp;
+      xmin = ( int * ) malloc ( sizeof ( int ) * ( n+1 ) ) ;
+      ymin = ( int * ) malloc ( sizeof ( int ) * ( n+1 ) ) ;
+      xmax = ( int * ) malloc ( sizeof ( int ) * ( n+1 ) ) ;
+      ymax = ( int * ) malloc ( sizeof ( int ) * ( n+1 ) ) ;
+      pmax = ( float * ) malloc ( sizeof ( float ) * ( n+1 ) ) ;
+      pmin = ( float * ) malloc ( sizeof ( float ) * ( n+1 ) ) ;
+      icord = 2*n+2;
+      printf("icord = %d\n",icord);
+      xcord = ( int * ) malloc ( sizeof ( int ) *icord ) ;
+      pcord = ( float * ) malloc ( sizeof ( float ) *icord ) ;
       int width = 5;
       kgDC *dc;
       kgWC *wc;
@@ -1825,54 +1841,62 @@ extern Dlink *FontList;
           pmax [ j+1 ] = tpx;
           pmin [ j+1 ] = tpn;
       }
+//      icord = abs ( xup - xlow ) + 4;
+//      xcord = ( int * ) malloc ( sizeof ( int ) *icord ) ;
+//      pcord = ( float * ) malloc ( sizeof ( float ) *icord ) ;
       ind = 0;
-      if ( ( scan > wc->c_v_y2 ) || ( ygrt < wc->c_v_y1 ) ||  \
-          ( xlow > wc->c_v_x2 ) || ( xup < wc->c_v_x1 ) ) return;
-      if ( ymax [ ind ] == scan ) ind++;
-      while ( scan <= ygrt ) {
-          cnt = 0;
-          while ( ymax [ ind ] == scan ) ++ind; /* excluding upper edges */
-          for ( i = ind;i < n;++i ) {
-              if ( ymin [ i ] <= scan ) {
-                  if ( ymax [ i ] != ymin [ i ] ) {
-                      xcord [ cnt ] = ( ( ( float ) ( xmax [ i ] -xmin [ i ] ) / ( ymax [ i ] -ymin [ i ] ) *  \
-                          ( scan-ymin [ i ] ) +xmin [ i ] ) +0.5 ) ;
-                      pcord [ cnt ] = ( ( ( float ) ( pmax [ i ] -pmin [ i ] ) / ( ymax [ i ] -ymin [ i ] ) *  \
-                          ( scan-ymin [ i ] ) +pmin [ i ] ) ) ;
-                      ++cnt;
+      if ( ! ( ( scan > wc->c_v_y2 ) || ( ygrt < wc->c_v_y1 ) || \
+       ( xlow > wc->c_v_x2 ) || ( xup < wc->c_v_x1 ) ) ) {
+          if ( ymax [ ind ] == scan ) ind++;
+          while ( scan <= ygrt ) {
+              cnt = 0;
+              while ( ymax [ ind ] == scan ) ++ind; /* excluding upper edges */
+              for ( i = ind;i < n;++i ) {
+                  if ( ymin [ i ] <= scan ) {
+                      if ( ymax [ i ] != ymin [ i ] ) {
+                          xcord [ cnt ] = ( ( ( float ) ( xmax [ i ] -xmin [ i ] ) / \
+                           ( ymax [ i ] -ymin [ i ] ) * \
+                           ( scan-ymin [ i ] ) +xmin [ i ] ) +0.5 ) ;
+                          pcord [ cnt ] = ( ( ( float ) ( pmax [ i ] -pmin [ i ] ) / \
+                           ( ymax [ i ] -ymin [ i ] ) * \
+                           ( scan-ymin [ i ] ) +pmin [ i ] ) ) ;
+                          ++cnt;
+                          printf("cnt = %d\n",cnt);
+                          fflush(stdout);
+                      }
                   }
               }
-          }
   /*sorting scan line intersection xcords of edges*/
-          for ( i = 0;i < cnt;++i ) {
-              j = i-1;
-              txx = xcord [ i ] ;
-              tpp = pcord [ i ] ;
-              while ( j >= 0 && txx < xcord [ j ] ) { xcord [ j+1 ] = xcord [ j ] , \
-                   pcord [ j+1 ] = pcord [ j ] ;j--;}
-              xcord [ j+1 ] = ( txx ) ;
-              pcord [ j+1 ] = ( tpp ) ;
-          }
+              for ( i = 0;i < cnt;++i ) {
+                  j = i-1;
+                  txx = xcord [ i ] ;
+                  tpp = pcord [ i ] ;
+                  while ( j >= 0 && txx < xcord [ j ] ) { xcord [ j+1 ] = xcord [ j ] , \
+                  pcord [ j+1 ] = pcord [ j ] ;j--;}
+                  xcord [ j+1 ] = ( txx ) ;
+                  pcord [ j+1 ] = ( tpp ) ;
+              }
   /*displaying scan lines*/
-          for ( i = 0;i < cnt;i+= 2 ) godr_line ( G , xcord [ i ] , \
-               xcord [ i+1 ] , scan , pcord [ i ] , pcord [ i+1 ] ) ;
-          scan++;
+              for ( i = 0;i < cnt;i+= 2 ) godr_line ( G , xcord [ i ] , \
+              xcord [ i+1 ] , scan , pcord [ i ] , pcord [ i+1 ] ) ;
+              scan++;
+          }
+          dc->c_color = dc->ln_color;
+          if ( flag == 1 ) for ( i = 0;i < n;i++ ) _draw_line ( G , px [ i ] , \
+          py [ i ] , px [ ( i+1 ) %n ] , py [ ( i+1 ) %n ] ) ;
       }
-      dc->c_color = dc->ln_color;
-      if ( flag == 1 ) for ( i = 0;i < n;i++ ) _draw_line ( G , px [ i ] , \
-           py [ i ] , px [ ( i+1 ) %n ] , py [ ( i+1 ) %n ] ) ;
   /*GTW(ln_width);*/
-      free(xmin);
-      free(ymin);
-      free(xmax);
-      free(ymax);
-      free(pmin);
-      free(pmax);
-      free(pcord);
-      free(xcord);
+      free ( xmin ) ;
+      free ( ymin ) ;
+      free ( xmax ) ;
+      free ( ymax ) ;
+      free ( pmin ) ;
+      free ( pmax ) ;
+      free ( pcord ) ;
+      free ( xcord ) ;
   }
   static void godr_line ( DIG *G , int xa , int xb , \
-       int y , float pa , float pb ) {
+  int y , float pa , float pb ) {
       int i , pos , p1 , p2 , yy;
       int temp;
       int tempc , clr , c_color;
@@ -1939,26 +1963,26 @@ extern Dlink *FontList;
       dc->c_color = c_color;
   }
   static void t_godr_fill ( DIG *G , int n , float *x , float *y , float *p ) {
-      int *x1  , *y1 ;
-      float *p1  , pv;
+      int *x1 , *y1 ;
+      float *p1 , pv;
       int i;
       kgDC *dc;
       dc = G->dc;
-      x1 = (int *)malloc(sizeof(int)*(n+1));
-      y1 = (int *)malloc(sizeof(int)*(n+1));
-      p1 = (float *)malloc(sizeof(float)*(n+1));
+      x1 = ( int * ) malloc ( sizeof ( int ) * ( n+1 ) ) ;
+      y1 = ( int * ) malloc ( sizeof ( int ) * ( n+1 ) ) ;
+      p1 = ( float * ) malloc ( sizeof ( float ) * ( n+1 ) ) ;
       for ( i = 0;i < n;i++ ) {
           x1 [ i ] = scr_x ( x [ i ] ) ;
           y1 [ i ] = scr_y ( y [ i ] ) ;
       }
       for ( i = 0;i < n;i++ ) {pv = * ( p++ ) , p1 [ i ] = pclr ( pv ) ; }
       _godard_fill ( G , ( int ) n , x1 , y1 , 0 , p1 ) ;
-      free(x1);
-      free(y1);
-      free(p1);
+      free ( x1 ) ;
+      free ( y1 ) ;
+      free ( p1 ) ;
   }
   static void t_3_godr_fill ( DIG *G , int n , float *x , \
-       float *y , float *z , float *p ) {
+  float *y , float *z , float *p ) {
       int x1 [ 1000 ] , y1 [ 1000 ] , z1 [ 1000 ] ;
       float p1 [ 1000 ] , pv;
       int i;
@@ -1973,7 +1997,7 @@ extern Dlink *FontList;
       _godard_fill3 ( G , ( int ) n , x1 , y1 , z1 , ( int ) dc->ibdr , p1 ) ;
   }
   void img_godrfill3f ( DIG *G , int n , float *x , \
-       float *y , float *z , float *v ) {
+  float *y , float *z , float *v ) {
       t_3_godr_fill ( G , n , x , y , z , v ) ;
   }
   static int CompPanel ( void *pt1 , void *pt2 ) {
@@ -2011,7 +2035,7 @@ extern Dlink *FontList;
           break;
           case 2 :
           _box_fill ( G , x-3*fac , y-3*fac , x+3*fac , \
-               y+3*fac , ( unsigned int ) 15 ) ;
+          y+3*fac , ( unsigned int ) 15 ) ;
           break;
           case 3 : _draw_line ( G , x , y-4*fac , x , y+4*fac ) ;
           _draw_line ( G , x-4*fac , y , x+4*fac , y ) ;
@@ -2156,8 +2180,8 @@ extern Dlink *FontList;
           if ( c & 1 ) {
               if ( tx == 0 ) return ( 0 ) ;
               y = ( int ) ( *ya+ ( wc->c_v_x1- ( *xa ) ) *ty/tx ) ;
-              if ( ( y == ys ) && ( ( ys > wc->c_v_y2 )  \
-                  || ( ys < wc->c_v_y1 ) ) ) return ( 0 ) ;
+              if ( ( y == ys ) && ( ( ys > wc->c_v_y2 ) \
+               || ( ys < wc->c_v_y1 ) ) ) return ( 0 ) ;
               ys = y;
               x = wc->c_v_x1;
               goto jump;
@@ -2165,8 +2189,8 @@ extern Dlink *FontList;
           if ( c & 2 ) {
               if ( tx == 0 ) return ( 0 ) ;
               y = ( int ) ( *ya+ ( wc->c_v_x2- ( *xa ) ) *ty/tx ) ;
-              if ( ( y == ys ) && ( ( ys > wc->c_v_y2 )  \
-                  || ( ys < wc->c_v_y1 ) ) ) return ( 0 ) ;
+              if ( ( y == ys ) && ( ( ys > wc->c_v_y2 ) \
+               || ( ys < wc->c_v_y1 ) ) ) return ( 0 ) ;
               ys = y;
               x = wc->c_v_x2;
               goto jump;
@@ -2174,8 +2198,8 @@ extern Dlink *FontList;
           if ( c & 8 ) {
               if ( ty == 0 ) return ( 0 ) ;
               x = ( int ) ( *xa+ ( wc->c_v_y2- ( *ya ) ) *tx/ty ) ;
-              if ( x == xs && ( ( xs < wc->c_v_x1 ) ||  \
-                  ( xs > wc->c_v_x2 ) ) ) return ( 0 ) ;
+              if ( x == xs && ( ( xs < wc->c_v_x1 ) || \
+               ( xs > wc->c_v_x2 ) ) ) return ( 0 ) ;
               xs = x;
               y = wc->c_v_y2;
               goto jump;
@@ -2183,8 +2207,8 @@ extern Dlink *FontList;
           if ( c & 4 ) {
               if ( ty == 0 ) return ( 0 ) ;
               x = ( int ) ( *xa+ ( wc->c_v_y1- ( *ya ) ) *tx/ty ) ;
-              if ( x == xs && ( ( xs < wc->c_v_x1 ) ||  \
-                  ( xs > wc->c_v_x2 ) ) ) return ( 0 ) ;
+              if ( x == xs && ( ( xs < wc->c_v_x1 ) || \
+               ( xs > wc->c_v_x2 ) ) ) return ( 0 ) ;
               xs = x;
               y = wc->c_v_y1;
           }
@@ -2205,7 +2229,7 @@ extern Dlink *FontList;
   static void _draw_line ( DIG *G , int x1 , int y1 , int x2 , int y2 ) {
       char far *addr;
       int i , dx , dy , f , g , inc1 , inc2 , ab , \
-           dx1 , dy1 , miny , maxy , minx , maxx;
+      dx1 , dy1 , miny , maxy , minx , maxx;
       int clip , ch , rh , r , c;
       unsigned int temp;
       int xa , ya , xb , yb , dum;
@@ -2215,7 +2239,7 @@ extern Dlink *FontList;
       EVGAY = dc->EVGAY-1;
       xa = x1 , xb = x2 , ya = y1 , yb = y2;
       if ( xa > xb ) {dum = xa , xa = xb , xb = dum , \
-           dum = ya , ya = yb , yb = dum;};
+      dum = ya , ya = yb , yb = dum;};
       clip = clip_line ( G , & xa , & ya , & xb , & yb ) ;
       if ( clip == 0 ) return;
 #if 0
@@ -2524,13 +2548,13 @@ extern Dlink *FontList;
                   x [ i ] = xdum*dc->txt_w42+xo;y [ i ] = yo+ydum*dc->txt_h42;
               }
               pnts += t_fillchr ( wc , x , y , n , & x1 [ pnts ] , \
-                   & y1 [ pnts ] , & x2 [ pnts ] , & y2 [ pnts ] ) ;
+               & y1 [ pnts ] , & x2 [ pnts ] , & y2 [ pnts ] ) ;
               code = dc->icxv [ ptr ] ;n = dc->icyv [ ptr ] ;
               if ( code < 0 ) {
                   _mpoly_fill ( G , pnts , x1 , y1 , x2 , y2 , color ) ;
                   temp = dc->c_color;dc->c_color = dc->t_color;
                   for ( i = 0;i < pnts;i++ ) _draw_line ( G , x1 [ i ] /Mag , \
-                       y1 [ i ] /Mag , x2 [ i ] /Mag , y2 [ i ] /Mag ) ;
+                  y1 [ i ] /Mag , x2 [ i ] /Mag , y2 [ i ] /Mag ) ;
                   dc->c_color = temp;
                   pnts = 0;
               }
@@ -2584,13 +2608,13 @@ extern Dlink *FontList;
                   y [ i ] = ( dc->cy+ ( ydum ) *dc->cost- ( xdum ) *dc->sint ) ;
               }
               pnts += t_fillchr ( wc , x , y , n , & x1 [ pnts ] , \
-                   & y1 [ pnts ] , & x2 [ pnts ] , & y2 [ pnts ] ) ;
+               & y1 [ pnts ] , & x2 [ pnts ] , & y2 [ pnts ] ) ;
               code = dc->icxv [ ptr ] ;n = dc->icyv [ ptr ] ;
               if ( code < 0 ) {
                   _mpoly_fill ( G , pnts , x1 , y1 , x2 , y2 , color ) ;
                   temp = dc->c_color;dc->c_color = dc->t_color;
                   for ( i = 0;i < pnts;i++ ) _draw_line ( G , x1 [ i ] /Mag , \
-                       y1 [ i ] /Mag , x2 [ i ] /Mag , y2 [ i ] /Mag ) ;
+                  y1 [ i ] /Mag , x2 [ i ] /Mag , y2 [ i ] /Mag ) ;
                   dc->c_color = temp;
                   pnts = 0;
               }
@@ -2651,7 +2675,7 @@ extern Dlink *FontList;
       return;
   }
   static int find_roots ( float a , float b , \
-       float c , float *r1 , float *r2 ) {
+  float c , float *r1 , float *r2 ) {
 /* this for special use expecting roots between (0-1) */
       double disc;
       if ( a == 0. ) {
@@ -2690,7 +2714,7 @@ extern Dlink *FontList;
       return n;
   }
   static int berzier ( int *xp , int *yp , float x1 , float y1 , float x4 , \
-       float y4 , float x2 , float y2 , float x3 , float y3 ) {
+  float y4 , float x2 , float y2 , float x3 , float y3 ) {
       float t , tm , x , y , xm , ym , dist , dt , r1 , r2;
       float ax , bx , cx , ay , by , cy;
       int n , notok , i , nx;
@@ -2744,7 +2768,7 @@ extern Dlink *FontList;
       return ( n ) ;
   }
   static int t_fillchr ( kgWC *wc , float *x , float *y , \
-       int n , int *x1 , int *y1 , int *x2 , int*y2 ) {
+  int n , int *x1 , int *y1 , int *x2 , int*y2 ) {
       int xp , yp , temp;
       float xx , yy , xx0 , yy0 , xx1 , xx2 , yy1 , yy2 , xx3 , xx4 , yy3 , yy4;
       int i , j , j1 , k;
@@ -2758,8 +2782,8 @@ extern Dlink *FontList;
           j1 = j-1;
           if ( ( xx0 == xx1 ) && ( yy0 == yy1 ) ) {
               xp = ( xx*Mag+0.5 ) ;yp = ( yy*Mag+0.5 ) ;
-              if ( ( xp != x1 [ j1 ] ) || ( yp != y1 [ j1 ] ) )  \
-                  {x1 [ j ] = xp;y1 [ j ] = yp; j++;};
+              if ( ( xp != x1 [ j1 ] ) || ( yp != y1 [ j1 ] ) ) \
+              {x1 [ j ] = xp;y1 [ j ] = yp; j++;};
           }
           else {
               xp = ( xx*Mag+0.5 ) ;yp = ( yy*Mag+0.5 ) ;
@@ -2770,7 +2794,7 @@ extern Dlink *FontList;
                   xx4 = xx , yy4 = yy;
                   xx3 = ( x [ i ] ) ; yy3 = ( y [ i ] ) ;i++;
                   j += berzier ( & x1 [ j ] , & y1 [ j ] , xx1 , \
-                       yy1 , xx4 , yy4 , xx2 , yy2 , xx3 , yy3 ) ;
+                  yy1 , xx4 , yy4 , xx2 , yy2 , xx3 , yy3 ) ;
                   if ( j > 4800 ) { printf ( "Not enough buffer\n" ) ;}
               }
               else i++;
@@ -2778,9 +2802,10 @@ extern Dlink *FontList;
           xx0 = xx;yy0 = yy;
       }
       i = 1;
-          while ( i < j ) { if ( ( x1 [ i ] == x1 [ i-1 ] ) && ( y1 [ i ] == y1 [ i-1 ] ) )  \
-              { j--; for ( k = i;k < j;k++ ) {x1 [ k ] = x1 [ k+1 ] ;
-              y1 [ k ] = y1 [ k+1 ] ;}}
+      while ( i < j ) { if ( ( x1 [ i ] == x1 [ i-1 ] ) && \
+           ( y1 [ i ] == y1 [ i-1 ] ) ) \
+          { j--; for ( k = i;k < j;k++ ) {x1 [ k ] = x1 [ k+1 ] ;
+          y1 [ k ] = y1 [ k+1 ] ;}}
           else i++;
       }
       for ( i = 1;i < j;i++ ) {x2 [ i-1 ] = x1 [ i ] ;y2 [ i-1 ] = y1 [ i ] ;}
@@ -2791,8 +2816,8 @@ extern Dlink *FontList;
       char chr [ 4 ] ;
       int err;
       float val;
-      chr [ 0 ] = *ch;chr [ 1 ] = * ( ch+1 ) ;chr [ 2 ] = *  \
-          ( ch+2 ) ;chr [ 3 ] = ' ';
+      chr [ 0 ] = *ch;chr [ 1 ] = * ( ch+1 ) ;chr [ 2 ] = * \
+       ( ch+2 ) ;chr [ 3 ] = ' ';
       err = sscanf ( chr , "%f" , & val ) ;
       if ( err < 1 ) return ( 1.0 ) ;
       else return ( val ) ;
@@ -2809,10 +2834,10 @@ extern Dlink *FontList;
       float Slnt [ 2 ] = {0.0 , 0.25} , Slant_o;;
       kgDC *dc;
       kgWC *wc;
-      GMIMG *img=NULL;
-      int tsize =16,strln =16;
+      GMIMG *img = NULL;
+      int tsize = 16 , strln = 16;
       float t_angle;
-      int X1V,X2V,Y1V,Y2V;
+      int X1V , X2V , Y1V , Y2V;
       dc = G->dc;
       wc = G->wc;
       tx = ( unsigned char * ) txt;
@@ -2822,8 +2847,8 @@ extern Dlink *FontList;
       slant = 0;
       font_o = dc->t_font;
 //      dc->trot = ( dc->cost < 0.99 ) ;
-      t_angle = -acosf( dc->cost)/rad;
-      if(dc->sint*dc->cost<0) t_angle = -t_angle;
+      t_angle = -acosf ( dc->cost ) /rad;
+      if ( dc->sint*dc->cost < 0 ) t_angle = -t_angle;
 //      printf("Img trot = %d\n",dc->trot);
       t_angle = dc->trot;
       dc->c_color = dc->t_color;
@@ -2838,42 +2863,44 @@ extern Dlink *FontList;
       lnwidth_o = dc->ln_width;
       dc->ln_width = 1;
 #if 1
-        {
-        IMG_STR *IMG=NULL;
-        float x1,y1,x2,y2,lng,h,w,g;
-        float vx1,vy1,vx2,vy2,wx1,wy1,wx2,wy2;
-        float X1,Y1,X2,Y2;
-        kgGetWindow (G,&wx1,&wy1,&wx2,&wy2);
-        wx1 = dc->w_x1, wx2 = dc->w_x2;
-        wy1 = dc->w_y1, wy2 = dc->w_y2;
-        w = (float)(dc->txt_wtx);
-        g = (float)(dc->txt_spx);
-        h = (float)(dc->txt_hty);
-        x1 = uiusr_x (dc->cur_x);
-        y1 = uiusr_y(dc->cur_y);
-        int base =0;
-        float cfx = (dc->v_x2 -dc->v_x1)/(wx2 - wx1);
-        float cfy = (dc->v_y2 -dc->v_y1)/(wy2 - wy1);
+      {
+          IMG_STR *IMG = NULL;
+          float x1 , y1 , x2 , y2 , lng , h , w , g;
+          float vx1 , vy1 , vx2 , vy2 , wx1 , wy1 , wx2 , wy2;
+          float X1 , Y1 , X2 , Y2;
+          kgGetWindow ( G , & wx1 , & wy1 , & wx2 , & wy2 ) ;
+          wx1 = dc->w_x1 , wx2 = dc->w_x2;
+          wy1 = dc->w_y1 , wy2 = dc->w_y2;
+          w = ( float ) ( dc->txt_wtx ) ;
+          g = ( float ) ( dc->txt_spx ) ;
+          h = ( float ) ( dc->txt_hty ) ;
+          x1 = uiusr_x ( dc->cur_x ) ;
+          y1 = uiusr_y ( dc->cur_y ) ;
+          int base = 0;
+          float cfx = ( dc->v_x2 -dc->v_x1 ) / ( wx2 - wx1 ) ;
+          float cfy = ( dc->v_y2 -dc->v_y1 ) / ( wy2 - wy1 ) ;
  //       printf("img_txt_wr Font= %d\n",dc->t_font);
-        IMG = (IMG_STR *)ftGrStringImage ( dc->t_font , dc->t_color ,(float)t_angle, txt ,w,h,g,cfx,cfy);
-        uiUserImageBox(IMG, t_angle,x1,y1, cfx,cfy,&X1,&Y1,&X2,&Y2);
+          IMG = ( IMG_STR * ) ftGrStringImage ( dc->t_font , dc->t_color , \
+           ( float ) t_angle , txt , w , h , g , cfx , cfy ) ;
+          uiUserImageBox ( IMG , t_angle , x1 , y1 , cfx , \
+          cfy , & X1 , & Y1 , & X2 , & Y2 ) ;
 #if 1
-        uiConvertBox(G,X1,Y1,X2,Y2,&X1V,&Y1V,&X2V,&Y2V);
-        void *crpimg = kgCropImage(G->img,X1V,Y1V,X2V,Y2V); 
+          uiConvertBox ( G , X1 , Y1 , X2 , Y2 , & X1V , & Y1V , & X2V , & Y2V ) ;
+          void *crpimg = kgCropImage ( G->img , X1V , Y1V , X2V , Y2V ) ;
 #if 0
-        kgMergeImages(crpimg,IMG->img,0,0);
+          kgMergeImages ( crpimg , IMG->img , 0 , 0 ) ;
 #else
-        kgBlendImages(crpimg,IMG->img,0,0);
+          kgBlendImages ( crpimg , IMG->img , 0 , 0 ) ;
 #endif
 //        img_drawimage(G,crpimg,X1,Y1,X2,Y2); 
-        imgUpdateImage(G,X1V,Y1V,crpimg);
-        kgFreeGmImage(crpimg);
+          imgUpdateImage ( G , X1V , Y1V , crpimg ) ;
+          kgFreeGmImage ( crpimg ) ;
 #else
-       img_drawimage(G,IMG->img,X1,Y1,X2,Y2);
+          img_drawimage ( G , IMG->img , X1 , Y1 , X2 , Y2 ) ;
 #endif
-        kgFreeGmImage(IMG->img);
-        free(IMG);
-        return;
+          kgFreeGmImage ( IMG->img ) ;
+          free ( IMG ) ;
+          return;
       }
 #endif
       while ( txt [ i ] != '\0' ) {
@@ -2886,8 +2913,8 @@ extern Dlink *FontList;
                   i++;
                   if ( txt [ i ] == '\0' ) break;
                   cntl = txt [ i ] ;
-                  if ( ( cntl == 'S' ) || ( cntl == 's' ) ) uisetsubsup  \
-                      ( G , & fact , & ishft , cntl ) ;
+                  if ( ( cntl == 'S' ) || ( cntl == 's' ) ) uisetsubsup \
+                   ( G , & fact , & ishft , cntl ) ;
                   else {
                       switch ( cntl ) {
                           case 'e':
@@ -3082,10 +3109,10 @@ extern Dlink *FontList;
       float Slnt [ 2 ] = {0.0 , 0.25} , Slant_o;;
       kgDC *dc;
       kgWC *wc;
-      GMIMG *img=NULL;
-      int tsize =16,strln =16;
+      GMIMG *img = NULL;
+      int tsize = 16 , strln = 16;
       float t_angle;
-      int X1V,X2V,Y1V,Y2V;
+      int X1V , X2V , Y1V , Y2V;
       dc = G->dc;
       wc = G->wc;
       tx = ( unsigned char * ) txt;
@@ -3095,8 +3122,8 @@ extern Dlink *FontList;
       slant = 0;
       font_o = dc->t_font;
 //      dc->trot = ( dc->cost < 0.99 ) ;
-      t_angle = -acosf( dc->cost)/rad;
-      if(dc->sint*dc->cost<0) t_angle = -t_angle;
+      t_angle = -acosf ( dc->cost ) /rad;
+      if ( dc->sint*dc->cost < 0 ) t_angle = -t_angle;
 //      printf("Img trot = %d\n",dc->trot);
       t_angle = dc->trot;
       dc->c_color = dc->t_color;
@@ -3111,48 +3138,49 @@ extern Dlink *FontList;
       lnwidth_o = dc->ln_width;
       dc->ln_width = 1;
 #if 1
-        {
-        IMG_STR *IMG=NULL;
-        float x1,y1,x2,y2,lng,h,w,g;
-        float vx1,vy1,vx2,vy2,wx1,wy1,wx2,wy2;
-        float X1,Y1,X2,Y2;
-        int xres,yres,cxres,cyres;
-        kgGetWindow (G,&wx1,&wy1,&wx2,&wy2);
-        wx1 = dc->w_x1, wx2 = dc->w_x2;
-        wy1 = dc->w_y1, wy2 = dc->w_y2;
-        w = (float)(dc->txt_wtx);
-        g = (float)(dc->txt_spx);
-        h = (float)(dc->txt_hty);
-        x1 = uiusr_x (dc->cur_x);
-        y1 = uiusr_y(dc->cur_y);
-        int base =0;
-        float cfx = (dc->v_x2 -dc->v_x1)/(wx2 - wx1);
-        float cfy = (dc->v_y2 -dc->v_y1)/(wy2 - wy1);
-        IMG = (IMG_STR *)ftGrStringImage ( dc->t_font , dc->t_color ,(float)t_angle, txt ,w,h,g,cfx,cfy);
-        uiUserImageBox(IMG, t_angle,x1,y1, cfx,cfy,&X1,&Y1,&X2,&Y2);
-        uiConvertBox(G,X1,Y1,X2,Y2,&X1V,&Y1V,&X2V,&Y2V);
-        void *crpimg = kgCropImage(G->img,X1V,Y1V,X2V,Y2V); 
-        kgGetImageSize(crpimg,&cxres,&cyres);
-        kgGetImageSize(IMG->img,&xres,&yres);
+      {
+          IMG_STR *IMG = NULL;
+          float x1 , y1 , x2 , y2 , lng , h , w , g;
+          float vx1 , vy1 , vx2 , vy2 , wx1 , wy1 , wx2 , wy2;
+          float X1 , Y1 , X2 , Y2;
+          int xres , yres , cxres , cyres;
+          kgGetWindow ( G , & wx1 , & wy1 , & wx2 , & wy2 ) ;
+          wx1 = dc->w_x1 , wx2 = dc->w_x2;
+          wy1 = dc->w_y1 , wy2 = dc->w_y2;
+          w = ( float ) ( dc->txt_wtx ) ;
+          g = ( float ) ( dc->txt_spx ) ;
+          h = ( float ) ( dc->txt_hty ) ;
+          x1 = uiusr_x ( dc->cur_x ) ;
+          y1 = uiusr_y ( dc->cur_y ) ;
+          int base = 0;
+          float cfx = ( dc->v_x2 -dc->v_x1 ) / ( wx2 - wx1 ) ;
+          float cfy = ( dc->v_y2 -dc->v_y1 ) / ( wy2 - wy1 ) ;
+          IMG = ( IMG_STR * ) ftGrStringImage ( dc->t_font , dc->t_color , \
+           ( float ) t_angle , txt , w , h , g , cfx , cfy ) ;
+          uiUserImageBox ( IMG , t_angle , x1 , y1 , cfx , \
+          cfy , & X1 , & Y1 , & X2 , & Y2 ) ;
+          uiConvertBox ( G , X1 , Y1 , X2 , Y2 , & X1V , & Y1V , & X2V , & Y2V ) ;
+          void *crpimg = kgCropImage ( G->img , X1V , Y1V , X2V , Y2V ) ;
+          kgGetImageSize ( crpimg , & cxres , & cyres ) ;
+          kgGetImageSize ( IMG->img , & xres , & yres ) ;
 #if 0
 #if 0
-        kgAddImages(crpimg,IMG->img,0,0);
-        img_drawimage(G,crpimg,X1,Y1,X2,Y2); 
+          kgAddImages ( crpimg , IMG->img , 0 , 0 ) ;
+          img_drawimage ( G , crpimg , X1 , Y1 , X2 , Y2 ) ;
 #else
-        void *timg = kgCropImage(IMG->img,0,0,cxres,cyres);
-        kgMergeImages(crpimg,timg,0,0);
-        img_drawimage(G,crpimg,X1,Y1,X2,Y2); 
-        kgFreeImage(timg);
+          void *timg = kgCropImage ( IMG->img , 0 , 0 , cxres , cyres ) ;
+          kgMergeImages ( crpimg , timg , 0 , 0 ) ;
+          img_drawimage ( G , crpimg , X1 , Y1 , X2 , Y2 ) ;
+          kgFreeImage ( timg ) ;
 #endif
 #else
-        kgMergeImages(crpimg,IMG->img,0,0);
-        img_drawimage(G,crpimg,X1,Y1,X2,Y2); 
+          kgMergeImages ( crpimg , IMG->img , 0 , 0 ) ;
+          img_drawimage ( G , crpimg , X1 , Y1 , X2 , Y2 ) ;
 #endif
-        kgFreeGmImage(crpimg);
-        kgFreeGmImage(IMG->img);
-
-        free(IMG);
-        return;
+          kgFreeGmImage ( crpimg ) ;
+          kgFreeGmImage ( IMG->img ) ;
+          free ( IMG ) ;
+          return;
       }
 #endif
       while ( txt [ i ] != '\0' ) {
@@ -3165,8 +3193,8 @@ extern Dlink *FontList;
                   i++;
                   if ( txt [ i ] == '\0' ) break;
                   cntl = txt [ i ] ;
-                  if ( ( cntl == 'S' ) || ( cntl == 's' ) ) uisetsubsup  \
-                      ( G , & fact , & ishft , cntl ) ;
+                  if ( ( cntl == 'S' ) || ( cntl == 's' ) ) uisetsubsup \
+                   ( G , & fact , & ishft , cntl ) ;
                   else {
                       switch ( cntl ) {
                           case 'e':
@@ -3350,7 +3378,7 @@ extern Dlink *FontList;
       if ( dc->t_font != font_o ) ui_txt_font ( G , font_o ) ;
   }
   static void _box_fill ( DIG *G , int x1 , int y1 , \
-       int x2 , int y2 , unsigned int color ) {
+  int x2 , int y2 , unsigned int color ) {
       int x_min , y_min , x_max , x_max1 , x_min1 , y_max , i , j;
       int po1;
       unsigned int temp;
@@ -3377,14 +3405,14 @@ extern Dlink *FontList;
       return;
   }
   static void _poly_fill ( DIG *G , int n , int *px , \
-       int *py , int flag , unsigned int b_color ) {
+  int *py , int flag , unsigned int b_color ) {
       int j , imd;
       int i , cnt , ind;
       int xcord [ 50 ] ;
       int xlow , xup;
       int txx;
       int ymax [ 500 ] , ymin [ 500 ] , xmax [ 500 ] , \
-           xmin [ 500 ] , tyx , tyn , txn , scan , ygrt;
+      xmin [ 500 ] , tyx , tyn , txn , scan , ygrt;
       unsigned int tempc;
       kgDC *dc;
       kgWC *wc;
@@ -3430,8 +3458,8 @@ extern Dlink *FontList;
           xmin [ j+1 ] = txn;
       }
       ind = 0;
-      if ( ( scan > wc->c_v_y2 ) || ( ygrt < wc->c_v_y1 ) ||  \
-          ( xlow > wc->c_v_x2 ) || ( xup < wc->c_v_x1 ) ) return;
+      if ( ( scan > wc->c_v_y2 ) || ( ygrt < wc->c_v_y1 ) || \
+       ( xlow > wc->c_v_x2 ) || ( xup < wc->c_v_x1 ) ) return;
       tempc = dc->c_color;
       dc->c_color = b_color;
       if ( ymax [ ind ] == scan ) ind++;
@@ -3441,8 +3469,9 @@ extern Dlink *FontList;
           for ( i = ind;i < n;++i ) {
               if ( ymin [ i ] <= scan ) {
                   if ( ymax [ i ] != ymin [ i ] ) {
-                      xcord [ cnt ] = ( ( ( float ) ( xmax [ i ] -xmin [ i ] ) / ( ymax [ i ] -ymin [ i ] ) *  \
-                          ( scan-ymin [ i ] ) +xmin [ i ] ) +0.5 ) ;
+                      xcord [ cnt ] = ( ( ( float ) ( xmax [ i ] -xmin [ i ] ) / \
+                       ( ymax [ i ] -ymin [ i ] ) * \
+                       ( scan-ymin [ i ] ) +xmin [ i ] ) +0.5 ) ;
                       ++cnt;
                   }
               }
@@ -3456,22 +3485,22 @@ extern Dlink *FontList;
           }
 	 /*displaying scan lines*/
           for ( i = 0;i < cnt;i+= 2 ) phori_line ( G , \
-               xcord [ i ] , xcord [ i+1 ] , scan ) ;
+          xcord [ i ] , xcord [ i+1 ] , scan ) ;
           scan++;
       }
       dc->c_color = dc->ln_color;
       if ( flag == 1 ) for ( i = 0;i < n;i++ ) _draw_line ( G , px [ i ] , \
-           py [ i ] , px [ ( i+1 ) %n ] , py [ ( i+1 ) %n ] ) ;
+      py [ i ] , px [ ( i+1 ) %n ] , py [ ( i+1 ) %n ] ) ;
   }
   static void _mpoly_fill ( DIG *G , int n , int *px , int *py , \
-       int *px1 , int *py1 , unsigned int b_color ) {
+  int *px1 , int *py1 , unsigned int b_color ) {
       int j , imd;
       int i , cnt , ind;
       int xcord [ 5000 ] ;
       int txx;
       int xlow , xup;
       int ymax [ 5000 ] , ymin [ 5000 ] , xmax [ 5000 ] , \
-           xmin [ 5000 ] , tyx , tyn , txn , scan , ygrt;
+      xmin [ 5000 ] , tyx , tyn , txn , scan , ygrt;
       unsigned int tempc;
       kgDC *dc;
       kgWC *wc;
@@ -3517,8 +3546,8 @@ extern Dlink *FontList;
           xmin [ j+1 ] = txn;
       }
       ind = 0;
-      if ( ( scan/Mag > wc->c_v_y2 ) || ( ygrt/Mag < wc->c_v_y1 ) ||  \
-          ( xlow/Mag > wc->c_v_x2 ) || ( xup/Mag < wc->c_v_x1 ) ) return;
+      if ( ( scan/Mag > wc->c_v_y2 ) || ( ygrt/Mag < wc->c_v_y1 ) || \
+       ( xlow/Mag > wc->c_v_x2 ) || ( xup/Mag < wc->c_v_x1 ) ) return;
       tempc = dc->c_color;
       dc->c_color = b_color;
       if ( ymax [ ind ] == scan ) ind++;
@@ -3528,8 +3557,9 @@ extern Dlink *FontList;
           for ( i = ind;i < n;++i ) {
               if ( ymin [ i ] <= scan ) {
                   if ( ymax [ i ] != ymin [ i ] ) {
-                      xcord [ cnt ] = ( ( ( float ) ( xmax [ i ] -xmin [ i ] ) / ( ymax [ i ] -ymin [ i ] ) *  \
-                          ( scan-ymin [ i ] ) +xmin [ i ] +0.5 ) ) ;
+                      xcord [ cnt ] = ( ( ( float ) ( xmax [ i ] -xmin [ i ] ) / \
+                       ( ymax [ i ] -ymin [ i ] ) * \
+                       ( scan-ymin [ i ] ) +xmin [ i ] +0.5 ) ) ;
                       ++cnt;
                   }
               }
@@ -3543,8 +3573,8 @@ extern Dlink *FontList;
           }
  /*displaying scan lines*/
           for ( i = 0;i < cnt;i+= 2 ) {
-              phori_line ( G , ( int ) ( xcord [ i ] /Mag+0.5 ) , ( int )  \
-                  ( xcord [ i+1 ] /Mag ) , ( ( float ) scan/Mag+0.5 ) ) ;
+              phori_line ( G , ( int ) ( xcord [ i ] /Mag+0.5 ) , ( int ) \
+               ( xcord [ i+1 ] /Mag ) , ( ( float ) scan/Mag+0.5 ) ) ;
           }
           scan++;
       }
@@ -3568,7 +3598,7 @@ extern Dlink *FontList;
       }
   }
   static void _circle_fill ( DIG *G , int x , \
-       int y , int r , unsigned int color ) {
+  int y , int r , unsigned int color ) {
       int i , j;
       int xm , ym;
       double t , sqrd;
@@ -3597,7 +3627,7 @@ extern Dlink *FontList;
       dc->c_color = temp;
   }
   static void _rect_fill ( DIG *G , int x1 , int y1 , \
-       int x2 , int y2 , unsigned int color ) {
+  int x2 , int y2 , unsigned int color ) {
       int EVGAX , EVGAY;
       int x_min , y_min , x_max , x_max1 , x_min1 , y_max , i , j , po1;
       unsigned int temp;
@@ -3753,24 +3783,24 @@ extern Dlink *FontList;
   }
   void img_godard_fill ( DIG *G , int n , float *x , float *y , float *p ) {
       int i;
-      int *x1  , *y1  ;
-      float *p1  ;
+      int *x1 , *y1 ;
+      float *p1 ;
       int color;
       float pv;
       kgDC *dc;
       dc = G->dc;
-      x1 = (int *)malloc(sizeof(int)*(n+1));
-      y1 = (int *)malloc(sizeof(int)*(n+1));
-      p1 = (float *)malloc(sizeof(float)*(n+1));
+      x1 = ( int * ) malloc ( sizeof ( int ) * ( n+1 ) ) ;
+      y1 = ( int * ) malloc ( sizeof ( int ) * ( n+1 ) ) ;
+      p1 = ( float * ) malloc ( sizeof ( float ) * ( n+1 ) ) ;
       for ( i = 0;i < n;i++ ) {
           x1 [ i ] = scr_x ( x [ i ] ) ;
           y1 [ i ] = scr_y ( y [ i ] ) ;
       }
       for ( i = 0;i < n;i++ ) {pv = * ( p+i ) , p1 [ i ] = pclr ( pv ) ; }
       _godard_fill ( G , ( int ) n , x1 , y1 , ( int ) dc->ibdr , p1 ) ;
-      free(x1);
-      free(y1);
-      free(p1);
+      free ( x1 ) ;
+      free ( y1 ) ;
+      free ( p1 ) ;
   }
   static void setpal ( kgWC *wc , int r , int g , int b , int i ) {
       kgColor *kgcolors;
@@ -3785,7 +3815,7 @@ extern Dlink *FontList;
       if ( G->D == NULL ) wc = G->wc;
       else wc = WC ( G->D ) ;
       setpal ( wc , ( int ) ir , ( int ) ig , ( int ) ib , ( int ) no ) ;
-      kgDefineColor(no,( int ) ir , ( int ) ig , ( int ) ib );
+      kgDefineColor ( no , ( int ) ir , ( int ) ig , ( int ) ib ) ;
   }
   static void put_pixl ( DIG *G , int col , int row ) {
       int addr , MAXB , row1;
@@ -3798,8 +3828,8 @@ extern Dlink *FontList;
       MAXB = dc->EVGAX;
       if ( col >= MAXB ) return;
       row1 = dc->EVGAY-1-row;
-      if ( ( col > wc->c_v_x2 ) || ( col < wc->c_v_x1 ) || ( row1 > wc->c_v_y2 )  \
-          || ( row1 < wc->c_v_y1 ) ) return;
+      if ( ( col > wc->c_v_x2 ) || ( col < wc->c_v_x1 ) || ( row1 > wc->c_v_y2 ) \
+       || ( row1 < wc->c_v_y1 ) ) return;
       addr = ( ( row ) *MAXB + col ) ;
       imgGetColor ( G , dc->c_color , addr ) ;
       return;
@@ -3813,8 +3843,8 @@ extern Dlink *FontList;
       wc = G->wc;
       MAXB = dc->EVGAX;
       row1 = dc->EVGAY-1-row;
-      if ( ( col > wc->c_v_x2 ) || ( col < wc->c_v_x1 ) || ( row1 > wc->c_v_y2 )  \
-          || ( row1 < wc->c_v_y1 ) ) return;
+      if ( ( col > wc->c_v_x2 ) || ( col < wc->c_v_x1 ) || ( row1 > wc->c_v_y2 ) \
+       || ( row1 < wc->c_v_y1 ) ) return;
       addr = ( ( row ) *MAXB + ( col ) ) ;
       imgGetColor ( G , dc->c_color , addr ) ;
       return;
@@ -3829,8 +3859,8 @@ extern Dlink *FontList;
       MAXB = dc->EVGAX;
       if ( col >= MAXB ) return;
       EVGAY = dc->EVGAY-1;
-      if ( ( col > wc->c_v_x2 ) || ( col < wc->c_v_x1 ) || ( row > wc->c_v_y2 )  \
-          || ( row < wc->c_v_y1 ) ) return;
+      if ( ( col > wc->c_v_x2 ) || ( col < wc->c_v_x1 ) || ( row > wc->c_v_y2 ) \
+       || ( row < wc->c_v_y1 ) ) return;
       addr = ( EVGAY-row ) *MAXB + ( col ) ;
       imgGetColor ( G , dc->c_color , addr ) ;
       return;
@@ -3896,7 +3926,7 @@ extern Dlink *FontList;
 //    printf("Image: %d %d %d %d\n",D_x,D_y,png->image_width,png->image_height);
 //    printf("%d %d %d %d %d %d\n",D->xo,D->yo,G->x1,G->y1,G->x2,G->y2);
           kgImage ( D , png , D_x , D_y , png->image_width , \
-               png->image_height , 0.0 , 1.0 ) ;
+          png->image_height , 0.0 , 1.0 ) ;
       }
 //  uiWriteImage(G->img,"junk.png");
       if ( G->MAG > 1 ) {uiFreeImage ( G->rzimg ) ; G->rzimg = NULL;}
@@ -4044,7 +4074,7 @@ extern Dlink *FontList;
       dc->bluebuf = NULL;
       dc->clrbuf = NULL;
       dc->DOUBLE = 0;
-      if(FontList == NULL) uiAddFonts();
+      if ( FontList == NULL ) uiAddFonts ( ) ;
       count = Dcount ( FontList ) ;
 #if 0
 // the Change is for thread safety 07/21
@@ -4063,7 +4093,7 @@ extern Dlink *FontList;
       dc->icyvf0 = dc->icyv;dc->m_f0 = dc->m_f;
 #endif
       dc->t_font = font%count;
-      dc->trot =0;
+      dc->trot = 0;
       dc->t_bkgr = 0;
       dc->t_bodr = 0;
       dc->fil_color = 0;
@@ -4231,8 +4261,8 @@ extern Dlink *FontList;
       entry++;
       strcpy ( dc->reviewfile , dc->objdir ) ;
       strcat ( dc->reviewfile , "/reviewdat" ) ;
-      G->rbuf = open ( dc->reviewfile , O_CREAT  \
-          | O_BINARY | O_TRUNC | O_RDWR , 0666 ) ;
+      G->rbuf = open ( dc->reviewfile , O_CREAT \
+       | O_BINARY | O_TRUNC | O_RDWR , 0666 ) ;
       strcpy ( dc->plotfile , dc->objdir ) ;
       strcat ( dc->plotfile , "/plotgph" ) ;
       strcpy ( dc->cmdsfile , dc->objdir ) ;
@@ -4269,13 +4299,12 @@ extern Dlink *FontList;
       free ( Gtmp ) ;
 #endif
   }
-  int uiConvertBox(DIG *G,float x1,float y1,float x2,float y2,int *x1new,
-       int *y1new,int *x2new,int *y2new) {
+  int uiConvertBox ( DIG *G , float x1 , float y1 , float x2 , float y2 , \
+  int *x1new , int *y1new , int *x2new , int *y2new ) {
   /*   
       Converts to Screen coordinate
   */
-      int X1 , Y1 , X2 , Y2 , EVGAY,temp;
- 
+      int X1 , Y1 , X2 , Y2 , EVGAY , temp;
       kgDC *dc;
       dc = G->dc;
       EVGAY = dc->EVGAY-1;
@@ -4290,35 +4319,35 @@ extern Dlink *FontList;
       *x2new = X2;
       *y2new = Y2;
 //      printf("%f %f %f %f %d %d %d %d\n",x1,y1,x2,y2,X1,Y1,X2,Y2);      
-
       return 1;
   }
-
-  void *kgBlendImages (void *bottom  , void *top,int xo,int yo ) {
+  void *kgBlendImages ( void *bottom , void *top , int xo , int yo ) {
       GMIMG *Dimg , *Simg;
       PixelPacket *pixels , *spixels;
       int w , h , iw , ih , i , j , ii , jj , sloc , dloc , cx0 , cx1 , cy0 , cy1;
       int channels;
-      float fs,fd;
-      int xres,yres;
+      float fs , fd;
+      int xres , yres;
 //      int x0=0,y0=0;  // offset, now not used
       Simg = ( GMIMG * ) top;
-      Dimg = (GMIMG *)bottom;;
+      Dimg = ( GMIMG * ) bottom;;
       iw = Dimg->image_width;
       ih = Dimg->image_height;
       w = Simg->image_width;
       h = Simg->image_height;
       channels = Simg->image_channels;
-      kgGetImageSize(Dimg,&xres,&yres);
+      kgGetImageSize ( Dimg , & xres , & yres ) ;
       cx0 = 0;
       cx1 = xres;
       cy0 = 0;
       cy1 = yres;
 //  printf("%d %d %d %d\n",cx0,cy0,cx1,cy1);
-      spixels = GetImagePixels ( ( Image * ) ( Simg->image ) , 0 , 0 , ( ( Image * )  \
-          ( Simg->image ) )->columns , ( ( Image * ) ( Simg->image ) )->rows ) ;
-      pixels = GetImagePixels ( ( Image * ) ( Dimg->image ) , 0 , 0 , ( ( Image * )  \
-          ( Dimg->image ) )->columns , ( ( Image * ) ( Dimg->image ) )->rows ) ;
+      spixels = GetImagePixels ( ( Image * ) ( Simg->image ) , \
+      0 , 0 , ( ( Image * ) \
+       ( Simg->image ) )->columns , ( ( Image * ) ( Simg->image ) )->rows ) ;
+      pixels = GetImagePixels ( ( Image * ) ( Dimg->image ) , \
+      0 , 0 , ( ( Image * ) \
+       ( Dimg->image ) )->columns , ( ( Image * ) ( Dimg->image ) )->rows ) ;
 //      pixels = G->pixels;
 //      printf("Channels = %d\n",channels);
       for ( j = 0;j < ( h ) ;j++ ) {
@@ -4333,36 +4362,37 @@ extern Dlink *FontList;
               if ( ii >= iw ) continue;
               sloc = j*w+i;
               dloc = jj*iw+ii;
-              if ( ( channels != 4 )  ) {
+              if ( ( channels != 4 ) ) {
                   pixels [ dloc ] .blue = spixels [ sloc ] .blue;
                   pixels [ dloc ] .green = spixels [ sloc ] .green;
                   pixels [ dloc ] .red = spixels [ sloc ] .red;
                   pixels [ dloc ] .opacity = 255;
               }
               else {
-                if( spixels [ sloc ] .opacity == 255 ) continue;
-                if( spixels [ sloc ] .opacity == 0 ) {
-                  pixels [ dloc ] .blue = spixels [ sloc ] .blue;
-                  pixels [ dloc ] .green = spixels [ sloc ] .green;
-                  pixels [ dloc ] .red = spixels [ sloc ] .red;
-                  pixels [ dloc ] .opacity = spixels [ sloc ] .opacity;
-                }
-                else {
-                  fd = 1-pixels [ dloc ] .opacity/255.0; ;
-                  fs = 1. - spixels [ sloc ] .opacity/255.0;
-                  fd = fd*(1- fs);
-                  float aout = fs +fd;
-                  fs = fs/(aout);               
-                  fd = fd/(aout);
-                  pixels [ dloc ] .blue = fd*pixels [ dloc ] .blue+fs* spixels [ sloc ] .blue;
+                  if ( spixels [ sloc ] .opacity == 255 ) continue;
+                  if ( spixels [ sloc ] .opacity == 0 ) {
+                      pixels [ dloc ] .blue = spixels [ sloc ] .blue;
+                      pixels [ dloc ] .green = spixels [ sloc ] .green;
+                      pixels [ dloc ] .red = spixels [ sloc ] .red;
+                      pixels [ dloc ] .opacity = spixels [ sloc ] .opacity;
+                  }
+                  else {
+                      fd = 1-pixels [ dloc ] .opacity/255.0; ;
+                      fs = 1. - spixels [ sloc ] .opacity/255.0;
+                      fd = fd* ( 1- fs ) ;
+                      float aout = fs +fd;
+                      fs = fs/ ( aout ) ;
+                      fd = fd/ ( aout ) ;
+                      pixels [ dloc ] .blue = fd*pixels [ dloc ] .blue+fs* spixels [ sloc ] .blue;
  //                 if ( pixels [ dloc ] .blue >255 ) pixels [ dloc ] .blue =255;
-                  pixels [ dloc ] .green = fd*pixels [ dloc ] .green+fs* spixels [ sloc ] .green;
+                      pixels [ dloc ] .green = fd*pixels [ dloc ] .green+fs* spixels [ sloc ] .green;
+                          
 //                  if ( pixels [ dloc ] .green>255 ) pixels [ dloc ] .green=255;
-                  pixels [ dloc ] .red = fd*pixels [ dloc ] .red+fs* spixels [ sloc ] .red;
+                      pixels [ dloc ] .red = fd*pixels [ dloc ] .red+fs* spixels [ sloc ] .red;
 //                  if ( pixels [ dloc ] .red>255 ) pixels [ dloc ] .red=255;
-                  pixels [ dloc ] .opacity = (1.-aout)*255;;
-                  if(pixels [ dloc ] .opacity > 255 ) pixels [ dloc ] .opacity =255;
-                }
+                      pixels [ dloc ] .opacity = ( 1.-aout ) *255;;
+                      if ( pixels [ dloc ] .opacity > 255 ) pixels [ dloc ] .opacity = 255;
+                  }
               }
 //TCB
 //      printf("%x %x %x %x\n",pixels[dloc].blue,pixels[dloc].green,pixels[dloc].red,pixels[dloc].opacity);
@@ -4372,7 +4402,7 @@ extern Dlink *FontList;
       return bottom;
   }
   void img_drawimage ( DIG *G , void *imgfile , float x1 , \
-       float y1 , float x2 , float y2 ) {
+  float y1 , float x2 , float y2 ) {
       float fac;
       GMIMG *img , *rzimg;
       char *pt;

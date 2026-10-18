@@ -1125,6 +1125,7 @@ void kgSetShadeParams(DIG *G,float p2, float p1,int startclr, int n, int ib)
  }
 void kgGouraudFill(DIG *G,int n, float *x, float *y,float *v)
  {
+     if(n< 3) return;
      if(G->Rbuff != NULL) {
        uiwrite_bf(G,&P,1);
        uiwrite_bf(G,&G2,1);
@@ -5947,7 +5948,7 @@ break;
    close(*rbuf);
    *rbuf=-1;
   }
- void uiread_buf(DIG *G, void *ch, int n)
+ int  uiread_buf(DIG *G, void *ch, int n)
   {
     int i;
     unsigned char *ptr;
@@ -5957,12 +5958,12 @@ break;
      {
        if ( G->R_Byte>=G->R_max){ G->R_max=read(G->review,(void *)G->Rbuff,B_min);G->R_Byte=0;}
        if(G->R_max ==0) {
-//         printf("Trying to read beyond file\n");
-//         exit(0);
-           return;
+         printf("Trying to read beyond file\n");
+           return 0;
        }
        *(ptr+i)=G->Rbuff[G->R_Byte++];
      }
+     return n;
   }
  void uiwrite_file(DIG *G,int *rbuf,char *flname)
   {
@@ -6231,8 +6232,8 @@ void uiwin_poly_fill(DIG *G)
 void uiwin_godard_fill(DIG *G)
 {
   int n;
-  float x[20];
-  float y[20],p[20];
+  float *x;
+  float *y,*p;
   int flag;
   int color;
   
@@ -6242,10 +6243,16 @@ void uiwin_godard_fill(DIG *G)
   dc=G->dc;
   wc = G->wc;
   uiread_buf(G,&n,4);
+  x = (float *)malloc(sizeof(float)*(n+2));
+  y = (float *)malloc(sizeof(float)*(n+2));
+  p = (float *)malloc(sizeof(float)*(n+2));
   uiread_buf(G,x,4*n);
   uiread_buf(G,y,4*n);
   uiread_buf(G,p,4*n);
   if(G->D_ON)ui_godr_fill(G,n,x,y,p);
+  free(x);
+  free(y);
+  free(p);
 }
 void uiwin_set_markstyle(DIG *G)
 {
@@ -6663,7 +6670,8 @@ void uicheck_and_do(DIG *G,char ch)
  {
    unsigned char ch2;
    uiread_buf(G,&ch2,1);
-//   printf("uicheck: %c%c \n",ch,ch2);
+   printf("uicheck: %c%c \n",ch,ch2);
+   fflush(stdout);
    switch((int)ch)
     { 
      case 'l' :
@@ -6743,7 +6751,6 @@ void uicheck_and_do(DIG *G,char ch)
        }
       break;
      case 'p' :
-      fflush(stdout);
       switch((int)ch2)
       {
         case 'b': uiwin_boxfill(G); break;
@@ -6985,8 +6992,14 @@ void uihoreview(DIG *G)
   while ( G->R_max>0)
   {
     uicheck_and_do(G,ch);
-    uiread_buf(G,&ch,1);
+    if(uiread_buf(G,&ch,1)==0){
+     printf("MSG: horeview %c\n",ch);
+     fflush(stdout);
+     break;
+    }
   }
+  printf("MSG:horeview Over\n");
+  fflush(stdout);
   if( G->BACK_UP ==1) {  G->Byte=0;G->R_max=0;}
   G->review= -1;
 #else
