@@ -10882,7 +10882,7 @@ int kgRoundedRectangleShade4(void * fid,float xo,float yo,float xl,float yl,int 
    sorg =s;
    vorg = vv;
    vmid = vmax;
-   vv = (vmin+0.4*(vmax-vmin));
+   vmid = (vmin+0.8*(vmax-vmin));
 
    if(fac > 0.5) {
        double dv,vmin,vmax,dv1,vmin1,vmax1,ang;
@@ -10912,7 +10912,6 @@ int kgRoundedRectangleShade4(void * fid,float xo,float yo,float xl,float yl,int 
        }
    }
        vmid =vv;
-       vv = vmax;
        Dang = 90.0/(np-1);
        dang = 3.14159265/180.0;
  
@@ -10948,7 +10947,17 @@ int kgRoundedRectangleShade4(void * fid,float xo,float yo,float xl,float yl,int 
      kgGouraudFill(fid,3,xp,yp,vp);
    }
 //   kgGouraudFill(fid,np2,xd,yd,vd);
+#if 0
+   for(i=0;i<(np-1);i++) {
+     xp[0]=xd[i]; yp[0]=yd[i];vp[0]=vd[i];
+     xp[1]=xd[i+1]; yp[1]=yd[i+1];vp[1]=vd[i+1];
+     j= np2;
+     xp[2]=xd[j]; yp[2]=yd[j];vp[2]=vd[j];
+     kgGouraudFill(fid,3,xp,yp,vp);
+   }
+#else
    kgGouraudFill(fid,np+1,xd+np,yd+np,vd+np);
+#endif
    for(i=0;i<np2;i++) {
      xd[i] = -x[i]+xo;
    }

@@ -2799,7 +2799,7 @@ static char *OthFonts []= {
   int *py , int flag , float *pv ) \
   {
       int j , imd;
-      int i , cnt , ind;
+      int i , cnt , ind,icord;
       int xlow , xup;
       int txx;
       int *xcord ;
@@ -2812,8 +2812,8 @@ static char *OthFonts []= {
       ymax  = (int *)malloc(sizeof(int)*(n+1));
       pmax = (float *)malloc(sizeof(float)*(n+1));
       pmin = (float *)malloc(sizeof(float)*(n+1));
-      pcord = (float *)malloc(sizeof(float)*(n+1));
-      xcord = (int *)malloc(sizeof(int)*(n+1));
+      pcord = (float *)malloc(sizeof(float)*(2*n+2));
+      xcord = (int *)malloc(sizeof(int)*(2*n+2));
       unsigned int tempc;
       kgDC *dc;
       kgWC *wc;
@@ -2869,6 +2869,7 @@ static char *OthFonts []= {
           pmin [ j+1 ] = tpn;
       }
       ind = 0;
+//MSG:
       if (!( ( scan > wc->c_v_y2 ) || ( ygrt < wc->c_v_y1 ) || \
        ( xlow > wc->c_v_x2 ) || ( xup < wc->c_v_x1 ) )) {
       if ( ymax [ ind ] == scan ) ind++;
@@ -2894,7 +2895,8 @@ static char *OthFonts []= {
               txx = xcord [ i ] ;
               tpp = pcord [ i ] ;
               while ( j >= 0 && txx < xcord [ j ] ) {
-                  xcord [ j+1 ] = xcord [ j ] , pcord [ j+1 ] = pcord [ j ] ;
+                  xcord [ j+1 ] = xcord [ j ] ;
+                  pcord [ j+1 ] = pcord [ j ] ;
                   j--;
               }
               xcord [ j+1 ] = ( txx ) ;
@@ -2905,10 +2907,11 @@ static char *OthFonts []= {
           xcord [ i+1 ] , scan , pcord [ i ] , pcord [ i+1 ] ) ;
           scan++;
       }
-      }
+//MSG:
       if ( flag == 1 ) for ( i = 0; i < n; i++ ) _uidraw_line \
        ( wc , px [ i ] , py [ i ] , px [ \
        ( i+1 ) %n ] , py [ ( i+1 ) %n ] ) ;
+      }
       free(xmin);
       free(ymin);
       free(xmax);
@@ -3457,6 +3460,7 @@ static char *OthFonts []= {
           if ( xmax < x1 [ i ] ) xmax = x1 [ i ] ;
           if ( ymax < y1 [ i ] ) ymax = y1 [ i ] ;
       }
+#if 0
       if (!( ( xmin == xmax ) || ( ymin == ymax ) )) {
       if (!( ( xmax < dc->v_x1 ) || ( xmin > dc->v_x2 ) || ( ymax < dc->v_y1 ) \
        || ( ymin > dc->v_y2 ) )){
@@ -3464,6 +3468,10 @@ static char *OthFonts []= {
       _uigodard_fill ( G , n , x1 , y1 , dc->ibdr , p1 ) ;
       }
       }
+#else
+      for ( i = 0; i < n; i++ ) {pv = * ( p++ ) , p1 [ i ] = uipclr ( pv ) ; }
+      _uigodard_fill ( G , n , x1 , y1 , dc->ibdr , p1 ) ;
+#endif
       free(x1);
       free(y1);
       free(p1);
