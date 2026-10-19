@@ -5,7 +5,7 @@
 #include "kulina.h"
 #include "uievent.h"
 #include "dlink.h"
-#define UNSIGNED unsigned int
+#define UNSIGNED unsigned short
 
      
 typedef struct

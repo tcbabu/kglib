@@ -20,7 +20,7 @@
 #define fscr_z(z) (float)((z-clip_min)*CPCONS); /* float version */
 #define uiscr_z(z) (int)((z-dc->clip_min)*dc->CPCONS+0.5);
 #define uifscr_z(z) (float)((z-dc->clip_min)*dc->CPCONS); /* float version */
-#define UNSIGNED unsigned int
+#define UNSIGNED unsigned short
 #define far  
 #define MAXZ 65000
   static int cur_z;

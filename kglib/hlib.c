@@ -283,7 +283,7 @@ static unsigned char c_color=15,p_color,p_bound,c_bound;
 static unsigned char *far_ptr, *cur_mem,*v_mem;
 static int cur_x,cur_y,D_x,D_y,lcur_x,lcur_y,rcur_x,rcur_y;
 static float V_x=1.0,V_y=1.0;
-static int pr_txt=1,txt_bold=1,txt_bold_o=1,ln_width=1,ln_style,m_style,po,jmp;
+static short pr_txt=1,txt_bold=1,txt_bold_o=1,ln_width=1,ln_style,m_style,po,jmp;
 static float jmpy,ylcur,yrcur;
 static float w_x1,w_y1,w_x2,w_y2,v_r,u_x,u_y;
 static float txt_ht=200,txt_wt=200,txt_sp=20,r_d,txt_w42,txt_h42;
@@ -296,27 +296,27 @@ static  int b_v_xt1,b_v_yt1,b_v_x1,b_v_x2,b_v_y1,b_v_y2;
 static  int s_v_x1,s_v_x2,s_v_y1,s_v_y2;
 static int buf,index0;
 static int bufl,bufr;
-static int rbuf,nmenu;
-static int t_color,t_bkgr,t_pattern,t_fill,t_bodr=0,greek=0;
+static short rbuf,nmenu;
+static short t_color,t_bkgr,t_pattern,t_fill,t_bodr=0,greek=0;
 static int *icxv,*icyv;
 static int *icpos;
 static float *m_f;
 static float cost=1.0,sint=0.0;
 static int gcur_x,gcur_y;
 static float gw_x1,gw_y1,gw_x2,gw_y2;
-static int max_clr=64,ibdr=0,min_clr=64;
-static int EVGAX=2399;
-static int evgay,evgax;
-static int MAXB=300;
-static int EVGAY=1799;
+static short max_clr=64,ibdr=0,min_clr=64;
+static short EVGAX=2399;
+static short evgay,evgax;
+static short MAXB=300;
+static short EVGAY=1799;
 static float xpos,ypos,txs=0.,txc=1.;
 static int t_font,t_font_o=-1;
 static float cx,cy,xp,yp;
 static void cpy_hdr(void);
 static void cpy_hdr1(void);
-static void put_pixl(int col, int row);
-static void put_dot(int col, int row);
-static void put_blnk(int col, int row);
+static void put_pixl(short col, short row);
+static void put_dot(short col, short row);
+static void put_blnk(short col, short row);
 static void hardcopy(void);
 static void  getwin(float w[]);
 static void  getvu( float v[]);
@@ -325,19 +325,19 @@ static void  back_gr(char flname[]);
 static void store_cmds(void);
 static void stop_store(void);
 static void read_cmds(void);
-static void set_godard_clrs(int maxc);
+static void set_godard_clrs(short maxc);
 static void clr_view(void);
 static void clr_buf(void);
 static void move(float x,float y);
 static void marker(float x,float y);
-static void set_lnwidth( int dw);
-static void set_txtbold( int dw);
+static void set_lnwidth( short dw);
+static void set_txtbold( short dw);
 static void draw(float x,float y);
 static void DRAW_LINE(float x1,float y1,float x2,float y2);
 static void box_fill(float x1,float y1,float x2,float y2,unsigned char color);
 static void win_box_fill(void);
-static void poly_fill(int n,float *x,float *y,int flag,unsigned char color);
-static void godard_fill(int n,float *px,float *py,int flag,float *pv);
+static void poly_fill(short n,float *x,float *y,short flag,unsigned char color);
+static void godard_fill(short n,float *px,float *py,short flag,float *pv);
 static void win_godard_fill(void);
 static void win_poly_fill(void);
 static void circle(float x1,float y1,float r);
@@ -345,7 +345,7 @@ static void circle_fill(float x1,float y1,float r,unsigned char color);
 static void init_graph();
 static void initialise();
 static void reinitialise();
-static void set_graphics(int n);
+static void set_graphics(short n);
 static void set_mode1();
 static void set_mode2();
 static void _move(int x,int y);
@@ -359,20 +359,20 @@ static void win_set_godard_clrs(void);
 static void win_set_shade_clrs(void);
 static void win_set_color(void);
 static void put_pixel(int col, int row);
-static void put_byte(int col, int row);
+static void put_byte(short col, short row);
 static void txt_write(char *txt);
 static void txt_incl(char *txt);
 static void txtwrt(char *txt);
 static void win_txtwrt(void);
 static void win_chng_clr(void);
-static void txt_color(int color);
+static void txt_color(short color);
 static void win_txt_color(void);
 static void win_txt_slant(void);
 static void win_txt_pattern(void);
 static void win_txt_fill(void);
 static void win_txt_bodr(void);
 static void win_txt_bkgr(void);
-static void txt_font(int font);
+static void txt_font(short font);
 static void set_txt_font( int font);
 static void win_txt_font(void);
 static void set_angle(float t);
@@ -383,12 +383,12 @@ static void clear_clip(void);
 static void win_clip_limit();
 static void win_pop_clip();
 static void win_sup_clip_limit();
-static void set_lnstyle(int styl);
-static int  strlngth(char *title,float *xdsp);
+static void set_lnstyle(short styl);
+static short  strlngth(char *title,float *xdsp);
 static void win_set_lnstyle(void);
 static void user_cord(float x1,float y1,float x2,float y2);
 static void set_viewport(int x1,int y1,int x2,int y2);
-static void set_markstyle(int style);
+static void set_markstyle(short style);
 static void win_set_markstyle(void);
 static void win_set_lnwidth(void);
 static void win_set_txtbold(void);
@@ -396,10 +396,10 @@ static void _marker (int x,int y);
 static void _box_fill(int x1,int y1,int x2,int y2,unsigned char color);
 static void _box_fill_ps(int x1,int y1,int x2,int y2,unsigned char color);
 static void clear_screen();
-static void _poly_fill(int n,int *px,int *py,int flag,unsigned char b_color);
-static void _poly_fill_ps(int n,int *px,int *py,int flag,unsigned char b_color);
-static void _mpoly_fill(int n,int *px,int *py,int *px1,int *py1,unsigned char b_color);
-static void _godard_fill(int n,int *px,int *py,int flag,float *pv);
+static void _poly_fill(short n,int *px,int *py,short flag,unsigned char b_color);
+static void _poly_fill_ps(short n,int *px,int *py,short flag,unsigned char b_color);
+static void _mpoly_fill(short n,int *px,int *py,int *px1,int *py1,unsigned char b_color);
+static void _godard_fill(short n,int *px,int *py,short flag,float *pv);
 static void scr_back(int x1,int y1,int x2, int y2, int *mem);
 static void scr_recover(int x1,int y1,int x2,int y2, int *mem);
 static void pixel_copy(int x1,int y1,int x2,int y2, int x3,int y3);
@@ -415,10 +415,10 @@ static void draw_lcur();
 static void draw_rcur();
 static void win_select(float *x1,float *y1,float *x2,float *y2);
 static void  m_intract(float tww,float thh,float tgg);
-static int clip_line(int *xa,int *ya,int *xb,int *yb);
+static short clip_line(int *xa,int *ya,int *xb,int *yb);
 static unsigned char code(int x,int y);
 static void unclip_files(void);
-static int unclip_line(int *xa,int *ya,int *xb,int *yb);
+static short unclip_line(int *xa,int *ya,int *xb,int *yb);
 static void win_set_prtxt( );
 static void win_move();
 static void win_draw();
@@ -427,20 +427,20 @@ static void win_boxfill();
 static void display_on(void);
 static void display_off(void);
 static void review_cmds(void);
-static void write_buf(void *ch, int n);
-static void close_file(int rbuf);
-static void read_buf(void *ch, int n);
-static void write_file(int rbuf);
+static void write_buf(void *ch, short n);
+static void close_file(short rbuf);
+static void read_buf(void *ch, short n);
+static void write_file(short rbuf);
 static void review_file(char *str);
-static void read_file(int rbuf);
-static void menuch(char c,int ix1,int iy1);
-static int review(void);
-static void _rect_fill(int x1,int y1,int x2,int y2,unsigned char color);
-static void _draw_bound(int x1,int y1,int x2,int y2);
+static void read_file(short rbuf);
+static void menuch(char c,short ix1,short iy1);
+static short review(void);
+static void _rect_fill(short x1,short y1,short x2,short y2,unsigned char color);
+static void _draw_bound(short x1,short y1,short x2,short y2);
 static void _draw_line(int x1,int y1,int x2,int y2);
 static void backup_view(void);
 static void restore_view(void);
-static char *h_int(float *x,float *y);
+static char *h_short(float *x,float *y);
 static void  txt_backup(char *txt);
 static void store_view(void);
 static void get_view(unsigned char *bf);
@@ -450,21 +450,21 @@ static void  set_landscape(void);
 static void  set_a4copy(void);
 static void t_fillchr_o(float *x,float *y,int code,int n);
 static int t_fillchr(float *x,float *y,int n,int *x1,int *y1,int *x2,int*y2);
-static int GHMAX=0,SCRN,S_OPEN=0;
+static short GHMAX=0,SCRN,S_OPEN=0;
 static char *GHBUF;
 static char df_gbuf[20]={"No help available"};
 static unsigned char *Rbuff;
 static int B_max=31400,B_min=31000,Byte=0,R_max=0,R_Byte=0;
 static unsigned char BACK_UP=0;
 /*unsigned char gr_buf[5200];*/
-static int OPEN=0,ENTRY=0;
-static int MODE=18;
+static short OPEN=0,ENTRY=0;
+static short MODE=18;
 static unsigned char * RBUFF;
 #define icde(l,m) icode[m-1][l-1]
 static unsigned char char_clr=0x0F,fill_clr=0x08,bodr_clr=0x0E,cur_clr=0x09,
             high_clr=0x04;
 
-static int  icode[256][3]= {
+static short  icode[256][3]= {
 255,255,255,   /* whilte */
 0,0,255,   /* blue */
 0,255,0,   /* green */
@@ -552,11 +552,11 @@ static int  icode[256][3]= {
 };
 static char ch,bf[200]={" "};
 static unsigned char cmds[1000];
-static int step;
+static short step;
 static unsigned char PIXL=0xFF;
 static int B_OFF_SET=0;
 #define CURKEY 00
-#define EVGA_CN(y)  (int)(y*((float)EVGAY/1799.0))
+#define EVGA_CN(y)  (short)(y*((float)EVGAY/1799.0))
 static unsigned char OFF=0xFF;
 static unsigned char C_CLR=0xFF;
 static char PAK_B=0x18;
@@ -649,10 +649,10 @@ static unsigned char fil_pt[16][16][2]={
    };
 static unsigned char pix=0xFF;
 static unsigned char *dp;
-static unsigned int IPO1=0x3CE;
-static unsigned int IPO2=0x3CF;
-static unsigned int IPO3=0x3C4;
-static unsigned int IPO4=0x3C5;
+static unsigned short IPO1=0x3CE;
+static unsigned short IPO2=0x3CF;
+static unsigned short IPO3=0x3C4;
+static unsigned short IPO4=0x3C5;
 static void GPEN(int pen) {
  fprintf(TX_F,"ZC col%3.3d s  n\n",PEN);
 /*
@@ -704,17 +704,17 @@ static  void setclr( color)
    PIXL =color&OFF;
    return;
  }
-static    void put_byte(int col,int  row)
+static    void put_byte(short col,short  row)
       {
         char temp;
-        int mnt;
+        short mnt;
         mnt = (col)>>3;
         temp=*(dp+(row)*MAXB+mnt);
         *(dp+(row)*MAXB+mnt) = c_color;
       }
-static       void g_fill(int ix,int iy,char col)
+static       void g_fill(short ix,short iy,char col)
        {
-        _rect_fill((int)ix,(int)(iy+15),(int)(ix+11),(int)(iy),col);
+        _rect_fill((short)ix,(short)(iy+15),(short)(ix+11),(short)(iy),col);
        }
 static void win_move()
 {
@@ -1169,7 +1169,7 @@ static void win_poly_fill(void)
   int color;
   
   int *x1,*y1;
-  int i;
+  short i;
   read_buf(&n,4);
   x = (float *)Malloc(sizeof(float)*n);
   y = (float *)Malloc(sizeof(float)*n);
@@ -1809,7 +1809,7 @@ static void t_panel(float *x,float *y,int color,int flag,int n)
   {
   int *x1,*y1;
   int xo,yo,xv,yv;
-  int i,j=0;
+  short i,j=0;
   x1 = (int *) Malloc(sizeof(int)*(n+1));
   y1 = (int *) Malloc(sizeof(int)*(n+1));
   if( (y1==NULL) ){
@@ -1829,7 +1829,7 @@ static void t_panel(float *x,float *y,int color,int flag,int n)
       xo=xv,yo=yv;j++;
     }
   }
-  if( (j>2)&&(j<500)) _poly_fill_ps((int)j,x1,y1,(int)flag,(unsigned char)color);
+  if( (j>2)&&(j<500)) _poly_fill_ps((short)j,x1,y1,(short)flag,(unsigned char)color);
   free(x1),free(y1);
 }
 static void win_3_polyfill()
@@ -1939,14 +1939,14 @@ static  void t_godr_fill(int n,float *x,float *y,float *p)
  {
   int x1[200],y1[200];
   float p1[20],pv;
-  int i;
+  short i;
   for(i=0;i<n;i++)
   {
     x1[i] =scr_x(x[i]); 
     y1[i] =scr_y(y[i]);
   }
    for (i=0;i<n;i++) {pv=*(p++), p1[i] = pclr(pv); }
-  _godard_fill((int)n,x1,y1,(int)ibdr,p1);
+  _godard_fill((short)n,x1,y1,(short)ibdr,p1);
  }
 static void win_3_godrfill()
 {
@@ -2270,9 +2270,9 @@ static void win_set_markstyle()
 }
 static void _marker(int x,int y)
 {
-  int fac=10;
+  short fac=10;
   int px[4],py[4];
-  int style,mf;
+  short style,mf;
   if(code(x,y) != 0) return;
   style = m_style%20;
   mf = m_style/20;
@@ -2338,22 +2338,22 @@ break;
         case 9 :
                  px[0]=x+4*fac;py[0]=y;px[1]=x-4*fac;py[1]=y+4*fac;
                  px[2]=x-4*fac;py[2]=y-4*fac;
-                 _poly_fill_ps((int)3,px,py,(int)0,(unsigned char)15);
+                 _poly_fill_ps((short)3,px,py,(short)0,(unsigned char)15);
                  break;
         case 10:
                  px[0]=x-4*fac;py[0]=y;px[1]=x+4*fac;py[1]=y+4*fac;
                  px[2]=x+4*fac;py[2]=y-4*fac;
-                 _poly_fill_ps((int)3,px,py,(int)0,(unsigned char)15);
+                 _poly_fill_ps((short)3,px,py,(short)0,(unsigned char)15);
                  break;
         case 11:
                  px[0]=x;py[0]=y+4*fac;px[1]=x-4*fac;py[1]=y-4*fac;
                  px[2]=x+4*fac;py[2]=y-4*fac;
-                 _poly_fill_ps((int)3,px,py,(int)0,(unsigned char)15);
+                 _poly_fill_ps((short)3,px,py,(short)0,(unsigned char)15);
                  break;
         case 12:
                  px[0]=x;py[0]=y-4*fac;px[1]=x-4*fac;py[1]=y+4*fac;
                  px[2]=x+4*fac;py[2]=y+4*fac;
-                 _poly_fill_ps((int)3,px,py,(int)0,(unsigned char)15);
+                 _poly_fill_ps((short)3,px,py,(short)0,(unsigned char)15);
                  break;
 case 13 :
                  _circle(x,y,(int)(3*fac));
@@ -2368,22 +2368,22 @@ case 15:
         case 16:
                  px[0]=x+2*fac;py[0]=y;px[1]=x-2*fac;py[1]=y+2*fac;
                  px[2]=x-2*fac;py[2]=y-2*fac;
-                 _poly_fill_ps((int)3,px,py,(int)0,(unsigned char)15);
+                 _poly_fill_ps((short)3,px,py,(short)0,(unsigned char)15);
                  break;
         case 17:
                  px[0]=x-2*fac;py[0]=y;px[1]=x+2*fac;py[1]=y+2*fac;
                  px[2]=x+2*fac;py[2]=y-2*fac;
-                 _poly_fill_ps((int)3,px,py,(int)0,(unsigned char)15);
+                 _poly_fill_ps((short)3,px,py,(short)0,(unsigned char)15);
                  break;
         case 18:
                  px[0]=x;py[0]=y+2*fac;px[1]=x-2*fac;py[1]=y-2*fac;
                  px[2]=x+2*fac;py[2]=y-2*fac;
-                 _poly_fill_ps((int)3,px,py,(int)0,(unsigned char)15);
+                 _poly_fill_ps((short)3,px,py,(short)0,(unsigned char)15);
                  break;
         case 19:
                  px[0]=x;py[0]=y-2*fac;px[1]=x-2*fac;py[1]=y+2*fac;
                  px[2]=x+2*fac;py[2]=y+2*fac;
-                 _poly_fill_ps((int)3,px,py,(int)0,(unsigned char)15);
+                 _poly_fill_ps((short)3,px,py,(short)0,(unsigned char)15);
                  break;
 default :break;
   }
@@ -2506,7 +2506,7 @@ static unsigned char code(int x, int y)
 }
 
 
-static int clip_line(int *xa,int *ya, int *xb, int *yb)
+static short clip_line(int *xa,int *ya, int *xb, int *yb)
 {
   int x,y,tx,ty,xs=c_v_x1,ys=c_v_y1;
   unsigned char c1,c2,c;
@@ -2583,7 +2583,7 @@ static unsigned char uncode(int x, int y)
 }
 
 
-static int unclip_line(int *xa,int *ya, int *xb, int *yb)
+static short unclip_line(int *xa,int *ya, int *xb, int *yb)
 {
   int x,y,tx,ty,xs=b_v_x1,ys=b_v_y1;
   unsigned char c1,c2,c;
@@ -2654,8 +2654,8 @@ c2=uncode(x,y);
 static void _draw_line(int x1,int y1,int x2,int y2)
 {
  char *addr;
- int i,dx,dy,f,g,inc1,inc2,ab,dx1,dy1,miny,maxy,minx,maxx;
- int clip,ch,rh,r,c;
+ short i,dx,dy,f,g,inc1,inc2,ab,dx1,dy1,miny,maxy,minx,maxx;
+ short clip,ch,rh,r,c;
  unsigned char temp;
  int xa,ya,xb,yb;
  xa =x1,xb=x2,ya=y1,yb=y2;
@@ -2675,7 +2675,7 @@ static void draw_line(int xa,int ya,int xb,int yb)
  }
 static void hori_line(int xa,int xb,int y)
 {
-  int i,clip;
+  short i,clip;
   char *addr;
   int temp;
   if(xa==xb) return;
@@ -2691,7 +2691,7 @@ static void hori_line(int xa,int xb,int y)
 }
 static void phori_line(int xa,int xb,int y)
 {
-  int i,j,ii,ip,ib,jp,clip,pt_no;
+  short i,j,ii,ip,ib,jp,clip,pt_no;
   char *addr;
   unsigned char dot;
   int temp;
@@ -2732,7 +2732,7 @@ static void phori_line(int xa,int xb,int y)
 
 static void vert_line(int ya,int yb,int x)
 {
-  int i,clip;
+  short i,clip;
   char *addr;
   int temp;
   if(ya==yb) return;
@@ -2751,8 +2751,8 @@ static void _draw_o(int x, int y)
 {
   int xa, ya, xb, yb;
   unsigned int ptn;
-  int  dx, dy,  f, inc1, inc2, g,dx1,dy1,ab;
-  int clip,i,ch,rh,c,r;
+  short  dx, dy,  f, inc1, inc2, g,dx1,dy1,ab;
+  short clip,i,ch,rh,c,r;
   float h;
 
   xa=cur_x;
@@ -2774,8 +2774,8 @@ static void _draw_(int x, int y)
   int xa, ya, xb, yb;
   unsigned int ptn;
   float  dxx, dyy,xx,yy;
-  int  dx, dy,  f, inc1, inc2, g,dx1,dy1,ab;
-  int clip,i,ch,rh,c,r,c1,r1;
+  short  dx, dy,  f, inc1, inc2, g,dx1,dy1,ab;
+  short clip,i,ch,rh,c,r,c1,r1;
   float h;
 
   xa=cur_x;
@@ -3189,8 +3189,8 @@ char c;
   float x[300],y[300];
   int x1[1500],y1[1500],x2[1500],y2[1500];
   int code,n,i,xdum,ydum,pnts;
-  int ptr;
-  int j,pnt,asc,tempc;
+  short ptr;
+  short j,pnt,asc,tempc;
   float fact=1.0;
   int xo,yo;
   tempc=ln_width;
@@ -3229,9 +3229,9 @@ char c;
          if(t_fill)
           {
             if(t_pattern==15)
-             _mpoly_fill((int)pnts,x1,y1,x2,y2,(unsigned char)t_color);
+             _mpoly_fill((short)pnts,x1,y1,x2,y2,(unsigned char)t_color);
             else 
-             _mpoly_fill((int)pnts,x1,y1,x2,y2,(unsigned char)t_pattern);
+             _mpoly_fill((short)pnts,x1,y1,x2,y2,(unsigned char)t_pattern);
           }
          if(t_bodr) 
             {
@@ -3256,8 +3256,8 @@ char c;
   float x[300],y[300];
   int x1[1500],y1[1500],x2[1500],y2[1500];
   int code,n,i,xdum,ydum,pnts;
-  int ptr;
-  int j,pnt,asc,tempc;
+  short ptr;
+  short j,pnt,asc,tempc;
   float fact=1.0;
   int xo,yo;
   asc=c;
@@ -3285,8 +3285,8 @@ char c;
   int x1[1500],y1[1500],x2[1500],y2[1500];
   int pnts;
   float xdum,ydum;
-  int ptr;
-  int j,pnt,asc,tempc;
+  short ptr;
+  short j,pnt,asc,tempc;
   float xa,ya;
   float fact=1.0;
   float xo,yo;
@@ -3327,9 +3327,9 @@ char c;
          if(t_fill)
           {
             if(t_pattern==15)
-             _mpoly_fill((int)pnts,x1,y1,x2,y2,(unsigned char)t_color);
+             _mpoly_fill((short)pnts,x1,y1,x2,y2,(unsigned char)t_color);
             else 
-             _mpoly_fill((int)pnts,x1,y1,x2,y2,(unsigned char)t_pattern);
+             _mpoly_fill((short)pnts,x1,y1,x2,y2,(unsigned char)t_pattern);
           }
          if(t_bodr)
             {
@@ -3356,8 +3356,8 @@ char c;
   int x1[1500],y1[1500],x2[1500],y2[1500];
   int pnts;
   float xdum,ydum;
-  int ptr;
-  int j,pnt,asc,tempc;
+  short ptr;
+  short j,pnt,asc,tempc;
   float xa,ya;
   float fact=1.0;
   float xo,yo;
@@ -3442,7 +3442,7 @@ static int t_fillchr(float *x,float *y,int n,int *x1,int *y1,int *x2,int*y2)
   {
   int xp,yp,temp;
   float xx,yy,xx0,yy0,xx1,xx2,yy1,yy2,xx3,xx4,yy3,yy4;
-  int i,j,j1,k;
+  short i,j,j1,k;
   j=0;
   xx0=x[0]; yy0=y[0];
   x1[j] =(xx0); y1[j] =(yy0); j++;
@@ -3487,7 +3487,7 @@ static void t_fillchr_o(float *x,float *y,int code,int n)
   int xp,yp,temp;
   int x1[300],y1[300];
   float xx,yy,xx0,yy0,xx1,xx2,yy1,yy2,xx3,xx4,yy3,yy4;
-  int i,j,j1;
+  short i,j,j1;
   j=0;
   xx0=x[0]; yy0=y[0];
   x1[j] =(xx0); y1[j] =(yy0); j++;
@@ -3519,8 +3519,8 @@ static void t_fillchr_o(float *x,float *y,int code,int n)
   }
   if(t_fill)
    {
-   if(code==0) _poly_fill((int)j,x1,y1,(int)0,(unsigned char)t_bkgr);
-   else _poly_fill((int)j,x1,y1,(int)0,(unsigned char)t_pattern);
+   if(code==0) _poly_fill((short)j,x1,y1,(short)0,(unsigned char)t_bkgr);
+   else _poly_fill((short)j,x1,y1,(short)0,(unsigned char)t_pattern);
    }
   if(t_bodr){
              temp =c_color;set_clr(t_color);
@@ -3538,7 +3538,7 @@ static void t_fillchr_o(float *x,float *y,int code,int n)
 static    float get_val(char *ch)
     {
       char chr[4];
-      int err;
+      short err;
       float val;
       chr[0]=*ch;chr[1]=*(ch+1);chr[2]=*(ch+2);chr[3]=' ';
       err = sscanf(chr ,"%f",&val);
@@ -3549,7 +3549,7 @@ static    float get_val(char *ch)
 static   void setsubsup(fact,ishft,cntl)
   char cntl;
   float *fact;
-  int *ishft;
+  short *ishft;
       {
       xp = xp -0.5*txt_sp;
       *fact = (*fact)*0.6;
@@ -3567,9 +3567,9 @@ static   void setsubsup(fact,ishft,cntl)
       }
 static   void resetsubsup(fact,ishft)
   float *fact;
-  int *ishft;
+  short *ishft;
    {
-     int is;
+     short is;
       xp = xp +0.5*txt_sp;
       *ishft = (*ishft)/10;
       is = *ishft-((*ishft)/10)*10;
@@ -3588,7 +3588,7 @@ static   void resetsubsup(fact,ishft)
 
 static void  win_txtwrt(void) {
  
-  int i=0,bold,tempc,ishft,trot,Nu,De,gap,lnwidth_o;
+  short i=0,bold,tempc,ishft,trot,Nu,De,gap,lnwidth_o;
   float fact,val,xl1,xl2,hfact=1.0,slant;
   int font_o;
   L_N *FO_L=NULL,*pt=NULL;
@@ -3831,7 +3831,7 @@ static void  win_txtwrt(void) {
   }
 static void  win_txtwrt_o(void)
 {
-  int i=0,bold,j,pnt,tempc,ishft,trot,Nu,De,gap;
+  short i=0,bold,j,pnt,tempc,ishft,trot,Nu,De,gap;
   float fact,val,xl1,xl2;
   int nchr;
   unsigned char txt[200],cntl;
@@ -3936,7 +3936,7 @@ static void  win_txtwrt_o(void)
 static void _box_fill(int x1,int y1,int x2,int y2,unsigned char color)
 {
   int x_min,y_min,x_max,x_max1,x_min1,y_max,i,j;
-  int po1;
+  short po1;
   unsigned char temp;
   int width=5;
   temp=c_color;
@@ -3967,7 +3967,7 @@ static void _box_fill(int x1,int y1,int x2,int y2,unsigned char color)
 static void _box_fill_ps(int x1,int y1,int x2,int y2,unsigned char color)
 {
   int x_min,y_min,x_max,x_max1,x_min1,y_max,i,j;
-  int po1;
+  short po1;
   unsigned char temp;
   int width=5;
   temp=c_color;
@@ -4012,10 +4012,10 @@ static void clear_screen()
 }
 
 
-static void _poly_fill(int n,int *px,int *py,int flag,unsigned char b_color)
+static void _poly_fill(short n,int *px,int *py,short flag,unsigned char b_color)
 {
-  int j,imd;
-  int i,cnt,ind,pcrl=0;
+  short j,imd;
+  short i,cnt,ind,pcrl=0;
   int xcord[15];
   int xlow,xup;
   int txx;
@@ -4110,10 +4110,10 @@ skip:
   if (flag==1)
       for(i=0;i<n;i++) draw_line(px[i],py[i],px[(i+1)%n],py[(i+1)%n]);
 }
-static void _poly_fill_ps(int n,int *px,int *py,int flag,unsigned char b_color)
+static void _poly_fill_ps(short n,int *px,int *py,short flag,unsigned char b_color)
 {
-  int j,imd;
-  int i,cnt,ind,pcrl=0;
+  short j,imd;
+  short i,cnt,ind,pcrl=0;
   int xcord[25];
   int xlow,xup;
   int txx;
@@ -4134,10 +4134,10 @@ skip:
       for(i=0;i<n;i++) draw_line(px[i],py[i],px[(i+1)%n],py[(i+1)%n]);
 }
 
-static void _mpoly_fill(int n,int *px,int *py,int *px1,int *py1,unsigned char b_color)
+static void _mpoly_fill(short n,int *px,int *py,int *px1,int *py1,unsigned char b_color)
 {
-  int j,imd;
-  int i,cnt,ind,pcrl=0;
+  short j,imd;
+  short i,cnt,ind,pcrl=0;
   int xcord[1500];
   int xlow,xup;
   int txx;
@@ -4229,7 +4229,7 @@ xcord[j+1]=(txx);
 
 static void _circle(int x,int y,int r)
 {
-  int i,j;
+  short i,j;
   int xx,yy;
   double pi;
   pi=3.14159265/12.0;
@@ -4270,9 +4270,9 @@ static void clr_buf(void)
   OPEN=1;
   BACK_UP=0;
  }
-static void _rect_fill(int x1,int y1,int x2,int y2,unsigned char color)
+static void _rect_fill(short x1,short y1,short x2,short y2,unsigned char color)
 {
-  int x_min,y_min,x_max,x_max1,x_min1,y_max,i,j,po1;
+  short x_min,y_min,x_max,x_max1,x_min1,y_max,i,j,po1;
   unsigned char temp;
   temp=c_color;
   c_color=color;
@@ -4297,9 +4297,9 @@ static void _rect_fill(int x1,int y1,int x2,int y2,unsigned char color)
   GPEN(c_color);
   return;
 }
-static void read_buf(void *ch,int n)
+static void read_buf(void *ch,short n)
   {
-    int i;
+    short i;
     unsigned char *ptr;
     ptr = (unsigned char *)ch;
     for(i=0;i<n;i++)
@@ -4308,10 +4308,10 @@ static void read_buf(void *ch,int n)
        *(ptr+i)=Rbuff[R_Byte++];
      }
   }
-static   int  strlngth(char *title,float *xdsp)
+static   short  strlngth(char *title,float *xdsp)
     {
       float wd,gp,fj,gj,val,fact,fact1=1.0;
-      int ngp,n,i,j,k,greek=0;
+      short ngp,n,i,j,k,greek=0;
       wd = txt_wtx;
       gp = txt_spx;
       ngp =1;
@@ -4364,13 +4364,13 @@ static void win_set_txtbold(void)
   txt_bold=bold;
   return;
 }
-static  void read_file(int rbuf)
+static  void read_file(short rbuf)
   {
    Byte=read(rbuf,(void *)Rbuff,B_min);
   }
-static  void write_buf( void *ch, int n)
+static  void write_buf( void *ch, short n)
   {
-    int i;
+    short i;
     int j;
     unsigned char * ptr;
     ptr = (unsigned char *) ch;
@@ -4378,10 +4378,10 @@ static  void write_buf( void *ch, int n)
     if ( Byte> B_max)
       { write(rbuf,(const void *)Rbuff,Byte);Byte=0;BACK_UP=1;}
   }
-static void _godard_fill(int n,int *px,int *py,int flag,float *pv)
+static void _godard_fill(short n,int *px,int *py,short flag,float *pv)
 {
-  int j,imd,tempc;
-  int i,cnt,ind;
+  short j,imd,tempc;
+  short i,cnt,ind;
   int pcrl=0;
   int xcord[15];
   int xlow,xup;
@@ -4615,7 +4615,7 @@ static void win_godard_fill(void)
     y1[i] =scr_y(y[i]);
   }
    for (i=0;i<n;i++) {pv=*(p+i), p1[i] = pclr(pv); }
-  _godard_fill((int)n,x1,y1,(int)ibdr,p1);
+  _godard_fill((short)n,x1,y1,(short)ibdr,p1);
 }
 static  void win_set_godard_clrs(void)
   {
@@ -4777,7 +4777,7 @@ static void set_a4copy(void)
        evgax=EVGAX;
        MAXB= (evgax+1)>>3;
    }
-static int ichk_blnk( unsigned char  *c,int n)
+static short ichk_blnk( unsigned char  *c,int n)
 
   {
     int i;
@@ -4877,9 +4877,9 @@ static  void hardcopy()
       fclose(hbuf);
       return;
    }
-static void put_pixl(int col, int row)
+static void put_pixl(short col, short row)
 {
-  int pos,j,temp;
+  short pos,j,temp;
   int addr;
   if(LSCAPE){temp=col,col=EVGAY-row,row=temp;};
 /*
@@ -4894,7 +4894,7 @@ static void put_pixl(int col, int row)
 
 static void put_pixel(int col, int row)
 {
-  int pos,j,temp;
+  short pos,j,temp;
   int addr;
   if ((col >c_v_x2) || (col <c_v_x1) || (row >c_v_y2) || (row <c_v_y1)) return;
   if(LSCAPE){temp=col,col=row,row=evgay-temp;};
