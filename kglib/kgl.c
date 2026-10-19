@@ -10851,7 +10851,7 @@ int kgRoundedRectangleShade4(void * fid,float xo,float yo,float xl,float yl,int 
    count = 90/Dang;
    size = yl;
    if(size > xl){ size=xl;}
-   bordrsize = size*0.1;
+   bordrsize = size*0.05;
    if(bordrsize< 4) bordrsize=4;
    if(bordrsize > size*0.3) bordrsize=size*0.3;
    dl = size*fac;
@@ -10882,14 +10882,10 @@ int kgRoundedRectangleShade4(void * fid,float xo,float yo,float xl,float yl,int 
    sorg =s;
    vorg = vv;
    vmid = vmax;
-   vv = (vmin+0.8*(vmax-vmin));
+   vv = (vmin+0.4*(vmax-vmin));
 
    if(fac > 0.5) {
        double dv,vmin,vmax,dv1,vmin1,vmax1,ang;
-       vmin1= vv;
-       vmax1 = vv;
-       vmin = vlow;
-       vmax = vlow;
        fac = (fac-0.5)/0.5;
        fac1 = (fac1-0.5)/0.5;
        np = kgGetEllipsePointsNew(xl, yl,count,x,y) ;
@@ -10915,21 +10911,15 @@ int kgRoundedRectangleShade4(void * fid,float xo,float yo,float xl,float yl,int 
          yd[np-1]= yl*0.5 -bordrsize ;
        }
    }
-#if 1 
-// Testing
        vmid =vv;
        vv = vmax;
        Dang = 90.0/(np-1);
        dang = 3.14159265/180.0;
  
-       ang =0;
        for(i=0;i<np;i++) {
-//         ss = sin(ang);
          v[i]= vmin;
          vd[i]= vmid;
-         ang +=dang;
        }
-#endif
    for(i=0;i<np;i++) {
      npi= np+i;
      npj = np-1-i;
