@@ -3077,7 +3077,7 @@ int gphRoundedRectangleShade4(int fid,float xo,float yo,float xl,float yl,int cl
    if(fac==0.0) {count=1;Dang=90;}
    size = yl;
    if(size > xl){ size=xl;}
-   bordrsize = size*0.1;
+   bordrsize = size*0.075;
    if(bordrsize< 4) bordrsize=4;
    if(bordrsize > size*0.3) bordrsize=size*0.3;
    dl = size*fac;
@@ -10851,7 +10851,7 @@ int kgRoundedRectangleShade4(void * fid,float xo,float yo,float xl,float yl,int 
    count = 90/Dang;
    size = yl;
    if(size > xl){ size=xl;}
-   bordrsize = size*0.05;
+   bordrsize = size*0.15;
    if(bordrsize< 4) bordrsize=4;
    if(bordrsize > size*0.3) bordrsize=size*0.3;
    dl = size*fac;
@@ -10882,7 +10882,7 @@ int kgRoundedRectangleShade4(void * fid,float xo,float yo,float xl,float yl,int 
    sorg =s;
    vorg = vv;
    vmid = vmax;
-   vmid = (vmin+0.8*(vmax-vmin));
+   vmid = (vmin+0.9*(vmax-vmin));
 
    if(fac > 0.5) {
        double dv,vmin,vmax,dv1,vmin1,vmax1,ang;
