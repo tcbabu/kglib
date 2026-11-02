@@ -832,6 +832,35 @@ static void gphCopyImage(int x0,int y0,GMIMG *img) {
 
 }
 
+static  void gph_putimage(void *imgfile,float x1,float y1,float x2,float y2)
+  {
+  float fac;
+  GMIMG *img,*rzimg,*timg=NULL;;
+  char *pt;
+  int IMG =1,iw,ih,w,h,temp;
+  int X1,Y1,X2,Y2;
+  if(imgfile== NULL) return;
+  X1=scr_x(x1);
+  Y1=EVGAY-scr_y(y1);
+  X2=scr_x(x2);
+  Y2=EVGAY-scr_y(y2);
+  if(Y1>Y2) {temp=Y2; Y2=Y1;Y1=temp;}
+  if(X1>X2) {temp=X2; X2=X1;X1=temp;}
+  pt = (char *)imgfile;
+  if((pt[0]=='#')&&(pt[1]=='#')) { IMG=0; img = uiGetImage((void *)(pt+2));}
+  else img = imgfile;
+  if(img== NULL) return;
+  w = X2-X1+1;
+  h = Y2 -Y1+1;
+  iw = img->image_width;
+  ih = img->image_height;
+  rzimg= (GMIMG *)kgChangeSizeImage(img,w,h);
+//  rzimg= (GMIMG *)kgFilterImage(img,w,h,7);
+  gphCopyImage(X1,Y1,rzimg);
+  uiFreeImage(rzimg);
+  if(!IMG) uiFreeImage(img);
+  
+  }
 static  void gph_drawimage(void *imgfile,float x1,float y1,float x2,float y2)
   {
   float fac;
@@ -872,6 +901,18 @@ static void win_drawimage()
   read_buf(&y2,4);
 //  _draw(x1,y1);
   gph_drawimage(buff,x1,y1,x2,y2);
+}
+static void win_putimage()
+{
+  char buff[100];
+  float x1,y1,x2,y2;
+  read_buf(buff,100);
+  read_buf(&x1,4);
+  read_buf(&y1,4);
+  read_buf(&x2,4);
+  read_buf(&y2,4);
+//  _draw(x1,y1);
+  gph_putimage(buff,x1,y1,x2,y2);
 }
 
 static void win_marker()

@@ -2660,7 +2660,7 @@ int  kgSetImageColortoAlpha ( void *Img , int r,int g,int b,float a ) {
       w = img->columns;
       h = img->rows;
       if ( transp > 1.0 ) transp = 1.0;
-      if ( transp < 0. ) transp = 0.0;
+//      if ( transp < 0. ) transp = 0.0; //to reduce transparency
       f = transp*255;
       img->matte = 1;
       img->background_color.opacity = 255;
@@ -2669,12 +2669,10 @@ int  kgSetImageColortoAlpha ( void *Img , int r,int g,int b,float a ) {
           dest = pixels + i*w;
           for ( j = 0;j < w; j++ ) {
 #if 1
-              if ( dest->opacity < 255 ) {
                   opacity = dest->opacity + f+0.5;
                   if ( opacity > 255 ) opacity = 255;
+                  if ( opacity < 0 ) opacity = 0;
                   dest->opacity = opacity;
-              }
-              else dest->opacity = 255;
 #else
 #endif
               dest++;
@@ -3383,6 +3381,37 @@ int  kgSetImageColortoAlpha ( void *Img , int r,int g,int b,float a ) {
       }
       SyncImagePixels ( image ) ;
       return png;
+  }
+  void *uiChangeColorBandgmImage ( GMIMG *png ,int bits) {
+      int w , h , bkgrclr , xsize , ysize;
+      float rzfac;
+      int i , j , k = 0 , kk,bval;
+      Image *image;
+      PixelPacket *pixels;
+      if ( png == NULL ) return NULL;
+      if(bits >= 8) return png;
+      if(bits <= 0) return png;
+      bval = 8-bits;
+      image = ( Image * ) ( png->image ) ;
+      uiInitGm ( ) ;
+      pixels = GetImagePixels ( image , 0 , 0 , image->columns , image->rows ) ;
+      xsize = image->columns;
+      ysize = image->rows;
+      k = 0;
+      for ( j = 0;j < ( image->rows ) ;j++ ) {
+          for ( i = 0;i < ( image->columns ) ;i++ ) {
+              pixels [ k ] .blue = (pixels [ k ] .blue >>bval)<< (bval);
+              pixels [ k ] .green =(pixels [ k ] .green >>bval)<< (bval); 
+              pixels [ k ] .red =  (pixels [ k ] .red >>bval)<< (bval); 
+              k++;
+          }
+      }
+      SyncImagePixels ( image ) ;
+      return png;
+  }
+  void *kgChangeColorBand ( void *png,int bits ) {
+  /* bits (1,7) */
+      return uiChangeColorBandgmImage ( ( GMIMG * ) png ,bits) ;
   }
   int kgGetImageSize ( void *img , int *xsize , int *ysize ) {
 /*

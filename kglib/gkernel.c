@@ -6728,6 +6728,142 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
       else if ( imgFile ) kgFreeImage ( png ) ;
       return 1;
   }
+  int ui_gm_putimage ( DIALOG *D , void *tmp , int x0 , int y0 , int width , \
+  int height ) \
+  {
+      int i , j , k , m , row , color , sx , sy , dx , dy , xoffset , yoffset , \
+      xm , ym , xl , yl , xu , yu , xc , yc , xdl , xdu , ydl , ydu;
+      float rzfac;
+//    unsigned long *dest,*Imgdata,val;
+      unsigned long val;
+      unsigned char *Imgdata = NULL , *dest;
+      unsigned char r , g , b;
+      unsigned int a;
+      unsigned long lastrow = 0;
+      unsigned long pixel;
+      unsigned int red , green , blue;
+      unsigned char bg_red = 0xff , bg_green = 0xff , bg_blue = 0xff;
+      double f , f1;
+      unsigned int ALPHA = 255;
+      int EVGAX , EVGAY;
+      char *fullname = NULL;
+      PixelPacket *pixels , *src;
+      GMIMG *png = NULL , *pngrz = NULL;
+      Image *img;
+      int ximage_rowbytes;
+      int w , h , ww;
+      XImage *uiImage;
+      char *cpt;
+      int imgFile = 0;
+      kgWC *wc;
+      if ( tmp == NULL ) return 0;
+      wc = D->wc;
+      EVGAX = WC ( D )->EVGAX;
+      EVGAY = WC ( D )->EVGAY;
+      cpt = ( char * ) tmp;
+      png = ( GMIMG * ) tmp;
+      if ( x0 < 0 ) x0 = 0;
+      if ( y0 < 0 ) y0 = 0;
+      if ( ( x0+width ) > EVGAX ) width = EVGAX-x0-1;
+      if ( ( y0+height ) > EVGAY ) height = EVGAY-y0-1;
+      if ( png == NULL ) return 0;
+      if ( png->bkgrclr >= 0 ) {
+          color = wc->c_color;
+          wcset_clr ( wc , png->bkgrclr ) ;
+          _uiBox_Fill ( wc , x0 , y0 , x0+width , y0+height ) ;
+          wcset_clr ( wc , color ) ;
+      }
+      ALPHA = 255;
+      rzfac = png->rzfac;
+      if ( rzfac != 1.0 ) {
+          pngrz = uiResizegmImage ( png , rzfac ) ;
+          if ( pngrz == NULL ) {
+              return 0;
+          }
+          png = pngrz;
+      }
+      xoffset = png->xoffset;
+      yoffset = png->yoffset;
+      xc = x0+width/2;
+      yc = y0+height/2;
+      pixels = ( PixelPacket * ) uiPixelsgmImage ( png ) ;
+      img = png->image;
+      w = img->columns;
+      h = img->rows;
+      xm = ( w-xoffset ) /2+xoffset;
+      ym = ( h-yoffset ) /2+yoffset;
+      xl = xm -width/2; xu = xm+width-width/2;
+      yl = ym -height/2; yu = ym+height -height/2;
+      if ( ( xu < 0 ) || ( xl > w ) || ( yu < 0 ) || ( yl > h ) ) {
+          if ( pngrz != NULL ) kgFreeImage ( pngrz ) ;
+          else if ( imgFile ) kgFreeImage ( png ) ;
+          return 0;
+      }
+// There is something to display
+      if ( xl < 0 ) xl = 0;
+      if ( xu > w ) xu = w;
+      if ( yl < 0 ) yl = 0;
+      if ( yu > h ) yu = h;
+      dx = xm - xc;
+      dy = ym - yc;
+      xdl = xl-dx;
+      xdu = xu-dx;
+      ydl = yl -dy;
+      ydu = yu -dy;
+      uiImage = kg_GetImage ( D , xdl , ydl , xdu-xdl+1 , ydu-ydl+1 ) ;
+      ximage_rowbytes = uiImage->bytes_per_line;
+      Imgdata = ( unsigned char * ) uiImage->data;
+      row = -1;
+
+      for ( i = 0; i < h; ++i ) {
+          if ( i < ( yl ) ) continue;
+          if ( i >= yu ) break;
+          src = pixels + i*w;
+          row++;
+          dest = Imgdata + row*ximage_rowbytes;
+          m = 0;
+          k = -1;
+          ww = w;
+          if ( png->image_channels == 3 ) {
+              for ( j = 0;j < ww; j++ ) {
+                  k++;
+                  if ( ( k ) < ( xl ) ) {src++;continue;}
+                  if ( ( k ) >= ( xu ) ) break;
+                  red = src->red;
+                  green = src->green;
+                  blue = src->blue;
+                  src++;
+                  *dest = blue; *dest++;
+                  *dest = green; *dest++;
+                  *dest = red; *dest++;
+                  *dest = 0xff; *dest++;
+                  m++;
+              }
+              } else /* if ( image_channels == 4 ) */ {
+              for ( j = 0;j < ww; j++ ) {
+                  k++;
+                  if ( ( k ) < ( xl ) ) {src++;continue;}
+                  if ( ( k ) >= ( xu ) ) break;
+                  r = src->red;
+                  g = src->green;
+                  b = src->blue;
+                  a = 255 -  src->opacity;
+                  src++;
+                  *dest = b; *dest++;
+                  *dest = g; *dest++;
+                  *dest = r; *dest++;
+                  *dest = a; *dest++;
+                  m++;
+              }
+          }
+      }
+
+      kgPutImage ( D , uiImage , 0 , 0 , xdl , ydl , xdu-xdl+1 , ydu-ydl+1 ) ;
+      XDestroyImage ( uiImage ) ;
+      if ( pngrz != NULL ) kgFreeImage ( pngrz ) ;
+      else if ( imgFile ) kgFreeImage ( png ) ;
+      return 1;
+  }
   void *kgGetImageCopy_o ( void *D , void *img ) {
 /* 
    if img is an image a copy is provided 
@@ -7140,6 +7276,42 @@ static char FONTSTRV[60]= "-adobe-helvetica-bold-r-*-*-";
       fmg = ( FMGIMG * ) tmp;
       if ( fmg == NULL ) return;
       ui_gm_image ( D , tmp , x0 , y0 , width , height ) ;
+      return;
+  }
+  void ui_Putimage ( void *Dtmp , void *tmp , int x0 , \
+       int y0 , int width , int height ) {
+/*
+    width is X-direction
+   height is Y direction
+*/
+      DIALOG *D;
+      int EVGAX , EVGAY;
+      char buf [ 30 ] ;
+      int h , w , i , j , k , m , row , color , sx , sy , dx , dy , val;
+      int *pt;
+      char *cpt , *fullname = NULL;
+      JPGIMG *img;
+      FMGIMG *fmg;
+      PNGIMG *png;
+      XImage *uiImage;
+      D = ( DIALOG * ) Dtmp;
+      int XpmR = 0;
+      unsigned long ALPHA;
+      int RedMaskPos , GreenMaskPos , BlueMaskPos;
+      if ( tmp == NULL ) return;
+      EVGAX = D->evgax;
+      EVGAY = D->evgay;
+      ALPHA = 255;
+      ALPHA = ALPHA << 24;
+      cpt = ( char * ) tmp;
+      if ( x0 < 0 ) x0 = 0;
+      if ( y0 < 0 ) y0 = 0;
+      if ( ( x0+width ) > EVGAX ) width = EVGAX-x0-1;
+      if ( ( y0+height ) > EVGAY ) height = EVGAY-y0-1;
+      if ( ( width <= 0 ) || ( height <= 0 ) ) return;
+      fmg = ( FMGIMG * ) tmp;
+      if ( fmg == NULL ) return;
+      ui_gm_putimage ( D , tmp , x0 , y0 , width , height ) ;
       return;
   }
   void *kgFMGtogmImage_o ( void *tmp ) {
