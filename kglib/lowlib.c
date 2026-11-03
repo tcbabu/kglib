@@ -5809,7 +5809,7 @@ void transch(int c) {
       EVGAY = D->evgay;
       x2 = dc->x2;
       y2 = dc->y2;
-      if ( dc->entry == 0 ) {x2 = -100; y2 = -100; }
+ //     if ( dc->entry == 0 ) {x2 = -100; y2 = -100; }
       if ( dc->entry ) {
           kg_scr_recover ( wc ) ;
 //          kg_scr_recover ( wc ) ;
@@ -5818,7 +5818,7 @@ void transch(int c) {
       };
       dc->entry = 1;
       xmin = x1 , xmax = x1+x0;
-      ymin = y1; ymax = y1-y0;
+      ymin = y1; ymax = y1+y0;
 #if 0
       kg_scr_back ( wc , xmin , ymin , xmax , ymin+1 ) ;
       kg_scr_back ( wc , xmin , ymax-1 , xmax , ymax ) ;
@@ -5851,22 +5851,38 @@ void transch(int c) {
       int xpo , ypo , but , pointer , xorg , yorg , xorg1 , yorg1;
       int temp,xchg=0,ychg=0;;
       float dx , dy , xl , xu , yl , yu;
+      float wx1,wy1,wx2,wy2;
+      int Dxl,Dyl,Dxu,Dyu;
+      int Dwxl,Dwyl,Dwxu,Dwyu;
       D = ( DIALOG * ) G->D;
       kgWC *wc;
       kgDC *dc;
       void *img=NULL;
       wc = G->wc;
       dc = G->dc;
+      kgGetWindow(G,&wx1,&wy1,&wx2,&wy2);
       if(*xbgn > *xx ){xl = *xx;*xx=*xbgn;*xbgn=xl;xchg=1;}
       if(*ybgn < *yy ){yl = *yy;*yy=*ybgn;*ybgn=yl;ychg=1;}
+      dx = *xx - *xbgn;
+      dy = *ybgn - *yy;
+      if(dx > (wx2-wx1)) return 0;
+      if(dy > (wy2-wy1)) return 0;
+#if 0
       xl = uiusr_x ( G->x1 ) ;
       xu = uiusr_x ( G->x2 ) ;
       yl = uiusr_y ( ( D->evgay-G->y2 ) ) ;
       yu = uiusr_y ( ( D->evgay-G->y1 ) ) ;
-      if ( *xbgn < xl ) *xbgn = xl;
-      if ( *xx > xu ) *xx = xu;
-      if ( *ybgn > yu ) *ybgn = yu;
-      if ( *yy < yl ) *yy = yl;
+#else
+      xl = wx1;
+      xu = wx2;
+      yl = wy1;
+      yu = wy2;
+#endif
+#if 0
+      if ( *xbgn < xl ) {*xbgn = xl;*xx = *xbgn +dx;}
+      if ( *xx > xu ) {*xx = xu; *xbgn = *xx -dx;}
+      if ( *ybgn > yu ) {*ybgn = yu;*yy = *ybgn -dy;}
+      if ( *yy < yl ) {*yy = yl;*ybgn = yl+dy;}
       if ( *xbgn > xu ) *xbgn = xl;
       if ( *ybgn < yl ) *ybgn = yu;
       dx = *xx - *xbgn;
@@ -5889,25 +5905,39 @@ void transch(int c) {
           *yy = yl;
           *ybgn = *yy+dy;
       }
+#endif
       if ( G->D_ON == 0 ) {
           MAG = G->MAG;
           kgAntialiasingOff ( G ) ;
       }
-      img = kgChangeSizeImage(image,dx,dy);
+      kgGetDeviceCord(G,*xbgn,*ybgn,&Dxl,&Dyl);
+      kgGetDeviceCord(G,*xx,*yy,&Dxu,&Dyu);
+      kgGetDeviceCord(G,wx1,wy1,&Dwxl,&Dwyu);
+      kgGetDeviceCord(G,wx2,wy2,&Dwxu,&Dwyl);
+      img = kgChangeSizeImage(image,abs(Dxu-Dxl),abs(Dyu - Dyl));
       kgAddTransparency(img,0.2);
       dc->entry = 0;
       temp = dc->c_bound;
       dc->c_bound = 14;
       uiset_clr ( D , 8 ) ;
       c_color = wc->c_color;
+#if 0
       xorg1 = uiscr_x ( *xx ) ;
       yorg1 = D->evgay-uiscr_y ( *yy ) ;
       xorg = uiscr_x ( *xbgn ) ;
       yorg = D->evgay-uiscr_y ( *ybgn ) ;
+#else
+     xorg1 = Dxu;
+     yorg1 = Dyu;
+     xorg = Dxl;
+     yorg = Dyl;
+#endif
+      printf("MSG: 1\n");
+      fflush(stdout);      
       dc->gcur_x = xorg;
       dc->gcur_y = yorg;
-      xorg = ( xorg1- xorg ) ;
-      yorg = - ( yorg1-yorg ) ;
+      xorg = ( Dxu -Dxl ) ;
+      yorg = (Dyu - Dyl) ;
       uiScrn_back ( wc , dc->msg_x , dc->msg_y , 40 ) ;
 //      dc->gcur_x = xorg1;
 //      dc->gcur_y = yorg1;
@@ -5924,10 +5954,17 @@ void transch(int c) {
           kb = kbevent.key;
 #if 1
           if ( ( event == 0 ) || ( event == 3 ) ) {
+#if 1
+              if ( kbevent.x+xorg > Dwxu ) kbevent.x = Dwxu - xorg;
+              if ( kbevent.y + yorg > Dwyu ) kbevent.y = Dwyu - yorg;
+              if ( kbevent.x < Dwxl ) kbevent.x = Dwxl;
+              if ( kbevent.y < Dwyl ) kbevent.y = Dwyl;
+#else
               if ( kbevent.x+xorg > G->x2 ) kbevent.x = G->x2 - xorg;
               if ( kbevent.y - yorg > G->y2 ) kbevent.y = G->y2 + yorg;
               if ( kbevent.x < G->x1 ) kbevent.x = G->x1;
               if ( kbevent.y < G->y1 ) kbevent.y = G->y1;
+#endif
           }
 #endif
           xpo = kbevent.x;
