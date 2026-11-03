@@ -5961,6 +5961,12 @@ void transch(int c) {
           kg_scr_recover ( wc ) ;
       };
       uiScrn_recover ( wc ) ;
+      if ( kbevent.x+xorg > Dwxu ) kbevent.x = Dwxu - xorg;
+      if ( kbevent.y + yorg > Dwyu ) kbevent.y = Dwyu - yorg;
+      if ( kbevent.x < Dwxl ) kbevent.x = Dwxl;
+      if ( kbevent.y < Dwyl ) kbevent.y = Dwyl;
+      dc->gcur_x = kbevent.x;
+      dc->gcur_y = kbevent.y;
       *xx = uiusr_x ( dc->gcur_x ) ;
       *yy = uiusr_y ( ( D->evgay-dc->gcur_y ) ) ;
       *xbgn = *xx+dx;
