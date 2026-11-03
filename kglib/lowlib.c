@@ -5867,45 +5867,10 @@ void transch(int c) {
       dy = *ybgn - *yy;
       if(dx > (wx2-wx1)) return 0;
       if(dy > (wy2-wy1)) return 0;
-#if 0
-      xl = uiusr_x ( G->x1 ) ;
-      xu = uiusr_x ( G->x2 ) ;
-      yl = uiusr_y ( ( D->evgay-G->y2 ) ) ;
-      yu = uiusr_y ( ( D->evgay-G->y1 ) ) ;
-#else
       xl = wx1;
       xu = wx2;
       yl = wy1;
       yu = wy2;
-#endif
-#if 0
-      if ( *xbgn < xl ) {*xbgn = xl;*xx = *xbgn +dx;}
-      if ( *xx > xu ) {*xx = xu; *xbgn = *xx -dx;}
-      if ( *ybgn > yu ) {*ybgn = yu;*yy = *ybgn -dy;}
-      if ( *yy < yl ) {*yy = yl;*ybgn = yl+dy;}
-      if ( *xbgn > xu ) *xbgn = xl;
-      if ( *ybgn < yl ) *ybgn = yu;
-      dx = *xx - *xbgn;
-      dy = *ybgn - *yy;
-      if ( dx > ( xu - xl ) ) {
-          dx = xu -xl;;
-          *xbgn = xl;
-          *xx = xl + dx;
-      }
-      if ( dy > ( yu - yl ) ) {
-          dy = yu -yl;
-          *ybgn = yu;
-          *yy = *ybgn - dy;
-      }
-      if ( *xx > xu ) {
-          *xx = xu;
-          *xbgn = *xx -dx;
-      }
-      if ( *yy < yl ) {
-          *yy = yl;
-          *ybgn = *yy+dy;
-      }
-#endif
       if ( G->D_ON == 0 ) {
           MAG = G->MAG;
           kgAntialiasingOff ( G ) ;
@@ -5921,57 +5886,33 @@ void transch(int c) {
       dc->c_bound = 14;
       uiset_clr ( D , 8 ) ;
       c_color = wc->c_color;
-#if 0
-      xorg1 = uiscr_x ( *xx ) ;
-      yorg1 = D->evgay-uiscr_y ( *yy ) ;
-      xorg = uiscr_x ( *xbgn ) ;
-      yorg = D->evgay-uiscr_y ( *ybgn ) ;
-#else
-     xorg1 = Dxu;
-     yorg1 = Dyu;
-     xorg = Dxl;
-     yorg = Dyl;
-#endif
-      printf("MSG: 1\n");
-      fflush(stdout);      
+      xorg1 = Dxu;
+      yorg1 = Dyu;
+      xorg = Dxl;
+      yorg = Dyl;
       dc->gcur_x = xorg;
       dc->gcur_y = yorg;
       xorg = ( Dxu -Dxl ) ;
       yorg = (Dyu - Dyl) ;
       uiScrn_back ( wc , dc->msg_x , dc->msg_y , 40 ) ;
-//      dc->gcur_x = xorg1;
-//      dc->gcur_y = yorg1;
       xpo = dc->gcur_x , ypo = dc->gcur_y;
-//  gbell();
-//  ChangeCursor(35);
       draw_cursor ( G ) ;
       draw_image_cursor ( G ,img, xorg , yorg , dc->gcur_x , dc->gcur_y ) ;
       while ( ! OK ) {
-//    kbevent = ui_getevent();
           kbevent = kgSkipMouseMove ( D ) ;
           event = kbevent.event;
           button = kbevent.button;
           kb = kbevent.key;
-#if 1
           if ( ( event == 0 ) || ( event == 3 ) ) {
-#if 1
               if ( kbevent.x+xorg > Dwxu ) kbevent.x = Dwxu - xorg;
               if ( kbevent.y + yorg > Dwyu ) kbevent.y = Dwyu - yorg;
               if ( kbevent.x < Dwxl ) kbevent.x = Dwxl;
               if ( kbevent.y < Dwyl ) kbevent.y = Dwyl;
-#else
-              if ( kbevent.x+xorg > G->x2 ) kbevent.x = G->x2 - xorg;
-              if ( kbevent.y - yorg > G->y2 ) kbevent.y = G->y2 + yorg;
-              if ( kbevent.x < G->x1 ) kbevent.x = G->x1;
-              if ( kbevent.y < G->y1 ) kbevent.y = G->y1;
-#endif
           }
-#endif
           xpo = kbevent.x;
           ypo = kbevent.y;
           switch ( event ) {
               case 0: // pointer movement
-//     case 2:  // button release
               case 3: // button press and movement
               if ( ( xpo != dc->gcur_x ) || ( ypo != dc->gcur_y ) ) {
                   dc->gcur_x = xpo , dc->gcur_y = ypo;
@@ -5993,7 +5934,6 @@ void transch(int c) {
               key = kb;
               if ( ui_Linefeed ( kb ) ) { key = '\r'; OK = 1; continue; }
               if ( ui_Return ( kb ) ) {key = '\r'; OK = 1; continue; }
-//       if(isdigit(kb)) {jmp = kb-'0';continue;}
               if ( ( kb >= '0' ) && ( kb <= '9' ) ) {dc->jmp = kb-'0'; continue; }
               if ( ( kb == '.' ) || ( kb == 'u' ) || ( kb == 'U' ) ) {
                   OK = 1; continue;
@@ -6021,7 +5961,6 @@ void transch(int c) {
           kg_scr_recover ( wc ) ;
       };
       uiScrn_recover ( wc ) ;
-//  ChangeCursor(59);
       *xx = uiusr_x ( dc->gcur_x ) ;
       *yy = uiusr_y ( ( D->evgay-dc->gcur_y ) ) ;
       *xbgn = *xx+dx;
