@@ -5880,7 +5880,7 @@ void transch(int c) {
       kgGetDeviceCord(G,wx1,wy1,&Dwxl,&Dwyu);
       kgGetDeviceCord(G,wx2,wy2,&Dwxu,&Dwyl);
       img = kgChangeSizeImage(image,abs(Dxu-Dxl),abs(Dyu - Dyl));
-      kgAddTransparency(img,0.2);
+      kgAddTransparency(img,0.4);
       dc->entry = 0;
       temp = dc->c_bound;
       dc->c_bound = 14;
