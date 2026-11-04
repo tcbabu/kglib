@@ -136,8 +136,10 @@ static Dlink *ModuleList=NULL;
       return th;
   }
   int Box_gincur ( float *x1 , float *y1 , float *x2 , float *y2 ) {
-      float yl , yu,xx,dx,dy;
+      float yl , yu,xx,dx,dy,x1b,x2b;
 /* it is messy due to a fix for an error in kglib */
+      x1b = *x1;
+      x2b = *x2;
       yl = Evgay-*y2;
       yu = Evgay -*y1;
       xx = *x1;
@@ -146,11 +148,13 @@ static Dlink *ModuleList=NULL;
       kgBoxCursor ( ( DIG * ) kgGetWidget ( Parent , 1 ) , x2 , & yl , x1 , & yu ) ;
       yl = Evgay-yl;
       yu = Evgay -yu;
+      *y1 = yl;
+      *x1 = *x2;
 //      *x1 = *x2;
-      *y1 =  yu;
+//      *y1 =  yu;
 //      *x2 = *x1 + dx;
 //      *y2 = *y1 +dy;
-      *y2 = yl;
+//      *y2 = yl;
       return 1;
   }
   int Rect_gincur ( float *x1 , float *y1 , float *x2 , float *y2 ) {
