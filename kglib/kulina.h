@@ -1435,6 +1435,7 @@ char kgRbrCursor(DIG *G,float *xx,float *yy,float *xbgn,float *ybgn);
 char kgRectCursor(DIG *,float *xx,float *yy,float *xbgn,float *ybgn);
 char kgBoxCursor(DIG *G,float *xx,float *yy,float *xbgn,float *ybgn);
 char kgImageCursor(DIG *G,void *image,float *xx,float *yy,float *xbgn,float *ybgn);
+char kgPathPoints(DIG *G,void *image,int *n,float *xx,float *yy);
 char kgDblCursor(DIG *G,float *xx,float *yy,float *xbgn,float *ybgn);
 char kgArcCursor(DIG *G,float *xx,float *yy,float *xbgn,float *ybgn);
 char kgDstCursor(DIG *G,float *xx,float *yy,float *xbgn,float *ybgn);
