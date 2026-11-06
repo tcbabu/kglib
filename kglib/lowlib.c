@@ -5898,6 +5898,11 @@ void transch(int c) {
           event = kbevent.event;
           button = kbevent.button;
           kb = kbevent.key;
+#if 0
+          if(event ==5) {
+                 kbevent.x = dc->gcur_x ; kbevent.y = dc->gcur_y;   
+          }
+#endif
           if ( ( event == 0 ) || ( event == 3 ) ) {
               if ( kbevent.x+xorg > Dwxu ) kbevent.x = Dwxu - xorg;
               if ( kbevent.y + yorg > Dwyu ) kbevent.y = Dwyu - yorg;
@@ -5927,20 +5932,29 @@ void transch(int c) {
               continue;
               case 5: // key release
               key = kb;
-              if ( ui_Linefeed ( kb ) ) { key = '\r'; OK = 1; continue; }
-              if ( ui_Return ( kb ) ) {key = '\r'; OK = 1; continue; }
+              if ( ui_Linefeed ( kb ) ) {
+                 kbevent.x = dc->gcur_x ; kbevent.y = dc->gcur_y;   
+                 key = '\r'; OK = 1; continue; }
+              if ( ui_Return ( kb ) ) {
+                 kbevent.x = dc->gcur_x ; kbevent.y = dc->gcur_y;   
+                 key = '\r'; OK = 1; continue; }
               if ( ( kb >= '0' ) && ( kb <= '9' ) ) {dc->jmp = kb-'0'; continue; }
               if ( ( kb == '.' ) || ( kb == 'u' ) || ( kb == 'U' ) ) {
+                 kbevent.x = dc->gcur_x ; kbevent.y = dc->gcur_y;   
                   OK = 1; continue;
               }
-              if ( ui_Uparrow ( kb ) ) { cursor_up ( dc ) ; draw_box_cursor \
-               ( G , xorg , yorg , dc->gcur_x , dc->gcur_y ) ; break; }
-              if ( ui_Downarrow ( kb ) ) { cursor_down ( dc ) ; draw_box_cursor \
-               ( G , xorg , yorg , dc->gcur_x , dc->gcur_y ) ; break; }
-              if ( ui_Leftarrow ( kb ) ) { cursor_left ( dc ) ; draw_box_cursor \
-               ( G , xorg , yorg , dc->gcur_x , dc->gcur_y ) ; break; }
-              if ( ui_Rightarrow ( kb ) ) { cursor_right ( dc ) ; draw_box_cursor \
-               ( G ,xorg , yorg , dc->gcur_x , dc->gcur_y ) ; break; }
+              if ( ui_Uparrow ( kb ) ) { cursor_up ( dc ) ;}
+              if ( ui_Downarrow ( kb ) ) { cursor_down ( dc ) ;}
+              if ( ui_Leftarrow ( kb ) ) { cursor_left ( dc ) ;}
+              if ( ui_Rightarrow ( kb ) ) { cursor_right ( dc ) ; }
+              kbevent.x = dc->gcur_x ; kbevent.y = dc->gcur_y;   
+              if ( kbevent.x+xorg > Dwxu ) kbevent.x = Dwxu - xorg;
+              if ( kbevent.y + yorg > Dwyu ) kbevent.y = Dwyu - yorg;
+              if ( kbevent.x < Dwxl ) kbevent.x = Dwxl;
+              if ( kbevent.y < Dwyl ) kbevent.y = Dwyl;
+              dc->gcur_x = kbevent.x;
+              dc->gcur_y = kbevent.y;
+              draw_box_cursor( G , xorg , yorg , dc->gcur_x , dc->gcur_y ) ;  
               break;
               default:
               break;
@@ -5950,9 +5964,9 @@ void transch(int c) {
       dc->c_bound = temp;
       uiset_clr ( D , c_color ) ;
       if ( dc->entry ) {
-//          kg_scr_recover ( wc ) ;
-//          kg_scr_recover ( wc ) ;
-//          kg_scr_recover ( wc ) ;
+          kg_scr_recover ( wc ) ;
+          kg_scr_recover ( wc ) ;
+          kg_scr_recover ( wc ) ;
           kg_scr_recover ( wc ) ;
       };
       uiScrn_recover ( wc ) ;
@@ -6112,6 +6126,7 @@ void transch(int c) {
               continue;
               case 5: // key release
               key = kb;
+#if 0
               if ( ui_Linefeed ( kb ) ) { key = '\r'; OK = 1; continue; }
               if ( ui_Return ( kb ) ) {key = '\r'; OK = 1; continue; }
               if ( ( kb >= '0' ) && ( kb <= '9' ) ) {dc->jmp = kb-'0'; continue; }
@@ -6126,6 +6141,31 @@ void transch(int c) {
                ( G , img,xorg , yorg , dc->gcur_x , dc->gcur_y ) ; break; }
               if ( ui_Rightarrow ( kb ) ) { cursor_right ( dc ) ; draw_image_cursor \
                ( G , img,xorg , yorg , dc->gcur_x , dc->gcur_y ) ; break; }
+#else
+              if ( ui_Linefeed ( kb ) ) {
+                 kbevent.x = dc->gcur_x ; kbevent.y = dc->gcur_y;   
+                 key = '\r'; OK = 1; continue; }
+              if ( ui_Return ( kb ) ) {
+                 kbevent.x = dc->gcur_x ; kbevent.y = dc->gcur_y;   
+                 key = '\r'; OK = 1; continue; }
+              if ( ( kb >= '0' ) && ( kb <= '9' ) ) {dc->jmp = kb-'0'; continue; }
+              if ( ( kb == '.' ) || ( kb == 'u' ) || ( kb == 'U' ) ) {
+                 kbevent.x = dc->gcur_x ; kbevent.y = dc->gcur_y;   
+                  OK = 1; continue;
+              }
+              if ( ui_Uparrow ( kb ) ) { cursor_up ( dc ) ;}
+              if ( ui_Downarrow ( kb ) ) { cursor_down ( dc ) ;}
+              if ( ui_Leftarrow ( kb ) ) { cursor_left ( dc ) ;}
+              if ( ui_Rightarrow ( kb ) ) { cursor_right ( dc ) ; }
+              kbevent.x = dc->gcur_x ; kbevent.y = dc->gcur_y;   
+              if ( kbevent.x+xorg > Dwxu ) kbevent.x = Dwxu - xorg;
+              if ( kbevent.y + yorg > Dwyu ) kbevent.y = Dwyu - yorg;
+              if ( kbevent.x < Dwxl ) kbevent.x = Dwxl;
+              if ( kbevent.y < Dwyl ) kbevent.y = Dwyl;
+              dc->gcur_x = kbevent.x;
+              dc->gcur_y = kbevent.y;
+              draw_image_cursor( G , img,xorg , yorg , dc->gcur_x , dc->gcur_y ) ;  
+#endif
               break;
               default:
               break;
