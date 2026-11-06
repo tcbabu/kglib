@@ -2799,7 +2799,7 @@ static char *OthFonts []= {
   int *py , int flag , float *pv ) \
   {
       int j , imd;
-      int i , cnt , ind;
+      int i , cnt , ind,icord;
       int xlow , xup;
       int txx;
       int *xcord ;
@@ -2812,8 +2812,8 @@ static char *OthFonts []= {
       ymax  = (int *)malloc(sizeof(int)*(n+1));
       pmax = (float *)malloc(sizeof(float)*(n+1));
       pmin = (float *)malloc(sizeof(float)*(n+1));
-      pcord = (float *)malloc(sizeof(float)*(n+1));
-      xcord = (int *)malloc(sizeof(int)*(n+1));
+      pcord = (float *)malloc(sizeof(float)*(2*n+2));
+      xcord = (int *)malloc(sizeof(int)*(2*n+2));
       unsigned int tempc;
       kgDC *dc;
       kgWC *wc;
@@ -2869,6 +2869,7 @@ static char *OthFonts []= {
           pmin [ j+1 ] = tpn;
       }
       ind = 0;
+//MSG:
       if (!( ( scan > wc->c_v_y2 ) || ( ygrt < wc->c_v_y1 ) || \
        ( xlow > wc->c_v_x2 ) || ( xup < wc->c_v_x1 ) )) {
       if ( ymax [ ind ] == scan ) ind++;
@@ -2894,7 +2895,8 @@ static char *OthFonts []= {
               txx = xcord [ i ] ;
               tpp = pcord [ i ] ;
               while ( j >= 0 && txx < xcord [ j ] ) {
-                  xcord [ j+1 ] = xcord [ j ] , pcord [ j+1 ] = pcord [ j ] ;
+                  xcord [ j+1 ] = xcord [ j ] ;
+                  pcord [ j+1 ] = pcord [ j ] ;
                   j--;
               }
               xcord [ j+1 ] = ( txx ) ;
@@ -2905,10 +2907,11 @@ static char *OthFonts []= {
           xcord [ i+1 ] , scan , pcord [ i ] , pcord [ i+1 ] ) ;
           scan++;
       }
-      }
+//MSG:
       if ( flag == 1 ) for ( i = 0; i < n; i++ ) _uidraw_line \
        ( wc , px [ i ] , py [ i ] , px [ \
        ( i+1 ) %n ] , py [ ( i+1 ) %n ] ) ;
+      }
       free(xmin);
       free(ymin);
       free(xmax);
@@ -3101,6 +3104,29 @@ static char *OthFonts []= {
       dc = G->dc;
       dc->ln_width = width;
   }
+  int uiGetDivCord(DIG *G,float x,float y,int *vx,int *vy) {
+      int xp,yp;
+      kgDC *dc;
+      dc = G->dc;
+      kgWC *wc;
+      wc = G->wc;
+      xp = uiscr_x ( x ) ;
+      yp = uiscr_y ( y ) ;
+      *vx = xp;
+      *vy = wc->EVGAY-yp;
+      return 1;
+   }
+  int uiGetGraphicCord(DIG *G,int vx,int vy,float *x,float *y) {
+      kgDC *dc;
+      dc = G->dc;
+      kgWC *wc;
+      wc = G->wc;
+      vy = wc->EVGAY-vy;
+      *x = uiusr_x ( vx ) ;
+      *y = uiusr_y ( vy ) ;
+      return 1;
+   }
+        
   void ui_move ( DIG *G , float x , float y ) {
       int x1 , y1;
       kgDC *dc;
@@ -3256,6 +3282,83 @@ static char *OthFonts []= {
 //      kgImage ( D , img , X1 , Y1 , img->image_width , \
 //      img->image_height , 0.0 , 1.0 ) ;
       ui_Image ( D , img , X1 , Y1 , img->image_width , img->image_height ) ;
+      if ( ! IMG ) uiFreeImage ( img ) ;
+  }
+  void ui_putimage ( DIG *G , void *imgfile , float x1 , \
+  float y1 , float x2 , float y2 ) \
+  {
+      float fac;
+      GMIMG *img , *rzimg;
+      char *pt;
+      int IMG = 1 , iw , ih , w , h , temp , wo , ho;
+      int X1 , Y1 , X2 , Y2 , EVGAY , X0 , Y0;
+      int xl , yl , xu , yu;
+      float lper , rper , tper , bper;
+      DIALOG *D;
+      kgDC *dc;
+      kgWC *wc;
+      if ( imgfile == NULL ) return;
+      dc = G->dc;
+      wc = G->wc;
+      D = G->D;
+      EVGAY = D->evgay;
+      X1 = uiscr_x ( x1 ) ;
+      X2 = uiscr_x ( x2 ) ;
+      if ( X1 > X2 ) {temp = X2; X2 = X1; X1 = temp; }
+      if ( X1 > wc->c_v_x2 ) return;
+      if ( X2 < wc->c_v_x1 ) return;
+      Y1 = uiscr_y ( y1 ) ;
+      Y2 = uiscr_y ( y2 ) ;
+      if ( Y1 > Y2 ) {temp = Y2; Y2 = Y1; Y1 = temp; }
+      if ( Y1 > wc->c_v_y2 ) return;
+      if ( Y2 < wc->c_v_y1 ) return;
+      xl = X1 , yl = Y1 , xu = X2 , yu = Y2;
+      if ( xl < wc->c_v_x1 ) xl = wc->c_v_x1;
+      if ( xu < wc->c_v_x1 ) xu = wc->c_v_x1;
+      if ( xl > wc->c_v_x2 ) xl = wc->c_v_x2;
+      if ( xu > wc->c_v_x2 ) xu = wc->c_v_x2;
+      if ( yl < wc->c_v_y1 ) yl = wc->c_v_y1;
+      if ( yu < wc->c_v_y1 ) yu = wc->c_v_y1;
+      if ( yl > wc->c_v_y2 ) yl = wc->c_v_y2;
+      if ( yu > wc->c_v_y2 ) yu = wc->c_v_y2;
+      w = xu -xl+1;
+      h = yu -yl+1;
+      if ( ( w <= 0 ) || ( h <= 0 ) ) return;
+      lper = ( xl-X1 ) / ( float ) ( X2-X1 ) ;
+      rper = ( X2-xu ) / ( float ) ( X2-X1 ) ;
+      tper = ( yl-Y1 ) / ( float ) ( Y2-Y1 ) ;
+      bper = ( Y2-yu ) / ( float ) ( Y2-Y1 ) ;
+      pt = ( char * ) imgfile;
+      if ( ( pt [ 0 ] == '#' ) && ( pt [ 1 ] == '#' ) ) {
+          IMG = 0;
+          img = uiGetImage ( ( void * ) ( pt+2 ) ) ;
+      }
+      else img = imgfile;
+      if ( img == NULL ) return;
+      iw = img->image_width;
+      ih = img->image_height;
+      rzimg = ( GMIMG * ) kgChangeSizeImage ( img , ( X2-X1 ) , ( Y2-Y1 ) ) ;
+      if ( IMG == 0 ) {kgFreeGmImage ( img ) ; IMG = 1; }
+      img = rzimg;
+      iw = img->image_width;
+      ih = img->image_height;
+      if ( ( lper != 0 ) || ( rper != 0 ) || ( tper != 0 ) || ( bper != 0 ) ) {
+          int l , r , b , t;
+          l = iw*lper+1; r = iw* ( 1-rper ) ;
+          b = ih*bper+1; t = ih* ( 1-tper ) ;
+          rzimg = kgCropImage ( img , l , b , r , t ) ;
+          uiFreeImage ( img ) ;
+          IMG = 0;
+          img = rzimg;
+      }
+      temp = EVGAY-yl;
+      Y1 = EVGAY -yu;
+      Y2 = temp;
+      X1 = xl;
+      X2 = xu;
+      w = X2-X1+1;
+      h = Y2 -Y1+1;
+      ui_Putimage ( D , img , X1 , Y1 , img->image_width , img->image_height ) ;
       if ( ! IMG ) uiFreeImage ( img ) ;
   }
   void ui_ln_style ( DIG *G , int istl ) {
@@ -3457,6 +3560,7 @@ static char *OthFonts []= {
           if ( xmax < x1 [ i ] ) xmax = x1 [ i ] ;
           if ( ymax < y1 [ i ] ) ymax = y1 [ i ] ;
       }
+#if 0
       if (!( ( xmin == xmax ) || ( ymin == ymax ) )) {
       if (!( ( xmax < dc->v_x1 ) || ( xmin > dc->v_x2 ) || ( ymax < dc->v_y1 ) \
        || ( ymin > dc->v_y2 ) )){
@@ -3464,6 +3568,10 @@ static char *OthFonts []= {
       _uigodard_fill ( G , n , x1 , y1 , dc->ibdr , p1 ) ;
       }
       }
+#else
+      for ( i = 0; i < n; i++ ) {pv = * ( p++ ) , p1 [ i ] = uipclr ( pv ) ; }
+      _uigodard_fill ( G , n , x1 , y1 , dc->ibdr , p1 ) ;
+#endif
       free(x1);
       free(y1);
       free(p1);
@@ -4607,7 +4715,7 @@ void transch(int c) {
       uiUpdateOn ( wc->D ) ;
       return ( key ) ;
   }
-  int draw_box_cursor ( DIG *G , int x0 , int y0 , int x1 , int y1 ) {
+  int draw_box_cursor_o ( DIG *G , int x0 , int y0 , int x1 , int y1 ) {
       int key;
 #if 1
       int x2 , y2;
@@ -5528,10 +5636,11 @@ void transch(int c) {
   /*XDraw((int)xa,(int)y,(int)xb,(int)y);*/
       _dvLine ( wc , xa , ( y ) , xb , ( y ) ) ;
   }
-  char kgBoxCursor ( DIG *G , float *xx , float *yy , \
+#if 0
+  char kgBoxCursor_o ( DIG *G , float *xx , float *yy , \
   float *xbgn , float *ybgn ) \
   /*   (xbgn,ybgn) initial upper left corner
-       (xx,yy) is upper right corner
+       (xx,yy) is lower right corner
        (xbgn,ybgn) not updated
        New position to lower left corner is send 
        through (xx,yy)
@@ -5542,13 +5651,15 @@ void transch(int c) {
       int kb , button , event , OK = 0 , c_color; ;
       int ch , key , MAG = 0;
       int xpo , ypo , but , pointer , xorg , yorg , xorg1 , yorg1;
-      int temp;
+      int temp,xchg,ychg;
       float dx , dy , xl , xu , yl , yu;
       D = ( DIALOG * ) G->D;
       kgWC *wc;
       kgDC *dc;
       wc = G->wc;
       dc = G->dc;
+      if(*xbgn > *xx ){xl = *xx;*xx=*xbgn;*xbgn=xl;xchg=1;}
+      if(*ybgn < *yy ){yl = *yy;*yy=*ybgn;*ybgn=yl;ychg=1;}
       xl = uiusr_x ( G->x1 ) ;
       xu = uiusr_x ( G->x2 ) ;
       yl = uiusr_y ( ( D->evgay-G->y2 ) ) ;
@@ -5675,9 +5786,623 @@ void transch(int c) {
 //  ChangeCursor(59);
       *xx = uiusr_x ( dc->gcur_x ) ;
       *yy = uiusr_y ( ( D->evgay-dc->gcur_y ) ) ;
+      *xbgn = *xx+dx;
+      *ybgn = *yy-dy;
+      if(xchg ){xl = *xx;*xx=*xbgn;*xbgn=xl;}
+      if(ychg ){yl = *yy;*yy=*ybgn;*ybgn=yl;}
       if ( MAG ) {
           kgAntialiasingOn ( G , MAG-1 ) ;
       }
+      return ( key ) ;
+  }
+#endif
+  int draw_box_cursor ( DIG *G , int x0 , int y0 , int x1 , int y1 ) {
+      int key;
+#if 1
+      int x2 , y2;
+      int xmin , ymin , xmax , ymax;
+      DIALOG *D;
+      int EVGAY;
+      kgWC *wc;
+      kgDC *dc;
+      D = G->D;
+      wc = G->wc;
+      dc = G->dc;
+      EVGAY = D->evgay;
+      x2 = dc->x2;
+      y2 = dc->y2;
+ //     if ( dc->entry == 0 ) {x2 = -100; y2 = -100; }
+      if ( dc->entry ) {
+          kg_scr_recover ( wc ) ;
+          kg_scr_recover ( wc ) ;
+          kg_scr_recover ( wc ) ;
+          kg_scr_recover ( wc ) ;
+      };
+      dc->entry = 1;
+      xmin = x1 , xmax = x1+x0;
+      ymin = y1; ymax = y1+y0;
+      kg_scr_back ( wc , xmin , ymin , xmax , ymin+1 ) ;
+      kg_scr_back ( wc , xmin , ymax-1 , xmax , ymax ) ;
+      kg_scr_back ( wc , xmin , ymin , xmin+1 , ymax ) ;
+      kg_scr_back ( wc , xmax-1 , ymin , xmax , ymax ) ;
+      _uiDraw_Bound ( wc , xmin , ymin , xmax , ymax ) ;
+      x2 = x1 , y2 = y1;
+      uiUpdateOn ( wc->D ) ;
+#endif
+      dc->x2 = x2 , dc->y2 = y2;
+      return ( key ) ;
+  }
+  char kgBoxCursor ( DIG *G ,float *xx , float *yy , \
+  float *xbgn , float *ybgn ) \
+  /*   (xbgn,ybgn) initial upper left corner
+       (xx,yy) is lower right corner
+       (xbgn,ybgn) not updated
+       New position to lower left corner is send 
+       through (xx,yy)
+  ***************************************************/
+  {
+      KBEVENT kbevent;
+      DIALOG *D;
+      int kb , button , event , OK = 0 , c_color; ;
+      int ch , key , MAG = 0;
+      int xpo , ypo , but , pointer , xorg , yorg , xorg1 , yorg1;
+      int temp,xchg=0,ychg=0;;
+      float dx , dy , xl , xu , yl , yu;
+      float wx1,wy1,wx2,wy2;
+      int Dxl,Dyl,Dxu,Dyu;
+      int Dwxl,Dwyl,Dwxu,Dwyu;
+      D = ( DIALOG * ) G->D;
+      kgWC *wc;
+      kgDC *dc;
+      void *img=NULL;
+      wc = G->wc;
+      dc = G->dc;
+      kgGetWindow(G,&wx1,&wy1,&wx2,&wy2);
+      if(*xbgn > *xx ){xl = *xx;*xx=*xbgn;*xbgn=xl;xchg=1;}
+      if(*ybgn < *yy ){yl = *yy;*yy=*ybgn;*ybgn=yl;ychg=1;}
+      dx = *xx - *xbgn;
+      dy = *ybgn - *yy;
+      if(dx > (wx2-wx1)) return 0;
+      if(dy > (wy2-wy1)) return 0;
+      xl = wx1;
+      xu = wx2;
+      yl = wy1;
+      yu = wy2;
+      if ( G->D_ON == 0 ) {
+          MAG = G->MAG;
+          kgAntialiasingOff ( G ) ;
+      }
+      kgGetDeviceCord(G,*xbgn,*ybgn,&Dxl,&Dyl);
+      kgGetDeviceCord(G,*xx,*yy,&Dxu,&Dyu);
+      kgGetDeviceCord(G,wx1,wy1,&Dwxl,&Dwyu);
+      kgGetDeviceCord(G,wx2,wy2,&Dwxu,&Dwyl);
+      dc->entry = 0;
+      temp = dc->c_bound;
+      dc->c_bound = 14;
+      uiset_clr ( D , 8 ) ;
+      c_color = wc->c_color;
+      xorg1 = Dxu;
+      yorg1 = Dyu;
+      xorg = Dxl;
+      yorg = Dyl;
+      dc->gcur_x = xorg;
+      dc->gcur_y = yorg;
+      xorg = ( Dxu -Dxl ) ;
+      yorg = (Dyu - Dyl) ;
+      uiScrn_back ( wc , dc->msg_x , dc->msg_y , 40 ) ;
+      xpo = dc->gcur_x , ypo = dc->gcur_y;
+      draw_cursor ( G ) ;
+      draw_box_cursor ( G , xorg , yorg , dc->gcur_x , dc->gcur_y ) ;
+      while ( ! OK ) {
+          kbevent = kgSkipMouseMove ( D ) ;
+          event = kbevent.event;
+          button = kbevent.button;
+          kb = kbevent.key;
+#if 0
+          if(event ==5) {
+                 kbevent.x = dc->gcur_x ; kbevent.y = dc->gcur_y;   
+          }
+#endif
+          if ( ( event == 0 ) || ( event == 3 ) ) {
+              if ( kbevent.x+xorg > Dwxu ) kbevent.x = Dwxu - xorg;
+              if ( kbevent.y + yorg > Dwyu ) kbevent.y = Dwyu - yorg;
+              if ( kbevent.x < Dwxl ) kbevent.x = Dwxl;
+              if ( kbevent.y < Dwyl ) kbevent.y = Dwyl;
+          }
+          xpo = kbevent.x;
+          ypo = kbevent.y;
+          switch ( event ) {
+              case 0: // pointer movement
+              case 3: // button press and movement
+              if ( ( xpo != dc->gcur_x ) || ( ypo != dc->gcur_y ) ) {
+                  dc->gcur_x = xpo , dc->gcur_y = ypo;
+                  draw_box_cursor ( G , xorg , yorg , dc->gcur_x , dc->gcur_y ) ;
+                  draw_po_cursor ( G ) ;
+              }
+              break;
+              case 1: // button press
+              if ( ( xpo != dc->gcur_x ) || ( ypo != dc->gcur_y ) ) {
+                  dc->gcur_x = xpo , dc->gcur_y = ypo;
+                  draw_box_cursor ( G , xorg , yorg , dc->gcur_x , dc->gcur_y ) ;
+                  draw_po_cursor ( G ) ;
+              }
+              if ( button == 1 ) key = '\r';
+              if ( button == 3 ) key = '.';
+              OK = 1;
+              continue;
+              case 5: // key release
+              key = kb;
+              if ( ui_Linefeed ( kb ) ) {
+                 kbevent.x = dc->gcur_x ; kbevent.y = dc->gcur_y;   
+                 key = '\r'; OK = 1; continue; }
+              if ( ui_Return ( kb ) ) {
+                 kbevent.x = dc->gcur_x ; kbevent.y = dc->gcur_y;   
+                 key = '\r'; OK = 1; continue; }
+              if ( ( kb >= '0' ) && ( kb <= '9' ) ) {dc->jmp = kb-'0'; continue; }
+              if ( ( kb == '.' ) || ( kb == 'u' ) || ( kb == 'U' ) ) {
+                 kbevent.x = dc->gcur_x ; kbevent.y = dc->gcur_y;   
+                  OK = 1; continue;
+              }
+              if ( ui_Uparrow ( kb ) ) { cursor_up ( dc ) ;}
+              if ( ui_Downarrow ( kb ) ) { cursor_down ( dc ) ;}
+              if ( ui_Leftarrow ( kb ) ) { cursor_left ( dc ) ;}
+              if ( ui_Rightarrow ( kb ) ) { cursor_right ( dc ) ; }
+              kbevent.x = dc->gcur_x ; kbevent.y = dc->gcur_y;   
+              if ( kbevent.x+xorg > Dwxu ) kbevent.x = Dwxu - xorg;
+              if ( kbevent.y + yorg > Dwyu ) kbevent.y = Dwyu - yorg;
+              if ( kbevent.x < Dwxl ) kbevent.x = Dwxl;
+              if ( kbevent.y < Dwyl ) kbevent.y = Dwyl;
+              dc->gcur_x = kbevent.x;
+              dc->gcur_y = kbevent.y;
+              draw_box_cursor( G , xorg , yorg , dc->gcur_x , dc->gcur_y ) ;  
+              break;
+              default:
+              break;
+          }
+      }
+      jump:
+      dc->c_bound = temp;
+      uiset_clr ( D , c_color ) ;
+      if ( dc->entry ) {
+          kg_scr_recover ( wc ) ;
+          kg_scr_recover ( wc ) ;
+          kg_scr_recover ( wc ) ;
+          kg_scr_recover ( wc ) ;
+      };
+      uiScrn_recover ( wc ) ;
+      if ( kbevent.x+xorg > Dwxu ) kbevent.x = Dwxu - xorg;
+      if ( kbevent.y + yorg > Dwyu ) kbevent.y = Dwyu - yorg;
+      if ( kbevent.x < Dwxl ) kbevent.x = Dwxl;
+      if ( kbevent.y < Dwyl ) kbevent.y = Dwyl;
+      dc->gcur_x = kbevent.x;
+      dc->gcur_y = kbevent.y;
+      *xx = uiusr_x ( dc->gcur_x ) ;
+      *yy = uiusr_y ( ( D->evgay-dc->gcur_y ) ) ;
+      *xbgn = *xx+dx;
+      *ybgn = *yy-dy;
+      if(xchg ){xl = *xx;*xx=*xbgn;*xbgn=xl;}
+      if(ychg ){yl = *yy;*yy=*ybgn;*ybgn=yl;}
+      if ( MAG ) {
+          kgAntialiasingOn ( G , MAG-1 ) ;
+      }
+      if(img!=NULL)kgFreeImage(img);
+      return ( key ) ;
+  }
+  int draw_image_cursor ( DIG *G ,void *img, int x0 , int y0 , int x1 , int y1 ) {
+      int key;
+#if 1
+      int x2 , y2;
+      int xmin , ymin , xmax , ymax;
+      DIALOG *D;
+      int EVGAY;
+      kgWC *wc;
+      kgDC *dc;
+      D = G->D;
+      wc = G->wc;
+      dc = G->dc;
+      EVGAY = D->evgay;
+      x2 = dc->x2;
+      y2 = dc->y2;
+ //     if ( dc->entry == 0 ) {x2 = -100; y2 = -100; }
+      if ( dc->entry ) {
+          kg_scr_recover ( wc ) ;
+//          kg_scr_recover ( wc ) ;
+//          kg_scr_recover ( wc ) ;
+//          kg_scr_recover ( wc ) ;
+      };
+      dc->entry = 1;
+      xmin = x1 , xmax = x1+x0;
+      ymin = y1; ymax = y1+y0;
+#if 0
+      kg_scr_back ( wc , xmin , ymin , xmax , ymin+1 ) ;
+      kg_scr_back ( wc , xmin , ymax-1 , xmax , ymax ) ;
+      kg_scr_back ( wc , xmin , ymin , xmin+1 , ymax ) ;
+      kg_scr_back ( wc , xmax-1 , ymin , xmax , ymax ) ;
+#else
+      kg_scr_back ( wc , xmin , ymin , xmax , ymax ) ;
+#endif
+      kgImage(wc->D,img, xmin , ymin , abs(xmax-xmin) , abs(ymax-ymin),0.0,0.9 ) ;
+      _uiDraw_Bound ( wc , xmin , ymin , xmax , ymax ) ;
+      x2 = x1 , y2 = y1;
+      uiUpdateOn ( wc->D ) ;
+#endif
+      dc->x2 = x2 , dc->y2 = y2;
+      return ( key ) ;
+  }
+  char kgImageCursor ( DIG *G , void *image,float *xx , float *yy , \
+  float *xbgn , float *ybgn ) \
+  /*   (xbgn,ybgn) initial upper left corner
+       (xx,yy) is lower right corner
+       (xbgn,ybgn) not updated
+       New position to lower left corner is send 
+       through (xx,yy)
+  ***************************************************/
+  {
+      KBEVENT kbevent;
+      DIALOG *D;
+      int kb , button , event , OK = 0 , c_color; ;
+      int ch , key , MAG = 0;
+      int xpo , ypo , but , pointer , xorg , yorg , xorg1 , yorg1;
+      int temp,xchg=0,ychg=0;;
+      float dx , dy , xl , xu , yl , yu;
+      float wx1,wy1,wx2,wy2;
+      int Dxl,Dyl,Dxu,Dyu;
+      int Dwxl,Dwyl,Dwxu,Dwyu;
+      D = ( DIALOG * ) G->D;
+      kgWC *wc;
+      kgDC *dc;
+      void *img=NULL;
+      wc = G->wc;
+      dc = G->dc;
+      kgGetWindow(G,&wx1,&wy1,&wx2,&wy2);
+      if(*xbgn > *xx ){xl = *xx;*xx=*xbgn;*xbgn=xl;xchg=1;}
+      if(*ybgn < *yy ){yl = *yy;*yy=*ybgn;*ybgn=yl;ychg=1;}
+      dx = *xx - *xbgn;
+      dy = *ybgn - *yy;
+      if(dx > (wx2-wx1)) return 0;
+      if(dy > (wy2-wy1)) return 0;
+      xl = wx1;
+      xu = wx2;
+      yl = wy1;
+      yu = wy2;
+      if ( G->D_ON == 0 ) {
+          MAG = G->MAG;
+          kgAntialiasingOff ( G ) ;
+      }
+      kgGetDeviceCord(G,*xbgn,*ybgn,&Dxl,&Dyl);
+      kgGetDeviceCord(G,*xx,*yy,&Dxu,&Dyu);
+      kgGetDeviceCord(G,wx1,wy1,&Dwxl,&Dwyu);
+      kgGetDeviceCord(G,wx2,wy2,&Dwxu,&Dwyl);
+      img = kgChangeSizeImage(image,abs(Dxu-Dxl),abs(Dyu - Dyl));
+      kgAddTransparency(img,0.3);
+      dc->entry = 0;
+      temp = dc->c_bound;
+      dc->c_bound = 14;
+      uiset_clr ( D , 8 ) ;
+      c_color = wc->c_color;
+      xorg1 = Dxu;
+      yorg1 = Dyu;
+      xorg = Dxl;
+      yorg = Dyl;
+      dc->gcur_x = xorg;
+      dc->gcur_y = yorg;
+      xorg = ( Dxu -Dxl ) ;
+      yorg = (Dyu - Dyl) ;
+      uiScrn_back ( wc , dc->msg_x , dc->msg_y , 40 ) ;
+      xpo = dc->gcur_x , ypo = dc->gcur_y;
+      draw_cursor ( G ) ;
+      draw_image_cursor ( G ,img, xorg , yorg , dc->gcur_x , dc->gcur_y ) ;
+      while ( ! OK ) {
+          kbevent = kgSkipMouseMove ( D ) ;
+          event = kbevent.event;
+          button = kbevent.button;
+          kb = kbevent.key;
+          if ( ( event == 0 ) || ( event == 3 ) ) {
+              if ( kbevent.x+xorg > Dwxu ) kbevent.x = Dwxu - xorg;
+              if ( kbevent.y + yorg > Dwyu ) kbevent.y = Dwyu - yorg;
+              if ( kbevent.x < Dwxl ) kbevent.x = Dwxl;
+              if ( kbevent.y < Dwyl ) kbevent.y = Dwyl;
+          }
+          xpo = kbevent.x;
+          ypo = kbevent.y;
+          switch ( event ) {
+              case 0: // pointer movement
+              case 3: // button press and movement
+              if ( ( xpo != dc->gcur_x ) || ( ypo != dc->gcur_y ) ) {
+                  dc->gcur_x = xpo , dc->gcur_y = ypo;
+                  draw_image_cursor ( G ,img, xorg , yorg , dc->gcur_x , dc->gcur_y ) ;
+                  draw_po_cursor ( G ) ;
+              }
+              break;
+              case 1: // button press
+              if ( ( xpo != dc->gcur_x ) || ( ypo != dc->gcur_y ) ) {
+                  dc->gcur_x = xpo , dc->gcur_y = ypo;
+                  draw_image_cursor ( G ,img, xorg , yorg , dc->gcur_x , dc->gcur_y ) ;
+                  draw_po_cursor ( G ) ;
+              }
+              if ( button == 1 ) key = '\r';
+              if ( button == 3 ) key = '.';
+              OK = 1;
+              continue;
+              case 5: // key release
+              key = kb;
+#if 0
+              if ( ui_Linefeed ( kb ) ) { key = '\r'; OK = 1; continue; }
+              if ( ui_Return ( kb ) ) {key = '\r'; OK = 1; continue; }
+              if ( ( kb >= '0' ) && ( kb <= '9' ) ) {dc->jmp = kb-'0'; continue; }
+              if ( ( kb == '.' ) || ( kb == 'u' ) || ( kb == 'U' ) ) {
+                  OK = 1; continue;
+              }
+              if ( ui_Uparrow ( kb ) ) { cursor_up ( dc ) ; draw_image_cursor \
+               ( G , img,xorg , yorg , dc->gcur_x , dc->gcur_y ) ; break; }
+              if ( ui_Downarrow ( kb ) ) { cursor_down ( dc ) ; draw_image_cursor \
+               ( G ,img, xorg , yorg , dc->gcur_x , dc->gcur_y ) ; break; }
+              if ( ui_Leftarrow ( kb ) ) { cursor_left ( dc ) ; draw_image_cursor \
+               ( G , img,xorg , yorg , dc->gcur_x , dc->gcur_y ) ; break; }
+              if ( ui_Rightarrow ( kb ) ) { cursor_right ( dc ) ; draw_image_cursor \
+               ( G , img,xorg , yorg , dc->gcur_x , dc->gcur_y ) ; break; }
+#else
+              if ( ui_Linefeed ( kb ) ) {
+                 kbevent.x = dc->gcur_x ; kbevent.y = dc->gcur_y;   
+                 key = '\r'; OK = 1; continue; }
+              if ( ui_Return ( kb ) ) {
+                 kbevent.x = dc->gcur_x ; kbevent.y = dc->gcur_y;   
+                 key = '\r'; OK = 1; continue; }
+              if ( ( kb >= '0' ) && ( kb <= '9' ) ) {dc->jmp = kb-'0'; continue; }
+              if ( ( kb == '.' ) || ( kb == 'u' ) || ( kb == 'U' ) ) {
+                 kbevent.x = dc->gcur_x ; kbevent.y = dc->gcur_y;   
+                  OK = 1; continue;
+              }
+              if ( ui_Uparrow ( kb ) ) { cursor_up ( dc ) ;}
+              if ( ui_Downarrow ( kb ) ) { cursor_down ( dc ) ;}
+              if ( ui_Leftarrow ( kb ) ) { cursor_left ( dc ) ;}
+              if ( ui_Rightarrow ( kb ) ) { cursor_right ( dc ) ; }
+              kbevent.x = dc->gcur_x ; kbevent.y = dc->gcur_y;   
+              if ( kbevent.x+xorg > Dwxu ) kbevent.x = Dwxu - xorg;
+              if ( kbevent.y + yorg > Dwyu ) kbevent.y = Dwyu - yorg;
+              if ( kbevent.x < Dwxl ) kbevent.x = Dwxl;
+              if ( kbevent.y < Dwyl ) kbevent.y = Dwyl;
+              dc->gcur_x = kbevent.x;
+              dc->gcur_y = kbevent.y;
+              draw_image_cursor( G , img,xorg , yorg , dc->gcur_x , dc->gcur_y ) ;  
+#endif
+              break;
+              default:
+              break;
+          }
+      }
+      jump:
+      dc->c_bound = temp;
+      uiset_clr ( D , c_color ) ;
+      if ( dc->entry ) {
+//          kg_scr_recover ( wc ) ;
+//          kg_scr_recover ( wc ) ;
+//          kg_scr_recover ( wc ) ;
+          kg_scr_recover ( wc ) ;
+      };
+      uiScrn_recover ( wc ) ;
+      if ( kbevent.x+xorg > Dwxu ) kbevent.x = Dwxu - xorg;
+      if ( kbevent.y + yorg > Dwyu ) kbevent.y = Dwyu - yorg;
+      if ( kbevent.x < Dwxl ) kbevent.x = Dwxl;
+      if ( kbevent.y < Dwyl ) kbevent.y = Dwyl;
+      dc->gcur_x = kbevent.x;
+      dc->gcur_y = kbevent.y;
+      *xx = uiusr_x ( dc->gcur_x ) ;
+      *yy = uiusr_y ( ( D->evgay-dc->gcur_y ) ) ;
+      *xbgn = *xx+dx;
+      *ybgn = *yy-dy;
+      if(xchg ){xl = *xx;*xx=*xbgn;*xbgn=xl;}
+      if(ychg ){yl = *yy;*yy=*ybgn;*ybgn=yl;}
+      if ( MAG ) {
+          kgAntialiasingOn ( G , MAG-1 ) ;
+      }
+      if(img!=NULL)kgFreeImage(img);
+      return ( key ) ;
+  }
+  int draw_path_cursor ( DIG *G ,void *img, int x1 , int y1 ) {
+      int key;
+      int x2 , y2;
+      int xmin , ymin , xmax , ymax,dx=0,dy=0;
+      DIALOG *D;
+      int EVGAY;
+      kgWC *wc;
+      kgDC *dc;
+      D = G->D;
+      wc = G->wc;
+      dc = G->dc;
+      EVGAY = D->evgay;
+      x2 = dc->x2;
+      y2 = dc->y2;
+      if ( dc->entry ) {
+//          kg_scr_recover ( wc ) ;
+      };
+      if(img != NULL) kgGetImageSize(img,&dx,&dy);
+      dc->entry = 1;
+      xmin = x1-dx/2 , xmax = xmin+dx;;
+      ymin = y1-dy/2; ymax = ymin + dy;;
+//      kg_scr_back ( wc , xmin , ymin , xmax , ymax ) ;
+      kgImage(wc->D,img, xmin , ymin , abs(xmax-xmin) , abs(ymax-ymin),0.0,0.9 ) ;
+//      _uiDraw_Bound ( wc , xmin , ymin , xmax , ymax ) ;
+      x2 = x1 , y2 = y1;
+      uiUpdateOn ( wc->D ) ;
+      dc->x2 = x2 , dc->y2 = y2;
+      return ( key ) ;
+  }
+  char kgPathPoints ( DIG *G , void *image,int *n,float *xx , float *yy ) {
+  /*   (xo,yo) is start point;
+       (xx,yy) retuns pints selected
+       n  no of points setcted;
+       image , image to be drawn at each of the points
+  ***************************************************/
+      KBEVENT kbevent;
+      DIALOG *D;
+      int kb , button , event , OK = 0 , c_color; ;
+      int ch , key , MAG = 0;
+      int xpo , ypo , but , pointer , xorg , yorg , xorg1 , yorg1;
+      int temp,xchg=0,ychg=0;;
+      float xl , xu , yl , yu;
+      int  dx=2 , dy=2 ;
+      float wx1,wy1,wx2,wy2;
+      int Dxl,Dyl,Dxu,Dyu;
+      int Dwxl,Dwyl,Dwxu,Dwyu;
+      Dlink *Plist=Dopen();      
+      typedef struct _Pnt { int x;int y;} PNT;
+      PNT *ptmp=NULL;;
+      int i=0;
+      float xbgn=0.,ybgn=0;
+
+      D = ( DIALOG * ) G->D;
+      kgWC *wc;
+      kgDC *dc;
+      void *img=NULL,*bimg =NULL;;
+      wc = G->wc;
+      dc = G->dc;
+      kgGetWindow(G,&wx1,&wy1,&wx2,&wy2);
+      xbgn = wx1+(wx2-wx1)/2;
+      ybgn = wy1+(wy2-wy1)/2;
+      kgCrossCursor(G,&xbgn,&ybgn);
+      xl = wx1;
+      xu = wx2;
+      yl = wy1;
+      yu = wy2;
+      if ( G->D_ON == 0 ) {
+          MAG = G->MAG;
+          kgAntialiasingOff ( G ) ;
+      }
+      kgGetDeviceCord(G,xbgn,ybgn,&Dxl,&Dyl);
+      kgGetDeviceCord(G,wx1,wy1,&Dwxl,&Dwyu);
+      kgGetDeviceCord(G,wx2,wy2,&Dwxu,&Dwyl);
+      if(image != NULL) kgGetImageSize(image,&dx,&dy);
+      else {
+        bimg = kgCreateImage(dx,dy);
+        kgImageModifyColor(bimg,.0,0.3,1.0);
+        kgAddTransparency(bimg,-0.5);
+        image = bimg;
+      }
+      while( (dx>100)||(dy>100) ){
+         dx = dx*0.9;
+         dy = dy*0.9;
+      }
+      Dxl = Dxl -dx/2;
+      Dyl = Dyl -dy/2;
+      Dyu = Dyl+dy;
+      Dxu = Dxl+dx;
+      img = kgChangeSizeImage(image,abs(Dxu-Dxl),abs(Dyu - Dyl));
+      kgAddTransparency(img,0.3);
+      dc->entry = 0;
+      temp = dc->c_bound;
+      dc->c_bound = 14;
+      uiset_clr ( D , 8 ) ;
+      c_color = wc->c_color;
+      xorg1 = Dxu;
+      yorg1 = Dyu;
+      xorg = Dxl+dx/2;
+      yorg = Dyl+dy/2;
+      dc->gcur_x = xorg;
+      dc->gcur_y = yorg;
+      xorg = ( Dxu -Dxl )/2 ;
+      yorg = (Dyu - Dyl)/2 ;
+      uiScrn_back ( wc , dc->msg_x , dc->msg_y , 40 ) ;
+              if ( dc->gcur_x+xorg > Dwxu ) dc->gcur_x = Dwxu - xorg;
+              if ( dc->gcur_y + yorg > Dwyu ) dc->gcur_y = Dwyu - yorg;
+              if ( dc->gcur_x < Dwxl+xorg ) dc->gcur_x = Dwxl+xorg;
+              if ( dc->gcur_y < Dwyl+yorg ) dc->gcur_y = Dwyl+yorg;
+      xpo = dc->gcur_x , ypo = dc->gcur_y;
+      draw_cursor ( G ) ;
+      draw_path_cursor ( G ,img, dc->gcur_x , dc->gcur_y ) ;
+      while ( ! OK ) {
+          ptmp = (PNT *)malloc(sizeof(PNT));
+          ptmp->x = dc->gcur_x;
+          ptmp->y = dc->gcur_y ;
+          Dadd(Plist,ptmp);
+          kbevent = kgSkipMouseMove ( D ) ;
+          event = kbevent.event;
+          button = kbevent.button;
+          kb = kbevent.key;
+          if ( ( event == 0 ) || ( event == 3 )||(event == 1) ) {
+              if ( kbevent.x+xorg > Dwxu ) kbevent.x = Dwxu - xorg;
+              if ( kbevent.y + yorg > Dwyu ) kbevent.y = Dwyu - yorg;
+              if ( kbevent.x < Dwxl+xorg ) kbevent.x = Dwxl+xorg;
+              if ( kbevent.y < Dwyl+yorg ) kbevent.y = Dwyl+yorg;
+          }
+          xpo = kbevent.x;
+          ypo = kbevent.y;
+          switch ( event ) {
+              case 0: // pointer movement
+              case 3: // button press and movement
+              if ( ( xpo != dc->gcur_x ) || ( ypo != dc->gcur_y ) ) {
+                  dc->gcur_x = xpo , dc->gcur_y = ypo;
+                  draw_path_cursor ( G ,img, dc->gcur_x , dc->gcur_y ) ;
+                  draw_po_cursor ( G ) ;
+              }
+              break;
+              case 1: // button press
+              if ( ( xpo != dc->gcur_x ) || ( ypo != dc->gcur_y ) ) {
+                  dc->gcur_x = xpo , dc->gcur_y = ypo;
+                  draw_path_cursor ( G ,img, dc->gcur_x , dc->gcur_y ) ;
+                  draw_po_cursor ( G ) ;
+              }
+              if ( button == 1 ) key = '\r';
+              if ( button == 3 ) key = '.';
+              OK = 1;
+              continue;
+              case 5: // key release
+              key = kb;
+              if ( ui_Linefeed ( kb ) ) { key = '\r'; OK = 1; continue; }
+              if ( ui_Return ( kb ) ) {key = '\r'; OK = 1; continue; }
+              if ( ( kb >= '0' ) && ( kb <= '9' ) ) {dc->jmp = kb-'0'; continue; }
+              if ( ( kb == '.' ) || ( kb == 'u' ) || ( kb == 'U' ) ) {
+                  OK = 1; continue;
+              }
+              if ( ui_Uparrow ( kb ) ) { cursor_up ( dc ) ; draw_path_cursor \
+               ( G , img, dc->gcur_x , dc->gcur_y ) ; break; }
+              if ( ui_Downarrow ( kb ) ) { cursor_down ( dc ) ; draw_path_cursor \
+               ( G ,img,  dc->gcur_x , dc->gcur_y ) ; break; }
+              if ( ui_Leftarrow ( kb ) ) { cursor_left ( dc ) ; draw_path_cursor \
+               ( G , img, dc->gcur_x , dc->gcur_y ) ; break; }
+              if ( ui_Rightarrow ( kb ) ) { cursor_right ( dc ) ; draw_path_cursor \
+               ( G , img,dc->gcur_x , dc->gcur_y ) ; break; }
+              break;
+              default:
+              break;
+          }
+      }
+      jump:
+      dc->c_bound = temp;
+      uiset_clr ( D , c_color ) ;
+      if ( dc->entry ) {
+//          kg_scr_recover ( wc ) ;
+      };
+      uiScrn_recover ( wc ) ;
+#if 0
+              if ( kbevent.x+xorg > Dwxu ) kbevent.x = Dwxu - xorg;
+              if ( kbevent.y + yorg > Dwyu ) kbevent.y = Dwyu - yorg;
+              if ( kbevent.x < Dwxl+xorg ) kbevent.x = Dwxl+xorg;
+              if ( kbevent.y < Dwyl+yorg ) kbevent.y = Dwyl+yorg;
+          dc->gcur_x = kbevent.x;
+          dc->gcur_y = kbevent.y;
+          ptmp = (PNT *)malloc(sizeof(PNT));
+          ptmp->x = dc->gcur_x;
+          ptmp->y = dc->gcur_y ;
+          Dadd(Plist,ptmp);
+#endif
+      if ( MAG ) {
+          kgAntialiasingOn ( G , MAG-1 ) ;
+      }
+      if(img!=NULL)kgFreeImage(img);
+      if(bimg!=NULL)kgFreeImage(img);
+      *n = Dcount(Plist);
+      xx = (float *)malloc(sizeof(float)*(*n));
+      yy  = (float *)malloc(sizeof(float)*(*n));
+      i=0;
+      Resetlink(Plist);
+      while ((ptmp = (PNT *)Getrecord(Plist))!= NULL) {
+          kgGetGraphicCord(G,ptmp->x,ptmp->y,xx+i,yy+i);
+//          printf("Pnt: %f %f\n",xx[i],yy[i]);
+//          fflush(stdout);
+          i++;
+      }
+      Dempty(Plist);
       return ( key ) ;
   }
   char kgRectCursor ( DIG *G , float *xx , float *yy , \

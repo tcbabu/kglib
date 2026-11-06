@@ -70,7 +70,7 @@ static float TI[16] = {1.,0.,0.,0.,0.,1.,0.,0.,0.,0.,1.,0.,0.,0.,0.,1.};
    }
 static unsigned char esc=0x1b,G2='g',N='n',C='c',P='p',Z='z',L='l',V='v';
 static unsigned char S='s',T='t',R='r',M='m',D='d',Y='y',U='u';
-static unsigned char O='o',B='b',X='x',F='f',I='i',A='a',E='e',W='w';
+static unsigned char O='o',B='b',X='x',F='f',I='i',IR='I',A='a',E='e',W='w';
 static unsigned char H='h',K='k',M3 ='M',D3='D',P3='P',G3='G',B3='B',S3='S',S4='H',T3='T';
 static unsigned char BELL=0x07;
 static char *dp;
@@ -806,6 +806,12 @@ void gphMove2f(int fid,float x,float y)
      WRITE(fid,&x,4);
      WRITE(fid,&y,4);
  }
+int kgGetDeviceCord(DIG *G,float x,float y,int *vx,int *vy){
+    return uiGetDivCord(G,x,y,vx,vy);
+}
+int kgGetGraphicCord(DIG *G,int vx,int vy,float *x,float *y) {
+  return  uiGetGraphicCord(G,vx,vy,x,y);
+}
 void kgMarkerType(DIG *G,int mtype)
 {
      kgDC *dc;
@@ -3077,7 +3083,7 @@ int gphRoundedRectangleShade4(int fid,float xo,float yo,float xl,float yl,int cl
    if(fac==0.0) {count=1;Dang=90;}
    size = yl;
    if(size > xl){ size=xl;}
-   bordrsize = size*0.1;
+   bordrsize = size*0.075;
    if(bordrsize< 4) bordrsize=4;
    if(bordrsize > size*0.3) bordrsize=size*0.3;
    dl = size*fac;
@@ -5199,6 +5205,16 @@ void kgrev_box_fill3f(DIG *G,FILE *fp)
                 kgDrawImage(G,imgfile,uicnv_x(dc,x1),uicnv_y(dc,y1),
                              uicnv_x(dc,x2),uicnv_y(dc,y2));
         break;
+        case 'I':
+                FREAD(pf,(void *)imgfile,100);
+                FREAD(pf,(void *)&x1,4);
+                FREAD(pf,(void *)&y1,4);
+                FREAD(pf,(void *)&x2,4);
+                FREAD(pf,(void *)&y2,4);
+//                printf("Drawing Image: %-s\n",imgfile);
+                kgRedrawImage(G,imgfile,uicnv_x(dc,x1),uicnv_y(dc,y1),
+                             uicnv_x(dc,x2),uicnv_y(dc,y2));
+        break;
         case 's':
                 FREAD(pf,(void *)&clr,4);
                 kgLineStyle(G,clr);
@@ -6158,6 +6174,21 @@ void uiwin_drawimage(DIG *G)
   uiread_buf(G,&y2,4);
   if(G->D_ON)ui_drawimage(G,buff,x1,y1,x2,y2);
 }
+void uiwin_putimage(DIG *G)
+{
+  float x1,y1,x2,y2;
+  char buff[100];
+  kgDC *dc;
+  kgWC *wc;
+  dc=G->dc;
+  wc = G->wc;
+  uiread_buf(G,buff,100);
+  uiread_buf(G,&x1,4);
+  uiread_buf(G,&y1,4);
+  uiread_buf(G,&x2,4);
+  uiread_buf(G,&y2,4);
+  if(G->D_ON)ui_putimage(G,buff,x1,y1,x2,y2);
+}
 
 void uiwin_marker(DIG *G)
 {
@@ -6709,6 +6740,8 @@ void uicheck_and_do(DIG *G,char ch)
         case 'd': uiwin_draw(G);
            break;
         case 'i': uiwin_drawimage(G);
+           break;
+        case 'I': uiwin_putimage(G);
            break;
         case 'l': uiwin_drawline(G);
            break;
@@ -8159,6 +8192,33 @@ void kgDrawImage(DIG *G,void *imgfile,float x1,float y1,float x2, float y2){
 //       kgReview(G);
      }
      else img_drawimage(G,imgfile,x1,y1,x2,y2);
+ }
+void kgRedrawImage(DIG *G,void *imgfile,float x1,float y1,float x2, float y2){
+     char buff[100];
+     kgDC *dc;
+     dc= G->dc;
+     buff[99]='\0';
+     strncpy(buff,imgfile,99);
+     if(G->Rbuff != NULL) {
+       uiwrite_bf(G,&L,1);
+       uiwrite_bf(G,&IR,1);
+       uiwrite_bf(G,buff,100);
+       uiwrite_bf(G,&x1,4);
+       uiwrite_bf(G,&y1,4);
+       uiwrite_bf(G,&x2,4);
+       uiwrite_bf(G,&y2,4);
+     }
+     if(G->D_ON){
+       if((buff[0]!='#')||(buff[1]!='#')) {
+        fprintf(stderr,"For Screen drawing filename should be ##<file>\n");
+        fprintf(stderr,"Trying inserting ##\n");
+	strcpy(buff,"##");
+	strncat(buff,imgfile,97);
+       }
+       ui_putimage(G,imgfile,x1,y1,x2,y2);
+//       kgReview(G);
+     }
+     else img_putimage(G,imgfile,x1,y1,x2,y2);
  }
 void * gphStringToImage(char *Str,int xsize,int ysize,int font,int txtcolor,int justification,int width,int bkgr){
 /* -1 left justification ; 0 center ;1 right */
@@ -10851,7 +10911,7 @@ int kgRoundedRectangleShade4(void * fid,float xo,float yo,float xl,float yl,int 
    count = 90/Dang;
    size = yl;
    if(size > xl){ size=xl;}
-   bordrsize = size*0.1;
+   bordrsize = size*0.15;
    if(bordrsize< 4) bordrsize=4;
    if(bordrsize > size*0.3) bordrsize=size*0.3;
    dl = size*fac;
@@ -10882,14 +10942,10 @@ int kgRoundedRectangleShade4(void * fid,float xo,float yo,float xl,float yl,int 
    sorg =s;
    vorg = vv;
    vmid = vmax;
-   vv = (vmin+0.8*(vmax-vmin));
+   vmid = (vmin+0.9*(vmax-vmin));
 
    if(fac > 0.5) {
        double dv,vmin,vmax,dv1,vmin1,vmax1,ang;
-       vmin1= vv;
-       vmax1 = vv;
-       vmin = vlow;
-       vmax = vlow;
        fac = (fac-0.5)/0.5;
        fac1 = (fac1-0.5)/0.5;
        np = kgGetEllipsePointsNew(xl, yl,count,x,y) ;
@@ -10915,21 +10971,14 @@ int kgRoundedRectangleShade4(void * fid,float xo,float yo,float xl,float yl,int 
          yd[np-1]= yl*0.5 -bordrsize ;
        }
    }
-#if 1 
-// Testing
        vmid =vv;
-       vv = vmax;
        Dang = 90.0/(np-1);
        dang = 3.14159265/180.0;
  
-       ang =0;
        for(i=0;i<np;i++) {
-//         ss = sin(ang);
          v[i]= vmin;
          vd[i]= vmid;
-         ang +=dang;
        }
-#endif
    for(i=0;i<np;i++) {
      npi= np+i;
      npj = np-1-i;
@@ -10958,7 +11007,17 @@ int kgRoundedRectangleShade4(void * fid,float xo,float yo,float xl,float yl,int 
      kgGouraudFill(fid,3,xp,yp,vp);
    }
 //   kgGouraudFill(fid,np2,xd,yd,vd);
+#if 0
+   for(i=0;i<(np-1);i++) {
+     xp[0]=xd[i]; yp[0]=yd[i];vp[0]=vd[i];
+     xp[1]=xd[i+1]; yp[1]=yd[i+1];vp[1]=vd[i+1];
+     j= np2;
+     xp[2]=xd[j]; yp[2]=yd[j];vp[2]=vd[j];
+     kgGouraudFill(fid,3,xp,yp,vp);
+   }
+#else
    kgGouraudFill(fid,np+1,xd+np,yd+np,vd+np);
+#endif
    for(i=0;i<np2;i++) {
      xd[i] = -x[i]+xo;
    }

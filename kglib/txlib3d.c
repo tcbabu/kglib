@@ -20,7 +20,7 @@
 #define fscr_z(z) (float)((z-clip_min)*CPCONS); /* float version */
 #define uiscr_z(z) (int)((z-dc->clip_min)*dc->CPCONS+0.5);
 #define uifscr_z(z) (float)((z-dc->clip_min)*dc->CPCONS); /* float version */
-#define UNSIGNED unsigned short
+#define UNSIGNEDINT unsigned int
 #define far  
 #define MAXZ 65000
   static int cur_z;
@@ -167,17 +167,17 @@
       kgWC *wc;
       wc = G->wc;
       dc = G->dc;
-      pt = ( UNSIGNED * ) dc->zbuf;
+      pt = ( UNSIGNEDINT * ) dc->zbuf;
       max = dc->Z_max;
       for ( i = 0;i < max;i++ ) * ( pt+i ) = 0;
-      pt = ( UNSIGNED * ) dc->redbuf;
+      pt = ( UNSIGNEDINT * ) dc->redbuf;
       if ( pt != NULL ) {
           for ( i = 0;i < max;i++ ) * ( pt+i ) = 0;
-          pt = ( UNSIGNED * ) dc->greenbuf;
+          pt = ( UNSIGNEDINT * ) dc->greenbuf;
           for ( i = 0;i < max;i++ ) * ( pt+i ) = 0;
-          pt = ( UNSIGNED * ) dc->bluebuf;
+          pt = ( UNSIGNEDINT * ) dc->bluebuf;
           for ( i = 0;i < max;i++ ) * ( pt+i ) = 0;
-          pt = ( UNSIGNED * ) dc->clrbuf;
+          pt = ( UNSIGNEDINT * ) dc->clrbuf;
           for ( i = 0;i < max;i++ ) * ( pt+i ) = 1;
       }
   }
@@ -198,10 +198,10 @@
       else {
           dc->Z_max = ( wc->EVGAY+3 ) * ( wc->EVGAX+3 ) ;
 #if 0
-          dc->redbuf = ( UNSIGNED * ) malloc ( sizeof ( UNSIGNED ) *dc->Z_max ) ;
-          dc->greenbuf = ( UNSIGNED * ) malloc ( sizeof ( UNSIGNED ) *dc->Z_max ) ;
-          dc->bluebuf = ( UNSIGNED * ) malloc ( sizeof ( UNSIGNED ) *dc->Z_max ) ;
-          dc->clrbuf = ( UNSIGNED * ) malloc ( sizeof ( UNSIGNED ) *dc->Z_max ) ;
+          dc->redbuf = ( UNSIGNEDINT * ) malloc ( sizeof ( UNSIGNEDINT ) *dc->Z_max ) ;
+          dc->greenbuf = ( UNSIGNEDINT * ) malloc ( sizeof ( UNSIGNEDINT ) *dc->Z_max ) ;
+          dc->bluebuf = ( UNSIGNEDINT * ) malloc ( sizeof ( UNSIGNEDINT ) *dc->Z_max ) ;
+          dc->clrbuf = ( UNSIGNEDINT * ) malloc ( sizeof ( UNSIGNEDINT ) *dc->Z_max ) ;
 #else
           dc->redbuf = NULL;
           dc->greenbuf = NULL;
@@ -209,7 +209,7 @@
           dc->clrbuf = NULL;
 #endif
       }
-      dc->zbuf = ( UNSIGNED * ) malloc ( sizeof ( UNSIGNED ) *dc->Z_max ) ;
+      dc->zbuf = ( UNSIGNEDINT * ) malloc ( sizeof ( UNSIGNEDINT ) *dc->Z_max ) ;
       if ( dc->zbuf == NULL ) {
           printf ( " Error: Zbuffer allocation\n" ) ;
           exit ( 0 ) ;
@@ -253,7 +253,7 @@
       int red = 255 , green = 0 , blue = 255 , val;
       int redo = 255 , greeno = 0 , blueo = 255 , pos;
       float fac = +.3 , fac1 = 0.2 , temp , oillu;
-      UNSIGNED *loc , *r , *g , *b , *clr;
+      UNSIGNEDINT *loc , *r , *g , *b , *clr;
       kgDC *dc;
       kgWC *wc;
       dc = G->dc;
@@ -305,7 +305,7 @@
       int red = 255 , green = 0 , blue = 255 , val;
       int redo = 255 , greeno = 0 , blueo = 255 , pos;
       float fac = +.3 , fac1 = 0.2 , temp , oillu;
-      UNSIGNED *loc , *r , *g , *b , *clr;
+      UNSIGNEDINT *loc , *r , *g , *b , *clr;
       kgDC *dc;
       kgWC *wc;
       dc = G->dc;
@@ -326,7 +326,7 @@
       int redo = 255 , greeno = 0 , blueo = 255 , pos;
       float fac = +.3 , fac1 = 0.2 , temp , oillu;
       float h , s , l;
-      UNSIGNED *loc , *r , *g , *b , *clr;
+      UNSIGNEDINT *loc , *r , *g , *b , *clr;
       kgDC *dc;
       kgWC *wc;
       wc = G->wc;
@@ -382,7 +382,7 @@
       float fac = +.3 , fac1 = 0.2 , temp , oillu;
       float h , s , l;
       float RED , GREEN , BLUE;
-      UNSIGNED *loc , *r , *g , *b , *clr;
+      UNSIGNEDINT *loc , *r , *g , *b , *clr;
       kgDC *dc;
       kgWC *wc;
       wc = G->wc;

@@ -276,7 +276,7 @@
       0 , 0 , ( ( Image * ) \
        ( Simg->image ) )->columns , ( ( Image * ) ( Simg->image ) )->rows ) ;
       pixels = G->pixels;
-//      printf("Channels = %d\n",channels);
+//      printf("MSG:Channels = %d\n",channels);
       for ( j = 0;j < ( h ) ;j++ ) {
           jj = j+y0;
           if ( jj < cy0 ) continue;
@@ -4440,6 +4440,49 @@
       if ( rzimg != NULL ) {
 //    printf(" Calling imgCopyImage\n");
           imgCopyImage ( G , X1 , Y1 , rzimg ) ;
+          uiFreeImage ( rzimg ) ;
+          if ( ! IMG ) uiFreeImage ( img ) ;
+      }
+  }
+  void img_putimage ( DIG *G , void *imgfile , float x1 , \
+  float y1 , float x2 , float y2 ) {
+      float fac;
+      GMIMG *img , *rzimg;
+      char *pt;
+      int IMG = 1 , iw , ih , w , h , temp;
+      int X1 , Y1 , X2 , Y2 , EVGAY;
+      kgDC *dc;
+      if ( imgfile == NULL ) return;
+      dc = G->dc;
+      EVGAY = dc->EVGAY-1;
+      X1 = scr_x ( x1 ) ;
+      Y1 = EVGAY-scr_y ( y1 ) ;
+      X2 = scr_x ( x2 ) ;
+      Y2 = EVGAY-scr_y ( y2 ) ;
+      if ( Y1 > Y2 ) {temp = Y2; Y2 = Y1;Y1 = temp;}
+      if ( X1 > X2 ) {temp = X2; X2 = X1;X1 = temp;}
+      pt = ( char * ) imgfile;
+//      printf("MSG: img_putimage %s\n",pt);
+      if ( ( pt [ 0 ] == '#' ) && ( pt [ 1 ] == '#' ) ) {
+          IMG = 0; img = uiGetImage ( ( void * ) ( pt+2 ) ) ;
+      }
+      else img = imgfile;
+      if ( img == NULL ) return;
+      if ( strcmp ( img->Sign , "FMG" ) == 0 ) {
+          FMGIMG *fmg;
+          GMIMG *gmimg;
+          fmg = ( FMGIMG * ) imgfile;
+          IMG = 0;
+          img = ( GMIMG * ) kgGetInlineImage ( fmg->image_data , fmg->size ) ;
+      }
+      if ( strcmp ( img->Sign , "IMG" ) != 0 ) return;
+      w = X2-X1;
+      h = Y2 -Y1;
+      iw = img->image_width;
+      ih = img->image_height;
+      rzimg = ( GMIMG * ) uiChangeSizegmImage ( img , w , h , 1 ) ;
+      if ( rzimg != NULL ) {
+          imgUpdateImage ( G , X1 , Y1 , rzimg ) ;
           uiFreeImage ( rzimg ) ;
           if ( ! IMG ) uiFreeImage ( img ) ;
       }
